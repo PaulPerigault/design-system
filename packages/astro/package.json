@@ -63,6 +63,16 @@
     "./Switch.astro": "./src/forms/Switch.astro",
     "./field-ids": "./src/forms/field-ids.ts",
     "./variants": "./src/lib/variants.ts",
+    "./Alert.astro": "./src/feedback/Alert.astro",
+    "./Progress.astro": "./src/feedback/Progress.astro",
+    "./Dialog.astro": "./src/feedback/Dialog.astro",
+    "./Status.astro": "./src/feedback/Status.astro",
+    "./Separator.astro": "./src/content/Separator.astro",
+    "./Accordion.astro": "./src/content/Accordion.astro",
+    "./Table.astro": "./src/content/Table.astro",
+    "./Breadcrumb.astro": "./src/content/Breadcrumb.astro",
+    "./Prose.astro": "./src/content/Prose.astro",
+    "./Diff.astro": "./src/content/Diff.astro",
     "./package.json": "./package.json"
   }
 }
