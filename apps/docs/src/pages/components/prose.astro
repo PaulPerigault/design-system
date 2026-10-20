@@ -1,0 +1,81 @@
+---
+import Prose from '../../../../../packages/astro/src/content/Prose.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="Prose · Design system · Paul Perigault">
+  <h1>Prose</h1>
+  <p>
+    Prose est un conteneur pour le contenu éditorial rendu à partir de Markdown. Il assure une
+    largeur de lecture optimale, un rythme vertical cohérent, et un style uniforme des titres,
+    listes, citations, code et tableaux.
+  </p>
+
+  <h2>Défaut</h2>
+  <Prose>
+    <h1>Titre 1</h1>
+    <p>
+      Ceci est un paragraphe avec du texte normal, un
+      <a href="/">lien</a>, du <code>code inline</code>.
+    </p>
+
+    <h2>Titre 2</h2>
+    <p>Un autre paragraphe avec plus de contexte.</p>
+
+    <h3>Titre 3</h3>
+    <ul>
+      <li>Premier point</li>
+      <li>Deuxième point</li>
+      <li>Troisième point</li>
+    </ul>
+
+    <blockquote>Une citation inspirante du domaine du design.</blockquote>
+
+    <pre><code>function example() {'{'} 
+  return 'code block';
+{'}'}</code></pre>
+
+    <table>
+      <caption>Exemple de tableau</caption>
+      <thead>
+        <tr>
+          <th scope="col">Colonne 1</th>
+          <th scope="col">Colonne 2</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Donnée A</td>
+          <td>Donnée B</td>
+        </tr>
+        <tr>
+          <td>Donnée C</td>
+          <td>Donnée D</td>
+        </tr>
+      </tbody>
+    </table>
+  </Prose>
+
+  <h2>Propriétés</h2>
+  <table>
+    <caption>Propriétés de Prose</caption>
+    <thead>
+      <tr>
+        <th scope="col">Nom</th>
+        <th scope="col">Type</th>
+        <th scope="col">Rôle</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">
+          <code>class</code>
+        </th>
+        <td>
+          <code>string</code>
+        </td>
+        <td>Réservé au placement du composant dans son parent.</td>
+      </tr>
+    </tbody>
+  </table>
+</DocsLayout>

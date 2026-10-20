@@ -1,0 +1,120 @@
+---
+/**
+ * Prose : conteneur de contenu éditorial (Markdown rendu). Largeur mesure, rythme vertical
+ * par tokens, styles de titres, listes, citations, monospace, liens, tableaux. Contenu
+ * du slot ciblé par :global() (CSS scopé d'Astro ne pénètre pas le slot). Zéro JavaScript,
+ * aucun attribut `style` (CSP stricte), tokens `--pp-*` uniquement.
+ */
+interface Props {
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={['pp-prose', className]}>
+  <slot />
+</div>
+
+<style>
+  .pp-prose {
+    max-inline-size: var(--pp-size-measure);
+  }
+
+  .pp-prose > :global(h1),
+  .pp-prose > :global(h2),
+  .pp-prose > :global(h3),
+  .pp-prose > :global(h4),
+  .pp-prose > :global(h5),
+  .pp-prose > :global(h6) {
+    margin-block: var(--pp-space-l) var(--pp-space-s);
+    font-weight: var(--pp-font-weight-bold);
+    line-height: var(--pp-font-line-height-heading);
+  }
+
+  .pp-prose > :global(h1) {
+    font-size: var(--pp-font-size-4);
+  }
+  .pp-prose > :global(h2) {
+    font-size: var(--pp-font-size-3);
+  }
+  .pp-prose > :global(h3) {
+    font-size: var(--pp-font-size-2);
+  }
+  .pp-prose > :global(h4) {
+    font-size: var(--pp-font-size-1);
+  }
+  .pp-prose > :global(h5),
+  .pp-prose > :global(h6) {
+    font-size: var(--pp-font-size-0);
+  }
+
+  .pp-prose > :global(p),
+  .pp-prose > :global(ul),
+  .pp-prose > :global(ol),
+  .pp-prose > :global(blockquote),
+  .pp-prose > :global(pre),
+  .pp-prose > :global(table) {
+    margin: 0 0 var(--pp-space-m) 0;
+  }
+
+  .pp-prose > :global(code) {
+    font-family: var(--pp-font-family-mono);
+    font-size: var(--pp-font-size--1);
+  }
+
+  .pp-prose > :global(pre) {
+    overflow-inline: auto;
+    padding: var(--pp-space-s) var(--pp-space-m);
+    background-color: var(--pp-color-surface);
+    border-radius: var(--pp-radius-surface);
+  }
+
+  .pp-prose > :global(pre code) {
+    font-family: var(--pp-font-family-mono);
+    font-size: var(--pp-font-size--1);
+    color: var(--pp-color-fg);
+  }
+
+  .pp-prose > :global(a) {
+    color: var(--pp-color-accent);
+    text-decoration: underline;
+  }
+
+  .pp-prose > :global(a:visited) {
+    color: var(--pp-color-muted);
+  }
+
+  .pp-prose > :global(ul),
+  .pp-prose > :global(ol) {
+    padding-inline-start: var(--pp-space-l);
+  }
+
+  .pp-prose > :global(li) {
+    margin-block-end: var(--pp-space-2xs);
+  }
+
+  .pp-prose > :global(blockquote) {
+    border-inline-start: var(--pp-size-focus-width) solid var(--pp-color-accent);
+    padding-inline-start: var(--pp-space-m);
+    font-style: italic;
+    color: var(--pp-color-muted);
+  }
+
+  .pp-prose > :global(table) {
+    border-collapse: collapse;
+    inline-size: 100%;
+  }
+
+  .pp-prose > :global(th),
+  .pp-prose > :global(td) {
+    text-align: start;
+    padding: var(--pp-space-3xs) var(--pp-space-xs);
+    border-block-end: var(--pp-size-rule) solid var(--pp-color-line);
+  }
+
+  .pp-prose > :global(thead th) {
+    font-weight: var(--pp-font-weight-bold);
+  }
+</style>
