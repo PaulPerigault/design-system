@@ -14,143 +14,69 @@ npm i -D @paulperigault/guards
 pp-guards <contrôle> [options] [racines…]
 ```
 
+Contrôles : `tokens`, `design`, `size`, `layers`, `images`, et `all`.
+
 Codes de sortie : `0` (succès), `1` (problèmes détectés), `2` (usage ou configuration).
 
-### Contrôles disponibles
+Les racines à parcourir sont des **positionnels** : `pp-guards design src apps`. Elles remplacent
+la clé `roots` du fichier de configuration. Chaque contrôle accepte aussi `--config <fichier>`
+(défaut : `pp-guards.config.json`) et `--help`.
 
-#### `tokens`
+Ordre de priorité des options : défauts du contrôle, section du fichier de configuration,
+drapeaux, puis positionnels pour les racines. Un tableau remplace le précédent, il ne s'y ajoute pas.
 
-Vérifie que les valeurs de tokens sont utilisées en lieu et place des valeurs brutes.
+### `tokens`
+
+Vérifie que chaque `var(--pp-…)` désigne un token de `tokens.json` ou une propriété `--pp-*`
+déclarée dans les sources scannées. Une référence inconnue est une erreur (code `1`). Les tokens
+jamais utilisés sont signalés par un avertissement qui ne change pas le code de sortie. Ce
+contrôle ne cherche pas les valeurs brutes : c'est le rôle de `design`.
+
+Fichiers scannés : `.astro`, `.css`, `.ts`, `.mjs`, hors `node_modules`, `dist` et `generated`.
 
 ```bash
-pp-guards tokens --tokens <tokens.json> [racines…]
+pp-guards tokens --tokens node_modules/@paulperigault/tokens/generated/tokens.json src
 ```
 
-Options :
+- `--tokens <chemin>` : fichier `tokens.json` (obligatoire, clé `tokens` de la section)
+- au moins une racine, en positionnel ou par `roots` dans la configuration
 
-- `--tokens <chemin>` (obligatoire) : fichier `tokens.json` source
-- `[racines…]` : répertoires à scanner (obligatoire, au moins un)
+Sans l'un des deux, le contrôle s'arrête avec le code `2`.
 
-#### `design`
+### `design`
 
-Applique les interdits de conception d'AGENTS.md : dégradés, ombres, flou, emoji, palette Tailwind par défaut, valeurs arbitraires, couleurs brutes, effets rétro, phrases génériques. Règles contrôlées :
-
-- `gradient` : dégradés décoratifs interdits
-- `shadow` : ombres décoratives interdites
-- `blur` : flou interdit
-- `emoji` : emoji interdit
-- `spaced-caps` : majuscules espacées interdites
-- `tailwind-palette` : palette Tailwind par défaut interdite, utiliser les tokens `--pp-*`
-- `arbitrary-value` : valeur arbitraire interdite, utiliser un token
-- `color-literal` : couleur brute interdite, utiliser un token `--pp-*`
-- `retro-effect` : effet rétro interdit (glitch, machine à écrire, scanlines)
-- `generic-phrase` : phrase générique interdite
+Applique les interdits « anti-IA » d'AGENTS.md.
 
 ```bash
 pp-guards design [options] [racines…]
 ```
 
-Options :
+- `--roots <dossier>` (répétable) : racines, autre forme des positionnels (défaut : `src`)
+- `--extensions <ext>` (répétable) : défaut `.astro`, `.css`, `.html`, `.md`, `.mdx`, `.jsx`, `.tsx`
+- `--allow <chemin>` (répétable) : exempte le chemin de toutes les règles
+- `--disable <règle>` (répétable) : désactive une règle partout
 
-- `--roots <dossier>` (répétable) : répertoires à scanner (défaut : `src`)
-- `--extensions <ext>` (répétable) : extensions de fichier (défaut : `.astro`, `.css`, `.html`, `.md`, `.mdx`, `.jsx`, `.tsx`)
-- `--disable <règle>` (répétable) : règles à désactiver par identifiant
-- `--allow <chemin>` (répétable) : chemin ou objet JSON `{ "path": "", "rules": [""] }` ; exempte du contrôle
-- `--config <fichier>` : configuration (défaut : `pp-guards.config.json`)
+Règles : `gradient`, `shadow`, `blur`, `emoji`, `spaced-caps`, `tailwind-palette`,
+`arbitrary-value`, `color-literal`, `retro-effect`, `generic-phrase`. Un identifiant inconnu dans
+`--disable` ou dans `allow[].rules` donne le code `2`.
 
-#### `size`
+Portée selon l'extension :
 
-Limite la taille des fichiers (par défaut 120 lignes) pour favoriser la cohésion et la maintenabilité.
+- `.css` et blocs `<style>` : déclarations CSS (dégradés, ombres, flou, `color-literal`,
+  `retro-effect`, majuscules espacées)
+- `.astro`, `.html`, `.jsx`, `.tsx` : attributs `class`, `className`, `class:list`
+  (classes utilitaires) en plus des blocs `<style>`
+- tous les fichiers, `.md` et `.mdx` compris : `emoji` et `generic-phrase`
 
-```bash
-pp-guards size [options] [racines…]
-```
+`color-literal` vise les valeurs CSS : notations hexadécimales, fonctions de couleur (`rgb()`,
+`oklch()`…) et noms de couleur dans les propriétés de couleur. La police mono n'est pas visée :
+l'ADR-0002 la permet pour le code, les identifiants, les empreintes et les journaux.
 
-Options :
+Les listes exactes (phrases génériques, couleurs nommées, motifs de classes) sont dans
+`src/design/*.mjs`.
 
-- `--roots <dossier>` (répétable) : répertoires à scanner (défaut : `src`)
-- `--extensions <ext>` (répétable) : extensions de fichier (défaut : `.ts`, `.astro`, `.css`, `.mjs`)
-- `--max <nombre>` : limite de lignes
-- `--config <fichier>` : configuration
-
-#### `layers`
-
-Vérifie l'ordre des dépendances entre couches : `tokens ← css ← astro`.
-
-```bash
-pp-guards layers [options]
-```
-
-Options :
-
-- `--config <fichier>` : configuration
-
-#### `images`
-
-Contrôle le répertoire des images (pas de `.svg` inline en dehors de `src/media`).
-
-```bash
-pp-guards images [options] [racines…]
-```
-
-Options :
-
-- `--roots <dossier>` (répétable) : répertoires à scanner (défaut : `src`)
-- `--allow <chemin>` (répétable) : chemins exemptés
-- `--config <fichier>` : configuration
-
-### Tout vérifier
-
-```bash
-pp-guards all
-```
-
-Exécute `tokens`, `design`, `size`, `layers`, `images` dans cet ordre. Les sections correspondantes doivent exister dans la configuration.
-
-## Configuration
-
-Fichier par défaut : `pp-guards.config.json` à la racine du projet.
-
-```json
-{
-  "tokens": {
-    "tokens": "packages/tokens/generated/tokens.json",
-    "roots": ["packages/css/src", "packages/astro/src"]
-  },
-  "design": {
-    "roots": ["packages", "apps"],
-    "allow": [
-      {
-        "path": "packages/tokens/generated",
-        "rules": ["color-literal"],
-        "reason": "tokens.css est généré"
-      }
-    ]
-  },
-  "size": {
-    "roots": ["packages", "apps"],
-    "max": 120,
-    "extensions": [".ts", ".astro", ".css", ".mjs"]
-  },
-  "layers": {
-    "layers": [
-      {
-        "name": "tokens",
-        "paths": ["packages/tokens/src"],
-        "packages": ["@paulperigault/tokens"]
-      }
-    ]
-  },
-  "images": {
-    "roots": ["packages", "apps"],
-    "allow": ["src/media"]
-  }
-}
-```
-
-### Liste blanche
-
-Sections `allow` : chaque entrée exempte un chemin ou un motif d'une ou plusieurs règles.
+Dans le fichier de configuration, `allow` accepte aussi des objets, que la ligne de commande ne
+sait pas exprimer :
 
 ```json
 {
@@ -160,49 +86,131 @@ Sections `allow` : chaque entrée exempte un chemin ou un motif d'une ou plusieu
 }
 ```
 
-- `path` (chaîne) : motif POSIX
-- `rules` (tableau, optionnel) : identifiants des règles exemptées (toutes si absent)
-- `reason` (chaîne, optionnel) : justification
+- `path` (obligatoire) : chemin POSIX exempté
+- `rules` (facultatif) : règles exemptées, toutes si absent
+- `reason` (facultatif) : justification
 
-## Intégration dans `verify`
+### `size`
 
-Ajouter à `package.json` :
+Refuse les fichiers qui dépassent un nombre de lignes. Un saut de ligne final n'est pas compté.
+
+```bash
+pp-guards size [options] [racines…]
+```
+
+- `--max <nombre>` : entier positif (défaut : `120`)
+- `--ext <ext>` (répétable) : défaut `.ts`, `.astro`, `.css`, `.mjs` (clé `extensions` en configuration)
+
+Racines par défaut : `src`.
+
+### `layers`
+
+Vérifie le sens des imports entre couches. Les couches sont listées **de la plus basse à la plus
+haute** ; un fichier ne peut pas importer une couche plus haute que la sienne. Une couche a :
+
+- `name` : identifiant unique
+- `paths` : dossiers de la couche (obligatoire, non vide)
+- `packages` : noms de paquets npm qui désignent la couche (facultatif)
+
+Un import relatif est rattaché à une couche par son chemin, un import de paquet par `packages`.
+Si aucun fichier scanné n'appartient à une couche, le contrôle échoue : `layers[].paths` est
+probablement faux.
+
+```bash
+pp-guards layers [racines…]
+```
+
+Pas de drapeau propre : la liste `layers` se règle dans la configuration. Les clés `roots`
+(défaut : `.`) et `extensions` (défaut : `.ts`, `.mjs`, `.js`, `.astro`, `.css`) sont facultatives.
+
+### `images`
+
+```bash
+pp-guards images [options] [racines…]
+```
+
+- `--allow <chemin>` (répétable) : où le balisage brut est permis (défaut : `src/media`)
+- `--maxKb <nombre>` : budget par fichier, en Ko (défaut : `500`, 1 Ko = 1024 octets)
+- `--budgets <json>` : budgets par chemin, par exemple `'[{"path":"public/hero","maxKb":800}]'`
+
+Racines par défaut : `src` et `public`. Trois vérifications :
+
+- Balisage : `<img>` brut (`.astro`, `.html`, `.md`, `.mdx`, `.jsx`, `.tsx`) et
+  `background` ou `background-image` avec `url(` (`.css`, `.astro`) sont refusés hors de `allow`.
+  `<Image>`, `<Picture>` et le `src: url()` d'une police ne sont pas visés.
+- Métadonnées : les JPEG et PNG qui contiennent des données EXIF, GPS ou XMP sont refusés. Le
+  message propose `exiftool -all= -overwrite_original "<fichier>"`. Les autres formats ne sont pas
+  analysés.
+- Poids : `.jpg`, `.jpeg`, `.png`, `.webp`, `.avif`, `.gif` et `.svg` ne dépassent pas `maxKb`. Dans
+  `budgets`, l'entrée dont le `path` est le plus long l'emporte sur `maxKb`.
+
+### `all`
+
+```bash
+pp-guards all [--config <fichier>]
+```
+
+Exécute dans l'ordre `tokens`, `design`, `size`, `layers`, `images`, mais seulement ceux dont la
+section existe dans la configuration. Le code de sortie est le plus élevé des codes obtenus. Aucune
+section : code `2`. Les positionnels et les autres drapeaux ne sont pas acceptés.
+
+## Configuration
+
+Fichier par défaut : `pp-guards.config.json` à la racine du projet. Une clé par contrôle, avec les
+mêmes noms que les drapeaux (`maxKb`, `budgets`, `allow`…) et `roots` pour les racines.
+
+```json
+{
+  "tokens": {
+    "tokens": "packages/tokens/generated/tokens.json",
+    "roots": ["packages/css/src", "packages/astro/src"]
+  },
+  "design": { "roots": ["packages", "apps"] },
+  "size": { "roots": ["packages", "apps"], "max": 120 },
+  "layers": {
+    "layers": [
+      { "name": "tokens", "paths": ["packages/tokens/src"], "packages": ["@paulperigault/tokens"] },
+      { "name": "css", "paths": ["packages/css/src"], "packages": ["@paulperigault/css"] }
+    ]
+  },
+  "images": { "roots": ["packages", "apps"], "allow": ["src/media"], "maxKb": 500 }
+}
+```
+
+## Branchement dans `verify`
+
+Un script `guard` lance tous les contrôles, et `verify` l'appelle, comme dans le site généré par
+`@paulperigault/create` :
 
 ```json
 {
   "scripts": {
-    "verify": "npm run guards && npm run lint && npm run format && npm test"
+    "guard": "pp-guards all",
+    "verify": "npm run guard && astro build"
   }
 }
 ```
 
-Ou pour tout vérifier à la fois :
-
-```bash
-npm run guards -- all
-```
-
 ## Configuration ESLint
 
-Importer les règles de conception dans `eslint.config.mjs` :
+Les seuils de conception (fonction de 40 lignes au plus, complexité 8, profondeur 3, 4 paramètres,
+3 callbacks imbriqués, pas de nombre magique) sont exportés pour ESLint. Le sous-chemin
+`@paulperigault/guards/eslint` dépend d'un export déclaré dans `package.json` par l'orchestrateur.
 
 ```javascript
+// eslint.config.mjs
+import tseslint from 'typescript-eslint';
 import { designConfig } from '@paulperigault/guards/eslint';
-import tsPlugin from 'typescript-eslint';
 
-export default [
-  ...designConfig({ testFiles: ['**/*.test.ts'] }),
-  {
-    files: ['**/*.ts'],
-    languageOptions: { parser: tsPlugin.parser },
-    plugins: { '@typescript-eslint': tsPlugin.plugin },
-  },
-];
+export default tseslint.config(...tseslint.configs.recommended, ...designConfig());
 ```
 
-Le module `eslint.mjs` exporte :
+- `designRules` : objet de règles, à fusionner dans une configuration existante
+- `testRelaxations` : règles désactivées pour les tests (`max-lines-per-function`,
+  `max-nested-callbacks`, `@typescript-eslint/no-magic-numbers`)
+- `designConfig({ testFiles })` : tableau de deux éléments de configuration plate, `designRules`
+  puis `testRelaxations` limité à `testFiles` (défaut : `**/*.test.{ts,mjs,js}`,
+  `**/test/**/*.ts`, `**/e2e/**/*.ts`)
 
-- `designRules` : objet des règles pour consumption directe
-- `designConfig(options)` : fonction générant une config plate (suppose `typescript-eslint` chargé par le consommateur)
-
-La règle `@typescript-eslint/no-magic-numbers` suppose le greffon `typescript-eslint` chargé.
+La règle `@typescript-eslint/no-magic-numbers` demande que le greffon `typescript-eslint` soit
+chargé par le projet : ce paquet n'a aucune dépendance d'exécution.
