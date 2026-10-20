@@ -52,7 +52,7 @@ describe('Separator (source CSS)', () => {
   const source = readFileSync(new URL('../src/content/Separator.astro', import.meta.url), 'utf8');
 
   it('utilise les tokens de règle et de ligne', () => {
-    expect(source).toContain('height: var(--pp-size-rule)');
+    expect(source).toContain('block-size: var(--pp-size-rule)');
     expect(source).toContain('background-color: var(--pp-color-line)');
   });
 
