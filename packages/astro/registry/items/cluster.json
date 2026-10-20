@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cluster",
+  "type": "registry:ui",
+  "title": "Cluster",
+  "description": "Groupe d'éléments en ligne qui passent à la ligne, espacés par gap (modèle « Every Layout », Pickering et Bell, 2021).",
+  "files": [
+    {
+      "path": "packages/astro/src/layout/Cluster.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": ["--pp-space-xs", "--pp-space-s", "--pp-space-m", "--pp-space-l", "--pp-space-xl"],
+    "version": "0.0.0"
+  }
+}

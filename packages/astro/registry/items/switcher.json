@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "switcher",
+  "type": "registry:ui",
+  "title": "Switcher",
+  "description": "Enfants côte à côte au-delà d'un seuil de largeur, empilés en deçà, sans media query (modèle « Every Layout », Pickering et Bell, 2021).",
+  "files": [
+    {
+      "path": "packages/astro/src/layout/Switcher.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-size-measure",
+      "--pp-size-page",
+      "--pp-space-xs",
+      "--pp-space-s",
+      "--pp-space-m",
+      "--pp-space-l",
+      "--pp-space-xl"
+    ],
+    "version": "0.0.0"
+  }
+}

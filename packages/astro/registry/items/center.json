@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "center",
+  "type": "registry:ui",
+  "title": "Center",
+  "description": "Centre un bloc dans l'axe inline, à largeur de lecture (modèle « Every Layout », Pickering et Bell, 2021).",
+  "files": [
+    {
+      "path": "packages/astro/src/layout/Center.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": ["--pp-size-measure", "--pp-space-s", "--pp-space-m"],
+    "version": "0.0.0"
+  }
+}

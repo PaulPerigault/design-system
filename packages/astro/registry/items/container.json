@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "container",
+  "type": "registry:ui",
+  "title": "Container",
+  "description": "Boîte centrée dans l'axe d'inline, à largeur maximale, avec une gouttière latérale (modèle « Every Layout », Pickering et Bell, 2021).",
+  "files": [
+    {
+      "path": "packages/astro/src/layout/Container.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-size-page",
+      "--pp-size-measure",
+      "--pp-space-s",
+      "--pp-space-m",
+      "--pp-space-l"
+    ],
+    "version": "0.0.0"
+  }
+}

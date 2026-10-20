@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "grid",
+  "type": "registry:ui",
+  "title": "Grid",
+  "description": "Grille intrinsèque sans media query ; le nombre de colonnes suit la largeur disponible (modèle « Every Layout », Pickering et Bell, 2021).",
+  "files": [
+    {
+      "path": "packages/astro/src/layout/Grid.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-size-measure",
+      "--pp-space-xs",
+      "--pp-space-s",
+      "--pp-space-m",
+      "--pp-space-l",
+      "--pp-space-xl"
+    ],
+    "version": "0.0.0"
+  }
+}
