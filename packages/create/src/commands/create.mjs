@@ -7,6 +7,7 @@ import { outputPath } from '../site/template.mjs';
 const CODE_OK = 0;
 const CODE_REFUSED = 1;
 const CODE_USAGE = 2;
+const SAFE_PATH = /^[\w./-]+$/;
 const USAGE = 'usage : create <dossier> [--dry-run]';
 
 /**
@@ -42,13 +43,28 @@ function sitePlan(dir, template, name) {
 }
 
 /**
+ * Dossier prêt pour un shell : entre guillemets simples dès qu'un caractère sort de `[\w./-]`.
+ * @param {string} dir
+ * @returns {string}
+ */
+function shellQuote(dir) {
+  return SAFE_PATH.test(dir) ? dir : `'${dir.replaceAll("'", "'\\''")}'`;
+}
+
+/**
  * @param {import('../lib/io.mjs').CreateIo} io
  * @param {string} dir
  */
 function nextSteps(io, dir) {
   io.out('');
   io.out('Prochaines étapes :');
-  for (const step of [`cd ${dir}`, 'git init', 'npm install', 'npm run dev', 'npm run verify']) {
+  for (const step of [
+    `cd ${shellQuote(dir)}`,
+    'git init',
+    'npm install',
+    'npm run dev',
+    'npm run verify',
+  ]) {
     io.out(`  ${step}`);
   }
   io.out('Commitez package-lock.json avant la première CI (npm ci l’exige).');

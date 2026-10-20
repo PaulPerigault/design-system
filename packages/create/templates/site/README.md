@@ -16,12 +16,13 @@ npm run verify
 a besoin d'un dépôt git.
 
 - `npm run dev` : serveur de développement Astro.
-- `npm run verify` : garde-fous (`pp-guards all`, réglés dans `pp-guards.config.json`), puis
-  `astro build`.
+- `npm run guard` : contrôles `pp-guards all`, réglés dans `pp-guards.config.json`.
+- `npm run verify` : `npm run guard`, puis `astro build`.
 
 ## Avant la première CI
 
-La CI (`.github/workflows/ci.yml`) lance `npm ci`, qui échoue sans `package-lock.json`. Commitez le
+La CI (`.github/workflows/ci.yml`) lance `npm ci --ignore-scripts` (aucun script de cycle de vie
+des dépendances, ni `prepare`), qui échoue sans `package-lock.json`. Commitez le
 lockfile produit par le premier `npm install` avant de pousser :
 
 ```sh
