@@ -2,6 +2,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { main } from '../src/cli.mjs';
+import { messageOf } from '../src/commands/snippet.mjs';
 import { nodeIo } from '../src/lib/io.mjs';
 
 const CODE_CRASH = 1;
@@ -14,6 +15,6 @@ try {
   const { version } = JSON.parse(manifest);
   process.exitCode = main(process.argv.slice(2), { io, templatesRoot, version });
 } catch (error) {
-  process.stderr.write(`pp-create : ${error instanceof Error ? error.message : String(error)}\n`);
+  process.stderr.write(`pp-create : ${messageOf(error)}\n`);
   process.exitCode = CODE_CRASH;
 }
