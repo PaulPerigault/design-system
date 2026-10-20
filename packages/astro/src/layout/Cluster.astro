@@ -1,0 +1,118 @@
+---
+/**
+ * Cluster : groupe d'éléments en ligne qui passent à la ligne, espacés par `gap`
+ * (modèle « Every Layout », Pickering et Bell). Zéro JavaScript ; les variantes passent par
+ * des attributs `data-*` (CSP stricte : aucun `style` en ligne).
+ *
+ * Avec `as="ul"` ou `as="ol"`, les enfants directs doivent être des `<li>`. `list-style: none`
+ * retire la sémantique de liste sous WebKit/VoiceOver (Scott O'Hara, « "Fixing" Lists », 2019) :
+ * `role="list"` est donc posé sur ces deux éléments seulement.
+ */
+interface Props {
+  space?: 'xs' | 's' | 'm' | 'l' | 'xl';
+  justify?: 'start' | 'center' | 'end' | 'between';
+  align?: 'start' | 'center' | 'end' | 'baseline';
+  as?: 'div' | 'ul' | 'ol' | 'nav';
+  /** Nom accessible, rendu en `aria-label` (utile avec `as="nav"`). */
+  label?: string;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const {
+  space = 's',
+  justify = 'start',
+  align = 'center',
+  as: Tag = 'div',
+  label,
+  class: className,
+} = Astro.props;
+const role = Tag === 'ul' || Tag === 'ol' ? 'list' : undefined;
+---
+
+<Tag
+  class:list={['pp-cluster', className]}
+  data-space={space}
+  data-justify={justify}
+  data-align={align}
+  aria-label={label}
+  role={role}
+>
+  <slot />
+</Tag>
+
+<style>
+  .pp-cluster {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cluster-space);
+    justify-content: var(--cluster-justify);
+    align-items: var(--cluster-align);
+    margin-block: 0;
+    margin-inline: 0;
+  }
+
+  ul.pp-cluster,
+  ol.pp-cluster {
+    list-style: none;
+    padding-block: 0;
+    padding-inline: 0;
+  }
+
+  .pp-cluster[data-space='xs'] {
+    --cluster-space: var(--pp-space-xs);
+  }
+
+  .pp-cluster[data-space='s'] {
+    --cluster-space: var(--pp-space-s);
+  }
+
+  .pp-cluster[data-space='m'] {
+    --cluster-space: var(--pp-space-m);
+  }
+
+  .pp-cluster[data-space='l'] {
+    --cluster-space: var(--pp-space-l);
+  }
+
+  .pp-cluster[data-space='xl'] {
+    --cluster-space: var(--pp-space-xl);
+  }
+
+  .pp-cluster[data-justify='start'] {
+    --cluster-justify: flex-start;
+  }
+
+  .pp-cluster[data-justify='center'] {
+    --cluster-justify: center;
+  }
+
+  .pp-cluster[data-justify='end'] {
+    --cluster-justify: flex-end;
+  }
+
+  .pp-cluster[data-justify='between'] {
+    --cluster-justify: space-between;
+  }
+
+  .pp-cluster[data-align='start'] {
+    --cluster-align: flex-start;
+  }
+
+  .pp-cluster[data-align='center'] {
+    --cluster-align: center;
+  }
+
+  .pp-cluster[data-align='end'] {
+    --cluster-align: flex-end;
+  }
+
+  .pp-cluster[data-align='baseline'] {
+    --cluster-align: baseline;
+  }
+
+  .pp-cluster > :global(*) {
+    margin-block: 0;
+    margin-inline: 0;
+  }
+</style>

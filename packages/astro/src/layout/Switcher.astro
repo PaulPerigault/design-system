@@ -1,0 +1,65 @@
+---
+/**
+ * Switcher : enfants côte à côte au-delà d'un seuil de largeur, empilés en deçà, sans media query
+ * (modèle « Every Layout », Pickering et Bell). Zéro JavaScript ; seuil et espacement passent par
+ * `data-threshold` et `data-space` (CSP stricte : aucun `style` en ligne).
+ */
+interface Props {
+  threshold?: 'measure' | 'page';
+  space?: 'xs' | 's' | 'm' | 'l' | 'xl';
+  as?: 'div' | 'section' | 'ul' | 'ol' | 'article';
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { threshold = 'measure', space = 'm', as: Tag = 'div', class: className } = Astro.props;
+---
+
+<Tag class:list={['pp-switcher', className]} data-threshold={threshold} data-space={space}>
+  <slot />
+</Tag>
+
+<style>
+  .pp-switcher {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--switcher-space);
+  }
+
+  .pp-switcher[data-threshold='measure'] {
+    --switcher-threshold: var(--pp-size-measure);
+  }
+
+  .pp-switcher[data-threshold='page'] {
+    --switcher-threshold: var(--pp-size-page);
+  }
+
+  .pp-switcher[data-space='xs'] {
+    --switcher-space: var(--pp-space-xs);
+  }
+
+  .pp-switcher[data-space='s'] {
+    --switcher-space: var(--pp-space-s);
+  }
+
+  .pp-switcher[data-space='m'] {
+    --switcher-space: var(--pp-space-m);
+  }
+
+  .pp-switcher[data-space='l'] {
+    --switcher-space: var(--pp-space-l);
+  }
+
+  .pp-switcher[data-space='xl'] {
+    --switcher-space: var(--pp-space-xl);
+  }
+
+  /*
+   * Technique « Holy Albatross » : 999 est un facteur assez grand pour rendre la base négative
+   * (donc ramenée à 0) sous le seuil, et très grande au-dessus, ce qui force le retour à la ligne.
+   */
+  .pp-switcher > :global(*) {
+    flex-grow: 1;
+    flex-basis: calc((var(--switcher-threshold) - 100%) * 999);
+  }
+</style>

@@ -28,6 +28,8 @@ Sens unique : `tokens ← css ← astro`. Un import qui remonte ce sens est une 
 - Composants : propriétés logiques (`inline`, `block`), cibles ≥ `--pp-target-min`, zéro JS par défaut.
 - **Aucun attribut `style` en ligne** : les sites consommateurs ont une CSP stricte (`style-src` par
   hashes, sans `unsafe-inline`), qui l'ignore. Variantes par attribut `data-*` ou classe, mappées en CSS.
+- Liste stylée sans puces (`list-style: none` sur `ul`/`ol`) : `role="list"` explicite (VoiceOver
+  retire sinon la sémantique de liste). Tout repère `nav` en double porte un nom (`aria-label`).
 - CSS scopé d'Astro : il n'atteint pas les enfants passés par `<slot />`. Les viser avec `:global()`
   sous la racine du composant (`.pp-stack > :global(* + *)`), et tester le CSS produit.
 

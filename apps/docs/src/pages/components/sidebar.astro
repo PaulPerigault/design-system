@@ -1,0 +1,89 @@
+---
+import Sidebar from '@paulperigault/astro/Sidebar.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="Sidebar · Design system · Paul Perigault">
+  <h1>Sidebar</h1>
+  <p>
+    Sidebar place une barre latérale de largeur fixe à côté d’un contenu qui occupe le reste, et les
+    empile quand le contenu passerait sous la moitié de la largeur.
+  </p>
+
+  <h2>Barre au début</h2>
+  <Sidebar as="section">
+    <nav aria-label="Exemple">Barre latérale</nav>
+    <div>Contenu principal, qui prend la largeur restante.</div>
+  </Sidebar>
+
+  <h2>Barre à la fin, plus large</h2>
+  <Sidebar as="section" side="end" sideWidth="medium" space="l">
+    <div>Contenu principal, qui prend la largeur restante.</div>
+    <aside>Barre latérale</aside>
+  </Sidebar>
+
+  <h2>Propriétés</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Propriété</th>
+        <th>Valeurs</th>
+        <th>Défaut</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>side</code>
+        </td>
+        <td>
+          <code>start</code>, <code>end</code>
+        </td>
+        <td>
+          <code>start</code>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>space</code>
+        </td>
+        <td>
+          <code>xs</code>, <code>s</code>, <code>m</code>, <code>l</code>, <code>xl</code>
+        </td>
+        <td>
+          <code>m</code>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>sideWidth</code>
+        </td>
+        <td>
+          <code>narrow</code> (mesure / 3), <code>medium</code> (mesure / 2)
+        </td>
+        <td>
+          <code>narrow</code>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>as</code>
+        </td>
+        <td>
+          <code>div</code>, <code>section</code>, <code>article</code>, <code>main</code>,{' '}
+          <code>aside</code>
+        </td>
+        <td>
+          <code>div</code>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>class</code>
+        </td>
+        <td>placement dans le parent</td>
+        <td>aucun</td>
+      </tr>
+    </tbody>
+  </table>
+</DocsLayout>

@@ -1,0 +1,112 @@
+---
+import Cluster from '@paulperigault/astro/Cluster.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="Cluster · Design system · Paul Perigault">
+  <h1>Cluster</h1>
+  <p>
+    Cluster aligne ses enfants sur une ligne, les fait passer à la suivante quand la place manque et
+    garde le même écart entre eux dans les deux axes.
+  </p>
+
+  <h2>Liste d’étiquettes</h2>
+  <Cluster as="ul" space="m">
+    <li>Accessibilité</li>
+    <li>Typographie</li>
+    <li>Performance</li>
+    <li>Impression</li>
+  </Cluster>
+
+  <h2>Navigation centrée</h2>
+  <Cluster as="nav" label="Liens de l’exemple Cluster" justify="center" space="l">
+    <a href="#accessibilite">Accessibilité</a>
+    <a href="#typographie">Typographie</a>
+    <a href="#performance">Performance</a>
+  </Cluster>
+
+  <h2>Propriétés</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Propriété</th>
+        <th>Valeurs</th>
+        <th>Défaut</th>
+        <th>Rôle</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>space</code>
+        </td>
+        <td>
+          <code>xs | s | m | l | xl</code>
+        </td>
+        <td>
+          <code>s</code>
+        </td>
+        <td>
+          Écart entre les enfants (<code>--pp-space-*</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>justify</code>
+        </td>
+        <td>
+          <code>start | center | end | between</code>
+        </td>
+        <td>
+          <code>start</code>
+        </td>
+        <td>Répartition sur l’axe de ligne.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>align</code>
+        </td>
+        <td>
+          <code>start | center | end | baseline</code>
+        </td>
+        <td>
+          <code>center</code>
+        </td>
+        <td>Alignement sur l’axe de bloc.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>as</code>
+        </td>
+        <td>
+          <code>div | ul | ol | nav</code>
+        </td>
+        <td>
+          <code>div</code>
+        </td>
+        <td>
+          Élément rendu. Avec <code>ul</code> ou <code>ol</code>, les enfants sont des{' '}
+          <code>li</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>label</code>
+        </td>
+        <td>texte</td>
+        <td>aucun</td>
+        <td>
+          Nom accessible (<code>aria-label</code>), à fournir pour <code>nav</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>class</code>
+        </td>
+        <td>texte</td>
+        <td>aucun</td>
+        <td>Placement dans le parent uniquement.</td>
+      </tr>
+    </tbody>
+  </table>
+</DocsLayout>

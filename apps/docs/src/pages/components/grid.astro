@@ -1,0 +1,80 @@
+---
+import Grid from '@paulperigault/astro/Grid.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="Grid · Design system · Paul Perigault">
+  <h1>Grid</h1>
+  <p>
+    Grid répartit ses enfants en colonnes de largeur minimale donnée : le nombre de colonnes
+    s’adapte à la place disponible, sans media query.
+  </p>
+
+  <h2>Largeur minimale par défaut</h2>
+  <Grid as="ul">
+    <li>Premier élément</li>
+    <li>Deuxième élément</li>
+    <li>Troisième élément</li>
+  </Grid>
+
+  <h2>Colonnes étroites, espacement large</h2>
+  <Grid as="section" min="narrow" space="l">
+    <p>Premier bloc.</p>
+    <p>Deuxième bloc.</p>
+    <p>Troisième bloc.</p>
+    <p>Quatrième bloc.</p>
+  </Grid>
+
+  <h2>Propriétés</h2>
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Propriété</th>
+        <th scope="col">Valeurs</th>
+        <th scope="col">Défaut</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">
+          <code>space</code>
+        </th>
+        <td>
+          <code>xs | s | m | l | xl</code>
+        </td>
+        <td>
+          <code>m</code>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">
+          <code>min</code>
+        </th>
+        <td>
+          <code>narrow | medium | wide</code> (mesure ÷ 3, ÷ 2, × 0,75)
+        </td>
+        <td>
+          <code>medium</code>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">
+          <code>as</code>
+        </th>
+        <td>
+          <code>div | ul | ol | section</code>
+        </td>
+        <td>
+          <code>div</code>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">
+          <code>class</code>
+        </th>
+        <td>placement dans le parent uniquement</td>
+        <td>aucun</td>
+      </tr>
+    </tbody>
+  </table>
+</DocsLayout>
