@@ -1,0 +1,11 @@
+{
+  "transport": "headless",
+  "baseBranch": "develop",
+  "worktreeRoot": "../ds-wt",
+  "runsDir": ".agents/runs",
+  "routingLog": ".agents/routing-log.jsonl",
+  "timeoutMs": 1800000,
+  "acceptanceTimeoutMs": 900000,
+  "trustTools": ["read", "write", "shell"],
+  "reviewTrustTools": ["read", "shell"]
+}

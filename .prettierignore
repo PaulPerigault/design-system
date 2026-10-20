@@ -1,0 +1,8 @@
+node_modules
+dist
+.astro
+package-lock.json
+CHANGELOG.md
+.agents
+docs/research-report.md
+docs/kickoff.md

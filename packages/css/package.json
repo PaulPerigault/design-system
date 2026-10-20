@@ -1,0 +1,41 @@
+{
+  "name": "@paulperigault/css",
+  "version": "0.0.0",
+  "description": "Base CSS, reset, impression, polices et thème Tailwind v4 bâtis sur @paulperigault/tokens.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Paul Perigault",
+  "keywords": [
+    "css",
+    "tailwindcss"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PaulPerigault/design-system.git",
+    "directory": "packages/css"
+  },
+  "homepage": "https://ds.paulperigault.dev",
+  "bugs": "https://github.com/PaulPerigault/design-system/issues",
+  "engines": {
+    "node": ">=24"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "prepublishOnly": "node ../../tools/checks/check-publish-env.mjs"
+  },
+  "dependencies": {
+    "@paulperigault/tokens": "0.0.0"
+  }
+}

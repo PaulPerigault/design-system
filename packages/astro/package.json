@@ -1,0 +1,53 @@
+{
+  "name": "@paulperigault/astro",
+  "version": "0.0.0",
+  "description": "Composants Astro accessibles, publiés en source, bâtis sur @paulperigault/css.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Paul Perigault",
+  "keywords": [
+    "astro",
+    "components",
+    "a11y"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PaulPerigault/design-system.git",
+    "directory": "packages/astro"
+  },
+  "homepage": "https://ds.paulperigault.dev",
+  "bugs": "https://github.com/PaulPerigault/design-system/issues",
+  "engines": {
+    "node": ">=24"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "prepublishOnly": "node ../../tools/checks/check-publish-env.mjs",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@paulperigault/css": "0.0.0",
+    "@paulperigault/tokens": "0.0.0"
+  },
+  "peerDependencies": {
+    "astro": "^7.4.0"
+  },
+  "devDependencies": {
+    "astro": "^7.4.1",
+    "linkedom": "^0.18.13"
+  },
+  "exports": {
+    "./Stack.astro": "./src/layout/Stack.astro",
+    "./package.json": "./package.json"
+  }
+}
