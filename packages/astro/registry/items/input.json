@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "input",
+  "type": "registry:ui",
+  "title": "Input",
+  "description": "Champ de saisie natif sur une ligne avec gestion d'erreur et état désactivé.",
+  "files": [
+    {
+      "path": "packages/astro/src/forms/Input.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-bg",
+      "--pp-color-control",
+      "--pp-color-fg",
+      "--pp-color-muted",
+      "--pp-color-status-failed",
+      "--pp-color-surface",
+      "--pp-font-line-height-body",
+      "--pp-font-size-0",
+      "--pp-radius-control",
+      "--pp-size-control-height",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-3xs",
+      "--pp-space-xs"
+    ],
+    "version": "0.0.0"
+  }
+}

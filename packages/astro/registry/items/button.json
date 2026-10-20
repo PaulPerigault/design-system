@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "button",
+  "type": "registry:ui",
+  "title": "Button",
+  "description": "Bouton natif ou lien stylisé avec variantes de tonalité et de taille, zéro JavaScript.",
+  "files": [
+    {
+      "path": "packages/astro/src/forms/Button.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-control",
+      "--pp-color-fg",
+      "--pp-color-muted",
+      "--pp-color-on-accent",
+      "--pp-duration-fast",
+      "--pp-easing-standard",
+      "--pp-font-line-height-heading",
+      "--pp-font-size-0",
+      "--pp-font-size-1",
+      "--pp-font-weight-medium",
+      "--pp-radius-control",
+      "--pp-size-control-height",
+      "--pp-size-target-min",
+      "--pp-space-m",
+      "--pp-space-s"
+    ],
+    "version": "0.0.0"
+  }
+}

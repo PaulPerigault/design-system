@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "choice",
+  "type": "registry:ui",
+  "title": "Choice",
+  "description": "Case à cocher ou bouton radio natif avec libellé, zéro JavaScript.",
+  "files": [
+    {
+      "path": "packages/astro/src/forms/Choice.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-fg",
+      "--pp-color-muted",
+      "--pp-size-control-height",
+      "--pp-size-target-min",
+      "--pp-space-xs"
+    ],
+    "version": "0.0.0"
+  }
+}

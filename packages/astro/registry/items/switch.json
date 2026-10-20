@@ -1,0 +1,36 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "switch",
+  "type": "registry:ui",
+  "title": "Switch",
+  "description": "Interrupteur natif sans JavaScript, piste et curseur dessinés en CSS.",
+  "files": [
+    {
+      "path": "packages/astro/src/forms/Switch.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-bg",
+      "--pp-color-control",
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-color-on-accent",
+      "--pp-duration-fast",
+      "--pp-easing-standard",
+      "--pp-radius-control",
+      "--pp-size-control-height",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-3xs",
+      "--pp-space-m",
+      "--pp-space-s",
+      "--pp-space-xl",
+      "--pp-space-xs"
+    ],
+    "version": "0.0.0"
+  }
+}
