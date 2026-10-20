@@ -98,7 +98,7 @@ test.describe('sans JavaScript', () => {
     for (const [name, label, id] of [
       ['choice', 'Recevoir les notes', '#choice-news'],
       ['switch', 'Recevoir les alertes', '#demo-default'],
-    ]) {
+    ] as const) {
       await page.goto(`/components/${name}/`);
       await page.getByText(label).click();
       await expect(page.locator(id)).toBeChecked();
@@ -110,7 +110,7 @@ test.describe('sans JavaScript', () => {
       ['select', '#select-pays', 'be'],
       ['input', '#exemple-defaut', 'Ada'],
       ['textarea', '#demo-defaut', 'Bonjour'],
-    ]) {
+    ] as const) {
       await page.goto(`/components/${name}/`);
       if (name === 'select') await page.selectOption(id, value);
       else await page.fill(id, value);
