@@ -5,14 +5,26 @@ const TAIL_CHARS = 4_000;
 
 /**
  * @param {{ shell: Function, cwd: string, env: Record<string, string>, commands: string[],
- *   timeoutMs: number, now?: () => number }} input
+ *   timeoutMs: number, now?: () => number, lock?: (cmd: string) => Promise<Function | null> }} input
  * @returns {Promise<{ cmd: string, code: number | null, durationMs: number, tail: string }[]>}
  */
-export async function runAcceptance({ shell, cwd, env, commands, timeoutMs, now = Date.now }) {
+export async function runAcceptance({
+  shell,
+  cwd,
+  env,
+  commands,
+  timeoutMs,
+  now = Date.now,
+  lock,
+}) {
   const results = [];
   for (const cmd of commands) {
     const start = now();
-    const { code, stdout, stderr, timedOut } = await shell(cmd, { cwd, env, timeoutMs });
+    // Commande lourde (Playwright, build Astro) : une seule à la fois sur le poste (`lock`).
+    const release = lock ? await lock(cmd) : null;
+    const { code, stdout, stderr, timedOut } = await shell(cmd, { cwd, env, timeoutMs }).finally(
+      () => release?.(),
+    );
     results.push({
       cmd,
       code: timedOut ? null : code,

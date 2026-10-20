@@ -17,7 +17,8 @@ const status = async () => (await deps.git(['status', '--porcelain'], { cwd: pat
 
 const before = await status();
 const file = (suffix) =>
-  runsPath(deps.repoRoot, deps.config.runsDir, `${task.id}.review-${model}${suffix}`);
+  runsPath(deps.stateRoot, deps.config.runsDir, `${task.id}.review-${model}${suffix}`);
+const release = await deps.slot();
 const run = await runAgent({
   launch: deps.launch,
   engine: 'kiro',
@@ -29,7 +30,7 @@ const run = await runAgent({
   args: kiroArgs({
     agent: 'ds-reviewer',
     model,
-    effort: 'medium',
+    effort: 'high',
     trustTools: deps.config.reviewTrustTools,
     prompt: buildPrompt(
       {
@@ -39,7 +40,7 @@ const run = await runAgent({
       { role: 'reviewer' },
     ),
   }),
-});
+}).finally(() => release());
 const touched = (await status()) !== before;
 const verdict = run.summary.finalText.trim();
 const outcome = touched ? 'touched' : run.code === 0 ? verdictOf(verdict) : 'unreadable';

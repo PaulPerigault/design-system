@@ -83,6 +83,12 @@ depends_on: [T1.01]
 
 `develop` = intégration (PR squash par lot, par l'orchestrateur seul). `main` = production, fusions par le propriétaire uniquement. Conventional Commits, sujet en minuscules ≤ 72 caractères, aucune signature d'outil (`Co-authored-by`, « Generated with » : refusés par commitlint, sans exemption).
 
+## Coordination (orchestrateur et ds-lead)
+
+Plafond global de sessions Kiro (`.agents/slots/`), une seule tâche lourde locale à la fois
+(`.agents/locks/heavy`), dépendances des worktrees clonées depuis une amorce (`.agents/seeds/`).
+ds-lead : `prompts/lead.md`, file `.agents/lead-queue.md`, moteur `tools/agents/lead.mjs`.
+
 ## Décisions et journal
 
 ADR dans `docs/adr/`, choix ouverts dans `docs/decisions-log.md`, journal daté dans `docs/journal/`, bilan dans `docs/run-report.md`.
