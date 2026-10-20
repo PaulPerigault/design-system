@@ -1,0 +1,58 @@
+---
+import Table from '@paulperigault/astro/Table.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+
+const spaceColumns = [
+  { key: 'name', label: 'Jeton' },
+  { key: 'size', label: 'Valeur (rem)', numeric: true },
+];
+const spaceRows = [
+  { name: '--pp-space-3xs', size: '0,25' },
+  { name: '--pp-space-2xs', size: '0,5' },
+  { name: '--pp-space-xs', size: '0,75' },
+  { name: '--pp-space-s', size: '1' },
+];
+
+const propColumns = [
+  { key: 'prop', label: 'Propriété' },
+  { key: 'type', label: 'Type' },
+  { key: 'default', label: 'Défaut' },
+  { key: 'role', label: 'Rôle' },
+];
+const propRows = [
+  {
+    prop: 'caption',
+    type: 'texte',
+    default: 'requis',
+    role: 'Légende visible et nom de la région.',
+  },
+  {
+    prop: 'columns',
+    type: '{ key, label, numeric? }[]',
+    default: 'requis',
+    role: 'Colonnes. `numeric` aligne en fin, en chiffres tabulaires.',
+  },
+  { prop: 'rows', type: 'Record<string, string>[]', default: 'requis', role: 'Lignes.' },
+  {
+    prop: 'rowHeader',
+    type: 'texte',
+    default: 'aucun',
+    role: 'Clé de la colonne rendue en th scope="row".',
+  },
+  { prop: 'class', type: 'texte', default: 'aucun', role: 'Placement dans le parent uniquement.' },
+];
+---
+
+<DocsLayout title="Table · Design system · Paul Perigault">
+  <h1>Table</h1>
+  <p>
+    Table rend un tableau de données dans une région qui défile en ligne et reçoit le focus au
+    clavier. La légende sert de nom à la région. Aucun JavaScript.
+  </p>
+
+  <h2>Avec colonne numérique et en-tête de ligne</h2>
+  <Table caption="Jetons d’espacement" columns={spaceColumns} rows={spaceRows} rowHeader="name" />
+
+  <h2>Propriétés</h2>
+  <Table caption="Propriétés de Table" columns={propColumns} rows={propRows} rowHeader="prop" />
+</DocsLayout>
