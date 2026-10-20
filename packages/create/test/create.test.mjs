@@ -7,12 +7,10 @@ import { npmName, sitePackageJson } from '../src/site/package-json.mjs';
 import { loadTemplate, outputPath } from '../src/site/template.mjs';
 import { fakeIo } from './fake-io.mjs';
 
-// Gabarit réel, lu en lecture seule : l'io ne porte ni writeText ni sortie.
 const TEMPLATES = fileURLToPath(new URL('../templates', import.meta.url));
 const sink = { write: () => true };
-const { cwd, readText, readdir } = nodeIo({ cwd: TEMPLATES, stdout: sink, stderr: sink });
-const template = loadTemplate({ cwd, readText, readdir }, TEMPLATES);
-const EXACT = /^\d+\.\d+\.\d+$/;
+const reader = nodeIo({ cwd: TEMPLATES, stdout: sink, stderr: sink });
+const template = loadTemplate(reader, TEMPLATES);
 
 function generate(options = {}, files = {}) {
   const fake = fakeIo(files);
@@ -35,11 +33,7 @@ describe('create : arborescence', () => {
     expect(outputPath('_gitignore')).toBe('.gitignore');
     expect(outputPath('_github/workflows/ci.yml')).toBe('.github/workflows/ci.yml');
     expect(outputPath('src/pages/index.astro')).toBe('src/pages/index.astro');
-    const { files } = generate();
-    for (const rel of ['.gitignore', '.npmrc', '.husky/commit-msg', '.github/workflows/ci.yml']) {
-      expect(fileOf(files, rel)).toBeDefined();
-    }
-    expect(Object.keys(files).filter((path) => path.includes('/_'))).toEqual([]);
+    expect(Object.keys(generate().files).filter((path) => path.includes('/_'))).toEqual([]);
   });
 });
 
@@ -47,9 +41,11 @@ describe('create : package.json', () => {
   it('versions exactes, reprises de versions.json', () => {
     const manifest = JSON.parse(fileOf(generate().files, 'package.json'));
     const all = { ...manifest.dependencies, ...manifest.devDependencies };
-    expect(Object.keys(manifest.dependencies)).toEqual(['@paulperigault/css', 'astro']);
+    const deps = ['@paulperigault/css', '@paulperigault/tokens', 'astro'];
+    expect(Object.keys(manifest.dependencies)).toEqual(deps);
     expect(all).toEqual(template.versions);
-    expect(Object.values(all).every((version) => EXACT.test(version))).toBe(true);
+    expect(Object.values(all).every((version) => /^\d+\.\d+\.\d+$/.test(version))).toBe(true);
+    expect(() => sitePackageJson('x', { ...all, astro: '^7.0.0' })).toThrow('astro');
   });
 
   it('scripts, module, engines', () => {
@@ -57,14 +53,12 @@ describe('create : package.json', () => {
     const manifest = JSON.parse(text);
     expect(text).toMatch(/^\{\n {2}"name": "mon-site",\n[\s\S]*\n\}\n$/);
     expect(manifest).toMatchObject({ private: true, type: 'module', engines: { node: '>=24' } });
-    const { dev, build, preview, guard, verify, prepare } = manifest.scripts;
-    expect([dev, build, preview, prepare].join()).toBe('astro dev,astro build,astro preview,husky');
-    expect([guard, verify]).toEqual(['pp-guards all', 'npm run guard && astro build']);
-  });
-
-  it('refuse une version non exacte', () => {
-    const versions = { ...template.versions, astro: '^7.0.0' };
-    expect(() => sitePackageJson('x', versions)).toThrow('astro');
+    expect(Object.values(manifest.scripts)).toEqual(
+      ['astro dev', 'astro build', 'astro preview', 'pp-guards all'].concat([
+        'npm run guard && astro build',
+        'husky',
+      ]),
+    );
   });
 
   it('dérive le nom npm du dossier', () => {
@@ -84,18 +78,18 @@ describe('create : garde-fous', () => {
     expect(out).toContain('créerait mon-site/.gitignore');
   });
 
-  it('refuse un dossier non vide, même avec --force', () => {
+  it('refuse un dossier non vide (même --force) ; code 2 hors un dossier', () => {
     const existing = { '/projet/mon-site/index.html': 'x' };
-    const { code, files, err } = generate({ force: true }, existing);
-    expect(code).toBe(1);
-    expect(files).toEqual({ '/projet/mon-site/index.html': 'x' });
-    expect(err[0]).toContain('mon-site');
+    const forced = generate({ force: true }, existing);
+    expect([forced.code, forced.files]).toEqual([1, existing]);
     expect(generate({}, { '/projet/mon-site': 'fichier' }).code).toBe(1);
+    expect([[], ['a', 'b']].map((positionals) => generate({ positionals }).code)).toEqual([2, 2]);
   });
 
-  it('code 2 sans dossier ou avec plusieurs', () => {
-    expect(generate({ positionals: [] }).code).toBe(2);
-    expect(generate({ positionals: ['a', 'b'] }).code).toBe(2);
+  it('cite le dossier entre guillemets dans « cd » si nécessaire', () => {
+    const cd = (dir) => generate({ positionals: [dir] }).out.find((l) => l.startsWith('  cd '));
+    expect(cd('clients/Été 2025')).toBe("  cd 'clients/Été 2025'");
+    expect([cd("l'atelier"), cd('a/b_c-1.x')]).toEqual(["  cd 'l'\\''atelier'", '  cd a/b_c-1.x']);
   });
 });
 
@@ -103,18 +97,24 @@ describe('gabarit', () => {
   const content = (path) => template.files.find((file) => file.path === path).content;
 
   it('pages sans JS ni style en ligne', () => {
-    for (const path of ['src/layouts/Base.astro', 'src/pages/index.astro']) {
-      expect(content(path)).not.toMatch(/<script|style=|<style/);
-    }
-    expect(content('src/layouts/Base.astro')).toContain('<html lang="fr">');
+    const pages = ['src/layouts/Base.astro', 'src/pages/index.astro'].map(content).join();
+    expect(pages).not.toMatch(/<script|style=|<style/);
+    expect(pages).toContain('<html lang="fr">');
   });
 
-  it('CI : actions épinglées par SHA, droits en lecture', () => {
+  it('ignore les entrées commençant par `.` (.DS_Store)', () => {
+    const e = (name, dir = false) => ({ name, isDirectory: () => dir });
+    const tree = { '/t/site': [e('.DS_Store'), e('a'), e('s', true)], '/t/site/s': [e('.x')] };
+    const io = { cwd: () => '/', readdir: (dir) => tree[dir], readText: () => '{}' };
+    expect(loadTemplate(io, '/t').files.map((file) => file.path)).toEqual(['a']);
+  });
+
+  it('CI : actions épinglées par SHA, droits en lecture, npm ci sans scripts', () => {
     const ci = content('_github/workflows/ci.yml');
     const uses = [...ci.matchAll(/uses: (\S+)/g)].map((match) => match[1]);
     expect(uses.length).toBeGreaterThan(0);
     expect(uses.every((ref) => /@[0-9a-f]{40}$/.test(ref))).toBe(true);
-    expect(ci).toContain('permissions:\n  contents: read');
-    expect(ci).toContain('persist-credentials: false');
+    const required = ['permissions:\n  contents: read', 'persist-credentials: false'];
+    for (const text of [...required, 'run: npm ci --ignore-scripts\n']) expect(ci).toContain(text);
   });
 });

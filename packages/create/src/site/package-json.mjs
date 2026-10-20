@@ -1,4 +1,6 @@
-const DEPENDENCIES = ['@paulperigault/css', 'astro'];
+// `tokens` : lu par pp-guards.config.json, donc direct (le hissage d'une dépendance transitive
+// n'est pas garanti).
+const DEPENDENCIES = ['@paulperigault/css', '@paulperigault/tokens', 'astro'];
 const DEV_DEPENDENCIES = [
   '@commitlint/cli',
   '@commitlint/config-conventional',

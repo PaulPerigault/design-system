@@ -30,7 +30,8 @@ export function outputPath(templatePath) {
  * @returns {string[]}
  */
 function listFiles(io, dir) {
-  return io.readdir(dir).flatMap((entry) => {
+  const entries = io.readdir(dir).filter((entry) => !entry.name.startsWith('.'));
+  return entries.flatMap((entry) => {
     if (!entry.isDirectory()) return [entry.name];
     return listFiles(io, posix.join(dir, entry.name)).map((rel) => `${entry.name}/${rel}`);
   });
