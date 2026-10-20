@@ -2,6 +2,7 @@
 // node tools/agents/batch.mjs --lot L3 --base lot/L3 [--parallel 3] [--escalate]
 // Une tâche est prête quand toutes ses dépendances sont intégrées (citées dans l'historique de la
 // branche du lot). Commencer à --parallel 3 ; ne monter que sans erreur de quota.
+import { existsSync } from 'node:fs';
 import { readdir } from 'node:fs/promises';
 import { batchTable, mapLimit, readyTasks, tasksOfLot } from './lib/batch.mjs';
 import { loadTask, parseOptions, realDeps } from './lib/cli.mjs';
@@ -31,7 +32,7 @@ const { ready, waiting } = readyTasks(tasks, integrated);
 
 // D-015 : base verte avant de lancer quoi que ce soit (sauf --skip-preflight).
 if (ready.length > 0 && options['skip-preflight'] !== true) {
-  const commands = baselineCommands(ready);
+  const commands = baselineCommands(ready, (path) => existsSync(`${deps.repoRoot}/${path}`));
   const failures = await failingBaseline(
     {
       shell: deps.shell,
