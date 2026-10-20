@@ -18,6 +18,16 @@ depends_on: [T4.01, T5.08]
 `;
 
 describe('parseTask', () => {
+  it('garde les guillemets d’une commande, ne retire que ceux qui encadrent la valeur', () => {
+    const text = TASK.replace(
+      '  - npx vitest run --project astro',
+      '  - node -e "JSON.parse(\'{}\')"\n  - "npm test"',
+    ).replace('title: Select natif', "title: 'Select natif'");
+    const task = parseTask(text);
+    expect(task.acceptance).toEqual(['node -e "JSON.parse(\'{}\')"', 'npm test']);
+    expect(task.title).toBe('Select natif');
+  });
+
   it('lit le front matter (commentaires, listes en bloc et en ligne) et l’énoncé', () => {
     const task = parseTask(TASK);
     expect(task).toMatchObject({
