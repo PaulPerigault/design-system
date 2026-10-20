@@ -1,0 +1,81 @@
+---
+import Breadcrumb from '@paulperigault/astro/Breadcrumb.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+
+const items = [
+  { href: '/', label: 'Accueil' },
+  { href: '/components/', label: 'Composants' },
+  { label: 'Breadcrumb' },
+];
+---
+
+<DocsLayout title="Breadcrumb · Design system · Paul Perigault">
+  <h1>Breadcrumb</h1>
+  <p>
+    Breadcrumb indique l’emplacement de la page dans la hiérarchie du site. La page courante est le
+    dernier élément : elle n’est pas un lien et porte <code>aria-current="page"</code>.
+  </p>
+
+  <h2>Exemple</h2>
+  <Breadcrumb label="Fil d’Ariane de l’exemple" items={items} />
+
+  <h2>Accessibilité</h2>
+  <ul>
+    <li>
+      Repère <code>nav</code> nommé par <code>label</code>, liste <code>ol</code> avec{' '}
+      <code>role="list"</code>.
+    </li>
+    <li>
+      Les séparateurs sont générés en CSS avec un texte alternatif vide : les lecteurs d’écran ne
+      les annoncent pas.
+    </li>
+    <li>
+      Les liens sont soulignés, la page courante est en graisse moyenne : pas de couleur seule.
+    </li>
+  </ul>
+
+  <h2>Propriétés</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Propriété</th>
+        <th>Valeurs</th>
+        <th>Défaut</th>
+        <th>Rôle</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>label</code>
+        </td>
+        <td>texte</td>
+        <td>obligatoire</td>
+        <td>
+          Nom accessible du repère (<code>aria-label</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>{'{ href?, label }[]'}</code>
+        </td>
+        <td>obligatoire</td>
+        <td>
+          Éléments dans l’ordre. Le dernier est la page courante, rendu sans lien même avec{' '}
+          <code>href</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>class</code>
+        </td>
+        <td>texte</td>
+        <td>aucun</td>
+        <td>Placement dans le parent uniquement.</td>
+      </tr>
+    </tbody>
+  </table>
+</DocsLayout>
