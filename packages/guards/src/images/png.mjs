@@ -1,7 +1,8 @@
 // Métadonnées d'un PNG : chunks parcourus après la signature jusqu'à IEND, sans dépendance.
-// `eXIf` → exif ; `tEXt`/`zTXt`/`iTXt` de mot-clé XMP → xmp, « Raw profile type exif » → exif.
+// `eXIf` → exif (+ gps) ; `tEXt`/`zTXt`/`iTXt` de mot-clé XMP → xmp, « Raw profile type exif » → exif.
 // Entrée non fiable : un chunk tronqué arrête la lecture, rien ne lève. CRC non vérifiés.
 import { Buffer } from 'node:buffer';
+import { tiffHasGps } from './jpeg.mjs';
 
 export const PNG_SIGNATURE = Buffer.from('89504e470d0a1a0a', 'hex');
 const LENGTH_SIZE = 4;
@@ -29,11 +30,12 @@ function keywordOf(data) {
 /**
  * @param {string} type
  * @param {Buffer} data
- * @returns {string | undefined}
+ * @returns {string[]}
  */
-function chunkFinding(type, data) {
-  if (type === EXIF_CHUNK) return 'exif';
-  return TEXT_CHUNKS.has(type) ? KEYWORDS.get(keywordOf(data)) : undefined;
+function chunkFindings(type, data) {
+  if (type === EXIF_CHUNK) return tiffHasGps(data) ? ['exif', 'gps'] : ['exif'];
+  const finding = TEXT_CHUNKS.has(type) ? KEYWORDS.get(keywordOf(data)) : undefined;
+  return finding ? [finding] : [];
 }
 
 /**
@@ -49,8 +51,8 @@ export function pngMetadata(bytes) {
     const type = bytes.toString('latin1', offset + LENGTH_SIZE, offset + CHUNK_HEADER);
     const end = offset + CHUNK_HEADER + length + CRC_SIZE;
     if (type === IEND || end > bytes.length) break;
-    const finding = chunkFinding(type, bytes.subarray(offset + CHUNK_HEADER, end - CRC_SIZE));
-    if (finding) found.add(finding);
+    const data = bytes.subarray(offset + CHUNK_HEADER, end - CRC_SIZE);
+    for (const finding of chunkFindings(type, data)) found.add(finding);
     offset = end;
   }
   return [...found];

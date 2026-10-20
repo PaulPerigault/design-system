@@ -3,40 +3,13 @@ import { parseArgs } from 'node:util';
 import { describe, expect, it } from 'vitest';
 import * as images from '../src/check-images.mjs';
 import { budgetFor, budgetSettings, BYTES_PER_KB } from '../src/images/budget.mjs';
-import { neutralizeComments, rawImages } from '../src/images/markup.mjs';
 import { GuardUsageError } from '../src/lib/report.mjs';
 import { fakeIo } from './fake-io.mjs';
 
-const labels = (text, ext) => rawImages(neutralizeComments(text), ext).map((f) => f.label);
 const kb = (n) => new Uint8Array(n * BYTES_PER_KB);
 // SOI, APP1 Exif `II` dont l'IFD0 porte GPSInfo (0x8825), EOI.
 const exifPayload = `457869660000 49492a0008000000 0100 2588 ${'0'.repeat(28)}`;
 const gpsJpeg = Buffer.from(`ffd8 ffe1 0022 ${exifPayload} ffd9`.replaceAll(' ', ''), 'hex');
-
-describe('markup', () => {
-  it('vise <img brut, insensible à la casse, pas <Image ni <Picture', () => {
-    expect(labels('<img src="a">\n<IMG/>\n<img\n alt="">', '.astro')).toHaveLength(3);
-    expect(labels('<Image src={a} /><Picture /><imgx>', '.tsx')).toEqual([]);
-    expect(labels('<img src="a">', '.css')).toEqual([]);
-  });
-
-  it('vise background(-image): url( mais pas une police ni une variable', () => {
-    const css = '.a { background-image: url(a.png); }\n.b { background: #000 url(b.png); }';
-    expect(labels(css, '.css')).toEqual(['background-image: url(', 'background: url(']);
-    const font = '@font-face { src: url(f.woff2); } .c { --pp-background: url(x); }';
-    expect(labels(font, '.css')).toEqual([]);
-    expect(labels('.d { background: red; mask: url(m.svg); }', '.css')).toEqual([]);
-    expect(labels('<p style="background-image: url(a)">', '.html')).toEqual([]);
-  });
-
-  it('neutralise les commentaires sans décaler les lignes', () => {
-    const text = '/* <img>\n */ <!-- <img>\n -->\n<img>';
-    expect(neutralizeComments(text).split('\n')).toHaveLength(4);
-    expect(rawImages(neutralizeComments(text), '.astro')).toEqual([
-      { index: text.lastIndexOf('<img>'), label: '<img> brut' },
-    ]);
-  });
-});
 
 describe('budget', () => {
   const settings = budgetSettings({
@@ -109,6 +82,15 @@ describe('run', () => {
       'public/me.jpg: métadonnées exif, gps (vie privée) : nettoyer avec exiftool -all= -overwrite_original "public/me.jpg"',
       'src/assets/hero/big.webp: 401 Ko > budget 400 Ko',
       'src/assets/small.svg: 2 Ko > budget 1 Ko',
+    ]);
+  });
+
+  it('traite les extensions sans tenir compte de la casse', () => {
+    const { io, err } = fakeIo({ 'public/ME.JPG': gpsJpeg, 'src/A.Astro': '<img src="a">' });
+    expect(images.run({ ...images.defaults }, io)).toBe(1);
+    expect(err).toEqual([
+      'src/A.Astro:1: <img> brut interdit hors src/media : utiliser Photo',
+      'public/ME.JPG: métadonnées exif, gps (vie privée) : nettoyer avec exiftool -all= -overwrite_original "public/ME.JPG"',
     ]);
   });
 
