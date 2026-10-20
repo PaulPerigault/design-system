@@ -90,6 +90,7 @@
           "npx astro*",
           "npx tsc*",
           "npx prettier --check*",
+          "node packages/guards/src/check-tokens.mjs*",
           "git status*",
           "git diff*",
           "git log*",
