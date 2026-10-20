@@ -1,0 +1,99 @@
+---
+import Center from '@paulperigault/astro/Center.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="Center · Design system · Paul Perigault">
+  <h1>Center</h1>
+  <p>
+    Center centre un bloc dans l’axe inline et limite sa largeur à la mesure de lecture définie par
+    le token <code>--pp-size-measure</code>.
+  </p>
+
+  <h2>Texte centré avec marge latérale</h2>
+  <Center text gutter="m" as="section">
+    <p>Ce paragraphe est centré, avec une marge latérale de taille m.</p>
+  </Center>
+
+  <h2>Enfants centrés selon leur largeur propre</h2>
+  <Center intrinsic gutter="s">
+    <p>Un premier paragraphe court.</p>
+    <button type="button">Action</button>
+  </Center>
+
+  <h2>Propriétés</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Propriété</th>
+        <th>Type</th>
+        <th>Défaut</th>
+        <th>Effet</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>text</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Centre le texte (<code>data-text</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>intrinsic</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Colonne flex, enfants centrés (<code>data-intrinsic</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>gutter</code>
+        </td>
+        <td>
+          <code>'s' | 'm'</code>
+        </td>
+        <td>absent</td>
+        <td>
+          Padding inline, tokens <code>--pp-space-s</code> ou <code>--pp-space-m</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>as</code>
+        </td>
+        <td>
+          <code>div | section | article | main | header | footer</code>
+        </td>
+        <td>
+          <code>div</code>
+        </td>
+        <td>Élément rendu.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>class</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>absent</td>
+        <td>Placement dans le parent uniquement.</td>
+      </tr>
+    </tbody>
+  </table>
+</DocsLayout>
