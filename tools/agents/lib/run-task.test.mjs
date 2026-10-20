@@ -66,6 +66,12 @@ describe('runTask', () => {
     expect(result).toMatchObject({ status: 'passed', engine: 'claude', model: 'opus' });
   });
 
+  it('transmet un retour de revue comme échec précédent (--feedback)', async () => {
+    const { deps, calls } = world();
+    await runTask(deps, TASK, { feedback: 'CHANGEMENTS REQUIS : a.astro:3' });
+    expect(calls.routing[0].reason).toBe('relance après revue');
+  });
+
   it('bloque une tâche dont une dépendance n’est pas intégrée', async () => {
     const { deps, calls } = world({ log: 'feat: x\n\nTâche T0.01' });
     const result = await runTask(deps, { ...TASK, depends_on: ['T0.01', 'T0.02'] });

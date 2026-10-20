@@ -49,10 +49,16 @@ const attemptFiles = (deps, id, n) => ({
   stderrFile: runFile(deps, `${id}.a${n}.stderr.log`),
 });
 
+const reasonOf = (previous) => {
+  if (!previous) return 'palier initial';
+  return previous.review ? 'relance après revue' : `escalade après : ${previous.failure}`;
+};
+
 /** Tentatives successives selon `tiers` ; s'arrête à la première réussite. */
-async function escalate(deps, task, { tiers, engine: initialEngine, env }) {
+async function escalate(deps, task, { tiers, engine: initialEngine, env, feedback }) {
   let engine = initialEngine;
-  let previous = null;
+  // Retour de revue (`--feedback`) : transmis comme échec précédent dès la première tentative.
+  let previous = feedback ? { failure: feedback, review: true } : null;
   const history = [];
   for (const [index, tier] of tiers.entries()) {
     const model = modelOf(deps, engine, tier);
@@ -66,12 +72,7 @@ async function escalate(deps, task, { tiers, engine: initialEngine, env }) {
       files,
     });
     history.push({ tier, model, engine, outcome: outcomeOf(attempt) });
-    await record(
-      deps,
-      task,
-      attempt,
-      previous ? `escalade après : ${previous.failure}` : 'palier initial',
-    );
+    await record(deps, task, attempt, reasonOf(previous));
     if (!attempt.failure) return { status: 'passed', attempt, history };
     if (attempt.quota) engine = 'claude';
     previous = attempt;
@@ -104,6 +105,7 @@ export async function runTask(deps, task, options = {}) {
   });
   const tier = options.tier ?? task.tier;
   const tiers = options.escalate ? tierPlan(deps.models, tier) : [tier];
-  const outcome = await escalate(deps, task, { tiers, engine: options.engine ?? task.engine, env });
+  const engine = options.engine ?? task.engine;
+  const outcome = await escalate(deps, task, { tiers, engine, env, feedback: options.feedback });
   return finish(deps, task, outcome);
 }
