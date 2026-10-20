@@ -4,6 +4,7 @@
 import { appendFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { coordination, mainRoot } from './coordination.mjs';
 import { run, runShell } from './process.mjs';
 import { parseTask } from './task.mjs';
 
@@ -21,7 +22,10 @@ const readJson = async (file) => JSON.parse(await readFile(join(REPO_ROOT, file)
 export async function realDeps({ base } = {}) {
   const config = await readJson('tools/agents/config.json');
   const models = await readJson('tools/agents/models.json');
-  const emptyNpmrc = join(REPO_ROOT, config.runsDir, 'empty.npmrc');
+  // État partagé (runs, routage, places, verrous, amorces) dans le dépôt principal, même quand le
+  // dispatcher tourne depuis un worktree (ds-lead).
+  const stateRoot = mainRoot(REPO_ROOT, cleanEnv(process.env));
+  const emptyNpmrc = join(stateRoot, config.runsDir, 'empty.npmrc');
   await mkdir(dirname(emptyNpmrc), { recursive: true });
   await writeFile(emptyNpmrc, '');
   return {
@@ -32,9 +36,11 @@ export async function realDeps({ base } = {}) {
     now: Date.now,
     env: cleanEnv(process.env),
     models,
-    config,
+    config: { ...config, worktreeRoot: resolve(stateRoot, config.worktreeRoot) },
     emptyNpmrc,
     repoRoot: REPO_ROOT,
+    stateRoot,
+    ...coordination({ sharedDir: join(stateRoot, '.agents'), shell: runShell }),
     base: base ?? config.baseBranch,
   };
 }

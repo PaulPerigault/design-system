@@ -25,6 +25,7 @@ const formatOwned = async (deps, task, worktree, env) => {
 export const verify = async (deps, task, worktree, env) => {
   await formatOwned(deps, task, worktree, env);
   const acceptance = await runAcceptance({
+    lock: deps.heavyLock,
     shell: deps.shell,
     cwd: worktree.path,
     env,

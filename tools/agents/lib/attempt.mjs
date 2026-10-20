@@ -32,15 +32,22 @@ const setupWorktree = async (deps, task, env) => {
     id: task.id,
     base: deps.base,
   });
-  const setup = await shell(SETUP, {
-    cwd: worktree.path,
-    env,
-    timeoutMs: config.acceptanceTimeoutMs,
-  });
+  // Amorce clonée si `deps.install` existe (seed.mjs), sinon `npm ci` classique.
+  const opts = { cwd: worktree.path, env, timeoutMs: config.acceptanceTimeoutMs };
+  const setup = deps.install ? await deps.install(opts) : await shell(SETUP, opts);
   return {
     worktree,
     setupFailure: setup.code === 0 ? null : `npm ci en échec : ${setup.stderr.slice(-500)}`,
   };
+};
+
+/** Session d'agent sous une place du sémaphore global (`deps.slot`, locks.mjs), toujours rendue. */
+const runAgentInSlot = async (deps, { engine, cwd, env, args, files }) => {
+  const release = deps.slot ? await deps.slot() : null;
+  const timeoutMs = deps.config.timeoutMs;
+  return runAgent({ launch: deps.launch, engine, cwd, env, timeoutMs, args, ...files }).finally(
+    () => release?.(),
+  );
 };
 
 /**
@@ -64,16 +71,9 @@ export async function runAttempt(deps, task, { engine, tier, model, previousFail
     role: task.agent === 'ds-reviewer' ? 'reviewer' : 'worker',
   });
   const args = agentArgs({ engine, task, model, prompt, config: deps.config, models: deps.models });
-  const run = await runAgent({
-    launch: deps.launch,
-    engine,
-    cwd: worktree.path,
-    env,
-    timeoutMs: deps.config.timeoutMs,
-    args,
-    ...files,
-  });
+  const run = await runAgentInSlot(deps, { engine, cwd: worktree.path, env, args, files });
   const quota = quotaExhausted(run.stderr, run.summary.finalText);
+  if (quota) deps.onQuota?.();
   const transport = transportFailure(run);
   const checked = transport
     ? { acceptance: [], ownership: null, failure: transport }

@@ -18,3 +18,11 @@ playwright-report/
 .env
 .env.*
 *.env
+
+# Coordination locale des agents (partagée entre orchestrateur et ds-lead).
+.agents/slots/
+.agents/locks/
+.agents/seeds/
+.agents/lead.log
+.agents/lead.pid
+.agents/lead-queue.md

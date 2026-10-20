@@ -12,7 +12,8 @@ const claudeModel = (deps, tier) =>
   tier === 'hard' ? deps.models.claude.hard : deps.models.claude.default;
 const modelOf = (deps, engine, tier) =>
   engine === 'kiro' ? modelFor(deps.models, tier) : claudeModel(deps, tier);
-const runFile = (deps, file) => runsPath(deps.repoRoot, deps.config.runsDir, file);
+const stateRoot = (deps) => deps.stateRoot ?? deps.repoRoot;
+const runFile = (deps, file) => runsPath(stateRoot(deps), deps.config.runsDir, file);
 
 const record = async (deps, task, attempt, reason) => {
   const entry = routingEntry({
@@ -24,7 +25,7 @@ const record = async (deps, task, attempt, reason) => {
     now: new Date(deps.now()),
   });
   await deps.fs.appendFile(
-    runsPath(deps.repoRoot, '.', deps.config.routingLog),
+    runsPath(stateRoot(deps), '.', deps.config.routingLog),
     `${JSON.stringify(entry)}\n`,
   );
 };
