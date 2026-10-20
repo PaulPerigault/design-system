@@ -1,0 +1,82 @@
+---
+/**
+ * Sidebar : une barre latérale de largeur fixe et un contenu qui prend le reste ; les deux
+ * s'empilent quand le contenu passerait sous la moitié de la largeur (modèle « Every Layout »,
+ * Pickering et Bell). Zéro JavaScript ; variantes par `data-*` (CSP stricte : aucun `style`).
+ */
+interface Props {
+  /** Côté de la barre : `start` = premier enfant, `end` = dernier enfant. */
+  side?: 'start' | 'end';
+  space?: 'xs' | 's' | 'm' | 'l' | 'xl';
+  sideWidth?: 'narrow' | 'medium';
+  as?: 'div' | 'section' | 'article' | 'main' | 'aside';
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const {
+  side = 'start',
+  space = 'm',
+  sideWidth = 'narrow',
+  as: Tag = 'div',
+  class: className,
+} = Astro.props;
+---
+
+<Tag
+  class:list={['pp-sidebar', className]}
+  data-side={side}
+  data-space={space}
+  data-side-width={sideWidth}
+>
+  <slot />
+</Tag>
+
+<style>
+  .pp-sidebar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sidebar-space);
+  }
+
+  .pp-sidebar[data-space='xs'] {
+    --sidebar-space: var(--pp-space-xs);
+  }
+
+  .pp-sidebar[data-space='s'] {
+    --sidebar-space: var(--pp-space-s);
+  }
+
+  .pp-sidebar[data-space='m'] {
+    --sidebar-space: var(--pp-space-m);
+  }
+
+  .pp-sidebar[data-space='l'] {
+    --sidebar-space: var(--pp-space-l);
+  }
+
+  .pp-sidebar[data-space='xl'] {
+    --sidebar-space: var(--pp-space-xl);
+  }
+
+  .pp-sidebar[data-side-width='narrow'] {
+    --sidebar-width: calc(var(--pp-size-measure) / 3);
+  }
+
+  .pp-sidebar[data-side-width='medium'] {
+    --sidebar-width: calc(var(--pp-size-measure) / 2);
+  }
+
+  .pp-sidebar[data-side='start'] > :global(:first-child),
+  .pp-sidebar[data-side='end'] > :global(:last-child) {
+    flex-basis: var(--sidebar-width);
+    flex-grow: 1;
+  }
+
+  .pp-sidebar[data-side='start'] > :global(:not(:first-child)),
+  .pp-sidebar[data-side='end'] > :global(:not(:last-child)) {
+    flex-basis: 0;
+    flex-grow: 999;
+    min-inline-size: 50%;
+  }
+</style>
