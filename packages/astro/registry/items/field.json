@@ -20,6 +20,7 @@
       "--pp-color-status-failed",
       "--pp-font-weight-bold",
       "--pp-font-weight-medium",
+      "--pp-font-weight-regular",
       "--pp-font-weight-semibold",
       "--pp-space-3xs",
       "--pp-space-s"

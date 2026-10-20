@@ -18,6 +18,7 @@
       "--pp-color-line",
       "--pp-color-muted",
       "--pp-color-status-failed",
+      "--pp-color-surface",
       "--pp-radius-control",
       "--pp-size-control-height",
       "--pp-size-focus-width",
