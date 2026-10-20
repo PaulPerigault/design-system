@@ -24,5 +24,8 @@ export const renderComponent = async (
 export const renderDom = async (
   component: AstroComponentFactory,
   options: Options = {},
-): Promise<Document> =>
-  parseHTML(`<body>${await renderComponent(component, options)}</body>`).document;
+): Promise<Document> => {
+  // linkedom ne construit `body` que pour un document complet (un fragment `<body>` reste vide).
+  const html = await renderComponent(component, options);
+  return parseHTML(`<!doctype html><html><body>${html}</body></html>`).document;
+};

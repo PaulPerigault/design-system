@@ -38,10 +38,12 @@ export function summaryMarkdown(result, finalText) {
   );
   return [
     `# ${result.id} — ${result.title}`,
-    `- Statut : **${result.status}**${result.failure ? ` (${result.failure})` : ''}`,
-    `- Moteur : ${result.engine}, palier ${result.tier}, modèle ${result.model}`,
-    `- Crédits Kiro : ${result.credits ?? 'n/d'} ; appels d’outils : ${result.toolCalls}`,
-    `- Durée : ${Math.round(result.durationMs / 1000)} s ; worktree : \`${result.worktree}\``,
+    [
+      `- Statut : **${result.status}**${result.failure ? ` (${result.failure})` : ''}`,
+      `- Moteur : ${result.engine}, palier ${result.tier}, modèle ${result.model}`,
+      `- Crédits Kiro : ${result.credits ?? 'n/d'} ; appels d’outils : ${result.toolCalls}`,
+      `- Durée : ${Math.round(result.durationMs / 1000)} s ; worktree : \`${result.worktree}\``,
+    ].join('\n'),
     `## Fichiers touchés\n\n${result.filesTouched.map((file) => `- \`${file}\``).join('\n') || '- aucun'}`,
     result.outOfScope.length ? `## Hors périmètre\n\n${result.outOfScope.join(', ')}` : '',
     `## Acceptation\n\n${acceptance.join('\n') || '- non lancée'}`,
