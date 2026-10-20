@@ -1,0 +1,57 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/specification/color/",
+  "$type": "color",
+  "$description": "Direction D. Encre — l'encre du favicon devient le système",
+  "light": {
+    "bg": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.985, 0.004, 270.7]
+      }
+    },
+    "fg": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.215, 0.016, 270.7]
+      }
+    },
+    "muted": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.43, 0.022, 270.7]
+      }
+    },
+    "accent": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.47, 0.19, 270.7]
+      }
+    }
+  },
+  "dark": {
+    "bg": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.201, 0.0124, 270.7]
+      }
+    },
+    "fg": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.945, 0.008, 270.7]
+      }
+    },
+    "muted": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.79, 0.018, 270.7]
+      }
+    },
+    "accent": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.78, 0.1, 270.7]
+      }
+    }
+  }
+}
