@@ -5,6 +5,7 @@
 import { readdir } from 'node:fs/promises';
 import { batchTable, mapLimit, readyTasks, tasksOfLot } from './lib/batch.mjs';
 import { loadTask, parseOptions, realDeps } from './lib/cli.mjs';
+import { baselineCommands, failingBaseline } from './lib/preflight.mjs';
 import { runTask } from './lib/run-task.mjs';
 
 const DEFAULT_PARALLEL = 3;
@@ -27,6 +28,27 @@ const integrated = tasks
   .filter((task) => new RegExp(`\\b${task.id.replace('.', '\\.')}\\b`).test(log))
   .map((task) => task.id);
 const { ready, waiting } = readyTasks(tasks, integrated);
+
+// D-015 : base verte avant de lancer quoi que ce soit (sauf --skip-preflight).
+if (ready.length > 0 && options['skip-preflight'] !== true) {
+  const commands = baselineCommands(ready);
+  const failures = await failingBaseline(
+    {
+      shell: deps.shell,
+      cwd: deps.repoRoot,
+      env: deps['env'],
+      timeoutMs: deps.config.acceptanceTimeoutMs,
+      lock: deps.heavyLock,
+    },
+    commands,
+  );
+  if (failures.length > 0) {
+    for (const { cmd, code, tail } of failures)
+      console.error(`Base rouge : \`${cmd}\` → ${code}\n${tail}`);
+    console.error('Lot non lancé : corriger la base (D-015).');
+    process.exit(1);
+  }
+}
 
 const parallel = Number(options.parallel ?? DEFAULT_PARALLEL);
 const results = await mapLimit(ready, parallel, (task) =>
