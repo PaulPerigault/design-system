@@ -96,16 +96,18 @@ describe('diff', () => {
     expect(env.out[0]).toBe('stack : copie 1.0.0, paquet 2.0.0');
   });
 
-  it('élément non éjecté : code 2', () => {
+  it('élément non éjecté ou positionnels faux : code 2', () => {
     const env = setup();
     expect(diff(env, 'button')).toBe(2);
     expect(env.err).toEqual(["élément non éjecté : eject button d'abord"]);
-  });
-
-  it('un positionnel exactement : code 2', () => {
-    const env = setup();
     expect(run({ positionals: [] }, { io: env.io })).toBe(2);
     expect(run({ positionals: ['a', 'b'] }, { io: env.io })).toBe(2);
+  });
+
+  it('nom insensible à la casse, élément du registre retrouvé', () => {
+    const env = setup({ copy: { 'A.astro': 'mien\n' } });
+    expect(diff(env, 'Stack')).toBe(1);
+    expect(env.out).toEqual(['stack : copie 1.2.3, paquet 1.2.3', 'modifié (local) src/A.astro']);
   });
 
   it('n’écrit rien', () => {
