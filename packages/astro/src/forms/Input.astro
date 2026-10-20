@@ -15,8 +15,8 @@ interface Props {
   autocomplete?: string;
   inputmode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search';
   /** Identifiants (séparés par des espaces) des éléments d'aide ou d'erreur. */
-  describedBy?: string;
-  invalid?: boolean;
+  describedBy?: string | undefined;
+  invalid?: boolean | undefined;
   placeholder?: string;
   /** Réservé au placement du composant dans son parent. */
   class?: string;

@@ -12,7 +12,7 @@ interface Props {
   checked?: boolean;
   disabled?: boolean;
   /** Identifiant(s) du texte d'aide ou d'erreur associé (`aria-describedby`). */
-  describedBy?: string;
+  describedBy?: string | undefined;
 }
 
 const { id, name, label, checked = false, disabled = false, describedBy } = Astro.props;

@@ -11,8 +11,8 @@ interface Props {
   required?: boolean;
   disabled?: boolean;
   /** Identifiants (séparés par des espaces) de l'aide ou du message d'erreur. */
-  describedBy?: string;
-  invalid?: boolean;
+  describedBy?: string | undefined;
+  invalid?: boolean | undefined;
   rows?: number;
   /** Réservé au placement du composant dans son parent. */
   class?: string;
