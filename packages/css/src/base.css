@@ -1,0 +1,77 @@
+/*
+ * Base : tout passe par les variables --pp-*. Propriétés logiques uniquement.
+ * Aucune ombre, aucun dégradé.
+ */
+@layer base {
+  html {
+    background-color: var(--pp-color-bg);
+    color: var(--pp-color-fg);
+  }
+
+  body {
+    background-color: var(--pp-color-bg);
+    color: var(--pp-color-fg);
+    font-family: var(--pp-font-family-sans);
+    font-size: var(--pp-font-size-0);
+    line-height: var(--pp-font-line-height-body);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    line-height: var(--pp-font-line-height-heading);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: var(--pp-font-family-mono);
+  }
+
+  time {
+    font-variant-numeric: tabular-nums;
+  }
+
+  a {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  ::selection {
+    background-color: var(--pp-color-accent);
+    color: var(--pp-color-on-accent);
+  }
+
+  :focus-visible {
+    outline: var(--pp-size-focus-width) solid var(--pp-color-focus);
+    outline-offset: var(--pp-size-focus-offset);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0s !important;
+      animation-delay: 0s !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0s !important;
+      transition-delay: 0s !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

@@ -1,0 +1,52 @@
+/* Thème Tailwind v4 : valeurs par défaut supprimées, seuls les tokens --pp-* sont exposés. */
+@custom-variant js (:root.js &);
+
+@theme inline {
+  --color-*: initial;
+  --font-*: initial;
+  --text-*: initial;
+  --shadow-*: initial;
+  --drop-shadow-*: initial;
+  --radius-*: initial;
+  --spacing-*: initial;
+
+  --color-accent: var(--pp-color-accent);
+  --color-bg: var(--pp-color-bg);
+  --color-control: var(--pp-color-control);
+  --color-fg: var(--pp-color-fg);
+  --color-focus: var(--pp-color-focus);
+  --color-line: var(--pp-color-line);
+  --color-muted: var(--pp-color-muted);
+  --color-on-accent: var(--pp-color-on-accent);
+  --color-status-degraded: var(--pp-color-status-degraded);
+  --color-status-failed: var(--pp-color-status-failed);
+  --color-status-passed: var(--pp-color-status-passed);
+  --color-status-running: var(--pp-color-status-running);
+  --color-surface: var(--pp-color-surface);
+
+  --font-sans: var(--pp-font-family-sans);
+  --font-mono: var(--pp-font-family-mono);
+
+  --text-sm: var(--pp-font-size--1);
+  --text-base: var(--pp-font-size-0);
+  --text-xl: var(--pp-font-size-1);
+  --text-2xl: var(--pp-font-size-2);
+  --text-3xl: var(--pp-font-size-3);
+  --text-4xl: var(--pp-font-size-4);
+
+  --spacing-3xs: var(--pp-space-3xs);
+  --spacing-2xs: var(--pp-space-2xs);
+  --spacing-xs: var(--pp-space-xs);
+  --spacing-s: var(--pp-space-s);
+  --spacing-m: var(--pp-space-m);
+  --spacing-l: var(--pp-space-l);
+  --spacing-xl: var(--pp-space-xl);
+  --spacing-2xl: var(--pp-space-2xl);
+  --spacing-3xl: var(--pp-space-3xl);
+
+  --radius-control: var(--pp-radius-control);
+  --radius-surface: var(--pp-radius-surface);
+
+  --container-page: var(--pp-size-page);
+  --container-measure: var(--pp-size-measure);
+}
