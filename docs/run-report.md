@@ -1,6 +1,6 @@
 # Rapport d'exécution
 
-Mis à jour à chaque fin de lot. Dernière mise à jour : 2026-10-20, fin de L3.
+Mis à jour à chaque fin de lot. Dernière mise à jour : 2026-10-20, fin de L4.
 
 ## Lots
 
@@ -32,3 +32,7 @@ Mis à jour à chaque fin de lot. Dernière mise à jour : 2026-10-20, fin de L3
 
 Voir [docs/manual-steps.md](manual-steps.md) : extension des jetons GitHub, `apply` OpenTofu,
 trusted publisher npm (et `0.0.0` d'amorce si nécessaire), fusions vers `main`.
+
+## ds-lead
+
+L8 en cours depuis 00:42 : ≈ 102 crédits d'exécution et ≈ 31 de revue au 2026-10-21 01:30 (hors sa propre session Opus).

@@ -1,0 +1,95 @@
+---
+import Textarea from '@paulperigault/astro/Textarea.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="Textarea · Design system · Paul Perigault">
+  <h1>Textarea</h1>
+  <p>
+    Textarea enveloppe l’élément natif <code>textarea</code> : à utiliser pour une saisie de
+    plusieurs lignes, comme un message.
+  </p>
+
+  <h2>Par défaut</h2>
+  <label for="demo-defaut">Message</label>
+  <Textarea id="demo-defaut" name="demo-defaut" />
+
+  <h2>Erreur</h2>
+  <label for="demo-erreur">Message</label>
+  <Textarea id="demo-erreur" name="demo-erreur" required invalid describedBy="demo-erreur-aide" />
+  <p id="demo-erreur-aide">Le message est obligatoire.</p>
+
+  <h2>Désactivé</h2>
+  <label for="demo-desactive">Message</label>
+  <Textarea id="demo-desactive" name="demo-desactive" disabled value="Saisie indisponible." />
+
+  <h2>Propriétés</h2>
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Propriété</th>
+        <th scope="col">Valeurs</th>
+        <th scope="col">Défaut</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">
+          <code>id</code>, <code>name</code>
+        </th>
+        <td>chaînes, obligatoires</td>
+        <td>aucun</td>
+      </tr>
+      <tr>
+        <th scope="row">
+          <code>value</code>
+        </th>
+        <td>texte initial</td>
+        <td>vide</td>
+      </tr>
+      <tr>
+        <th scope="row">
+          <code>required</code>, <code>disabled</code>
+        </th>
+        <td>booléens</td>
+        <td>
+          <code>false</code>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">
+          <code>invalid</code>
+        </th>
+        <td>
+          booléen, pose <code>aria-invalid="true"</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">
+          <code>describedBy</code>
+        </th>
+        <td>identifiants de l’aide ou de l’erreur</td>
+        <td>aucun</td>
+      </tr>
+      <tr>
+        <th scope="row">
+          <code>rows</code>
+        </th>
+        <td>nombre de lignes visibles</td>
+        <td>
+          <code>4</code>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">
+          <code>class</code>
+        </th>
+        <td>placement dans le parent uniquement</td>
+        <td>aucun</td>
+      </tr>
+    </tbody>
+  </table>
+</DocsLayout>

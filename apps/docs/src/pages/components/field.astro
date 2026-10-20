@@ -1,0 +1,86 @@
+---
+import Field from '@paulperigault/astro/Field.astro';
+import Input from '@paulperigault/astro/Input.astro';
+import { describedBy } from '@paulperigault/astro/field-ids';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+
+const hint = 'Celle que vous consultez chaque jour.';
+const error = 'Saisissez une adresse au format nom@domaine.fr.';
+const PROPS = [
+  ['id', 'string', 'obligatoire', 'Id du contrôle ; dérive <id>-hint et <id>-error.'],
+  ['label', 'string', 'obligatoire', 'Libellé visible, relié au contrôle par for.'],
+  ['hint', 'string', 'absent', 'Indication rendue sous <id>-hint.'],
+  ['error', 'string', 'absent', 'Message d’erreur rendu sous <id>-error, précédé d’une icône.'],
+  ['errorLabel', 'string', 'absent', 'Préfixe de l’erreur ; absent, aucun préfixe.'],
+  ['required', 'boolean', 'false', 'Affiche requiredLabel dans le libellé.'],
+  ['requiredLabel', 'string', 'absent', 'Texte visible exigé quand required vaut true.'],
+  ['class', 'string', 'absent', 'Placement du composant dans son parent.'],
+];
+const HEADERS = ['Prop', 'Type', 'Défaut', 'Rôle'];
+---
+
+<DocsLayout title="Field · Design system · Paul Perigault">
+  <div class="docs-prose">
+    <h1>Field</h1>
+    <p>
+      Field rend le libellé, l’indication et l’erreur d’un contrôle natif ; le contrôle s’y relie
+      par aria-describedby et aria-invalid, calculés par describedBy de field-ids.
+    </p>
+
+    <h2>Par défaut</h2>
+    <Field id="doc-email" label="Courriel" hint={hint} required requiredLabel="obligatoire">
+      <Input
+        id="doc-email"
+        name="email"
+        type="email"
+        required
+        autocomplete="email"
+        describedBy={describedBy({ id: 'doc-email', hint })}
+      />
+    </Field>
+
+    <h2>Erreur</h2>
+    <Field id="doc-email-error" label="Courriel" hint={hint} error={error} errorLabel="Erreur :">
+      <Input
+        id="doc-email-error"
+        name="email"
+        type="email"
+        value="paul"
+        autocomplete="email"
+        invalid={true}
+        describedBy={describedBy({ id: 'doc-email-error', hint, error })}
+      />
+    </Field>
+
+    <h2>Désactivé</h2>
+    <Field id="doc-email-disabled" label="Courriel">
+      <Input id="doc-email-disabled" name="email" type="email" disabled />
+    </Field>
+
+    <h2>Props</h2>
+    <div class="docs-table-wrap" tabindex="0" role="region" aria-label="Props de Field">
+      <table class="docs-table">
+        <caption>Props de Field</caption>
+        <thead>
+          <tr>
+            {HEADERS.map((header) => (
+              <th scope="col">{header}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {PROPS.map(([name, ...cells]) => (
+            <tr>
+              <th scope="row">
+                <code>{name}</code>
+              </th>
+              {cells.map((cell) => (
+                <td>{cell}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</DocsLayout>

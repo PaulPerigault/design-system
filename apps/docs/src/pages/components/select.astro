@@ -1,0 +1,83 @@
+---
+import Select from '@paulperigault/astro/Select.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+
+const pays = [
+  { value: 'fr', label: 'France' },
+  { value: 'be', label: 'Belgique' },
+  { value: 'ch', label: 'Suisse' },
+  { value: 'ca', label: 'Canada', disabled: true },
+];
+
+const props = [
+  ['id', 'chaîne, obligatoire ; relie le <label for>', 'aucun'],
+  ['name', 'chaîne, obligatoire', 'aucun'],
+  ['options', '{ value, label, disabled? }[]', 'aucun'],
+  ['value', 'valeur de l’option sélectionnée', 'aucune'],
+  ['placeholder', 'libellé d’une première option vide et désactivée', 'aucun'],
+  ['required', 'booléen', 'false'],
+  ['disabled', 'booléen', 'false'],
+  ['describedBy', 'identifiants des textes d’aide ou d’erreur', 'aucun'],
+  ['invalid', 'booléen ; pose aria-invalid="true"', 'false'],
+  ['class', 'placement dans le parent', 'aucun'],
+];
+---
+
+<DocsLayout title="Select · Design system · Paul Perigault">
+  <h1>Select</h1>
+  <p>
+    Select rend un élément select natif : clavier, lecteurs d’écran et sélecteurs mobiles restent
+    ceux du navigateur, et le libellé vient d’un label associé par son id.
+  </p>
+
+  <h2>Par défaut</h2>
+  <label for="select-pays">Pays</label>
+  <Select
+    id="select-pays"
+    name="pays"
+    options={pays}
+    placeholder="Choisir un pays"
+    required
+    describedBy="select-pays-aide"
+  />
+  <p id="select-pays-aide">Le Canada n’est pas encore proposé.</p>
+
+  <h2>Erreur</h2>
+  <label for="select-pays-erreur">Pays</label>
+  <Select
+    id="select-pays-erreur"
+    name="pays-erreur"
+    options={pays}
+    placeholder="Choisir un pays"
+    required
+    invalid
+    describedBy="select-pays-erreur-texte"
+  />
+  <p id="select-pays-erreur-texte">Erreur : choisissez un pays.</p>
+
+  <h2>Désactivé</h2>
+  <label for="select-pays-off">Pays</label>
+  <Select id="select-pays-off" name="pays-off" options={pays} value="fr" disabled />
+
+  <h2>Propriétés</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Propriété</th>
+        <th>Valeurs</th>
+        <th>Défaut</th>
+      </tr>
+    </thead>
+    <tbody>
+      {props.map(([name, values, fallback]) => (
+        <tr>
+          <td>
+            <code>{name}</code>
+          </td>
+          <td>{values}</td>
+          <td>{fallback}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</DocsLayout>

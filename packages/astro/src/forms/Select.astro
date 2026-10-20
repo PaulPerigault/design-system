@@ -1,0 +1,111 @@
+---
+/**
+ * Select : liste déroulante native, zéro JavaScript. Le nom accessible vient d'un `<label for>`
+ * du site (aucun texte en dur ici). Chevron SVG décoratif superposé par grille : ni image de fond
+ * ni attribut `style` (CSP stricte des sites consommateurs).
+ */
+interface Option {
+  value: string;
+  label: string;
+  disabled?: boolean;
+}
+
+interface Props {
+  id: string;
+  name: string;
+  options: Option[];
+  /** Valeur de l'option sélectionnée. */
+  value?: string;
+  /** Première option `value=""`, désactivée ; sélectionnée si `value` est absent. */
+  placeholder?: string;
+  required?: boolean;
+  disabled?: boolean;
+  /** Identifiants des textes d'aide ou d'erreur, séparés par des espaces. */
+  describedBy?: string | undefined;
+  invalid?: boolean | undefined;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { id, name, options, value, placeholder } = Astro.props;
+const { required = false, disabled = false, invalid = false, describedBy } = Astro.props;
+---
+
+<div class:list={['pp-select', Astro.props.class]}>
+  <select
+    class="pp-select__control"
+    id={id}
+    name={name}
+    required={required}
+    disabled={disabled}
+    aria-invalid={invalid ? 'true' : undefined}
+    aria-describedby={describedBy}
+  >
+    {placeholder !== undefined && (
+      <option value="" disabled selected={value === undefined}>
+        {placeholder}
+      </option>
+    )}
+    {options.map((option) => (
+      <option value={option.value} selected={option.value === value} disabled={option.disabled}>
+        {option.label}
+      </option>
+    ))}
+  </select>
+  <svg class="pp-select__chevron" aria-hidden="true" focusable="false" viewBox="0 0 16 16">
+    <path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2"></path>
+  </svg>
+</div>
+
+<style>
+  .pp-select {
+    display: grid;
+    grid-template-areas: 'select';
+    align-items: center;
+  }
+
+  .pp-select__control,
+  .pp-select__chevron {
+    grid-area: select;
+  }
+
+  .pp-select__control {
+    appearance: none;
+    inline-size: 100%;
+    min-block-size: var(--pp-size-control-height);
+    padding-block: var(--pp-space-3xs);
+    padding-inline: var(--pp-space-xs) var(--pp-space-xl);
+    border: var(--pp-size-rule) solid var(--pp-color-control);
+    border-radius: var(--pp-radius-control);
+    background-color: var(--pp-color-bg);
+    color: var(--pp-color-fg);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  /* Bordure épaissie en plus de la couleur : l'état ne repose pas sur la couleur (WCAG 1.4.1). */
+  .pp-select__control[aria-invalid='true'] {
+    border-width: var(--pp-size-focus-width);
+    border-color: var(--pp-color-status-failed);
+  }
+
+  .pp-select__control:disabled {
+    border-color: var(--pp-color-line);
+    background-color: var(--pp-color-surface);
+    color: var(--pp-color-muted);
+    cursor: not-allowed;
+  }
+
+  .pp-select__chevron {
+    justify-self: end;
+    inline-size: var(--pp-space-s);
+    block-size: var(--pp-space-s);
+    margin-inline-end: var(--pp-space-xs);
+    color: var(--pp-color-fg);
+    pointer-events: none;
+  }
+
+  .pp-select__control:disabled + .pp-select__chevron {
+    color: var(--pp-color-muted);
+  }
+</style>

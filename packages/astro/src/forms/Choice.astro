@@ -1,0 +1,82 @@
+---
+/**
+ * Choice : case à cocher ou bouton radio natif, suivi de son `<label for>`.
+ * Zéro JavaScript, aucun texte en dur : le libellé vient de `label`. Pour un groupe, l'envelopper
+ * dans `<fieldset>` + `<legend>`. Le focus visible est hérité de `@paulperigault/css`.
+ */
+interface Props {
+  type: 'checkbox' | 'radio';
+  id: string;
+  name: string;
+  value: string;
+  label: string;
+  checked?: boolean;
+  disabled?: boolean;
+  /** Identifiant(s) de l'aide ou du message d'erreur associé (`aria-describedby`). */
+  describedBy?: string | undefined;
+}
+
+const {
+  type,
+  id,
+  name,
+  value,
+  label,
+  checked = false,
+  disabled = false,
+  describedBy,
+} = Astro.props;
+---
+
+<div class="pp-choice" data-disabled={disabled ? '' : undefined}>
+  <input
+    class="pp-choice__input"
+    type={type}
+    id={id}
+    name={name}
+    value={value}
+    checked={checked}
+    disabled={disabled}
+    aria-describedby={describedBy}
+  />
+  <label class="pp-choice__label" for={id}>
+    {label}
+  </label>
+</div>
+
+<style>
+  .pp-choice {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--pp-space-xs);
+    min-block-size: var(--pp-size-control-height);
+  }
+
+  .pp-choice__input {
+    flex: none;
+    inline-size: var(--pp-size-target-min);
+    block-size: var(--pp-size-target-min);
+    margin: 0;
+    margin-block-start: calc((var(--pp-size-control-height) - var(--pp-size-target-min)) / 2);
+    accent-color: var(--pp-color-accent);
+    cursor: pointer;
+  }
+
+  .pp-choice__label {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-block-size: var(--pp-size-control-height);
+    color: var(--pp-color-fg);
+    cursor: pointer;
+  }
+
+  .pp-choice[data-disabled] .pp-choice__input,
+  .pp-choice[data-disabled] .pp-choice__label {
+    cursor: not-allowed;
+  }
+
+  .pp-choice[data-disabled] .pp-choice__label {
+    color: var(--pp-color-muted);
+  }
+</style>

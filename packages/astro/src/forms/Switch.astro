@@ -1,0 +1,106 @@
+---
+/**
+ * Switch : interrupteur natif sans JavaScript. `<input type="checkbox" role="switch">` porte
+ * l'état `checked` ; la piste et le curseur sont dessinés en CSS sur `appearance: none`.
+ * L'état se lit aussi à la position du curseur, pas seulement à la couleur.
+ * Aucun texte en dur : le libellé vient de la prop `label`.
+ */
+interface Props {
+  id: string;
+  name: string;
+  label: string;
+  checked?: boolean;
+  disabled?: boolean;
+  /** Identifiant(s) du texte d'aide ou d'erreur associé (`aria-describedby`). */
+  describedBy?: string | undefined;
+}
+
+const { id, name, label, checked = false, disabled = false, describedBy } = Astro.props;
+---
+
+<div class="pp-switch">
+  <input
+    class="pp-switch__input"
+    type="checkbox"
+    role="switch"
+    id={id}
+    name={name}
+    checked={checked}
+    disabled={disabled}
+    aria-describedby={describedBy}
+  />
+  <label class="pp-switch__label" for={id}>
+    {label}
+  </label>
+</div>
+
+<style>
+  .pp-switch {
+    display: flex;
+    align-items: center;
+    gap: var(--pp-space-xs);
+    min-block-size: var(--pp-size-control-height);
+  }
+
+  .pp-switch__input {
+    appearance: none;
+    position: relative;
+    flex-shrink: 0;
+    margin: 0;
+    inline-size: var(--pp-space-xl);
+    block-size: var(--pp-size-target-min);
+    border: var(--pp-size-rule) solid var(--pp-color-control);
+    border-radius: var(--pp-radius-control);
+    background-color: var(--pp-color-bg);
+    cursor: pointer;
+    transition: background-color var(--pp-duration-fast) var(--pp-easing-standard);
+  }
+
+  .pp-switch__input::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: var(--pp-space-3xs);
+    inline-size: var(--pp-space-s);
+    block-size: var(--pp-space-s);
+    margin-block: auto;
+    border-radius: var(--pp-radius-control);
+    background-color: var(--pp-color-fg);
+    transition: translate var(--pp-duration-fast) var(--pp-easing-standard);
+  }
+
+  .pp-switch__input:checked {
+    border-color: var(--pp-color-accent);
+    background-color: var(--pp-color-accent);
+  }
+
+  .pp-switch__input:checked::before {
+    translate: var(--pp-space-m);
+    background-color: var(--pp-color-on-accent);
+  }
+
+  .pp-switch__input:disabled {
+    border-color: var(--pp-color-line);
+    cursor: not-allowed;
+  }
+
+  .pp-switch__input:disabled:checked {
+    background-color: var(--pp-color-muted);
+  }
+
+  .pp-switch__input:disabled + .pp-switch__label {
+    color: var(--pp-color-muted);
+    cursor: not-allowed;
+  }
+
+  .pp-switch__label {
+    cursor: pointer;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pp-switch__input,
+    .pp-switch__input::before {
+      transition: none;
+    }
+  }
+</style>

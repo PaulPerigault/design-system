@@ -1,0 +1,33 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "select",
+  "type": "registry:ui",
+  "title": "Select",
+  "description": "Liste déroulante native avec chevron décoratif superposé par grille, zéro JavaScript.",
+  "files": [
+    {
+      "path": "packages/astro/src/forms/Select.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-bg",
+      "--pp-color-control",
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-color-status-failed",
+      "--pp-color-surface",
+      "--pp-radius-control",
+      "--pp-size-control-height",
+      "--pp-size-focus-width",
+      "--pp-size-rule",
+      "--pp-space-3xs",
+      "--pp-space-s",
+      "--pp-space-xl",
+      "--pp-space-xs"
+    ],
+    "version": "0.0.0"
+  }
+}

@@ -1,0 +1,72 @@
+---
+import Input from '@paulperigault/astro/Input.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+
+const props = [
+  ['id', 'string', 'obligatoire', 'Identifiant, cible du for du label.'],
+  ['name', 'string', 'obligatoire', 'Nom du champ dans le formulaire.'],
+  ['type', 'text, email, url, tel, search, password, number', 'text', 'Type natif.'],
+  ['value', 'string ou number', 'absent', 'Valeur initiale.'],
+  ['required', 'boolean', 'false', 'Champ obligatoire.'],
+  ['disabled', 'boolean', 'false', 'Champ désactivé.'],
+  ['autocomplete', 'string', 'absent', 'Jeton d’autocomplétion HTML.'],
+  ['inputmode', 'string', 'absent', 'Clavier virtuel proposé.'],
+  ['describedBy', 'string', 'absent', 'Identifiants des textes d’aide ou d’erreur.'],
+  ['invalid', 'boolean', 'false', 'Pose aria-invalid="true" et la bordure d’erreur.'],
+  ['placeholder', 'string', 'absent', 'Exemple de saisie, jamais un libellé.'],
+];
+---
+
+<DocsLayout title="Input · Design system · Paul Perigault">
+  <h1>Input</h1>
+  <p>
+    Input est un champ de saisie natif. Chaque champ a besoin d’un label relié par son identifiant :
+    le placeholder ne remplace pas le libellé.
+  </p>
+  <Stack space="l">
+    <div>
+      <label for="exemple-defaut">Nom</label>
+      <Input id="exemple-defaut" name="nom" autocomplete="name" />
+    </div>
+    <div>
+      <label for="exemple-erreur">Adresse e-mail</label>
+      <Input
+        id="exemple-erreur"
+        name="courriel"
+        type="email"
+        value="ada@"
+        invalid
+        describedBy="exemple-erreur-message"
+      />
+      <p id="exemple-erreur-message">Il manque le domaine après l’arobase.</p>
+    </div>
+    <div>
+      <label for="exemple-desactive">Référence</label>
+      <Input id="exemple-desactive" name="reference" value="PP-001" disabled />
+    </div>
+  </Stack>
+  <h2>Propriétés</h2>
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Nom</th>
+        <th scope="col">Type</th>
+        <th scope="col">Défaut</th>
+        <th scope="col">Rôle</th>
+      </tr>
+    </thead>
+    <tbody>
+      {props.map(([name, type, fallback, role]) => (
+        <tr>
+          <th scope="row">
+            <code>{name}</code>
+          </th>
+          <td>{type}</td>
+          <td>{fallback}</td>
+          <td>{role}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</DocsLayout>

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "field",
+  "type": "registry:ui",
+  "title": "Field",
+  "description": "Enveloppe d'un contrôle de formulaire avec libellé, indication et message d'erreur optionnels.",
+  "files": [
+    {
+      "path": "packages/astro/src/forms/Field.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/forms/field-ids.ts",
+      "type": "registry:lib"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-muted",
+      "--pp-color-status-failed",
+      "--pp-font-weight-bold",
+      "--pp-font-weight-medium",
+      "--pp-font-weight-regular",
+      "--pp-font-weight-semibold",
+      "--pp-space-3xs",
+      "--pp-space-s"
+    ],
+    "version": "0.0.0"
+  }
+}
