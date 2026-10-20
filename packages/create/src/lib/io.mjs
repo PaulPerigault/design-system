@@ -28,8 +28,14 @@ export function resolveIn(io, rel) {
  * @returns {CreateIo}
  */
 export function nodeIo({ cwd, stdout, stderr }) {
+  const posixCwd = cwd.split('\\').join('/');
+  if (!posix.isAbsolute(posixCwd)) {
+    throw new Error(
+      `chemin de travail non POSIX : Windows non pris en charge pour l'instant (${cwd})`,
+    );
+  }
   return {
-    cwd: cwd.split('\\').join('/'),
+    cwd: posixCwd,
     readText: (path) => readFileSync(path, 'utf8'),
     writeText(path, text) {
       mkdirSync(posix.dirname(path), { recursive: true });

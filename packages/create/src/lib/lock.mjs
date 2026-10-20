@@ -32,7 +32,18 @@ export function readLock(io) {
   if (data?.lockfileVersion !== LOCK_VERSION) {
     throw new Error(`${LOCK_FILE} : lockfileVersion ${data?.lockfileVersion} non pris en charge`);
   }
-  return { lockfileVersion: LOCK_VERSION, items: data.items ?? {} };
+  return { lockfileVersion: LOCK_VERSION, items: checkItems(data.items ?? {}) };
+}
+
+/**
+ * @param {unknown} items
+ * @returns {Record<string, LockEntry>}
+ */
+function checkItems(items) {
+  if (typeof items !== 'object' || items === null || Array.isArray(items)) {
+    throw new Error(`${LOCK_FILE} : items doit être un objet`);
+  }
+  return /** @type {Record<string, LockEntry>} */ (items);
 }
 
 /**
