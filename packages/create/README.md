@@ -1,89 +1,113 @@
 # @paulperigault/create
 
-CLI pour initialiser des sites avec @paulperigault/astro, ajouter des composants, les éjecter du paquet ou les synchroniser.
+CLI pour créer un site Astro qui consomme le design system, ajouter des composants
+`@paulperigault/astro`, les éjecter dans le projet ou les comparer au paquet.
 
-## Installation
-
-Usage via `npm create` (recommandé) :
+## Utilisation
 
 ```bash
 npm create @paulperigault <dossier>
-```
-
-Ou via `npx` directement :
-
-```bash
 npx @paulperigault/create create <dossier>
 npx @paulperigault/create add <élément>
 npx @paulperigault/create eject <élément>
 npx @paulperigault/create diff <élément>
 ```
 
-## Commandes
+`<dossier>` seul est un raccourci de `create <dossier>`. Le nom d'un élément est celui du registre
+de `@paulperigault/astro` ou son titre, sans tenir compte de la casse.
 
-Codes de sortie : `0` (succès), `1` (refusé), `2` (usage).
+## Options
+
+- `--dry-run` : liste les écritures sans rien écrire (`create`, `add`, `eject`)
+- `--from <dossier>` : racine d'un paquet `@paulperigault/astro` hors de `node_modules`
+  (`add`, `eject`, `diff`)
+- `--out <dossier>` : dossier cible des copies (`eject`, défaut : `src/components/pp`)
+- `--force` : écrase les copies existantes et l'entrée du verrou (`eject`)
+- `-h`, `--help` : affiche l'aide
+- `-v`, `--version` : affiche la version
+
+Une option appliquée à une commande qui ne la prend pas est refusée (code `2`).
+
+## Commandes
 
 ### `create <dossier>`
 
-Initialise un site Astro minimal avec @paulperigault/astro.
+Génère un site Astro à partir du gabarit `templates/site/`. Refuse un dossier qui existe et n'est
+pas vide, même avec `--force` (code `1`).
 
-```bash
-npm create @paulperigault <dossier>
-```
+Le site généré contient :
 
-Refuse un dossier non vide.
+- `package.json` avec `@paulperigault/css`, `@paulperigault/tokens` et `astro` en dépendances,
+  `@paulperigault/guards`, `husky`, `@commitlint/cli` et `@commitlint/config-conventional` en
+  `devDependencies`, toutes en versions exactes (`templates/versions.json`)
+- les scripts `dev`, `build`, `preview`, `guard` (`pp-guards all`), `verify`
+  (`npm run guard && astro build`) et `prepare` (`husky`)
+- `pp-guards.config.json`, une mise en page `src/layouts/Base.astro` qui importe
+  `@paulperigault/css`, et une page d'accueil
+- un hook Husky `commit-msg`, la configuration commitlint, un workflow GitHub Actions
+  (`npm ci --ignore-scripts` puis `npm run verify`), `.gitignore` et `.npmrc`
 
-Options :
+Les fichiers du gabarit préfixés par `_` perdent ce préfixe à l'écriture (`_gitignore` devient
+`.gitignore`). Le nom du paquet npm est dérivé du nom du dossier.
 
-- `--dry-run` : liste les écritures sans créer les fichiers
+Après l'écriture, la commande affiche les étapes suivantes : `cd`, `git init`, `npm install`,
+`npm run dev`, `npm run verify`. Il faut commiter `package-lock.json` avant la première CI.
+
+Codes : `0` écrit (ou plan affiché avec `--dry-run`), `1` dossier non vide ou conflit, `2` usage.
 
 ### `add <élément>`
 
-Ajoute @paulperigault/astro aux dépendances du projet courant et affiche l'extrait d'import.
+Ajoute `@paulperigault/astro` aux `dependencies` du `package.json` du dossier courant, à la
+version installée, sauf s'il figure déjà dans `dependencies` ou `devDependencies`. Affiche ensuite
+un extrait d'import par fichier `.astro` de l'élément, et les éléments requis du registre :
 
-```bash
-npx @paulperigault/create add <élément>
+```text
+import Stack from '@paulperigault/astro/Stack.astro';
 ```
 
-Consulte le registre du paquet pour lister les dépendances requises.
+Un avertissement signale un import que le champ `exports` du paquet ne couvre pas.
 
-Options :
-
-- `--dry-run` : liste les modifications sans écrire
-- `--from <dossier>` : paquet hors `node_modules` (développement du design system)
+Codes : `0` succès, `1` `package.json` absent ou inutilisable, `2` usage ou élément introuvable
+dans le paquet installé.
 
 ### `eject <élément>`
 
-Copie les sources du composant dans le projet et les inscrit dans `pp-ds.lock.json` pour suivi.
+Copie les sources de l'élément dans le projet : `src/layout/Stack.astro` du paquet devient
+`<out>/layout/Stack.astro`. Les copies sont inscrites dans `pp-ds.lock.json` avec leur empreinte.
+La commande affiche l'import de la copie, relatif à `src/`.
 
-```bash
-npx @paulperigault/create eject <élément>
-```
+Sans `--force`, elle refuse un élément déjà présent dans le verrou ou un fichier cible existant.
 
-Par défaut, copie vers `src/components/pp`.
+Codes : `0` succès, `1` conflit ou verrou illisible, `2` usage, élément introuvable ou paquet
+absent.
 
-Options :
+### `diff <élément>`
 
-- `--out <dossier>` : dossier cible (défaut : `src/components/pp`)
-- `--force` : écrase les copies existantes et l'entrée du verrou
-- `--from <dossier>` : paquet hors `node_modules`
-- `--dry-run` : liste les écritures sans créer les fichiers
+Compare, en lecture seule, la copie éjectée au paquet installé. L'élément doit figurer dans
+`pp-ds.lock.json`. La commande affiche les versions de la copie et du paquet, puis une ligne
+`<statut> <fichier>` par différence. Statuts : `ajouté`, `supprimé`, `modifié`, avec l'origine
+`(local)`, `(paquet)` ou `(local, paquet)` quand l'empreinte du verrou permet de la déterminer.
 
-Crée ou met à jour `pp-ds.lock.json` :
+Codes : `0` identique, `1` différences, `2` usage ou élément non éjecté.
+
+## `pp-ds.lock.json`
+
+Créé à la racine du projet par `eject`, trié par nom, indenté de 2 espaces. `items` est indexé par
+le `name` de l'élément dans le registre, en minuscules. Chaque fichier garde son chemin source
+dans le paquet, son chemin de copie et l'empreinte SHA-256 du contenu copié.
 
 ```json
 {
-  "package": "@paulperigault/astro",
-  "version": "1.2.3",
+  "lockfileVersion": 1,
   "items": {
-    "Stack": {
+    "stack": {
       "package": "@paulperigault/astro",
       "version": "1.2.3",
       "files": [
         {
           "source": "src/layout/Stack.astro",
           "path": "src/components/pp/layout/Stack.astro",
-          "sha256": "abc123…"
+          "sha256": "…"
         }
       ]
     }
@@ -91,62 +115,21 @@ Crée ou met à jour `pp-ds.lock.json` :
 }
 ```
 
-### `diff <élément>`
-
-Compare la copie éjectée au paquet installé et affiche les divergences.
-
-```bash
-npx @paulperigault/create diff <élément>
-```
-
-Options :
-
-- `--from <dossier>` : paquet hors `node_modules`
-
-## Options communes
-
-- `--dry-run` : affiche un plan d'écritures sans modifier le disque
-- `--help` : affiche l'aide complète
-- `--version` : affiche la version
-- `--config <fichier>` : fichier de configuration (usage interne)
+Une `lockfileVersion` autre que `1` est refusée.
 
 ## Exemple
 
-Créer un site minimal :
-
 ```bash
-npm create @paulperigault my-site
-cd my-site
+npm create @paulperigault mon-site
+cd mon-site
+git init
 npm install
 npm run dev
 ```
 
-Ajouter un composant :
+Éjecter puis comparer :
 
 ```bash
-npx @paulperigault/create add Stack
-# Import Stack from '@paulperigault/astro/Stack';
+npx @paulperigault/create eject stack
+npx @paulperigault/create diff stack
 ```
-
-Éjecter et personnaliser :
-
-```bash
-npx @paulperigault/create eject Stack
-# Fichiers copiés vers src/components/pp/layout/Stack.astro
-# pp-ds.lock.json mis à jour
-```
-
-Comparer après modifications :
-
-```bash
-npx @paulperigault/create diff Stack
-# Affiche les changements depuis la version éjectée
-```
-
-## Architecture interne
-
-- `commands/` : handlers pour `create`, `add`, `eject`, `diff`
-- `lib/registry.mjs` : charge les métadonnées du paquet (@paulperigault/astro)
-- `lib/lock.mjs` : gère `pp-ds.lock.json` pour le suivi des fichiers éjectés
-- `lib/plan.mjs` : construit et exécute les plans de fichiers (avec support `--dry-run`)
-- `site/template.mjs` : charge le gabarit minimal pour `create`
