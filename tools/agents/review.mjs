@@ -5,6 +5,7 @@ import { executorEnv } from './lib/env.mjs';
 import { loadTask, parseOptions, realDeps } from './lib/cli.mjs';
 import { buildPrompt } from './lib/prompt.mjs';
 import { kiroArgs, runAgent } from './lib/transports.mjs';
+import { verdictOf } from './lib/verdict.mjs';
 import { runsPath, worktreeOf } from './lib/worktree.mjs';
 
 const options = parseOptions(process.argv.slice(2));
@@ -41,12 +42,17 @@ const run = await runAgent({
 });
 const touched = (await status()) !== before;
 const verdict = run.summary.finalText.trim();
-const approved = !touched && run.code === 0 && /^\**APPROUVÉ/i.test(verdict);
+const outcome = touched ? 'touched' : run.code === 0 ? verdictOf(verdict) : 'unreadable';
+const approved = outcome === 'approved';
+const LABELS = {
+  approved: 'APPROUVÉ',
+  changes: 'CHANGEMENTS REQUIS',
+  unreadable: 'VERDICT ILLISIBLE',
+  touched: 'RELECTEUR A MODIFIÉ UN FICHIER',
+};
 await deps.fs.writeFile(
   file('.md'),
   `# Revue ${task.id} (${model})\n\nCrédits : ${run.summary.credits}\n\n${verdict}\n`,
 );
-console.log(
-  `${task.id} revue ${model} : ${approved ? 'APPROUVÉ' : touched ? 'RELECTEUR A MODIFIÉ UN FICHIER' : 'CHANGEMENTS REQUIS'} · crédits ${run.summary.credits}`,
-);
+console.log(`${task.id} revue ${model} : ${LABELS[outcome]} · crédits ${run.summary.credits}`);
 process.exit(approved ? 0 : 1);

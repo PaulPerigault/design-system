@@ -26,6 +26,10 @@ Sens unique : `tokens ← css ← astro`. Un import qui remonte ce sens est une 
 - Une brique = un test au minimum. Logique pure + dépendances injectées (FS, process, horloge, `fetch`).
 - Tout style passe par les tokens `--pp-*` : aucune couleur, taille, espacement, rayon ou durée brute.
 - Composants : propriétés logiques (`inline`, `block`), cibles ≥ `--pp-target-min`, zéro JS par défaut.
+- **Aucun attribut `style` en ligne** : les sites consommateurs ont une CSP stricte (`style-src` par
+  hashes, sans `unsafe-inline`), qui l'ignore. Variantes par attribut `data-*` ou classe, mappées en CSS.
+- CSS scopé d'Astro : il n'atteint pas les enfants passés par `<slot />`. Les viser avec `:global()`
+  sous la racine du composant (`.pp-stack > :global(* + *)`), et tester le CSS produit.
 
 ## Règle éditoriale
 
