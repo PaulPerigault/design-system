@@ -1,0 +1,87 @@
+---
+import Status from '@paulperigault/astro/Status.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="Status · Design system · Paul Perigault">
+  <h1>Status</h1>
+  <p>
+    Status indique l’état d’un pipeline par un libellé écrit et une icône de forme propre à chaque
+    état. La couleur renforce l’icône ; elle ne porte jamais l’information seule.
+  </p>
+
+  <h2>Les quatre états</h2>
+  <ul role="list">
+    <li>
+      <Status state="passed" label="Réussi" />
+    </li>
+    <li>
+      <Status state="failed" label="Échec" />
+    </li>
+    <li>
+      <Status state="degraded" label="Dégradé" />
+    </li>
+    <li>
+      <Status state="running" label="En cours" />
+    </li>
+  </ul>
+
+  <h2>Identifiant en police mono</h2>
+  <p>
+    <Status state="passed" label="3f9c2ab" mono />
+  </p>
+
+  <h2>Propriétés</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Propriété</th>
+        <th>Valeurs</th>
+        <th>Défaut</th>
+        <th>Rôle</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>state</code>
+        </td>
+        <td>
+          <code>passed | failed | degraded | running</code>
+        </td>
+        <td>
+          <code>running</code>
+        </td>
+        <td>
+          Icône (coche, croix, triangle, cercle) et couleur <code>--pp-color-status-*</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>label</code>
+        </td>
+        <td>texte</td>
+        <td>obligatoire</td>
+        <td>Libellé visible, nom accessible de l’état.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>mono</code>
+        </td>
+        <td>booléen</td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>Police mono, pour une empreinte de commit.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>class</code>
+        </td>
+        <td>texte</td>
+        <td>aucun</td>
+        <td>Placement dans le parent uniquement.</td>
+      </tr>
+    </tbody>
+  </table>
+</DocsLayout>

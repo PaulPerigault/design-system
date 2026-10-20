@@ -1,0 +1,89 @@
+---
+/**
+ * Status : état d'un pipeline en une ligne. Zéro JavaScript, aucun `role` (contenu statique),
+ * variante par `data-state` (CSP stricte : aucun `style`). L'état est écrit en clair (`label`) et
+ * porté par une forme d'icône propre (coche, croix, triangle, cercle) : jamais la couleur seule
+ * (WCAG 2.2, critère 1.4.1). La couleur ne touche que l'icône ; le texte reste en `--pp-color-fg`.
+ */
+interface Props {
+  state?: 'passed' | 'failed' | 'degraded' | 'running';
+  /** Libellé visible de l'état (par exemple « Réussi »). */
+  label: string;
+  /** Police mono, pour un identifiant tel qu'une empreinte de commit. */
+  mono?: boolean;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const ICONS = {
+  passed: 'M4 12.5l5 5l11-11',
+  failed: 'M6 6l12 12M18 6l-12 12',
+  degraded: 'M12 3L22 20H2Z',
+  running: 'M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0',
+} as const;
+
+const { state = 'running', label, mono = false, class: className } = Astro.props;
+---
+
+<span
+  class:list={['pp-status', className]}
+  data-state={state}
+  data-mono={mono ? 'true' : undefined}
+>
+  <svg
+    class="pp-status__icon"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path d={ICONS[state]}></path>
+  </svg>
+  <span class="pp-status__label">{label}</span>
+</span>
+
+<style>
+  .pp-status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--pp-space-2xs);
+    color: var(--pp-color-fg);
+  }
+
+  .pp-status__icon {
+    flex: none;
+    inline-size: var(--pp-size-target-min);
+    block-size: var(--pp-size-target-min);
+    color: var(--status-color);
+  }
+
+  .pp-status[data-mono='true'] .pp-status__label {
+    font-family: var(--pp-font-family-mono);
+  }
+
+  .pp-status[data-state='passed'] {
+    --status-color: var(--pp-color-status-passed);
+  }
+
+  .pp-status[data-state='failed'] {
+    --status-color: var(--pp-color-status-failed);
+  }
+
+  .pp-status[data-state='degraded'] {
+    --status-color: var(--pp-color-status-degraded);
+  }
+
+  .pp-status[data-state='running'] {
+    --status-color: var(--pp-color-status-running);
+  }
+
+  @media (forced-colors: active) {
+    .pp-status__icon {
+      color: CanvasText;
+    }
+  }
+</style>
