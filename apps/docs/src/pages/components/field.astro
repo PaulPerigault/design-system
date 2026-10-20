@@ -1,5 +1,6 @@
 ---
 import Field from '@paulperigault/astro/Field.astro';
+import Input from '@paulperigault/astro/Input.astro';
 import { describedBy } from '@paulperigault/astro/field-ids';
 import DocsLayout from '../../layouts/DocsLayout.astro';
 
@@ -28,31 +29,32 @@ const HEADERS = ['Prop', 'Type', 'Défaut', 'Rôle'];
 
     <h2>Par défaut</h2>
     <Field id="doc-email" label="Courriel" hint={hint} required requiredLabel="obligatoire">
-      <input
-        class="doc-control"
+      <Input
         id="doc-email"
+        name="email"
         type="email"
-        autocomplete="email"
         required
-        aria-describedby={describedBy({ id: 'doc-email', hint })}
+        autocomplete="email"
+        describedBy={describedBy({ id: 'doc-email', hint })}
       />
     </Field>
 
     <h2>Erreur</h2>
     <Field id="doc-email-error" label="Courriel" hint={hint} error={error} errorLabel="Erreur :">
-      <input
-        class="doc-control"
+      <Input
         id="doc-email-error"
+        name="email"
         type="email"
         value="paul"
-        aria-describedby={describedBy({ id: 'doc-email-error', hint, error })}
-        aria-invalid="true"
+        autocomplete="email"
+        invalid={true}
+        describedBy={describedBy({ id: 'doc-email-error', hint, error })}
       />
     </Field>
 
     <h2>Désactivé</h2>
     <Field id="doc-email-disabled" label="Courriel">
-      <input class="doc-control" id="doc-email-disabled" type="email" disabled />
+      <Input id="doc-email-disabled" name="email" type="email" disabled />
     </Field>
 
     <h2>Props</h2>
@@ -82,21 +84,3 @@ const HEADERS = ['Prop', 'Type', 'Défaut', 'Rôle'];
     </div>
   </div>
 </DocsLayout>
-
-<style>
-  /* Contrôle natif de démonstration, en attendant le composant Input. */
-  .doc-control {
-    min-block-size: var(--pp-size-control-height);
-    padding-inline: var(--pp-space-2xs);
-    border: var(--pp-size-rule) solid var(--pp-color-control);
-    border-radius: var(--pp-radius-control);
-    background-color: var(--pp-color-bg);
-    color: var(--pp-color-fg);
-    font: inherit;
-  }
-
-  .doc-control:disabled {
-    border-color: var(--pp-color-line);
-    color: var(--pp-color-muted);
-  }
-</style>
