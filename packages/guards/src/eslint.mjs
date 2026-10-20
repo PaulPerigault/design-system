@@ -2,7 +2,7 @@
  * Limites de conception : petites fonctions, faible complexité, pas de nombres magiques.
  * Exporte les règles ESLint de conception et un générateur de config plate.
  *
- * ⚠️ La règle `@typescript-eslint/no-magic-numbers` suppose que le greffon
+ * La règle `@typescript-eslint/no-magic-numbers` suppose que le greffon
  * `typescript-eslint` est chargé par le consommateur. Ce paquet n'a aucune
  * dépendance d'exécution.
  */
