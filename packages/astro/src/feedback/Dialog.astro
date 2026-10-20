@@ -1,0 +1,120 @@
+---
+/**
+ * Dialog : `<dialog>` natif modal, sans script. Le déclencheur porte `commandfor={id}
+ * command="show-modal"` (Invoker Commands, HTML) ; sans cette API, un behavior livré plus tard
+ * l'ouvrira sur ce même balisage. Fermeture : bouton `closeLabel` (`<form method="dialog">`),
+ * Échap, clic hors boîte (`closedby="any"`, Chrome/Edge 134+, Firefox 141+). Focus : navigateur.
+ * `:modal` remet les marges auto, que Stack ou Cluster annulent sur leurs enfants.
+ */
+interface Props {
+  /** Identifiant du `<dialog>`, visé par `commandfor` sur le déclencheur. */
+  id: string;
+  /** Titre visible, rendu en `<h2>` et nom accessible (`aria-labelledby`). */
+  title: string;
+  /** Libellé visible du bouton de fermeture, fourni par le site (traduit). */
+  closeLabel: string;
+}
+
+const { id, title, closeLabel } = Astro.props;
+const titleId = `${id}-title`;
+const hasActions = Astro.slots.has('actions');
+---
+
+<dialog class="pp-dialog" id={id} aria-labelledby={titleId} closedby="any">
+  <div class="pp-dialog__header">
+    <h2 class="pp-dialog__title" id={titleId}>
+      {title}
+    </h2>
+    <form method="dialog">
+      <button class="pp-dialog__close" type="submit">
+        {closeLabel}
+      </button>
+    </form>
+  </div>
+  <div class="pp-dialog__body">
+    <slot />
+  </div>
+  {hasActions && (
+    <div class="pp-dialog__actions">
+      <slot name="actions" />
+    </div>
+  )}
+</dialog>
+
+<style>
+  .pp-dialog {
+    box-sizing: border-box;
+    inline-size: var(--pp-size-measure);
+    max-inline-size: calc(100% - 2 * var(--pp-space-m));
+    padding-block: var(--pp-space-m);
+    padding-inline: var(--pp-space-m);
+    border: var(--pp-size-rule) solid var(--pp-color-line);
+    border-radius: var(--pp-radius-surface);
+    background-color: var(--pp-color-surface);
+    color: var(--pp-color-fg);
+  }
+
+  .pp-dialog:modal {
+    margin-block: auto;
+    margin-inline: auto;
+  }
+
+  .pp-dialog::backdrop {
+    background-color: color-mix(in oklab, var(--pp-color-fg) 60%, transparent);
+  }
+
+  .pp-dialog__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--pp-space-s);
+  }
+
+  .pp-dialog__title {
+    margin-block: 0;
+    font-size: var(--pp-font-size-2);
+  }
+
+  .pp-dialog__close {
+    min-block-size: max(var(--pp-size-control-height), var(--pp-size-target-min));
+    padding-inline: var(--pp-space-s);
+    border: var(--pp-size-rule) solid var(--pp-color-control);
+    border-radius: var(--pp-radius-control);
+    background-color: transparent;
+    color: var(--pp-color-fg);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .pp-dialog__body {
+    display: grid;
+    gap: var(--pp-space-s);
+    margin-block-start: var(--pp-space-s);
+  }
+
+  .pp-dialog__body > :global(*) {
+    margin-block: 0;
+  }
+
+  .pp-dialog__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--pp-space-s);
+    margin-block-start: var(--pp-space-m);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .pp-dialog[open],
+    .pp-dialog[open]::backdrop {
+      transition: opacity var(--pp-duration-base) var(--pp-easing-standard);
+    }
+
+    @starting-style {
+      .pp-dialog[open],
+      .pp-dialog[open]::backdrop {
+        opacity: 0;
+      }
+    }
+  }
+</style>
