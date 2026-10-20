@@ -1,0 +1,109 @@
+---
+import DocsLayout from '../layouts/DocsLayout.astro';
+import { ROLES, THEMES, loadDirections } from '../lib/directions';
+import type { DirectionReport, Theme } from '../lib/directions';
+
+const ADR_URL =
+  'https://github.com/PaulPerigault/design-system/blob/develop/docs/adr/0002-identite-encre.md';
+const THEME_LABEL: Record<Theme, string> = { light: 'Thème clair', dark: 'Thème sombre' };
+const ROLE_LABEL = { bg: 'fond', fg: 'texte', muted: 'texte secondaire', accent: 'accent' };
+const DECIMALS = 2;
+const SWATCH_SIZE = 48;
+const SWATCH_GAP = 8;
+const SWATCH_STEP = SWATCH_SIZE + SWATCH_GAP;
+const SVG_WIDTH = SWATCH_STEP * ROLES.length - SWATCH_GAP;
+const SVG_HEIGHT = SWATCH_STEP * THEMES.length - SWATCH_GAP;
+
+const directions = loadDirections();
+const format = (value: number | null) => (value === null ? 'hors gamut' : value.toFixed(DECIMALS));
+
+/** Une pastille par rôle et par thème : thème en ligne, rôle en colonne. */
+const swatches = (direction: DirectionReport) =>
+  THEMES.flatMap((theme, row) =>
+    ROLES.flatMap((role, column) => {
+      const fill = direction.themes[theme].hex[role];
+      return fill ? [{ fill, x: column * SWATCH_STEP, y: row * SWATCH_STEP }] : [];
+    }),
+  );
+
+const HEADERS = ['Thème', 'Texte / fond', 'Secondaire / fond', 'Accent / fond', 'Gamut sRGB'];
+
+/** Une ligne par thème : libellé, trois rapports, gamut. */
+const tableRows = (direction: DirectionReport) =>
+  THEMES.map((theme) => {
+    const { ratios, inGamut } = direction.themes[theme];
+    return [
+      THEME_LABEL[theme],
+      format(ratios.fgBg),
+      format(ratios.mutedBg),
+      format(ratios.accentBg),
+      inGamut ? 'dans le gamut' : 'hors gamut',
+    ];
+  });
+
+const altText = (direction: DirectionReport) =>
+  THEMES.map((theme) => {
+    const colors = ROLES.map(
+      (r) => `${ROLE_LABEL[r]} ${direction.themes[theme].hex[r] ?? 'hors gamut'}`,
+    );
+    return `${THEME_LABEL[theme]} : ${colors.join(', ')}`;
+  }).join(' ; ');
+
+const svgProps = (direction: DirectionReport) => ({
+  role: 'img',
+  'aria-label': `${direction.name}. ${altText(direction)}`,
+  width: SVG_WIDTH,
+  height: SVG_HEIGHT,
+  viewBox: `0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`,
+});
+---
+
+<DocsLayout title="Identité : quatre directions comparées · Design system · Paul Perigault">
+  <div class="docs-prose">
+    <h1>Identité : quatre directions comparées</h1>
+    <p>
+      Quatre directions de couleur ont été définies en OKLCH, chacune en thème clair et sombre.
+      Chaque tableau donne les rapports de contraste WCAG 2 calculés à partir des valeurs sources.
+      Le seuil de WCAG 2.2 AA est de 4,5 pour le texte courant.
+    </p>
+  </div>
+  {directions.map((direction) => (
+    <section class="docs-direction" aria-labelledby={`dir-${direction.id}`}>
+      <h2 id={`dir-${direction.id}`}>{direction.name}</h2>
+      <p>{direction.description}</p>
+      {direction.retained && (
+        <p>
+          <span class="docs-badge">Direction retenue</span> Décision consignée dans{' '}
+          <a href={ADR_URL}>l’ADR-0002</a>.
+        </p>
+      )}
+      <svg {...svgProps(direction)}>
+        {swatches(direction).map(({ fill, x, y }) => (
+          <rect x={x} y={y} width={SWATCH_SIZE} height={SWATCH_SIZE} fill={fill} />
+        ))}
+      </svg>
+      <div class="docs-table-wrap">
+        <table class="docs-table">
+          <caption>Contraste et gamut de {direction.name}</caption>
+          <thead>
+            <tr>
+              {HEADERS.map((header) => (
+                <th scope="col">{header}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {tableRows(direction).map(([theme, ...cells]) => (
+              <tr>
+                <th scope="row">{theme}</th>
+                {cells.map((cell) => (
+                  <td>{cell}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  ))}
+</DocsLayout>
