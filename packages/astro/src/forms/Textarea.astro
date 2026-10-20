@@ -1,0 +1,80 @@
+---
+/**
+ * Textarea : `<textarea>` natif, zéro JavaScript. Le nom accessible vient d'un `<label for={id}>`
+ * (voir Field) ; aucun texte n'est écrit ici. L'erreur est exposée par `aria-invalid` et par une
+ * bordure plus épaisse en plus de la couleur (WCAG 1.4.1). Aucun attribut `style` (CSP stricte).
+ */
+interface Props {
+  id: string;
+  name: string;
+  value?: string;
+  required?: boolean;
+  disabled?: boolean;
+  /** Identifiants (séparés par des espaces) de l'aide ou du message d'erreur. */
+  describedBy?: string;
+  invalid?: boolean;
+  rows?: number;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const DEFAULT_ROWS = 4;
+
+const {
+  id,
+  name,
+  value = '',
+  required = false,
+  disabled = false,
+  describedBy,
+  invalid = false,
+  rows = DEFAULT_ROWS,
+  class: className,
+} = Astro.props;
+---
+
+<textarea
+  class:list={['pp-textarea', className]}
+  id={id}
+  name={name}
+  rows={rows}
+  required={required}
+  disabled={disabled}
+  aria-describedby={describedBy}
+  aria-invalid={invalid ? 'true' : undefined}
+>{value}</textarea>
+
+<style>
+  .pp-textarea {
+    box-sizing: border-box;
+    inline-size: 100%;
+    min-block-size: var(--pp-size-target-min);
+    padding-block: var(--pp-space-2xs);
+    padding-inline: var(--pp-space-xs);
+    border: var(--pp-size-rule) solid var(--pp-color-control);
+    border-radius: var(--pp-radius-control);
+    background-color: var(--pp-color-bg);
+    color: var(--pp-color-fg);
+    font: inherit;
+    line-height: var(--pp-font-line-height-body);
+    resize: block;
+  }
+
+  .pp-textarea[aria-invalid='true'] {
+    border-color: var(--pp-color-status-failed);
+    border-inline-start-width: var(--pp-space-3xs);
+  }
+
+  .pp-textarea:disabled {
+    background-color: var(--pp-color-surface);
+    color: var(--pp-color-muted);
+    cursor: not-allowed;
+  }
+
+  @supports (field-sizing: content) {
+    .pp-textarea {
+      field-sizing: content;
+      min-block-size: var(--pp-size-control-height);
+    }
+  }
+</style>
