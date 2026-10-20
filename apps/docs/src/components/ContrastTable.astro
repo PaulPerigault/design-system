@@ -1,0 +1,54 @@
+---
+/**
+ * Tableau des rapports de contraste et du gamut d'une direction d'identité. Le conteneur défile
+ * sur petit écran : c'est une région nommée, atteignable au clavier (axe
+ * `scrollable-region-focusable`, WCAG 2.1.1).
+ */
+import { THEMES } from '../lib/directions';
+import type { DirectionReport, Theme } from '../lib/directions';
+
+interface Props {
+  direction: DirectionReport;
+}
+
+const { direction } = Astro.props;
+const THEME_LABEL: Record<Theme, string> = { light: 'Thème clair', dark: 'Thème sombre' };
+const HEADERS = ['Thème', 'Texte / fond', 'Secondaire / fond', 'Accent / fond', 'Gamut sRGB'];
+const DECIMALS = 2;
+const format = (value: number | null) => (value === null ? 'hors gamut' : value.toFixed(DECIMALS));
+
+const rows = THEMES.map((theme) => {
+  const { ratios, inGamut } = direction.themes[theme];
+  return [
+    THEME_LABEL[theme],
+    format(ratios.fgBg),
+    format(ratios.mutedBg),
+    format(ratios.accentBg),
+    inGamut ? 'dans le gamut' : 'hors gamut',
+  ];
+});
+const caption = `Contraste et gamut de ${direction.name}`;
+---
+
+<div class="docs-table-wrap" tabindex="0" role="region" aria-label={caption}>
+  <table class="docs-table">
+    <caption>{caption}</caption>
+    <thead>
+      <tr>
+        {HEADERS.map((header) => (
+          <th scope="col">{header}</th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map(([theme, ...cells]) => (
+        <tr>
+          <th scope="row">{theme}</th>
+          {cells.map((cell) => (
+            <td>{cell}</td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

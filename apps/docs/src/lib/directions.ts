@@ -13,7 +13,7 @@ export type Role = (typeof ROLES)[number];
 export type Theme = (typeof THEMES)[number];
 
 interface RawColor {
-  $value: { components: [number, number, number] };
+  $value: { components: number[] };
 }
 type RawTheme = Record<Role, RawColor>;
 interface RawDirection extends Record<Theme, RawTheme> {
@@ -46,7 +46,7 @@ const SOURCES: { id: string; name: string; raw: RawDirection }[] = [
 const RETAINED_ID = 'encre';
 
 const toOklch = ({ $value }: RawColor): Oklch => {
-  const [l, c, h] = $value.components;
+  const [l = 0, c = 0, h = 0] = $value.components;
   return { l, c, h };
 };
 

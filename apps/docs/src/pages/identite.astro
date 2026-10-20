@@ -1,4 +1,5 @@
 ---
+import ContrastTable from '../components/ContrastTable.astro';
 import DocsLayout from '../layouts/DocsLayout.astro';
 import { ROLES, THEMES, loadDirections } from '../lib/directions';
 import type { DirectionReport, Theme } from '../lib/directions';
@@ -7,7 +8,6 @@ const ADR_URL =
   'https://github.com/PaulPerigault/design-system/blob/develop/docs/adr/0002-identite-encre.md';
 const THEME_LABEL: Record<Theme, string> = { light: 'Thème clair', dark: 'Thème sombre' };
 const ROLE_LABEL = { bg: 'fond', fg: 'texte', muted: 'texte secondaire', accent: 'accent' };
-const DECIMALS = 2;
 const SWATCH_SIZE = 48;
 const SWATCH_GAP = 8;
 const SWATCH_STEP = SWATCH_SIZE + SWATCH_GAP;
@@ -15,7 +15,6 @@ const SVG_WIDTH = SWATCH_STEP * ROLES.length - SWATCH_GAP;
 const SVG_HEIGHT = SWATCH_STEP * THEMES.length - SWATCH_GAP;
 
 const directions = loadDirections();
-const format = (value: number | null) => (value === null ? 'hors gamut' : value.toFixed(DECIMALS));
 
 /** Une pastille par rôle et par thème : thème en ligne, rôle en colonne. */
 const swatches = (direction: DirectionReport) =>
@@ -26,21 +25,6 @@ const swatches = (direction: DirectionReport) =>
     }),
   );
 
-const HEADERS = ['Thème', 'Texte / fond', 'Secondaire / fond', 'Accent / fond', 'Gamut sRGB'];
-
-/** Une ligne par thème : libellé, trois rapports, gamut. */
-const tableRows = (direction: DirectionReport) =>
-  THEMES.map((theme) => {
-    const { ratios, inGamut } = direction.themes[theme];
-    return [
-      THEME_LABEL[theme],
-      format(ratios.fgBg),
-      format(ratios.mutedBg),
-      format(ratios.accentBg),
-      inGamut ? 'dans le gamut' : 'hors gamut',
-    ];
-  });
-
 const altText = (direction: DirectionReport) =>
   THEMES.map((theme) => {
     const colors = ROLES.map(
@@ -50,7 +34,7 @@ const altText = (direction: DirectionReport) =>
   }).join(' ; ');
 
 const svgProps = (direction: DirectionReport) => ({
-  role: 'img',
+  role: 'img' as const,
   'aria-label': `${direction.name}. ${altText(direction)}`,
   width: SVG_WIDTH,
   height: SVG_HEIGHT,
@@ -82,28 +66,7 @@ const svgProps = (direction: DirectionReport) => ({
           <rect x={x} y={y} width={SWATCH_SIZE} height={SWATCH_SIZE} fill={fill} />
         ))}
       </svg>
-      <div class="docs-table-wrap">
-        <table class="docs-table">
-          <caption>Contraste et gamut de {direction.name}</caption>
-          <thead>
-            <tr>
-              {HEADERS.map((header) => (
-                <th scope="col">{header}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {tableRows(direction).map(([theme, ...cells]) => (
-              <tr>
-                <th scope="row">{theme}</th>
-                {cells.map((cell) => (
-                  <td>{cell}</td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <ContrastTable direction={direction} />
     </section>
   ))}
 </DocsLayout>
