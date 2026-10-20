@@ -1,0 +1,93 @@
+---
+import Diff from '@paulperigault/astro/Diff.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+
+interface Line {
+  kind: 'add' | 'del' | 'ctx';
+  text: string;
+}
+
+const lines: Line[] = [
+  { kind: 'ctx', text: 'function total(items) {' },
+  { kind: 'del', text: '  return items.length;' },
+  { kind: 'add', text: '  return items.reduce((sum, item) => sum + item.price, 0);' },
+  { kind: 'ctx', text: '}' },
+];
+---
+
+<DocsLayout title="Diff · Design system · Paul Perigault">
+  <h1>Diff</h1>
+  <p>
+    Diff affiche une différence de texte ligne à ligne, en chasse fixe. Chaque ligne commence par un
+    signe visible (<code>+</code>, <code>-</code> ou espace) : la couleur du bord ne porte jamais
+    l’information seule. Les lecteurs d’écran entendent le libellé fourni avant chaque ligne ajoutée
+    ou supprimée.
+  </p>
+
+  <h2>Exemple</h2>
+  <Diff
+    caption="Calcul du total d’un panier"
+    lines={lines}
+    addedLabel="Ligne ajoutée"
+    removedLabel="Ligne supprimée"
+  />
+
+  <h2>Propriétés</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Propriété</th>
+        <th>Valeurs</th>
+        <th>Défaut</th>
+        <th>Rôle</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>lines</code>
+        </td>
+        <td>
+          <code>{'{ kind: add | del | ctx; text }[]'}</code>
+        </td>
+        <td>requis</td>
+        <td>
+          Lignes dans l’ordre. <code>add</code> donne un <code>ins</code>, <code>del</code> un{' '}
+          <code>del</code>, <code>ctx</code> une ligne neutre.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>caption</code>
+        </td>
+        <td>texte</td>
+        <td>requis</td>
+        <td>Légende visible et nom accessible de la région défilante.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>addedLabel</code>
+        </td>
+        <td>texte</td>
+        <td>requis</td>
+        <td>Libellé masqué visuellement, lu avant chaque ligne ajoutée.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>removedLabel</code>
+        </td>
+        <td>texte</td>
+        <td>requis</td>
+        <td>Libellé masqué visuellement, lu avant chaque ligne supprimée.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>class</code>
+        </td>
+        <td>texte</td>
+        <td>aucun</td>
+        <td>Placement dans le parent uniquement.</td>
+      </tr>
+    </tbody>
+  </table>
+</DocsLayout>
