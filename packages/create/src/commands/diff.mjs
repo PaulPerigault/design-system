@@ -3,6 +3,7 @@ import { sha256 } from '../lib/hash.mjs';
 import { resolveIn } from '../lib/io.mjs';
 import { readLock } from '../lib/lock.mjs';
 import {
+  findItem,
   itemFiles,
   loadItems,
   packageRoot,
@@ -73,6 +74,15 @@ function differences(sides) {
     .map(([label, key]) => `${label} ${key}`);
 }
 
+/** @returns {object | undefined} élément du registre (nom ou titre), undefined s'il a disparu */
+function findOptional(items, query) {
+  try {
+    return findItem(items, query);
+  } catch {
+    return undefined;
+  }
+}
+
 /**
  * Compare la copie éjectée d'un élément au paquet installé (lecture seule).
  * @param {{ positionals: string[], from?: string }} args
@@ -86,17 +96,18 @@ export function run({ positionals, from }, { io }) {
   }
   const [name] = positionals;
   const { items: locked } = readLock(io);
-  const entry = locked[name];
-  if (!entry) {
+  const key = Object.keys(locked).find((lockKey) => lockKey.toLowerCase() === name.toLowerCase());
+  if (key === undefined) {
     io.err(`élément non éjecté : eject ${name} d'abord`);
     return CODE_USAGE;
   }
+  const entry = locked[key];
   const root = packageRoot(io, from);
-  const item = loadItems(io, root).find((candidate) => candidate.name === name);
+  const item = findOptional(loadItems(io, root), key);
   const lines = differences(collect(io, entry, root, item));
-  io.out(`${name} : copie ${entry.version}, paquet ${packageVersion(io, root)}`);
+  io.out(`${key} : copie ${entry.version}, paquet ${packageVersion(io, root)}`);
   if (lines.length === 0) {
-    io.out(`${name} : identique au paquet`);
+    io.out(`${key} : identique au paquet`);
     return CODE_SAME;
   }
   lines.forEach((line) => io.out(line));

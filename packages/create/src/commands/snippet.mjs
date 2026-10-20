@@ -1,5 +1,12 @@
 import { posix } from 'node:path';
-import { findItem, itemFiles, loadItems, packageRoot, packageVersion } from '../lib/registry.mjs';
+import {
+  findItem,
+  itemFiles,
+  loadItems,
+  PACKAGE_NAME,
+  packageRoot,
+  packageVersion,
+} from '../lib/registry.mjs';
 
 /**
  * Ce que partagent `add` et `eject` : contrôle du positionnel, localisation de l'élément dans le
@@ -39,7 +46,10 @@ export function locate(io, { command, positionals = [], from }) {
   try {
     const root = packageRoot(io, from);
     const item = findItem(loadItems(io, root), positionals[0]);
-    return { root, item, version: packageVersion(io, root), files: itemFiles(item) };
+    const version = packageVersion(io, root);
+    if (version.trim() === '')
+      throw new Error(`${PACKAGE_NAME} installé sans version dans ${root}`);
+    return { root, item, version, files: itemFiles(item) };
   } catch (error) {
     io.err(messageOf(error));
     return null;
