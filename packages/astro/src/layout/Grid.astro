@@ -1,0 +1,66 @@
+---
+/**
+ * Grid : grille intrinsèque sans media query ; le nombre de colonnes suit la largeur disponible
+ * (modèle « Every Layout », Pickering et Bell). Zéro JavaScript ; l'espacement et la largeur
+ * minimale passent par `data-space` et `data-min` (CSP stricte : aucun `style` en ligne).
+ */
+interface Props {
+  space?: 'xs' | 's' | 'm' | 'l' | 'xl';
+  min?: 'narrow' | 'medium' | 'wide';
+  as?: 'div' | 'ul' | 'ol' | 'section';
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { space = 'm', min = 'medium', as: Tag = 'div', class: className } = Astro.props;
+---
+
+<Tag class:list={['pp-grid', className]} data-space={space} data-min={min}>
+  <slot />
+</Tag>
+
+<style>
+  .pp-grid {
+    display: grid;
+    gap: var(--grid-space);
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--grid-min), 100%), 1fr));
+  }
+
+  .pp-grid[data-space='xs'] {
+    --grid-space: var(--pp-space-xs);
+  }
+
+  .pp-grid[data-space='s'] {
+    --grid-space: var(--pp-space-s);
+  }
+
+  .pp-grid[data-space='m'] {
+    --grid-space: var(--pp-space-m);
+  }
+
+  .pp-grid[data-space='l'] {
+    --grid-space: var(--pp-space-l);
+  }
+
+  .pp-grid[data-space='xl'] {
+    --grid-space: var(--pp-space-xl);
+  }
+
+  /* Seules opérations permises sur la mesure : diviser par 3, diviser par 2, multiplier par 0.75. */
+  .pp-grid[data-min='narrow'] {
+    --grid-min: calc(var(--pp-size-measure) / 3);
+  }
+
+  .pp-grid[data-min='medium'] {
+    --grid-min: calc(var(--pp-size-measure) / 2);
+  }
+
+  .pp-grid[data-min='wide'] {
+    --grid-min: calc(var(--pp-size-measure) * 0.75);
+  }
+
+  .pp-grid > :global(*) {
+    margin-block: 0;
+    min-inline-size: 0;
+  }
+</style>
