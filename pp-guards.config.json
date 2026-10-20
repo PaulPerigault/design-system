@@ -1,0 +1,44 @@
+{
+  "tokens": {
+    "tokens": "packages/tokens/generated/tokens.json",
+    "roots": ["packages/css/src", "packages/astro/src", "apps/docs/src"]
+  },
+  "design": {
+    "roots": ["packages", "apps"],
+    "allow": [
+      {
+        "path": "packages/tokens/generated",
+        "rules": ["color-literal"],
+        "reason": "tokens.css est généré depuis la source DTCG : c'est là que les valeurs OKLCH sont définies (les tokens eux-mêmes)"
+      }
+    ]
+  },
+  "size": {
+    "roots": ["packages", "apps", "tools"],
+    "max": 120,
+    "extensions": [".ts", ".astro", ".css", ".mjs"]
+  },
+  "layers": {
+    "layers": [
+      {
+        "name": "tokens",
+        "paths": ["packages/tokens/src", "packages/tokens/scripts"],
+        "packages": ["@paulperigault/tokens"]
+      },
+      {
+        "name": "css",
+        "paths": ["packages/css/src", "packages/css/scripts"],
+        "packages": ["@paulperigault/css"]
+      },
+      {
+        "name": "astro",
+        "paths": ["packages/astro/src"],
+        "packages": ["@paulperigault/astro"]
+      }
+    ]
+  },
+  "images": {
+    "roots": ["packages", "apps"],
+    "allow": ["src/media"]
+  }
+}
