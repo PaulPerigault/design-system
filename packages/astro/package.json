@@ -48,6 +48,21 @@
   },
   "exports": {
     "./Stack.astro": "./src/layout/Stack.astro",
+    "./Cluster.astro": "./src/layout/Cluster.astro",
+    "./Grid.astro": "./src/layout/Grid.astro",
+    "./Container.astro": "./src/layout/Container.astro",
+    "./Sidebar.astro": "./src/layout/Sidebar.astro",
+    "./Switcher.astro": "./src/layout/Switcher.astro",
+    "./Center.astro": "./src/layout/Center.astro",
+    "./Button.astro": "./src/forms/Button.astro",
+    "./Field.astro": "./src/forms/Field.astro",
+    "./Input.astro": "./src/forms/Input.astro",
+    "./Textarea.astro": "./src/forms/Textarea.astro",
+    "./Select.astro": "./src/forms/Select.astro",
+    "./Choice.astro": "./src/forms/Choice.astro",
+    "./Switch.astro": "./src/forms/Switch.astro",
+    "./field-ids": "./src/forms/field-ids.ts",
+    "./variants": "./src/lib/variants.ts",
     "./package.json": "./package.json"
   }
 }
