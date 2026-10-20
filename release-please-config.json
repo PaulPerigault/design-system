@@ -1,0 +1,54 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "release-type": "node",
+  "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": false,
+  "include-component-in-tag": true,
+  "separate-pull-requests": false,
+  "pull-request-title-pattern": "chore: release ${branch}",
+  "plugins": [
+    {
+      "type": "node-workspace"
+    }
+  ],
+  "changelog-sections": [
+    {
+      "type": "feat",
+      "section": "Features"
+    },
+    {
+      "type": "fix",
+      "section": "Bug Fixes"
+    },
+    {
+      "type": "perf",
+      "section": "Performance"
+    },
+    {
+      "type": "refactor",
+      "section": "Refactoring"
+    }
+  ],
+  "packages": {
+    "packages/tokens": {
+      "component": "tokens",
+      "package-name": "@paulperigault/tokens"
+    },
+    "packages/css": {
+      "component": "css",
+      "package-name": "@paulperigault/css"
+    },
+    "packages/astro": {
+      "component": "astro",
+      "package-name": "@paulperigault/astro"
+    },
+    "packages/guards": {
+      "component": "guards",
+      "package-name": "@paulperigault/guards"
+    },
+    "packages/create": {
+      "component": "create",
+      "package-name": "@paulperigault/create"
+    }
+  }
+}

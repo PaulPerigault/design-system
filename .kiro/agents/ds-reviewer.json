@@ -1,0 +1,122 @@
+{
+  "name": "ds-reviewer",
+  "description": "Relecteur en lecture seule : exécute les tests, rend APPROUVÉ ou CHANGEMENTS REQUIS avec fichier:ligne.",
+  "prompt": "file://../../prompts/reviewer.md",
+  "model": "claude-opus-5.5",
+  "tools": ["read", "shell"],
+  "resources": ["file://AGENTS.md"],
+  "permissions": {
+    "rules": [
+      {
+        "capability": "fs_read",
+        "match": ["**"],
+        "effect": "allow",
+        "exclude": ["**/.env*", "**/*.env", "**/.npmrc", "**/.secrets*"]
+      },
+      {
+        "capability": "fs_read",
+        "match": ["**/.env*", "**/*.env", "**/.npmrc", "**/.secrets*"],
+        "effect": "deny"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "git commit*",
+          "git push*",
+          "git merge*",
+          "git rebase*",
+          "git reset*",
+          "git checkout*",
+          "git switch*",
+          "git branch*",
+          "git stash*",
+          "git worktree*",
+          "git tag*",
+          "git remote*",
+          "git config*",
+          "npm publish*",
+          "npm * publish*",
+          "pnpm *",
+          "yarn *",
+          "bun *",
+          "npm install*",
+          "npm i *",
+          "npm uninstall*",
+          "npm update*",
+          "npx npm *",
+          "curl *",
+          "wget *",
+          "ssh *",
+          "scp *",
+          "gh *",
+          "kiro-cli *",
+          "claude *",
+          "tofu *",
+          "terraform *",
+          "wrangler *",
+          "sudo *"
+        ],
+        "effect": "deny"
+      },
+      {
+        "capability": "web_fetch",
+        "match": ["*"],
+        "effect": "deny"
+      },
+      {
+        "capability": "web_search",
+        "match": ["*"],
+        "effect": "deny"
+      },
+      {
+        "capability": "subagent",
+        "match": ["*"],
+        "effect": "deny"
+      },
+      {
+        "capability": "fs_write",
+        "match": ["**"],
+        "effect": "deny"
+      },
+      {
+        "capability": "shell",
+        "match": [
+          "npm test*",
+          "npm run *",
+          "npm -w *",
+          "npx vitest*",
+          "npx eslint*",
+          "npx playwright*",
+          "npx astro*",
+          "npx tsc*",
+          "git status*",
+          "git diff*",
+          "git log*",
+          "git show*",
+          "ls*",
+          "cat *",
+          "head *",
+          "tail *",
+          "grep *",
+          "rg *",
+          "find *",
+          "wc *",
+          "node tools/checks/*"
+        ],
+        "effect": "allow"
+      }
+    ]
+  },
+  "hooks": [
+    {
+      "name": "ds-deny",
+      "trigger": "PreToolUse",
+      "matcher": "shell",
+      "action": {
+        "type": "command",
+        "command": "node tools/agents/kiro-hook.mjs"
+      },
+      "timeout": 10
+    }
+  ]
+}

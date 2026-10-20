@@ -1,0 +1,54 @@
+name: Release
+
+# Inerte tant que `main` n'existe pas (créée par l'apply OpenTofu du propriétaire, avec ses
+# rulesets). Seul ce workflow publie : trusted publishing OIDC + provenance, aucun NPM_TOKEN.
+on:
+  push:
+    branches: [main]
+
+permissions: {}
+
+# Jamais annulé en cours : release-please pourrait laisser un tag sans release.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created }}
+    steps:
+      - id: release
+        uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+          target-branch: main
+
+  publish:
+    needs: release-please
+    if: needs.release-please.outputs.releases_created == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # Environnement protégé (IaC, infra/github du portfolio) : déploiement depuis main seulement.
+    environment: npm-publish
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .nvmrc
+          registry-url: https://registry.npmjs.org
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      # Publie chaque paquet dont la version n'existe pas encore sur npmjs ; préversion → tag next.
+      - run: node tools/release/publish-new.mjs

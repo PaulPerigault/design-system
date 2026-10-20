@@ -1,0 +1,62 @@
+{
+  "name": "paulperigault-design-system",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Monorepo du design system de paulperigault.fr",
+  "license": "MIT",
+  "packageManager": "npm@11.19.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "check:size": "node tools/checks/check-size.mjs",
+    "check:lockfile": "node tools/checks/check-lockfile.mjs",
+    "check:secrets": "secretlint \"**/*\"",
+    "check:pack": "npm pack --dry-run --workspaces --json > /dev/null",
+    "guard": "npm run check:secrets && npm run check:size && npm run check:lockfile",
+    "build": "npm run build --workspaces --if-present",
+    "verify": "npm run guard && npm run lint && npm run format:check && npm test && npm run build && npm run check:pack",
+    "agents:run": "node tools/agents/run.mjs",
+    "agents:batch": "node tools/agents/batch.mjs",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.5.0",
+    "@commitlint/config-conventional": "^20.5.0",
+    "@eslint/js": "^10.0.0",
+    "@secretlint/secretlint-rule-preset-recommend": "^13.0.7",
+    "@types/node": "^24.19.2",
+    "eslint": "^10.12.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-astro": "^3.2.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.1",
+    "secretlint": "^13.0.7",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.71.2",
+    "vitest": "^4.1.12"
+  },
+  "lint-staged": {
+    "*": [
+      "secretlint"
+    ],
+    "*.{ts,mjs,astro}": [
+      "eslint --fix --no-warn-ignored",
+      "prettier --write"
+    ],
+    "*.{css,json,md}": [
+      "prettier --write"
+    ]
+  }
+}
