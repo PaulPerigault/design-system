@@ -1,15 +1,18 @@
 # Rapport d'exécution
 
-Mis à jour à chaque fin de lot. Dernière mise à jour : 2026-10-20, fin de L2.
+Mis à jour à chaque fin de lot. Dernière mise à jour : 2026-10-20, fin de L3.
 
 ## Lots
 
-| Lot | Statut   | Bilan                                       |
-| --- | -------- | ------------------------------------------- |
-| L0  | terminé  | [docs/lots/L0.md](lots/L0.md)               |
-| L1  | terminé  | [docs/lots/L1.md](lots/L1.md)               |
-| L2  | terminé  | [docs/lots/L2.md](lots/L2.md)               |
-| L3  | en cours | primitives de layout (variants livré en L2) |
+| Lot | Statut   | Bilan                         |
+| --- | -------- | ----------------------------- |
+| L0  | terminé  | [docs/lots/L0.md](lots/L0.md) |
+| L1  | terminé  | [docs/lots/L1.md](lots/L1.md) |
+| L2  | terminé  | [docs/lots/L2.md](lots/L2.md) |
+| L3  | terminé  | [docs/lots/L3.md](lots/L3.md) |
+| L4  | en cours | formulaires (orchestrateur)   |
+| L8  | en cours | garde-fous et CLI (ds-lead)   |
+| L6  | file     | images et photos (ds-lead)    |
 
 ## Proportion Kiro / Claude
 
