@@ -1,0 +1,15 @@
+{
+  "tokens": {
+    "tokens": "node_modules/@paulperigault/tokens/generated/tokens.json",
+    "roots": ["src"]
+  },
+  "design": {
+    "roots": ["src"]
+  },
+  "size": {
+    "roots": ["src"]
+  },
+  "images": {
+    "roots": ["src", "public"]
+  }
+}

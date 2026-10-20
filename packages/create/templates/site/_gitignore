@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+
+# Fichiers de secrets locaux : jamais versionnés.
+.env
+.env.*
+*.env
