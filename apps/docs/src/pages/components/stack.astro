@@ -1,0 +1,25 @@
+---
+import Stack from '@paulperigault/astro/Stack.astro';
+---
+
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stack · Design system · Paul Perigault</title>
+  </head>
+  <body>
+    <main>
+      <h1>Stack</h1>
+      <p>
+        Stack empile ses enfants dans l’axe de bloc et place l’espacement choisi entre eux, jamais
+        avant le premier ni après le dernier.
+      </p>
+      <Stack space="l" as="section">
+        <p>Premier paragraphe.</p>
+        <p>Deuxième paragraphe.</p>
+        <p>Troisième paragraphe.</p>
+      </Stack>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "stack",
+  "type": "registry:ui",
+  "title": "Stack",
+  "description": "Empile ses enfants verticalement avec un espacement régulier, sans marge en bordure, sans JavaScript.",
+  "files": [
+    {
+      "path": "packages/astro/src/layout/Stack.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": ["--pp-space-xs", "--pp-space-s", "--pp-space-m", "--pp-space-l", "--pp-space-xl"],
+    "version": "0.0.0"
+  }
+}
