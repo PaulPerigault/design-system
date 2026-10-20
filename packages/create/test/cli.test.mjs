@@ -67,7 +67,7 @@ describe('cli : dispatch', () => {
 
   it('ne charge le gabarit que pour create', () => {
     const { cli } = setup({ templatesRoot: '/absent' });
-    expect([cli('add', 'stack', '--dry-run'), cli('eject', 'stack', '--dry-run')]).toEqual([0, 0]);
+    expect(['add', 'eject', 'diff'].map((name) => cli(name, 'stack'))).toEqual([0, 0, 0]);
     expect(() => cli('create', 'mon-site')).toThrow('ENOENT');
   });
 });
@@ -96,10 +96,10 @@ describe('cli : aide et version', () => {
 
 describe('cli : erreurs d’usage (code 2, usage sur la sortie d’erreur, rien d’écrit)', () => {
   it.each([
-    ['option inconnue', ['add', 'stack', '--bogus'], "Unknown option '--bogus'"],
-    ['option courte inconnue', ['-x'], "Unknown option '-x'"],
-    ['valeur manquante', ['eject', 'stack', '--out'], "'--out <value>' argument missing"],
-    ['valeur à un booléen', ['add', 'stack', '--dry-run=oui'], 'does not take an argument'],
+    ['option inconnue', ['add', 'stack', '--bogus'], 'option inconnue : --bogus'],
+    ['option courte inconnue', ['-x'], 'option inconnue : -x'],
+    ['valeur manquante', ['eject', 'stack', '--out'], 'valeur manquante pour --out'],
+    ['valeur à un booléen', ['add', 'stack', '--dry-run=oui'], '--dry-run ne prend pas de valeur'],
     ['commande manquante', [], 'commande manquante'],
     ['commande inconnue', ['publier', 'stack'], 'commande inconnue : publier'],
     ['argument manquant', ['eject'], 'eject : argument <élément> manquant'],

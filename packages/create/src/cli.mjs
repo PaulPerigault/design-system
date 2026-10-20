@@ -1,9 +1,9 @@
 import { parseArgs } from 'node:util';
+import { parseErrorMessage, runCommand } from './cli-errors.mjs';
 import * as add from './commands/add.mjs';
 import * as create from './commands/create.mjs';
 import * as diff from './commands/diff.mjs';
 import * as eject from './commands/eject.mjs';
-import { messageOf } from './commands/snippet.mjs';
 import { loadTemplate } from './site/template.mjs';
 
 const CODE_OK = 0;
@@ -90,7 +90,7 @@ export function main(argv, { io, templatesRoot, version }) {
   try {
     parsed = parseArgs({ args: argv, options: OPTIONS, strict: true, allowPositionals: true });
   } catch (error) {
-    return usageError(io, messageOf(error));
+    return usageError(io, parseErrorMessage(error));
   }
   const { values, positionals } = parsed;
   if (values.help || values.version) {
@@ -105,7 +105,7 @@ export function main(argv, { io, templatesRoot, version }) {
 }
 
 /**
- * Lance la commande ; seul `create` charge le gabarit.
+ * Lance la commande ; seul `create` charge le gabarit. Une erreur levée par la commande vaut 2.
  * @param {{ name: string, rest: string[] }} command
  * @param {Record<string, string | boolean | undefined>} values
  * @param {{ io: import('./lib/io.mjs').CreateIo, templatesRoot: string }} ctx
@@ -115,5 +115,5 @@ function dispatch({ name, rest }, values, { io, templatesRoot }) {
   const template = name === 'create' ? loadTemplate(io, templatesRoot) : undefined;
   const { force, from, out } = values;
   const options = { positionals: rest, dryRun: values['dry-run'] === true, force, from, out };
-  return COMMANDS[name].run(options, { io, template });
+  return runCommand(io, () => COMMANDS[name].run(options, { io, template }));
 }
