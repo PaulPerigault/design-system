@@ -1,0 +1,53 @@
+---
+/**
+ * Container : boîte centrée dans l'axe d'inline, à largeur maximale, avec une gouttière latérale
+ * (modèle « Every Layout », Pickering et Bell). Zéro JavaScript ; les variantes passent par
+ * `data-width` et `data-gutter` (CSP stricte : aucun `style` en ligne).
+ */
+interface Props {
+  width?: 'page' | 'measure';
+  gutter?: 's' | 'm' | 'l';
+  as?: 'div' | 'section' | 'main' | 'header' | 'footer' | 'article';
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { width = 'page', gutter = 's', as: Tag = 'div', class: className } = Astro.props;
+---
+
+<Tag class:list={['pp-container', className]} data-width={width} data-gutter={gutter}>
+  <slot />
+</Tag>
+
+<style>
+  .pp-container {
+    box-sizing: content-box;
+    margin-inline: auto;
+    max-inline-size: var(--container-width);
+    padding-inline: var(--container-gutter);
+  }
+
+  .pp-container[data-width='page'] {
+    --container-width: var(--pp-size-page);
+  }
+
+  .pp-container[data-width='measure'] {
+    --container-width: var(--pp-size-measure);
+  }
+
+  .pp-container[data-gutter='s'] {
+    --container-gutter: var(--pp-space-s);
+  }
+
+  .pp-container[data-gutter='m'] {
+    --container-gutter: var(--pp-space-m);
+  }
+
+  .pp-container[data-gutter='l'] {
+    --container-gutter: var(--pp-space-l);
+  }
+
+  .pp-container > :global(*) {
+    max-inline-size: 100%;
+  }
+</style>

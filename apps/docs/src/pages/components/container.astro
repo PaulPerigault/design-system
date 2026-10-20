@@ -1,0 +1,86 @@
+---
+import Container from '@paulperigault/astro/Container.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="Container · Design system · Paul Perigault">
+  <h1>Container</h1>
+  <p>
+    Container centre son contenu dans l’axe d’inline, limite sa largeur à la largeur de page ou à la
+    mesure de lecture, et réserve une gouttière de chaque côté.
+  </p>
+
+  <h2>Largeur de page</h2>
+  <Container as="section" width="page" gutter="m">
+    <p>Contenu à la largeur de page, gouttière moyenne.</p>
+  </Container>
+
+  <h2>Mesure de lecture</h2>
+  <Container as="article" width="measure" gutter="l">
+    <p>Contenu limité à la mesure de lecture, gouttière large.</p>
+  </Container>
+
+  <h2>Propriétés</h2>
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Propriété</th>
+        <th scope="col">Valeurs</th>
+        <th scope="col">Défaut</th>
+        <th scope="col">Effet</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">
+          <code>width</code>
+        </th>
+        <td>
+          <code>page</code>, <code>measure</code>
+        </td>
+        <td>
+          <code>page</code>
+        </td>
+        <td>
+          Largeur maximale : <code>--pp-size-page</code> ou <code>--pp-size-measure</code>.
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">
+          <code>gutter</code>
+        </th>
+        <td>
+          <code>s</code>, <code>m</code>, <code>l</code>
+        </td>
+        <td>
+          <code>s</code>
+        </td>
+        <td>
+          Marge intérieure latérale : <code>--pp-space-s</code>, <code>--pp-space-m</code>,
+          <code>--pp-space-l</code>.
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">
+          <code>as</code>
+        </th>
+        <td>
+          <code>div</code>, <code>section</code>, <code>main</code>, <code>header</code>,
+          <code>footer</code>, <code>article</code>
+        </td>
+        <td>
+          <code>div</code>
+        </td>
+        <td>Élément HTML rendu.</td>
+      </tr>
+      <tr>
+        <th scope="row">
+          <code>class</code>
+        </th>
+        <td>chaîne</td>
+        <td>aucun</td>
+        <td>Placement dans le parent uniquement.</td>
+      </tr>
+    </tbody>
+  </table>
+</DocsLayout>
