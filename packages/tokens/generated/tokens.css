@@ -1,0 +1,77 @@
+/* Fichier généré par scripts/build.mjs depuis src/tokens/ : ne pas éditer. */
+
+:root {
+  color-scheme: light dark;
+
+  --pp-color-accent: light-dark(oklch(47% 0.19 270.7), oklch(78% 0.1 270.7));
+  --pp-color-bg: light-dark(oklch(98.5% 0.004 270.7), oklch(20.1% 0.0124 270.7));
+  --pp-color-control: light-dark(oklch(60% 0.02 270.7), oklch(60% 0.02 270.7));
+  --pp-color-fg: light-dark(oklch(21.5% 0.016 270.7), oklch(94.5% 0.008 270.7));
+  --pp-color-focus: light-dark(oklch(47% 0.19 270.7), oklch(78% 0.1 270.7));
+  --pp-color-line: light-dark(oklch(88.5% 0.01 270.7), oklch(34% 0.016 270.7));
+  --pp-color-muted: light-dark(oklch(43% 0.022 270.7), oklch(79% 0.018 270.7));
+  --pp-color-on-accent: light-dark(oklch(99.5% 0.002 270.7), oklch(20.1% 0.0124 270.7));
+  --pp-color-status-degraded: light-dark(oklch(50% 0.1 70), oklch(82% 0.11 75));
+  --pp-color-status-failed: light-dark(oklch(50% 0.17 25), oklch(76% 0.13 25));
+  --pp-color-status-passed: light-dark(oklch(47% 0.105 155), oklch(80% 0.13 155));
+  --pp-color-status-running: light-dark(oklch(47% 0.19 270.7), oklch(78% 0.1 270.7));
+  --pp-color-surface: light-dark(oklch(95.8% 0.007 270.7), oklch(25% 0.014 270.7));
+  --pp-duration-base: 160ms;
+  --pp-duration-fast: 100ms;
+  --pp-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --pp-font-family-mono:
+    'Atkinson Hyperlegible Mono Variable', 'Atkinson Mono Fallback', ui-monospace, monospace;
+  --pp-font-family-sans:
+    'Atkinson Hyperlegible Next Variable', 'Atkinson Next Fallback', system-ui, sans-serif;
+  --pp-font-line-height-body: 1.55;
+  --pp-font-line-height-heading: 1.15;
+  --pp-font-size--1: 0.9rem;
+  --pp-font-size-0: 1.125rem;
+  --pp-font-size-1: 1.406rem;
+  --pp-font-size-2: 1.758rem;
+  --pp-font-size-3: 2.197rem;
+  --pp-font-size-4: 2.747rem;
+  --pp-font-weight-bold: 700;
+  --pp-font-weight-medium: 500;
+  --pp-font-weight-regular: 400;
+  --pp-font-weight-semibold: 600;
+  --pp-radius-control: 0.25rem;
+  --pp-radius-surface: 0.5rem;
+  --pp-ratio-landscape: 1.5;
+  --pp-ratio-portrait: 0.8;
+  --pp-ratio-square: 1;
+  --pp-ratio-wide: 1.7778;
+  --pp-size-control-height: 2.75rem;
+  --pp-size-focus-offset: 2px;
+  --pp-size-focus-width: 2px;
+  --pp-size-measure: 38rem;
+  --pp-size-page: 72rem;
+  --pp-size-rule: 1px;
+  --pp-size-target-min: 1.5rem;
+  --pp-space-2xl: 4rem;
+  --pp-space-2xs: 0.5rem;
+  --pp-space-3xl: 6rem;
+  --pp-space-3xs: 0.25rem;
+  --pp-space-l: 2rem;
+  --pp-space-m: 1.5rem;
+  --pp-space-s: 1rem;
+  --pp-space-xl: 3rem;
+  --pp-space-xs: 0.75rem;
+  --pp-z-overlay: 100;
+  --pp-z-sticky: 10;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --pp-duration-base: 0ms;
+    --pp-duration-fast: 0ms;
+  }
+}
