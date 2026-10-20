@@ -9,6 +9,7 @@
   --pp-color-fg: light-dark(oklch(21.5% 0.016 270.7), oklch(94.5% 0.008 270.7));
   --pp-color-focus: light-dark(oklch(47% 0.19 270.7), oklch(78% 0.1 270.7));
   --pp-color-line: light-dark(oklch(88.5% 0.01 270.7), oklch(34% 0.016 270.7));
+  --pp-color-media-placeholder: light-dark(oklch(91.5% 0.01 270.7), oklch(30% 0.015 270.7));
   --pp-color-muted: light-dark(oklch(43% 0.022 270.7), oklch(79% 0.018 270.7));
   --pp-color-on-accent: light-dark(oklch(99.5% 0.002 270.7), oklch(20.1% 0.0124 270.7));
   --pp-color-status-degraded: light-dark(oklch(50% 0.1 70), oklch(82% 0.11 75));
@@ -35,6 +36,14 @@
   --pp-font-weight-medium: 500;
   --pp-font-weight-regular: 400;
   --pp-font-weight-semibold: 600;
+  --pp-media-budget-card: 80;
+  --pp-media-budget-gallery: 150;
+  --pp-media-budget-hero: 200;
+  --pp-media-radius: 0.5rem;
+  --pp-media-rule: 1px;
+  --pp-media-scrim-color: oklch(20.1% 0.0124 270.7);
+  --pp-media-scrim-opacity: 0.72;
+  --pp-media-scrim-text: oklch(99.5% 0.002 270.7);
   --pp-radius-control: 0.25rem;
   --pp-radius-surface: 0.5rem;
   --pp-ratio-landscape: 1.5;

@@ -91,5 +91,49 @@
     "square": { "$value": 1 },
     "landscape": { "$value": 1.5 },
     "wide": { "$value": 1.7778 }
+  },
+  "media": {
+    "radius": {
+      "$type": "dimension",
+      "$value": { "value": 0.5, "unit": "rem" },
+      "$description": "Rayon des médias ; égal à `radius.surface`."
+    },
+    "rule": {
+      "$type": "dimension",
+      "$value": { "value": 1, "unit": "px" },
+      "$description": "Épaisseur du filet média ; égale à `size.rule`."
+    },
+    "budget": {
+      "$type": "number",
+      "hero": {
+        "$value": 200,
+        "$description": "Poids maximal d'une variante générée, en Ko (préférence)."
+      },
+      "card": {
+        "$value": 80,
+        "$description": "Poids maximal d'une variante générée, en Ko (préférence)."
+      },
+      "gallery": {
+        "$value": 150,
+        "$description": "Poids maximal d'une variante générée, en Ko (préférence)."
+      }
+    },
+    "scrim": {
+      "color": {
+        "$type": "color",
+        "$value": { "colorSpace": "oklch", "components": [0.201, 0.0124, 270.7] },
+        "$description": "Voile sous un texte posé sur une photo ; identique dans les deux thèmes."
+      },
+      "text": {
+        "$type": "color",
+        "$value": { "colorSpace": "oklch", "components": [0.995, 0.002, 270.7] },
+        "$description": "Texte posé sur le voile."
+      },
+      "opacity": {
+        "$type": "number",
+        "$value": 0.72,
+        "$description": "Opacité du voile (contraste au pire cas testé par Scrim)."
+      }
+    }
   }
 }
