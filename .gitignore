@@ -1,0 +1,20 @@
+node_modules/
+dist/
+.astro/
+coverage/
+test-results/
+playwright-report/
+*.tgz
+.DS_Store
+
+# Exécutions des agents : flux, résultats et résumés locaux (le journal versionné est docs/journal/).
+.agents/runs/
+
+# Réglages personnels de Claude Code et worktrees.
+.claude/settings.local.json
+.claude/worktrees/
+
+# Fichiers de secrets locaux : jamais versionnés.
+.env
+.env.*
+*.env
