@@ -1,0 +1,18 @@
+{
+  "name": "paulperigault",
+  "version": "2025.10",
+  "description": "Identité Encre : base commune et modificateur de thème.",
+  "sets": {
+    "base": { "sources": ["base.tokens.json"] }
+  },
+  "modifiers": {
+    "theme": {
+      "default": "light",
+      "contexts": {
+        "light": ["light.tokens.json"],
+        "dark": ["dark.tokens.json"]
+      }
+    }
+  },
+  "resolutionOrder": [{ "$ref": "#/sets/base" }, { "$ref": "#/modifiers/theme" }]
+}

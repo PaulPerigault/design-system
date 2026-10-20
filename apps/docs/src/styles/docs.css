@@ -1,0 +1,110 @@
+@import 'tailwindcss';
+@import '@paulperigault/css';
+@import '@paulperigault/css/theme.css';
+@source '../../../../packages/astro/src';
+
+/* Mise en page de la documentation : tokens uniquement, propriétés logiques. */
+.docs-skip {
+  position: absolute;
+  inset-block-start: var(--pp-space-3xs);
+  inset-inline-start: var(--pp-space-3xs);
+  padding-block: var(--pp-space-2xs);
+  padding-inline: var(--pp-space-s);
+  min-block-size: var(--pp-size-target-min);
+  background-color: var(--pp-color-bg);
+  color: var(--pp-color-fg);
+  border: var(--pp-size-rule) solid var(--pp-color-line);
+  transform: translateY(-200%);
+}
+
+.docs-skip:focus {
+  transform: none;
+}
+
+.docs-header,
+.docs-main,
+.docs-footer {
+  max-inline-size: var(--pp-size-page);
+  margin-inline: auto;
+  padding-inline: var(--pp-space-s);
+}
+
+.docs-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pp-space-s);
+  padding-block: var(--pp-space-s);
+  border-block-end: var(--pp-size-rule) solid var(--pp-color-line);
+}
+
+.docs-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pp-space-s);
+}
+
+.docs-nav a,
+.docs-brand {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--pp-size-target-min);
+}
+
+.docs-brand {
+  font-weight: var(--pp-font-weight-bold);
+}
+
+.docs-main {
+  padding-block: var(--pp-space-xl);
+}
+
+.docs-footer {
+  padding-block: var(--pp-space-l);
+  border-block-start: var(--pp-size-rule) solid var(--pp-color-line);
+  color: var(--pp-color-muted);
+}
+
+.docs-prose > * + * {
+  margin-block-start: var(--pp-space-s);
+}
+
+.docs-prose {
+  max-inline-size: var(--pp-size-measure);
+}
+
+.docs-direction {
+  margin-block-start: var(--pp-space-xl);
+}
+
+.docs-direction > * + * {
+  margin-block-start: var(--pp-space-s);
+}
+
+.docs-badge {
+  display: inline-block;
+  padding-inline: var(--pp-space-2xs);
+  border: var(--pp-size-rule) solid var(--pp-color-accent);
+  border-radius: var(--pp-radius-control);
+  color: var(--pp-color-accent);
+  font-size: var(--pp-font-size--1);
+  font-weight: var(--pp-font-weight-semibold);
+}
+
+.docs-table-wrap {
+  overflow-inline: auto;
+}
+
+.docs-table {
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.docs-table th,
+.docs-table td {
+  padding-block: var(--pp-space-3xs);
+  padding-inline: var(--pp-space-xs);
+  border-block-end: var(--pp-size-rule) solid var(--pp-color-line);
+  text-align: start;
+}

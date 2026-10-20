@@ -1,0 +1,57 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/specification/color/",
+  "$type": "color",
+  "$description": "Direction B. Blueprint — plan d'architecture, neutres froids",
+  "light": {
+    "bg": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.985, 0.0048, 250]
+      }
+    },
+    "fg": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.215, 0.0192, 250]
+      }
+    },
+    "muted": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.43, 0.024, 250]
+      }
+    },
+    "accent": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.48, 0.13, 250]
+      }
+    }
+  },
+  "dark": {
+    "bg": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.205, 0.0144, 250]
+      }
+    },
+    "fg": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.945, 0.0096, 250]
+      }
+    },
+    "muted": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.79, 0.0192, 250]
+      }
+    },
+    "accent": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.79, 0.1, 250]
+      }
+    }
+  }
+}

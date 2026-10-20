@@ -1,0 +1,59 @@
+{
+  "color": {
+    "$type": "color",
+    "bg": {
+      "$value": { "colorSpace": "oklch", "components": [0.201, 0.0124, 270.7] },
+      "$description": "Fond de page ; l'encre du favicon (#14161c)."
+    },
+    "surface": {
+      "$value": { "colorSpace": "oklch", "components": [0.25, 0.014, 270.7] },
+      "$description": "Fond des surfaces surélevées (cartes, panneaux)."
+    },
+    "fg": {
+      "$value": { "colorSpace": "oklch", "components": [0.945, 0.008, 270.7] },
+      "$description": "Texte principal."
+    },
+    "muted": {
+      "$value": { "colorSpace": "oklch", "components": [0.79, 0.018, 270.7] },
+      "$description": "Texte atténué (légendes, métadonnées)."
+    },
+    "line": {
+      "$value": { "colorSpace": "oklch", "components": [0.34, 0.016, 270.7] },
+      "$description": "Filets et séparateurs."
+    },
+    "control": {
+      "$value": { "colorSpace": "oklch", "components": [0.6, 0.02, 270.7] },
+      "$description": "Bordure des contrôles de formulaire."
+    },
+    "accent": {
+      "$value": { "colorSpace": "oklch", "components": [0.78, 0.1, 270.7] },
+      "$description": "Accent unique : liens et actions principales."
+    },
+    "on-accent": {
+      "$value": { "colorSpace": "oklch", "components": [0.201, 0.0124, 270.7] },
+      "$description": "Texte posé sur la couleur d'accent."
+    },
+    "focus": {
+      "$value": { "colorSpace": "oklch", "components": [0.78, 0.1, 270.7] },
+      "$description": "Anneau de focus clavier."
+    },
+    "status": {
+      "passed": {
+        "$value": { "colorSpace": "oklch", "components": [0.8, 0.13, 155] },
+        "$description": "Statut réussi ; toujours avec icône et libellé."
+      },
+      "failed": {
+        "$value": { "colorSpace": "oklch", "components": [0.76, 0.13, 25] },
+        "$description": "Statut en échec ; toujours avec icône et libellé."
+      },
+      "degraded": {
+        "$value": { "colorSpace": "oklch", "components": [0.82, 0.11, 75] },
+        "$description": "Statut dégradé ; toujours avec icône et libellé."
+      },
+      "running": {
+        "$value": { "colorSpace": "oklch", "components": [0.78, 0.1, 270.7] },
+        "$description": "Statut en cours ; toujours avec icône et libellé."
+      }
+    }
+  }
+}

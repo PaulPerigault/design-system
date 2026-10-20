@@ -55,6 +55,24 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run verify
 
+  e2e:
+    # Documentation construite puis testée dans Chromium : axe (WCAG 2.2 AA), 1.4.12, 2.5.8,
+    # mouvement réduit.
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - run: npm run e2e
+
   zizmor:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -72,7 +90,7 @@ jobs:
   ci:
     # Check requis unique : vert seulement si tous les jobs précédents le sont (ou sautés à bon droit).
     if: always()
-    needs: [commitlint, verify, zizmor]
+    needs: [commitlint, verify, e2e, zizmor]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

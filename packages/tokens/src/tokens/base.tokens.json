@@ -1,0 +1,95 @@
+{
+  "font": {
+    "family": {
+      "$type": "fontFamily",
+      "sans": {
+        "$value": [
+          "Atkinson Hyperlegible Next Variable",
+          "Atkinson Next Fallback",
+          "system-ui",
+          "sans-serif"
+        ],
+        "$description": "Texte courant."
+      },
+      "mono": {
+        "$value": [
+          "Atkinson Hyperlegible Mono Variable",
+          "Atkinson Mono Fallback",
+          "ui-monospace",
+          "monospace"
+        ],
+        "$description": "Code, identifiants, empreintes et métadonnées."
+      }
+    },
+    "weight": {
+      "$type": "fontWeight",
+      "regular": { "$value": 400 },
+      "medium": { "$value": 500 },
+      "semibold": { "$value": 600 },
+      "bold": { "$value": 700 }
+    },
+    "size": {
+      "$type": "dimension",
+      "$description": "Échelle 1,25 depuis 18 px.",
+      "-1": { "$value": { "value": 0.9, "unit": "rem" } },
+      "0": { "$value": { "value": 1.125, "unit": "rem" } },
+      "1": { "$value": { "value": 1.406, "unit": "rem" } },
+      "2": { "$value": { "value": 1.758, "unit": "rem" } },
+      "3": { "$value": { "value": 2.197, "unit": "rem" } },
+      "4": { "$value": { "value": 2.747, "unit": "rem" } }
+    },
+    "line-height": {
+      "$type": "number",
+      "body": { "$value": 1.55 },
+      "heading": { "$value": 1.15 }
+    }
+  },
+  "space": {
+    "$type": "dimension",
+    "3xs": { "$value": { "value": 0.25, "unit": "rem" } },
+    "2xs": { "$value": { "value": 0.5, "unit": "rem" } },
+    "xs": { "$value": { "value": 0.75, "unit": "rem" } },
+    "s": { "$value": { "value": 1, "unit": "rem" } },
+    "m": { "$value": { "value": 1.5, "unit": "rem" } },
+    "l": { "$value": { "value": 2, "unit": "rem" } },
+    "xl": { "$value": { "value": 3, "unit": "rem" } },
+    "2xl": { "$value": { "value": 4, "unit": "rem" } },
+    "3xl": { "$value": { "value": 6, "unit": "rem" } }
+  },
+  "size": {
+    "$type": "dimension",
+    "target-min": { "$value": { "value": 1.5, "unit": "rem" } },
+    "control-height": { "$value": { "value": 2.75, "unit": "rem" } },
+    "measure": { "$value": { "value": 38, "unit": "rem" } },
+    "page": { "$value": { "value": 72, "unit": "rem" } },
+    "rule": { "$value": { "value": 1, "unit": "px" } },
+    "focus-width": { "$value": { "value": 2, "unit": "px" } },
+    "focus-offset": { "$value": { "value": 2, "unit": "px" } }
+  },
+  "radius": {
+    "$type": "dimension",
+    "control": { "$value": { "value": 0.25, "unit": "rem" } },
+    "surface": { "$value": { "value": 0.5, "unit": "rem" } }
+  },
+  "duration": {
+    "$type": "duration",
+    "fast": { "$value": { "value": 100, "unit": "ms" } },
+    "base": { "$value": { "value": 160, "unit": "ms" } }
+  },
+  "easing": {
+    "$type": "cubicBezier",
+    "standard": { "$value": [0.2, 0, 0, 1] }
+  },
+  "z": {
+    "$type": "number",
+    "sticky": { "$value": 10 },
+    "overlay": { "$value": 100 }
+  },
+  "ratio": {
+    "$type": "number",
+    "portrait": { "$value": 0.8 },
+    "square": { "$value": 1 },
+    "landscape": { "$value": 1.5 },
+    "wide": { "$value": 1.7778 }
+  }
+}

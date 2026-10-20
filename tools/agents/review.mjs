@@ -29,7 +29,7 @@ const run = await runAgent({
   args: kiroArgs({
     agent: 'ds-reviewer',
     model,
-    effort: 'high',
+    effort: 'medium',
     trustTools: deps.config.reviewTrustTools,
     prompt: buildPrompt(
       {

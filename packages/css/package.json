@@ -23,9 +23,9 @@
     "**/*.css"
   ],
   "files": [
-    "dist",
     "src",
-    "README.md"
+    "README.md",
+    "LICENSES"
   ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
@@ -36,6 +36,19 @@
     "prepublishOnly": "node ../../tools/checks/check-publish-env.mjs"
   },
   "dependencies": {
+    "@fontsource-variable/atkinson-hyperlegible-mono": "^5.3.0",
+    "@fontsource-variable/atkinson-hyperlegible-next": "^5.3.0",
     "@paulperigault/tokens": "0.0.0"
+  },
+  "exports": {
+    ".": "./src/index.css",
+    "./base.css": "./src/base.css",
+    "./theme.css": "./src/theme.css",
+    "./fonts.css": "./src/fonts.css",
+    "./print.css": "./src/print.css",
+    "./package.json": "./package.json"
+  },
+  "devDependencies": {
+    "@capsizecss/metrics": "^4.4.0"
   }
 }

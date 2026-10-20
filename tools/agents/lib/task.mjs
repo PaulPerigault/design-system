@@ -16,7 +16,10 @@ const scalar = (text) => {
       .map((item) => item.trim())
       .filter(Boolean);
   }
-  return text.replace(/^["']|["']$/g, '');
+  // Guillemets retirés seulement s'ils encadrent toute la valeur : une commande comme
+  // `node -e "…"` garde les siens (bug constaté sur T2.09, quatre paliers échoués à tort).
+  const quoted = /^(["'])(.*)\1$/.exec(text);
+  return quoted ? quoted[2] : text;
 };
 
 /** Front matter → objet ; une clé sans valeur suivie de `- x` devient une liste. */

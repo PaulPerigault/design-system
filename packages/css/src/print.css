@@ -1,0 +1,19 @@
+/* Impression : thème clair forcé, adresse des liens externes, pas de coupure dans les blocs. */
+@media print {
+  :root,
+  :root[data-theme='light'],
+  :root[data-theme='dark'] {
+    color-scheme: light;
+  }
+
+  a[href^='http']::after {
+    content: ' (' attr(href) ')';
+  }
+
+  li,
+  figure,
+  pre,
+  table {
+    break-inside: avoid;
+  }
+}

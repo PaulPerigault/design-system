@@ -6,3 +6,4 @@ CHANGELOG.md
 .agents
 docs/research-report.md
 docs/kickoff.md
+packages/*/generated

@@ -1,0 +1,57 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/specification/color/",
+  "$type": "color",
+  "$description": "Direction C. Signal — neutres purs, un accent fort",
+  "light": {
+    "bg": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.985, 0, 0]
+      }
+    },
+    "fg": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.215, 0, 0]
+      }
+    },
+    "muted": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.43, 0, 0]
+      }
+    },
+    "accent": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.53, 0.19, 33]
+      }
+    }
+  },
+  "dark": {
+    "bg": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.205, 0, 0]
+      }
+    },
+    "fg": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.945, 0, 0]
+      }
+    },
+    "muted": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.79, 0, 0]
+      }
+    },
+    "accent": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.74, 0.14, 33]
+      }
+    }
+  }
+}

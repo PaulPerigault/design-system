@@ -1,0 +1,57 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/specification/color/",
+  "$type": "color",
+  "$description": "Direction A. Runbook — document d'exploitation, neutres chauds",
+  "light": {
+    "bg": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.985, 0.004, 80]
+      }
+    },
+    "fg": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.215, 0.016, 80]
+      }
+    },
+    "muted": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.43, 0.02, 80]
+      }
+    },
+    "accent": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.5, 0.1, 70]
+      }
+    }
+  },
+  "dark": {
+    "bg": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.205, 0.012, 80]
+      }
+    },
+    "fg": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.945, 0.008, 80]
+      }
+    },
+    "muted": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.79, 0.016, 80]
+      }
+    },
+    "accent": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.82, 0.11, 75]
+      }
+    }
+  }
+}

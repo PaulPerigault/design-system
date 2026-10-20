@@ -22,8 +22,9 @@
   },
   "sideEffects": false,
   "files": [
-    "dist",
     "src",
+    "generated",
+    "scripts",
     "README.md"
   ],
   "publishConfig": {
@@ -32,6 +33,22 @@
     "provenance": true
   },
   "scripts": {
-    "prepublishOnly": "node ../../tools/checks/check-publish-env.mjs"
+    "prepublishOnly": "node ../../tools/checks/check-publish-env.mjs",
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/build.mjs --check"
+  },
+  "exports": {
+    "./color": {
+      "types": "./src/lib/color.d.mts",
+      "default": "./src/lib/color.mjs"
+    },
+    "./contrast": {
+      "types": "./src/lib/contrast.d.mts",
+      "default": "./src/lib/contrast.mjs"
+    },
+    "./tokens.css": "./generated/tokens.css",
+    "./tokens.json": "./generated/tokens.json",
+    "./types": "./generated/tokens.d.ts",
+    "./package.json": "./package.json"
   }
 }
