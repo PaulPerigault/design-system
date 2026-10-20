@@ -21,6 +21,7 @@ const TIFF_HEADER_SIZE = 8;
 const TIFF_MAGIC = 0x2a;
 const TIFF_MAGIC_OFFSET = 2;
 const IFD0_OFFSET = 4;
+const BYTE_ORDER_SIZE = 2;
 const SHORT_SIZE = 2;
 const IFD_ENTRY_SIZE = 12;
 const GPS_INFO_TAG = 0x8825;
@@ -37,7 +38,7 @@ const isStandalone = (marker) => marker === TEM || (marker >= RST0 && marker <= 
  */
 function tiffReader(tiff) {
   if (tiff.length < TIFF_HEADER_SIZE) return null;
-  const order = tiff.toString('latin1', 0, MARKER_SIZE);
+  const order = tiff.toString('latin1', 0, BYTE_ORDER_SIZE);
   if (order !== 'II' && order !== 'MM') return null;
   const little = order === 'II';
   const short = (at) => (little ? tiff.readUInt16LE(at) : tiff.readUInt16BE(at));

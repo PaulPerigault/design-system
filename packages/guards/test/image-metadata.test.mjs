@@ -71,7 +71,8 @@ describe('metadataOf : JPEG', () => {
 
 describe('metadataOf : PNG', () => {
   it('lit eXIf et les mots-clés des chunks texte', () => {
-    expect(metadataOf(png(chunk('eXIf', tiff('MM', []))))).toEqual(['exif']);
+    const exifOf = (order, tags) => metadataOf(png(chunk('eXIf', tiff(order, tags))));
+    expect([exifOf('II', [0x010f]), exifOf('II', [0x8825])]).toEqual([['exif'], ['exif', 'gps']]);
     expect(metadataOf(text('iTXt', 'XML:com.adobe.xmp\0\0\0\0\0<x/>'))).toEqual(['xmp']);
     expect(metadataOf(text('zTXt', 'XML:com.adobe.xmp\0\0xx'))).toEqual(['xmp']);
     expect(metadataOf(text('tEXt', 'Raw profile type exif\0\n'))).toEqual(['exif']);
