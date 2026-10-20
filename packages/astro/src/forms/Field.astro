@@ -1,0 +1,113 @@
+---
+/**
+ * Field : enveloppe d'un contrôle de formulaire. Rend le libellé (`<label for={id}>`), une
+ * indication et une erreur facultatives, puis le contrôle passé en slot. Zéro JavaScript.
+ *
+ * Le contrôle porte lui-même `id`, `required`, `disabled` et se relie aux textes par
+ * `field-ids` : `aria-describedby={describedBy({ id, hint, error })}` et
+ * `aria-invalid={error ? 'true' : undefined}`. L'erreur, rendue par le serveur, n'est pas une
+ * région `aria-live`. Elle n'est jamais signalée par la seule couleur : icône décorative et
+ * préfixe `errorLabel`. Aucun texte en dur : le site fournit et traduit chaque libellé.
+ */
+import { fieldIds } from './field-ids';
+
+interface RequiredField {
+  required: true;
+  /** Texte visible accolé au libellé, par exemple « obligatoire » : jamais un « * » seul. */
+  requiredLabel: string;
+}
+
+interface OptionalField {
+  required?: false | undefined;
+  requiredLabel?: undefined;
+}
+
+type Props = (RequiredField | OptionalField) & {
+  /** Id du contrôle enveloppé ; dérive aussi `<id>-hint` et `<id>-error`. */
+  id: string;
+  label: string;
+  hint?: string | undefined;
+  error?: string | undefined;
+  /** Préfixe de l'erreur, par exemple « Erreur : ». Absent : aucun préfixe rendu. */
+  errorLabel?: string | undefined;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string | undefined;
+};
+
+const { id, label, hint, error, errorLabel, class: className } = Astro.props;
+const { required, requiredLabel } = Astro.props;
+const ids = fieldIds(id);
+---
+
+<div class:list={['pp-field', className]} data-invalid={error ? 'true' : undefined}>
+  <label class="pp-field__label" for={id}>
+    {label}
+    {required && <span class="pp-field__required">{` ${requiredLabel}`}</span>}
+  </label>
+  {hint && (
+    <p class="pp-field__hint" id={ids.hint}>
+      {hint}
+    </p>
+  )}
+  {error && (
+    <p class="pp-field__error" id={ids.error}>
+      <svg class="pp-field__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2" />
+        <path d="M12 7v6m0 3.5v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+      <span>
+        {errorLabel && <span class="pp-field__error-label">{`${errorLabel} `}</span>}
+        {error}
+      </span>
+    </p>
+  )}
+  <slot />
+</div>
+
+<style>
+  .pp-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--pp-space-3xs);
+  }
+
+  .pp-field > :global(*) {
+    margin-block: 0;
+  }
+
+  .pp-field__label {
+    font-weight: var(--pp-font-weight-semibold);
+  }
+
+  .pp-field__required {
+    font-weight: var(--pp-font-weight-regular);
+  }
+
+  .pp-field__hint {
+    color: var(--pp-color-muted);
+  }
+
+  .pp-field__error {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--pp-space-3xs);
+    color: var(--pp-color-status-failed);
+    font-weight: var(--pp-font-weight-medium);
+  }
+
+  /* Hauteur d'une ligne : l'icône reste centrée sur la première ligne de l'erreur. */
+  .pp-field__icon {
+    flex: none;
+    inline-size: var(--pp-space-s);
+    block-size: 1lh;
+  }
+
+  .pp-field__error-label {
+    font-weight: var(--pp-font-weight-bold);
+  }
+
+  /* Contrôle désactivé (attribut natif, passé en slot) : le libellé l'indique aussi. */
+  .pp-field:has(:global(:disabled)) .pp-field__label {
+    color: var(--pp-color-muted);
+  }
+</style>

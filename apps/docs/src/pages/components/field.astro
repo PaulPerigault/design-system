@@ -1,0 +1,102 @@
+---
+import Field from '@paulperigault/astro/Field.astro';
+import { describedBy } from '@paulperigault/astro/field-ids';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+
+const hint = 'Celle que vous consultez chaque jour.';
+const error = 'Saisissez une adresse au format nom@domaine.fr.';
+const PROPS = [
+  ['id', 'string', 'obligatoire', 'Id du contrôle ; dérive <id>-hint et <id>-error.'],
+  ['label', 'string', 'obligatoire', 'Libellé visible, relié au contrôle par for.'],
+  ['hint', 'string', 'absent', 'Indication rendue sous <id>-hint.'],
+  ['error', 'string', 'absent', 'Message d’erreur rendu sous <id>-error, précédé d’une icône.'],
+  ['errorLabel', 'string', 'absent', 'Préfixe de l’erreur ; absent, aucun préfixe.'],
+  ['required', 'boolean', 'false', 'Affiche requiredLabel dans le libellé.'],
+  ['requiredLabel', 'string', 'absent', 'Texte visible exigé quand required vaut true.'],
+  ['class', 'string', 'absent', 'Placement du composant dans son parent.'],
+];
+const HEADERS = ['Prop', 'Type', 'Défaut', 'Rôle'];
+---
+
+<DocsLayout title="Field · Design system · Paul Perigault">
+  <div class="docs-prose">
+    <h1>Field</h1>
+    <p>
+      Field rend le libellé, l’indication et l’erreur d’un contrôle natif ; le contrôle s’y relie
+      par aria-describedby et aria-invalid, calculés par describedBy de field-ids.
+    </p>
+
+    <h2>Par défaut</h2>
+    <Field id="doc-email" label="Courriel" hint={hint} required requiredLabel="obligatoire">
+      <input
+        class="doc-control"
+        id="doc-email"
+        type="email"
+        autocomplete="email"
+        required
+        aria-describedby={describedBy({ id: 'doc-email', hint })}
+      />
+    </Field>
+
+    <h2>Erreur</h2>
+    <Field id="doc-email-error" label="Courriel" hint={hint} error={error} errorLabel="Erreur :">
+      <input
+        class="doc-control"
+        id="doc-email-error"
+        type="email"
+        value="paul"
+        aria-describedby={describedBy({ id: 'doc-email-error', hint, error })}
+        aria-invalid="true"
+      />
+    </Field>
+
+    <h2>Désactivé</h2>
+    <Field id="doc-email-disabled" label="Courriel">
+      <input class="doc-control" id="doc-email-disabled" type="email" disabled />
+    </Field>
+
+    <h2>Props</h2>
+    <div class="docs-table-wrap" tabindex="0" role="region" aria-label="Props de Field">
+      <table class="docs-table">
+        <caption>Props de Field</caption>
+        <thead>
+          <tr>
+            {HEADERS.map((header) => (
+              <th scope="col">{header}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {PROPS.map(([name, ...cells]) => (
+            <tr>
+              <th scope="row">
+                <code>{name}</code>
+              </th>
+              {cells.map((cell) => (
+                <td>{cell}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</DocsLayout>
+
+<style>
+  /* Contrôle natif de démonstration, en attendant le composant Input. */
+  .doc-control {
+    min-block-size: var(--pp-size-control-height);
+    padding-inline: var(--pp-space-2xs);
+    border: var(--pp-size-rule) solid var(--pp-color-control);
+    border-radius: var(--pp-radius-control);
+    background-color: var(--pp-color-bg);
+    color: var(--pp-color-fg);
+    font: inherit;
+  }
+
+  .doc-control:disabled {
+    border-color: var(--pp-color-line);
+    color: var(--pp-color-muted);
+  }
+</style>
