@@ -1,0 +1,149 @@
+---
+import Choice from '@paulperigault/astro/Choice.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="Choice · Design system · Paul Perigault">
+  <h1>Choice</h1>
+  <p>
+    Choice rend une case à cocher ou un bouton radio natif suivi de son libellé, et toute la zone
+    (contrôle et libellé) reste cliquable sur au moins la hauteur d’un contrôle.
+  </p>
+
+  <h2>Par défaut</h2>
+  <Stack space="2xs" as="div">
+    <Choice type="checkbox" id="choice-news" name="news" value="oui" label="Recevoir les notes" />
+    <Choice
+      type="checkbox"
+      id="choice-checked"
+      name="digest"
+      value="oui"
+      label="Recevoir le résumé mensuel"
+      checked
+    />
+  </Stack>
+
+  <h2>Groupe de boutons radio</h2>
+  <p>
+    Un groupe s’écrit dans un <code>fieldset</code> avec un <code>legend</code> : le lecteur d’écran
+    annonce la question avant chaque choix.
+  </p>
+  <fieldset>
+    <legend>Format de contact</legend>
+    <Choice type="radio" id="choice-mail" name="contact" value="mail" label="Courriel" checked />
+    <Choice type="radio" id="choice-phone" name="contact" value="phone" label="Téléphone" />
+  </fieldset>
+
+  <h2>Erreur</h2>
+  <p>
+    Le message d’erreur est un élément à part, relié au contrôle par <code>describedBy</code>.
+  </p>
+  <Choice
+    type="checkbox"
+    id="choice-terms"
+    name="terms"
+    value="oui"
+    label="J’accepte les conditions"
+    describedBy="choice-terms-error"
+  />
+  <p id="choice-terms-error">Cochez cette case pour continuer.</p>
+
+  <h2>Désactivé</h2>
+  <Choice
+    type="checkbox"
+    id="choice-off"
+    name="off"
+    value="oui"
+    label="Option indisponible"
+    disabled
+  />
+
+  <h2>Propriétés</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Propriété</th>
+        <th>Valeurs</th>
+        <th>Défaut</th>
+        <th>Rôle</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>type</code>
+        </td>
+        <td>
+          <code>checkbox | radio</code>
+        </td>
+        <td>obligatoire</td>
+        <td>Nature du contrôle natif.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>id</code>
+        </td>
+        <td>texte</td>
+        <td>obligatoire</td>
+        <td>
+          Identifiant unique, relie l’<code>input</code> et son <code>label</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>name</code>
+        </td>
+        <td>texte</td>
+        <td>obligatoire</td>
+        <td>Nom envoyé avec le formulaire ; commun à tous les radios d’un groupe.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>value</code>
+        </td>
+        <td>texte</td>
+        <td>obligatoire</td>
+        <td>Valeur envoyée quand le choix est coché.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>label</code>
+        </td>
+        <td>texte</td>
+        <td>obligatoire</td>
+        <td>Libellé visible, fourni par le site (aucun texte en dur).</td>
+      </tr>
+      <tr>
+        <td>
+          <code>checked</code>
+        </td>
+        <td>booléen</td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>État initial coché.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>disabled</code>
+        </td>
+        <td>booléen</td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>Désactive le contrôle ; le libellé passe en couleur atténuée.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>describedBy</code>
+        </td>
+        <td>texte</td>
+        <td>aucun</td>
+        <td>
+          Identifiant de l’aide ou de l’erreur (<code>aria-describedby</code>).
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</DocsLayout>
