@@ -1,9 +1,9 @@
 import { describe, expectTypeOf, it } from 'vitest';
-import Choice from '../src/forms/Choice.astro';
-import Input from '../src/forms/Input.astro';
-import Select from '../src/forms/Select.astro';
-import Switch from '../src/forms/Switch.astro';
-import Textarea from '../src/forms/Textarea.astro';
+import type Choice from '../src/forms/Choice.astro';
+import type Input from '../src/forms/Input.astro';
+import type Select from '../src/forms/Select.astro';
+import type Switch from '../src/forms/Switch.astro';
+import type Textarea from '../src/forms/Textarea.astro';
 
 type PropsOf<T extends (...args: never[]) => unknown> = Parameters<T>[1];
 type Described = { describedBy: undefined };
