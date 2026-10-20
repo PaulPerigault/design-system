@@ -1,0 +1,117 @@
+---
+/**
+ * Alert : message mis en avant, zéro JavaScript, ton par `data-tone` (CSP : aucun `style`).
+ * La couleur de statut ne touche que l'icône (décorative) et le filet de début ; le ton est
+ * écrit en clair (`toneLabel`) : jamais la couleur seule (WCAG 2.2, critère 1.4.1).
+ * Sans `live`, aucun rôle (contenu statique) ; `polite` → `status`, `assertive` → `alert`.
+ */
+interface Props {
+  tone?: 'info' | 'passed' | 'degraded' | 'failed';
+  /** Libellé visible du ton (par exemple « Information »). */
+  toneLabel: string;
+  title?: string;
+  live?: 'polite' | 'assertive';
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const CIRCLE = 'M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0';
+const ICONS = {
+  info: `${CIRCLE}M12 11v5M12 8h.01`,
+  passed: `${CIRCLE}M8 12.5l3 3l5-6`,
+  degraded: 'M12 3L22 20H2ZM12 10v4M12 17h.01',
+  failed: `${CIRCLE}M9 9l6 6M15 9l-6 6`,
+} as const;
+const ROLES = { polite: 'status', assertive: 'alert' } as const;
+
+const { tone = 'info', toneLabel, title, live, class: className } = Astro.props;
+const role = live === undefined ? undefined : ROLES[live];
+---
+
+<div class:list={['pp-alert', className]} data-tone={tone} role={role}>
+  <svg
+    class="pp-alert__icon"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path d={ICONS[tone]}></path>
+  </svg>
+  <div class="pp-alert__body">
+    <p class="pp-alert__heading">
+      <span class="pp-alert__tone">{toneLabel}</span>
+      {title && ' '}
+      {title && <strong class="pp-alert__title">{title}</strong>}
+    </p>
+    <div class="pp-alert__content">
+      <slot />
+    </div>
+  </div>
+</div>
+
+<style>
+  .pp-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--pp-space-2xs);
+    padding-block: var(--pp-space-xs);
+    padding-inline: var(--pp-space-s);
+    border: var(--pp-size-rule) solid var(--pp-color-line);
+    border-inline-start: var(--pp-space-3xs) solid var(--alert-tone);
+    border-radius: var(--pp-radius-surface);
+    background-color: var(--pp-color-surface);
+    color: var(--pp-color-fg);
+    line-height: var(--pp-font-line-height-body);
+  }
+
+  .pp-alert[data-tone='info'] {
+    --alert-tone: var(--pp-color-status-running);
+  }
+
+  .pp-alert[data-tone='passed'] {
+    --alert-tone: var(--pp-color-status-passed);
+  }
+
+  .pp-alert[data-tone='degraded'] {
+    --alert-tone: var(--pp-color-status-degraded);
+  }
+
+  .pp-alert[data-tone='failed'] {
+    --alert-tone: var(--pp-color-status-failed);
+  }
+
+  .pp-alert__icon {
+    flex: none;
+    inline-size: var(--pp-font-size-1);
+    block-size: var(--pp-font-size-1);
+    color: var(--alert-tone);
+  }
+
+  .pp-alert__heading {
+    margin-block: 0;
+    font-weight: var(--pp-font-weight-semibold);
+  }
+
+  .pp-alert__content > :global(*) {
+    margin-block: 0;
+  }
+
+  .pp-alert__content > :global(* + *) {
+    margin-block-start: var(--pp-space-2xs);
+  }
+
+  @media (forced-colors: active) {
+    .pp-alert {
+      border-inline-start-color: CanvasText;
+    }
+
+    .pp-alert__icon {
+      color: CanvasText;
+    }
+  }
+</style>
