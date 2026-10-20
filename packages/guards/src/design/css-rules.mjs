@@ -9,7 +9,7 @@ const DROP_SHADOW = /drop-shadow\s*\(/i;
 const HEX = /#(?:[0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{3,4})\b/i;
 const COLOR_FUNCTION = /\b(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch|color)\s*\(/i;
 const COLOR_PROPERTY =
-  /(?:^|-)color$|^(?:background|border(?:-[a-z]+)?|outline|fill|stroke|text-decoration|column-rule)$/;
+  /(?:^|-)color$|^(?:background|border(?:-[a-z]+){0,2}|outline(?:-[a-z]+){0,2}|fill|stroke|text-decoration|column-rule)$/;
 const PALETTE = new RegExp(
   `var\\(\\s*--color-(?:${PALETTE_HUES.join('|')})-(?:${SHADES.join('|')})\\b`,
 );
