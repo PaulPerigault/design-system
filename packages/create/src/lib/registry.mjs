@@ -40,6 +40,9 @@ function parseItem(io, path) {
   if (typeof data?.name !== 'string' || !Array.isArray(data.files)) {
     throw new Error(`Fragment invalide (name ou files manquant) : ${path}`);
   }
+  if (!data.files.every((f) => typeof f?.path === 'string')) {
+    throw new Error(`Fragment invalide (files[].path doit être une chaîne) : ${path}`);
+  }
   return data;
 }
 
@@ -83,7 +86,8 @@ export function itemFiles(item) {
   return item.files.map(({ path }) => {
     const rel = path.startsWith(REPO_PREFIX) ? path.slice(REPO_PREFIX.length) : path;
     const clean = posix.normalize(rel);
-    if (posix.isAbsolute(clean) || clean === '..' || clean.startsWith('../')) {
+    const outside = posix.isAbsolute(clean) || clean === '..' || clean.startsWith('../');
+    if (outside || clean === '.') {
       throw new Error(`Chemin hors du paquet dans « ${item.name} » : ${path}`);
     }
     return clean;
@@ -96,6 +100,15 @@ export function itemFiles(item) {
  * @returns {string}
  */
 export function packageVersion(io, root) {
-  const manifest = JSON.parse(io.readText(posix.join(root, 'package.json')));
+  const path = posix.join(root, 'package.json');
+  let manifest;
+  try {
+    manifest = JSON.parse(io.readText(path));
+  } catch (cause) {
+    throw new Error(`package.json illisible (JSON invalide) : ${path}`, { cause });
+  }
+  if (typeof manifest?.version !== 'string') {
+    throw new Error(`package.json sans version (chaîne attendue) : ${path}`);
+  }
   return manifest.version;
 }
