@@ -21,8 +21,9 @@
   },
   "sideEffects": false,
   "files": [
-    "dist",
+    "bin",
     "src",
+    "templates",
     "README.md"
   ],
   "publishConfig": {
@@ -31,6 +32,13 @@
     "provenance": true
   },
   "scripts": {
-    "prepublishOnly": "node ../../tools/checks/check-publish-env.mjs"
+    "prepublishOnly": "node ../../tools/checks/check-publish-env.mjs",
+    "test": "vitest run"
+  },
+  "bin": {
+    "pp-create": "./bin/pp-create.mjs"
+  },
+  "exports": {
+    "./package.json": "./package.json"
   }
 }

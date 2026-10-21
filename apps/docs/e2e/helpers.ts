@@ -18,9 +18,12 @@ export type Viewport = (typeof VIEWPORTS)[number];
 /** Taille minimale d'une cible (WCAG 2.2, critère 2.5.8), en pixels CSS. */
 export const TARGET_MIN = 24;
 
-/** Pose `data-theme` sur `<html>`. */
+/** Pose `data-theme` sur `<html>` et attend la fin des transitions de couleur qu'il déclenche. */
 export async function setTheme(page: Page, theme: Theme): Promise<void> {
-  await page.evaluate((value) => document.documentElement.setAttribute('data-theme', value), theme);
+  await page.evaluate(async (value) => {
+    document.documentElement.setAttribute('data-theme', value);
+    await Promise.all(document.getAnimations().map((animation) => animation.finished));
+  }, theme);
 }
 
 /** Ouvre une page au viewport donné, thème appliqué. */

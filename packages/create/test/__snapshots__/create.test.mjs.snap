@@ -1,0 +1,19 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`create : arborescence > instantané des chemins et empreintes sha256, puis prochaines étapes 1`] = `
+{
+  "/projet/mon-site/.github/workflows/ci.yml": "8fda4b8d802d2576e359c3c0bcab5b7d86b0325c568a8abb43208bfe7e993524",
+  "/projet/mon-site/.gitignore": "adbd3c4968e4054156b6e160ca8e960c0a0872cc423b8e7166b87fe3335d4c2e",
+  "/projet/mon-site/.husky/commit-msg": "28a616e5cb4c46b5b3119b320c4aae6a4de9c8cc634e712fedbff6aa752aa148",
+  "/projet/mon-site/.npmrc": "ec01c0bbe9ef883ce200625d215dc3a196275c2bfa3f64639d2748a4366b85c6",
+  "/projet/mon-site/README.md": "7b4a185d540cc88e632a230061fe49f3147d0c7494d16817354885e02508a1ab",
+  "/projet/mon-site/astro.config.mjs": "553612c27bf1677c9d2550fb2cea697c31ab64af8d5ed6880e4a9decca755e0d",
+  "/projet/mon-site/commitlint.config.mjs": "c87bafa4c73bb019a6b09480b67049c885f4e6cd53420ec77956e0f6d4ca61a0",
+  "/projet/mon-site/commitlint/no-tool-signature.mjs": "92e5c9a54ea948ca969455a0f8c13a82954408313d926b3a29345337d0460b18",
+  "/projet/mon-site/package.json": "e4a7187acb9f026a18d01439db4c531a69e4848b42d41ec147457d5494232e91",
+  "/projet/mon-site/pp-guards.config.json": "bfb350a4b25752dbab6e1e0ea04542917aeab2a4fd0c4539ea976aa053395e5c",
+  "/projet/mon-site/src/layouts/Base.astro": "2d106665ab2fdfb1591259a6362f9675aa5eae4f552d3d84d9f1cf023393dca2",
+  "/projet/mon-site/src/pages/index.astro": "4f8f5e7d0e05fe0746bbca0ddc5685977be1d5bcb272a589e27058289d6fd532",
+  "/projet/mon-site/tsconfig.json": "b5b0a5b04a14cddd7713c5e1c82e86c79c17c2f86b170e26e9b170b3d5e01cd9",
+}
+`;
