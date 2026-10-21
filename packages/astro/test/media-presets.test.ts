@@ -67,8 +67,9 @@ describe('widthsFor', () => {
     expect(widthsFor('page', large)).toContain(measure * ROOT_FONT_PX * 2);
   });
 
-  it('plafonne à la largeur source, sans jamais rendre une liste vide', () => {
-    expect(widthsFor('page', 1200)).toEqual([608, 1152]);
+  it('ramène à la largeur source ce qui la dépasse, sans jamais rendre une liste vide', () => {
+    expect(widthsFor('page', 1200)).toEqual([608, 1152, 1200]);
+    expect(widthsFor('page', 900)).toEqual([608, 900]);
     expect(widthsFor('page', 608)).toEqual([608]);
     expect(widthsFor('page', 400)).toEqual([400]);
     expect(widthsFor('avatar', 50)).toEqual([50]);

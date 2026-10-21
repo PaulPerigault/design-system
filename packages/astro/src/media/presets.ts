@@ -71,8 +71,8 @@ const px = (rem: number): number => Math.round(rem * ROOT_FONT_PX);
 
 /**
  * Largeurs à générer (px) : chaque densité × largeur de référence, plus × mesure pour les
- * emplacements fluides (pleine largeur sous la mesure). Entières, triées, uniques, plafonnées à
- * la source ; au pire `[sourceWidth]`.
+ * emplacements fluides (pleine largeur sous la mesure). Entières, triées, uniques ; une largeur
+ * qui dépasse la source est ramenée à la source (servie en entier plutôt qu'écartée).
  */
 export function widthsFor(
   layout: MediaLayout,
@@ -85,8 +85,8 @@ export function widthsFor(
   const { width, from } = reference(layout, base);
   const widths = from === undefined ? [width] : [width, measureRem(base)];
   const candidates = widths.flatMap((rem) => DENSITIES.map((density) => px(rem * density)));
-  const kept = [...new Set(candidates)].filter((w) => w <= sourceWidth).sort((a, b) => a - b);
-  return kept.length > 0 ? kept : [sourceWidth];
+  const capped = candidates.map((w) => Math.min(w, sourceWidth));
+  return [...new Set(capped)].sort((a, b) => a - b);
 }
 
 /** Qualité d'encodage (0–100) selon la nature de l'image. */
