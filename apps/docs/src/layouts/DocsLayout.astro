@@ -1,5 +1,6 @@
 ---
 import tokens from '@paulperigault/tokens/tokens.json';
+import MobileMenu from '../components/MobileMenu.astro';
 import '../styles/docs.css';
 
 interface Props {
@@ -37,6 +38,7 @@ const { themeColor } = tokens;
         <a href="/identite/">Identité</a>
         <a href="/#composants">Composants</a>
       </nav>
+      <MobileMenu />
     </header>
     <main id="contenu" class="docs-main">
       <slot />
