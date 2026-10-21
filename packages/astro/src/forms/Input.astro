@@ -22,6 +22,8 @@ interface Props {
   autocomplete?: string;
   /** Clavier virtuel à afficher quand `type` ne suffit pas. */
   inputmode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search';
+  /** Libellé de la touche Entrée du clavier virtuel (`enterkeyhint`), par exemple `next`. */
+  enterkeyhint?: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send';
   /** Identifiants (séparés par des espaces) des éléments d'aide ou d'erreur. */
   describedBy?: string | undefined;
   /** Pose `aria-invalid="true"` ; à relier au message d'erreur par `describedBy`. */
@@ -41,6 +43,7 @@ const {
   disabled = false,
   autocomplete,
   inputmode,
+  enterkeyhint,
   describedBy,
   invalid = false,
   placeholder,
@@ -58,6 +61,7 @@ const {
   disabled={disabled}
   autocomplete={autocomplete}
   inputmode={inputmode}
+  enterkeyhint={enterkeyhint}
   aria-describedby={describedBy}
   aria-invalid={invalid ? 'true' : undefined}
   placeholder={placeholder}

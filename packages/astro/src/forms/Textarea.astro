@@ -21,6 +21,8 @@ interface Props {
   invalid?: boolean | undefined;
   /** Hauteur initiale en lignes. */
   rows?: number;
+  /** Libellé de la touche Entrée du clavier virtuel (`enterkeyhint`), par exemple `next`. */
+  enterkeyhint?: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send';
   /** Réservé au placement du composant dans son parent. */
   class?: string;
 }
@@ -36,6 +38,7 @@ const {
   describedBy,
   invalid = false,
   rows = DEFAULT_ROWS,
+  enterkeyhint,
   class: className,
 } = Astro.props;
 ---
@@ -45,6 +48,7 @@ const {
   id={id}
   name={name}
   rows={rows}
+  enterkeyhint={enterkeyhint}
   required={required}
   disabled={disabled}
   aria-describedby={describedBy}
