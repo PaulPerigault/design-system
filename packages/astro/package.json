@@ -74,6 +74,8 @@
     "./Breadcrumb.astro": "./src/content/Breadcrumb.astro",
     "./Prose.astro": "./src/content/Prose.astro",
     "./Diff.astro": "./src/content/Diff.astro",
+    "./Photo.astro": "./src/media/Photo.astro",
+    "./media-types": "./src/media/types.ts",
     "./package.json": "./package.json"
   }
 }

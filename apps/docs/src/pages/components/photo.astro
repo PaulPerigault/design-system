@@ -1,0 +1,79 @@
+---
+import Photo from '@paulperigault/astro/Photo.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import capture from '../../assets/media/capture.png';
+import carre from '../../assets/media/carre.jpg';
+import paysage from '../../assets/media/paysage.jpg';
+import portrait from '../../assets/media/portrait.jpg';
+
+const props = [
+  ['src', 'image importée localement (ImageMetadata) ; une URL est refusée', 'aucun'],
+  ['alt', 'texte alternatif ; vide refusé', 'aucun'],
+  ['decorative', 'true : alt="" ; exclusif de alt', 'aucun'],
+  ['ratio', "'portrait' | 'square' | 'landscape' | 'wide'", 'proportion de l’image'],
+  ['focal', "'center' | 'top' | 'bottom' | 'left' | 'right' | 'top-left'…", "'center'"],
+  ['priority', 'booléen ; loading="eager" et fetchpriority="high"', 'false'],
+  ['layout', "'page' | 'measure' | 'half' | 'third' | 'avatar' ; règle sizes", "'measure'"],
+  ['kind', "'photo' | 'capture' | 'illustration' ; qualité et repli", "'photo'"],
+  ['rule', 'booléen ; filet autour du cadre', 'false'],
+  ['class', 'placement dans le parent', 'aucun'],
+];
+---
+
+<DocsLayout title="Photo · Design system · Paul Perigault">
+  <h1>Photo</h1>
+  <p>
+    Photo affiche une image importée localement : AVIF puis WebP, largeurs et sizes tirés des
+    tokens, width et height toujours rendus, fond d’attente à la couleur dominante calculée au
+    build.
+  </p>
+
+  <h2>Image principale</h2>
+  <Photo
+    src={paysage}
+    alt="Composition géométrique : soleil orange au-dessus de bandes grise et bleue sur fond encre"
+    priority
+  />
+
+  <h2>Portrait recadré en haut</h2>
+  <Photo
+    src={portrait}
+    alt="Composition géométrique : rectangle bleu clair au-dessus d’une bande grise"
+    ratio="portrait"
+    focal="top"
+    layout="half"
+  />
+
+  <h2>Décorative</h2>
+  <Photo src={carre} decorative ratio="square" layout="third" />
+
+  <h2>Capture avec filet</h2>
+  <Photo
+    src={capture}
+    alt="Capture d’interface : barre supérieure, menu latéral, titre, bloc de contenu et bouton"
+    kind="capture"
+    rule
+  />
+
+  <h2>Propriétés</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Propriété</th>
+        <th>Valeurs</th>
+        <th>Défaut</th>
+      </tr>
+    </thead>
+    <tbody>
+      {props.map(([name, values, fallback]) => (
+        <tr>
+          <td>
+            <code>{name}</code>
+          </td>
+          <td>{values}</td>
+          <td>{fallback}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</DocsLayout>

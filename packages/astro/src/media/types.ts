@@ -1,4 +1,5 @@
 /** Types du pipeline d'images : aucun code exécutable ici. */
+import type { ImageMetadata } from 'astro';
 
 /** Proportions servies, une par token `--pp-ratio-*`. */
 export type Ratio = 'portrait' | 'square' | 'landscape' | 'wide';
@@ -29,3 +30,21 @@ export type Breakpoint = 'narrow' | 'medium';
  * Impossible d'omettre les deux ou de passer les deux.
  */
 export type AltProps = { alt: string; decorative?: never } | { decorative: true; alt?: never };
+
+/** Props de `Photo` (et base des autres composants média). */
+export type PhotoProps = AltProps & {
+  /** Image importée localement (`import photo from './photo.jpg'`). */
+  src: ImageMetadata;
+  /** Proportion du cadre ; absente, l'image garde sa proportion propre. */
+  ratio?: Ratio;
+  /** Point gardé visible quand le cadre recadre l'image. */
+  focal?: Focal;
+  /** Image principale de la page (LCP) : chargée tout de suite, en priorité. */
+  priority?: boolean;
+  layout?: MediaLayout;
+  kind?: MediaKind;
+  /** Filet autour du cadre (captures sur fond clair). */
+  rule?: boolean;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+};

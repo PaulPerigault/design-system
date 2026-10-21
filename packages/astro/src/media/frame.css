@@ -1,0 +1,94 @@
+/*
+ * Cadre média partagé (Photo, Figure, Avatar, ProjectCover, Gallery) : classes `.pp-media`,
+ * fichier global, variantes par attributs `data-*` (aucun `style` en ligne).
+ */
+.pp-media {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--pp-media-radius);
+  background-color: var(--pp-color-media-placeholder);
+}
+
+.pp-media picture {
+  position: relative;
+  display: block;
+}
+
+.pp-media img {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+}
+
+.pp-media[data-ratio] picture,
+.pp-media[data-ratio] img {
+  block-size: 100%;
+}
+
+.pp-media[data-ratio] img {
+  object-fit: cover;
+}
+
+.pp-media[data-ratio='portrait'] {
+  aspect-ratio: var(--pp-ratio-portrait);
+}
+
+.pp-media[data-ratio='square'] {
+  aspect-ratio: var(--pp-ratio-square);
+}
+
+.pp-media[data-ratio='landscape'] {
+  aspect-ratio: var(--pp-ratio-landscape);
+}
+
+.pp-media[data-ratio='wide'] {
+  aspect-ratio: var(--pp-ratio-wide);
+}
+
+.pp-media[data-focal='center'] img {
+  object-position: center;
+}
+
+.pp-media[data-focal='top'] img {
+  object-position: center top;
+}
+
+.pp-media[data-focal='bottom'] img {
+  object-position: center bottom;
+}
+
+.pp-media[data-focal='left'] img {
+  object-position: left center;
+}
+
+.pp-media[data-focal='right'] img {
+  object-position: right center;
+}
+
+.pp-media[data-focal='top-left'] img {
+  object-position: left top;
+}
+
+.pp-media[data-focal='top-right'] img {
+  object-position: right top;
+}
+
+.pp-media[data-focal='bottom-left'] img {
+  object-position: left bottom;
+}
+
+.pp-media[data-focal='bottom-right'] img {
+  object-position: right bottom;
+}
+
+.pp-media[data-rule] {
+  border: var(--pp-media-rule) solid var(--pp-color-line);
+}
+
+.pp-media__placeholder {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+}
