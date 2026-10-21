@@ -1,0 +1,37 @@
+---
+/**
+ * Avatar : image carrée au rayon média (pas de cercle), taille par token d'espacement. À côté
+ * d'un nom affiché, l'avatar est `decorative`. Compose `Photo` ; zéro JavaScript.
+ */
+import Photo from './Photo.astro';
+import { altPropsOf } from './alt';
+import type { AvatarProps } from './types';
+
+type Props = AvatarProps;
+
+const { src, size = 'm', class: className } = Astro.props;
+---
+
+<span class:list={['pp-avatar', className]} data-size={size}>
+  <Photo src={src} {...altPropsOf(Astro.props)} ratio="square" layout="avatar" focal="top" />
+</span>
+
+<style>
+  .pp-avatar {
+    display: inline-block;
+    flex-shrink: 0;
+    vertical-align: middle;
+  }
+
+  .pp-avatar[data-size='s'] {
+    inline-size: var(--pp-space-xl);
+  }
+
+  .pp-avatar[data-size='m'] {
+    inline-size: var(--pp-space-2xl);
+  }
+
+  .pp-avatar[data-size='l'] {
+    inline-size: var(--pp-space-3xl);
+  }
+</style>

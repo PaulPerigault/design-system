@@ -65,3 +65,22 @@ export type ArtDirectionProps = AltProps & {
   /** Réservé au placement du composant dans son parent. */
   class?: string;
 };
+
+/** Props d'`Avatar` : image carrée, taille par token d'espacement. */
+export type AvatarProps = AltProps & {
+  src: ImageMetadata;
+  size?: 's' | 'm' | 'l';
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+};
+
+/** Props de `ProjectCover` : couverture de projet, toujours filetée. */
+export type ProjectCoverProps = AltProps & {
+  src: ImageMetadata;
+  ratio?: 'landscape' | 'wide';
+  layout?: 'third' | 'half' | 'page';
+  kind?: MediaKind;
+  priority?: boolean;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+};

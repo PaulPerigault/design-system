@@ -1,0 +1,64 @@
+---
+import Grid from '@paulperigault/astro/Grid.astro';
+import ProjectCover from '@paulperigault/astro/ProjectCover.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import capture from '../../assets/media/capture.png';
+import large from '../../assets/media/large.jpg';
+
+const props = [
+  ['src', 'image importée localement', 'aucun'],
+  ['alt', 'texte alternatif', 'aucun'],
+  ['decorative', 'true : alt="" ; exclusif de alt', 'aucun'],
+  ['ratio', "'landscape' | 'wide'", "'landscape'"],
+  ['layout', "'third' | 'half' | 'page' ; règle sizes", "'third'"],
+  ['kind', "'photo' | 'capture' | 'illustration'", "'capture'"],
+  ['priority', 'booléen', 'false'],
+  ['class', 'placement dans le parent', 'aucun'],
+];
+---
+
+<DocsLayout title="ProjectCover · Design system · Paul Perigault">
+  <h1>ProjectCover</h1>
+  <p>
+    ProjectCover est la couverture d’un projet : toujours entourée d’un filet, pour qu’une capture
+    sur fond clair ne se confonde pas avec la page.
+  </p>
+
+  <h2>Capture et image large</h2>
+  <Grid>
+    <ProjectCover
+      src={capture}
+      alt="Capture d’interface : barre supérieure, menu latéral, titre et bouton"
+      layout="half"
+    />
+    <ProjectCover
+      src={large}
+      alt="Composition géométrique : disque bleu et colonne grise"
+      ratio="wide"
+      kind="photo"
+      layout="half"
+    />
+  </Grid>
+
+  <h2>Propriétés</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Propriété</th>
+        <th>Valeurs</th>
+        <th>Défaut</th>
+      </tr>
+    </thead>
+    <tbody>
+      {props.map(([name, values, fallback]) => (
+        <tr>
+          <td>
+            <code>{name}</code>
+          </td>
+          <td>{values}</td>
+          <td>{fallback}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</DocsLayout>
