@@ -16,6 +16,7 @@
   --color-fg: var(--pp-color-fg);
   --color-focus: var(--pp-color-focus);
   --color-line: var(--pp-color-line);
+  --color-media-placeholder: var(--pp-color-media-placeholder);
   --color-muted: var(--pp-color-muted);
   --color-on-accent: var(--pp-color-on-accent);
   --color-status-degraded: var(--pp-color-status-degraded);
