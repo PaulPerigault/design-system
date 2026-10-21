@@ -68,6 +68,7 @@
     "./Progress.astro": "./src/feedback/Progress.astro",
     "./Dialog.astro": "./src/feedback/Dialog.astro",
     "./Status.astro": "./src/feedback/Status.astro",
+    "./InvokerFallback.astro": "./src/feedback/InvokerFallback.astro",
     "./Separator.astro": "./src/content/Separator.astro",
     "./Accordion.astro": "./src/content/Accordion.astro",
     "./Table.astro": "./src/content/Table.astro",

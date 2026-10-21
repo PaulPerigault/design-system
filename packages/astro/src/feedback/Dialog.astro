@@ -1,9 +1,9 @@
 ---
 /**
  * Dialog : `<dialog>` natif modal, sans script. Le déclencheur porte `commandfor={id}
- * command="show-modal"` (Invoker Commands, HTML) ; sans cette API, un behavior livré plus tard
- * l'ouvrira sur ce même balisage. Fermeture : bouton `closeLabel` (`<form method="dialog">`),
- * Échap, clic hors boîte (`closedby="any"`, Chrome/Edge 134+, Firefox 141+). Focus : navigateur.
+ * command="show-modal"` (Invoker Commands, HTML) ; sans cette API, `InvokerFallback` rejoue ce
+ * même balisage. Fermeture : bouton `closeLabel` (`<form method="dialog">`), Échap, clic hors
+ * boîte (`closedby="any"`, repris par `InvokerFallback` là où il manque). Focus : navigateur.
  * `:modal` remet les marges auto, que Stack ou Cluster annulent sur leurs enfants.
  */
 interface Props {

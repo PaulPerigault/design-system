@@ -1,5 +1,6 @@
 ---
 import Gallery from '@paulperigault/astro/Gallery.astro';
+import InvokerFallback from '@paulperigault/astro/InvokerFallback.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
 import capture from '../../assets/media/capture.png';
 import carre from '../../assets/media/carre.jpg';
@@ -42,6 +43,7 @@ const props = [
   <Gallery id="galerie-simple" items={items.slice(0, SIMPLE)} ratio="landscape" />
 
   <h2>Agrandissement</h2>
+  <InvokerFallback />
   <Gallery id="galerie" items={items} enlarge labels={{ open: 'Agrandir', close: 'Fermer' }} />
 
   <h2>Propriétés</h2>
