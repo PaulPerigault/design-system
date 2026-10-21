@@ -450,3 +450,26 @@ Décisions du propriétaire, prises pendant l'étape 0 :
 - **Bac à sable de Claude Code** : essayé le 2026-10-20 ; une écriture dans `~/Documents` a réussi malgré `sandbox.enabled` et `/sandbox`. Il est désactivé et le risque est accepté (`docs/decisions-log.md`).
 - **Kiro en priorité** tant qu'il reste des crédits : implémentation, tests, docs, fragments et revues (revue `claude-opus-5.5` + revue croisée d'un autre éditeur disponible dans Kiro). Les sous-agents Claude ne servent qu'en repli. La proportion Kiro / Claude est notée à chaque fin de lot.
 - **Compte Kiro** : offert par un tiers, géré par une organisation (IAM Identity Center) ; aucun secret ne transite par Kiro.
+
+## Addendum 3 (2026-10-21) : phase 2 « Excellence » (L10 à L14)
+
+Ordre de mission du propriétaire (`ds-brief/prompt-phase2-excellence.md`), reporté ici. Exécution
+séquentielle par l'orchestrateur seul (Kiro épuisé, D-016), un relecteur par lot pour les tâches
+difficiles ; mêmes garde-fous, interdits et règle de preuve « prouvé / convention / préférence ».
+
+- **L10 — corrections et hygiène** : favicon du portfolio servi par la doc (empreintes SHA-256),
+  `docs/photos-review.md`, identité git locale `PaulPerigault` (adresse noreply) et relecture du
+  message de squash sur `develop` (D-004), tableaux de propriétés générés depuis les
+  `interface Props`, propriétés physiques dans les classes Tailwind, mineurs de L6.
+- **L11 — référentiel** (`docs/benchmark/`) : design systems publiés, grands sites (publié et
+  observé, jamais mélangés), science en source primaire, normes en vigueur (WCAG 2.2, RGAA,
+  EN 301 549, EAA), panel d'environ 25 acteurs, `gap.md` qui définit L12 à L14.
+- **L12 — mobile d'abord, ordinateur excellent** : matrice d'appareils, cibles, formulaires,
+  zones sûres, budgets de performance en échec bloquant, clavier, régression visuelle.
+- **L13 — documentation** : gabarit unique de page, langage simple, recherche statique,
+  déclaration d'accessibilité RGAA, procédure manuelle pour les lecteurs d'écran.
+- **L14 — lisible par les IA** : `llms.txt`, Markdown par page, registre statique, paquet
+  `@paulperigault/mcp` (stdio, lecture seule), ADR « MCP », gabarit `create` avec `.mcp.json`.
+
+Toujours interdits : `apply`, publication, fusion ou push vers `main`, modification du favicon,
+de `~/.npmrc` et des réglages globaux.
