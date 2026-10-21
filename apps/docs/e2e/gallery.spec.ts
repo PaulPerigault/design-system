@@ -53,9 +53,15 @@ for (const javaScriptEnabled of [true, false]) {
   });
 }
 
-test('une colonne à 390 px, trois à 1280 px', async ({ page }) => {
+/** Fenêtre où le conteneur est entre trois quarts de mesure et mesure : deux colonnes. */
+const TABLET = { width: 600, height: 900 };
+
+test('une colonne à 390 px, deux à 600 px, trois à 1280 px', async ({ page }) => {
   await open(page, PATH, VIEWPORTS[1]);
   expect(await columns(page)).toBe(1);
+  await page.setViewportSize(TABLET);
+  await page.goto(PATH);
+  expect(await columns(page)).toBe(2);
   await open(page, PATH, VIEWPORTS[0]);
   expect(await columns(page)).toBe(3);
 });

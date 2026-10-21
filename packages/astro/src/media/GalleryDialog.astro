@@ -15,14 +15,25 @@ interface Props {
 }
 
 const { id, item, closeLabel } = Astro.props;
+const captionId = item.caption ? `${id}-legende` : undefined;
 ---
 
-<dialog class="pp-gallery-dialog" id={id} aria-label={item.alt} closedby="any">
+<dialog
+  class="pp-gallery-dialog"
+  id={id}
+  aria-label={item.alt}
+  aria-describedby={captionId}
+  closedby="any"
+>
   <button type="button" class="pp-gallery-dialog__close" commandfor={id} command="close">
     {closeLabel}
   </button>
   <Photo src={item.src} alt={item.alt} layout="page" />
-  {item.caption && <p class="pp-gallery-dialog__caption">{item.caption}</p>}
+  {item.caption && (
+    <p class="pp-gallery-dialog__caption" id={captionId}>
+      {item.caption}
+    </p>
+  )}
 </dialog>
 
 <style>

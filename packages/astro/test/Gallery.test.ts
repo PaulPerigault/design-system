@@ -44,7 +44,7 @@ describe('Gallery', () => {
     });
   });
 
-  it('enlarge : bouton de fermeture par dialog, légende si fournie', async () => {
+  it('enlarge : bouton de fermeture par dialog, image différée', async () => {
     const dom = await renderDom(Gallery, { props: ENLARGE });
     const dialogs = [...dom.querySelectorAll('dialog')];
     for (const dialog of dialogs) {
@@ -53,8 +53,15 @@ describe('Gallery', () => {
       expect(close?.textContent?.trim()).toBe('Fermer');
       expect(dialog.querySelector('img')?.getAttribute('loading')).toBe('lazy');
     }
-    expect(dialogs[0]?.textContent).toContain('Bande claire en bas.');
-    expect(dialogs[1]?.querySelector('p')).toBeNull();
+  });
+
+  it('légende si fournie, reliée au dialog par aria-describedby', async () => {
+    const dom = await renderDom(Gallery, { props: ENLARGE });
+    const [first, second] = [...dom.querySelectorAll('dialog')];
+    const describedBy = first?.getAttribute('aria-describedby') ?? '';
+    expect(dom.getElementById(describedBy)?.textContent).toContain('Bande claire en bas.');
+    expect(second?.querySelector('p')).toBeNull();
+    expect(second?.hasAttribute('aria-describedby')).toBe(false);
   });
 
   it('identifiants uniques, aucun script ni style', async () => {
