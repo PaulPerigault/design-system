@@ -1,0 +1,56 @@
+---
+import ArtDirection from '@paulperigault/astro/ArtDirection.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import large from '../../assets/media/large.jpg';
+import largeEtroit from '../../assets/media/large-etroit.jpg';
+
+const props = [
+  ['src', 'image par défaut, importée localement', 'aucun'],
+  ['sources', "{ at: 'narrow' | 'medium', src }[] ; un recadrage par point de rupture", 'aucun'],
+  ['alt', 'texte alternatif, commun à tous les recadrages', 'aucun'],
+  ['decorative', 'true : alt="" ; exclusif de alt', 'aucun'],
+  ['priority', 'booléen ; loading="eager" et fetchpriority="high"', 'false'],
+  ['layout', "'page' | 'measure' | 'half' | 'third' | 'avatar' ; règle sizes", "'page'"],
+  ['kind', "'photo' | 'capture' | 'illustration'", "'photo'"],
+  ['class', 'placement dans le parent', 'aucun'],
+];
+---
+
+<DocsLayout title="ArtDirection · Design system · Paul Perigault">
+  <h1>ArtDirection</h1>
+  <p>
+    ArtDirection sert un recadrage resserré sur le sujet aux écrans étroits au lieu de réduire
+    l’image large : chaque source porte les dimensions de son recadrage, la place est réservée avant
+    le chargement.
+  </p>
+
+  <h2>Recadrage étroit sous la mesure</h2>
+  <ArtDirection
+    src={large}
+    sources={[{ at: 'narrow', src: largeEtroit }]}
+    alt="Composition géométrique : disque bleu et colonne grise au-dessus d’une bande d’horizon"
+    priority
+  />
+
+  <h2>Propriétés</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Propriété</th>
+        <th>Valeurs</th>
+        <th>Défaut</th>
+      </tr>
+    </thead>
+    <tbody>
+      {props.map(([name, values, fallback]) => (
+        <tr>
+          <td>
+            <code>{name}</code>
+          </td>
+          <td>{values}</td>
+          <td>{fallback}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</DocsLayout>

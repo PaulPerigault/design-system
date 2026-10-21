@@ -48,3 +48,20 @@ export type PhotoProps = AltProps & {
   /** Réservé au placement du composant dans son parent. */
   class?: string;
 };
+
+/** Recadrage servi à partir d'un point de rupture (`ArtDirection`). */
+export interface ArtSource {
+  at: Breakpoint;
+  src: ImageMetadata;
+}
+
+/** Props de `ArtDirection` : image par défaut plus recadrages par largeur d'écran. */
+export type ArtDirectionProps = AltProps & {
+  src: ImageMetadata;
+  sources: ArtSource[];
+  priority?: boolean;
+  layout?: MediaLayout;
+  kind?: MediaKind;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+};
