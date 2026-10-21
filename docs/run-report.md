@@ -127,3 +127,14 @@ Commandes exactes dans [manual-steps.md](manual-steps.md). Dans l'ordre :
 - Règle `physical-property` étendue aux classes Tailwind physiques (`ml-*`, `text-left`…).
 - Mineurs de L6 : `sizes` du dialogue d'agrandissement, collision d'identifiants entre deux
   galeries aux préfixes proches, cache de `dominantColor` en `astro dev`.
+
+## Phase 2 : état au 2026-10-21 (arrêt demandé)
+
+- L10 (#13) et L11 (#14) fusionnés dans `develop`.
+- L12 en cours sur `lot/L12`, poussée, non fusionnée : T12.01 à T12.05 faites (matrice de
+  13 appareils, reflow, focus, `enterkeyhint`, menu mobile).
+- Tâche en cours : T12.06 (préchargement de la police du corps et test de performance sous CPU ×4
+  et Slow 4G), **non commencée dans le code**. Suivantes : T12.07 régression visuelle en CI, bilan,
+  PR ; puis L13 et L14.
+- Vérifier : `git switch lot/L12 && npm ci && npm run verify && npm run build && npx playwright
+test -c apps/docs/playwright.config.ts`.
