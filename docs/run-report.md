@@ -1,38 +1,129 @@
 # Rapport d'exécution
 
-Mis à jour à chaque fin de lot. Dernière mise à jour : 2026-10-20, fin de L5.
+Dernière mise à jour : 2026-10-21, 10:01, après la fusion de L7. Le journal détaillé est dans
+`docs/journal/`, les décisions dans `docs/decisions-log.md`, chaque lot dans `docs/lots/`.
 
 ## Lots
 
-| Lot | Statut   | Bilan                         |
-| --- | -------- | ----------------------------- |
-| L0  | terminé  | [docs/lots/L0.md](lots/L0.md) |
-| L1  | terminé  | [docs/lots/L1.md](lots/L1.md) |
-| L2  | terminé  | [docs/lots/L2.md](lots/L2.md) |
-| L3  | terminé  | [docs/lots/L3.md](lots/L3.md) |
-| L4  | en cours | formulaires (orchestrateur)   |
-| L8  | en cours | garde-fous et CLI (ds-lead)   |
-| L6  | file     | images et photos (ds-lead)    |
+| Lot | Statut                      | Contenu                                                            | Bilan             |
+| --- | --------------------------- | ------------------------------------------------------------------ | ----------------- |
+| L0  | fusionné (#1)               | squelette, CI, garde-fous de l'assistant, agents Kiro, dispatcher  | [L0](lots/L0.md)  |
+| L1  | fusionné (#2)               | pilote Stack via Kiro                                              | [L1](lots/L1.md)  |
+| L2  | fusionné (#3)               | identité « Encre », tokens DTCG OKLCH, générateur, contraste       | [L2](lots/L2.md)  |
+| —   | fusionné (#4)               | dispatcher v2 : coordination partagée, amorce, moteur ds-lead      | —                 |
+| L3  | fusionné (#5)               | 7 primitives de layout                                             | [L3](lots/L3.md)  |
+| L4  | fusionné (#6)               | 7 composants de formulaire                                         | [L4](lots/L4.md)  |
+| L5  | fusionné (#7)               | 10 composants de retour et de structure                            | [L5](lots/L5.md)  |
+| L8  | fusionné (#9)               | `@paulperigault/guards` empaqueté, CLI `create`, job « site »      | [L8](lots/L8.md)  |
+| L6  | fusionné (#10)              | pipeline d'images, 7 composants média                              | [L6](lots/L6.md)  |
+| L7  | fusionné (#11)              | doc complète, a11y sur toutes les pages, registre assemblé, mesure | [L7](lots/L7.md)  |
+| L9  | **arrêté à la préparation** | paquets non publiés (404 sur les cinq) : migration impossible      | « L9 » ci-dessous |
 
-## Proportion Kiro / Claude
+État de `develop` : `npm run verify` vert (1117 tests unitaires, `astro check` sans erreur,
+registre à jour), `npm run e2e` vert (338 tests Playwright : axe sur les 33 pages × 2 thèmes ×
+2 fenêtres, 1.4.12, cibles, clavier, CLS, mesure).
 
-| Lot | Tâches Kiro    | Tâches Claude      | Crédits Kiro          |
-| --- | -------------- | ------------------ | --------------------- |
-| L0  | 0              | 10 (orchestrateur) | < 0,1 (vérifications) |
-| L1  | 1 (+ 3 revues) | 0 (orchestration)  | 10,63                 |
+## L9 : migration du portfolio
 
-## PR ouvertes
+Le kickoff conditionne la migration aux paquets publiés en dist-tag `next`, donc au trusted
+publisher. Le registre public répond 404 pour `@paulperigault/{tokens,css,astro,guards,create}`
+(vérifié le 2026-10-21 sans lire `~/.npmrc`) : la branche s'arrête ici, comme prévu. Fait côté
+portfolio : test des empreintes SHA-256 du favicon et du logo (PR portfolio #270, fusionnée). À faire après
+la publication : remplacer les composants dupliqués du portfolio par `@paulperigault/astro@next`,
+lot par lot (layout, formulaire de contact, images), avec ses e2e comme filet.
 
-- Portfolio #267 (garde-fous de l'assistant) : fusionnée dans `develop`.
-- Design system #1 (L0) : fusionnée dans `develop`.
-- Portfolio #269 (IaC du dépôt design-system) : fusionnée dans `develop` ; **apply en attente du propriétaire**.
-- Design system #2 (L1) : fusionnée dans `develop`.
+## Bilan Kiro
+
+Les 1000 crédits offerts sont **épuisés** (quota mensuel `MONTHLY_REQUEST_COUNT` atteint le
+2026-10-21 vers 08:55, non renouvelable). Kiro est marqué indisponible (D-016) ; la fin de L6 et
+L7 ont été faites par l'orchestrateur seul.
+
+### Crédits tracés : ≈ 865 sur 1000
+
+| Poste                                    | Crédits | Source                                  |
+| ---------------------------------------- | ------: | --------------------------------------- |
+| Exécutions de tâches (105 tentatives)    |  428,80 | `.agents/routing-log.jsonl`             |
+| Revues (34)                              |   99,24 | flux `.agents/runs/*.review-*.jsonl`    |
+| Sessions de chef de lot ds-lead (L8, L6) |  337,31 | journal (257,47 pour L8, 79,84 pour L6) |
+| **Total tracé**                          | **865** |                                         |
+
+Les ≈ 135 crédits restants ne figurent dans aucune de ces sources : essais de prise en main,
+appels de contrôle du quota, sessions interrompues dont le flux est perdu (8 entrées du journal de
+routage ont dû être reconstruites après un `reset`).
+
+### Par modèle
+
+| Modèle            | Usage                 | Tentatives | Réussies | Taux | Crédits |
+| ----------------- | --------------------- | ---------: | -------: | ---: | ------: |
+| claude-opus-5.5   | tâches hard           |         29 |       21 | 72 % |  245,82 |
+|                   | revues                |         19 |        — |    — |   71,40 |
+|                   | chef de lot (ds-lead) |          2 |        — |    — |  337,31 |
+| claude-sonnet-5.5 | tâches std            |         57 |       38 | 67 % |  165,90 |
+| claude-haiku-4.5  | tâches light          |         11 |        8 | 73 % |   11,83 |
+| qwen3-coder-next  | tâches mech           |          7 |        4 | 57 % |    5,26 |
+| gpt-5.6-terra     | revues croisées       |         15 |        — |    — |   27,84 |
+
+Opus au total : ≈ 655 crédits (76 % du tracé), dont plus de la moitié en sessions de chef de lot.
+
+### Tâches
+
+- **70 tâches confiées à Kiro, 66 abouties** (94 %). Non abouties : T2.11 (défaut d'a11y hors de
+  son périmètre, repris par l'orchestrateur) ; T8.17 et T8.22, abandonnées pour un critère
+  d'acceptation faux (le bit exécutable de T8.22 a été posé dans les changements partagés de L8) ;
+  T6.02, refusée par le profil des exécutants (écriture dans `tools/**`), réécrite en T6.12.
+- Causes des 34 tentatives ratées : acceptation en échec 28 (taille > 120 lignes, formatage,
+  export manquant, base déjà rouge, critère faux), aucun fichier modifié 4 (refus de permission),
+  agent introuvable 1, inconnue 1.
+- Tâches faites par l'orchestrateur après l'arrêt de Kiro : 8 en L6 (T6.04 à T6.10, T6.12),
+  7 en L7, plus les corrections issues des relectures.
+
+### Leçons de routage
+
+1. **Le pilotage coûte plus que l'exécution.** ds-lead a dépensé 257 crédits pour piloter L8,
+   contre 157 d'exécution et 38 de revues. Un chef de lot Opus ne se justifie que sur un lot long
+   et peu supervisé ; ici l'orchestrateur découpait et validait déjà.
+2. **Opus pour le raisonnement, pas pour le volume.** Les escalades Opus dues à la seule limite
+   de 120 lignes ou au formatage (T2.04 : 23 crédits, dont une trentaine de retouches Prettier)
+   sont perdues : formater avant l'acceptation (D-006), exclure les fichiers générés de Prettier
+   (D-011), demander dans l'énoncé de découper au-delà de ~100 lignes.
+3. **Énoncés exacts.** Exports non déclarés, acceptation incomplète (taille, ESLint,
+   `astro check`), critères faux et base rouge expliquent la plupart des échecs ; le contrôle
+   préalable de la base (D-015) et les exports déclarés en tête de lot les ont fait disparaître.
+4. **Petits modèles, sortie vérifiée par script.** Haiku et Qwen ont fait les tâches mécaniques
+   (tokens, fragments de registre, corrections ciblées) pour moins de 2 % des crédits ; un
+   `meta.tokens` inventé en L3 rappelle qu'il faut recalculer ce qui peut l'être (assembleur L7).
+5. **Une revue par tâche hard suffit.** Les revues ont trouvé de vrais défauts (T3.02, tâches hard
+   de L6, repli des Invoker Commands en L7) ; les tâches std se contrôlent par l'acceptation.
+6. **Lire `result.json` avant de supprimer un worktree** : 8,3 crédits perdus en L3.
 
 ## Actions du propriétaire
 
-Voir [docs/manual-steps.md](manual-steps.md) : extension des jetons GitHub, `apply` OpenTofu,
-trusted publisher npm (et `0.0.0` d'amorce si nécessaire), fusions vers `main`.
+Commandes exactes dans [manual-steps.md](manual-steps.md). Dans l'ordre :
 
-## ds-lead
+1. **Étendre les deux jetons GitHub IaC** (`GITHUB_IAC_TOKEN`, `IAC_GITHUB_READONLY_TOKEN`) au
+   dépôt `PaulPerigault/design-system` (réglages GitHub, sans API).
+2. **`apply` OpenTofu** des trois briques du portfolio (`infra/github`, `infra/identity`,
+   `infra/`), chacune après lecture de son plan : crée `main`, les rulesets, l'environnement
+   `npm-publish`, le projet Pages et `ds.paulperigault.dev`.
+3. **Trusted publisher npm** pour les cinq paquets (avec une `0.0.0` d'amorce si la page de
+   réglages n'existe pas encore), workflow `release.yml`, environnement `npm-publish`.
+4. **Fusions vers `main`** : une PR `develop → main` par release, puis la PR de release-please.
+5. Ensuite : L9 (migration du portfolio vers `next`), reprise par l'assistant.
 
-L8 (session 1, 00:42 → 01:36) : **≈ 452 crédits** = exécutions 157,18 + revues 38,03 + session de chef de lot 257,47 (985 appels d'outils). La session de pilotage coûte plus que l'exécution : à surveiller. L6 en cours depuis 01:36.
+## PR
+
+| Dépôt         | PR                     | État                                                 |
+| ------------- | ---------------------- | ---------------------------------------------------- |
+| design-system | #1 à #7, #9, #10, #11  | fusionnées dans `develop`                            |
+| design-system | #8                     | fermée (remplacée par #9 : sujets de commit refusés) |
+| portfolio     | #263, #265, #267, #269 | fusionnées dans `develop`                            |
+| portfolio     | #264                   | fermée (sonde temporaire)                            |
+| portfolio     | #270                   | fusionnée : empreintes du favicon                    |
+| portfolio     | #271                   | `vite` 8.3.5 (avis de sécurité du 2026-10-21)        |
+
+## Reste à faire hors L9
+
+- Tableaux de propriétés de la doc : 28 pages à passer sur un composant commun bâti sur `Table`.
+- Règle `physical-property` étendue aux classes Tailwind physiques (`ml-*`, `text-left`…).
+- Mineurs de L6 : `sizes` du dialogue d'agrandissement, collision d'identifiants entre deux
+  galeries aux préfixes proches, cache de `dominantColor` en `astro dev`.
