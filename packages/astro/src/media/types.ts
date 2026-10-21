@@ -57,6 +57,8 @@ export type PhotoProps = AltProps & {
   kind?: MediaKind;
   /** Filet autour du cadre (captures sur fond clair). */
   rule?: boolean;
+  /** Remplace `sizes` déduit de `layout`, quand la hauteur borne l'image (dialogue). */
+  sizes?: string;
   /** Réservé au placement du composant dans son parent. */
   class?: string;
 };

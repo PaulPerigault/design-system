@@ -12,7 +12,8 @@ type Props = GalleryProps;
 
 const { id, items, ratio = 'square' } = Astro.props;
 const labels = Astro.props.enlarge === true ? Astro.props.labels : undefined;
-const dialogId = (index: number): string => `${id}-${index + 1}`;
+// `--image-` sépare le préfixe du rang : deux galeries `g` et `g-1` ne partagent aucun identifiant.
+const dialogId = (index: number): string => `${id}--image-${index + 1}`;
 ---
 
 <div class="pp-gallery">

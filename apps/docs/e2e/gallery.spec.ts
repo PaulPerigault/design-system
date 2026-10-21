@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { THEMES, VIEWPORTS, open } from './helpers';
 
 const PATH = '/components/gallery/';
-const FIRST = 'galerie-1';
+const FIRST = 'galerie--image-1';
 const MAX_TABS = 40;
 
 async function tabTo(page: Page, selector: string): Promise<void> {

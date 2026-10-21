@@ -84,4 +84,14 @@ describe('Gallery', () => {
     expectTypeOf<{ id: string; items: Item[]; enlarge: true }>().not.toExtend<GalleryProps>();
     expectTypeOf<{ id: string; items: { src: ImageMetadata }[] }>().not.toExtend<GalleryProps>();
   });
+
+  it('deux galeries aux préfixes proches : identifiants distincts, sizes bornée par la hauteur', async () => {
+    const html = [
+      await renderComponent(Gallery, { props: { ...ENLARGE, id: 'g' } }),
+      await renderComponent(Gallery, { props: { ...ENLARGE, id: 'g-1' } }),
+    ].join('');
+    const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(html).toMatch(/sizes="min\(100vw, calc\(1\.500 \* \(100vh - 12rem\)\)\)"/);
+  });
 });
