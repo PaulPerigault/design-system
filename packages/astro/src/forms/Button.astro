@@ -1,5 +1,5 @@
 ---
-import { variants } from '../lib/variants';
+import { button } from './button-variants';
 
 /**
  * Button : `<button>` natif, ou `<a>` quand `href` est fourni (mêmes classes). Zéro JavaScript.
@@ -7,26 +7,19 @@ import { variants } from '../lib/variants';
  * Un lien désactivé perd son `href` et porte `role="link"` + `aria-disabled="true"`.
  */
 interface Props {
+  /** Importance de l'action (défaut `primary`, l'action principale, une par vue). */
   tone?: 'primary' | 'secondary' | 'quiet';
+  /** Taille (défaut `m`) ; les deux respectent la cible de 44 px. */
   size?: 'm' | 'l';
+  /** Type du bouton ; `submit` seulement dans un formulaire. */
   type?: 'button' | 'submit' | 'reset';
+  /** Désactive le bouton (ou le lien, rendu `aria-disabled`). */
   disabled?: boolean;
+  /** Rend un lien `<a>` stylé en bouton au lieu d'un `<button>` : pour naviguer, pas pour agir. */
   href?: string;
+  /** Réservé au placement du composant dans son parent. */
   class?: string;
 }
-
-const button = variants({
-  base: 'pp-button',
-  variants: {
-    tone: {
-      primary: 'pp-button--primary',
-      secondary: 'pp-button--secondary',
-      quiet: 'pp-button--quiet',
-    },
-    size: { m: 'pp-button--m', l: 'pp-button--l' },
-  },
-  defaults: { tone: 'primary', size: 'm' },
-});
 
 const { tone, size, type = 'button', disabled = false, href, class: className } = Astro.props;
 const classes = [button({ tone, size }), className].filter(Boolean).join(' ');

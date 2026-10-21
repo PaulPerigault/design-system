@@ -1,29 +1,7 @@
 ---
 import Separator from '@paulperigault/astro/Separator.astro';
-import Table from '@paulperigault/astro/Table.astro';
+import PropsTable from '../../components/PropsTable.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
-
-const columns = [
-  { key: 'name', label: 'Nom' },
-  { key: 'type', label: 'Type' },
-  { key: 'fallback', label: 'Défaut' },
-  { key: 'role', label: 'Rôle' },
-];
-const rows = [
-  {
-    name: 'decorative',
-    type: 'boolean',
-    fallback: 'false',
-    role: 'false : hr lu comme séparateur ; true : masqué aux technologies d’assistance.',
-  },
-  {
-    name: 'space',
-    type: "'xs' | 's' | 'm' | 'l' | 'xl'",
-    fallback: "'m'",
-    role: 'Espacement autour du filet.',
-  },
-  { name: 'class', type: 'string', fallback: 'aucun', role: 'Placement dans le parent.' },
-];
 ---
 
 <DocsLayout title="Separator · Design system · Paul Perigault">
@@ -56,5 +34,5 @@ const rows = [
   </div>
 
   <h2>Propriétés</h2>
-  <Table caption="Propriétés de Separator" columns={columns} rows={rows} rowHeader="name" />
+  <PropsTable item="separator" title="Separator" />
 </DocsLayout>

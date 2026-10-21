@@ -6,10 +6,15 @@
  * Aucun texte en dur : le libellé vient de la prop `label`.
  */
 interface Props {
+  /** Identifiant du contrôle, relié à son libellé. */
   id: string;
+  /** Nom envoyé avec le formulaire. */
   name: string;
+  /** Libellé visible, nom accessible de l'interrupteur. */
   label: string;
+  /** Activé au chargement. */
   checked?: boolean;
+  /** Désactive l'interrupteur. */
   disabled?: boolean;
   /** Identifiant(s) du texte d'aide ou d'erreur associé (`aria-describedby`). */
   describedBy?: string | undefined;

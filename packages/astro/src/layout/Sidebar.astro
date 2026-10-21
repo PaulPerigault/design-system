@@ -7,8 +7,11 @@
 interface Props {
   /** Côté de la barre : `start` = premier enfant, `end` = dernier enfant. */
   side?: 'start' | 'end';
+  /** Espacement entre les enfants (token `--pp-space-*`). */
   space?: 'xs' | 's' | 'm' | 'l' | 'xl';
+  /** Largeur de la colonne latérale avant que les deux colonnes ne s'empilent. */
   sideWidth?: 'narrow' | 'medium';
+  /** Élément HTML rendu (sémantique de la page). */
   as?: 'div' | 'section' | 'article' | 'main' | 'aside';
   /** Réservé au placement du composant dans son parent. */
   class?: string;

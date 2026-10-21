@@ -1,16 +1,8 @@
 ---
 import Stack from '@paulperigault/astro/Stack.astro';
 import Switch from '../../../../../packages/astro/src/forms/Switch.astro';
+import PropsTable from '../../components/PropsTable.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
-
-const props = [
-  ['id', 'string', 'Obligatoire. Relie le libellé à la case.'],
-  ['name', 'string', 'Obligatoire. Nom du champ envoyé avec le formulaire.'],
-  ['label', 'string', 'Obligatoire. Libellé visible, fourni par le site (traduit).'],
-  ['checked', 'boolean', 'Faux par défaut. État initial.'],
-  ['disabled', 'boolean', 'Faux par défaut. Désactive le champ.'],
-  ['describedBy', 'string', 'Identifiant du texte d’aide ou d’erreur (aria-describedby).'],
-] as const;
 ---
 
 <DocsLayout title="Switch · Design system · Paul Perigault">
@@ -33,27 +25,6 @@ const props = [
     <h2>Désactivé</h2>
     <Switch id="demo-disabled" name="demo-disabled" label="Mode hors ligne" checked disabled />
     <h2>Propriétés</h2>
-    <table>
-      <thead>
-        <tr>
-          <th scope="col">Prop</th>
-          <th scope="col">Type</th>
-          <th scope="col">Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        {props.map(([name, type, description]) => (
-          <tr>
-            <th scope="row">
-              <code>{name}</code>
-            </th>
-            <td>
-              <code>{type}</code>
-            </td>
-            <td>{description}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <PropsTable item="switch" title="Switch" />
   </Stack>
 </DocsLayout>

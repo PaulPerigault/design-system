@@ -1,5 +1,6 @@
 ---
 import Breadcrumb from '@paulperigault/astro/Breadcrumb.astro';
+import PropsTable from '../../components/PropsTable.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
 
 const items = [
@@ -35,47 +36,5 @@ const items = [
   </ul>
 
   <h2>Propriétés</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Propriété</th>
-        <th>Valeurs</th>
-        <th>Défaut</th>
-        <th>Rôle</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-          <code>label</code>
-        </td>
-        <td>texte</td>
-        <td>obligatoire</td>
-        <td>
-          Nom accessible du repère (<code>aria-label</code>).
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>items</code>
-        </td>
-        <td>
-          <code>{'{ href?, label }[]'}</code>
-        </td>
-        <td>obligatoire</td>
-        <td>
-          Éléments dans l’ordre. Le dernier est la page courante, rendu sans lien même avec{' '}
-          <code>href</code>.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>class</code>
-        </td>
-        <td>texte</td>
-        <td>aucun</td>
-        <td>Placement dans le parent uniquement.</td>
-      </tr>
-    </tbody>
-  </table>
+  <PropsTable item="breadcrumb" title="Breadcrumb" />
 </DocsLayout>

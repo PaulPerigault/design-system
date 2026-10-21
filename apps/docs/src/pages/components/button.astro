@@ -1,15 +1,7 @@
 ---
 import Button from '../../../../../packages/astro/src/forms/Button.astro';
+import PropsTable from '../../components/PropsTable.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
-
-const props = [
-  ['tone', "'primary' | 'secondary' | 'quiet'", 'primary', 'Fond accent, bordure, ou souligné.'],
-  ['size', "'m' | 'l'", 'm', 'Taille du texte et de l’espacement interne.'],
-  ['type', "'button' | 'submit' | 'reset'", 'button', 'Type du bouton natif.'],
-  ['disabled', 'boolean', 'false', 'Lien : sans href, aria-disabled="true".'],
-  ['href', 'string', 'aucun', 'Rend un lien <a> avec les mêmes classes.'],
-  ['class', 'string', 'aucun', 'Réservé au placement dans le parent.'],
-];
 ---
 
 <DocsLayout title="Button · Design system · Paul Perigault">
@@ -46,29 +38,5 @@ const props = [
   </p>
 
   <h2>Propriétés</h2>
-  <table>
-    <caption>Propriétés de Button</caption>
-    <thead>
-      <tr>
-        <th scope="col">Nom</th>
-        <th scope="col">Type</th>
-        <th scope="col">Défaut</th>
-        <th scope="col">Rôle</th>
-      </tr>
-    </thead>
-    <tbody>
-      {props.map(([name, type, byDefault, role]) => (
-        <tr>
-          <th scope="row">
-            <code>{name}</code>
-          </th>
-          <td>
-            <code>{type}</code>
-          </td>
-          <td>{byDefault}</td>
-          <td>{role}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+  <PropsTable item="button" title="Button" />
 </DocsLayout>

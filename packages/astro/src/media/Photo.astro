@@ -22,6 +22,7 @@ const {
   layout = 'measure',
   kind = 'photo',
   rule = false,
+  sizes,
   class: className,
 } = Astro.props;
 
@@ -51,7 +52,7 @@ const loading = priority
     formats={[...FORMATS]}
     fallbackFormat={fallbackFormat(kind)}
     widths={widthsFor(layout, src.width)}
-    sizes={sizesFor(layout)}
+    sizes={sizes ?? sizesFor(layout)}
     quality={qualityFor(kind)}
     {...loading}
   />

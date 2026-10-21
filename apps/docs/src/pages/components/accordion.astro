@@ -1,5 +1,6 @@
 ---
 import Accordion from '@paulperigault/astro/Accordion.astro';
+import PropsTable from '../../components/PropsTable.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
 
 const items = [
@@ -43,50 +44,5 @@ const exclusiveItems = [
   </Accordion>
 
   <h2>Propriétés</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Propriété</th>
-        <th>Valeurs</th>
-        <th>Défaut</th>
-        <th>Rôle</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-          <code>items</code>
-        </td>
-        <td>
-          <code>{'{ id, summary, open? }[]'}</code>
-        </td>
-        <td>requis</td>
-        <td>
-          Un panneau par élément. Le contenu arrive par le slot nommé d’après <code>id</code>.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>exclusive</code>
-        </td>
-        <td>
-          <code>true | false</code>
-        </td>
-        <td>
-          <code>false</code>
-        </td>
-        <td>
-          Partage l’attribut <code>name</code> : un seul panneau ouvert à la fois.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>class</code>
-        </td>
-        <td>texte</td>
-        <td>aucun</td>
-        <td>Placement dans le parent uniquement.</td>
-      </tr>
-    </tbody>
-  </table>
+  <PropsTable item="accordion" title="Accordion" />
 </DocsLayout>

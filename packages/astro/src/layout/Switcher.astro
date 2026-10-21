@@ -5,8 +5,11 @@
  * `data-threshold` et `data-space` (CSP stricte : aucun `style` en ligne).
  */
 interface Props {
+  /** Largeur de conteneur sous laquelle les enfants s'empilent. */
   threshold?: 'measure' | 'page';
+  /** Espacement entre les enfants (token `--pp-space-*`). */
   space?: 'xs' | 's' | 'm' | 'l' | 'xl';
+  /** Élément rendu ; avec `ul` ou `ol`, les enfants doivent être des `<li>`. */
   as?: 'div' | 'section' | 'ul' | 'ol' | 'article';
   /** Réservé au placement du composant dans son parent. */
   class?: string;

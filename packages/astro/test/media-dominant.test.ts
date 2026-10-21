@@ -6,9 +6,10 @@ import type { DominantDeps, SharpFactory } from '../src/media/dominant';
 const fake = (dominant: { r: number; g: number; b: number }): SharpFactory =>
   vi.fn(() => ({ stats: () => Promise.resolve({ dominant }) }));
 
-const deps = (factory: SharpFactory): Required<DominantDeps> => ({
+const deps = (factory: SharpFactory, mtime = 1): Required<DominantDeps> => ({
   load: vi.fn(() => Promise.resolve({ default: factory })),
   cache: new Map(),
+  mtime: () => mtime,
 });
 
 describe('dominantColor : faux sharp', () => {
@@ -71,7 +72,18 @@ describe('dominantColor : cache par chemin', () => {
     await dominantColor(buffer, injected);
     await dominantColor(buffer, injected);
     expect(injected.load).toHaveBeenCalledTimes(4);
-    expect([...injected.cache.keys()]).toEqual(['/img/g.jpg', '/img/h.jpg']);
+    expect([...injected.cache.keys()]).toEqual(['/img/g.jpg@1', '/img/h.jpg@1']);
+  });
+});
+
+describe('dominantColor : fichier modifié', () => {
+  it('recalcule quand la date de modification change (serveur de dev)', async () => {
+    let modified = 1;
+    const injected = { ...deps(fake({ r: 1, g: 2, b: 3 })), mtime: () => modified };
+    await dominantColor('/img/i.jpg', injected);
+    modified = 2;
+    await dominantColor('/img/i.jpg', injected);
+    expect(injected.load).toHaveBeenCalledTimes(2);
   });
 });
 

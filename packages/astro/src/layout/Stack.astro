@@ -5,6 +5,7 @@
  * Zéro JavaScript ; l'espacement passe par `data-space` (CSP stricte : aucun `style` en ligne).
  */
 interface Props {
+  /** Espacement entre les enfants (token `--pp-space-*`). */
   space?: 'xs' | 's' | 'm' | 'l' | 'xl';
   /** Élément rendu. Avec `ul` ou `ol`, les enfants doivent être des `<li>`. */
   as?: 'div' | 'section' | 'ul' | 'ol' | 'article';

@@ -1,6 +1,7 @@
 ---
 import Gallery from '@paulperigault/astro/Gallery.astro';
 import InvokerFallback from '@paulperigault/astro/InvokerFallback.astro';
+import PropsTable from '../../components/PropsTable.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
 import capture from '../../assets/media/capture.png';
 import carre from '../../assets/media/carre.jpg';
@@ -22,14 +23,6 @@ const items = [
 
 /** Nombre d'images de la grille simple : une rangée à trois colonnes. */
 const SIMPLE = 3;
-
-const props = [
-  ['id', 'préfixe des identifiants des dialogues', 'aucun'],
-  ['items', '{ src, alt, caption? }[] ; alt obligatoire', 'aucun'],
-  ['ratio', "'portrait' | 'square' | 'landscape' | 'wide'", "'square'"],
-  ['enlarge', 'true : chaque vignette ouvre un dialogue modal, sans JavaScript', 'false'],
-  ['labels', '{ open, close } ; obligatoire avec enlarge', 'aucun'],
-];
 ---
 
 <DocsLayout title="Gallery · Design system · Paul Perigault">
@@ -47,24 +40,5 @@ const props = [
   <Gallery id="galerie" items={items} enlarge labels={{ open: 'Agrandir', close: 'Fermer' }} />
 
   <h2>Propriétés</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Propriété</th>
-        <th>Valeurs</th>
-        <th>Défaut</th>
-      </tr>
-    </thead>
-    <tbody>
-      {props.map(([name, values, fallback]) => (
-        <tr>
-          <td>
-            <code>{name}</code>
-          </td>
-          <td>{values}</td>
-          <td>{fallback}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+  <PropsTable item="gallery" title="Gallery" />
 </DocsLayout>

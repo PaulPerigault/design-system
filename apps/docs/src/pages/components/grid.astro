@@ -1,5 +1,6 @@
 ---
 import Grid from '@paulperigault/astro/Grid.astro';
+import PropsTable from '../../components/PropsTable.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
 ---
 
@@ -26,55 +27,5 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
   </Grid>
 
   <h2>Propriétés</h2>
-  <table>
-    <thead>
-      <tr>
-        <th scope="col">Propriété</th>
-        <th scope="col">Valeurs</th>
-        <th scope="col">Défaut</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row">
-          <code>space</code>
-        </th>
-        <td>
-          <code>xs | s | m | l | xl</code>
-        </td>
-        <td>
-          <code>m</code>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">
-          <code>min</code>
-        </th>
-        <td>
-          <code>narrow | medium | wide</code> (mesure ÷ 3, ÷ 2, × 0,75)
-        </td>
-        <td>
-          <code>medium</code>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">
-          <code>as</code>
-        </th>
-        <td>
-          <code>div | ul | ol | section</code>
-        </td>
-        <td>
-          <code>div</code>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">
-          <code>class</code>
-        </th>
-        <td>placement dans le parent uniquement</td>
-        <td>aucun</td>
-      </tr>
-    </tbody>
-  </table>
+  <PropsTable item="grid" title="Grid" />
 </DocsLayout>

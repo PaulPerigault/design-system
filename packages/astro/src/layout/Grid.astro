@@ -5,8 +5,11 @@
  * minimale passent par `data-space` et `data-min` (CSP stricte : aucun `style` en ligne).
  */
 interface Props {
+  /** Espacement entre les enfants (token `--pp-space-*`). */
   space?: 'xs' | 's' | 'm' | 'l' | 'xl';
+  /** Largeur minimale d'une colonne avant passage à la ligne (fraction de la mesure). */
   min?: 'narrow' | 'medium' | 'wide';
+  /** Élément rendu ; avec `ul` ou `ol`, les enfants doivent être des `<li>`. */
   as?: 'div' | 'ul' | 'ol' | 'section';
   /** Réservé au placement du composant dans son parent. */
   class?: string;

@@ -1,5 +1,6 @@
 ---
 import Select from '@paulperigault/astro/Select.astro';
+import PropsTable from '../../components/PropsTable.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
 
 const pays = [
@@ -7,19 +8,6 @@ const pays = [
   { value: 'be', label: 'Belgique' },
   { value: 'ch', label: 'Suisse' },
   { value: 'ca', label: 'Canada', disabled: true },
-];
-
-const props = [
-  ['id', 'chaîne, obligatoire ; relie le <label for>', 'aucun'],
-  ['name', 'chaîne, obligatoire', 'aucun'],
-  ['options', '{ value, label, disabled? }[]', 'aucun'],
-  ['value', 'valeur de l’option sélectionnée', 'aucune'],
-  ['placeholder', 'libellé d’une première option vide et désactivée', 'aucun'],
-  ['required', 'booléen', 'false'],
-  ['disabled', 'booléen', 'false'],
-  ['describedBy', 'identifiants des textes d’aide ou d’erreur', 'aucun'],
-  ['invalid', 'booléen ; pose aria-invalid="true"', 'false'],
-  ['class', 'placement dans le parent', 'aucun'],
 ];
 ---
 
@@ -60,24 +48,5 @@ const props = [
   <Select id="select-pays-off" name="pays-off" options={pays} value="fr" disabled />
 
   <h2>Propriétés</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Propriété</th>
-        <th>Valeurs</th>
-        <th>Défaut</th>
-      </tr>
-    </thead>
-    <tbody>
-      {props.map(([name, values, fallback]) => (
-        <tr>
-          <td>
-            <code>{name}</code>
-          </td>
-          <td>{values}</td>
-          <td>{fallback}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+  <PropsTable item="select" title="Select" />
 </DocsLayout>

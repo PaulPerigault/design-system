@@ -60,4 +60,35 @@ const size = { width: 600, height: 400 };
     const [problem] = analyze('a.css', 'a { margin-left: 0; }', ALL);
     expect(problem?.message).toMatch(/logique/);
   });
+
+  it.each([
+    'ml-2',
+    'md:pr-4',
+    '-left-1',
+    'right-0',
+    'text-left',
+    'rounded-l-md',
+    'rounded-tr',
+    'border-r-2',
+    'float-right',
+    'scroll-pl-4',
+  ])('classe Tailwind physique refusée : %s', (utility) =>
+    expect(markup(`<p class="${utility}">`)).toEqual([PHYSICAL]),
+  );
+
+  it.each([
+    'ms-2',
+    'pe-4',
+    'start-0',
+    'text-start',
+    'rounded-s-md',
+    'border-e-2',
+    'border-line',
+    'rounded-lg',
+    'mt-2',
+    'mx-auto',
+    'leading-tight',
+  ])('classe logique ou neutre permise : %s', (utility) =>
+    expect(markup(`<p class="${utility}">`)).toEqual([]),
+  );
 });

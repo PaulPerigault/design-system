@@ -14,7 +14,9 @@ interface Column {
 interface Props {
   /** Légende visible du tableau, reprise comme nom accessible de la région. */
   caption: string;
+  /** Colonnes : `{ key, label, numeric? }` ; `numeric` aligne en fin et en chiffres tabulaires. */
   columns: Column[];
+  /** Lignes : une valeur texte par clé de colonne. */
   rows: Record<string, string>[];
   /** Clé de la colonne rendue en `<th scope="row">`. */
   rowHeader?: string;

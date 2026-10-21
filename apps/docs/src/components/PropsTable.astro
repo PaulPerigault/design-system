@@ -1,0 +1,38 @@
+---
+/**
+ * Tableau des propriétés d'un composant, généré depuis son type `Props` (types, JSDoc, valeurs par
+ * défaut) : aucun tableau écrit à la main. Source : `packages/astro/scripts/props`.
+ */
+import Table from '@paulperigault/astro/Table.astro';
+import registry from '@paulperigault/astro/registry.json';
+import { resolve } from 'node:path';
+import { propsOf } from '../../../../packages/astro/scripts/props/props.ts';
+
+interface Props {
+  /** Nom de l'élément du registre (slug de la page). */
+  item: string;
+  /** Titre du composant, pour la légende du tableau. */
+  title: string;
+}
+
+const { item, title } = Astro.props;
+const entry = registry.items.find((candidate) => candidate.name === item);
+const file = entry?.files.find((candidate) => candidate.path.endsWith('.astro'));
+if (file === undefined) throw new Error(`Composant introuvable dans le registre : ${item}`);
+// Le build de la doc tourne dans apps/docs (npm -w) : les chemins du registre partent de la racine.
+const root = resolve(process.cwd(), '../..');
+const columns = [
+  { key: 'name', label: 'Propriété' },
+  { key: 'type', label: 'Type' },
+  { key: 'fallback', label: 'Défaut' },
+  { key: 'description', label: 'Description' },
+];
+const rows = propsOf(resolve(root, file.path)).map((prop) => ({
+  name: prop.optional ? prop.name : `${prop.name} (obligatoire)`,
+  type: prop.type,
+  fallback: prop.fallback ?? '—',
+  description: prop.description,
+}));
+---
+
+<Table caption={`Propriétés de ${title}`} columns={columns} rows={rows} rowHeader="name" />

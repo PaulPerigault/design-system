@@ -6,10 +6,13 @@
  * Sans `live`, aucun rôle (contenu statique) ; `polite` → `status`, `assertive` → `alert`.
  */
 interface Props {
+  /** Nature du message, écrite en clair dans le texte (la couleur n'est jamais seule). */
   tone?: 'info' | 'passed' | 'degraded' | 'failed';
   /** Libellé visible du ton (par exemple « Information »). */
   toneLabel: string;
+  /** Titre court du message. */
   title?: string;
+  /** Annonce par les lecteurs d'écran : `polite` attend la fin de la lecture, `assertive` interrompt. Absent : aucune annonce. */
   live?: 'polite' | 'assertive';
   /** Réservé au placement du composant dans son parent. */
   class?: string;

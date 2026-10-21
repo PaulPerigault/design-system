@@ -8,6 +8,10 @@
     {
       "path": "packages/astro/src/forms/Button.astro",
       "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/forms/button-variants.ts",
+      "type": "registry:lib"
     }
   ],
   "meta": {

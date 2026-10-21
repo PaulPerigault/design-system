@@ -1,5 +1,6 @@
 ---
 import Center from '@paulperigault/astro/Center.astro';
+import PropsTable from '../../components/PropsTable.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
 ---
 
@@ -22,78 +23,5 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
   </Center>
 
   <h2>Propriétés</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Propriété</th>
-        <th>Type</th>
-        <th>Défaut</th>
-        <th>Effet</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-          <code>text</code>
-        </td>
-        <td>
-          <code>boolean</code>
-        </td>
-        <td>
-          <code>false</code>
-        </td>
-        <td>
-          Centre le texte (<code>data-text</code>).
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>intrinsic</code>
-        </td>
-        <td>
-          <code>boolean</code>
-        </td>
-        <td>
-          <code>false</code>
-        </td>
-        <td>
-          Colonne flex, enfants centrés (<code>data-intrinsic</code>).
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>gutter</code>
-        </td>
-        <td>
-          <code>'s' | 'm'</code>
-        </td>
-        <td>absent</td>
-        <td>
-          Padding inline, tokens <code>--pp-space-s</code> ou <code>--pp-space-m</code>.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>as</code>
-        </td>
-        <td>
-          <code>div | section | article | main | header | footer</code>
-        </td>
-        <td>
-          <code>div</code>
-        </td>
-        <td>Élément rendu.</td>
-      </tr>
-      <tr>
-        <td>
-          <code>class</code>
-        </td>
-        <td>
-          <code>string</code>
-        </td>
-        <td>absent</td>
-        <td>Placement dans le parent uniquement.</td>
-      </tr>
-    </tbody>
-  </table>
+  <PropsTable item="center" title="Center" />
 </DocsLayout>

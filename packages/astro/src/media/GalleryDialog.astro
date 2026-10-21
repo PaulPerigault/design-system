@@ -5,16 +5,28 @@
  * par Invoker Commands (`command="close"`). Échap et clic hors boîte ferment aussi.
  */
 import Photo from './Photo.astro';
+import { remOf } from './presets';
 import type { GalleryItem } from './types';
 
 interface Props {
+  /** Identifiant du dialogue, visé par `commandfor`. */
   id: string;
+  /** Image agrandie, avec son alternative et sa légende. */
   item: GalleryItem;
   /** Libellé visible du bouton de fermeture, fourni par le site. */
   closeLabel: string;
 }
 
 const { id, item, closeLabel } = Astro.props;
+// Largeur réelle : la hauteur est bornée à 100dvh − 2 × --pp-space-3xl (voir le style), la largeur
+// suit le ratio de l'image, sans dépasser la fenêtre.
+/** Marges haute et basse du dialogue. */
+const MARGINS = 2;
+/** Décimales du ratio dans `sizes`. */
+const RATIO_DIGITS = 3;
+const margin = MARGINS * remOf('--pp-space-3xl');
+const ratio = (item.src.width / item.src.height).toFixed(RATIO_DIGITS);
+const sizes = `min(100vw, calc(${ratio} * (100vh - ${margin}rem)))`;
 const captionId = item.caption ? `${id}-legende` : undefined;
 ---
 
@@ -28,7 +40,7 @@ const captionId = item.caption ? `${id}-legende` : undefined;
   <button type="button" class="pp-gallery-dialog__close" commandfor={id} command="close">
     {closeLabel}
   </button>
-  <Photo src={item.src} alt={item.alt} layout="page" />
+  <Photo src={item.src} alt={item.alt} layout="page" sizes={sizes} />
   {item.caption && (
     <p class="pp-gallery-dialog__caption" id={captionId}>
       {item.caption}

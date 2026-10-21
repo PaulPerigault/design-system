@@ -2,13 +2,8 @@
 import Dialog from '@paulperigault/astro/Dialog.astro';
 import InvokerFallback from '@paulperigault/astro/InvokerFallback.astro';
 import Stack from '@paulperigault/astro/Stack.astro';
+import PropsTable from '../../components/PropsTable.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
-
-const props = [
-  ['id', 'string', 'Obligatoire. Identifiant visé par commandfor sur le déclencheur.'],
-  ['title', 'string', 'Obligatoire. Titre visible en h2, nom accessible de la boîte.'],
-  ['closeLabel', 'string', 'Obligatoire. Libellé visible du bouton de fermeture (traduit).'],
-] as const;
 ---
 
 <DocsLayout title="Dialog · Design system · Paul Perigault">
@@ -43,28 +38,7 @@ const props = [
     </p>
     <h2>Propriétés</h2>
     <p>Slots : le contenu par défaut forme le corps ; le slot actions reçoit les boutons finaux.</p>
-    <table>
-      <thead>
-        <tr>
-          <th scope="col">Prop</th>
-          <th scope="col">Type</th>
-          <th scope="col">Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        {props.map(([name, type, description]) => (
-          <tr>
-            <th scope="row">
-              <code>{name}</code>
-            </th>
-            <td>
-              <code>{type}</code>
-            </td>
-            <td>{description}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <PropsTable item="dialog" title="Dialog" />
   </Stack>
 </DocsLayout>
 

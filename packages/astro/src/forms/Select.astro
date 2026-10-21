@@ -11,17 +11,23 @@ interface Option {
 }
 
 interface Props {
+  /** Identifiant, visé par `<label for>`. */
   id: string;
+  /** Nom envoyé avec le formulaire. */
   name: string;
+  /** Options proposées : `{ value, label, disabled? }`. */
   options: Option[];
   /** Valeur de l'option sélectionnée. */
   value?: string;
   /** Première option `value=""`, désactivée ; sélectionnée si `value` est absent. */
   placeholder?: string;
+  /** Choix obligatoire (`required`). */
   required?: boolean;
+  /** Désactive la liste. */
   disabled?: boolean;
   /** Identifiants des textes d'aide ou d'erreur, séparés par des espaces. */
   describedBy?: string | undefined;
+  /** Pose `aria-invalid="true"` ; à relier au message d'erreur par `describedBy`. */
   invalid?: boolean | undefined;
   /** Réservé au placement du composant dans son parent. */
   class?: string;
