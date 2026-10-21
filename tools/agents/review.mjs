@@ -11,6 +11,10 @@ import { runsPath, worktreeOf } from './lib/worktree.mjs';
 const options = parseOptions(process.argv.slice(2));
 const task = await loadTask(options._[0]);
 const deps = await realDeps();
+if (deps.config.kiro?.available === false) {
+  console.error(`Kiro ${deps.config.kiro.reason} : rien n'est lancé.`);
+  process.exit(2);
+}
 const model = options.model ?? deps.models.tiers.hard.model;
 const { path } = worktreeOf(deps.repoRoot, deps.config.worktreeRoot, task.id);
 const status = async () => (await deps.git(['status', '--porcelain'], { cwd: path })).stdout;
