@@ -4,11 +4,34 @@ import { VIEWPORTS, open } from './helpers';
 const PATH = '/components/dialog/';
 const TRIGGER = 'button[commandfor="demo-dialog"][command="show-modal"]';
 
-/** Masque les API natives avant le chargement : le repli InvokerFallback doit s'installer. */
-const hideNativeApis = () => {
-  delete (HTMLButtonElement.prototype as { command?: unknown }).command;
-  delete (HTMLDialogElement.prototype as { closedBy?: unknown }).closedBy;
-};
+/**
+ * Avant le chargement : compte les appels JavaScript à `showModal` et `close` (le comportement
+ * natif ne passe pas par eux) et, en mode repli, masque les API pour que InvokerFallback
+ * s'installe. Chromium garde son comportement natif : seul le compteur prouve qui a agi.
+ */
+function instrument(hide: boolean): void {
+  const calls = { showModal: 0, close: 0 };
+  Object.assign(window, { __ppDialogCalls: calls });
+  const proto = HTMLDialogElement.prototype;
+  for (const name of ['showModal', 'close'] as const) {
+    const native = proto[name];
+    proto[name] = function (this: HTMLDialogElement) {
+      calls[name] += 1;
+      native.call(this);
+    };
+  }
+  if (hide) {
+    delete (HTMLButtonElement.prototype as { command?: unknown }).command;
+    delete (HTMLDialogElement.prototype as { closedBy?: unknown }).closedBy;
+  }
+}
+
+const callsOf = (page: Page) =>
+  page.evaluate(
+    () =>
+      (window as unknown as { __ppDialogCalls: { showModal: number; close: number } })
+        .__ppDialogCalls,
+  );
 
 async function errorsOf(page: Page): Promise<string[]> {
   const errors: string[] = [];
@@ -22,7 +45,7 @@ async function errorsOf(page: Page): Promise<string[]> {
 for (const fallback of [false, true]) {
   test.describe(fallback ? 'API natives masquées (repli)' : 'API natives', () => {
     test.beforeEach(async ({ page }) => {
-      if (fallback) await page.addInitScript(hideNativeApis);
+      await page.addInitScript(instrument, fallback);
     });
 
     test('Entrée ouvre, Échap ferme, le focus revient au déclencheur', async ({ page }) => {
@@ -37,6 +60,16 @@ for (const fallback of [false, true]) {
       await expect(dialog).not.toHaveAttribute('open');
       await expect(page.locator(TRIGGER)).toBeFocused();
       expect(errors).toEqual([]);
+      // Repli : le script a ouvert ; natif : il est resté inactif.
+      expect((await callsOf(page)).showModal).toBe(fallback ? 1 : 0);
+    });
+
+    test('au clic souris, le focus revient au déclencheur', async ({ page }) => {
+      await open(page, PATH, VIEWPORTS[0]);
+      await page.locator(TRIGGER).click();
+      await expect(page.locator('#demo-dialog')).toHaveAttribute('open', '');
+      await page.keyboard.press('Escape');
+      await expect(page.locator(TRIGGER)).toBeFocused();
     });
 
     test('bouton de fermeture et clic hors de la boîte ferment', async ({ page }) => {
@@ -49,6 +82,8 @@ for (const fallback of [false, true]) {
       await expect(dialog).toHaveAttribute('open', '');
       await page.mouse.click(2, 2);
       await expect(dialog).not.toHaveAttribute('open');
+      // Pas de compteur ici : Chromium ferme au relâché, avant le clic que le repli écoute ;
+      // la logique du clic hors boîte est prouvée par invokers.test.ts.
     });
   });
 }

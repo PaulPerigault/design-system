@@ -29,7 +29,7 @@ const page = () =>
 describe('runCommand', () => {
   it('show-modal ouvre une seule fois, close ferme, request-close retombe sur close', () => {
     const dialog = fakeDialog();
-    expect(runCommand(dialog, 'show-modal')).toBe(true);
+    expect(runCommand(dialog, 'Show-Modal')).toBe(true); // casse ignorée, comme le natif
     runCommand(dialog, 'show-modal');
     expect(dialog.showModal).toHaveBeenCalledTimes(1);
     runCommand(dialog, 'request-close');
@@ -51,7 +51,10 @@ describe('onInvoke', () => {
     const doc = page();
     const dialog = fakeDialog();
     const find = vi.fn(() => dialog);
+    const opener = doc.querySelector('button');
+    const focus = vi.spyOn(opener as HTMLButtonElement, 'focus');
     expect(onInvoke(doc.querySelector('span'), find)).toBe(true);
+    expect(focus).toHaveBeenCalled();
     expect(find).toHaveBeenCalledWith('d');
     expect(dialog.open).toBe(true);
     onInvoke(doc.querySelectorAll('button')[1] ?? null, find);
@@ -68,18 +71,28 @@ describe('onInvoke', () => {
 });
 
 describe('onLightDismiss', () => {
-  it('ferme un dialogue closedby="any" ouvert sur un clic hors de sa boîte', () => {
+  const at = (target: unknown, x: number, y: number) => ({ target, x, y });
+
+  it('ferme un dialogue closedby="any" quand appui et clic visent le fond', () => {
     const dialog = fakeDialog(true);
-    expect(onLightDismiss(dialog, 200, 200)).toBe(false);
+    expect(onLightDismiss(at(dialog, 200, 200), at(dialog, 200, 200))).toBe(false);
     expect(dialog.open).toBe(true);
-    expect(onLightDismiss(dialog, 20, 200)).toBe(true);
+    expect(onLightDismiss(at(dialog, 20, 200), at(dialog, 20, 200))).toBe(true);
     expect(dialog.open).toBe(false);
   });
 
+  it('un glisser commencé dans la boîte ne ferme pas', () => {
+    const dialog = fakeDialog(true);
+    expect(onLightDismiss(at(dialog, 20, 200), at(dialog, 200, 200))).toBe(false);
+    expect(onLightDismiss(at(dialog, 20, 200), null)).toBe(false);
+    expect(dialog.open).toBe(true);
+  });
+
   it('ignore les dialogues fermés ou sans closedby="any"', () => {
-    expect(onLightDismiss(fakeDialog(false), 20, 20)).toBe(false);
+    const closed = fakeDialog(false);
+    expect(onLightDismiss(at(closed, 20, 20), at(closed, 20, 20))).toBe(false);
     const strict = fakeDialog(true, 'closerequest');
-    expect(onLightDismiss(strict, 20, 20)).toBe(false);
+    expect(onLightDismiss(at(strict, 20, 20), at(strict, 20, 20))).toBe(false);
     expect(strict.open).toBe(true);
   });
 });
