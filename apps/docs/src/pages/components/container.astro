@@ -13,14 +13,22 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
 
   <h2>Largeur de page</h2>
   <Container as="section" width="page" gutter="m">
-    <p>Contenu à la largeur de page, gouttière moyenne.</p>
+    <div class="docs-sample">Contenu à la largeur de page, gouttière moyenne.</div>
   </Container>
 
   <h2>Mesure de lecture</h2>
   <Container as="article" width="measure" gutter="l">
-    <p>Contenu limité à la mesure de lecture, gouttière large.</p>
+    <div class="docs-sample">Contenu limité à la mesure de lecture, gouttière large.</div>
   </Container>
 
   <h2>Propriétés</h2>
   <PropsTable item="container" title="Container" />
 </DocsLayout>
+
+<style>
+  /* Bloc témoin : montre la largeur du conteneur ; ce n'est pas un paragraphe de lecture. */
+  .docs-sample {
+    padding: var(--pp-space-s);
+    border: var(--pp-size-rule) solid var(--pp-color-line);
+  }
+</style>
