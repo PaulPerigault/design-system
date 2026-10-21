@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "invoker-fallback",
+  "type": "registry:ui",
+  "title": "InvokerFallback",
+  "description": "Repli des Invoker Commands et de closedby pour Dialog et Gallery : script externe inactif là où le navigateur gère ces attributs.",
+  "files": [
+    {
+      "path": "packages/astro/src/feedback/InvokerFallback.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/behaviors/invokers.ts",
+      "type": "registry:lib"
+    }
+  ],
+  "meta": {
+    "tokens": [],
+    "version": "0.0.0"
+  }
+}

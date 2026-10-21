@@ -1,7 +1,26 @@
+import { readdirSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import type { Page } from '@playwright/test';
 
-/** Pages couvertes par les tests E2E. */
-export const PAGES = ['/', '/identite/', '/components/stack/'] as const;
+const DIST = fileURLToPath(new URL('../dist/', import.meta.url));
+
+/** Chemins des pages construites (`…/index.html`), lus dans `dist/` : aucune liste à la main. */
+function builtPages(): string[] {
+  const files = readdirSync(DIST, { recursive: true, encoding: 'utf8' });
+  const pages = files
+    .filter((file) => file === 'index.html' || file.endsWith('/index.html'))
+    .map((file) => `/${file.slice(0, -'index.html'.length)}`)
+    .sort();
+  // Échec fermé : sans build, aucune page ne serait testée en silence.
+  if (pages.length === 0) throw new Error(`Aucune page construite dans ${DIST} : lancer le build.`);
+  return pages;
+}
+
+/** Toutes les pages construites : axe, 1.4.12 et tailles de cibles les parcourent toutes. */
+export const PAGES = builtPages();
+
+/** Pages de composants (`/components/<slug>/`). */
+export const COMPONENT_PAGES = PAGES.filter((path) => path.startsWith('/components/'));
 
 /** Pages qui chargent les tokens et la CSS du design system. */
 export const STYLED_PAGES = ['/identite/', '/components/stack/'] as const;
@@ -18,11 +37,13 @@ export type Viewport = (typeof VIEWPORTS)[number];
 /** Taille minimale d'une cible (WCAG 2.2, critère 2.5.8), en pixels CSS. */
 export const TARGET_MIN = 24;
 
-/** Pose `data-theme` sur `<html>` et attend la fin des transitions de couleur qu'il déclenche. */
+/** Pose `data-theme` sur `<html>` et attend la fin des transitions de couleur qu’il déclenche. */
 export async function setTheme(page: Page, theme: Theme): Promise<void> {
   await page.evaluate(async (value) => {
     document.documentElement.setAttribute('data-theme', value);
-    await Promise.all(document.getAnimations().map((animation) => animation.finished));
+    // Transitions seulement : une animation infinie (Progress indéterminé) ne finit jamais.
+    const transitions = document.getAnimations().filter((a) => a instanceof CSSTransition);
+    await Promise.all(transitions.map((transition) => transition.finished));
   }, theme);
 }
 

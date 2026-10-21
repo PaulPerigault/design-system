@@ -1,5 +1,6 @@
 ---
 import Dialog from '@paulperigault/astro/Dialog.astro';
+import InvokerFallback from '@paulperigault/astro/InvokerFallback.astro';
 import Stack from '@paulperigault/astro/Stack.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
 
@@ -14,10 +15,11 @@ const props = [
   <h1>Dialog</h1>
   <p>
     Dialog est un élément dialog natif ouvert en modale. Le composant ne contient aucun script : le
-    déclencheur porte commandfor et command="show-modal" (API Invoker Commands). Les navigateurs
-    sans cette API n’ouvrent pas encore la boîte ; un behavior livré plus tard prendra le relais sur
-    le même balisage.
+    déclencheur porte commandfor et command="show-modal" (API Invoker Commands). Pour les
+    navigateurs sans cette API, InvokerFallback, posé une fois dans la page, rejoue le même balisage
+    avec un petit script externe, inactif là où l’API existe.
   </p>
+  <InvokerFallback />
   <Stack space="m">
     <h2>Démonstration</h2>
     <p>
@@ -36,8 +38,8 @@ const props = [
     <h2>Fermeture et focus</h2>
     <p>
       La boîte se ferme par le bouton de fermeture, par la touche Échap, et par un clic hors de la
-      boîte là où closedby="any" est pris en charge (Chrome et Edge 134+, Firefox 141+). Le
-      navigateur place le focus sur le premier élément focalisable, puis le rend au déclencheur.
+      boîte (closedby="any", repris par InvokerFallback là où il manque). Le navigateur place le
+      focus sur le premier élément focalisable, puis le rend au déclencheur.
     </p>
     <h2>Propriétés</h2>
     <p>Slots : le contenu par défaut forme le corps ; le slot actions reçoit les boutons finaux.</p>

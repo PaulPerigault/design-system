@@ -1,0 +1,13 @@
+---
+/**
+ * InvokerFallback : à poser une fois par page qui contient un Dialog ou une Gallery avec
+ * agrandissement, si le site vise des navigateurs sans Invoker Commands ni `closedby`. Script
+ * externe (CSP `'self'`), inactif là où le navigateur gère déjà ces attributs.
+ */
+---
+
+<script>
+  import { install } from '../behaviors/invokers';
+
+  install(document);
+</script>

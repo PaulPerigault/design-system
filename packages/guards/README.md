@@ -57,16 +57,22 @@ pp-guards design [options] [racines…]
 - `--disable <règle>` (répétable) : désactive une règle partout
 
 Règles : `gradient`, `shadow`, `blur`, `emoji`, `spaced-caps`, `tailwind-palette`,
-`arbitrary-value`, `color-literal`, `retro-effect`, `generic-phrase`. Un identifiant inconnu dans
+`arbitrary-value`, `color-literal`, `retro-effect`, `generic-phrase`, `physical-property`. Un
+identifiant inconnu dans
 `--disable` ou dans `allow[].rules` donne le code `2`.
 
 Portée selon l'extension :
 
 - `.css` et blocs `<style>` : déclarations CSS (dégradés, ombres, flou, `color-literal`,
-  `retro-effect`, majuscules espacées)
+  `retro-effect`, majuscules espacées, `physical-property`)
 - `.astro`, `.html`, `.jsx`, `.tsx` : attributs `class`, `className`, `class:list`
   (classes utilitaires) en plus des blocs `<style>`
 - tous les fichiers, `.md` et `.mdx` compris : `emoji` et `generic-phrase`
+
+`physical-property` refuse les déclarations physiques (`margin-left`, `width`, `top`,
+`border-right`, `overflow-x`, `text-align: left`…) au profit des propriétés logiques
+(`margin-inline-start`, `inline-size`, `inset-block-start`…), qui suivent le sens d'écriture. Les
+conditions `@media` et `@container` ne sont pas visées.
 
 `color-literal` vise les valeurs CSS : notations hexadécimales, fonctions de couleur (`rgb()`,
 `oklch()`…) et noms de couleur dans les propriétés de couleur. La police mono n'est pas visée :

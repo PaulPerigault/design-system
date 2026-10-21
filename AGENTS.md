@@ -50,6 +50,8 @@ npx vitest run --project astro          # un paquet
 npm -w @paulperigault/docs run build    # documentation
 npm run check:size                      # limite de 120 lignes
 npm run check:lockfile                  # npmjs uniquement, aucune dépendance file:/link:
+npm run registry                        # régénère meta.tokens des fragments et registry.json
+npm run check:registry                  # registre à jour, chaque export .astro a son fragment
 ```
 
 ## Format d'une tâche (`tasks/<id>-<slug>.md`)

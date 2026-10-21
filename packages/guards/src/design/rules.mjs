@@ -3,6 +3,7 @@
 import { lineOf } from '../lib/files.mjs';
 import { classHits } from './class-rules.mjs';
 import { cssHits } from './css-rules.mjs';
+import { logicalHits } from './logical-rules.mjs';
 import { textHits } from './text-rules.mjs';
 
 export const MESSAGES = {
@@ -16,6 +17,7 @@ export const MESSAGES = {
   'color-literal': 'couleur brute interdite, utiliser un token --pp-*',
   'retro-effect': 'effet rétro interdit (glitch, machine à écrire, scanlines)',
   'generic-phrase': 'phrase générique interdite',
+  'physical-property': 'propriété physique interdite, utiliser la propriété logique',
 };
 export const RULE_IDS = Object.keys(MESSAGES);
 
@@ -48,8 +50,11 @@ function styleOnly(text) {
 
 function collect(ext, clean) {
   const hits = textHits(clean);
-  if (ext === '.css') hits.push(...cssHits(clean));
-  if (MARKUP.includes(ext)) hits.push(...cssHits(styleOnly(clean)), ...classHits(clean));
+  if (ext === '.css') hits.push(...cssHits(clean), ...logicalHits(clean));
+  if (MARKUP.includes(ext)) {
+    const css = styleOnly(clean);
+    hits.push(...cssHits(css), ...logicalHits(css), ...classHits(clean));
+  }
   return hits;
 }
 

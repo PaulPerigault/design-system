@@ -23,7 +23,7 @@ const LAYOUTS: MediaLayout[] = ['page', 'measure', 'half', 'third', 'avatar'];
 describe('presets : tokens de référence', () => {
   it('lit les largeurs en rem dans tokens.json', () => {
     expect(base['--pp-size-page']).toBe('72rem');
-    expect(base['--pp-size-measure']).toBe('38rem');
+    expect(base['--pp-size-measure']).toBe('36rem');
     expect(base['--pp-space-3xl']).toBe('6rem');
     expect(remOf('--pp-size-page')).toBe(page);
     expect(ROOT_FONT_PX).toBe(16);
@@ -41,7 +41,7 @@ describe('presets : tokens de référence', () => {
 describe('sizesFor', () => {
   it('construit chaque chaîne depuis les tokens', () => {
     expect(sizesFor('page')).toBe('(min-width: 72rem) 72rem, 100vw');
-    expect(sizesFor('measure')).toBe('(min-width: 38rem) 38rem, 100vw');
+    expect(sizesFor('measure')).toBe('(min-width: 36rem) 36rem, 100vw');
     expect(sizesFor('half')).toBe('(min-width: 72rem) 36rem, 100vw');
     expect(sizesFor('third')).toBe('(min-width: 72rem) 24rem, 100vw');
     expect(sizesFor('avatar')).toBe('6rem');
@@ -58,19 +58,19 @@ describe('sizesFor', () => {
 describe('widthsFor', () => {
   const large = 4000;
   it('donne densités × référence, plus × mesure pour les fluides', () => {
-    expect(widthsFor('page', large)).toEqual([608, 1152, 1216, 2304]);
-    expect(widthsFor('measure', large)).toEqual([608, 1216]);
-    expect(widthsFor('half', large)).toEqual([576, 608, 1152, 1216]);
-    expect(widthsFor('third', large)).toEqual([384, 608, 768, 1216]);
+    expect(widthsFor('page', large)).toEqual([576, 1152, 2304]);
+    expect(widthsFor('measure', large)).toEqual([576, 1152]);
+    expect(widthsFor('half', large)).toEqual([576, 1152]);
+    expect(widthsFor('third', large)).toEqual([384, 576, 768, 1152]);
     expect(widthsFor('avatar', large)).toEqual([96, 192]);
     expect(widthsFor('page', large)).toContain(page * ROOT_FONT_PX);
     expect(widthsFor('page', large)).toContain(measure * ROOT_FONT_PX * 2);
   });
 
   it('ramène à la largeur source ce qui la dépasse, sans jamais rendre une liste vide', () => {
-    expect(widthsFor('page', 1200)).toEqual([608, 1152, 1200]);
-    expect(widthsFor('page', 900)).toEqual([608, 900]);
-    expect(widthsFor('page', 608)).toEqual([608]);
+    expect(widthsFor('page', 1200)).toEqual([576, 1152, 1200]);
+    expect(widthsFor('page', 900)).toEqual([576, 900]);
+    expect(widthsFor('page', 576)).toEqual([576]);
     expect(widthsFor('page', 400)).toEqual([400]);
     expect(widthsFor('avatar', 50)).toEqual([50]);
   });
@@ -105,7 +105,7 @@ describe('qualité, formats, médias, ratios', () => {
   });
 
   it('requêtes médias depuis les tokens', () => {
-    expect(mediaFor('narrow')).toBe('(width < 38rem)');
+    expect(mediaFor('narrow')).toBe('(width < 36rem)');
     expect(mediaFor('medium')).toBe('(width < 72rem)');
   });
 
