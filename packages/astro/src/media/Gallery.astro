@@ -57,17 +57,17 @@ const dialogId = (index: number): string => `${id}-${index + 1}`;
 
   /*
    * `var()` est refusé dans une condition @container : seuils littéraux, égaux aux tokens
-   * (vérifié par Gallery.test.ts). 28.5rem = --pp-size-measure × 0.75 : un téléphone reste à une
+   * (vérifié par Gallery.test.ts). 27rem = --pp-size-measure × 0.75 : un téléphone reste à une
    * colonne.
    */
-  @container (min-width: 28.5rem) {
+  @container (min-width: 27rem) {
     .pp-gallery__list {
       grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  /* 38rem = --pp-size-measure. */
-  @container (min-width: 38rem) {
+  /* 36rem = --pp-size-measure. */
+  @container (min-width: 36rem) {
     .pp-gallery__list {
       grid-template-columns: repeat(3, 1fr);
     }
