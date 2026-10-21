@@ -22,7 +22,7 @@
   },
   "sideEffects": false,
   "files": [
-    "dist",
+    "bin",
     "src",
     "README.md"
   ],
@@ -32,6 +32,22 @@
     "provenance": true
   },
   "scripts": {
-    "prepublishOnly": "node ../../tools/checks/check-publish-env.mjs"
+    "prepublishOnly": "node ../../tools/checks/check-publish-env.mjs",
+    "test": "vitest run"
+  },
+  "bin": {
+    "pp-guards": "./bin/pp-guards.mjs"
+  },
+  "exports": {
+    "./eslint": "./src/eslint.mjs",
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": {
+    "typescript-eslint": "^8.71.2"
+  },
+  "peerDependenciesMeta": {
+    "typescript-eslint": {
+      "optional": true
+    }
   }
 }

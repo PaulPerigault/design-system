@@ -39,6 +39,6 @@
   },
   "images": {
     "roots": ["packages", "apps"],
-    "allow": ["src/media"]
+    "allow": ["src/media", "packages/guards/README.md"]
   }
 }
