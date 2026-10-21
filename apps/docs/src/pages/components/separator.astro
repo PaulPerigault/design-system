@@ -1,67 +1,60 @@
 ---
-import Separator from '../../../../../packages/astro/src/content/Separator.astro';
+import Separator from '@paulperigault/astro/Separator.astro';
+import Table from '@paulperigault/astro/Table.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
 
-const props = [
-  ['decorative', 'boolean', 'false', 'Rend un <hr> sémantique (false) ou décoratif (true).'],
-  ['space', "'xs' | 's' | 'm' | 'l' | 'xl'", 'm', 'Espacement vertical autour du filet.'],
-  ['class', 'string', 'aucun', 'Réservé au placement dans le parent.'],
+const columns = [
+  { key: 'name', label: 'Nom' },
+  { key: 'type', label: 'Type' },
+  { key: 'fallback', label: 'Défaut' },
+  { key: 'role', label: 'Rôle' },
+];
+const rows = [
+  {
+    name: 'decorative',
+    type: 'boolean',
+    fallback: 'false',
+    role: 'false : hr lu comme séparateur ; true : masqué aux technologies d’assistance.',
+  },
+  {
+    name: 'space',
+    type: "'xs' | 's' | 'm' | 'l' | 'xl'",
+    fallback: "'m'",
+    role: 'Espacement autour du filet.',
+  },
+  { name: 'class', type: 'string', fallback: 'aucun', role: 'Placement dans le parent.' },
 ];
 ---
 
 <DocsLayout title="Separator · Design system · Paul Perigault">
   <h1>Separator</h1>
   <p>
-    Separator rend un filet horizontal de décoration ou de séparation. Par défaut, il s’agit d’un `
-    <hr />` natif avec sémantique ( WCAG 2.2 AA). Quand `decorative` est true, le séparateur est
-    décoratif (`role="presentation"`, `aria-hidden="true"`), sans incidence sur l’accessibilité.
+    Separator rend un élément hr natif, lu comme séparateur entre deux sections ; avec decorative,
+    le filet est masqué aux technologies d’assistance (role="presentation", aria-hidden).
   </p>
 
-  <h2>Défaut</h2>
-  <p>
-    Un séparateur sémantique pour distinguer deux sections :
+  <h2>Entre deux sections</h2>
+  <div>
+    <p>Fin de la première section.</p>
     <Separator />
-  </p>
+    <p>Début de la seconde section.</p>
+  </div>
 
   <h2>Décoratif</h2>
-  <p>
-    Un séparateur décoratif entre deux éléments visuels :
+  <div>
+    <p>Filet purement visuel.</p>
     <Separator decorative />
-  </p>
+  </div>
 
-  <h2>Variantes d’espacement</h2>
-  <p>
+  <h2>Espacements</h2>
+  <div>
     <Separator space="xs" />
     <Separator space="s" />
     <Separator space="m" />
     <Separator space="l" />
     <Separator space="xl" />
-  </p>
+  </div>
 
   <h2>Propriétés</h2>
-  <table>
-    <caption>Propriétés de Separator</caption>
-    <thead>
-      <tr>
-        <th scope="col">Nom</th>
-        <th scope="col">Type</th>
-        <th scope="col">Défaut</th>
-        <th scope="col">Rôle</th>
-      </tr>
-    </thead>
-    <tbody>
-      {props.map(([name, type, byDefault, role]) => (
-        <tr>
-          <th scope="row">
-            <code>{name}</code>
-          </th>
-          <td>
-            <code>{type}</code>
-          </td>
-          <td>{byDefault}</td>
-          <td>{role}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+  <Table caption="Propriétés de Separator" columns={columns} rows={rows} rowHeader="name" />
 </DocsLayout>
