@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "gallery",
+  "type": "registry:ui",
+  "title": "Gallery",
+  "description": "Grille d’images en container queries ; agrandissement par dialogue natif et Invoker Commands, zéro JavaScript.",
+  "registryDependencies": ["photo"],
+  "files": [
+    {
+      "path": "packages/astro/src/media/Gallery.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/media/GalleryDialog.astro",
+      "type": "registry:lib"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-media-radius",
+      "--pp-radius-control",
+      "--pp-radius-surface",
+      "--pp-size-control-height",
+      "--pp-size-measure",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-3xl",
+      "--pp-space-m",
+      "--pp-space-s",
+      "--pp-space-xs"
+    ],
+    "version": "0.0.0"
+  }
+}
