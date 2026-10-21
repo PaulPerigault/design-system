@@ -36,7 +36,9 @@ function observe(): void {
 }
 
 /** À appeler avant `page.goto` : les observateurs démarrent avec le document. */
-export const injectVitals = (page: Page): Promise<void> => page.addInitScript(observe);
+export async function injectVitals(page: Page): Promise<void> {
+  await page.addInitScript(observe);
+}
 
 /** Somme des décalages de mise en page hors interaction (CLS). */
 export const readCls = (page: Page): Promise<number> =>
