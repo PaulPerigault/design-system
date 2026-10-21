@@ -47,6 +47,12 @@ export async function setTheme(page: Page, theme: Theme): Promise<void> {
   }, theme);
 }
 
+/** Ouvre une page à la taille de l'appareil du projet (matrice), thème appliqué. */
+export async function visit(page: Page, path: string, theme?: Theme) {
+  await page.goto(path);
+  if (theme) await setTheme(page, theme);
+}
+
 /** Ouvre une page au viewport donné, thème appliqué. */
 export async function open(page: Page, path: string, viewport: Viewport, theme?: Theme) {
   await page.setViewportSize({ width: viewport.width, height: viewport.height });

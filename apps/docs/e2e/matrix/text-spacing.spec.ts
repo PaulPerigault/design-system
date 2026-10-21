@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { PAGES, VIEWPORTS, open } from './helpers';
+import { PAGES, visit } from '../helpers';
 
 // Valeurs imposées par WCAG 2.2, critère 1.4.12 (espacement du texte).
 const SPACING_CSS = `
@@ -37,11 +37,9 @@ function findProblems(): Problem[] {
 }
 
 for (const path of PAGES) {
-  for (const viewport of VIEWPORTS) {
-    test(`espacement du texte : ${path}, ${viewport.name}`, async ({ page }) => {
-      await open(page, path, viewport);
-      await page.addStyleTag({ content: SPACING_CSS });
-      expect(await page.evaluate(findProblems)).toEqual([]);
-    });
-  }
+  test(`espacement du texte : ${path}`, async ({ page }) => {
+    await visit(page, path);
+    await page.addStyleTag({ content: SPACING_CSS });
+    expect(await page.evaluate(findProblems)).toEqual([]);
+  });
 }

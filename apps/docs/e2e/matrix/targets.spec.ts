@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { PAGES, TARGET_MIN, VIEWPORTS, open } from './helpers';
+import { PAGES, TARGET_MIN, visit } from '../helpers';
 
 interface Target {
   label: string;
@@ -49,15 +49,43 @@ function respectsSpacing(target: Target, all: Target[]): boolean {
     });
 }
 
+/** Contrôles principaux : 44 × 44 px (WCAG 2.5.5, AAA ; Apple 44 pt, Material 48 dp). */
+const PRIMARY_MIN = 44;
+const PRIMARY = [
+  '.pp-button',
+  'main input:not([type=checkbox], [type=radio], [type=hidden])',
+  'main select',
+  'main textarea',
+  '.pp-dialog__close',
+  '.pp-gallery-dialog__close',
+  '.docs-menu-button',
+].join(', ');
+
+function smallPrimaries({ selector, min }: { selector: string; min: number }): string[] {
+  return [...document.querySelectorAll(selector)]
+    .map((el) => ({ el, r: el.getBoundingClientRect() }))
+    .filter(({ r }) => r.width > 0 && r.height > 0)
+    .filter(({ r }) => r.width < min || r.height < min)
+    .map(
+      ({ el, r }) =>
+        `${el.tagName}.${el.className} (${r.width.toFixed(1)} × ${r.height.toFixed(1)})`,
+    );
+}
+
 for (const path of PAGES) {
-  for (const viewport of VIEWPORTS) {
-    test(`cibles ≥ 24 px : ${path}, ${viewport.name}`, async ({ page }) => {
-      await open(page, path, viewport);
-      const targets = await page.evaluate(collectTargets);
-      const failing = targets
-        .filter((t) => !isLarge(t) && !respectsSpacing(t, targets))
-        .map((t) => `${t.label} (${t.width.toFixed(1)} × ${t.height.toFixed(1)})`);
-      expect(failing).toEqual([]);
-    });
-  }
+  test(`cibles ≥ 24 px et espacement : ${path}`, async ({ page }) => {
+    await visit(page, path);
+    const targets = await page.evaluate(collectTargets);
+    const failing = targets
+      .filter((t) => !isLarge(t) && !respectsSpacing(t, targets))
+      .map((t) => `${t.label} (${t.width.toFixed(1)} × ${t.height.toFixed(1)})`);
+    expect(failing).toEqual([]);
+  });
+
+  test(`contrôles principaux ≥ 44 px : ${path}`, async ({ page }) => {
+    await visit(page, path);
+    expect(await page.evaluate(smallPrimaries, { selector: PRIMARY, min: PRIMARY_MIN })).toEqual(
+      [],
+    );
+  });
 }
