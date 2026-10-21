@@ -1,0 +1,88 @@
+---
+/**
+ * Breadcrumb : fil d'Ariane (modèle APG « Breadcrumb », W3C WAI-ARIA Authoring Practices).
+ * `<nav aria-label>` + `<ol role="list">` ; le dernier élément est la page courante, sans lien,
+ * avec `aria-current="page"`. Zéro JavaScript. Aucun texte en dur : `label` et les libellés des
+ * éléments viennent des props. Le séparateur est un `::before` CSS avec texte alternatif vide
+ * (`content: '/' / ''`), donc absent de l'arbre d'accessibilité et du texte lu.
+ * Les liens restent soulignés : l'information ne repose pas sur la couleur seule.
+ * `role="list"` explicite : `list-style: none` retire la sémantique de liste sous VoiceOver.
+ */
+interface Item {
+  href?: string;
+  label: string;
+}
+
+interface Props {
+  /** Nom accessible du repère de navigation (`aria-label`). */
+  label: string;
+  items: Item[];
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { label, items, class: className } = Astro.props;
+const lastIndex = items.length - 1;
+---
+
+<nav class:list={['pp-breadcrumb', className]} aria-label={label}>
+  <ol role="list">
+    {items.map((item, index) =>
+      index === lastIndex || item.href === undefined ? (
+        <li>
+          <span aria-current={index === lastIndex ? 'page' : undefined}>{item.label}</span>
+        </li>
+      ) : (
+        <li>
+          <a href={item.href}>{item.label}</a>
+        </li>
+      ),
+    )}
+  </ol>
+</nav>
+
+<style>
+  .pp-breadcrumb ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: var(--pp-space-xs);
+    margin-block: 0;
+    margin-inline: 0;
+    padding-block: 0;
+    padding-inline: 0;
+    list-style: none;
+    font-size: var(--pp-font-size-0);
+  }
+
+  .pp-breadcrumb li {
+    display: inline-flex;
+    align-items: center;
+    column-gap: var(--pp-space-xs);
+    min-block-size: var(--pp-size-target-min);
+  }
+
+  .pp-breadcrumb li + li::before {
+    content: '/' / '';
+    color: var(--pp-color-muted);
+  }
+
+  .pp-breadcrumb a {
+    color: var(--pp-color-accent);
+    text-decoration: underline;
+  }
+
+  .pp-breadcrumb a:hover {
+    color: var(--pp-color-fg);
+  }
+
+  .pp-breadcrumb a:focus-visible {
+    outline: var(--pp-size-rule) solid var(--pp-color-focus);
+    outline-offset: var(--pp-size-rule);
+  }
+
+  .pp-breadcrumb [aria-current='page'] {
+    color: var(--pp-color-fg);
+    font-weight: var(--pp-font-weight-medium);
+  }
+</style>

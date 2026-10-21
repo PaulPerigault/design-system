@@ -1,0 +1,114 @@
+---
+/**
+ * Progress : `<progress>` ou `<meter>` natif, zéro JavaScript. Le libellé visible est relié par
+ * `<label for>` ; `valueText` (ex. « 3 sur 5 ») reste visible et relié par `aria-describedby` :
+ * la valeur ne repose jamais sur la couleur seule. Sans `value`, `<progress>` est indéterminé ;
+ * son animation est retirée sous `prefers-reduced-motion: reduce`. Aucun texte en dur.
+ */
+interface Props {
+  id: string;
+  label: string;
+  kind?: 'progress' | 'meter';
+  value?: number;
+  /** Défaut : 1 (valeur native). */
+  max?: number;
+  /** `meter` seulement : `low`, `high`, `optimum`. */
+  low?: number;
+  high?: number;
+  optimum?: number;
+  /** Texte visible de la valeur. */
+  valueText?: string;
+  class?: string;
+}
+
+const { id, label, kind = 'progress', max = 1, valueText, class: className } = Astro.props;
+const { value, low, high, optimum } = Astro.props;
+const valueId = valueText ? `${id}-value` : undefined;
+const Tag = kind;
+const range = kind === 'meter' ? { low, high, optimum } : {};
+const attrs = { id, value, max, 'aria-describedby': valueId, ...range };
+---
+
+<div class:list={['pp-progress', className]}>
+  <label for={id}>{label}</label>
+  <Tag class="pp-progress__bar" {...attrs} />
+  {valueText && <span id={valueId}>{valueText}</span>}
+</div>
+
+<style>
+  .pp-progress {
+    display: grid;
+    gap: var(--pp-space-3xs);
+  }
+
+  .pp-progress__bar {
+    appearance: none;
+    box-sizing: border-box;
+    inline-size: 100%;
+    block-size: var(--pp-space-2xs);
+    margin: 0;
+    border: var(--pp-size-rule) solid var(--pp-color-control);
+    border-radius: var(--pp-radius-control);
+    background: var(--pp-color-surface);
+    color: var(--pp-color-accent);
+    overflow: hidden;
+  }
+
+  .pp-progress__bar::-webkit-progress-bar,
+  .pp-progress__bar::-webkit-meter-bar {
+    background: var(--pp-color-surface);
+    border: 0;
+  }
+
+  .pp-progress__bar::-webkit-progress-value,
+  .pp-progress__bar::-webkit-meter-optimum-value {
+    background: var(--pp-color-accent);
+  }
+
+  .pp-progress__bar::-moz-progress-bar,
+  .pp-progress__bar:-moz-meter-optimum::-moz-meter-bar {
+    background: var(--pp-color-accent);
+  }
+
+  .pp-progress__bar::-webkit-meter-suboptimum-value {
+    background: var(--pp-color-status-degraded);
+  }
+
+  .pp-progress__bar:-moz-meter-sub-optimum::-moz-meter-bar {
+    background: var(--pp-color-status-degraded);
+  }
+
+  .pp-progress__bar::-webkit-meter-even-less-good-value {
+    background: var(--pp-color-status-failed);
+  }
+
+  .pp-progress__bar:-moz-meter-sub-sub-optimum::-moz-meter-bar {
+    background: var(--pp-color-status-failed);
+  }
+
+  .pp-progress__bar:indeterminate {
+    background: var(--pp-color-accent);
+    animation: pp-progress-pulse calc(var(--pp-duration-base) * 10) var(--pp-easing-standard)
+      infinite alternate;
+  }
+
+  .pp-progress__bar:indeterminate::-webkit-progress-bar {
+    background: transparent;
+  }
+
+  .pp-progress__bar:indeterminate::-moz-progress-bar {
+    background: transparent;
+  }
+
+  @keyframes pp-progress-pulse {
+    to {
+      background: var(--pp-color-surface);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pp-progress__bar:indeterminate {
+      animation: none;
+    }
+  }
+</style>

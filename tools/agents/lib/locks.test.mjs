@@ -91,6 +91,7 @@ describe('amorce node_modules', () => {
     expect((await installDependencies(deps)).seeded).toBe(true);
     expect(calls).toHaveLength(1);
     expect(calls[0]).toContain('cp -cR');
+    expect(calls[0]).toMatch(/rm -rf .* && cp -cR/);
     expect(calls[0]).toContain(`/s/${lockHash('{"lockfileVersion":3}')}`);
   });
 

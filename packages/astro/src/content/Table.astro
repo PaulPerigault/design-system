@@ -1,0 +1,103 @@
+---
+/**
+ * Table : tableau de données dans une région défilante nommée et focalisable (axe
+ * `scrollable-region-focusable`, WCAG 2.1.1). Zéro JavaScript, aucun attribut `style` (CSP
+ * stricte). Les colonnes numériques sont alignées en fin de ligne, en chiffres tabulaires.
+ * Les libellés viennent tous des props : le composant ne contient aucun texte.
+ */
+interface Column {
+  key: string;
+  label: string;
+  numeric?: boolean;
+}
+
+interface Props {
+  /** Légende visible du tableau, reprise comme nom accessible de la région. */
+  caption: string;
+  columns: Column[];
+  rows: Record<string, string>[];
+  /** Clé de la colonne rendue en `<th scope="row">`. */
+  rowHeader?: string;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { caption, columns, rows, rowHeader, class: className } = Astro.props;
+const numeric = (column: Column): '' | undefined => (column.numeric ? '' : undefined);
+---
+
+<div class:list={['pp-table', className]} tabindex="0" role="region" aria-label={caption}>
+  <table>
+    <caption>{caption}</caption>
+    <thead>
+      <tr>
+        {columns.map((column) => (
+          <th scope="col" data-numeric={numeric(column)}>
+            {column.label}
+          </th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((row) => (
+        <tr>
+          {columns.map((column) =>
+            column.key === rowHeader ? (
+              <th scope="row" data-numeric={numeric(column)}>
+                {row[column.key] ?? ''}
+              </th>
+            ) : (
+              <td data-numeric={numeric(column)}>{row[column.key] ?? ''}</td>
+            ),
+          )}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .pp-table {
+    overflow-inline: auto;
+  }
+
+  .pp-table:focus-visible {
+    outline: var(--pp-size-focus-width) solid var(--pp-color-focus);
+    outline-offset: var(--pp-size-focus-offset);
+  }
+
+  table {
+    border-collapse: collapse;
+    inline-size: 100%;
+    font-variant-numeric: tabular-nums;
+  }
+
+  caption {
+    text-align: start;
+    font-weight: var(--pp-font-weight-semibold);
+    padding-block-end: var(--pp-space-2xs);
+  }
+
+  th,
+  td {
+    padding-block: var(--pp-space-3xs);
+    padding-inline: var(--pp-space-xs);
+    min-block-size: var(--pp-size-target-min);
+    text-align: start;
+    vertical-align: baseline;
+    border-block-end: var(--pp-size-rule) solid var(--pp-color-line);
+  }
+
+  thead th {
+    font-weight: var(--pp-font-weight-bold);
+    border-block-end-width: var(--pp-size-focus-width);
+  }
+
+  tbody th {
+    font-weight: var(--pp-font-weight-semibold);
+  }
+
+  [data-numeric] {
+    text-align: end;
+  }
+</style>

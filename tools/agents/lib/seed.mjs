@@ -11,9 +11,13 @@ export const lockHash = (text) => createHash('sha256').update(text).digest('hex'
 
 const quote = (path) => `'${path.replace(/'/g, "'\\''")}'`;
 
-/** Copie (clone APFS) des dossiers `node_modules` de `from` vers `to`, chemins relatifs conservés. */
+/**
+ * Copie (clone APFS) des dossiers `node_modules` de `from` vers `to`, chemins relatifs conservés.
+ * La cible est d'abord supprimée : `cp -R` vers un dossier existant copierait la source dedans
+ * (`node_modules/node_modules`, constaté sur un worktree installé deux fois).
+ */
 const cloneModules = (from, to) =>
-  `cd ${quote(from)} && for d in ${MODULE_DIRS.join(' ')}; do [ -d "$d" ] && mkdir -p ${quote(to)}/"$(dirname "$d")" && cp -cR "$d" ${quote(to)}/"$d"; done; true`;
+  `cd ${quote(from)} && for d in ${MODULE_DIRS.join(' ')}; do [ -d "$d" ] && mkdir -p ${quote(to)}/"$(dirname "$d")" && rm -rf ${quote(to)}/"$d" && cp -cR "$d" ${quote(to)}/"$d"; done; true`;
 
 /**
  * Installe les dépendances du worktree : clone de l'amorce si elle existe pour ce lockfile,

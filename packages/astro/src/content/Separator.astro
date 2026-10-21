@@ -1,0 +1,60 @@
+---
+/**
+ * Separator : filet horizontal de décoration ou de séparation.
+ * Rend un `<hr>` natif ( WCAG 2.2 AA), ou un `<hr role="presentation">` quand `decorative` est true.
+ * Aucun texte en dur : si un libellé est nécessaire, l'utilisateur place un titre avant le séparateur.
+ */
+interface Props {
+  decorative?: boolean;
+  space?: 'xs' | 's' | 'm' | 'l' | 'xl';
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { decorative = false, space = 'm', class: className } = Astro.props;
+const role = decorative ? 'presentation' : undefined;
+---
+
+<hr
+  class:list={['pp-separator', className]}
+  data-space={space}
+  role={role}
+  aria-hidden={decorative ? 'true' : undefined}
+/>
+
+<style>
+  .pp-separator {
+    block-size: var(--pp-size-rule);
+    border: 0;
+    background-color: var(--pp-color-line);
+    margin-block: var(--separator-space);
+    margin-inline: 0;
+    padding: 0;
+  }
+
+  .pp-separator[data-space='xs'] {
+    --separator-space: var(--pp-space-xs);
+  }
+
+  .pp-separator[data-space='s'] {
+    --separator-space: var(--pp-space-s);
+  }
+
+  .pp-separator[data-space='m'] {
+    --separator-space: var(--pp-space-m);
+  }
+
+  .pp-separator[data-space='l'] {
+    --separator-space: var(--pp-space-l);
+  }
+
+  .pp-separator[data-space='xl'] {
+    --separator-space: var(--pp-space-xl);
+  }
+
+  @media (forced-colors: active) {
+    .pp-separator {
+      background-color: CanvasText;
+    }
+  }
+</style>

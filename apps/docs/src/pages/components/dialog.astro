@@ -1,0 +1,80 @@
+---
+import Dialog from '@paulperigault/astro/Dialog.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+
+const props = [
+  ['id', 'string', 'Obligatoire. Identifiant visé par commandfor sur le déclencheur.'],
+  ['title', 'string', 'Obligatoire. Titre visible en h2, nom accessible de la boîte.'],
+  ['closeLabel', 'string', 'Obligatoire. Libellé visible du bouton de fermeture (traduit).'],
+] as const;
+---
+
+<DocsLayout title="Dialog · Design system · Paul Perigault">
+  <h1>Dialog</h1>
+  <p>
+    Dialog est un élément dialog natif ouvert en modale. Le composant ne contient aucun script : le
+    déclencheur porte commandfor et command="show-modal" (API Invoker Commands). Les navigateurs
+    sans cette API n’ouvrent pas encore la boîte ; un behavior livré plus tard prendra le relais sur
+    le même balisage.
+  </p>
+  <Stack space="m">
+    <h2>Démonstration</h2>
+    <p>
+      <button class="docs-trigger" type="button" commandfor="demo-dialog" command="show-modal">
+        Supprimer le brouillon
+      </button>
+    </p>
+    <Dialog id="demo-dialog" title="Supprimer le brouillon" closeLabel="Annuler">
+      <p>Le brouillon sera supprimé. Cette action ne peut pas être annulée.</p>
+      <form slot="actions" method="dialog">
+        <button class="docs-trigger" type="submit" value="delete">
+          Supprimer
+        </button>
+      </form>
+    </Dialog>
+    <h2>Fermeture et focus</h2>
+    <p>
+      La boîte se ferme par le bouton de fermeture, par la touche Échap, et par un clic hors de la
+      boîte là où closedby="any" est pris en charge (Chrome et Edge 134+, Firefox 141+). Le
+      navigateur place le focus sur le premier élément focalisable, puis le rend au déclencheur.
+    </p>
+    <h2>Propriétés</h2>
+    <p>Slots : le contenu par défaut forme le corps ; le slot actions reçoit les boutons finaux.</p>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Prop</th>
+          <th scope="col">Type</th>
+          <th scope="col">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {props.map(([name, type, description]) => (
+          <tr>
+            <th scope="row">
+              <code>{name}</code>
+            </th>
+            <td>
+              <code>{type}</code>
+            </td>
+            <td>{description}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </Stack>
+</DocsLayout>
+
+<style>
+  .docs-trigger {
+    min-block-size: max(var(--pp-size-control-height), var(--pp-size-target-min));
+    padding-inline: var(--pp-space-s);
+    border: var(--pp-size-rule) solid var(--pp-color-accent);
+    border-radius: var(--pp-radius-control);
+    background-color: var(--pp-color-accent);
+    color: var(--pp-color-on-accent);
+    font: inherit;
+    cursor: pointer;
+  }
+</style>

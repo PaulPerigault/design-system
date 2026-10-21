@@ -1,0 +1,114 @@
+---
+/**
+ * Diff : différence de texte ligne à ligne, en chasse fixe. Zéro JavaScript, aucun attribut
+ * `style` (CSP stricte). L'information ne passe jamais par la couleur seule : chaque ligne porte
+ * un signe visible (`+`, `-` ou espace) et, pour les lecteurs d'écran, un libellé masqué
+ * visuellement. Sémantique native : `<ins>` pour l'ajout, `<del>` pour la suppression.
+ * Les libellés viennent tous des props : le composant ne contient aucun texte.
+ */
+interface Line {
+  kind: 'add' | 'del' | 'ctx';
+  text: string;
+}
+
+interface Props {
+  /** Légende visible, reprise comme nom accessible de la région défilante. */
+  caption: string;
+  lines: Line[];
+  /** Libellé lu avant chaque ligne ajoutée. */
+  addedLabel: string;
+  /** Libellé lu avant chaque ligne supprimée. */
+  removedLabel: string;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { caption, lines, addedLabel, removedLabel, class: className } = Astro.props;
+const SIGNS = { add: '+', del: '-', ctx: ' ' } as const;
+---
+
+<figure class:list={['pp-diff', className]}>
+  <figcaption>{caption}</figcaption>
+  <div class="pp-diff-scroll" tabindex="0" role="region" aria-label={caption}>
+    <pre>{lines.map((line) => {
+      const sign = <span class="sign" aria-hidden="true">{SIGNS[line.kind]}</span>;
+      if (line.kind === 'add') {
+        return <ins class="line">{sign}<span class="hidden">{addedLabel}{' '}</span>{line.text}</ins>;
+      }
+      if (line.kind === 'del') {
+        return <del class="line">{sign}<span class="hidden">{removedLabel}{' '}</span>{line.text}</del>;
+      }
+      return <span class="line">{sign}{line.text}</span>;
+    })}</pre>
+  </div>
+</figure>
+
+<style>
+  .pp-diff {
+    margin-block: 0;
+    margin-inline: 0;
+  }
+
+  figcaption {
+    font-weight: var(--pp-font-weight-semibold);
+    padding-block-end: var(--pp-space-2xs);
+  }
+
+  .pp-diff-scroll {
+    overflow-inline: auto;
+    border: var(--pp-size-rule) solid var(--pp-color-line);
+    border-radius: var(--pp-radius-control);
+  }
+
+  .pp-diff-scroll:focus-visible {
+    outline: var(--pp-size-focus-width) solid var(--pp-color-focus);
+    outline-offset: var(--pp-size-focus-offset);
+  }
+
+  pre {
+    margin-block: 0;
+    margin-inline: 0;
+    padding-block: var(--pp-space-3xs);
+    font-family: var(--pp-font-family-mono);
+    font-size: var(--pp-font-size--1);
+    line-height: var(--pp-font-line-height-body);
+    white-space: normal;
+    inline-size: max-content;
+    min-inline-size: 100%;
+  }
+
+  .line {
+    display: block;
+    position: relative;
+    white-space: pre;
+    padding-inline: var(--pp-space-xs);
+    border-inline-start: var(--pp-space-3xs) solid transparent;
+    text-decoration: none;
+  }
+
+  ins.line {
+    background: var(--pp-color-surface);
+    border-inline-start-color: var(--pp-color-status-passed);
+  }
+
+  del.line {
+    background: var(--pp-color-surface);
+    border-inline-start-color: var(--pp-color-status-failed);
+  }
+
+  .sign {
+    display: inline-block;
+    min-inline-size: var(--pp-space-xs);
+    color: var(--pp-color-muted);
+    user-select: none;
+  }
+
+  .hidden {
+    position: absolute;
+    inline-size: var(--pp-size-rule);
+    block-size: var(--pp-size-rule);
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+</style>

@@ -3,11 +3,22 @@
 // n'existe pas encore échouerait forcément). Une base rouge ferait échouer, puis escalader, toutes
 // les tâches pour une raison qui n'est pas la leur : le lot ne part pas.
 
-/** Commandes à vérifier sur la base, sans doublon, hors commandes qui citent un fichier de tâche. */
-export function baselineCommands(tasks) {
+const parents = (file) =>
+  file
+    .split('/')
+    .slice(0, -1)
+    .map((_, i, parts) => parts.slice(0, i + 1).join('/'));
+
+/**
+ * Commandes à vérifier sur la base, sans doublon, hors commandes qui citent un fichier de tâche
+ * ou un dossier que les tâches vont créer (absent de la base : `exists` injecté).
+ */
+export function baselineCommands(tasks, exists = () => true) {
   const owned = tasks.flatMap((task) => task.files);
+  const missingDirs = [...new Set(owned.flatMap(parents))].filter((dir) => !exists(dir));
+  const skip = [...owned, ...missingDirs];
   const commands = tasks.flatMap((task) => task.acceptance);
-  return [...new Set(commands)].filter((cmd) => !owned.some((file) => cmd.includes(file)));
+  return [...new Set(commands)].filter((cmd) => !skip.some((path) => cmd.includes(path)));
 }
 
 /**

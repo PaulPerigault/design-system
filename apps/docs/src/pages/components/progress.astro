@@ -1,0 +1,64 @@
+---
+import Progress from '@paulperigault/astro/Progress.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+
+const props = [
+  ['id', 'string', 'Obligatoire. Relie le libellé à la barre.'],
+  ['label', 'string', 'Obligatoire. Libellé visible, fourni par le site (traduit).'],
+  ['kind', "'progress' | 'meter'", 'progress par défaut. Avancement ou mesure dans une plage.'],
+  ['value', 'number', 'Valeur courante. Absente sur progress : état indéterminé.'],
+  ['max', 'number', '1 par défaut (valeur native).'],
+  ['low, high, optimum', 'number', 'meter seulement. Bornes des zones et valeur idéale.'],
+  ['valueText', 'string', 'Texte visible de la valeur, relié par aria-describedby.'],
+] as const;
+---
+
+<DocsLayout title="Progress · Design system · Paul Perigault">
+  <h1>Progress</h1>
+  <p>
+    Progress rend un élément natif : progress pour un avancement, meter pour une mesure dans une
+    plage connue. Le libellé est relié par label for, la valeur s’affiche en texte : elle ne dépend
+    jamais de la couleur seule.
+  </p>
+  <Stack space="m">
+    <h2>Avancement</h2>
+    <Progress id="demo-progress" label="Envoi du fichier" value={3} max={5} valueText="3 sur 5" />
+    <h2>Indéterminé</h2>
+    <Progress id="demo-indeterminate" label="Préparation de l’archive" />
+    <h2>Mesure</h2>
+    <Progress
+      id="demo-meter"
+      kind="meter"
+      label="Espace disque utilisé"
+      value={0.9}
+      low={0.5}
+      high={0.8}
+      optimum={0.2}
+      valueText="90 %"
+    />
+    <h2>Propriétés</h2>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Prop</th>
+          <th scope="col">Type</th>
+          <th scope="col">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {props.map(([name, type, description]) => (
+          <tr>
+            <th scope="row">
+              <code>{name}</code>
+            </th>
+            <td>
+              <code>{type}</code>
+            </td>
+            <td>{description}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </Stack>
+</DocsLayout>

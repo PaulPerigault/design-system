@@ -1,0 +1,117 @@
+---
+/**
+ * Accordion : `<details>` / `<summary>` natifs, zéro JavaScript, libellés en props. Chaque
+ * panneau reçoit le slot nommé d'après son `id`. `exclusive` partage l'attribut `name`
+ * (Baseline 2024 ; repli : panneaux indépendants), dérivé des `id` pour isoler les accordéons.
+ */
+interface Item {
+  id: string;
+  summary: string;
+  open?: boolean;
+}
+
+interface Props {
+  items: Item[];
+  exclusive?: boolean;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { items, exclusive = false, class: className } = Astro.props;
+const group = exclusive ? `pp-accordion-${items.map((item) => item.id).join('-')}` : undefined;
+---
+
+<div class:list={['pp-accordion', className]}>
+  {items.map((item) => (
+    <details class="pp-accordion__item" name={group} open={item.open ?? false}>
+      <summary class="pp-accordion__summary">
+        <span>{item.summary}</span>
+        <svg class="pp-accordion__chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" />
+        </svg>
+      </summary>
+      <div class="pp-accordion__panel">
+        <slot name={item.id} />
+      </div>
+    </details>
+  ))}
+</div>
+
+<style>
+  .pp-accordion {
+    border-block-start: var(--pp-size-rule) solid var(--pp-color-line);
+  }
+
+  .pp-accordion__item {
+    border-block-end: var(--pp-size-rule) solid var(--pp-color-line);
+  }
+
+  .pp-accordion__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--pp-space-s);
+    box-sizing: border-box;
+    min-block-size: max(var(--pp-size-target-min), var(--pp-size-control-height));
+    padding-block: var(--pp-space-2xs);
+    color: var(--pp-color-fg);
+    font-weight: var(--pp-font-weight-medium);
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .pp-accordion__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .pp-accordion__summary:hover {
+    color: var(--pp-color-accent);
+  }
+
+  .pp-accordion__summary:focus-visible {
+    outline: var(--pp-size-focus-width) solid var(--pp-color-focus);
+    outline-offset: var(--pp-size-focus-offset);
+  }
+
+  .pp-accordion__chevron {
+    flex: none;
+    inline-size: 1em;
+    block-size: 1em;
+  }
+
+  .pp-accordion__item[open] > .pp-accordion__summary .pp-accordion__chevron {
+    scale: 1 -1;
+  }
+
+  .pp-accordion__panel {
+    padding-block: var(--pp-space-2xs) var(--pp-space-s);
+  }
+
+  .pp-accordion__panel > :global(:first-child) {
+    margin-block-start: 0;
+  }
+
+  .pp-accordion__panel > :global(:last-child) {
+    margin-block-end: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (interpolate-size: allow-keywords) {
+      .pp-accordion__item {
+        interpolate-size: allow-keywords;
+      }
+
+      .pp-accordion__item::details-content {
+        block-size: 0;
+        overflow: clip;
+        transition:
+          block-size var(--pp-duration-base) var(--pp-easing-standard),
+          content-visibility var(--pp-duration-base) allow-discrete;
+      }
+
+      .pp-accordion__item[open]::details-content {
+        block-size: auto;
+      }
+    }
+  }
+</style>

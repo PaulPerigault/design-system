@@ -1,6 +1,6 @@
 # Rapport d'exécution
 
-Mis à jour à chaque fin de lot. Dernière mise à jour : 2026-10-20, fin de L4.
+Mis à jour à chaque fin de lot. Dernière mise à jour : 2026-10-20, fin de L5.
 
 ## Lots
 
@@ -35,4 +35,4 @@ trusted publisher npm (et `0.0.0` d'amorce si nécessaire), fusions vers `main`.
 
 ## ds-lead
 
-L8 en cours depuis 00:42 : ≈ 102 crédits d'exécution et ≈ 31 de revue au 2026-10-21 01:30 (hors sa propre session Opus).
+L8 (session 1, 00:42 → 01:36) : **≈ 452 crédits** = exécutions 157,18 + revues 38,03 + session de chef de lot 257,47 (985 appels d'outils). La session de pilotage coûte plus que l'exécution : à surveiller. L6 en cours depuis 01:36.
