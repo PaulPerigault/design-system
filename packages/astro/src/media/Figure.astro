@@ -1,0 +1,45 @@
+---
+/**
+ * Figure : un média (en pratique un `Photo`) et sa légende, avec un crédit facultatif dont le
+ * texte complet vient du site. Zéro JavaScript, aucun libellé en dur.
+ */
+interface Props {
+  /** Légende, obligatoire et non vide. */
+  caption: string;
+  /** Crédit complet (ex. « Photo : … »). */
+  credit?: string;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { caption, credit, class: className } = Astro.props;
+if (typeof caption !== 'string' || caption.trim() === '') {
+  throw new TypeError('Légende vide : `caption` décrit le média de la figure.');
+}
+---
+
+<figure class:list={['pp-figure', className]}>
+  <slot />
+  <figcaption class="pp-figure__caption">
+    {caption}
+    {credit && <small class="pp-figure__credit">{credit}</small>}
+  </figcaption>
+</figure>
+
+<style>
+  .pp-figure {
+    margin: 0;
+  }
+
+  .pp-figure__caption {
+    max-inline-size: var(--pp-size-measure);
+    margin-block-start: var(--pp-space-2xs);
+    color: var(--pp-color-muted);
+    font-size: var(--pp-font-size--1);
+  }
+
+  .pp-figure__credit {
+    display: block;
+    font-size: inherit;
+  }
+</style>

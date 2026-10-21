@@ -72,6 +72,18 @@ describe('runTask', () => {
     expect(calls.routing[0].reason).toBe('relance après revue');
   });
 
+  it('refuse le moteur Kiro quand il est marqué indisponible', async () => {
+    const { deps, calls } = world();
+    deps.config = {
+      ...deps.config,
+      kiro: { available: false, reason: 'indisponible : crédits épuisés' },
+    };
+    const result = await runTask(deps, TASK);
+    expect(result).toMatchObject({ status: 'blocked' });
+    expect(result.failure).toMatch(/crédits épuisés/);
+    expect(calls.kiro).toHaveLength(0);
+  });
+
   it('bloque une tâche dont une dépendance n’est pas intégrée', async () => {
     const { deps, calls } = world({ log: 'feat: x\n\nTâche T0.01' });
     const result = await runTask(deps, { ...TASK, depends_on: ['T0.01', 'T0.02'] });

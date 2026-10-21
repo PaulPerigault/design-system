@@ -1,0 +1,31 @@
+---
+/**
+ * ProjectCover : couverture de projet (capture par défaut), toujours filetée, au ratio paysage ou
+ * large. Compose `Photo` ; zéro JavaScript.
+ */
+import Photo from './Photo.astro';
+import { altPropsOf } from './alt';
+import type { ProjectCoverProps } from './types';
+
+type Props = ProjectCoverProps;
+
+const {
+  src,
+  ratio = 'landscape',
+  layout = 'third',
+  kind = 'capture',
+  priority = false,
+  class: className,
+} = Astro.props;
+---
+
+<Photo
+  src={src}
+  {...altPropsOf(Astro.props)}
+  ratio={ratio}
+  layout={layout}
+  kind={kind}
+  priority={priority}
+  rule
+  class={className}
+/>

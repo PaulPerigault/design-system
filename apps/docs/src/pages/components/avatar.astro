@@ -1,0 +1,53 @@
+---
+import Avatar from '@paulperigault/astro/Avatar.astro';
+import Cluster from '@paulperigault/astro/Cluster.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import carre from '../../assets/media/carre.jpg';
+
+const props = [
+  ['src', 'image importée localement', 'aucun'],
+  ['alt', 'texte alternatif', 'aucun'],
+  ['decorative', 'true : alt="" ; à utiliser quand le nom est affiché à côté', 'aucun'],
+  ['size', "'s' | 'm' | 'l' ; tokens --pp-space-xl, -2xl, -3xl", "'m'"],
+  ['class', 'placement dans le parent', 'aucun'],
+];
+const sizes = ['s', 'm', 'l'] as const;
+---
+
+<DocsLayout title="Avatar · Design system · Paul Perigault">
+  <h1>Avatar</h1>
+  <p>
+    Avatar affiche une image carrée au rayon des médias, recadrée en haut ; à côté d’un nom affiché,
+    elle est décorative pour que le nom ne soit pas lu deux fois.
+  </p>
+
+  <h2>Trois tailles, à côté d’un nom</h2>
+  {sizes.map((size) => (
+    <Cluster space="s" align="center">
+      <Avatar src={carre} decorative size={size} />
+      <span>Camille Martin, taille {size}</span>
+    </Cluster>
+  ))}
+
+  <h2>Propriétés</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Propriété</th>
+        <th>Valeurs</th>
+        <th>Défaut</th>
+      </tr>
+    </thead>
+    <tbody>
+      {props.map(([name, values, fallback]) => (
+        <tr>
+          <td>
+            <code>{name}</code>
+          </td>
+          <td>{values}</td>
+          <td>{fallback}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</DocsLayout>

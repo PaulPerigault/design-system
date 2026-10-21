@@ -54,6 +54,10 @@
         "$value": { "colorSpace": "oklch", "components": [0.47, 0.19, 270.7] },
         "$description": "Statut en cours ; toujours avec icône et libellé."
       }
+    },
+    "media-placeholder": {
+      "$value": { "colorSpace": "oklch", "components": [0.915, 0.01, 270.7] },
+      "$description": "Fond d'un média avant chargement, quand la couleur dominante n'est pas calculée."
     }
   }
 }

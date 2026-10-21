@@ -1,0 +1,58 @@
+---
+/**
+ * Photo : seule façon d'afficher une image locale. Enveloppe `<Picture>` (AVIF puis WebP, repli
+ * JPEG ou PNG), largeurs et `sizes` tirés des tokens, cadre `.pp-media` (`frame.css`) et fond
+ * d'attente à la couleur dominante calculée au build. Aucun attribut `style` (CSP stricte) : la
+ * couleur passe par l'attribut de présentation SVG `fill`.
+ */
+import { Picture } from 'astro:assets';
+import { altOf, assertLocal, imagePath } from './checks';
+import { dominantColor } from './dominant';
+import { FORMATS, fallbackFormat, qualityFor, sizesFor, widthsFor } from './presets';
+import type { PhotoProps } from './types';
+import './frame.css';
+
+type Props = PhotoProps;
+
+const {
+  src,
+  ratio,
+  focal = 'center',
+  priority = false,
+  layout = 'measure',
+  kind = 'photo',
+  rule = false,
+  class: className,
+} = Astro.props;
+
+assertLocal(src);
+const alt = altOf(Astro.props);
+const path = imagePath(src);
+const color = path === undefined ? undefined : await dominantColor(path);
+const loading = priority
+  ? ({ loading: 'eager', fetchpriority: 'high' } as const)
+  : ({ loading: 'lazy', decoding: 'async' } as const);
+---
+
+<div
+  class:list={['pp-media', className]}
+  data-ratio={ratio}
+  data-focal={focal}
+  data-rule={rule ? '' : undefined}
+>
+  {color && (
+    <svg class="pp-media__placeholder" aria-hidden="true" focusable="false">
+      <rect width="100%" height="100%" fill={color} />
+    </svg>
+  )}
+  <Picture
+    src={src}
+    alt={alt}
+    formats={[...FORMATS]}
+    fallbackFormat={fallbackFormat(kind)}
+    widths={widthsFor(layout, src.width)}
+    sizes={sizesFor(layout)}
+    quality={qualityFor(kind)}
+    {...loading}
+  />
+</div>

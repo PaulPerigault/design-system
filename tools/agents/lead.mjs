@@ -17,6 +17,10 @@ import {
 import { commitLeadFiles, prepareLeadWorktree, runLeadSession } from './lib/lead-session.mjs';
 
 const deps = await realDeps();
+if (deps.config.kiro?.available === false) {
+  console.error(`Kiro ${deps.config.kiro.reason} : rien n'est lancé.`);
+  process.exit(2);
+}
 const shared = join(deps.stateRoot, '.agents');
 const queueFile = join(shared, 'lead-queue.md');
 const pidFile = join(shared, 'lead.pid');

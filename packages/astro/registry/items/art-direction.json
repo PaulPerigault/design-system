@@ -1,0 +1,47 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "art-direction",
+  "type": "registry:ui",
+  "title": "ArtDirection",
+  "description": "Un recadrage par largeur d’écran dans un picture écrit à la main, chaque source portant les dimensions de son recadrage : CLS nul, zéro JavaScript.",
+  "files": [
+    {
+      "path": "packages/astro/src/media/ArtDirection.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/media/frame.css",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/media/types.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/media/checks.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/media/presets.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/media/dominant.ts",
+      "type": "registry:lib"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-media-radius",
+      "--pp-media-rule",
+      "--pp-ratio-landscape",
+      "--pp-ratio-portrait",
+      "--pp-ratio-square",
+      "--pp-ratio-wide",
+      "--pp-size-measure",
+      "--pp-size-page",
+      "--pp-space-3xl"
+    ],
+    "version": "0.0.0"
+  }
+}

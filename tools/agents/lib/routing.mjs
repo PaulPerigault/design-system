@@ -47,3 +47,9 @@ export function routingEntry({ task, tier, model, engine, reason, result, credit
     credits: credits ?? null,
   };
 }
+
+/** Raison pour laquelle le moteur est indisponible (`config.kiro.available: false`), sinon null. */
+export const unavailableEngine = (deps, engine) =>
+  engine === 'kiro' && deps.config.kiro?.available === false
+    ? `Kiro ${deps.config.kiro.reason}`
+    : null;

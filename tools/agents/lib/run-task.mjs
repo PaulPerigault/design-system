@@ -3,7 +3,7 @@
 import { runAttempt } from './attempt.mjs';
 import { executorEnv } from './env.mjs';
 import { resultOf, summaryMarkdown } from './result.mjs';
-import { modelFor, routingEntry, tierPlan } from './routing.mjs';
+import { modelFor, routingEntry, tierPlan, unavailableEngine } from './routing.mjs';
 import { missingDependencies, removeWorktree, runsPath } from './worktree.mjs';
 
 const outcomeOf = (attempt) => (attempt.failure ? `échec : ${attempt.failure}` : 'réussite');
@@ -91,6 +91,12 @@ async function escalate(deps, task, { tiers, engine: initialEngine, env, feedbac
  */
 export async function runTask(deps, task, options = {}) {
   await deps.fs.mkdir(runFile(deps, '.'), { recursive: true });
+  const engine = options.engine ?? task.engine;
+  const unavailable = unavailableEngine(deps, engine);
+  if (unavailable) {
+    const attempt = { failure: unavailable, engine, tier: task.tier };
+    return finish(deps, task, { status: 'blocked', attempt, history: [] });
+  }
   const missing = await missingDependencies({ ...deps, dependsOn: task.depends_on });
   if (missing.length > 0) {
     const attempt = {
@@ -106,7 +112,6 @@ export async function runTask(deps, task, options = {}) {
   });
   const tier = options.tier ?? task.tier;
   const tiers = options.escalate ? tierPlan(deps.models, tier) : [tier];
-  const engine = options.engine ?? task.engine;
   const outcome = await escalate(deps, task, { tiers, engine, env, feedback: options.feedback });
   return finish(deps, task, outcome);
 }

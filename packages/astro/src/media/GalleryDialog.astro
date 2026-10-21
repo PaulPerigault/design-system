@@ -1,0 +1,90 @@
+---
+/**
+ * Dialogue d'agrandissement d'une image de galerie : `<dialog>` modal nommé par l'alternative,
+ * image au ratio propre (chargée en différé, donc à l'ouverture), légende, bouton de fermeture
+ * par Invoker Commands (`command="close"`). Échap et clic hors boîte ferment aussi.
+ */
+import Photo from './Photo.astro';
+import type { GalleryItem } from './types';
+
+interface Props {
+  id: string;
+  item: GalleryItem;
+  /** Libellé visible du bouton de fermeture, fourni par le site. */
+  closeLabel: string;
+}
+
+const { id, item, closeLabel } = Astro.props;
+const captionId = item.caption ? `${id}-legende` : undefined;
+---
+
+<dialog
+  class="pp-gallery-dialog"
+  id={id}
+  aria-label={item.alt}
+  aria-describedby={captionId}
+  closedby="any"
+>
+  <button type="button" class="pp-gallery-dialog__close" commandfor={id} command="close">
+    {closeLabel}
+  </button>
+  <Photo src={item.src} alt={item.alt} layout="page" />
+  {item.caption && (
+    <p class="pp-gallery-dialog__caption" id={captionId}>
+      {item.caption}
+    </p>
+  )}
+</dialog>
+
+<style>
+  .pp-gallery-dialog {
+    box-sizing: border-box;
+    max-inline-size: calc(100% - 2 * var(--pp-space-m));
+    max-block-size: calc(100% - 2 * var(--pp-space-m));
+    padding: var(--pp-space-m);
+    overflow: auto;
+    border: var(--pp-size-rule) solid var(--pp-color-line);
+    border-radius: var(--pp-radius-surface);
+    background-color: var(--pp-color-bg);
+    color: var(--pp-color-fg);
+  }
+
+  .pp-gallery-dialog:modal {
+    margin: auto;
+  }
+
+  .pp-gallery-dialog::backdrop {
+    background-color: color-mix(in oklab, var(--pp-color-fg) 60%, transparent);
+  }
+
+  .pp-gallery-dialog__close {
+    display: block;
+    min-block-size: max(var(--pp-size-control-height), var(--pp-size-target-min));
+    margin-block-end: var(--pp-space-s);
+    margin-inline-start: auto;
+    padding-inline: var(--pp-space-s);
+    border: var(--pp-size-rule) solid var(--pp-color-control);
+    border-radius: var(--pp-radius-control);
+    background-color: transparent;
+    color: var(--pp-color-fg);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  /* Image entière dans la fenêtre : hauteur bornée, largeur déduite du ratio (élément remplacé). */
+  .pp-gallery-dialog :global(.pp-media) {
+    inline-size: fit-content;
+    margin-inline: auto;
+  }
+
+  .pp-gallery-dialog :global(.pp-media img) {
+    inline-size: auto;
+    max-inline-size: 100%;
+    max-block-size: calc(100dvh - 2 * var(--pp-space-3xl));
+  }
+
+  .pp-gallery-dialog__caption {
+    margin-block: var(--pp-space-xs) 0;
+    color: var(--pp-color-muted);
+  }
+</style>

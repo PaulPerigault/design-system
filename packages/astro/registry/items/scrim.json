@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "scrim",
+  "type": "registry:ui",
+  "title": "Scrim",
+  "description": "Texte sur photo posé sur un voile uni dont le contraste au pire cas, sur toute image, est vérifié à 4,5:1 au moins.",
+  "files": [
+    {
+      "path": "packages/astro/src/media/Scrim.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/media/scrim.ts",
+      "type": "registry:lib"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-media-radius",
+      "--pp-media-scrim-color",
+      "--pp-media-scrim-opacity",
+      "--pp-media-scrim-text",
+      "--pp-space-2xs",
+      "--pp-space-m",
+      "--pp-space-s"
+    ],
+    "version": "0.0.0"
+  }
+}

@@ -1,0 +1,47 @@
+---
+import Figure from '@paulperigault/astro/Figure.astro';
+import Photo from '@paulperigault/astro/Photo.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import portrait from '../../assets/media/portrait.jpg';
+
+const props = [
+  ['caption', 'légende, obligatoire ; vide refusée au build', 'aucun'],
+  ['credit', 'crédit complet fourni par le site (ex. « Photo : … »)', 'aucun'],
+  ['class', 'placement dans le parent', 'aucun'],
+];
+---
+
+<DocsLayout title="Figure · Design system · Paul Perigault">
+  <h1>Figure</h1>
+  <p>
+    Figure associe un média à sa légende par les éléments figure et figcaption ; le crédit, s’il
+    existe, suit la légende en plus petit.
+  </p>
+
+  <h2>Légende et crédit</h2>
+  <Figure caption="Rectangle bleu clair au-dessus d’une bande grise." credit="Image : générée">
+    <Photo src={portrait} decorative ratio="landscape" layout="half" />
+  </Figure>
+
+  <h2>Propriétés</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Propriété</th>
+        <th>Valeurs</th>
+        <th>Défaut</th>
+      </tr>
+    </thead>
+    <tbody>
+      {props.map(([name, values, fallback]) => (
+        <tr>
+          <td>
+            <code>{name}</code>
+          </td>
+          <td>{values}</td>
+          <td>{fallback}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</DocsLayout>

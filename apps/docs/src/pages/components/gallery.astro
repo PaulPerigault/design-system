@@ -1,0 +1,68 @@
+---
+import Gallery from '@paulperigault/astro/Gallery.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import capture from '../../assets/media/capture.png';
+import carre from '../../assets/media/carre.jpg';
+import large from '../../assets/media/large.jpg';
+import paysage from '../../assets/media/paysage.jpg';
+import portrait from '../../assets/media/portrait.jpg';
+
+const items = [
+  { src: paysage, alt: 'Soleil orange au-dessus de bandes grise et bleue sur fond encre' },
+  { src: portrait, alt: 'Rectangle bleu clair au-dessus d’une bande grise sur fond clair' },
+  { src: carre, alt: 'Disque bleu clair et rectangle blanc sur fond bleu' },
+  {
+    src: large,
+    alt: 'Disque bleu et colonne grise au-dessus d’une bande d’horizon',
+    caption: 'Format 16:9, recadré au carré dans la grille.',
+  },
+  { src: capture, alt: 'Capture d’interface : barre supérieure, menu latéral, titre et bouton' },
+];
+
+/** Nombre d'images de la grille simple : une rangée à trois colonnes. */
+const SIMPLE = 3;
+
+const props = [
+  ['id', 'préfixe des identifiants des dialogues', 'aucun'],
+  ['items', '{ src, alt, caption? }[] ; alt obligatoire', 'aucun'],
+  ['ratio', "'portrait' | 'square' | 'landscape' | 'wide'", "'square'"],
+  ['enlarge', 'true : chaque vignette ouvre un dialogue modal, sans JavaScript', 'false'],
+  ['labels', '{ open, close } ; obligatoire avec enlarge', 'aucun'],
+];
+---
+
+<DocsLayout title="Gallery · Design system · Paul Perigault">
+  <h1>Gallery</h1>
+  <p>
+    Gallery range les images en une, deux puis trois colonnes selon la largeur de son conteneur ;
+    avec enlarge, chaque vignette est un bouton qui ouvre l’image entière dans un dialogue natif.
+  </p>
+
+  <h2>Grille simple</h2>
+  <Gallery id="galerie-simple" items={items.slice(0, SIMPLE)} ratio="landscape" />
+
+  <h2>Agrandissement</h2>
+  <Gallery id="galerie" items={items} enlarge labels={{ open: 'Agrandir', close: 'Fermer' }} />
+
+  <h2>Propriétés</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Propriété</th>
+        <th>Valeurs</th>
+        <th>Défaut</th>
+      </tr>
+    </thead>
+    <tbody>
+      {props.map(([name, values, fallback]) => (
+        <tr>
+          <td>
+            <code>{name}</code>
+          </td>
+          <td>{values}</td>
+          <td>{fallback}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</DocsLayout>

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "avatar",
+  "type": "registry:ui",
+  "title": "Avatar",
+  "description": "Image carrée au rayon des médias en trois tailles de tokens, recadrée en haut, zéro JavaScript.",
+  "registryDependencies": ["photo"],
+  "files": [
+    {
+      "path": "packages/astro/src/media/Avatar.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/media/alt.ts",
+      "type": "registry:lib"
+    }
+  ],
+  "meta": {
+    "tokens": ["--pp-space-2xl", "--pp-space-3xl", "--pp-space-xl"],
+    "version": "0.0.0"
+  }
+}

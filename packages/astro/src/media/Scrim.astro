@@ -1,0 +1,68 @@
+---
+/**
+ * Scrim : texte posé sur une photo, lisible quelle que soit la photo. Le bloc de texte a pour fond
+ * un voile uni semi-opaque (tokens `--pp-media-scrim-*`, pire cas vérifié par `scrim.ts`).
+ * Ni dégradé, ni flou, ni ombre ; zéro JavaScript, aucun `style` en ligne.
+ */
+interface Props {
+  /** Position du texte dans l'axe de bloc. */
+  place?: 'start' | 'end';
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { place = 'end', class: className } = Astro.props;
+---
+
+<div class:list={['pp-scrim', className]} data-place={place}>
+  <div class="pp-scrim__media">
+    <slot name="media" />
+  </div>
+  <div class="pp-scrim__text">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .pp-scrim {
+    display: grid;
+  }
+
+  .pp-scrim__media,
+  .pp-scrim__text {
+    grid-area: 1 / 1;
+  }
+
+  .pp-scrim__text {
+    margin: var(--pp-space-s);
+    padding: var(--pp-space-s) var(--pp-space-m);
+    border-radius: var(--pp-media-radius);
+    color: var(--pp-media-scrim-text);
+    background-color: color-mix(
+      in srgb,
+      var(--pp-media-scrim-color) calc(var(--pp-media-scrim-opacity) * 100%),
+      transparent
+    );
+  }
+
+  .pp-scrim[data-place='start'] .pp-scrim__text {
+    align-self: start;
+  }
+
+  .pp-scrim[data-place='end'] .pp-scrim__text {
+    align-self: end;
+  }
+
+  .pp-scrim__text > :global(*) {
+    margin-block: 0;
+    color: inherit;
+  }
+
+  .pp-scrim__text :global(a) {
+    color: inherit;
+  }
+
+  .pp-scrim__text > :global(* + *) {
+    margin-block-start: var(--pp-space-2xs);
+  }
+</style>

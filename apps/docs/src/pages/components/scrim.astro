@@ -1,0 +1,63 @@
+---
+import { oklchToSrgb, parseOklch } from '@paulperigault/tokens/color';
+import tokens from '@paulperigault/tokens/tokens.json';
+import Photo from '@paulperigault/astro/Photo.astro';
+import Scrim from '@paulperigault/astro/Scrim.astro';
+import { worstCaseContrast } from '@paulperigault/astro/scrim';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import paysage from '../../assets/media/paysage.jpg';
+
+const base: Record<string, string> = tokens.base;
+const rgb = (name: string) => oklchToSrgb(parseOklch(base[name] ?? ''));
+const worst = worstCaseContrast({
+  veil: rgb('--pp-media-scrim-color'),
+  opacity: Number(base['--pp-media-scrim-opacity']),
+  text: rgb('--pp-media-scrim-text'),
+}).toLocaleString('fr-FR', { maximumFractionDigits: 1 });
+
+const props = [
+  ['place', "'start' | 'end' ; position du texte dans l’axe de bloc", "'end'"],
+  ['class', 'placement dans le parent', 'aucun'],
+  ['slot media', 'le média, en pratique un Photo décoratif', 'aucun'],
+  ['slot par défaut', 'le texte posé sur le voile', 'aucun'],
+];
+---
+
+<DocsLayout title="Scrim · Design system · Paul Perigault">
+  <h1>Scrim</h1>
+  <p>
+    Scrim pose le texte sur un voile uni semi-opaque : quelle que soit l’image dessous, le contraste
+    du texte vaut au moins {worst}:1, valeur calculée au build depuis les tokens.
+  </p>
+
+  <h2>Texte en bas de l’image</h2>
+  <Scrim>
+    <Photo slot="media" src={paysage} decorative ratio="landscape" />
+    <p>
+      <strong>Soleil sur bandes</strong>
+    </p>
+    <p>Voile uni, sans dégradé ni flou.</p>
+  </Scrim>
+
+  <h2>Propriétés</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Propriété</th>
+        <th>Valeurs</th>
+        <th>Défaut</th>
+      </tr>
+    </thead>
+    <tbody>
+      {props.map(([name, values, fallback]) => (
+        <tr>
+          <td>
+            <code>{name}</code>
+          </td>
+          <td>{values}</td>
+          <td>{fallback}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</DocsLayout>

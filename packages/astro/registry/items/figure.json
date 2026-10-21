@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "figure",
+  "type": "registry:ui",
+  "title": "Figure",
+  "description": "Média et légende dans figure et figcaption, crédit facultatif fourni par le site, légende vide refusée au build.",
+  "files": [
+    {
+      "path": "packages/astro/src/media/Figure.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": ["--pp-font-size--1", "--pp-size-measure", "--pp-space-2xs"],
+    "version": "0.0.0"
+  }
+}
