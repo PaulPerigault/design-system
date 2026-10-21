@@ -72,7 +72,10 @@ Portée selon l'extension :
 `physical-property` refuse les déclarations physiques (`margin-left`, `width`, `top`,
 `border-right`, `overflow-x`, `text-align: left`…) au profit des propriétés logiques
 (`margin-inline-start`, `inline-size`, `inset-block-start`…), qui suivent le sens d'écriture. Les
-conditions `@media` et `@container` ne sont pas visées.
+conditions `@media` et `@container` ne sont pas visées. Dans les attributs `class`, la règle vise les utilitaires
+Tailwind physiques de l'axe en ligne (`ml-*`, `pr-*`, `left-*`, `text-left`, `rounded-l-*`,
+`border-r-*`, `float-right`…), qui ont un équivalent logique (`ms-*`, `pe-*`, `start-*`,
+`text-start`, `rounded-s-*`, `border-e-*`) ; l'axe de bloc (`mt-*`, `mb-*`) reste permis.
 
 `color-literal` vise les valeurs CSS : notations hexadécimales, fonctions de couleur (`rgb()`,
 `oklch()`…) et noms de couleur dans les propriétés de couleur. La police mono n'est pas visée :

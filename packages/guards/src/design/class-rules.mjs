@@ -16,6 +16,12 @@ const CHECKS = [
   ['tailwind-palette', PALETTE],
   ['arbitrary-value', /^(?:-?[a-z][\w-]*-\[.+\]|\[[\w-]+:.+\])/],
   ['arbitrary-value', /^-?[a-z][\w-]*-\((?!(?:[a-z-]+:)?--pp-)/],
+  // Axe en ligne physique ; équivalents logiques : ms-/me-, ps-/pe-, start-/end-, text-start…
+  [
+    'physical-property',
+    /^(?:(?:scroll-)?[mp][lr]-|(?:left|right)-|(?:text|float|clear)-(?:left|right)$)/,
+  ],
+  ['physical-property', /^(?:rounded-(?:[lr]|[tb][lr])|border-[lr])(?:-|$)/],
 ];
 const WIDE_TRACKING = /^tracking-(?:wide|wider|widest)$/;
 const CUSTOM_TRACKING = /^tracking-\[\s*([^\]]+)\]$/;
