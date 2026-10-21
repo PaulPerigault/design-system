@@ -12,11 +12,11 @@
   ],
   "meta": {
     "tokens": [
-      "--pp-size-page",
       "--pp-size-measure",
-      "--pp-space-s",
+      "--pp-size-page",
+      "--pp-space-l",
       "--pp-space-m",
-      "--pp-space-l"
+      "--pp-space-s"
     ],
     "version": "0.0.0"
   }

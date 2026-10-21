@@ -32,6 +32,8 @@
   ],
   "meta": {
     "tokens": [
+      "--pp-color-line",
+      "--pp-color-media-placeholder",
       "--pp-media-radius",
       "--pp-media-rule",
       "--pp-ratio-landscape",

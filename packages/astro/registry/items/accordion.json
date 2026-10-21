@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "accordion",
+  "type": "registry:ui",
+  "title": "Accordion",
+  "description": "Sections repliables en details natifs, groupées par name, animation seulement sans préférence de mouvement réduit.",
+  "files": [
+    {
+      "path": "packages/astro/src/content/Accordion.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-fg",
+      "--pp-color-focus",
+      "--pp-color-line",
+      "--pp-duration-base",
+      "--pp-easing-standard",
+      "--pp-font-weight-medium",
+      "--pp-size-control-height",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-2xs",
+      "--pp-space-s"
+    ],
+    "version": "0.0.0"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "breadcrumb",
+  "type": "registry:ui",
+  "title": "Breadcrumb",
+  "description": "Fil d’Ariane en liste nommée, page courante marquée par aria-current.",
+  "files": [
+    {
+      "path": "packages/astro/src/content/Breadcrumb.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-fg",
+      "--pp-color-focus",
+      "--pp-color-muted",
+      "--pp-font-size-0",
+      "--pp-font-weight-medium",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-xs"
+    ],
+    "version": "0.0.0"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "diff",
+  "type": "registry:ui",
+  "title": "Diff",
+  "description": "Ajouts et retraits en ins et del natifs, signes visibles et libellés lus.",
+  "files": [
+    {
+      "path": "packages/astro/src/content/Diff.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-focus",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-color-status-failed",
+      "--pp-color-status-passed",
+      "--pp-color-surface",
+      "--pp-font-family-mono",
+      "--pp-font-line-height-body",
+      "--pp-font-size--1",
+      "--pp-font-weight-semibold",
+      "--pp-radius-control",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-rule",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-xs"
+    ],
+    "version": "0.0.0"
+  }
+}

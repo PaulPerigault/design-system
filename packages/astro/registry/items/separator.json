@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "separator",
+  "type": "registry:ui",
+  "title": "Separator",
+  "description": "Élément hr natif lu comme séparateur, ou filet décoratif masqué aux technologies d’assistance.",
+  "files": [
+    {
+      "path": "packages/astro/src/content/Separator.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-line",
+      "--pp-size-rule",
+      "--pp-space-l",
+      "--pp-space-m",
+      "--pp-space-s",
+      "--pp-space-xl",
+      "--pp-space-xs"
+    ],
+    "version": "0.0.0"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "dialog",
+  "type": "registry:ui",
+  "title": "Dialog",
+  "description": "Dialogue modal natif ouvert par Invoker Commands sans script, fermeture par bouton, Échap ou clic hors boîte.",
+  "files": [
+    {
+      "path": "packages/astro/src/feedback/Dialog.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-control",
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-surface",
+      "--pp-duration-base",
+      "--pp-easing-standard",
+      "--pp-font-size-2",
+      "--pp-radius-control",
+      "--pp-radius-surface",
+      "--pp-size-control-height",
+      "--pp-size-measure",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-m",
+      "--pp-space-s"
+    ],
+    "version": "0.0.0"
+  }
+}

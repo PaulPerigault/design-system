@@ -11,7 +11,7 @@
     }
   ],
   "meta": {
-    "tokens": ["--pp-space-xs", "--pp-space-s", "--pp-space-m", "--pp-space-l", "--pp-space-xl"],
+    "tokens": ["--pp-space-l", "--pp-space-m", "--pp-space-s", "--pp-space-xl", "--pp-space-xs"],
     "version": "0.0.0"
   }
 }

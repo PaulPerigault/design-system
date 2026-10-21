@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "progress",
+  "type": "registry:ui",
+  "title": "Progress",
+  "description": "Barre progress ou jauge meter natives, valeur reprise en texte relié.",
+  "files": [
+    {
+      "path": "packages/astro/src/feedback/Progress.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-control",
+      "--pp-color-status-degraded",
+      "--pp-color-status-failed",
+      "--pp-color-surface",
+      "--pp-duration-base",
+      "--pp-easing-standard",
+      "--pp-radius-control",
+      "--pp-size-rule",
+      "--pp-space-2xs",
+      "--pp-space-3xs"
+    ],
+    "version": "0.0.0"
+  }
+}

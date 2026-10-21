@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "status",
+  "type": "registry:ui",
+  "title": "Status",
+  "description": "Statut de pipeline avec une forme d’icône propre à chaque état : la couleur n’est jamais seule porteuse du sens.",
+  "files": [
+    {
+      "path": "packages/astro/src/feedback/Status.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-fg",
+      "--pp-color-status-degraded",
+      "--pp-color-status-failed",
+      "--pp-color-status-passed",
+      "--pp-color-status-running",
+      "--pp-font-family-mono",
+      "--pp-size-target-min",
+      "--pp-space-2xs"
+    ],
+    "version": "0.0.0"
+  }
+}

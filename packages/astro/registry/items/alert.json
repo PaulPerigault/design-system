@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "alert",
+  "type": "registry:ui",
+  "title": "Alert",
+  "description": "Message de retour au ton écrit en clair ; rôle d’annonce seulement si live, zéro JavaScript.",
+  "files": [
+    {
+      "path": "packages/astro/src/feedback/Alert.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-status-degraded",
+      "--pp-color-status-failed",
+      "--pp-color-status-passed",
+      "--pp-color-status-running",
+      "--pp-color-surface",
+      "--pp-font-line-height-body",
+      "--pp-font-size-1",
+      "--pp-font-weight-semibold",
+      "--pp-radius-surface",
+      "--pp-size-rule",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-s",
+      "--pp-space-xs"
+    ],
+    "version": "0.0.0"
+  }
+}

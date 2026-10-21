@@ -17,6 +17,11 @@
   ],
   "meta": {
     "tokens": [
+      "--pp-color-bg",
+      "--pp-color-control",
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-muted",
       "--pp-media-radius",
       "--pp-radius-control",
       "--pp-radius-surface",

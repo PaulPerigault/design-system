@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "table",
+  "type": "registry:ui",
+  "title": "Table",
+  "description": "Tableau de données dans une région défilante nommée et focalisable, chiffres tabulaires.",
+  "files": [
+    {
+      "path": "packages/astro/src/content/Table.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-focus",
+      "--pp-color-line",
+      "--pp-font-weight-bold",
+      "--pp-font-weight-semibold",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-xs"
+    ],
+    "version": "0.0.0"
+  }
+}

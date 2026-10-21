@@ -1,0 +1,42 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "prose",
+  "type": "registry:ui",
+  "title": "Prose",
+  "description": "Mise en forme du contenu éditorial (titres, listes, citations, code) à la mesure de lecture.",
+  "files": [
+    {
+      "path": "packages/astro/src/content/Prose.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-color-surface",
+      "--pp-font-family-mono",
+      "--pp-font-line-height-heading",
+      "--pp-font-size--1",
+      "--pp-font-size-0",
+      "--pp-font-size-1",
+      "--pp-font-size-2",
+      "--pp-font-size-3",
+      "--pp-font-size-4",
+      "--pp-font-weight-bold",
+      "--pp-radius-surface",
+      "--pp-size-focus-width",
+      "--pp-size-measure",
+      "--pp-size-rule",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-l",
+      "--pp-space-m",
+      "--pp-space-s",
+      "--pp-space-xs"
+    ],
+    "version": "0.0.0"
+  }
+}

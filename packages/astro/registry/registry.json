@@ -1,0 +1,896 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "@paulperigault/astro",
+  "homepage": "https://ds.paulperigault.dev",
+  "items": [
+    {
+      "name": "accordion",
+      "type": "registry:ui",
+      "title": "Accordion",
+      "description": "Sections repliables en details natifs, groupées par name, animation seulement sans préférence de mouvement réduit.",
+      "files": [
+        {
+          "path": "packages/astro/src/content/Accordion.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-fg",
+          "--pp-color-focus",
+          "--pp-color-line",
+          "--pp-duration-base",
+          "--pp-easing-standard",
+          "--pp-font-weight-medium",
+          "--pp-size-control-height",
+          "--pp-size-focus-offset",
+          "--pp-size-focus-width",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-2xs",
+          "--pp-space-s"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui",
+      "title": "Alert",
+      "description": "Message de retour au ton écrit en clair ; rôle d’annonce seulement si live, zéro JavaScript.",
+      "files": [
+        {
+          "path": "packages/astro/src/feedback/Alert.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-fg",
+          "--pp-color-line",
+          "--pp-color-status-degraded",
+          "--pp-color-status-failed",
+          "--pp-color-status-passed",
+          "--pp-color-status-running",
+          "--pp-color-surface",
+          "--pp-font-line-height-body",
+          "--pp-font-size-1",
+          "--pp-font-weight-semibold",
+          "--pp-radius-surface",
+          "--pp-size-rule",
+          "--pp-space-2xs",
+          "--pp-space-3xs",
+          "--pp-space-s",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "art-direction",
+      "type": "registry:ui",
+      "title": "ArtDirection",
+      "description": "Un recadrage par largeur d’écran dans un picture écrit à la main, chaque source portant les dimensions de son recadrage : CLS nul, zéro JavaScript.",
+      "files": [
+        {
+          "path": "packages/astro/src/media/ArtDirection.astro",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/media/frame.css",
+          "type": "registry:lib"
+        },
+        {
+          "path": "packages/astro/src/media/types.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "packages/astro/src/media/checks.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "packages/astro/src/media/presets.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "packages/astro/src/media/dominant.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-line",
+          "--pp-color-media-placeholder",
+          "--pp-media-radius",
+          "--pp-media-rule",
+          "--pp-ratio-landscape",
+          "--pp-ratio-portrait",
+          "--pp-ratio-square",
+          "--pp-ratio-wide",
+          "--pp-size-measure",
+          "--pp-size-page",
+          "--pp-space-3xl"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "avatar",
+      "type": "registry:ui",
+      "title": "Avatar",
+      "description": "Image carrée au rayon des médias en trois tailles de tokens, recadrée en haut, zéro JavaScript.",
+      "registryDependencies": ["photo"],
+      "files": [
+        {
+          "path": "packages/astro/src/media/Avatar.astro",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/media/alt.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "tokens": ["--pp-space-2xl", "--pp-space-3xl", "--pp-space-xl"],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:ui",
+      "title": "Breadcrumb",
+      "description": "Fil d’Ariane en liste nommée, page courante marquée par aria-current.",
+      "files": [
+        {
+          "path": "packages/astro/src/content/Breadcrumb.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-fg",
+          "--pp-color-focus",
+          "--pp-color-muted",
+          "--pp-font-size-0",
+          "--pp-font-weight-medium",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "Bouton natif ou lien stylisé avec variantes de tonalité et de taille, zéro JavaScript.",
+      "files": [
+        {
+          "path": "packages/astro/src/forms/Button.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-control",
+          "--pp-color-fg",
+          "--pp-color-muted",
+          "--pp-color-on-accent",
+          "--pp-duration-fast",
+          "--pp-easing-standard",
+          "--pp-font-line-height-heading",
+          "--pp-font-size-0",
+          "--pp-font-size-1",
+          "--pp-font-weight-medium",
+          "--pp-radius-control",
+          "--pp-size-control-height",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-m",
+          "--pp-space-s"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "center",
+      "type": "registry:ui",
+      "title": "Center",
+      "description": "Centre un bloc dans l'axe inline, à largeur de lecture (modèle « Every Layout », Pickering et Bell, 2021).",
+      "files": [
+        {
+          "path": "packages/astro/src/layout/Center.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": ["--pp-size-measure", "--pp-space-m", "--pp-space-s"],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "choice",
+      "type": "registry:ui",
+      "title": "Choice",
+      "description": "Case à cocher ou bouton radio natif avec libellé, zéro JavaScript.",
+      "files": [
+        {
+          "path": "packages/astro/src/forms/Choice.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-fg",
+          "--pp-color-muted",
+          "--pp-size-control-height",
+          "--pp-size-target-min",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "cluster",
+      "type": "registry:ui",
+      "title": "Cluster",
+      "description": "Groupe d'éléments en ligne qui passent à la ligne, espacés par gap (modèle « Every Layout », Pickering et Bell, 2021).",
+      "files": [
+        {
+          "path": "packages/astro/src/layout/Cluster.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-space-l",
+          "--pp-space-m",
+          "--pp-space-s",
+          "--pp-space-xl",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "container",
+      "type": "registry:ui",
+      "title": "Container",
+      "description": "Boîte centrée dans l'axe d'inline, à largeur maximale, avec une gouttière latérale (modèle « Every Layout », Pickering et Bell, 2021).",
+      "files": [
+        {
+          "path": "packages/astro/src/layout/Container.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-size-measure",
+          "--pp-size-page",
+          "--pp-space-l",
+          "--pp-space-m",
+          "--pp-space-s"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "Dialog",
+      "description": "Dialogue modal natif ouvert par Invoker Commands sans script, fermeture par bouton, Échap ou clic hors boîte.",
+      "files": [
+        {
+          "path": "packages/astro/src/feedback/Dialog.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-control",
+          "--pp-color-fg",
+          "--pp-color-line",
+          "--pp-color-surface",
+          "--pp-duration-base",
+          "--pp-easing-standard",
+          "--pp-font-size-2",
+          "--pp-radius-control",
+          "--pp-radius-surface",
+          "--pp-size-control-height",
+          "--pp-size-measure",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-m",
+          "--pp-space-s"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "diff",
+      "type": "registry:ui",
+      "title": "Diff",
+      "description": "Ajouts et retraits en ins et del natifs, signes visibles et libellés lus.",
+      "files": [
+        {
+          "path": "packages/astro/src/content/Diff.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-focus",
+          "--pp-color-line",
+          "--pp-color-muted",
+          "--pp-color-status-failed",
+          "--pp-color-status-passed",
+          "--pp-color-surface",
+          "--pp-font-family-mono",
+          "--pp-font-line-height-body",
+          "--pp-font-size--1",
+          "--pp-font-weight-semibold",
+          "--pp-radius-control",
+          "--pp-size-focus-offset",
+          "--pp-size-focus-width",
+          "--pp-size-rule",
+          "--pp-space-2xs",
+          "--pp-space-3xs",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "field",
+      "type": "registry:ui",
+      "title": "Field",
+      "description": "Enveloppe d'un contrôle de formulaire avec libellé, indication et message d'erreur optionnels.",
+      "files": [
+        {
+          "path": "packages/astro/src/forms/Field.astro",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/forms/field-ids.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-muted",
+          "--pp-color-status-failed",
+          "--pp-font-weight-bold",
+          "--pp-font-weight-medium",
+          "--pp-font-weight-regular",
+          "--pp-font-weight-semibold",
+          "--pp-space-3xs",
+          "--pp-space-s"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "figure",
+      "type": "registry:ui",
+      "title": "Figure",
+      "description": "Média et légende dans figure et figcaption, crédit facultatif fourni par le site, légende vide refusée au build.",
+      "files": [
+        {
+          "path": "packages/astro/src/media/Figure.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": ["--pp-color-muted", "--pp-font-size--1", "--pp-size-measure", "--pp-space-2xs"],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "gallery",
+      "type": "registry:ui",
+      "title": "Gallery",
+      "description": "Grille d’images en container queries ; agrandissement par dialogue natif et Invoker Commands, zéro JavaScript.",
+      "registryDependencies": ["photo"],
+      "files": [
+        {
+          "path": "packages/astro/src/media/Gallery.astro",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/media/GalleryDialog.astro",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-bg",
+          "--pp-color-control",
+          "--pp-color-fg",
+          "--pp-color-line",
+          "--pp-color-muted",
+          "--pp-media-radius",
+          "--pp-radius-control",
+          "--pp-radius-surface",
+          "--pp-size-control-height",
+          "--pp-size-measure",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-3xl",
+          "--pp-space-m",
+          "--pp-space-s",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "grid",
+      "type": "registry:ui",
+      "title": "Grid",
+      "description": "Grille intrinsèque sans media query ; le nombre de colonnes suit la largeur disponible (modèle « Every Layout », Pickering et Bell, 2021).",
+      "files": [
+        {
+          "path": "packages/astro/src/layout/Grid.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-size-measure",
+          "--pp-space-l",
+          "--pp-space-m",
+          "--pp-space-s",
+          "--pp-space-xl",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "Champ de saisie natif sur une ligne avec gestion d'erreur et état désactivé.",
+      "files": [
+        {
+          "path": "packages/astro/src/forms/Input.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-bg",
+          "--pp-color-control",
+          "--pp-color-fg",
+          "--pp-color-muted",
+          "--pp-color-status-failed",
+          "--pp-color-surface",
+          "--pp-font-line-height-body",
+          "--pp-font-size-0",
+          "--pp-radius-control",
+          "--pp-size-control-height",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-3xs",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "photo",
+      "type": "registry:ui",
+      "title": "Photo",
+      "description": "Image locale en AVIF puis WebP, largeurs et sizes tirés des tokens, width et height toujours rendus, fond d’attente à la couleur dominante : CLS nul, zéro JavaScript.",
+      "files": [
+        {
+          "path": "packages/astro/src/media/Photo.astro",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/media/frame.css",
+          "type": "registry:lib"
+        },
+        {
+          "path": "packages/astro/src/media/types.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "packages/astro/src/media/checks.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "packages/astro/src/media/presets.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "packages/astro/src/media/dominant.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-line",
+          "--pp-color-media-placeholder",
+          "--pp-media-radius",
+          "--pp-media-rule",
+          "--pp-ratio-landscape",
+          "--pp-ratio-portrait",
+          "--pp-ratio-square",
+          "--pp-ratio-wide",
+          "--pp-size-measure",
+          "--pp-size-page",
+          "--pp-space-3xl"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "progress",
+      "type": "registry:ui",
+      "title": "Progress",
+      "description": "Barre progress ou jauge meter natives, valeur reprise en texte relié.",
+      "files": [
+        {
+          "path": "packages/astro/src/feedback/Progress.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-control",
+          "--pp-color-status-degraded",
+          "--pp-color-status-failed",
+          "--pp-color-surface",
+          "--pp-duration-base",
+          "--pp-easing-standard",
+          "--pp-radius-control",
+          "--pp-size-rule",
+          "--pp-space-2xs",
+          "--pp-space-3xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "project-cover",
+      "type": "registry:ui",
+      "title": "ProjectCover",
+      "description": "Couverture de projet toujours filetée, au ratio paysage ou large, repli PNG pour les captures.",
+      "registryDependencies": ["photo"],
+      "files": [
+        {
+          "path": "packages/astro/src/media/ProjectCover.astro",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/media/alt.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "tokens": [],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "prose",
+      "type": "registry:ui",
+      "title": "Prose",
+      "description": "Mise en forme du contenu éditorial (titres, listes, citations, code) à la mesure de lecture.",
+      "files": [
+        {
+          "path": "packages/astro/src/content/Prose.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-fg",
+          "--pp-color-line",
+          "--pp-color-muted",
+          "--pp-color-surface",
+          "--pp-font-family-mono",
+          "--pp-font-line-height-heading",
+          "--pp-font-size--1",
+          "--pp-font-size-0",
+          "--pp-font-size-1",
+          "--pp-font-size-2",
+          "--pp-font-size-3",
+          "--pp-font-size-4",
+          "--pp-font-weight-bold",
+          "--pp-radius-surface",
+          "--pp-size-focus-width",
+          "--pp-size-measure",
+          "--pp-size-rule",
+          "--pp-space-2xs",
+          "--pp-space-3xs",
+          "--pp-space-l",
+          "--pp-space-m",
+          "--pp-space-s",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "scrim",
+      "type": "registry:ui",
+      "title": "Scrim",
+      "description": "Texte sur photo posé sur un voile uni dont le contraste au pire cas, sur toute image, est vérifié à 4,5:1 au moins.",
+      "files": [
+        {
+          "path": "packages/astro/src/media/Scrim.astro",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/media/scrim.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-media-radius",
+          "--pp-media-scrim-color",
+          "--pp-media-scrim-opacity",
+          "--pp-media-scrim-text",
+          "--pp-space-2xs",
+          "--pp-space-m",
+          "--pp-space-s"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "Liste déroulante native avec chevron décoratif superposé par grille, zéro JavaScript.",
+      "files": [
+        {
+          "path": "packages/astro/src/forms/Select.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-bg",
+          "--pp-color-control",
+          "--pp-color-fg",
+          "--pp-color-line",
+          "--pp-color-muted",
+          "--pp-color-status-failed",
+          "--pp-color-surface",
+          "--pp-radius-control",
+          "--pp-size-control-height",
+          "--pp-size-focus-width",
+          "--pp-size-rule",
+          "--pp-space-3xs",
+          "--pp-space-s",
+          "--pp-space-xl",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "Separator",
+      "description": "Élément hr natif lu comme séparateur, ou filet décoratif masqué aux technologies d’assistance.",
+      "files": [
+        {
+          "path": "packages/astro/src/content/Separator.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-line",
+          "--pp-size-rule",
+          "--pp-space-l",
+          "--pp-space-m",
+          "--pp-space-s",
+          "--pp-space-xl",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "Sidebar",
+      "description": "Barre latérale de largeur fixe et contenu qui prend le reste ; s'empilent quand le contenu passe sous la moitié de la largeur (modèle « Every Layout », Pickering et Bell, 2021).",
+      "files": [
+        {
+          "path": "packages/astro/src/layout/Sidebar.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-size-measure",
+          "--pp-space-l",
+          "--pp-space-m",
+          "--pp-space-s",
+          "--pp-space-xl",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "stack",
+      "type": "registry:ui",
+      "title": "Stack",
+      "description": "Empile ses enfants verticalement avec un espacement régulier, sans marge en bordure, sans JavaScript.",
+      "files": [
+        {
+          "path": "packages/astro/src/layout/Stack.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-space-l",
+          "--pp-space-m",
+          "--pp-space-s",
+          "--pp-space-xl",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "status",
+      "type": "registry:ui",
+      "title": "Status",
+      "description": "Statut de pipeline avec une forme d’icône propre à chaque état : la couleur n’est jamais seule porteuse du sens.",
+      "files": [
+        {
+          "path": "packages/astro/src/feedback/Status.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-fg",
+          "--pp-color-status-degraded",
+          "--pp-color-status-failed",
+          "--pp-color-status-passed",
+          "--pp-color-status-running",
+          "--pp-font-family-mono",
+          "--pp-size-target-min",
+          "--pp-space-2xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "Interrupteur natif sans JavaScript, piste et curseur dessinés en CSS.",
+      "files": [
+        {
+          "path": "packages/astro/src/forms/Switch.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-bg",
+          "--pp-color-control",
+          "--pp-color-fg",
+          "--pp-color-line",
+          "--pp-color-muted",
+          "--pp-color-on-accent",
+          "--pp-duration-fast",
+          "--pp-easing-standard",
+          "--pp-radius-control",
+          "--pp-size-control-height",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-3xs",
+          "--pp-space-m",
+          "--pp-space-s",
+          "--pp-space-xl",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "switcher",
+      "type": "registry:ui",
+      "title": "Switcher",
+      "description": "Enfants côte à côte au-delà d'un seuil de largeur, empilés en deçà, sans media query (modèle « Every Layout », Pickering et Bell, 2021).",
+      "files": [
+        {
+          "path": "packages/astro/src/layout/Switcher.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-size-measure",
+          "--pp-size-page",
+          "--pp-space-l",
+          "--pp-space-m",
+          "--pp-space-s",
+          "--pp-space-xl",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "Table",
+      "description": "Tableau de données dans une région défilante nommée et focalisable, chiffres tabulaires.",
+      "files": [
+        {
+          "path": "packages/astro/src/content/Table.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-focus",
+          "--pp-color-line",
+          "--pp-font-weight-bold",
+          "--pp-font-weight-semibold",
+          "--pp-size-focus-offset",
+          "--pp-size-focus-width",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-2xs",
+          "--pp-space-3xs",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "Zone de texte native redimensionnable avec gestion d'erreur et état désactivé.",
+      "files": [
+        {
+          "path": "packages/astro/src/forms/Textarea.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-bg",
+          "--pp-color-control",
+          "--pp-color-fg",
+          "--pp-color-muted",
+          "--pp-color-status-failed",
+          "--pp-color-surface",
+          "--pp-font-line-height-body",
+          "--pp-radius-control",
+          "--pp-size-control-height",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-2xs",
+          "--pp-space-3xs",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    }
+  ]
+}

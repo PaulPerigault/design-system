@@ -14,11 +14,11 @@
     "tokens": [
       "--pp-size-measure",
       "--pp-size-page",
-      "--pp-space-xs",
-      "--pp-space-s",
-      "--pp-space-m",
       "--pp-space-l",
-      "--pp-space-xl"
+      "--pp-space-m",
+      "--pp-space-s",
+      "--pp-space-xl",
+      "--pp-space-xs"
     ],
     "version": "0.0.0"
   }
