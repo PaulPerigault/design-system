@@ -1,0 +1,86 @@
+---
+/**
+ * Gallery : grille d'images en container queries (1, 2 puis 3 colonnes selon le conteneur). Avec `enlarge`, chaque
+ * vignette est un bouton d'invocation HTML (`commandfor`, `command="show-modal"`) qui ouvre son
+ * `<dialog>` (GalleryDialog) : zéro JavaScript, focus rendu par le navigateur à la fermeture.
+ */
+import GalleryDialog from './GalleryDialog.astro';
+import Photo from './Photo.astro';
+import type { GalleryProps } from './types';
+
+type Props = GalleryProps;
+
+const { id, items, ratio = 'square' } = Astro.props;
+const labels = Astro.props.enlarge === true ? Astro.props.labels : undefined;
+const dialogId = (index: number): string => `${id}-${index + 1}`;
+---
+
+<div class="pp-gallery">
+  <ul role="list" class="pp-gallery__list">
+    {items.map((item, index) => (
+      <li>
+        {labels ? (
+          <button
+            type="button"
+            class="pp-gallery__open"
+            commandfor={dialogId(index)}
+            command="show-modal"
+            aria-label={`${labels.open} : ${item.alt}`}
+          >
+            <Photo src={item.src} alt={item.alt} ratio={ratio} layout="third" />
+          </button>
+        ) : (
+          <Photo src={item.src} alt={item.alt} ratio={ratio} layout="third" />
+        )}
+      </li>
+    ))}
+  </ul>
+  {labels &&
+    items.map((item, index) => (
+      <GalleryDialog id={dialogId(index)} item={item} closeLabel={labels.close} />
+    ))}
+</div>
+
+<style>
+  .pp-gallery {
+    container-type: inline-size;
+  }
+
+  .pp-gallery__list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--pp-space-s);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /*
+   * `var()` est refusé dans une condition @container : seuils littéraux, égaux aux tokens
+   * (vérifié par Gallery.test.ts). 28.5rem = --pp-size-measure × 0.75 : un téléphone reste à une
+   * colonne.
+   */
+  @container (min-width: 28.5rem) {
+    .pp-gallery__list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* 38rem = --pp-size-measure. */
+  @container (min-width: 38rem) {
+    .pp-gallery__list {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .pp-gallery__open {
+    display: block;
+    inline-size: 100%;
+    min-block-size: var(--pp-size-target-min);
+    padding: 0;
+    border: 0;
+    border-radius: var(--pp-media-radius);
+    background: none;
+    cursor: zoom-in;
+  }
+</style>

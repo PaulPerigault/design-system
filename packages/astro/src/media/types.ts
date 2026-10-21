@@ -84,3 +84,24 @@ export type ProjectCoverProps = AltProps & {
   /** Réservé au placement du composant dans son parent. */
   class?: string;
 };
+
+/** Image de galerie : l'alternative est obligatoire (une galerie est du contenu). */
+export interface GalleryItem {
+  src: ImageMetadata;
+  alt: string;
+  caption?: string;
+}
+
+/** Libellés des boutons d'agrandissement, fournis par le site (traduits). */
+export interface GalleryLabels {
+  open: string;
+  close: string;
+}
+
+/** Props de `Gallery` : `enlarge` exige ses libellés. */
+export type GalleryProps = {
+  /** Préfixe des identifiants des dialogues. */
+  id: string;
+  items: GalleryItem[];
+  ratio?: Ratio;
+} & ({ enlarge?: false; labels?: never } | { enlarge: true; labels: GalleryLabels });

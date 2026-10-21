@@ -79,6 +79,7 @@
     "./Figure.astro": "./src/media/Figure.astro",
     "./Avatar.astro": "./src/media/Avatar.astro",
     "./ProjectCover.astro": "./src/media/ProjectCover.astro",
+    "./Gallery.astro": "./src/media/Gallery.astro",
     "./Scrim.astro": "./src/media/Scrim.astro",
     "./scrim": "./src/media/scrim.ts",
     "./media-types": "./src/media/types.ts",
