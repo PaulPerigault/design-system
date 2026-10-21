@@ -5,7 +5,9 @@
  * Aucun texte en dur : si un libellé est nécessaire, l'utilisateur place un titre avant le séparateur.
  */
 interface Props {
+  /** `true` : filet masqué aux technologies d'assistance ; `false` : séparateur lu. */
   decorative?: boolean;
+  /** Espacement autour du filet. */
   space?: 'xs' | 's' | 'm' | 'l' | 'xl';
   /** Réservé au placement du composant dans son parent. */
   class?: string;

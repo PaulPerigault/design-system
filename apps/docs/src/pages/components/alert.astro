@@ -1,14 +1,7 @@
 ---
 import Alert from '@paulperigault/astro/Alert.astro';
+import PropsTable from '../../components/PropsTable.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
-
-const PROPS = [
-  ['tone', 'info | passed | degraded | failed', 'info', 'Couleur de l’icône et du filet.'],
-  ['toneLabel', 'texte (obligatoire)', 'aucun', 'Libellé visible du ton.'],
-  ['title', 'texte', 'aucun', 'Titre affiché après le libellé du ton.'],
-  ['live', 'polite | assertive', 'aucun', 'Pose role="status" ou role="alert".'],
-  ['class', 'texte', 'aucun', 'Placement dans le parent uniquement.'],
-];
 ---
 
 <DocsLayout title="Alert · Design system · Paul Perigault">
@@ -41,26 +34,5 @@ const PROPS = [
   </p>
 
   <h2>Propriétés</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Propriété</th>
-        <th>Valeurs</th>
-        <th>Défaut</th>
-        <th>Rôle</th>
-      </tr>
-    </thead>
-    <tbody>
-      {PROPS.map(([name, values, fallback, role]) => (
-        <tr>
-          <td>
-            <code>{name}</code>
-          </td>
-          <td>{values}</td>
-          <td>{fallback}</td>
-          <td>{role}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+  <PropsTable item="alert" title="Alert" />
 </DocsLayout>

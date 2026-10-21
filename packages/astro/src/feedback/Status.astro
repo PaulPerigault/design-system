@@ -6,6 +6,7 @@
  * (WCAG 2.2, critère 1.4.1). La couleur ne touche que l'icône ; le texte reste en `--pp-color-fg`.
  */
 interface Props {
+  /** État affiché, avec sa forme d'icône propre et son libellé. */
   state?: 'passed' | 'failed' | 'degraded' | 'running';
   /** Libellé visible de l'état (par exemple « Réussi »). */
   label: string;

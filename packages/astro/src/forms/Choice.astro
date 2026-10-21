@@ -5,12 +5,19 @@
  * dans `<fieldset>` + `<legend>`. Le focus visible est hérité de `@paulperigault/css`.
  */
 interface Props {
+  /** Case à cocher (choix multiples) ou bouton radio (un seul choix par `name`). */
   type: 'checkbox' | 'radio';
+  /** Identifiant du contrôle, relié à son libellé. */
   id: string;
+  /** Nom envoyé avec le formulaire. */
   name: string;
+  /** Valeur envoyée quand le choix est coché. */
   value: string;
+  /** Libellé visible, cliquable, nom accessible du contrôle. */
   label: string;
+  /** Coché au chargement. */
   checked?: boolean;
+  /** Désactive le contrôle. */
   disabled?: boolean;
   /** Identifiant(s) de l'aide ou du message d'erreur associé (`aria-describedby`). */
   describedBy?: string | undefined;

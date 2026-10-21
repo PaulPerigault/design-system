@@ -29,7 +29,17 @@ export type Breakpoint = 'narrow' | 'medium';
  * Texte alternatif obligatoire, ou image explicitement décorative (`alt=""`).
  * Impossible d'omettre les deux ou de passer les deux.
  */
-export type AltProps = { alt: string; decorative?: never } | { decorative: true; alt?: never };
+export type AltProps =
+  | {
+      /** Texte alternatif : ce que l'image apporte au contenu. Vide : erreur au build. */
+      alt: string;
+      decorative?: never;
+    }
+  | {
+      /** Image purement décorative, rendue avec `alt=""`. Exclusif de `alt`. */
+      decorative: true;
+      alt?: never;
+    };
 
 /** Props de `Photo` (et base des autres composants média). */
 export type PhotoProps = AltProps & {
@@ -41,7 +51,9 @@ export type PhotoProps = AltProps & {
   focal?: Focal;
   /** Image principale de la page (LCP) : chargée tout de suite, en priorité. */
   priority?: boolean;
+  /** Emplacement dans la page ; règle `sizes` et les largeurs générées. */
   layout?: MediaLayout;
+  /** Nature de l'image ; règle la qualité et le format de repli (JPEG pour une photo, PNG sinon). */
   kind?: MediaKind;
   /** Filet autour du cadre (captures sur fond clair). */
   rule?: boolean;
@@ -49,59 +61,12 @@ export type PhotoProps = AltProps & {
   class?: string;
 };
 
-/** Recadrage servi à partir d'un point de rupture (`ArtDirection`). */
-export interface ArtSource {
-  at: Breakpoint;
-  src: ImageMetadata;
-}
-
-/** Props de `ArtDirection` : image par défaut plus recadrages par largeur d'écran. */
-export type ArtDirectionProps = AltProps & {
-  src: ImageMetadata;
-  sources: ArtSource[];
-  priority?: boolean;
-  layout?: MediaLayout;
-  kind?: MediaKind;
-  /** Réservé au placement du composant dans son parent. */
-  class?: string;
-};
-
-/** Props d'`Avatar` : image carrée, taille par token d'espacement. */
-export type AvatarProps = AltProps & {
-  src: ImageMetadata;
-  size?: 's' | 'm' | 'l';
-  /** Réservé au placement du composant dans son parent. */
-  class?: string;
-};
-
-/** Props de `ProjectCover` : couverture de projet, toujours filetée. */
-export type ProjectCoverProps = AltProps & {
-  src: ImageMetadata;
-  ratio?: 'landscape' | 'wide';
-  layout?: 'third' | 'half' | 'page';
-  kind?: MediaKind;
-  priority?: boolean;
-  /** Réservé au placement du composant dans son parent. */
-  class?: string;
-};
-
-/** Image de galerie : l'alternative est obligatoire (une galerie est du contenu). */
-export interface GalleryItem {
-  src: ImageMetadata;
-  alt: string;
-  caption?: string;
-}
-
-/** Libellés des boutons d'agrandissement, fournis par le site (traduits). */
-export interface GalleryLabels {
-  open: string;
-  close: string;
-}
-
-/** Props de `Gallery` : `enlarge` exige ses libellés. */
-export type GalleryProps = {
-  /** Préfixe des identifiants des dialogues. */
-  id: string;
-  items: GalleryItem[];
-  ratio?: Ratio;
-} & ({ enlarge?: false; labels?: never } | { enlarge: true; labels: GalleryLabels });
+export type {
+  ArtDirectionProps,
+  ArtSource,
+  AvatarProps,
+  GalleryItem,
+  GalleryLabels,
+  GalleryProps,
+  ProjectCoverProps,
+} from './component-types';

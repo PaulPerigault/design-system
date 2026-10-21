@@ -1,5 +1,6 @@
 ---
 import Textarea from '@paulperigault/astro/Textarea.astro';
+import PropsTable from '../../components/PropsTable.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
 ---
 
@@ -24,72 +25,5 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
   <Textarea id="demo-desactive" name="demo-desactive" disabled value="Saisie indisponible." />
 
   <h2>Propriétés</h2>
-  <table>
-    <thead>
-      <tr>
-        <th scope="col">Propriété</th>
-        <th scope="col">Valeurs</th>
-        <th scope="col">Défaut</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row">
-          <code>id</code>, <code>name</code>
-        </th>
-        <td>chaînes, obligatoires</td>
-        <td>aucun</td>
-      </tr>
-      <tr>
-        <th scope="row">
-          <code>value</code>
-        </th>
-        <td>texte initial</td>
-        <td>vide</td>
-      </tr>
-      <tr>
-        <th scope="row">
-          <code>required</code>, <code>disabled</code>
-        </th>
-        <td>booléens</td>
-        <td>
-          <code>false</code>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">
-          <code>invalid</code>
-        </th>
-        <td>
-          booléen, pose <code>aria-invalid="true"</code>
-        </td>
-        <td>
-          <code>false</code>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">
-          <code>describedBy</code>
-        </th>
-        <td>identifiants de l’aide ou de l’erreur</td>
-        <td>aucun</td>
-      </tr>
-      <tr>
-        <th scope="row">
-          <code>rows</code>
-        </th>
-        <td>nombre de lignes visibles</td>
-        <td>
-          <code>4</code>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">
-          <code>class</code>
-        </th>
-        <td>placement dans le parent uniquement</td>
-        <td>aucun</td>
-      </tr>
-    </tbody>
-  </table>
+  <PropsTable item="textarea" title="Textarea" />
 </DocsLayout>

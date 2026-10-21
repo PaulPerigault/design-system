@@ -1,23 +1,29 @@
 ---
 /**
- * Progress : `<progress>` ou `<meter>` natif, zéro JavaScript. Le libellé visible est relié par
- * `<label for>` ; `valueText` (ex. « 3 sur 5 ») reste visible et relié par `aria-describedby` :
- * la valeur ne repose jamais sur la couleur seule. Sans `value`, `<progress>` est indéterminé ;
- * son animation est retirée sous `prefers-reduced-motion: reduce`. Aucun texte en dur.
+ * Progress : `<progress>` ou `<meter>` natif, zéro JavaScript, libellé relié par `<label for>`.
+ * `valueText` (« 3 sur 5 ») reste visible, relié par `aria-describedby` : jamais la couleur seule.
+ * Indéterminé sans `value`, sans animation sous `prefers-reduced-motion`. Aucun texte en dur.
  */
 interface Props {
+  /** Identifiant de la barre, relié à son libellé. */
   id: string;
+  /** Libellé visible, nom accessible. */
   label: string;
+  /** `progress` pour une tâche en cours, `meter` pour une mesure dans une plage connue. */
   kind?: 'progress' | 'meter';
+  /** Valeur actuelle ; absente pour une progression indéterminée. */
   value?: number;
-  /** Défaut : 1 (valeur native). */
+  /** Valeur maximale (défaut : 1, valeur native). */
   max?: number;
-  /** `meter` seulement : `low`, `high`, `optimum`. */
+  /** Seuil bas d'une jauge (`meter`). */
   low?: number;
+  /** Seuil haut d'une jauge (`meter`). */
   high?: number;
+  /** Valeur optimale d'une jauge (`meter`). */
   optimum?: number;
   /** Texte visible de la valeur. */
   valueText?: string;
+  /** Réservé au placement du composant dans son parent. */
   class?: string;
 }
 

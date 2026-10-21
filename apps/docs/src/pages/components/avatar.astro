@@ -1,16 +1,10 @@
 ---
 import Avatar from '@paulperigault/astro/Avatar.astro';
 import Cluster from '@paulperigault/astro/Cluster.astro';
+import PropsTable from '../../components/PropsTable.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
 import carre from '../../assets/media/carre.jpg';
 
-const props = [
-  ['src', 'image importée localement', 'aucun'],
-  ['alt', 'texte alternatif', 'aucun'],
-  ['decorative', 'true : alt="" ; à utiliser quand le nom est affiché à côté', 'aucun'],
-  ['size', "'s' | 'm' | 'l' ; tokens --pp-space-xl, -2xl, -3xl", "'m'"],
-  ['class', 'placement dans le parent', 'aucun'],
-];
 const sizes = ['s', 'm', 'l'] as const;
 ---
 
@@ -30,24 +24,5 @@ const sizes = ['s', 'm', 'l'] as const;
   ))}
 
   <h2>Propriétés</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Propriété</th>
-        <th>Valeurs</th>
-        <th>Défaut</th>
-      </tr>
-    </thead>
-    <tbody>
-      {props.map(([name, values, fallback]) => (
-        <tr>
-          <td>
-            <code>{name}</code>
-          </td>
-          <td>{values}</td>
-          <td>{fallback}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+  <PropsTable item="avatar" title="Avatar" />
 </DocsLayout>

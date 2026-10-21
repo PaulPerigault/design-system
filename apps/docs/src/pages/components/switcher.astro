@@ -1,5 +1,6 @@
 ---
 import Switcher from '@paulperigault/astro/Switcher.astro';
+import PropsTable from '../../components/PropsTable.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
 ---
 
@@ -24,56 +25,5 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
   </Switcher>
 
   <h2>Propriétés</h2>
-  <table>
-    <thead>
-      <tr>
-        <th scope="col">Propriété</th>
-        <th scope="col">Valeurs</th>
-        <th scope="col">Défaut</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row">
-          <code>threshold</code>
-        </th>
-        <td>
-          <code>measure</code>, <code>page</code>
-        </td>
-        <td>
-          <code>measure</code>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">
-          <code>space</code>
-        </th>
-        <td>
-          <code>xs</code>, <code>s</code>, <code>m</code>, <code>l</code>, <code>xl</code>
-        </td>
-        <td>
-          <code>m</code>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">
-          <code>as</code>
-        </th>
-        <td>
-          <code>div</code>, <code>section</code>, <code>ul</code>, <code>ol</code>,
-          <code>article</code>
-        </td>
-        <td>
-          <code>div</code>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">
-          <code>class</code>
-        </th>
-        <td>placement dans le parent uniquement</td>
-        <td>aucun</td>
-      </tr>
-    </tbody>
-  </table>
+  <PropsTable item="switcher" title="Switcher" />
 </DocsLayout>

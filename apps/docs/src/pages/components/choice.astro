@@ -1,5 +1,6 @@
 ---
 import ChoiceExamples from '../../components/ChoiceExamples.astro';
+import PropsTable from '../../components/PropsTable.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
 ---
 
@@ -13,90 +14,5 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
   <ChoiceExamples />
 
   <h2>Propriétés</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Propriété</th>
-        <th>Valeurs</th>
-        <th>Défaut</th>
-        <th>Rôle</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-          <code>type</code>
-        </td>
-        <td>
-          <code>checkbox | radio</code>
-        </td>
-        <td>obligatoire</td>
-        <td>Nature du contrôle natif.</td>
-      </tr>
-      <tr>
-        <td>
-          <code>id</code>
-        </td>
-        <td>texte</td>
-        <td>obligatoire</td>
-        <td>
-          Identifiant unique, relie l'<code>input</code> et son <code>label</code>.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>name</code>
-        </td>
-        <td>texte</td>
-        <td>obligatoire</td>
-        <td>Nom envoyé avec le formulaire ; commun à tous les radios d'un groupe.</td>
-      </tr>
-      <tr>
-        <td>
-          <code>value</code>
-        </td>
-        <td>texte</td>
-        <td>obligatoire</td>
-        <td>Valeur envoyée quand le choix est coché.</td>
-      </tr>
-      <tr>
-        <td>
-          <code>label</code>
-        </td>
-        <td>texte</td>
-        <td>obligatoire</td>
-        <td>Libellé visible, fourni par le site (aucun texte en dur).</td>
-      </tr>
-      <tr>
-        <td>
-          <code>checked</code>
-        </td>
-        <td>booléen</td>
-        <td>
-          <code>false</code>
-        </td>
-        <td>État initial coché.</td>
-      </tr>
-      <tr>
-        <td>
-          <code>disabled</code>
-        </td>
-        <td>booléen</td>
-        <td>
-          <code>false</code>
-        </td>
-        <td>Désactive le contrôle ; le libellé passe en couleur atténuée.</td>
-      </tr>
-      <tr>
-        <td>
-          <code>describedBy</code>
-        </td>
-        <td>texte</td>
-        <td>aucun</td>
-        <td>
-          Identifiant de l'aide ou de l'erreur (<code>aria-describedby</code>).
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <PropsTable item="choice" title="Choice" />
 </DocsLayout>

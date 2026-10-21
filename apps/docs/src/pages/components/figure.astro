@@ -1,14 +1,9 @@
 ---
 import Figure from '@paulperigault/astro/Figure.astro';
 import Photo from '@paulperigault/astro/Photo.astro';
+import PropsTable from '../../components/PropsTable.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
 import portrait from '../../assets/media/portrait.jpg';
-
-const props = [
-  ['caption', 'légende, obligatoire ; vide refusée au build', 'aucun'],
-  ['credit', 'crédit complet fourni par le site (ex. « Photo : … »)', 'aucun'],
-  ['class', 'placement dans le parent', 'aucun'],
-];
 ---
 
 <DocsLayout title="Figure · Design system · Paul Perigault">
@@ -24,24 +19,5 @@ const props = [
   </Figure>
 
   <h2>Propriétés</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Propriété</th>
-        <th>Valeurs</th>
-        <th>Défaut</th>
-      </tr>
-    </thead>
-    <tbody>
-      {props.map(([name, values, fallback]) => (
-        <tr>
-          <td>
-            <code>{name}</code>
-          </td>
-          <td>{values}</td>
-          <td>{fallback}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+  <PropsTable item="figure" title="Figure" />
 </DocsLayout>

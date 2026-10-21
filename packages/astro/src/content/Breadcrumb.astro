@@ -16,6 +16,7 @@ interface Item {
 interface Props {
   /** Nom accessible du repère de navigation (`aria-label`). */
   label: string;
+  /** Étapes de la racine à la page courante : `{ label, href? }` ; la dernière est la page courante. */
   items: Item[];
   /** Réservé au placement du composant dans son parent. */
   class?: string;

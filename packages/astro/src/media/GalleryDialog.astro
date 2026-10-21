@@ -8,7 +8,9 @@ import Photo from './Photo.astro';
 import type { GalleryItem } from './types';
 
 interface Props {
+  /** Identifiant du dialogue, visé par `commandfor`. */
   id: string;
+  /** Image agrandie, avec son alternative et sa légende. */
   item: GalleryItem;
   /** Libellé visible du bouton de fermeture, fourni par le site. */
   closeLabel: string;

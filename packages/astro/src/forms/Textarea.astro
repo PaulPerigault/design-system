@@ -5,14 +5,21 @@
  * bordure plus épaisse en plus de la couleur (WCAG 1.4.1). Aucun attribut `style` (CSP stricte).
  */
 interface Props {
+  /** Identifiant, visé par `<label for>`. */
   id: string;
+  /** Nom envoyé avec le formulaire. */
   name: string;
+  /** Texte initial. */
   value?: string;
+  /** Saisie obligatoire (`required`). */
   required?: boolean;
+  /** Désactive le champ. */
   disabled?: boolean;
   /** Identifiants (séparés par des espaces) de l'aide ou du message d'erreur. */
   describedBy?: string | undefined;
+  /** Pose `aria-invalid="true"` ; à relier au message d'erreur par `describedBy`. */
   invalid?: boolean | undefined;
+  /** Hauteur initiale en lignes. */
   rows?: number;
   /** Réservé au placement du composant dans son parent. */
   class?: string;

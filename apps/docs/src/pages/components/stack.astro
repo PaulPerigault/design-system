@@ -1,5 +1,6 @@
 ---
 import Stack from '@paulperigault/astro/Stack.astro';
+import PropsTable from '../../components/PropsTable.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
 ---
 
@@ -14,4 +15,7 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
     <p>Deuxième paragraphe.</p>
     <p>Troisième paragraphe.</p>
   </Stack>
+
+  <h2>Propriétés</h2>
+  <PropsTable item="stack" title="Stack" />
 </DocsLayout>

@@ -18,6 +18,10 @@
       "type": "registry:lib"
     },
     {
+      "path": "packages/astro/src/media/component-types.ts",
+      "type": "registry:lib"
+    },
+    {
       "path": "packages/astro/src/media/checks.ts",
       "type": "registry:lib"
     },
@@ -42,7 +46,8 @@
       "--pp-ratio-wide",
       "--pp-size-measure",
       "--pp-size-page",
-      "--pp-space-3xl"
+      "--pp-space-3xl",
+      "--pp-space-xl"
     ],
     "version": "0.0.0"
   }

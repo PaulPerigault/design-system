@@ -14,6 +14,7 @@ interface Line {
 interface Props {
   /** Légende visible, reprise comme nom accessible de la région défilante. */
   caption: string;
+  /** Lignes du diff : `{ kind: 'added' | 'removed' | 'context', text }`. */
   lines: Line[];
   /** Libellé lu avant chaque ligne ajoutée. */
   addedLabel: string;

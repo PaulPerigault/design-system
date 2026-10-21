@@ -2,16 +2,18 @@
 /**
  * Cluster : groupe d'éléments en ligne qui passent à la ligne, espacés par `gap`
  * (modèle « Every Layout », Pickering et Bell). Zéro JavaScript ; les variantes passent par
- * des attributs `data-*` (CSP stricte : aucun `style` en ligne).
- *
- * Avec `as="ul"` ou `as="ol"`, les enfants directs doivent être des `<li>`. `list-style: none`
+ * des attributs `data-*` (CSP stricte : aucun `style` en ligne). `list-style: none`
  * retire la sémantique de liste sous WebKit/VoiceOver (Scott O'Hara, « "Fixing" Lists », 2019) :
  * `role="list"` est donc posé sur ces deux éléments seulement.
  */
 interface Props {
+  /** Espacement entre les enfants (token `--pp-space-*`). */
   space?: 'xs' | 's' | 'm' | 'l' | 'xl';
+  /** Répartition des enfants dans l'axe en ligne. */
   justify?: 'start' | 'center' | 'end' | 'between';
+  /** Alignement des enfants dans l'axe de bloc. */
   align?: 'start' | 'center' | 'end' | 'baseline';
+  /** Élément rendu ; avec `ul` ou `ol`, les enfants doivent être des `<li>`. */
   as?: 'div' | 'ul' | 'ol' | 'nav';
   /** Nom accessible, rendu en `aria-label` (utile avec `as="nav"`). */
   label?: string;

@@ -1,5 +1,6 @@
 ---
 import Table from '@paulperigault/astro/Table.astro';
+import PropsTable from '../../components/PropsTable.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
 
 const spaceColumns = [
@@ -11,35 +12,6 @@ const spaceRows = [
   { name: '--pp-space-2xs', size: '0,5' },
   { name: '--pp-space-xs', size: '0,75' },
   { name: '--pp-space-s', size: '1' },
-];
-
-const propColumns = [
-  { key: 'prop', label: 'Propriété' },
-  { key: 'type', label: 'Type' },
-  { key: 'default', label: 'Défaut' },
-  { key: 'role', label: 'Rôle' },
-];
-const propRows = [
-  {
-    prop: 'caption',
-    type: 'texte',
-    default: 'requis',
-    role: 'Légende visible et nom de la région.',
-  },
-  {
-    prop: 'columns',
-    type: '{ key, label, numeric? }[]',
-    default: 'requis',
-    role: 'Colonnes. `numeric` aligne en fin, en chiffres tabulaires.',
-  },
-  { prop: 'rows', type: 'Record<string, string>[]', default: 'requis', role: 'Lignes.' },
-  {
-    prop: 'rowHeader',
-    type: 'texte',
-    default: 'aucun',
-    role: 'Clé de la colonne rendue en th scope="row".',
-  },
-  { prop: 'class', type: 'texte', default: 'aucun', role: 'Placement dans le parent uniquement.' },
 ];
 ---
 
@@ -54,5 +26,5 @@ const propRows = [
   <Table caption="Jetons d’espacement" columns={spaceColumns} rows={spaceRows} rowHeader="name" />
 
   <h2>Propriétés</h2>
-  <Table caption="Propriétés de Table" columns={propColumns} rows={propRows} rowHeader="prop" />
+  <PropsTable item="table" title="Table" />
 </DocsLayout>

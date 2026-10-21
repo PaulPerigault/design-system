@@ -8,7 +8,9 @@ interface Props {
   text?: boolean;
   /** Centre les enfants selon leur largeur propre. */
   intrinsic?: boolean;
+  /** Marge intérieure en ligne, pour que le contenu ne touche pas les bords sur mobile. */
   gutter?: 's' | 'm';
+  /** Élément HTML rendu (sémantique de la page). */
   as?: 'div' | 'section' | 'article' | 'main' | 'header' | 'footer';
   /** Réservé au placement du composant dans son parent. */
   class?: string;

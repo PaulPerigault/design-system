@@ -6,17 +6,27 @@
  * `describedBy`) : le composant n'embarque aucun texte. Le focus vient de `@paulperigault/css`.
  */
 interface Props {
+  /** Identifiant, visé par `<label for>`. */
   id: string;
+  /** Nom envoyé avec le formulaire. */
   name: string;
+  /** Type de saisie ; choisit aussi le clavier virtuel sur mobile. */
   type?: 'text' | 'email' | 'url' | 'tel' | 'search' | 'password' | 'number';
+  /** Valeur initiale. */
   value?: string | number;
+  /** Saisie obligatoire (`required`). */
   required?: boolean;
+  /** Désactive le champ. */
   disabled?: boolean;
+  /** Jeton `autocomplete` (WCAG 1.3.5), par exemple `email` ou `name`. */
   autocomplete?: string;
+  /** Clavier virtuel à afficher quand `type` ne suffit pas. */
   inputmode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search';
   /** Identifiants (séparés par des espaces) des éléments d'aide ou d'erreur. */
   describedBy?: string | undefined;
+  /** Pose `aria-invalid="true"` ; à relier au message d'erreur par `describedBy`. */
   invalid?: boolean | undefined;
+  /** Exemple de saisie ; jamais à la place du libellé. */
   placeholder?: string;
   /** Réservé au placement du composant dans son parent. */
   class?: string;

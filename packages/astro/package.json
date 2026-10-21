@@ -84,6 +84,7 @@
     "./Scrim.astro": "./src/media/Scrim.astro",
     "./scrim": "./src/media/scrim.ts",
     "./media-types": "./src/media/types.ts",
+    "./registry.json": "./registry/registry.json",
     "./package.json": "./package.json"
   }
 }

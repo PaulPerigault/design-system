@@ -11,7 +11,9 @@ interface Item {
 }
 
 interface Props {
+  /** Sections : `{ id, title, body }` ; le titre ouvre et ferme la section. */
   items: Item[];
+  /** Une seule section ouverte à la fois (`<details name>`). */
   exclusive?: boolean;
   /** Réservé au placement du composant dans son parent. */
   class?: string;

@@ -12,6 +12,7 @@
 import { fieldIds } from './field-ids';
 
 interface RequiredField {
+  /** Champ obligatoire : `requiredLabel` est alors exigé et accolé au libellé. */
   required: true;
   /** Texte visible accolé au libellé, par exemple « obligatoire » : jamais un « * » seul. */
   requiredLabel: string;
@@ -25,8 +26,11 @@ interface OptionalField {
 type Props = (RequiredField | OptionalField) & {
   /** Id du contrôle enveloppé ; dérive aussi `<id>-hint` et `<id>-error`. */
   id: string;
+  /** Libellé visible du champ. */
   label: string;
+  /** Indication affichée sous le libellé, reliée par `aria-describedby`. */
   hint?: string | undefined;
+  /** Message d'erreur ; s'il est présent, le champ passe en état invalide. */
   error?: string | undefined;
   /** Préfixe de l'erreur, par exemple « Erreur : ». Absent : aucun préfixe rendu. */
   errorLabel?: string | undefined;

@@ -1,5 +1,6 @@
 ---
 import Prose from '../../../../../packages/astro/src/content/Prose.astro';
+import PropsTable from '../../components/PropsTable.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
 ---
 
@@ -57,25 +58,5 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
   </Prose>
 
   <h2>Propriétés</h2>
-  <table>
-    <caption>Propriétés de Prose</caption>
-    <thead>
-      <tr>
-        <th scope="col">Nom</th>
-        <th scope="col">Type</th>
-        <th scope="col">Rôle</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row">
-          <code>class</code>
-        </th>
-        <td>
-          <code>string</code>
-        </td>
-        <td>Réservé au placement du composant dans son parent.</td>
-      </tr>
-    </tbody>
-  </table>
+  <PropsTable item="prose" title="Prose" />
 </DocsLayout>

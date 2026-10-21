@@ -5,8 +5,11 @@
  * `data-width` et `data-gutter` (CSP stricte : aucun `style` en ligne).
  */
 interface Props {
+  /** Largeur maximale : la page (`--pp-size-page`) ou la mesure de lecture (`--pp-size-measure`). */
   width?: 'page' | 'measure';
+  /** Marge intérieure en ligne, pour que le contenu ne touche pas les bords. */
   gutter?: 's' | 'm' | 'l';
+  /** Élément HTML rendu (sémantique de la page). */
   as?: 'div' | 'section' | 'main' | 'header' | 'footer' | 'article';
   /** Réservé au placement du composant dans son parent. */
   class?: string;
