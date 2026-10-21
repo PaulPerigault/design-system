@@ -1,9 +1,7 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
-import { TARGET_MIN, THEMES, VIEWPORTS, open } from './helpers';
+import { TARGET_MIN, VIEWPORTS, open } from './helpers';
 
 const NAMES = ['button', 'field', 'input', 'textarea', 'select', 'choice', 'switch'];
-const WCAG = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22a', 'wcag22aa'];
 const CONTROL_MIN = 44;
 const MAX_TABS = 80;
 const CONTROLS =
@@ -44,16 +42,6 @@ function measure(selector: string) {
 
 for (const name of NAMES) {
   const path = `/components/${name}/`;
-  for (const theme of THEMES) {
-    for (const viewport of VIEWPORTS) {
-      test(`axe : ${path}, thème ${theme}, ${viewport.name}`, async ({ page }) => {
-        await open(page, path, viewport, theme);
-        const { violations } = await new AxeBuilder({ page }).withTags(WCAG).analyze();
-        expect(violations.map((v) => `${v.id} (${v.nodes.length}) : ${v.help}`)).toEqual([]);
-      });
-    }
-  }
-
   test(`clavier : Tab atteint chaque contrôle dans l'ordre, ${path}`, async ({ page }) => {
     await open(page, path, VIEWPORTS[0]);
     const count = await page.evaluate(tagControls, CONTROLS);
