@@ -1,0 +1,42 @@
+[
+  { "name": "Apple", "category": "plateforme", "url": "https://www.apple.com/fr/" },
+  { "name": "Google Search", "category": "plateforme", "url": "https://www.google.com/" },
+  { "name": "YouTube", "category": "plateforme", "url": "https://www.youtube.com/" },
+  {
+    "name": "Gmail (accueil public)",
+    "category": "plateforme",
+    "url": "https://workspace.google.com/intl/fr/gmail/"
+  },
+  { "name": "Microsoft", "category": "plateforme", "url": "https://www.microsoft.com/fr-fr/" },
+  { "name": "Facebook", "category": "plateforme", "url": "https://www.facebook.com/" },
+  { "name": "Instagram", "category": "plateforme", "url": "https://www.instagram.com/" },
+  { "name": "WhatsApp", "category": "plateforme", "url": "https://www.whatsapp.com/" },
+  { "name": "Threads", "category": "plateforme", "url": "https://www.threads.com/" },
+  { "name": "TikTok", "category": "réseau social", "url": "https://www.tiktok.com/" },
+  { "name": "X", "category": "réseau social", "url": "https://x.com/" },
+  { "name": "LinkedIn", "category": "réseau social", "url": "https://www.linkedin.com/" },
+  { "name": "Snapchat", "category": "réseau social", "url": "https://www.snapchat.com/" },
+  { "name": "Pinterest", "category": "réseau social", "url": "https://www.pinterest.com/" },
+  { "name": "Reddit", "category": "réseau social", "url": "https://www.reddit.com/" },
+  { "name": "Bluesky", "category": "réseau social", "url": "https://bsky.app/" },
+  { "name": "Amazon", "category": "commerce", "url": "https://www.amazon.fr/" },
+  { "name": "Decathlon", "category": "commerce", "url": "https://www.decathlon.fr/" },
+  { "name": "Leroy Merlin", "category": "commerce", "url": "https://www.leroymerlin.fr/" },
+  { "name": "Airbnb", "category": "commerce", "url": "https://www.airbnb.fr/" },
+  { "name": "Booking", "category": "commerce", "url": "https://www.booking.com/" },
+  { "name": "Uber", "category": "commerce", "url": "https://www.uber.com/fr/fr/" },
+  { "name": "Netflix", "category": "commerce", "url": "https://www.netflix.com/fr/" },
+  { "name": "Spotify", "category": "commerce", "url": "https://open.spotify.com/" },
+  { "name": "SNCF Connect", "category": "France", "url": "https://www.sncf-connect.com/" },
+  { "name": "Doctolib", "category": "France", "url": "https://www.doctolib.fr/" },
+  { "name": "Orange", "category": "France", "url": "https://www.orange.fr/portail" },
+  { "name": "La Poste", "category": "France", "url": "https://www.laposte.fr/" },
+  { "name": "service-public.fr", "category": "France", "url": "https://www.service-public.fr/" },
+  { "name": "Le Monde", "category": "France", "url": "https://www.lemonde.fr/" },
+  {
+    "name": "Wikipedia",
+    "category": "lisibilité",
+    "url": "https://fr.wikipedia.org/wiki/Accessibilit%C3%A9_du_web"
+  },
+  { "name": "BBC", "category": "lisibilité", "url": "https://www.bbc.com/news" }
+]

@@ -1,0 +1,1396 @@
+{
+  "observedAt": "2026-10-21T09:12:32.065Z",
+  "results": [
+    {
+      "name": "Apple",
+      "category": "plateforme",
+      "url": "https://www.apple.com/fr/",
+      "mobile": {
+        "finalUrl": "https://www.apple.com/fr/",
+        "targets": {
+          "count": 32,
+          "atLeast44": 56,
+          "atLeast24": 94,
+          "median": 48
+        },
+        "body": {
+          "fontSize": 19,
+          "lineHeight": "23px",
+          "charsPerLine": 55
+        },
+        "chrome": {
+          "bottomBar": false,
+          "stickyHeader": true,
+          "menuButton": true,
+          "viewportFitCover": true,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 58,
+          "fontFiles": 6,
+          "fontKB": 928
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "focus": {
+          "tag": "A",
+          "outline": true,
+          "boxShadow": false
+        }
+      },
+      "desktop": {
+        "finalUrl": "https://www.apple.com/fr/",
+        "targets": {
+          "count": 238,
+          "atLeast44": 36,
+          "atLeast24": 95,
+          "median": 30
+        },
+        "body": {
+          "fontSize": 21,
+          "lineHeight": "25px",
+          "charsPerLine": 55
+        },
+        "chrome": {
+          "bottomBar": false,
+          "stickyHeader": true,
+          "menuButton": true,
+          "viewportFitCover": true,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 57,
+          "fontFiles": 6,
+          "fontKB": 825
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "focus": {
+          "tag": "A",
+          "outline": true,
+          "boxShadow": false
+        }
+      }
+    },
+    {
+      "name": "Google Search",
+      "category": "plateforme",
+      "url": "https://www.google.com/",
+      "mobile": {
+        "finalUrl": "https://www.google.com/",
+        "targets": {
+          "count": 28,
+          "atLeast44": 61,
+          "atLeast24": 96,
+          "median": 46
+        },
+        "body": null,
+        "chrome": {
+          "bottomBar": false,
+          "stickyHeader": false,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 35,
+          "fontFiles": 0,
+          "fontKB": 0
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "focus": {
+          "tag": "BUTTON",
+          "outline": false,
+          "boxShadow": false
+        }
+      },
+      "desktop": {
+        "finalUrl": "https://www.google.com/",
+        "targets": {
+          "count": 28,
+          "atLeast44": 61,
+          "atLeast24": 96,
+          "median": 46
+        },
+        "body": null,
+        "chrome": {
+          "bottomBar": false,
+          "stickyHeader": false,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 34,
+          "fontFiles": 0,
+          "fontKB": 0
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "focus": {
+          "tag": "BUTTON",
+          "outline": false,
+          "boxShadow": false
+        }
+      }
+    },
+    {
+      "name": "YouTube",
+      "category": "plateforme",
+      "url": "https://www.youtube.com/",
+      "mobile": {
+        "finalUrl": "https://www.youtube.com/",
+        "targets": {
+          "count": 12,
+          "atLeast44": 17,
+          "atLeast24": 83,
+          "median": 40
+        },
+        "body": null,
+        "chrome": {
+          "bottomBar": true,
+          "stickyHeader": true,
+          "menuButton": true,
+          "viewportFitCover": true,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 128,
+          "fontFiles": 0,
+          "fontKB": 0
+        },
+        "lightBackground": "rgb(255, 255, 255) rgba(0, 0, 0, 0)",
+        "darkBackground": "rgb(255, 255, 255) rgba(0, 0, 0, 0)",
+        "focus": {
+          "tag": "BUTTON",
+          "outline": false,
+          "boxShadow": false
+        }
+      },
+      "desktop": {
+        "finalUrl": "https://www.youtube.com/",
+        "targets": {
+          "count": 29,
+          "atLeast44": 3,
+          "atLeast24": 86,
+          "median": 40
+        },
+        "body": null,
+        "chrome": {
+          "bottomBar": true,
+          "stickyHeader": true,
+          "menuButton": true,
+          "viewportFitCover": true,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 137,
+          "fontFiles": 0,
+          "fontKB": 0
+        },
+        "lightBackground": "rgb(255, 255, 255) rgba(0, 0, 0, 0)",
+        "darkBackground": "rgb(255, 255, 255) rgba(0, 0, 0, 0)",
+        "focus": {
+          "tag": "BUTTON",
+          "outline": false,
+          "boxShadow": false
+        }
+      }
+    },
+    {
+      "name": "Gmail (accueil public)",
+      "category": "plateforme",
+      "url": "https://workspace.google.com/intl/fr/gmail/",
+      "mobile": {
+        "finalUrl": "https://workspace.google.com/intl/fr/gmail/",
+        "targets": {
+          "count": 10,
+          "atLeast44": 40,
+          "atLeast24": 90,
+          "median": 36
+        },
+        "body": {
+          "fontSize": 16,
+          "lineHeight": "24px",
+          "charsPerLine": 44
+        },
+        "chrome": {
+          "bottomBar": false,
+          "stickyHeader": true,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 95,
+          "fontFiles": 0,
+          "fontKB": 0
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgba(0, 0, 0, 0)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgba(0, 0, 0, 0)",
+        "focus": {
+          "tag": "A",
+          "outline": true,
+          "boxShadow": true
+        }
+      },
+      "desktop": {
+        "finalUrl": "https://workspace.google.com/intl/fr/gmail/",
+        "targets": {
+          "count": 12,
+          "atLeast44": 50,
+          "atLeast24": 83,
+          "median": 48
+        },
+        "body": {
+          "fontSize": 18,
+          "lineHeight": "28.0001px",
+          "charsPerLine": 44
+        },
+        "chrome": {
+          "bottomBar": false,
+          "stickyHeader": true,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 86,
+          "fontFiles": 0,
+          "fontKB": 0
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgba(0, 0, 0, 0)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgba(0, 0, 0, 0)",
+        "focus": {
+          "tag": "A",
+          "outline": true,
+          "boxShadow": true
+        }
+      }
+    },
+    {
+      "name": "Microsoft",
+      "category": "plateforme",
+      "url": "https://www.microsoft.com/fr-fr/",
+      "mobile": {
+        "finalUrl": "https://www.microsoft.com/fr-fr/",
+        "targets": {
+          "count": 13,
+          "atLeast44": 15,
+          "atLeast24": 92,
+          "median": 36
+        },
+        "body": {
+          "fontSize": 16,
+          "lineHeight": "24px",
+          "charsPerLine": 31
+        },
+        "chrome": {
+          "bottomBar": false,
+          "stickyHeader": false,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 195,
+          "fontFiles": 8,
+          "fontKB": null
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "focus": {
+          "tag": "A",
+          "outline": false,
+          "boxShadow": false
+        }
+      },
+      "desktop": {
+        "finalUrl": "https://www.microsoft.com/fr-fr/",
+        "targets": {
+          "count": 25,
+          "atLeast44": 64,
+          "atLeast24": 88,
+          "median": 49
+        },
+        "body": {
+          "fontSize": 16,
+          "lineHeight": "24px",
+          "charsPerLine": 25
+        },
+        "chrome": {
+          "bottomBar": false,
+          "stickyHeader": false,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 196,
+          "fontFiles": 8,
+          "fontKB": null
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "focus": {
+          "tag": "A",
+          "outline": false,
+          "boxShadow": false
+        }
+      }
+    },
+    {
+      "name": "Facebook",
+      "category": "plateforme",
+      "url": "https://www.facebook.com/",
+      "skipped": "robots.txt"
+    },
+    {
+      "name": "Instagram",
+      "category": "plateforme",
+      "url": "https://www.instagram.com/",
+      "skipped": "robots.txt"
+    },
+    {
+      "name": "WhatsApp",
+      "category": "plateforme",
+      "url": "https://www.whatsapp.com/",
+      "mobile": {
+        "finalUrl": "https://www.whatsapp.com/",
+        "targets": {
+          "count": 4,
+          "atLeast44": 50,
+          "atLeast24": 75,
+          "median": 53
+        },
+        "body": {
+          "fontSize": 16,
+          "lineHeight": "22px",
+          "charsPerLine": 28
+        },
+        "chrome": {
+          "bottomBar": true,
+          "stickyHeader": true,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 40,
+          "fontFiles": 1,
+          "fontKB": 273
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "focus": {
+          "tag": "SPAN",
+          "outline": true,
+          "boxShadow": false
+        }
+      },
+      "desktop": {
+        "finalUrl": "https://www.whatsapp.com/",
+        "targets": {
+          "count": 18,
+          "atLeast44": 22,
+          "atLeast24": 61,
+          "median": 39
+        },
+        "body": {
+          "fontSize": 18,
+          "lineHeight": "25px",
+          "charsPerLine": 38
+        },
+        "chrome": {
+          "bottomBar": false,
+          "stickyHeader": true,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 40,
+          "fontFiles": 1,
+          "fontKB": 273
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "focus": {
+          "tag": "A",
+          "outline": true,
+          "boxShadow": false
+        }
+      }
+    },
+    {
+      "name": "Threads",
+      "category": "plateforme",
+      "url": "https://www.threads.com/",
+      "skipped": "robots.txt"
+    },
+    {
+      "name": "TikTok",
+      "category": "réseau social",
+      "url": "https://www.tiktok.com/",
+      "mobile": {
+        "finalUrl": "https://www.tiktok.com/explore",
+        "targets": {
+          "count": 68,
+          "atLeast44": 24,
+          "atLeast24": 38,
+          "median": 20
+        },
+        "body": null,
+        "chrome": {
+          "bottomBar": true,
+          "stickyHeader": true,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 251,
+          "fontFiles": 3,
+          "fontKB": 168
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "focus": null
+      },
+      "desktop": {
+        "finalUrl": "https://www.tiktok.com/",
+        "targets": {
+          "count": 40,
+          "atLeast44": 33,
+          "atLeast24": 78,
+          "median": 40
+        },
+        "body": null,
+        "chrome": {
+          "bottomBar": true,
+          "stickyHeader": true,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 251,
+          "fontFiles": 4,
+          "fontKB": 226
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "focus": {
+          "tag": "BUTTON",
+          "outline": false,
+          "boxShadow": false
+        }
+      }
+    },
+    {
+      "name": "X",
+      "category": "réseau social",
+      "url": "https://x.com/",
+      "skipped": "robots.txt"
+    },
+    {
+      "name": "LinkedIn",
+      "category": "réseau social",
+      "url": "https://www.linkedin.com/",
+      "skipped": "robots.txt"
+    },
+    {
+      "name": "Snapchat",
+      "category": "réseau social",
+      "url": "https://www.snapchat.com/",
+      "skipped": "robots.txt"
+    },
+    {
+      "name": "Pinterest",
+      "category": "réseau social",
+      "url": "https://www.pinterest.com/",
+      "skipped": "robots.txt"
+    },
+    {
+      "name": "Reddit",
+      "category": "réseau social",
+      "url": "https://www.reddit.com/",
+      "skipped": "robots.txt"
+    },
+    {
+      "name": "Bluesky",
+      "category": "réseau social",
+      "url": "https://bsky.app/",
+      "mobile": {
+        "finalUrl": "https://bsky.app/",
+        "targets": {
+          "count": 25,
+          "atLeast44": 16,
+          "atLeast24": 68,
+          "median": 28
+        },
+        "body": null,
+        "chrome": {
+          "bottomBar": true,
+          "stickyHeader": true,
+          "menuButton": true,
+          "viewportFitCover": true,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 36,
+          "fontFiles": 1,
+          "fontKB": null
+        },
+        "lightBackground": "rgb(255, 255, 255) rgb(255, 255, 255)",
+        "darkBackground": "rgb(255, 255, 255) rgb(255, 255, 255)",
+        "focus": {
+          "tag": "BUTTON",
+          "outline": true,
+          "boxShadow": false
+        }
+      },
+      "desktop": {
+        "finalUrl": "https://bsky.app/",
+        "targets": {
+          "count": 32,
+          "atLeast44": 13,
+          "atLeast24": 53,
+          "median": 28
+        },
+        "body": null,
+        "chrome": {
+          "bottomBar": true,
+          "stickyHeader": true,
+          "menuButton": true,
+          "viewportFitCover": true,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 36,
+          "fontFiles": 1,
+          "fontKB": null
+        },
+        "lightBackground": "rgb(255, 255, 255) rgb(255, 255, 255)",
+        "darkBackground": "rgb(255, 255, 255) rgb(255, 255, 255)",
+        "focus": {
+          "tag": "BUTTON",
+          "outline": true,
+          "boxShadow": false
+        }
+      }
+    },
+    {
+      "name": "Amazon",
+      "category": "commerce",
+      "url": "https://www.amazon.fr/",
+      "mobile": {
+        "finalUrl": "https://www.amazon.fr/",
+        "targets": {
+          "count": 181,
+          "atLeast44": 40,
+          "atLeast24": 96,
+          "median": 42
+        },
+        "body": null,
+        "chrome": {
+          "bottomBar": true,
+          "stickyHeader": false,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 169,
+          "fontFiles": 0,
+          "fontKB": 0
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "focus": {
+          "tag": "A",
+          "outline": true,
+          "boxShadow": false
+        }
+      },
+      "desktop": {
+        "finalUrl": "https://www.amazon.fr/",
+        "targets": {
+          "count": 102,
+          "atLeast44": 42,
+          "atLeast24": 95,
+          "median": 38
+        },
+        "body": null,
+        "chrome": {
+          "bottomBar": false,
+          "stickyHeader": false,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 137,
+          "fontFiles": 0,
+          "fontKB": 0
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "focus": {
+          "tag": "A",
+          "outline": true,
+          "boxShadow": false
+        }
+      }
+    },
+    {
+      "name": "Decathlon",
+      "category": "commerce",
+      "url": "https://www.decathlon.fr/",
+      "mobile": {
+        "blocked": "HTTP 403, Un instant…"
+      }
+    },
+    {
+      "name": "Leroy Merlin",
+      "category": "commerce",
+      "url": "https://www.leroymerlin.fr/",
+      "mobile": {
+        "blocked": "HTTP 403, leroymerlin.fr"
+      }
+    },
+    {
+      "name": "Airbnb",
+      "category": "commerce",
+      "url": "https://www.airbnb.fr/",
+      "mobile": {
+        "finalUrl": "https://www.airbnb.fr/",
+        "targets": {
+          "count": 31,
+          "atLeast44": 13,
+          "atLeast24": 58,
+          "median": 36
+        },
+        "body": {
+          "fontSize": 14,
+          "lineHeight": "20.02px",
+          "charsPerLine": 39
+        },
+        "chrome": {
+          "bottomBar": true,
+          "stickyHeader": true,
+          "menuButton": false,
+          "viewportFitCover": true,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 156,
+          "fontFiles": 1,
+          "fontKB": null
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "focus": {
+          "tag": "BUTTON",
+          "outline": false,
+          "boxShadow": true
+        }
+      },
+      "desktop": {
+        "finalUrl": "https://www.airbnb.fr/",
+        "targets": {
+          "count": 57,
+          "atLeast44": 9,
+          "atLeast24": 56,
+          "median": 36
+        },
+        "body": {
+          "fontSize": 14,
+          "lineHeight": "20.02px",
+          "charsPerLine": 98
+        },
+        "chrome": {
+          "bottomBar": false,
+          "stickyHeader": true,
+          "menuButton": true,
+          "viewportFitCover": true,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 151,
+          "fontFiles": 1,
+          "fontKB": null
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "focus": {
+          "tag": "BUTTON",
+          "outline": false,
+          "boxShadow": true
+        }
+      }
+    },
+    {
+      "name": "Booking",
+      "category": "commerce",
+      "url": "https://www.booking.com/",
+      "mobile": {
+        "finalUrl": "https://www.booking.com/index.fr.html",
+        "targets": {
+          "count": 20,
+          "atLeast44": 50,
+          "atLeast24": 70,
+          "median": 44
+        },
+        "body": {
+          "fontSize": 20,
+          "lineHeight": "28px",
+          "charsPerLine": 27
+        },
+        "chrome": {
+          "bottomBar": true,
+          "stickyHeader": true,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 203,
+          "fontFiles": 0,
+          "fontKB": 0
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "focus": {
+          "tag": "A",
+          "outline": false,
+          "boxShadow": true
+        }
+      },
+      "desktop": {
+        "finalUrl": "https://www.booking.com/index.fr.html",
+        "targets": {
+          "count": 24,
+          "atLeast44": 50,
+          "atLeast24": 83,
+          "median": 44
+        },
+        "body": {
+          "fontSize": 24,
+          "lineHeight": "32px",
+          "charsPerLine": 41
+        },
+        "chrome": {
+          "bottomBar": true,
+          "stickyHeader": true,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 198,
+          "fontFiles": 0,
+          "fontKB": 0
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "focus": {
+          "tag": "A",
+          "outline": false,
+          "boxShadow": true
+        }
+      }
+    },
+    {
+      "name": "Uber",
+      "category": "commerce",
+      "url": "https://www.uber.com/fr/fr/",
+      "mobile": {
+        "finalUrl": "https://www.uber.com/fr/fr/",
+        "targets": {
+          "count": 20,
+          "atLeast44": 50,
+          "atLeast24": 85,
+          "median": 48
+        },
+        "body": {
+          "fontSize": 16,
+          "lineHeight": "24px",
+          "charsPerLine": 35
+        },
+        "chrome": {
+          "bottomBar": false,
+          "stickyHeader": true,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 101,
+          "fontFiles": 4,
+          "fontKB": null
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgba(0, 0, 0, 0)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgba(0, 0, 0, 0)",
+        "focus": {
+          "tag": "A",
+          "outline": true,
+          "boxShadow": false
+        }
+      },
+      "desktop": {
+        "finalUrl": "https://www.uber.com/fr/fr/",
+        "targets": {
+          "count": 25,
+          "atLeast44": 24,
+          "atLeast24": 88,
+          "median": 36
+        },
+        "body": {
+          "fontSize": 12,
+          "lineHeight": "20px",
+          "charsPerLine": 32
+        },
+        "chrome": {
+          "bottomBar": false,
+          "stickyHeader": true,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 93,
+          "fontFiles": 4,
+          "fontKB": null
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgba(0, 0, 0, 0)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgba(0, 0, 0, 0)",
+        "focus": {
+          "tag": "A",
+          "outline": true,
+          "boxShadow": false
+        }
+      }
+    },
+    {
+      "name": "Netflix",
+      "category": "commerce",
+      "url": "https://www.netflix.com/fr/",
+      "skipped": "robots.txt"
+    },
+    {
+      "name": "Spotify",
+      "category": "commerce",
+      "url": "https://open.spotify.com/",
+      "mobile": {
+        "finalUrl": "https://open.spotify.com/intl-fr/",
+        "targets": {
+          "count": 182,
+          "atLeast44": 37,
+          "atLeast24": 51,
+          "median": 24
+        },
+        "body": {
+          "fontSize": 16,
+          "lineHeight": "normal",
+          "charsPerLine": 60
+        },
+        "chrome": {
+          "bottomBar": false,
+          "stickyHeader": true,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": true
+        },
+        "resources": {
+          "requests": 155,
+          "fontFiles": 4,
+          "fontKB": null
+        },
+        "lightBackground": "rgb(18, 18, 18) rgba(0, 0, 0, 0)",
+        "darkBackground": "rgb(18, 18, 18) rgba(0, 0, 0, 0)",
+        "focus": {
+          "tag": "BUTTON",
+          "outline": true,
+          "boxShadow": false
+        }
+      },
+      "desktop": {
+        "finalUrl": "https://open.spotify.com/intl-fr/",
+        "targets": {
+          "count": 173,
+          "atLeast44": 49,
+          "atLeast24": 60,
+          "median": 32
+        },
+        "body": {
+          "fontSize": 16,
+          "lineHeight": "normal",
+          "charsPerLine": null
+        },
+        "chrome": {
+          "bottomBar": false,
+          "stickyHeader": true,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": true
+        },
+        "resources": {
+          "requests": 155,
+          "fontFiles": 4,
+          "fontKB": null
+        },
+        "lightBackground": "rgb(18, 18, 18) rgba(0, 0, 0, 0)",
+        "darkBackground": "rgb(18, 18, 18) rgba(0, 0, 0, 0)",
+        "focus": {
+          "tag": "BUTTON",
+          "outline": true,
+          "boxShadow": false
+        }
+      }
+    },
+    {
+      "name": "SNCF Connect",
+      "category": "France",
+      "url": "https://www.sncf-connect.com/",
+      "mobile": {
+        "blocked": "HTTP 403, sncf-connect.com"
+      }
+    },
+    {
+      "name": "Doctolib",
+      "category": "France",
+      "url": "https://www.doctolib.fr/",
+      "mobile": {
+        "finalUrl": "https://www.doctolib.fr/",
+        "targets": {
+          "count": 10,
+          "atLeast44": 70,
+          "atLeast24": 90,
+          "median": 60
+        },
+        "body": {
+          "fontSize": 14,
+          "lineHeight": "24px",
+          "charsPerLine": 51
+        },
+        "chrome": {
+          "bottomBar": false,
+          "stickyHeader": false,
+          "menuButton": true,
+          "viewportFitCover": true,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 251,
+          "fontFiles": 0,
+          "fontKB": 0
+        },
+        "lightBackground": "rgb(228, 237, 246) rgb(228, 237, 246)",
+        "darkBackground": "rgb(228, 237, 246) rgb(228, 237, 246)",
+        "focus": {
+          "tag": "A",
+          "outline": true,
+          "boxShadow": true
+        }
+      },
+      "desktop": {
+        "finalUrl": "https://www.doctolib.fr/",
+        "targets": {
+          "count": 10,
+          "atLeast44": 50,
+          "atLeast24": 80,
+          "median": 50
+        },
+        "body": {
+          "fontSize": 14,
+          "lineHeight": "24px",
+          "charsPerLine": 51
+        },
+        "chrome": {
+          "bottomBar": false,
+          "stickyHeader": false,
+          "menuButton": true,
+          "viewportFitCover": true,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 251,
+          "fontFiles": 0,
+          "fontKB": 0
+        },
+        "lightBackground": "rgb(228, 237, 246) rgb(228, 237, 246)",
+        "darkBackground": "rgb(228, 237, 246) rgb(228, 237, 246)",
+        "focus": {
+          "tag": "A",
+          "outline": true,
+          "boxShadow": true
+        }
+      }
+    },
+    {
+      "name": "Orange",
+      "category": "France",
+      "url": "https://www.orange.fr/portail",
+      "mobile": {
+        "finalUrl": "https://www.orange.fr/portail",
+        "targets": {
+          "count": 9,
+          "atLeast44": 78,
+          "atLeast24": 100,
+          "median": 268
+        },
+        "body": {
+          "fontSize": 16,
+          "lineHeight": "22.8571px",
+          "charsPerLine": 17
+        },
+        "chrome": {
+          "bottomBar": false,
+          "stickyHeader": false,
+          "menuButton": false,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 83,
+          "fontFiles": 2,
+          "fontKB": null
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "focus": {
+          "tag": "ELCOS-HEADER",
+          "outline": false,
+          "boxShadow": false
+        }
+      },
+      "desktop": {
+        "finalUrl": "https://www.orange.fr/portail",
+        "targets": {
+          "count": 8,
+          "atLeast44": 88,
+          "atLeast24": 100,
+          "median": 61
+        },
+        "body": {
+          "fontSize": 16,
+          "lineHeight": "22px",
+          "charsPerLine": 29
+        },
+        "chrome": {
+          "bottomBar": false,
+          "stickyHeader": false,
+          "menuButton": false,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 121,
+          "fontFiles": 2,
+          "fontKB": null
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "focus": {
+          "tag": "ELCOS-HEADER",
+          "outline": false,
+          "boxShadow": false
+        }
+      }
+    },
+    {
+      "name": "La Poste",
+      "category": "France",
+      "url": "https://www.laposte.fr/",
+      "mobile": {
+        "blocked": "HTTP 403, Access Denied"
+      }
+    },
+    {
+      "name": "service-public.fr",
+      "category": "France",
+      "url": "https://www.service-public.fr/",
+      "mobile": {
+        "finalUrl": "https://www.service-public.gouv.fr/",
+        "targets": {
+          "count": 35,
+          "atLeast44": 69,
+          "atLeast24": 100,
+          "median": 48
+        },
+        "body": {
+          "fontSize": 12.8,
+          "lineHeight": "24px",
+          "charsPerLine": 51
+        },
+        "chrome": {
+          "bottomBar": true,
+          "stickyHeader": false,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 90,
+          "fontFiles": 4,
+          "fontKB": 167
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "focus": {
+          "tag": "BUTTON",
+          "outline": true,
+          "boxShadow": false
+        }
+      },
+      "desktop": {
+        "finalUrl": "https://www.service-public.gouv.fr/",
+        "targets": {
+          "count": 29,
+          "atLeast44": 66,
+          "atLeast24": 100,
+          "median": 56
+        },
+        "body": {
+          "fontSize": 12.8,
+          "lineHeight": "24px",
+          "charsPerLine": 102
+        },
+        "chrome": {
+          "bottomBar": false,
+          "stickyHeader": false,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 95,
+          "fontFiles": 4,
+          "fontKB": 167
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgb(255, 255, 255)",
+        "focus": {
+          "tag": "BUTTON",
+          "outline": true,
+          "boxShadow": false
+        }
+      }
+    },
+    {
+      "name": "Le Monde",
+      "category": "France",
+      "url": "https://www.lemonde.fr/",
+      "mobile": {
+        "finalUrl": "https://www.lemonde.fr/",
+        "targets": {
+          "count": 30,
+          "atLeast44": 7,
+          "atLeast24": 80,
+          "median": 40
+        },
+        "body": {
+          "fontSize": 15,
+          "lineHeight": "21px",
+          "charsPerLine": 44
+        },
+        "chrome": {
+          "bottomBar": true,
+          "stickyHeader": false,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 48,
+          "fontFiles": 6,
+          "fontKB": 215
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgba(0, 0, 0, 0)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgba(0, 0, 0, 0)",
+        "focus": {
+          "tag": "A",
+          "outline": true,
+          "boxShadow": false
+        }
+      },
+      "desktop": {
+        "finalUrl": "https://www.lemonde.fr/",
+        "targets": {
+          "count": 41,
+          "atLeast44": 24,
+          "atLeast24": 85,
+          "median": 40
+        },
+        "body": {
+          "fontSize": 16,
+          "lineHeight": "22.4px",
+          "charsPerLine": 38
+        },
+        "chrome": {
+          "bottomBar": true,
+          "stickyHeader": false,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 58,
+          "fontFiles": 6,
+          "fontKB": 215
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgba(0, 0, 0, 0)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgba(0, 0, 0, 0)",
+        "focus": {
+          "tag": "A",
+          "outline": true,
+          "boxShadow": false
+        }
+      }
+    },
+    {
+      "name": "Wikipedia",
+      "category": "lisibilité",
+      "url": "https://fr.wikipedia.org/wiki/Accessibilit%C3%A9_du_web",
+      "mobile": {
+        "finalUrl": "https://fr.wikipedia.org/wiki/Accessibilit%C3%A9_du_web",
+        "targets": {
+          "count": 121,
+          "atLeast44": 9,
+          "atLeast24": 43,
+          "median": 22
+        },
+        "body": {
+          "fontSize": 16,
+          "lineHeight": "26px",
+          "charsPerLine": 41
+        },
+        "chrome": {
+          "bottomBar": false,
+          "stickyHeader": false,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 35,
+          "fontFiles": 0,
+          "fontKB": 0
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgb(248, 249, 250)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgb(248, 249, 250)",
+        "focus": {
+          "tag": "A",
+          "outline": true,
+          "boxShadow": false
+        }
+      },
+      "desktop": {
+        "finalUrl": "https://fr.wikipedia.org/wiki/Accessibilit%C3%A9_du_web",
+        "targets": {
+          "count": 92,
+          "atLeast44": 8,
+          "atLeast24": 52,
+          "median": 28
+        },
+        "body": {
+          "fontSize": 16,
+          "lineHeight": "26px",
+          "charsPerLine": 52
+        },
+        "chrome": {
+          "bottomBar": false,
+          "stickyHeader": false,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 36,
+          "fontFiles": 0,
+          "fontKB": 0
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgb(248, 249, 250)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgb(248, 249, 250)",
+        "focus": {
+          "tag": "A",
+          "outline": true,
+          "boxShadow": false
+        }
+      }
+    },
+    {
+      "name": "BBC",
+      "category": "lisibilité",
+      "url": "https://www.bbc.com/news",
+      "mobile": {
+        "finalUrl": "https://www.bbc.com/news",
+        "targets": {
+          "count": 31,
+          "atLeast44": 81,
+          "atLeast24": 87,
+          "median": 44
+        },
+        "body": {
+          "fontSize": 14,
+          "lineHeight": "18px",
+          "charsPerLine": 38
+        },
+        "chrome": {
+          "bottomBar": true,
+          "stickyHeader": true,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 100,
+          "fontFiles": 6,
+          "fontKB": 391
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgba(0, 0, 0, 0)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgba(0, 0, 0, 0)",
+        "focus": {
+          "tag": "IFRAME",
+          "outline": false,
+          "boxShadow": false
+        }
+      },
+      "desktop": {
+        "finalUrl": "https://www.bbc.com/news",
+        "targets": {
+          "count": 57,
+          "atLeast44": 42,
+          "atLeast24": 95,
+          "median": 42
+        },
+        "body": {
+          "fontSize": 14,
+          "lineHeight": "18px",
+          "charsPerLine": 38
+        },
+        "chrome": {
+          "bottomBar": true,
+          "stickyHeader": true,
+          "menuButton": true,
+          "viewportFitCover": false,
+          "userScalableBlocked": false
+        },
+        "resources": {
+          "requests": 105,
+          "fontFiles": 6,
+          "fontKB": 391
+        },
+        "lightBackground": "rgba(0, 0, 0, 0) rgba(0, 0, 0, 0)",
+        "darkBackground": "rgba(0, 0, 0, 0) rgba(0, 0, 0, 0)",
+        "focus": {
+          "tag": "IFRAME",
+          "outline": false,
+          "boxShadow": false
+        }
+      }
+    }
+  ]
+}
