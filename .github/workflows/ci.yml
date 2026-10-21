@@ -44,6 +44,26 @@ jobs:
           PR_BODY: ${{ github.event.pull_request.body }}
         run: printf '%s\n\n%s\n' "$PR_TITLE" "$PR_BODY" | npx --no -- commitlint --verbose
 
+  squash-message:
+    # D-004 : sur `develop`, relit le commit de squash créé par GitHub (conventions et aucune
+    # signature d'outil ; un `Co-authored-by` ajouté par GitHub signale un auteur git différent du
+    # compte qui fusionne).
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: message du dernier commit de develop
+        run: npx --no -- commitlint --from HEAD~1 --to HEAD --verbose
+
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -122,7 +142,7 @@ jobs:
   ci:
     # Check requis unique : vert seulement si tous les jobs précédents le sont (ou sautés à bon droit).
     if: always()
-    needs: [commitlint, verify, e2e, site, zizmor]
+    needs: [commitlint, squash-message, verify, e2e, site, zizmor]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
