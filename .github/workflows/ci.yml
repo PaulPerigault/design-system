@@ -113,7 +113,7 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/packs"
           npm pack --pack-destination "$RUNNER_TEMP/packs" \
-            -w @paulperigault/tokens -w @paulperigault/css -w @paulperigault/guards
+            -w @paulperigault/tokens -w @paulperigault/css -w @paulperigault/guards -w @paulperigault/mcp
       - name: site généré
         run: node packages/create/bin/pp-create.mjs create "$RUNNER_TEMP/site"
       - name: installation sur les tarballs
