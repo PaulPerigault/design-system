@@ -1,21 +1,69 @@
 ---
 import Stack from '@paulperigault/astro/Stack.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+
+const snippet = `<Stack space="l" as="section">
+  <p>Premier paragraphe.</p>
+  <p>Deuxième paragraphe.</p>
+</Stack>`;
 ---
 
-<DocsLayout title="Stack · Design system · Paul Perigault">
-  <h1>Stack</h1>
-  <p>
-    Stack empile ses enfants dans l’axe de bloc et place l’espacement choisi entre eux, jamais avant
-    le premier ni après le dernier.
-  </p>
+<ComponentPage
+  slug="stack"
+  title="Stack"
+  summary="Stack empile ses enfants dans l’axe de bloc, avec un espacement entre eux et aucune marge avant le premier ni après le dernier."
+  use={[
+    'Espacer des blocs de même niveau, comme des paragraphes ou des sections, avec la prop space.',
+    'Espacer des enfants de hauteur variable sans régler chaque marge à la main.',
+  ]}
+  avoid={[
+    'Pour disposer des éléments côte à côte : utiliser Cluster ou Switcher.',
+    'Pour des colonnes de largeur minimale donnée : utiliser Grid.',
+    'Pour des enfants qui gardent leurs propres marges : le composant les remet à zéro.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: ['Le composant n’ajoute aucun élément interactif et ne modifie pas le focus.'],
+    screenReader: [
+      'Le composant n’ajoute ni rôle ni libellé.',
+      'Avec as="ul" ou as="ol", la liste reste lue comme liste : les puces ne sont pas retirées.',
+    ],
+    guaranteed: [
+      'Espacement par margin-block et tokens --pp-space-*, sans marge avant le premier enfant.',
+      'L’ordre visuel est celui du DOM : aucune propriété order n’est utilisée.',
+    ],
+    integrator: [
+      'Garder dans le DOM l’ordre de lecture voulu : le composant ne le réordonne pas.',
+      'Avec as="ul", ne mettre que des li comme enfants directs.',
+    ],
+  }}
+  evidence={[
+    {
+      label:
+        'WCAG 1.3.2 Ordre de lecture significatif (niveau A) : ordre visuel égal à l’ordre du DOM.',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html',
+    },
+    {
+      label: 'WCAG 1.4.10 Reflow (niveau AA) : test sur chaque page construite.',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/reflow.html',
+    },
+    { label: 'Tests : packages/astro/test/Stack.test.ts, apps/docs/e2e/layout.spec.ts' },
+    { label: 'Code source : packages/astro/src/layout/Stack.astro' },
+  ]}
+>
   <Stack space="l" as="section">
     <p>Premier paragraphe.</p>
     <p>Deuxième paragraphe.</p>
     <p>Troisième paragraphe.</p>
   </Stack>
-
-  <h2>Propriétés</h2>
-  <PropsTable item="stack" title="Stack" />
-</DocsLayout>
+  <Fragment slot="variants">
+    <Stack space="xs">
+      <p>Espacement xs, premier paragraphe.</p>
+      <p>Espacement xs, deuxième paragraphe.</p>
+    </Stack>
+    <Stack space="xl">
+      <p>Espacement xl, premier paragraphe.</p>
+      <p>Espacement xl, deuxième paragraphe.</p>
+    </Stack>
+  </Fragment>
+</ComponentPage>

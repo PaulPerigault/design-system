@@ -1,31 +1,78 @@
 ---
 import Cluster from '@paulperigault/astro/Cluster.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+
+const snippet = `<Cluster as="nav" label="Liens de l’exemple Cluster" justify="center" space="l">
+  <a href="#accessibilite">Accessibilité</a>
+  <a href="#proprietes">Propriétés</a>
+</Cluster>`;
 ---
 
-<DocsLayout title="Cluster · Design system · Paul Perigault">
-  <h1>Cluster</h1>
-  <p>
-    Cluster aligne ses enfants sur une ligne, les fait passer à la suivante quand la place manque et
-    garde le même écart entre eux dans les deux axes.
-  </p>
-
-  <h2>Liste d’étiquettes</h2>
+<ComponentPage
+  slug="cluster"
+  title="Cluster"
+  summary="Cluster aligne ses enfants sur une ligne, les fait passer à la suivante au besoin et garde le même écart entre eux."
+  use={[
+    'Grouper des étiquettes, des boutons ou des liens courts qui doivent rester côte à côte.',
+    'Donner une navigation secondaire courte, avec as="nav" et un label.',
+  ]}
+  avoid={[
+    'Pour des blocs longs ou des paragraphes lus dans l’ordre : utiliser Stack.',
+    'Pour des colonnes de même largeur : utiliser Grid.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: ['Le composant ne prend pas le focus et ne change pas l’ordre de tabulation.'],
+    screenReader: [
+      'Avec as="ul" ou as="ol", role="list" est posé : VoiceOver garde la sémantique de liste.',
+      'Avec as="nav" et label, le repère est nommé ; sans label, il est anonyme.',
+    ],
+    guaranteed: [
+      'list-style: none sur ul et ol, avec role="list" explicite.',
+      'Espacement par gap ; les enfants n’ont pas de marge.',
+    ],
+    integrator: [
+      'Donner un label à chaque nav si la page en contient plusieurs.',
+      'Dimensionner les liens et boutons à au moins --pp-target-min : le composant ne le fait pas.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.3.1 Information et relations (niveau A) : la liste reste balisée ul ou ol.',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html',
+    },
+    {
+      label:
+        'WCAG 1.4.10 Reflow (niveau AA) : le passage à la ligne évite le défilement horizontal.',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/reflow.html',
+    },
+    {
+      label: 'Tests : packages/astro/test/Cluster.test.ts, apps/docs/e2e/layout.spec.ts (gap)',
+    },
+    {
+      label: 'Source citée dans Cluster.astro : Scott O’Hara, « "Fixing" Lists », 2019.',
+    },
+  ]}
+>
   <Cluster as="ul" space="m">
     <li>Accessibilité</li>
     <li>Typographie</li>
     <li>Performance</li>
     <li>Impression</li>
   </Cluster>
-
-  <h2>Navigation centrée</h2>
   <Cluster as="nav" label="Liens de l’exemple Cluster" justify="center" space="l">
     <a href="#accessibilite">Accessibilité</a>
     <a href="#typographie">Typographie</a>
     <a href="#performance">Performance</a>
   </Cluster>
-
-  <h2>Propriétés</h2>
-  <PropsTable item="cluster" title="Cluster" />
-</DocsLayout>
+  <Fragment slot="variants">
+    <Cluster justify="between" space="s">
+      <span>À gauche</span>
+      <span>À droite</span>
+    </Cluster>
+    <Cluster justify="end" align="start" space="xs">
+      <span>Premier</span>
+      <span>Second</span>
+    </Cluster>
+  </Fragment>
+</ComponentPage>
