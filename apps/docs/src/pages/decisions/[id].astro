@@ -1,0 +1,50 @@
+---
+import Prose from '@paulperigault/astro/Prose.astro';
+import type { MarkdownInstance } from 'astro';
+import DraftNotice from '../../components/DraftNotice.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import { adrId, adrTitle, descriptionOf, isDraft } from '../../lib/adr.ts';
+import { canonicalOf, graph, techArticleLd, titleOf } from '../../lib/seo.ts';
+
+export function getStaticPaths() {
+  // Glob local à la fonction : Astro exécute getStaticPaths isolément, hors du module.
+  const adrs = import.meta.glob<MarkdownInstance<Record<string, unknown>>>(
+    '../../../../../docs/adr/*.md',
+    { eager: true },
+  );
+  return Object.entries(adrs).map(([file, adr]) => ({
+    params: { id: adrId(file) },
+    props: { markdown: adr.rawContent(), Body: adr.Content },
+  }));
+}
+
+const { markdown, Body } = Astro.props;
+const title = adrTitle(markdown);
+const description = descriptionOf(markdown);
+const url = canonicalOf(`/decisions/${Astro.params.id}/`);
+const jsonLd = graph(techArticleLd({ title, description, url }));
+---
+
+<DocsLayout title={titleOf(title)} description={description} jsonLd={jsonLd}>
+  {isDraft(markdown) && <DraftNotice />}
+  <p>
+    <a href="/decisions/">Toutes les décisions</a>
+  </p>
+  <div class="pp-adr">
+    <Prose>
+      <Body />
+    </Prose>
+  </div>
+</DocsLayout>
+
+<style>
+  /* Tableaux Markdown rendus : ils tiennent dans la largeur à 320 px, les cellules se coupent. */
+  .pp-adr :global(table) {
+    max-inline-size: 100%;
+  }
+
+  .pp-adr :global(th),
+  .pp-adr :global(td) {
+    overflow-wrap: anywhere;
+  }
+</style>

@@ -1,0 +1,45 @@
+---
+import Prose from '@paulperigault/astro/Prose.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+import type { MarkdownInstance } from 'astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import { adrEntry, byId } from '../../lib/adr.ts';
+import { titleOf } from '../../lib/seo.ts';
+
+const ADRS = import.meta.glob<MarkdownInstance<Record<string, unknown>>>(
+  '../../../../../docs/adr/*.md',
+  { eager: true },
+);
+const entries = Object.entries(ADRS)
+  .map(([file, adr]) => adrEntry(file, adr.rawContent()))
+  .sort(byId);
+const JOURNAL_URL =
+  'https://github.com/PaulPerigault/design-system/blob/develop/docs/decisions-log.md';
+const DESCRIPTION =
+  'Décisions d’architecture du design system. Chaque ADR donne le contexte, la décision retenue, son statut et un résumé court.';
+---
+
+<DocsLayout title={titleOf('Décisions')} description={DESCRIPTION}>
+  <Prose>
+    <h1>Décisions</h1>
+    <p>
+      Chaque décision d’architecture est une ADR. Chaque ADR décrit un contexte et une décision. Le
+      statut indique si elle est acceptée ou seulement proposée.
+    </p>
+    <p>
+      Le journal des décisions détaille les choix ouverts, numérotés D-001 et suivants. Il est
+      publié sur <a href={JOURNAL_URL}>GitHub</a>.
+    </p>
+  </Prose>
+  <Stack space="l">
+    {entries.map((entry) => (
+      <Stack as="article" space="xs">
+        <h2>
+          <a href={entry.href}>{entry.title}</a>
+        </h2>
+        <p>Statut : {entry.status}</p>
+        <p>{entry.summary}</p>
+      </Stack>
+    ))}
+  </Stack>
+</DocsLayout>
