@@ -1,0 +1,12 @@
+/* Liens d'information du pied de page : cibles de taille minimale, espacées. */
+.docs-footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pp-space-s);
+}
+
+.docs-footer nav a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--pp-size-target-min);
+}

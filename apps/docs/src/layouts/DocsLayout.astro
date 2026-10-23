@@ -3,6 +3,7 @@ import tokens from '@paulperigault/tokens/tokens.json';
 import bodyFont from '@fontsource-variable/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-wght-normal.woff2?url';
 import MobileMenu from '../components/MobileMenu.astro';
 import '../styles/docs.css';
+import '../styles/footer.css';
 
 interface Props {
   title: string;
@@ -39,14 +40,19 @@ const { themeColor } = tokens;
         <a href="/">Accueil</a>
         <a href="/identite/">Identité</a>
         <a href="/#composants">Composants</a>
+        <a href="/recherche/">Recherche</a>
       </nav>
       <MobileMenu />
     </header>
-    <main id="contenu" class="docs-main">
+    <main id="contenu" class="docs-main" data-pagefind-body>
       <slot />
     </main>
     <footer class="docs-footer">
       <p>Design system de paulperigault.fr, licence MIT.</p>
+      <nav aria-label="Informations">
+        <a href="/glossaire/">Glossaire</a>
+        <a href="/accessibilite/">Accessibilité</a>
+      </nav>
     </footer>
   </body>
 </html>
