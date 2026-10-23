@@ -6,7 +6,7 @@
   "description": "Documentation vivante du design system (ds.paulperigault.dev).",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && pagefind --site dist",
     "check": "astro check",
     "e2e": "playwright test"
   },
@@ -21,6 +21,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.11",
     "@axe-core/playwright": "^4.14.0",
-    "@playwright/test": "^1.64.1"
+    "@playwright/test": "^1.64.1",
+    "pagefind": "1.5.2"
   }
 }
