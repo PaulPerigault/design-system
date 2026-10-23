@@ -1,0 +1,92 @@
+---
+import DraftNotice from '../components/DraftNotice.astro';
+import DocsLayout from '../layouts/DocsLayout.astro';
+---
+
+<DocsLayout
+  title="À propos de l'auteur · Design system · Paul Perigault"
+  description="Paul Périgault, DevOps et DevSecOps, auteur du design system de paulperigault.fr. Liens, méthode de travail visible dans le dépôt, contact."
+>
+  <DraftNotice />
+
+  <div class="docs-prose about">
+    <h1>À propos de l'auteur</h1>
+
+    <p>
+      Paul Périgault travaille en DevOps et DevSecOps. Il a conçu et écrit ce design system, qui
+      sert de base au site{' '}
+      <a href="https://paulperigault.fr" rel="author">
+        paulperigault.fr
+      </a>
+      .
+    </p>
+    <p>
+      Le code source est sur{' '}
+      <a href="https://github.com/PaulPerigault" rel="me">
+        GitHub
+      </a>
+      . Cette page ne donne ni formation, ni employeur, ni date : seuls les faits du dépôt sont
+      écrits.
+    </p>
+
+    <h2>Liens</h2>
+    <ul>
+      <li>
+        <a href="https://paulperigault.fr" rel="author">
+          Portfolio : paulperigault.fr
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/PaulPerigault" rel="me">
+          Dépôt GitHub : PaulPerigault
+        </a>
+      </li>
+    </ul>
+
+    <h2>Ce que le design system montre de sa façon de travailler</h2>
+    <p>Chaque point ci-dessous renvoie à un fichier du dépôt qui l'établit.</p>
+    <ul>
+      <li>
+        Les règles sont écrites une fois, dans <code>AGENTS.md</code>, puis vérifiées par la CI :
+        fichier de 120 lignes au plus, fonction de 40 lignes au plus, aucune couleur brute.
+      </li>
+      <li>
+        Les choix sont datés. Le journal <code>docs/decisions-log.md</code> note pour chaque
+        décision l'alternative écartée et le retour arrière. Les décisions plus larges sont dans
+        <code>docs/adr/</code>.
+      </li>
+      <li>
+        Les limites sont dites. La décision D-021 note qu'un plancher d'INP en CI reste inexpliqué :
+        elle le classe en « convention, pas preuve ».
+      </li>
+      <li>
+        La sécurité fait partie du produit. <code>AGENTS.md</code> interdit l'attribut
+        <code>style</code> en ligne pour tenir une CSP stricte, et la décision D-024 choisit des
+        feuilles de style en fichiers plutôt que <code>unsafe-inline</code>.
+      </li>
+      <li>
+        La livraison est encadrée. Le <code>README.md</code> du dépôt indique que les publications
+        passent par le workflow <code>release</code> (trusted publishing OIDC, provenance), jamais
+        depuis un poste.
+      </li>
+      <li>
+        Le travail délégué est borné. Selon <code>AGENTS.md</code>, une tâche liste les seuls
+        fichiers qu'un agent peut écrire, et tout autre fichier modifié la fait échouer.
+      </li>
+    </ul>
+
+    <h2>Contact</h2>
+    <p>contact : [à compléter par Paul]</p>
+  </div>
+</DocsLayout>
+
+<style>
+  .about ul {
+    list-style: disc;
+    padding-inline-start: var(--pp-space-m);
+  }
+
+  .about li + li {
+    margin-block-start: var(--pp-space-xs);
+  }
+</style>

@@ -1,0 +1,5 @@
+/* Chemins, noms de fichiers et URL longs : ils passent à la ligne au lieu de déborder
+   (WCAG 1.4.10 reflux à 320 px, 1.4.12 espacement du texte). Convention de la doc. */
+.docs-main {
+  overflow-wrap: anywhere;
+}

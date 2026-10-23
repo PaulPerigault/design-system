@@ -1,0 +1,115 @@
+---
+import Table from '@paulperigault/astro/Table.astro';
+import ArchitectureDiagram from '../components/ArchitectureDiagram.astro';
+import DraftNotice from '../components/DraftNotice.astro';
+import DocsLayout from '../layouts/DocsLayout.astro';
+
+const col = (key: string, label: string) => ({ key, label });
+const PKG_COLS = [col('paquet', 'Paquet'), col('role', 'Rôle'), col('depend', 'Dépend de')];
+const CHK_COLS = [
+  col('controle', 'Contrôle'),
+  col('verif', 'Vérification'),
+  col('fichier', 'Fichier'),
+];
+
+// Source : AGENTS.md, tableau « Paquet / Rôle / Dépend de ».
+const PACKAGES: [string, string, string][] = [
+  ['@paulperigault/tokens', 'source DTCG, couleur et contraste', 'rien à l’exécution'],
+  ['@paulperigault/css', 'base, reset, polices, @theme Tailwind v4', 'tokens'],
+  ['@paulperigault/astro', 'composants .astro, behaviors, variants()', 'css, tokens'],
+  ['@paulperigault/guards', 'contrôles de taille, couleurs, couches, images', 'rien à l’exécution'],
+  ['@paulperigault/create', 'CLI create, add, eject, diff', 'rien à l’exécution'],
+  ['@paulperigault/mcp', 'serveur MCP stdio en lecture seule', 'tokens, guards'],
+  ['apps/docs', 'documentation vivante du design system', 'tous les paquets'],
+];
+const pkgRows = PACKAGES.map(([paquet, role, depend]) => ({ paquet, role, depend }));
+
+// Source : .github/workflows/*.yml. Chaque ligne renvoie au fichier qui l’établit.
+const CHECKS: [string, string, string][] = [
+  ['Commitlint', 'Commits de la PR, puis titre et corps : Conventional Commits', 'ci.yml'],
+  ['Verify', 'npm run verify : guards, lint, format, tests, build, pack', 'ci.yml'],
+  ['E2E', 'Build puis Chromium : axe WCAG 2.2 AA, 1.4.12, 2.5.8, mouvement réduit', 'ci.yml'],
+  ['Site', 'Site généré par la CLI, installé sur les tarballs, puis verify', 'ci.yml'],
+  ['Visuel', 'Captures sur 13 projets de matrice, références non versionnées', 'visual.yml'],
+  ['CodeQL', 'Analyse JavaScript et TypeScript, à chaque push, PR et lundi', 'codeql.yml'],
+  ['Supply chain', 'Signatures npm, scripts d’installation, audit haut, SBOM', 'supply-chain.yml'],
+  ['Scorecard', 'Note OpenSSF sur main, chaque mardi ; métadonnées publiées', 'scorecard.yml'],
+];
+const chkRows = CHECKS.map(([controle, verif, fichier]) => ({ controle, verif, fichier }));
+---
+
+<DocsLayout
+  title="Architecture · Design system · Paul Perigault"
+  description="Architecture du design system : paquets et dépendances, CI, publication npm et infrastructure. Chaque fait renvoie à son fichier source."
+>
+  <div class="docs-prose">
+    <DraftNotice />
+    <h1>Architecture</h1>
+    <p>
+      Cette page décrit les paquets, leurs dépendances, la chaîne de livraison et l’infrastructure.
+      Chaque fait renvoie au fichier qui l’établit.
+    </p>
+    <h2>Paquets et sens des dépendances</h2>
+    <p>
+      Le dépôt compte six paquets npm et une application de documentation. astro dépend de css, et
+      css dépend de tokens. Un import qui remonte ce sens est une erreur (AGENTS.md).
+    </p>
+  </div>
+  <Table caption="Paquets et dépendances" columns={PKG_COLS} rows={pkgRows} rowHeader="paquet" />
+  <ArchitectureDiagram />
+
+  <div class="docs-prose">
+    <h2>Chaîne de livraison</h2>
+    <p>
+      Chaque modification passe par les workflows de <code>.github/workflows</code>. Le tableau
+      liste ce que chacun vérifie.
+    </p>
+  </div>
+  <Table caption="Contrôles CI" columns={CHK_COLS} rows={chkRows} rowHeader="controle" />
+  <div class="docs-prose">
+    <p>
+      Le job <code>ci</code> échoue si l’un des jobs requis échoue ou est annulé. Dependabot
+      fusionne automatiquement les correctifs et mineures vers develop, pas les majeures.
+    </p>
+
+    <h2>Publication</h2>
+    <p>
+      Seul le workflow <code>release.yml</code> publie. Il ne publie rien tant que la branche main
+      n’existe pas, selon son propre commentaire. Dans l’ordre :
+    </p>
+    <ul>
+      <li>release-please prépare la PR de release sur main.</li>
+      <li>Le job publish tourne dans npm-publish, avec id-token: write, sans NPM_TOKEN.</li>
+      <li>Avant publication : build, npm audit signatures, puis SBOM CycloneDX.</li>
+      <li>
+        publish-new.mjs publie les versions absentes avec provenance. Préversion : dist-tag next.
+      </li>
+    </ul>
+    <p>
+      La garde <code>prepublishOnly</code> refuse une publication hors CI.
+    </p>
+
+    <h2>Infrastructure</h2>
+    <p>
+      L’infrastructure est décrite en OpenTofu, dans la stack du portfolio et non dans ce dépôt.
+      Selon <code>docs/manual-steps.md</code>, le plan prévoit :
+    </p>
+    <ul>
+      <li>infra/github adopte le dépôt, puis crée main, les rulesets et npm-publish ;</li>
+      <li>infra/ crée le projet Pages des docs et l’enregistrement DNS ds.paulperigault.dev.</li>
+    </ul>
+    <p>
+      L’apply se fait à la main, par le propriétaire. Tant que les jetons ne couvrent pas le dépôt,
+      le job <code>tofu-plan</code> saute son plan. L’hébergeur des docs n’est pas décidé : voir
+      l’ADR-0004.
+    </p>
+
+    <h2>Choix cloud</h2>
+    <ul>
+      <li>Statique : la sortie du build est un ensemble de fichiers.</li>
+      <li>Sans serveur : la recherche Pagefind charge son index dans le navigateur.</li>
+      <li>Sans cookie : aucun cookie n’est posé par le code de apps/docs.</li>
+      <li>Hébergeur non décidé : voir l’ADR-0004.</li>
+    </ul>
+  </div>
+</DocsLayout>

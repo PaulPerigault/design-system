@@ -1,5 +1,11 @@
 # Rapport d'exécution
 
+**État au 2026-10-23, 23:55 (reprise sous Kiro).** L10 à L14 fusionnés. Lot courant `lot/L15` : sécurité
+(Dependabot, CodeQL, Scorecard, SBOM, `SECURITY.md`, en-têtes générés, adaptateurs d'hébergeurs,
+ADR-0004) et vitrine (SEO, accueil, architecture, décisions, preuves, auteur, utiliser, mentions
+légales, confidentialité, crédits). `verify` : 1464 tests ; e2e : 4354. Détail : `docs/journal/2026-10-23.md`.
+Reste : PWA, composants de niveau 2 (P3), déclaration d'accessibilité, bilan de crédits à jour.
+
 Dernière mise à jour : 2026-10-21, 10:01, après la fusion de L7. Le journal détaillé est dans
 `docs/journal/`, les décisions dans `docs/decisions-log.md`, chaque lot dans `docs/lots/`.
 
