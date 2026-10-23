@@ -47,7 +47,9 @@ export function summary(count: number, query: string): string {
 function safeExcerpt(raw: string): string {
   return raw
     .split(/(<\/?mark>)/i)
-    .map((part, index) => (index % 2 === 1 ? part.toLowerCase() : escapeHtml(unescapeHtml(part))))
+    .map((part) =>
+      /^<\/?mark>$/i.test(part) ? part.toLowerCase() : escapeHtml(unescapeHtml(part)),
+    )
     .join('');
 }
 
