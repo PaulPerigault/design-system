@@ -27,6 +27,9 @@ export async function readInp(page: Page): Promise<InpEntry> {
       buffered: true,
     } as PerformanceObserverInit);
   }, EVENT_THRESHOLD_MS);
+  // Interaction après le démarrage : le blocage du fil principal juste après le chargement
+  // relève du TBT, pas de l'INP (mesuré en CI : 212 ms d'attente, 0 de traitement, 20 de rendu).
+  await page.evaluate(() => new Promise((done) => requestIdleCallback(done, { timeout: 2000 })));
   await page.locator('.docs-menu-button').click();
   await expect(page.locator('dialog#docs-menu')).toBeVisible();
   // Les entrées `event` sont livrées après le rendu de la trame suivant l'interaction.
