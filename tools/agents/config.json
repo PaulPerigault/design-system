@@ -9,7 +9,6 @@
   "trustTools": ["read", "write", "shell"],
   "reviewTrustTools": ["read", "shell"],
   "kiro": {
-    "available": false,
-    "reason": "indisponible : crédits épuisés (quota mensuel atteint le 2026-10-21, 1000 crédits offerts non renouvelables)"
+    "available": true
   }
 }

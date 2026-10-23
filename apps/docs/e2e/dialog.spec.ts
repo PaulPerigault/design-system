@@ -88,16 +88,14 @@ for (const fallback of [false, true]) {
   });
 }
 
-test('le repli ne charge rien de plus que son script, et seulement sur ses pages', async ({
-  page,
-}) => {
+// Depuis T12.05, le menu mobile est un Dialog : chaque page porte le repli, et lui seul.
+test('le repli est le seul script de la page, un seul fichier partagé', async ({ page }) => {
   const scripts: string[] = [];
   page.on('request', (request) => {
     if (request.resourceType() === 'script') scripts.push(new URL(request.url()).pathname);
   });
   await open(page, '/components/stack/', VIEWPORTS[0]);
-  expect(scripts).toEqual([]);
   await open(page, PATH, VIEWPORTS[0]);
-  expect(scripts).toHaveLength(1);
-  expect(scripts[0]).toMatch(/^\/_astro\/.+\.js$/);
+  expect(new Set(scripts).size).toBe(1);
+  expect(scripts[0]).toMatch(/^\/_astro\/InvokerFallback.+\.js$/);
 });

@@ -60,6 +60,12 @@
   padding-block: var(--pp-space-xl);
 }
 
+/* Longueur de ligne tenue sur grand écran (docs/benchmark/gap.md, n° 19) : le texte courant ne
+   dépasse jamais la mesure ; spécificité nulle, un composant peut la redéfinir. */
+.docs-main :where(p, li, dt, dd, figcaption, blockquote) {
+  max-inline-size: var(--pp-size-measure);
+}
+
 .docs-footer {
   padding-block: var(--pp-space-l);
   border-block-start: var(--pp-size-rule) solid var(--pp-color-line);

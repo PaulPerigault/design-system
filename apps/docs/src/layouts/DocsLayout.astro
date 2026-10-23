@@ -1,5 +1,7 @@
 ---
 import tokens from '@paulperigault/tokens/tokens.json';
+import bodyFont from '@fontsource-variable/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-wght-normal.woff2?url';
+import MobileMenu from '../components/MobileMenu.astro';
 import '../styles/docs.css';
 
 interface Props {
@@ -18,6 +20,7 @@ const { themeColor } = tokens;
     <meta name="theme-color" content={themeColor.light} media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content={themeColor.dark} media="(prefers-color-scheme: dark)" />
     <title>{title}</title>
+    <link rel="preload" as="font" type="font/woff2" crossorigin href={bodyFont} />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/image/logo.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -37,6 +40,7 @@ const { themeColor } = tokens;
         <a href="/identite/">Identité</a>
         <a href="/#composants">Composants</a>
       </nav>
+      <MobileMenu />
     </header>
     <main id="contenu" class="docs-main">
       <slot />
