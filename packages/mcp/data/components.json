@@ -2470,6 +2470,7 @@
   {
     "a11y": {
       "guaranteed": [
+        "Le libellé est visible au-dessus des lignes : aucun texte masqué à l’œil.",
         "La zone est un message d’état, sans focus volé (WCAG 4.1.3).",
         "L’animation s’arrête sous prefers-reduced-motion et la ligne reste un aplat fixe.",
         "En forced-colors: active, chaque ligne reçoit une bordure CanvasText."
@@ -2508,7 +2509,7 @@
         "type": "number"
       },
       {
-        "description": "Texte lu par les lecteurs d'écran, par exemple « Chargement du contenu ».",
+        "description": "Texte visible et lu par les lecteurs d'écran, par exemple « Chargement du contenu ».",
         "fallback": "—",
         "name": "label (obligatoire)",
         "type": "string"
@@ -2519,6 +2520,7 @@
     "summary": "Skeleton affiche un emplacement de chargement en lignes, avec un libellé lu par les lecteurs d’écran.",
     "title": "Skeleton",
     "tokens": [
+      "--pp-color-fg",
       "--pp-color-line",
       "--pp-duration-base",
       "--pp-easing-standard",
