@@ -1,38 +1,62 @@
 ---
 import Separator from '@paulperigault/astro/Separator.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+
+const snippet = `<Separator />
+<Separator decorative />
+<Separator space="xl" />`;
 ---
 
-<DocsLayout title="Separator · Design system · Paul Perigault">
-  <h1>Separator</h1>
-  <p>
-    Separator rend un élément hr natif, lu comme séparateur entre deux sections ; avec decorative,
-    le filet est masqué aux technologies d’assistance (role="presentation", aria-hidden).
-  </p>
-
-  <h2>Entre deux sections</h2>
+<ComponentPage
+  slug="separator"
+  title="Separator"
+  summary="Separator rend un filet horizontal entre deux blocs de contenu, avec un espacement choisi."
+  use={[
+    'Séparer deux sections d’une même page quand le changement de sujet doit être lu.',
+    'Poser un filet purement visuel avec decorative, sans effet pour les technologies d’assistance.',
+  ]}
+  avoid={[
+    'Pour espacer deux blocs sans filet visible : utiliser les primitives de layout.',
+    'Pour nommer une section : placer un titre avant le séparateur, le composant n’a pas de libellé.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: ['Le filet n’est pas interactif : il ne prend jamais le focus.'],
+    screenReader: [
+      'Par défaut, un hr natif est lu comme séparateur.',
+      'Avec decorative, le filet est masqué (role="presentation", aria-hidden="true").',
+    ],
+    guaranteed: [
+      'Élément hr natif, sans texte en dur.',
+      'En mode contraste forcé, le filet prend la couleur CanvasText.',
+    ],
+    integrator: [
+      'Choisir decorative seulement si le filet n’apporte aucune information.',
+      'Placer un titre avant le séparateur si la section doit être nommée.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'Élément hr, spécification HTML (WHATWG)',
+      href: 'https://html.spec.whatwg.org/multipage/grouping-content.html#the-hr-element',
+    },
+    { label: 'Code source : packages/astro/src/content/Separator.astro' },
+  ]}
+>
   <div>
     <p>Fin de la première section.</p>
     <Separator />
     <p>Début de la seconde section.</p>
   </div>
-
-  <h2>Décoratif</h2>
   <div>
     <p>Filet purement visuel.</p>
     <Separator decorative />
   </div>
-
-  <h2>Espacements</h2>
-  <div>
+  <Fragment slot="variants">
     <Separator space="xs" />
     <Separator space="s" />
     <Separator space="m" />
     <Separator space="l" />
     <Separator space="xl" />
-  </div>
-
-  <h2>Propriétés</h2>
-  <PropsTable item="separator" title="Separator" />
-</DocsLayout>
+  </Fragment>
+</ComponentPage>

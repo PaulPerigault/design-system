@@ -6,7 +6,7 @@ const TEMPLATES = '/pp/templates';
 const VERSION = '4.5.6';
 const stack = { name: 'stack', files: [{ path: 'packages/astro/src/layout/Stack.astro' }] };
 const DEPS = ['@commitlint/cli', '@commitlint/config-conventional', 'astro', 'husky'];
-const PP_DEPS = ['css', 'guards', 'tokens'].map((name) => `@paulperigault/${name}`);
+const PP_DEPS = ['css', 'guards', 'mcp', 'tokens'].map((name) => `@paulperigault/${name}`);
 const versions = Object.fromEntries([...DEPS, ...PP_DEPS].map((name) => [name, '1.0.0']));
 
 /** Projet avec manifeste, paquet astro installé et gabarit, tout en mémoire. */

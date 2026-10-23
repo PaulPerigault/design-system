@@ -1,20 +1,49 @@
 ---
 import Grid from '@paulperigault/astro/Grid.astro';
 import ProjectCover from '@paulperigault/astro/ProjectCover.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
 import capture from '../../assets/media/capture.png';
 import large from '../../assets/media/large.jpg';
+
+const snippet = `<ProjectCover src={capture} alt="Capture d’interface : barre supérieure, menu latéral" layout="half" />`;
 ---
 
-<DocsLayout title="ProjectCover · Design system · Paul Perigault">
-  <h1>ProjectCover</h1>
-  <p>
-    ProjectCover est la couverture d’un projet : toujours entourée d’un filet, pour qu’une capture
-    sur fond clair ne se confonde pas avec la page.
-  </p>
-
-  <h2>Capture et image large</h2>
+<ComponentPage
+  slug="project-cover"
+  title="ProjectCover"
+  summary="ProjectCover affiche la couverture d’un projet, toujours entourée d’un filet, au ratio paysage ou large."
+  use={[
+    'Présenter une capture d’interface sur fond clair : le filet la sépare de la page.',
+    'Illustrer une fiche projet dans une Grid, en layout third ou half.',
+  ]}
+  avoid={[
+    'Pour une image sans rapport avec un projet : utiliser Photo, sans filet.',
+    'Pour un ratio carré ou portrait : le composant n’accepte que landscape ou wide.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: ['La couverture n’est pas interactive : elle ne prend pas le focus.'],
+    screenReader: [
+      'Le type exige alt ou decorative : une couverture sans texte n’est pas acceptée.',
+      'Le texte alt est lu tel quel ; il décrit l’image affichée.',
+    ],
+    guaranteed: [
+      'Filet (data-rule) autour du cadre, toujours présent.',
+      'Repli PNG pour une capture, JPEG pour une photo (test Avatar.test.ts).',
+    ],
+    integrator: [
+      'Écrire un alt qui décrit l’interface ou l’image, pas le nom du projet.',
+      'Lier la couverture à la fiche projet par un lien texte : le composant ne l’ajoute pas.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.1.1 Contenu non textuel (A)',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html',
+    },
+    { label: 'Tests : packages/astro/test/Avatar.test.ts (ProjectCover)' },
+  ]}
+>
   <Grid>
     <ProjectCover
       src={capture}
@@ -29,7 +58,4 @@ import large from '../../assets/media/large.jpg';
       layout="half"
     />
   </Grid>
-
-  <h2>Propriétés</h2>
-  <PropsTable item="project-cover" title="ProjectCover" />
-</DocsLayout>
+</ComponentPage>

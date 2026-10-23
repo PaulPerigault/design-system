@@ -1,53 +1,68 @@
 ---
-import Field from '@paulperigault/astro/Field.astro';
-import Input from '@paulperigault/astro/Input.astro';
-import { describedBy } from '@paulperigault/astro/field-ids';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+import Examples from '../../components/examples/field.astro';
 
-const hint = 'Celle que vous consultez chaque jour.';
-const error = 'Saisissez une adresse au format nom@domaine.fr.';
+const snippet = `<Field id="courriel" label="Courriel" hint="Adresse professionnelle." required requiredLabel="obligatoire">
+  <Input id="courriel" name="email" type="email" required describedBy="courriel-hint" />
+</Field>`;
 ---
 
-<DocsLayout title="Field · Design system · Paul Perigault">
-  <div class="docs-prose">
-    <h1>Field</h1>
-    <p>
-      Field rend le libellé, l’indication et l’erreur d’un contrôle natif ; le contrôle s’y relie
-      par aria-describedby et aria-invalid, calculés par describedBy de field-ids.
-    </p>
-
-    <h2>Par défaut</h2>
-    <Field id="doc-email" label="Courriel" hint={hint} required requiredLabel="obligatoire">
-      <Input
-        id="doc-email"
-        name="email"
-        type="email"
-        required
-        autocomplete="email"
-        describedBy={describedBy({ id: 'doc-email', hint })}
-      />
-    </Field>
-
-    <h2>Erreur</h2>
-    <Field id="doc-email-error" label="Courriel" hint={hint} error={error} errorLabel="Erreur :">
-      <Input
-        id="doc-email-error"
-        name="email"
-        type="email"
-        value="paul"
-        autocomplete="email"
-        invalid={true}
-        describedBy={describedBy({ id: 'doc-email-error', hint, error })}
-      />
-    </Field>
-
-    <h2>Désactivé</h2>
-    <Field id="doc-email-disabled" label="Courriel">
-      <Input id="doc-email-disabled" name="email" type="email" disabled />
-    </Field>
-
-    <h2>Propriétés</h2>
-    <PropsTable item="field" title="Field" />
-  </div>
-</DocsLayout>
+<ComponentPage
+  slug="field"
+  title="Field"
+  summary="Field rend le libellé, l’indication et l’erreur d’un contrôle, et les relie au contrôle par son identifiant."
+  use={[
+    'Donner un libellé visible et une indication à un champ de formulaire.',
+    'Afficher une erreur sous un champ, avec errorLabel pour le préfixe.',
+    'Marquer un champ obligatoire avec requiredLabel, texte visible accolé au libellé.',
+  ]}
+  avoid={[
+    'Pour un contrôle sans libellé visible : Field exige la prop label.',
+    'Pour une erreur qui concerne tout le formulaire : Field relie le message à un seul contrôle.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Le champ n’ajoute aucun arrêt de tabulation : seul le contrôle enveloppé reçoit le focus.',
+      'Le libellé est lié par for : un clic sur le libellé place le focus dans le champ.',
+    ],
+    screenReader: [
+      'Le libellé nomme le contrôle, et la mention obligatoire fait partie du même libellé.',
+      'L’indication et l’erreur sont lues avec le champ, quand l’intégrateur pose aria-describedby.',
+      'L’erreur n’est pas une région aria-live : elle n’est pas annoncée à son apparition.',
+    ],
+    guaranteed: [
+      'Libellé relié par for et id ; identifiants <id>-hint et <id>-error (Field.test.ts).',
+      'Icône d’erreur décorative : aria-hidden="true" et focusable="false" (Field.test.ts).',
+      'Erreur signalée par le texte et l’icône, jamais par la seule couleur (Field.astro).',
+    ],
+    integrator: [
+      'Poser le même id sur Field et sur le contrôle, puis aria-describedby et aria-invalid.',
+      'Fournir requiredLabel et errorLabel traduits : le composant n’embarque aucun texte.',
+      'Rédiger l’erreur avec la correction attendue, pas seulement « Champ invalide ».',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.3.1 Information et relations (Info and Relationships)',
+      href: 'https://www.w3.org/WCAG22/Understanding/info-and-relationships.html',
+    },
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur (Use of Color)',
+      href: 'https://www.w3.org/WCAG22/Understanding/use-of-color.html',
+    },
+    {
+      label: 'WCAG 3.3.1 Identification des erreurs (Error Identification)',
+      href: 'https://www.w3.org/WCAG22/Understanding/error-identification.html',
+    },
+    {
+      label: 'WCAG 3.3.2 Étiquettes ou instructions (Labels or Instructions)',
+      href: 'https://www.w3.org/WCAG22/Understanding/labels-or-instructions.html',
+    },
+    {
+      label: 'Tests : packages/astro/test/Field.test.ts ; apps/docs/e2e/forms.spec.ts',
+    },
+  ]}
+>
+  <Examples />
+</ComponentPage>

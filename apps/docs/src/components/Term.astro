@@ -1,0 +1,20 @@
+---
+/**
+ * Lien vers une entrée du glossaire. Un identifiant inconnu fait échouer le build.
+ * Usage : <Term id="oklch">OKLCH</Term>
+ */
+import { GLOSSARY } from '../lib/glossary';
+
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+if (!GLOSSARY.some((entry) => entry.id === id)) {
+  throw new Error(`Terme de glossaire introuvable : ${id}`);
+}
+---
+
+<a href={`/glossaire/#${id}`}>
+  <slot />
+</a>

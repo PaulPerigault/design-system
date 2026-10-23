@@ -1,0 +1,19 @@
+---
+import Stack from '@paulperigault/astro/Stack.astro';
+import Switch from '@paulperigault/astro/Switch.astro';
+---
+
+<Stack space="m">
+  <h3>Défaut</h3>
+  <Switch id="demo-default" name="demo-default" label="Recevoir les alertes" />
+  <h3>Erreur</h3>
+  <Switch
+    id="demo-error"
+    name="demo-error"
+    label="Accepter les conditions"
+    describedBy="demo-error-message"
+  />
+  <p id="demo-error-message">Ce réglage est obligatoire pour continuer.</p>
+  <h3>Désactivé</h3>
+  <Switch id="demo-disabled" name="demo-disabled" label="Mode hors ligne" checked disabled />
+</Stack>

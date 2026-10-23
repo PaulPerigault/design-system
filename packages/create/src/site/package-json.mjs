@@ -5,6 +5,7 @@ const DEV_DEPENDENCIES = [
   '@commitlint/cli',
   '@commitlint/config-conventional',
   '@paulperigault/guards',
+  '@paulperigault/mcp',
   'husky',
 ];
 const SCRIPTS = {

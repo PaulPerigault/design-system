@@ -1,0 +1,45 @@
+/* Gabarit ComponentPage : tokens uniquement, propriétés logiques. */
+.pp-component-page h2 {
+  margin-block-start: var(--pp-space-xl);
+}
+
+.pp-component-page h3 {
+  margin-block-start: var(--pp-space-m);
+}
+
+.pp-component-page :where(h2, h3) + * {
+  margin-block-start: var(--pp-space-xs);
+}
+
+.pp-component-page ul:not(.pp-component-page__tokens) {
+  list-style: disc;
+  padding-inline-start: var(--pp-space-m);
+}
+
+.pp-component-page__examples {
+  padding: var(--pp-space-s);
+  border: var(--pp-size-rule) solid var(--pp-color-line);
+  border-radius: var(--pp-radius-control);
+}
+
+.pp-component-page__snippet {
+  margin-block-start: var(--pp-space-s);
+  padding: var(--pp-space-s);
+  max-inline-size: 100%;
+  overflow: auto;
+  border: var(--pp-size-rule) solid var(--pp-color-line);
+  border-radius: var(--pp-radius-control);
+}
+
+.pp-component-page__tokens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pp-space-xs);
+  list-style: none;
+  padding: 0;
+}
+
+/* Mots longs (jetons, identifiants) : coupés plutôt que de faire défiler la page (1.4.10, 1.4.12). */
+.pp-component-page :where(li, p, td) {
+  overflow-wrap: anywhere;
+}

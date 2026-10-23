@@ -1,0 +1,16 @@
+---
+import Switcher from '@paulperigault/astro/Switcher.astro';
+---
+
+<h3>Seuil par défaut (measure)</h3>
+<Switcher>
+  <p>Premier bloc.</p>
+  <p>Deuxième bloc.</p>
+  <p>Troisième bloc.</p>
+</Switcher>
+
+<h3>Seuil page, espacement large</h3>
+<Switcher threshold="page" space="l" as="section">
+  <p>Premier bloc.</p>
+  <p>Deuxième bloc.</p>
+</Switcher>

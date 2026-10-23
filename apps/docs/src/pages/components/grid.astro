@@ -1,31 +1,73 @@
 ---
 import Grid from '@paulperigault/astro/Grid.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+
+const snippet = `<Grid as="ul" min="narrow" space="l">
+  <li>Premier élément</li>
+  <li>Deuxième élément</li>
+</Grid>`;
 ---
 
-<DocsLayout title="Grid · Design system · Paul Perigault">
-  <h1>Grid</h1>
-  <p>
-    Grid répartit ses enfants en colonnes de largeur minimale donnée : le nombre de colonnes
-    s’adapte à la place disponible, sans media query.
-  </p>
-
-  <h2>Largeur minimale par défaut</h2>
+<ComponentPage
+  slug="grid"
+  title="Grid"
+  summary="Grid répartit ses enfants en colonnes de largeur minimale donnée, sans media query : le nombre de colonnes suit la place."
+  use={[
+    'Présenter des cartes ou des blocs de même importance dont le nombre varie avec la largeur.',
+    'Remplacer des media queries qui ne servent qu’à changer le nombre de colonnes.',
+  ]}
+  avoid={[
+    'Pour deux zones de tailles différentes : utiliser Sidebar.',
+    'Pour des blocs qui se lisent en colonne, dans un ordre strict : utiliser Stack.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: ['Le composant ne réordonne pas les enfants : l’ordre de tabulation suit le DOM.'],
+    screenReader: [
+      'Avec as="ul", la liste reste lue comme liste : les puces ne sont pas retirées.',
+      'Le composant n’ajoute ni rôle ni libellé.',
+    ],
+    guaranteed: [
+      'Colonnes en repeat(auto-fit, minmax(…, 1fr)), sans media query.',
+      'Enfants directs avec min-inline-size: 0, pour que les colonnes puissent rétrécir.',
+    ],
+    integrator: [
+      'Tester la largeur minimale sur mobile : une colonne trop étroite coupe le texte.',
+      'Vérifier le zoom à 400 % sur les blocs de la grille.',
+    ],
+  }}
+  evidence={[
+    {
+      label:
+        'WCAG 1.3.2 Ordre de lecture significatif (niveau A) : ordre visuel égal à l’ordre du DOM.',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html',
+    },
+    {
+      label: 'WCAG 1.4.10 Reflow (niveau AA) : test sur chaque page construite.',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/reflow.html',
+    },
+    {
+      label:
+        'Tests : packages/astro/test/Grid.test.ts, apps/docs/e2e/layout.spec.ts (display grid)',
+    },
+    { label: 'Code source : packages/astro/src/layout/Grid.astro' },
+  ]}
+>
   <Grid as="ul">
     <li>Premier élément</li>
     <li>Deuxième élément</li>
     <li>Troisième élément</li>
   </Grid>
-
-  <h2>Colonnes étroites, espacement large</h2>
   <Grid as="section" min="narrow" space="l">
     <p>Premier bloc.</p>
     <p>Deuxième bloc.</p>
     <p>Troisième bloc.</p>
     <p>Quatrième bloc.</p>
   </Grid>
-
-  <h2>Propriétés</h2>
-  <PropsTable item="grid" title="Grid" />
-</DocsLayout>
+  <Fragment slot="variants">
+    <Grid min="wide" space="s">
+      <p>Largeur large, premier bloc.</p>
+      <p>Largeur large, deuxième bloc.</p>
+    </Grid>
+  </Fragment>
+</ComponentPage>

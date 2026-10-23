@@ -1,13 +1,18 @@
 ---
 import Accordion from '@paulperigault/astro/Accordion.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+import AccordionExamples from '../../components/examples/accordion.astro';
 
+const snippet = `---
 const items = [
-  { id: 'native', summary: 'Quel élément HTML est utilisé ?', open: true },
-  { id: 'keyboard', summary: 'Comment l’utiliser au clavier ?' },
-  { id: 'motion', summary: 'Quand l’ouverture est-elle animée ?' },
+  { id: 'one', summary: 'Premier panneau', open: true },
+  { id: 'two', summary: 'Deuxième panneau' },
 ];
+---
+<Accordion items={items} exclusive>
+  <p slot="one">Contenu du premier panneau.</p>
+  <p slot="two">Contenu du deuxième panneau.</p>
+</Accordion>`;
 
 const exclusiveItems = [
   { id: 'one', summary: 'Premier panneau', open: true },
@@ -15,34 +20,56 @@ const exclusiveItems = [
 ];
 ---
 
-<DocsLayout title="Accordion · Design system · Paul Perigault">
-  <h1>Accordion</h1>
-  <p>
-    Accordion empile des éléments <code>details</code> et <code>summary</code> natifs. Il ne charge
-    aucun JavaScript : le navigateur gère l’état, le clavier et l’annonce aux lecteurs d’écran.
-  </p>
-
-  <h2>Panneaux indépendants</h2>
-  <Accordion items={items}>
-    <p slot="native">
-      Un <code>details</code> par panneau, avec un <code>summary</code> pour titre.
-    </p>
-    <p slot="keyboard">Tab atteint le titre, Entrée ou Espace ouvre et ferme le panneau.</p>
-    <p slot="motion">
-      Sous <code>prefers-reduced-motion: no-preference</code>, si le navigateur gère
-      <code>interpolate-size</code>.
-    </p>
-  </Accordion>
-
-  <h2>Un seul panneau ouvert</h2>
-  <Accordion items={exclusiveItems} exclusive>
-    <p slot="one">Ouvrir un autre panneau referme celui-ci.</p>
-    <p slot="two">
-      L’attribut <code>name</code> est pris en charge depuis 2024 (Baseline). Sans support, les
-      panneaux restent indépendants.
-    </p>
-  </Accordion>
-
-  <h2>Propriétés</h2>
-  <PropsTable item="accordion" title="Accordion" />
-</DocsLayout>
+<ComponentPage
+  slug="accordion"
+  title="Accordion"
+  summary="Accordion groupe des sections repliables, construites sur les éléments natifs details et summary."
+  use={[
+    'Replier des questions fréquentes ou des sections longues d’une même page.',
+    'Limiter l’ouverture à un panneau à la fois avec exclusive, quand les sections s’excluent.',
+  ]}
+  avoid={[
+    'Pour une navigation entre pages : utiliser une liste de liens.',
+    'Pour des contenus à comparer : garder les sections ouvertes (préférence).',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Tab donne le focus à chaque titre, dans l’ordre du document.',
+      'Entrée ou Espace ouvre et ferme le panneau du titre actif.',
+    ],
+    screenReader: [
+      'L’état replié ou déplié vient de details, sans attribut ajouté.',
+      'Le chevron est masqué (aria-hidden="true") : le titre seul porte le nom.',
+    ],
+    guaranteed: [
+      'Zéro JavaScript : l’état vient du navigateur.',
+      'Le marqueur natif est masqué ; un contour de focus visible entoure le titre.',
+      'L’ouverture n’est animée que sous prefers-reduced-motion: no-preference.',
+    ],
+    integrator: [
+      'Donner des id uniques dans un accordéon : ils servent de slots et de nom de groupe.',
+      'Garder un titre clair : il est le seul libellé du panneau.',
+      'Pour exclusive, prévoir le repli : sans name, les panneaux restent indépendants.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 2.4.7 Focus visible',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html',
+    },
+    {
+      label: 'WCAG 4.1.2 Nom, rôle, valeur',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html',
+    },
+    { label: 'Tests : packages/astro/test/Accordion.test.ts' },
+  ]}
+>
+  <AccordionExamples />
+  <Fragment slot="variants">
+    <Accordion items={exclusiveItems} exclusive>
+      <p slot="one">Ouvrir un autre panneau referme celui-ci.</p>
+      <p slot="two">Sans support de name, les panneaux restent indépendants.</p>
+    </Accordion>
+  </Fragment>
+</ComponentPage>

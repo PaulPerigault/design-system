@@ -1,37 +1,62 @@
 ---
 import Status from '@paulperigault/astro/Status.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+import StatusExamples from '../../components/examples/status.astro';
+
+const snippet = `<Status state="passed" label="Réussi" />
+<Status state="failed" label="Échec" />
+<Status state="degraded" label="Dégradé" />
+<Status state="running" label="En cours" />
+<Status state="passed" label="3f9c2ab" mono />`;
 ---
 
-<DocsLayout title="Status · Design system · Paul Perigault">
-  <h1>Status</h1>
-  <p>
-    Status indique l’état d’un pipeline par un libellé écrit et une icône de forme propre à chaque
-    état. La couleur renforce l’icône ; elle ne porte jamais l’information seule.
-  </p>
-
-  <h2>Les quatre états</h2>
-  <ul role="list">
-    <li>
-      <Status state="passed" label="Réussi" />
-    </li>
-    <li>
-      <Status state="failed" label="Échec" />
-    </li>
-    <li>
-      <Status state="degraded" label="Dégradé" />
-    </li>
-    <li>
-      <Status state="running" label="En cours" />
-    </li>
-  </ul>
-
-  <h2>Identifiant en police mono</h2>
-  <p>
+<ComponentPage
+  slug="status"
+  title="Status"
+  summary="Status affiche l’état d’un pipeline par un libellé écrit et une icône de forme propre à l’état."
+  use={[
+    'Afficher le résultat d’un build, d’un test ou d’un déploiement, sur une ligne.',
+    'Afficher un identifiant court, comme une empreinte de commit, avec mono.',
+  ]}
+  avoid={[
+    'Pour une progression chiffrée : utiliser Progress, qui porte une valeur.',
+    'Pour un message d’erreur détaillé : Status ne porte qu’un état et un libellé court.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Le composant est statique : il ne reçoit pas le focus.',
+      'Aucune touche n’est gérée par le composant.',
+    ],
+    screenReader: [
+      'Le libellé est le texte lu ; l’icône est masquée (aria-hidden="true").',
+      'Aucun rôle n’est posé : le contenu est lu comme du texte ordinaire.',
+    ],
+    guaranteed: [
+      'L’état est écrit en clair et porté par une forme d’icône distincte pour chaque état.',
+      'La couleur ne colore que l’icône ; le texte garde la couleur de premier plan.',
+      'En forced-colors: active, l’icône prend la couleur CanvasText.',
+    ],
+    integrator: [
+      'Fournir un libellé court qui décrit l’état, dans la langue du site.',
+      'Ne pas ajouter de couleur seule à côté du composant pour transmettre l’état.',
+      'Poser role="status" autour des mises à jour à annoncer : le composant ne le fait pas.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.1.1 Contenu non textuel',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html',
+    },
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html',
+    },
+    { label: 'Tests : packages/astro/test/Status.test.ts' },
+  ]}
+>
+  <StatusExamples />
+  <Fragment slot="variants">
     <Status state="passed" label="3f9c2ab" mono />
-  </p>
-
-  <h2>Propriétés</h2>
-  <PropsTable item="status" title="Status" />
-</DocsLayout>
+  </Fragment>
+</ComponentPage>

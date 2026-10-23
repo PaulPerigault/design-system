@@ -1,42 +1,69 @@
 ---
-import Button from '../../../../../packages/astro/src/forms/Button.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+import Examples from '../../components/examples/button.astro';
+
+const snippet = `<Button type="submit">Envoyer</Button>
+<Button tone="secondary">Annuler</Button>
+<Button href="/">Retour à l’accueil</Button>`;
 ---
 
-<DocsLayout title="Button · Design system · Paul Perigault">
-  <h1>Button</h1>
-  <p>
-    Button rend un bouton natif, ou un lien si href est fourni : un bouton déclenche une action, un
-    lien mène à une adresse. Le libellé vient du contenu du composant.
-  </p>
-
-  <h2>Défaut</h2>
-  <p>
-    <Button type="submit">Envoyer</Button>
-    <Button tone="secondary">Annuler</Button>
-    <Button tone="quiet">Plus tard</Button>
-    <Button href="/">Retour à l’accueil</Button>
-  </p>
-
-  <h2>Erreur</h2>
-  <p id="button-erreur" role="alert">
-    L’envoi a échoué. Vérifiez la connexion puis réessayez.
-  </p>
-  <p>
-    <Button tone="secondary" type="submit">
-      Réessayer
-    </Button>
-  </p>
-
-  <h2>Désactivé</h2>
-  <p>
-    <Button disabled>Envoyer</Button>
-    <Button href="/" disabled>
-      Lien désactivé
-    </Button>
-  </p>
-
-  <h2>Propriétés</h2>
-  <PropsTable item="button" title="Button" />
-</DocsLayout>
+<ComponentPage
+  slug="button"
+  title="Button"
+  summary="Button rend un bouton natif, ou un lien stylé en bouton quand href est fourni."
+  use={[
+    'Déclencher une action de la page, comme envoyer un formulaire.',
+    'Naviguer vers une adresse avec href : le composant rend alors un lien a.',
+    'Poser une seule action principale par vue, avec tone="primary" (règle de la doc du composant).',
+  ]}
+  avoid={[
+    'Pour une simple navigation sans style de bouton : un lien natif suffit.',
+    'Pour choisir une option parmi plusieurs : utiliser Choice ou Select, pas plusieurs boutons.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Un bouton natif reçoit le focus avec Tab et s’active avec Entrée ou Espace.',
+      'Un lien avec href s’active avec Entrée. Le focus visible vient de base.css.',
+      'Un bouton désactivé, ou un lien désactivé sans href, ne reçoit pas le focus.',
+    ],
+    screenReader: [
+      'Le nom accessible vient du contenu du slot : aucun libellé n’est écrit en dur.',
+      'Un bouton désactivé porte l’état natif disabled, exposé aux technologies d’assistance.',
+      'Un lien désactivé porte role="link" et aria-disabled="true".',
+    ],
+    guaranteed: [
+      'type vaut button par défaut, sans soumission de formulaire involontaire (Button.test.ts).',
+      'Cible minimale par tokens ; .pp-button ≥ 44 px (targets.spec.ts, forms.spec.ts).',
+      'En mode contraste forcé, le ton primary garde une bordure ButtonText (Button.astro).',
+    ],
+    integrator: [
+      'Donner un libellé qui décrit l’action seul : « Envoyer », pas « Cliquer ici ».',
+      'Choisir href pour une navigation, et un bouton pour une action.',
+      'Vérifier le contraste des tons dans le thème utilisé : le composant ne le mesure pas.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 2.4.7 Focus visible (Focus Visible)',
+      href: 'https://www.w3.org/WCAG22/Understanding/focus-visible.html',
+    },
+    {
+      label: 'WCAG 2.5.5 Taille de la cible (AAA) : 44 px pour les contrôles principaux',
+      href: 'https://www.w3.org/WCAG22/Understanding/target-size-enhanced.html',
+    },
+    {
+      label: 'WCAG 2.5.8 Taille de la cible (minimum) : 24 px avec espacement',
+      href: 'https://www.w3.org/WCAG22/Understanding/target-size-minimum.html',
+    },
+    {
+      label: 'WCAG 4.1.2 Nom, rôle, valeur (Name, Role, Value)',
+      href: 'https://www.w3.org/WCAG22/Understanding/name-role-value.html',
+    },
+    {
+      label: 'Tests : packages/astro/test/Button.test.ts ; apps/docs/e2e/forms.spec.ts',
+    },
+  ]}
+>
+  <Examples />
+</ComponentPage>

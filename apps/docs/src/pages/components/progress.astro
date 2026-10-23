@@ -1,23 +1,61 @@
 ---
 import Progress from '@paulperigault/astro/Progress.astro';
-import Stack from '@paulperigault/astro/Stack.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+import ProgressExamples from '../../components/examples/progress.astro';
+
+const snippet = `<Progress id="upload" label="Envoi du fichier" value={3} max={5} valueText="3 sur 5" />
+<Progress id="archive" label="Préparation de l’archive" />
+<Progress id="disk" kind="meter" label="Espace disque utilisé" value={0.9} low={0.5} high={0.8} optimum={0.2} valueText="90 %" />`;
 ---
 
-<DocsLayout title="Progress · Design system · Paul Perigault">
-  <h1>Progress</h1>
-  <p>
-    Progress rend un élément natif : progress pour un avancement, meter pour une mesure dans une
-    plage connue. Le libellé est relié par label for, la valeur s’affiche en texte : elle ne dépend
-    jamais de la couleur seule.
-  </p>
-  <Stack space="m">
-    <h2>Avancement</h2>
-    <Progress id="demo-progress" label="Envoi du fichier" value={3} max={5} valueText="3 sur 5" />
-    <h2>Indéterminé</h2>
-    <Progress id="demo-indeterminate" label="Préparation de l’archive" />
-    <h2>Mesure</h2>
+<ComponentPage
+  slug="progress"
+  title="Progress"
+  summary="Progress affiche l’avancement d’une tâche, ou une mesure dans une plage connue, par un élément natif."
+  use={[
+    'Suivre un envoi ou un traitement dont la fin est connue : value et max.',
+    'Afficher une mesure dans une plage connue, avec kind="meter" et ses seuils.',
+  ]}
+  avoid={[
+    'Pour l’issue d’une tâche, réussie ou en échec : utiliser Status, la barre ne la porte pas.',
+    'Pour une valeur sans maximum connu : afficher un texte, une barre suggère une fin.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Le composant n’est pas interactif : il ne reçoit jamais le focus.',
+      'Aucune touche n’est gérée par le composant.',
+    ],
+    screenReader: [
+      'Le libellé visible nomme la barre, relié par label for.',
+      'valueText est relié à la barre par aria-describedby.',
+      'Sans value, la barre est indéterminée et n’expose aucune valeur.',
+    ],
+    guaranteed: [
+      'Élément progress ou meter natif, sans rôle ajouté.',
+      'Aucun script ; la valeur est écrite en texte, jamais par la couleur seule.',
+      'Sous prefers-reduced-motion: reduce, l’animation de la barre indéterminée est retirée.',
+    ],
+    integrator: [
+      'Fournir un libellé visible et court : il nomme la barre.',
+      'Mettre à jour value à chaque changement : le composant n’annonce pas les changements.',
+      'Ajouter valueText quand la valeur compte, par exemple « 3 sur 5 ».',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html',
+    },
+    {
+      label: 'WCAG 4.1.2 Nom, rôle, valeur',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html',
+    },
+    { label: 'Tests : packages/astro/test/Progress.test.ts' },
+  ]}
+>
+  <ProgressExamples />
+  <Fragment slot="variants">
     <Progress
       id="demo-meter"
       kind="meter"
@@ -28,7 +66,5 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
       optimum={0.2}
       valueText="90 %"
     />
-    <h2>Propriétés</h2>
-    <PropsTable item="progress" title="Progress" />
-  </Stack>
-</DocsLayout>
+  </Fragment>
+</ComponentPage>

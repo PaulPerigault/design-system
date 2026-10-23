@@ -1,0 +1,86 @@
+---
+import Alert from '@paulperigault/astro/Alert.astro';
+import Table from '@paulperigault/astro/Table.astro';
+import DocsLayout from '../layouts/DocsLayout.astro';
+
+const DEFENSEUR_URL = 'https://formulaire.defenseurdesdroits.fr';
+// [choix, statut, fichier e2e qui le prouve]
+const CHOICES: [string, string, string][] = [
+  ['WCAG 2.2 niveau AA, contrôlé par axe', 'Testé', 'matrix/axe.spec.ts'],
+  ['Thèmes clair et sombre', 'Testé', 'matrix/axe.spec.ts'],
+  ['Cibles tactiles d’au moins 24 px (2.5.8)', 'Testé', 'matrix/targets.spec.ts'],
+  ['Contrôles principaux d’au moins 44 px (2.5.5, AAA)', 'Testé', 'matrix/targets.spec.ts'],
+  ['Focus visible, non masqué, apparence (2.4.7, 2.4.11, 2.4.13)', 'Testé', 'matrix/focus.spec.ts'],
+  ['Reflow à 320 px et texte à 200 % (1.4.10, 1.4.4)', 'Testé', 'reflow.spec.ts'],
+  ['Espacement du texte modifiable (1.4.12)', 'Testé', 'matrix/text-spacing.spec.ts'],
+  ['Zoom jamais bloqué (balise viewport)', 'Testé', 'matrix/layout.spec.ts'],
+  ['Mouvement réduit respecté (2.3.3, AAA)', 'Testé', 'motion.spec.ts'],
+  ['Contraste renforcé de 7:1 (1.4.6, AAA)', 'Convention', 'aucun test de page'],
+  ['Zéro JavaScript par défaut', 'Convention', 'forms.spec.ts, sans JavaScript'],
+];
+const COLUMNS = [
+  { key: 'choix', label: 'Choix' },
+  { key: 'statut', label: 'Statut' },
+  { key: 'preuve', label: 'Preuve' },
+];
+const ROWS = CHOICES.map(([choix, statut, preuve]) => ({ choix, statut, preuve }));
+---
+
+<DocsLayout title="Accessibilité · Design system · Paul Perigault">
+  <div class="docs-prose">
+    <Alert tone="degraded" toneLabel="Brouillon à relire par Paul">
+      <p>Ce texte n’a pas encore été relu. Le champ de contact reste à compléter.</p>
+    </Alert>
+    <h1>Accessibilité</h1>
+    <p>
+      Cette page décrit ce que le design system vise, ce qui est testé et où en est la conformité.
+    </p>
+
+    <h2>Nos choix</h2>
+    <p>
+      La cible est WCAG 2.2 niveau AA, plus quatre critères AAA retenus : 2.5.5 Taille de la cible,
+      2.4.13 Apparence du focus, 1.4.6 Contraste (renforcé) et 2.3.3 Animations déclenchées par
+      interaction. Les fichiers cités sont dans apps/docs/e2e.
+    </p>
+  </div>
+
+  <Table
+    caption="Choix d’accessibilité et preuves"
+    columns={COLUMNS}
+    rows={ROWS}
+    rowHeader="choix"
+  />
+
+  <div class="docs-prose">
+    <h2>Déclaration d’accessibilité</h2>
+
+    <h3>État de conformité</h3>
+    <p>État de conformité : partiellement conforme (auto-évaluation).</p>
+    <p>Taux de conformité : à établir après audit manuel.</p>
+    <p>
+      Le taux RGAA 4.1 n’est pas calculé. Seuls les contrôles automatisés ont été menés : axe et
+      tests de bout en bout sur 13 configurations d’appareils. Il n’y a pas eu d’audit manuel
+      complet, ni de test avec lecteur d’écran. La procédure est décrite dans
+      <code>docs/a11y/manual-checklist.md</code>.
+    </p>
+
+    <h3>Contenus non accessibles</h3>
+    <p>Aucune liste de contenus non accessibles n’a été établie, faute d’audit manuel complet.</p>
+
+    <h3>Établissement de la déclaration</h3>
+    <p>
+      Date de l’auto-évaluation : 23 octobre 2026. Elle repose sur les contrôles automatisés
+      ci-dessus. Les critères qui ne se testent pas automatiquement n’ont pas été évalués.
+    </p>
+
+    <h3>Retour d’information et contact</h3>
+    <p>Pour signaler un problème d’accessibilité, écrivez au contact ci-dessous.</p>
+    <p>contact : [à compléter par Paul]</p>
+
+    <h3>Voies de recours</h3>
+    <p>
+      Si la réponse ne vous satisfait pas, saisissez le Défenseur des droits à l’adresse
+      <a href={DEFENSEUR_URL}>formulaire en ligne du Défenseur des droits</a>.
+    </p>
+  </div>
+</DocsLayout>

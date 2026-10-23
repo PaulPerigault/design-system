@@ -1,0 +1,34 @@
+---
+import Photo from '@paulperigault/astro/Photo.astro';
+import capture from '../../assets/media/capture.png';
+import carre from '../../assets/media/carre.jpg';
+import paysage from '../../assets/media/paysage.jpg';
+import portrait from '../../assets/media/portrait.jpg';
+---
+
+<h3>Image principale</h3>
+<Photo
+  src={paysage}
+  alt="Composition géométrique : soleil orange au-dessus de bandes grise et bleue sur fond encre"
+  priority
+/>
+
+<h3>Portrait recadré en haut</h3>
+<Photo
+  src={portrait}
+  alt="Composition géométrique : rectangle bleu clair au-dessus d’une bande grise"
+  ratio="portrait"
+  focal="top"
+  layout="half"
+/>
+
+<h3>Décorative</h3>
+<Photo src={carre} decorative ratio="square" layout="third" />
+
+<h3>Capture avec filet</h3>
+<Photo
+  src={capture}
+  alt="Capture d’interface : barre supérieure, menu latéral, titre, bloc de contenu et bouton"
+  kind="capture"
+  rule
+/>

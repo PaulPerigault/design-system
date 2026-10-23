@@ -4,8 +4,7 @@ import tokens from '@paulperigault/tokens/tokens.json';
 import Photo from '@paulperigault/astro/Photo.astro';
 import Scrim from '@paulperigault/astro/Scrim.astro';
 import { worstCaseContrast } from '@paulperigault/astro/scrim';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
 import paysage from '../../assets/media/paysage.jpg';
 
 const base: Record<string, string> = tokens.base;
@@ -15,16 +14,52 @@ const worst = worstCaseContrast({
   opacity: Number(base['--pp-media-scrim-opacity']),
   text: rgb('--pp-media-scrim-text'),
 }).toLocaleString('fr-FR', { maximumFractionDigits: 1 });
+
+const snippet = `<Scrim place="end">
+  <Photo slot="media" src={photo} decorative ratio="landscape" />
+  <p>Titre sur l’image</p>
+</Scrim>`;
 ---
 
-<DocsLayout title="Scrim · Design system · Paul Perigault">
-  <h1>Scrim</h1>
-  <p>
-    Scrim pose le texte sur un voile uni semi-opaque : quelle que soit l’image dessous, le contraste
-    du texte vaut au moins {worst}:1, valeur calculée au build depuis les tokens.
-  </p>
-
-  <h2>Texte en bas de l’image</h2>
+<ComponentPage
+  slug="scrim"
+  title="Scrim"
+  summary={`Scrim pose le texte sur un voile uni semi-opaque : contraste d’au moins ${worst}:1 sur toute image.`}
+  use={[
+    'Poser un titre ou une légende sur une photo, quelle que soit l’image dessous.',
+    'Placer le texte en bas (place="end") ou en haut (place="start") de l’image.',
+  ]}
+  avoid={[
+    'Pour un texte qui n’a pas besoin de l’image : placer le texte hors du média.',
+    'Pour un dégradé ou une ombre : le composant n’en produit pas, le voile est uni.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Le composant ne prend pas le focus ; les liens ou boutons du texte gardent le leur.',
+    ],
+    screenReader: [
+      'Le média du slot media suit son alt ; avec decorative, il est masqué.',
+      'Le texte est lu après le média, dans l’ordre du document.',
+    ],
+    guaranteed: [
+      'Voile color-mix sur les tokens --pp-media-scrim-color, -opacity et -text.',
+      'Aucun dégradé, flou ni ombre ; zéro JavaScript ; aucun style en ligne.',
+    ],
+    integrator: [
+      'Le contrôle vaut pour le pire cas : il ne dispense pas de tester la photo réelle.',
+      'Mettre le média dans le slot media et le texte dans le slot par défaut.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.4.3 Contraste (minimum) (AA)',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html',
+    },
+    { label: 'Calcul du contraste : packages/astro/src/media/scrim.ts' },
+    { label: 'Tests : packages/astro/test/Scrim.test.ts' },
+  ]}
+>
   <Scrim>
     <Photo slot="media" src={paysage} decorative ratio="landscape" />
     <p>
@@ -32,7 +67,4 @@ const worst = worstCaseContrast({
     </p>
     <p>Voile uni, sans dégradé ni flou.</p>
   </Scrim>
-
-  <h2>Propriétés</h2>
-  <PropsTable item="scrim" title="Scrim" />
-</DocsLayout>
+</ComponentPage>

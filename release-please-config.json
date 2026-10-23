@@ -49,6 +49,10 @@
     "packages/create": {
       "component": "create",
       "package-name": "@paulperigault/create"
+    },
+    "packages/mcp": {
+      "component": "mcp",
+      "package-name": "@paulperigault/mcp"
     }
   }
 }
