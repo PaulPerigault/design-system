@@ -51,6 +51,7 @@ export const GROUPS: readonly DocGroup[] = [
       link('progress', 'Progress'),
       link('dialog', 'Dialog'),
       link('status', 'Status'),
+      link('skeleton', 'Skeleton'),
     ],
   },
   {
@@ -63,7 +64,16 @@ export const GROUPS: readonly DocGroup[] = [
       link('breadcrumb', 'Breadcrumb'),
       link('prose', 'Prose'),
       link('diff', 'Diff'),
+      link('empty-state', 'EmptyState'),
+      link('stat', 'Stat'),
+      link('timeline', 'Timeline'),
+      link('card', 'Card'),
     ],
+  },
+  {
+    id: 'navigation',
+    title: 'Navigation',
+    links: [link('pagination', 'Pagination')],
   },
   {
     id: 'images',
