@@ -1,0 +1,29 @@
+---
+import Button from '@paulperigault/astro/Button.astro';
+---
+
+<h3>Défaut</h3>
+<p>
+  <Button type="submit">Envoyer</Button>
+  <Button tone="secondary">Annuler</Button>
+  <Button tone="quiet">Plus tard</Button>
+  <Button href="/">Retour à l’accueil</Button>
+</p>
+
+<h3>Erreur</h3>
+<p id="button-erreur" role="alert">
+  L’envoi a échoué. Vérifiez la connexion puis réessayez.
+</p>
+<p>
+  <Button tone="secondary" type="submit">
+    Réessayer
+  </Button>
+</p>
+
+<h3>Désactivé</h3>
+<p>
+  <Button disabled>Envoyer</Button>
+  <Button href="/" disabled>
+    Lien désactivé
+  </Button>
+</p>

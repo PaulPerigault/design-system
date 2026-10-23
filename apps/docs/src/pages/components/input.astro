@@ -1,38 +1,69 @@
 ---
-import Input from '@paulperigault/astro/Input.astro';
-import Stack from '@paulperigault/astro/Stack.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+import Examples from '../../components/examples/input.astro';
+
+const snippet = `<label for="courriel">Adresse e-mail</label>
+<Input id="courriel" name="courriel" type="email" autocomplete="email" invalid describedBy="courriel-message" />
+<p id="courriel-message">Il manque le domaine après l’arobase.</p>`;
 ---
 
-<DocsLayout title="Input · Design system · Paul Perigault">
-  <h1>Input</h1>
-  <p>
-    Input est un champ de saisie natif. Chaque champ a besoin d’un label relié par son identifiant :
-    le placeholder ne remplace pas le libellé.
-  </p>
-  <Stack space="l">
-    <div>
-      <label for="exemple-defaut">Nom</label>
-      <Input id="exemple-defaut" name="nom" autocomplete="name" />
-    </div>
-    <div>
-      <label for="exemple-erreur">Adresse e-mail</label>
-      <Input
-        id="exemple-erreur"
-        name="courriel"
-        type="email"
-        value="ada@"
-        invalid
-        describedBy="exemple-erreur-message"
-      />
-      <p id="exemple-erreur-message">Il manque le domaine après l’arobase.</p>
-    </div>
-    <div>
-      <label for="exemple-desactive">Référence</label>
-      <Input id="exemple-desactive" name="reference" value="PP-001" disabled />
-    </div>
-  </Stack>
-  <h2>Propriétés</h2>
-  <PropsTable item="input" title="Input" />
-</DocsLayout>
+<ComponentPage
+  slug="input"
+  title="Input"
+  summary="Input est un champ de saisie natif sur une ligne, relié à son libellé par son identifiant."
+  use={[
+    'Saisir une donnée courte : nom, courriel, téléphone ou recherche.',
+    'Indiquer type et autocomplete pour le bon clavier et le remplissage automatique.',
+    'Signaler une erreur sur le champ, avec invalid et describedBy.',
+  ]}
+  avoid={[
+    'Pour plusieurs lignes de texte : utiliser Textarea.',
+    'Pour une liste de valeurs limitée : utiliser Select.',
+    'Pour remplacer le libellé par un placeholder : un placeholder n’est pas un libellé.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Champ natif : Tab l’atteint, et la saisie reste gérée par le navigateur.',
+      'Le focus visible vient de base.css, par :focus-visible.',
+    ],
+    screenReader: [
+      'Le nom vient du label for : le placeholder ne sert jamais de nom.',
+      'invalid pose aria-invalid="true", annoncé par les lecteurs d’écran (Input.astro).',
+      'describedBy relie le message d’erreur ; l’intégrateur fournit l’identifiant.',
+    ],
+    guaranteed: [
+      'id, name, type, autocomplete, inputmode et enterkeyhint transmis tels quels (Input.test.ts).',
+      'Aucun texte en dur : le composant n’écrit ni libellé ni message.',
+      'Hauteur minimale au plus grand de control-height et target-min (forms.spec.ts).',
+    ],
+    integrator: [
+      'Relier chaque champ à un label par for.',
+      'Choisir autocomplete selon la donnée saisie : WCAG 1.3.5 demande un jeton exact.',
+      'Relier le message d’erreur par describedBy, et poser invalid quand la saisie est fausse.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.3.5 Identifier l’objet de la saisie (Identify Input Purpose)',
+      href: 'https://www.w3.org/WCAG22/Understanding/identify-input-purpose.html',
+    },
+    {
+      label: 'WCAG 2.5.8 Taille de la cible (minimum) : 24 px avec espacement',
+      href: 'https://www.w3.org/WCAG22/Understanding/target-size-minimum.html',
+    },
+    {
+      label: 'WCAG 3.3.2 Étiquettes ou instructions (Labels or Instructions)',
+      href: 'https://www.w3.org/WCAG22/Understanding/labels-or-instructions.html',
+    },
+    {
+      label: 'WCAG 4.1.2 Nom, rôle, valeur (Name, Role, Value)',
+      href: 'https://www.w3.org/WCAG22/Understanding/name-role-value.html',
+    },
+    {
+      label: 'Tests : packages/astro/test/Input.test.ts ; apps/docs/e2e/forms.spec.ts',
+    },
+  ]}
+>
+  <Examples />
+</ComponentPage>

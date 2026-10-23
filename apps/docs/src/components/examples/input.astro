@@ -1,0 +1,27 @@
+---
+import Input from '@paulperigault/astro/Input.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+---
+
+<Stack space="l">
+  <div>
+    <label for="exemple-defaut">Nom</label>
+    <Input id="exemple-defaut" name="nom" autocomplete="name" />
+  </div>
+  <div>
+    <label for="exemple-erreur">Adresse e-mail</label>
+    <Input
+      id="exemple-erreur"
+      name="courriel"
+      type="email"
+      value="ada@"
+      invalid
+      describedBy="exemple-erreur-message"
+    />
+    <p id="exemple-erreur-message">Il manque le domaine après l’arobase.</p>
+  </div>
+  <div>
+    <label for="exemple-desactive">Référence</label>
+    <Input id="exemple-desactive" name="reference" value="PP-001" disabled />
+  </div>
+</Stack>

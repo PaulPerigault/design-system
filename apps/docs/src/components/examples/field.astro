@@ -1,0 +1,38 @@
+---
+import Field from '@paulperigault/astro/Field.astro';
+import Input from '@paulperigault/astro/Input.astro';
+import { describedBy } from '@paulperigault/astro/field-ids';
+
+const hint = 'Celle que vous consultez chaque jour.';
+const error = 'Saisissez une adresse au format nom@domaine.fr.';
+---
+
+<h3>Par défaut</h3>
+<Field id="doc-email" label="Courriel" hint={hint} required requiredLabel="obligatoire">
+  <Input
+    id="doc-email"
+    name="email"
+    type="email"
+    required
+    autocomplete="email"
+    describedBy={describedBy({ id: 'doc-email', hint })}
+  />
+</Field>
+
+<h3>Erreur</h3>
+<Field id="doc-email-error" label="Courriel" hint={hint} error={error} errorLabel="Erreur :">
+  <Input
+    id="doc-email-error"
+    name="email"
+    type="email"
+    value="paul"
+    autocomplete="email"
+    invalid={true}
+    describedBy={describedBy({ id: 'doc-email-error', hint, error })}
+  />
+</Field>
+
+<h3>Désactivé</h3>
+<Field id="doc-email-disabled" label="Courriel">
+  <Input id="doc-email-disabled" name="email" type="email" disabled />
+</Field>
