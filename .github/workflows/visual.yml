@@ -1,8 +1,8 @@
 name: Visuel
 
 # Régression visuelle (gap.md n° 20). Les captures dépendent du système : références générées
-# sur le runner, mises en cache par appareil, jamais versionnées. Premier passage sur `develop` :
-# création des références ; ensuite et sur les PR : comparaison seule (échec si écart).
+# sur le runner, mises en cache par appareil, jamais versionnées. Références manquantes : créées ;
+# références présentes : comparaison (échec si écart).
 
 on:
   pull_request:
@@ -59,10 +59,9 @@ jobs:
         env:
           PP_VISUAL: '1'
           PROJECT: ${{ matrix.project }}
-          SNAPSHOTS: ${{ github.event_name == 'pull_request' && 'none' || 'missing' }}
         run: >
           npx playwright test -c apps/docs/playwright.config.ts
-          --project="$PROJECT" visual.spec.ts --update-snapshots="$SNAPSHOTS"
+          --project="$PROJECT" visual.spec.ts --update-snapshots=missing
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: failure()
         with:
