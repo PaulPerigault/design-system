@@ -1,30 +1,60 @@
 ---
-import Stack from '@paulperigault/astro/Stack.astro';
-import Switch from '../../../../../packages/astro/src/forms/Switch.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+import SwitchExamples from '../../components/examples/switch.astro';
+
+const snippet = `<Switch id="alerts" name="alerts" label="Recevoir les alertes" />`;
 ---
 
-<DocsLayout title="Switch · Design system · Paul Perigault">
-  <h1>Switch</h1>
-  <p>
-    Switch est une case à cocher native avec le rôle switch : l’état est porté par le navigateur,
-    sans JavaScript, et se lit à la position du curseur autant qu’à la couleur.
-  </p>
-  <Stack space="m">
-    <h2>Défaut</h2>
-    <Switch id="demo-default" name="demo-default" label="Recevoir les alertes" />
-    <h2>Erreur</h2>
-    <Switch
-      id="demo-error"
-      name="demo-error"
-      label="Accepter les conditions"
-      describedBy="demo-error-message"
-    />
-    <p id="demo-error-message">Ce réglage est obligatoire pour continuer.</p>
-    <h2>Désactivé</h2>
-    <Switch id="demo-disabled" name="demo-disabled" label="Mode hors ligne" checked disabled />
-    <h2>Propriétés</h2>
-    <PropsTable item="switch" title="Switch" />
-  </Stack>
-</DocsLayout>
+<ComponentPage
+  slug="switch"
+  title="Switch"
+  summary="Switch rend un interrupteur natif activé ou désactivé, sans JavaScript, avec un libellé visible."
+  use={[
+    'Activer ou désactiver un réglage qui prend effet directement, comme la réception des alertes.',
+    'Afficher un état initial activé avec checked, ou figé avec disabled.',
+  ]}
+  avoid={[
+    'Pour une case parmi plusieurs options à cocher : utiliser Choice de type checkbox.',
+    'Pour une action qui se lance au clic : utiliser Button.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Tab atteint l’interrupteur ; Espace bascule son état.',
+      'Un interrupteur désactivé est sauté par Tab.',
+    ],
+    screenReader: [
+      'Le rôle switch annonce le contrôle comme interrupteur, activé ou désactivé.',
+      'Le libellé relié par for et id donne le nom accessible.',
+    ],
+    guaranteed: [
+      'Case à cocher native avec role="switch" ; l’état checked est porté par le navigateur.',
+      'L’état se lit à la position du curseur, pas seulement à la couleur.',
+      'Les transitions sont désactivées avec prefers-reduced-motion.',
+    ],
+    integrator: [
+      'Donner un libellé qui dit ce que l’interrupteur active, via la prop label.',
+      'Relier un message d’aide ou d’erreur par describedBy.',
+      'Garder le libellé visible : le composant ne le masque pas.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur, niveau A',
+      href: 'https://www.w3.org/TR/WCAG22/#use-of-color',
+    },
+    {
+      label: 'WCAG 4.1.2 Nom, rôle, valeur, niveau A',
+      href: 'https://www.w3.org/TR/WCAG22/#name-role-value',
+    },
+    {
+      label: 'WCAG 2.3.3 Animation déclenchée par interaction, niveau AAA',
+      href: 'https://www.w3.org/TR/WCAG22/#animation-from-interactions',
+    },
+    { label: 'WCAG 2.4.7 Focus visible, niveau AA : apps/docs/e2e/forms.spec.ts' },
+    { label: 'WCAG 2.5.8 Taille de la cible (minimum), niveau AA : apps/docs/e2e/forms.spec.ts' },
+    { label: 'Code source : packages/astro/src/forms/Switch.astro' },
+  ]}
+>
+  <SwitchExamples />
+</ComponentPage>

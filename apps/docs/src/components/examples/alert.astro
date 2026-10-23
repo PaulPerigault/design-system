@@ -1,0 +1,25 @@
+---
+import Alert from '@paulperigault/astro/Alert.astro';
+---
+
+<h3>Tons</h3>
+<Alert tone="info" toneLabel="Information" title="Nouvelle version">
+  <p>La version 2 des tokens est disponible.</p>
+</Alert>
+<Alert tone="passed" toneLabel="Réussi">
+  <p>Tous les contrôles sont passés.</p>
+</Alert>
+<Alert tone="degraded" toneLabel="Dégradé" title="Build lent">
+  <p>La documentation a mis plus de temps que d’habitude à se construire.</p>
+</Alert>
+<Alert tone="failed" toneLabel="Échec" title="Contrôle de taille">
+  <p>Un fichier dépasse 120 lignes.</p>
+</Alert>
+
+<h3>Messages dynamiques</h3>
+<p>
+  Sans <code>live</code>, aucun rôle n’est posé : le message est lu dans le flux. Réservez
+  <code>live</code> aux messages insérés après le chargement : <code>polite</code> donne
+  <code>role="status"</code>, <code>assertive</code> donne <code>role="alert"</code>, qui interrompt
+  la lecture.
+</p>

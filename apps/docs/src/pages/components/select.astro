@@ -1,52 +1,62 @@
 ---
-import Select from '@paulperigault/astro/Select.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+import SelectExamples from '../../components/examples/select.astro';
 
-const pays = [
-  { value: 'fr', label: 'France' },
-  { value: 'be', label: 'Belgique' },
-  { value: 'ch', label: 'Suisse' },
-  { value: 'ca', label: 'Canada', disabled: true },
-];
+const snippet = `<label for="pays">Pays</label>
+<Select id="pays" name="pays" options={[{ value: 'fr', label: 'France' }]} placeholder="Choisir un pays" />`;
 ---
 
-<DocsLayout title="Select · Design system · Paul Perigault">
-  <h1>Select</h1>
-  <p>
-    Select rend un élément select natif : clavier, lecteurs d’écran et sélecteurs mobiles restent
-    ceux du navigateur, et le libellé vient d’un label associé par son id.
-  </p>
-
-  <h2>Par défaut</h2>
-  <label for="select-pays">Pays</label>
-  <Select
-    id="select-pays"
-    name="pays"
-    options={pays}
-    placeholder="Choisir un pays"
-    required
-    describedBy="select-pays-aide"
-  />
-  <p id="select-pays-aide">Le Canada n’est pas encore proposé.</p>
-
-  <h2>Erreur</h2>
-  <label for="select-pays-erreur">Pays</label>
-  <Select
-    id="select-pays-erreur"
-    name="pays-erreur"
-    options={pays}
-    placeholder="Choisir un pays"
-    required
-    invalid
-    describedBy="select-pays-erreur-texte"
-  />
-  <p id="select-pays-erreur-texte">Erreur : choisissez un pays.</p>
-
-  <h2>Désactivé</h2>
-  <label for="select-pays-off">Pays</label>
-  <Select id="select-pays-off" name="pays-off" options={pays} value="fr" disabled />
-
-  <h2>Propriétés</h2>
-  <PropsTable item="select" title="Select" />
-</DocsLayout>
+<ComponentPage
+  slug="select"
+  title="Select"
+  summary="Select rend une liste déroulante native, avec option vide, états d’erreur et de désactivation."
+  use={[
+    'Choisir une valeur dans une liste fermée et courte, comme un pays.',
+    'Afficher une option vide à choisir avec placeholder quand aucune valeur n’est pré-remplie.',
+  ]}
+  avoid={[
+    'Pour un choix multiple : Select n’accepte pas multiple, utiliser des Choice de type checkbox.',
+    'Pour deux ou trois options visibles à la fois : préférence pour un groupe de Choice radio.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Tab place le focus sur la liste ; les flèches et la frappe restent natives.',
+      'Le placeholder est une option désactivée : il ne peut pas être choisi.',
+    ],
+    screenReader: [
+      'Le nom du champ vient du label relié par for et id.',
+      'Avec invalid, le champ est annoncé invalide et le message de describedBy est lu.',
+    ],
+    guaranteed: [
+      'Élément select natif, sans JavaScript ; le chevron est masqué (aria-hidden).',
+      'L’erreur passe aussi par une bordure plus épaisse, en plus de la couleur.',
+      'Les options marquées disabled ne peuvent pas être choisies.',
+    ],
+    integrator: [
+      'Fournir un label dont for est égal à id : le composant n’écrit aucun libellé.',
+      'Ne pas faire du placeholder le seul libellé du champ.',
+      'Écrire le message d’erreur et le référencer par describedBy quand invalid est posé.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.3.1 Information et relations, niveau A',
+      href: 'https://www.w3.org/TR/WCAG22/#info-and-relationships',
+    },
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur, niveau A',
+      href: 'https://www.w3.org/TR/WCAG22/#use-of-color',
+    },
+    {
+      label: 'WCAG 4.1.2 Nom, rôle, valeur, niveau A',
+      href: 'https://www.w3.org/TR/WCAG22/#name-role-value',
+    },
+    { label: 'WCAG 2.4.7 Focus visible, niveau AA : apps/docs/e2e/forms.spec.ts' },
+    { label: 'WCAG 2.5.8 Taille de la cible (minimum), niveau AA : apps/docs/e2e/forms.spec.ts' },
+    { label: 'WCAG 3.3.1 Identification des erreurs, niveau A : apps/docs/e2e/forms.spec.ts' },
+    { label: 'Code source : packages/astro/src/forms/Select.astro' },
+  ]}
+>
+  <SelectExamples />
+</ComponentPage>

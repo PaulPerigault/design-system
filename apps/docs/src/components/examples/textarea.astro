@@ -1,0 +1,16 @@
+---
+import Textarea from '@paulperigault/astro/Textarea.astro';
+---
+
+<h3>Par défaut</h3>
+<label for="demo-defaut">Message</label>
+<Textarea id="demo-defaut" name="demo-defaut" />
+
+<h3>Erreur</h3>
+<label for="demo-erreur">Message</label>
+<Textarea id="demo-erreur" name="demo-erreur" required invalid describedBy="demo-erreur-aide" />
+<p id="demo-erreur-aide">Le message est obligatoire.</p>
+
+<h3>Désactivé</h3>
+<label for="demo-desactive">Message</label>
+<Textarea id="demo-desactive" name="demo-desactive" disabled value="Saisie indisponible." />
