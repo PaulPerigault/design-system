@@ -28,3 +28,4 @@ apps/docs/.visual/
 .agents/lead.pid
 .agents/lead-queue.md
 .agents/routing-log.jsonl
+apps/docs/deploy/

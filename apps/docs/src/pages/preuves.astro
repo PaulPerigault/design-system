@@ -1,0 +1,101 @@
+---
+import Table from '@paulperigault/astro/Table.astro';
+import raw from '../data/proofs.json';
+import DocsLayout from '../layouts/DocsLayout.astro';
+import { formatCount as n, formatDate, loadProofs } from '../lib/proofs.ts';
+
+const proofs = loadProofs(raw);
+const { tests, accessibility: a11y, performance: perf, security } = proofs;
+
+const COLUMNS = [
+  { key: 'element', label: 'Élément' },
+  { key: 'valeur', label: 'Valeur' },
+  { key: 'statut', label: 'Statut' },
+  { key: 'source', label: 'Fichier ou commande' },
+];
+const MEASURED = 'mesuré';
+const CONVENTION = 'convention';
+const row = (element: string, valeur: string, statut: string, source: string) => ({
+  element,
+  valeur,
+  statut,
+  source,
+});
+
+const SPLIT = Object.entries(a11y.contrastMinimums)
+  .map(([minimum, count]) => `${n(count)} à ${minimum.replace('.', ',')}`)
+  .join(', ');
+const CONTRAST = 'packages/tokens/test/contrast-matrix.test.mjs';
+const PERF = 'apps/docs/e2e/perf.spec.ts';
+const CSP = 'apps/docs/e2e/csp.spec.ts';
+
+const SECTIONS = [
+  {
+    title: 'Tests',
+    rows: [
+      row('Tests unitaires', n(tests.unit), MEASURED, 'npm run verify (Vitest)'),
+      row('Tests de bout en bout', n(tests.e2e), MEASURED, 'npm run e2e (Playwright)'),
+      row('Appareils', n(tests.devices), CONVENTION, 'apps/docs/e2e/devices.ts'),
+      row('Thèmes', `${n(tests.themes)} (clair et sombre)`, CONVENTION, 'apps/docs/e2e/helpers.ts'),
+    ],
+  },
+  {
+    title: 'Accessibilité',
+    rows: [
+      row('Cible', a11y.target, CONVENTION, 'apps/docs/e2e/matrix/axe.spec.ts'),
+      row('Violations axe', n(a11y.axeViolations), MEASURED, 'apps/docs/e2e/matrix/axe.spec.ts'),
+      row('Paires de contraste vérifiées', n(a11y.contrastPairs), MEASURED, CONTRAST),
+      row('Répartition par seuil', SPLIT, MEASURED, CONTRAST),
+    ],
+  },
+  {
+    title: 'Performance',
+    rows: [
+      row('LCP, au plus', `${n(perf.budgets.lcpMs)} ms`, MEASURED, PERF),
+      row('INP, au plus', `${n(perf.budgets.inpMs)} ms. ${perf.note}`, MEASURED, PERF),
+      row('CLS, au plus', n(perf.budgets.cls), MEASURED, PERF),
+      row('JavaScript gzip, au plus', `${n(perf.budgets.scriptGzipBytes)} octets`, MEASURED, PERF),
+      row('Profil de mesure', perf.profile, CONVENTION, PERF),
+    ],
+  },
+  {
+    title: 'Sécurité',
+    rows: [
+      row('CSP', security.csp, MEASURED, CSP),
+      row('Signatures', security.auditSignatures, MEASURED, '.github/workflows/supply-chain.yml'),
+      row(
+        'Scripts d’installation',
+        security.installScripts,
+        MEASURED,
+        'tools/checks/check-install-scripts.mjs',
+      ),
+      row('Ressources tierces à l’exécution', n(security.thirdPartyAtRuntime), MEASURED, CSP),
+    ],
+  },
+];
+---
+
+<DocsLayout
+  title="Preuves · Design system · Paul Perigault"
+  description="Chiffres mesurés sur le dépôt du design system : tests, accessibilité, performance et sécurité, avec la date, la source et le fichier de test."
+>
+  <div class="docs-prose">
+    <h1>Preuves</h1>
+    <p>
+      Mesuré le {formatDate(proofs.measuredOn)}. Source : {proofs.source}.
+    </p>
+    <p>
+      Ce sont des contrôles de ce dépôt, pas un audit externe. Une ligne « mesuré » a un test qui
+      échoue si la valeur est dépassée. Une ligne « convention » est un choix, sans seuil testé.
+    </p>
+  </div>
+
+  {SECTIONS.map((section) => (
+    <>
+      <div class="docs-prose">
+        <h2>{section.title}</h2>
+      </div>
+      <Table caption={section.title} columns={COLUMNS} rows={section.rows} rowHeader="element" />
+    </>
+  ))}
+</DocsLayout>

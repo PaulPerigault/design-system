@@ -1,0 +1,23 @@
+{
+  "measuredOn": "2026-10-23",
+  "source": "npm run verify, npm run e2e et workflows CI du dépôt",
+  "tests": { "unit": 1331, "e2e": 3197, "devices": 13, "themes": 2 },
+  "content": { "pages": 36, "components": 31, "registryItems": 32, "glossaryTerms": 30 },
+  "accessibility": {
+    "target": "WCAG 2.2 AA, plus 2.5.5, 2.4.13, 1.4.6 et 2.3.3 (AAA)",
+    "axeViolations": 0,
+    "contrastPairs": 19,
+    "contrastMinimums": { "7:1": 2, "4.5:1": 13, "3:1": 4 }
+  },
+  "performance": {
+    "budgets": { "lcpMs": 2500, "inpMs": 200, "cls": 0.1, "scriptGzipBytes": 1024 },
+    "profile": "360 × 800, CPU ralenti ×4, réseau Slow 4G",
+    "note": "L'INP est mesuré et rapporté en CI, bloquant en local (D-021)."
+  },
+  "security": {
+    "csp": "default-src 'none', sans unsafe-inline ni unsafe-eval",
+    "auditSignatures": "204 paquets avec attestations vérifiées",
+    "installScripts": "liste blanche d'un paquet (fsevents, optionnel)",
+    "thirdPartyAtRuntime": 0
+  }
+}

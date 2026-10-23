@@ -1,5 +1,8 @@
 # Design system @paulperigault
 
+[![CI](https://github.com/PaulPerigault/design-system/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/PaulPerigault/design-system/actions/workflows/ci.yml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/PaulPerigault/design-system/badge)](https://scorecard.dev/viewer/?uri=github.com/PaulPerigault/design-system)
+
 Design system de [paulperigault.fr](https://paulperigault.fr) : tokens, CSS, composants Astro accessibles, garde-fous de conception et CLI, publiés sur npmjs sous le scope `@paulperigault`.
 
 | Paquet                  | Rôle                                                                                       |
@@ -9,6 +12,7 @@ Design system de [paulperigault.fr](https://paulperigault.fr) : tokens, CSS, com
 | `@paulperigault/astro`  | composants `.astro` publiés en source                                                      |
 | `@paulperigault/guards` | contrôles de conception et config ESLint                                                   |
 | `@paulperigault/create` | CLI `create`, `add`, `eject`, `diff`                                                       |
+| `@paulperigault/mcp`    | serveur MCP (stdio, lecture seule) du design system                                        |
 
 Documentation vivante : `apps/docs` (ds.paulperigault.dev).
 
@@ -19,6 +23,10 @@ Node 24, npm 11. Installation avec `npm ci`, vérification complète avec `npm r
 ## Statut
 
 En construction : versions `0.x`, rien n'est encore publié. Les publications passent uniquement par le workflow `release` (trusted publishing OIDC, provenance), jamais depuis un poste.
+
+## Sécurité
+
+Signalement et mesures en place : [SECURITY.md](SECURITY.md).
 
 ## Licence
 

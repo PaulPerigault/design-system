@@ -1,0 +1,51 @@
+---
+import DraftNotice from '../components/DraftNotice.astro';
+import DocsLayout from '../layouts/DocsLayout.astro';
+---
+
+<DocsLayout
+  title="Confidentialité · Design system · Paul Perigault"
+  description="Données personnelles du site : aucun cookie, aucune mesure d'audience, aucune ressource tierce, journaux de l'hébergeur, droits RGPD."
+>
+  <div class="docs-prose">
+    <DraftNotice />
+    <h1>Confidentialité</h1>
+
+    <h2>Ce que le site fait</h2>
+    <p>Le site ne pose aucun cookie. Il ne lit ni n’écrit de stockage local du navigateur.</p>
+    <p>
+      Il ne contient aucune mesure d’audience et aucun traceur. Aucune ressource n’est chargée
+      depuis une autre origine : polices, images, scripts et connexions sont limités au site
+      lui-même.
+    </p>
+    <p>
+      La politique de sécurité est dans <code>apps/docs/scripts/headers/policy.mjs</code>. Le test{' '}
+      <code>apps/docs/e2e/csp.spec.ts</code> vérifie qu’elle ne subit aucune violation sur chaque
+      page.
+    </p>
+
+    <h2>Ce que voit l’hébergeur</h2>
+    <p>
+      À chaque requête, l’hébergeur reçoit l’adresse IP de l’appareil et la conserve dans ses
+      journaux. Durée de conservation : à compléter selon l’hébergeur.
+    </p>
+
+    <h2>Mesure d’audience</h2>
+    <p>Aucune mesure d’audience n’est en place.</p>
+    <p>
+      Si une mesure est ajoutée, elle sera une solution exemptée de consentement selon la CNIL. Ce
+      choix sera documenté par une ADR dans <code>docs/adr/</code>.
+    </p>
+
+    <h2>Vos droits</h2>
+    <p>
+      Vous pouvez demander l’accès, la rectification, l’effacement, la limitation et la portabilité
+      de vos données, et vous opposer à leur traitement (RGPD, articles 15 à 21).
+    </p>
+    <p>
+      Pour exercer ces droits, écrivez au contact indiqué sur la page{' '}
+      <a href="/mentions-legales/">Mentions légales</a>. Vous pouvez aussi saisir la CNIL, sur{' '}
+      <a href="https://www.cnil.fr">cnil.fr</a>.
+    </p>
+  </div>
+</DocsLayout>
