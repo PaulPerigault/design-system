@@ -1,0 +1,114 @@
+---
+import Alert from '@paulperigault/astro/Alert.astro';
+import DocsLayout from '../layouts/DocsLayout.astro';
+
+const CREATE = `npm create @paulperigault mon-site
+cd mon-site
+git init
+npm install
+npm run dev`;
+const ADD = `npx @paulperigault/create add stack
+npx @paulperigault/create eject stack
+npx @paulperigault/create diff stack`;
+const TOKENS = `@import '@paulperigault/tokens/tokens.css';`;
+const COMPONENT = `import Stack from '@paulperigault/astro/Stack.astro';`;
+const GUARDS = `npx pp-guards all`;
+const MCP = `{
+  "mcpServers": {
+    "paulperigault-ds": {
+      "command": "npx",
+      "args": ["-y", "@paulperigault/mcp"]
+    }
+  }
+}`;
+const SELF_TEST = `npx -y @paulperigault/mcp --self-test`;
+---
+
+<DocsLayout
+  title="Utiliser le design system · Design system · Paul Perigault"
+  description="Installer le design system @paulperigault : créer un site, importer les jetons et composants, lancer les gardes, brancher le serveur MCP et le registre."
+>
+  <div class="docs-prose usage">
+    <h1>Utiliser le design system</h1>
+
+    <Alert tone="info" toneLabel="Information">
+      <p>
+        Les paquets ne sont pas encore publiés sur npmjs. Le <code>README.md</code> du dépôt les
+        déclare « en construction » en version <code>0.x</code>. Les commandes ci-dessous
+        fonctionneront après la première publication.
+      </p>
+    </Alert>
+
+    <h2>Créer un site</h2>
+    <p>
+      La commande <code>create</code> génère un site Astro qui consomme le design system, avec les
+      gardes, un hook de commit et un workflow CI.
+    </p>
+    <pre tabindex="0"><code>{CREATE}</code></pre>
+
+    <h2>Ajouter, éjecter, comparer un composant</h2>
+    <p>
+      <code>add</code> déclare <code>@paulperigault/astro</code> et affiche l'import à écrire.
+      <code>eject</code> copie les sources dans le projet et les inscrit dans
+      <code>pp-ds.lock.json</code>. <code>diff</code> compare la copie au paquet installé.
+    </p>
+    <pre tabindex="0"><code>{ADD}</code></pre>
+    <p>
+      Chaque commande accepte <code>--dry-run</code> pour lister les écritures sans les faire.
+    </p>
+
+    <h2>Importer les jetons</h2>
+    <p>
+      Dans une feuille de style, les jetons <code>--pp-*</code> viennent d'un seul fichier.
+    </p>
+    <pre tabindex="0"><code>{TOKENS}</code></pre>
+
+    <h2>Importer les composants</h2>
+    <p>Les composants sont publiés en source. Chaque export correspond à un fichier.</p>
+    <pre tabindex="0"><code>{COMPONENT}</code></pre>
+
+    <h2>Contrôler avec les gardes</h2>
+    <p>
+      <code>@paulperigault/guards</code> vérifie la taille des fichiers, les couleurs, les couches
+      CSS, les jetons et les images. La commande <code>all</code> les lance tous. Elle sort avec le
+      code 1 si elle trouve un problème.
+    </p>
+    <pre tabindex="0"><code>{GUARDS}</code></pre>
+
+    <h2>Brancher le serveur MCP</h2>
+    <p>
+      Le serveur donne à un assistant les fiches des composants, les jetons et un calcul de
+      contraste. Il est en lecture seule et ne se connecte à aucun réseau. Il demande Node 24.
+    </p>
+    <p>
+      Claude Code : fichier <code>.mcp.json</code> à la racine du projet.
+    </p>
+    <pre tabindex="0"><code>{MCP}</code></pre>
+    <p>
+      Kiro lit <code>.kiro/settings/mcp.json</code> et Cursor lit <code>.cursor/mcp.json</code>,
+      avec le même bloc. Kiro accepte aussi <code>"disabled": false</code>. Pour vérifier le paquet
+      :
+    </p>
+    <pre tabindex="0"><code>{SELF_TEST}</code></pre>
+
+    <h2>Registre et llms.txt</h2>
+    <p>
+      Le registre des composants est servi sur <a href="/r/registry.json">/r/registry.json</a>. Le
+      fichier <a href="/llms.txt">/llms.txt</a> résume le site pour un modèle de langage.
+    </p>
+  </div>
+</DocsLayout>
+
+<style>
+  .usage pre {
+    padding: var(--pp-space-s);
+    max-inline-size: 100%;
+    overflow: auto;
+    border: var(--pp-size-rule) solid var(--pp-color-line);
+    border-radius: var(--pp-radius-control);
+  }
+
+  .usage :where(p, li) {
+    overflow-wrap: anywhere;
+  }
+</style>
