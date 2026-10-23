@@ -1,28 +1,60 @@
 ---
 import Avatar from '@paulperigault/astro/Avatar.astro';
 import Cluster from '@paulperigault/astro/Cluster.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
 import carre from '../../assets/media/carre.jpg';
 
 const sizes = ['s', 'm', 'l'] as const;
+const snippet = `<Avatar src={portrait} decorative size="m" />`;
 ---
 
-<DocsLayout title="Avatar · Design system · Paul Perigault">
-  <h1>Avatar</h1>
-  <p>
-    Avatar affiche une image carrée au rayon des médias, recadrée en haut ; à côté d’un nom affiché,
-    elle est décorative pour que le nom ne soit pas lu deux fois.
-  </p>
-
-  <h2>Trois tailles, à côté d’un nom</h2>
-  {sizes.map((size) => (
-    <Cluster space="s" align="center">
-      <Avatar src={carre} decorative size={size} />
-      <span>Camille Martin, taille {size}</span>
-    </Cluster>
-  ))}
-
-  <h2>Propriétés</h2>
-  <PropsTable item="avatar" title="Avatar" />
-</DocsLayout>
+<ComponentPage
+  slug="avatar"
+  title="Avatar"
+  summary="Avatar affiche une image carrée au rayon des médias, recadrée en haut, pour accompagner un nom."
+  use={[
+    'Accompagner un nom affiché : l’avatar est alors decorative, le nom est lu seul.',
+    'Afficher une image de profil en trois tailles, s, m ou l, par data-size.',
+  ]}
+  avoid={[
+    'Pour une image qui porte seule une information : utiliser Photo avec un alt.',
+    'Pour un sujet placé hors du haut de l’image : le cadrage est fixé en haut.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: ['Avatar n’est pas interactif : il ne prend pas le focus.'],
+    screenReader: [
+      'Avec decorative, l’image a alt="" et est ignorée des lecteurs d’écran.',
+      'Le nom affiché à côté est lu seul, sans doublon.',
+    ],
+    guaranteed: [
+      'Image rendue par Photo, dans picture, avec alt ou alt vide.',
+      'Cadre carré au rayon média, taille par data-size (s, m, l), focal en haut.',
+    ],
+    integrator: [
+      'Écrire un alt si l’image est seule, sans nom à côté.',
+      'Importer l’image localement : Photo n’affiche que des images locales.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.1.1 Contenu non textuel (A)',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html',
+    },
+    { label: 'Tests : packages/astro/test/Avatar.test.ts' },
+    { label: 'Tests : packages/astro/test/Photo.test.ts' },
+  ]}
+>
+  <Cluster space="s" align="center">
+    <Avatar src={carre} decorative size="m" />
+    <span>Camille Martin</span>
+  </Cluster>
+  <Fragment slot="variants">
+    {sizes.map((size) => (
+      <Cluster space="s" align="center">
+        <Avatar src={carre} decorative size={size} />
+        <span>Camille Martin, taille {size}</span>
+      </Cluster>
+    ))}
+  </Fragment>
+</ComponentPage>

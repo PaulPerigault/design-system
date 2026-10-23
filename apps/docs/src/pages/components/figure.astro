@@ -1,23 +1,55 @@
 ---
 import Figure from '@paulperigault/astro/Figure.astro';
 import Photo from '@paulperigault/astro/Photo.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
 import portrait from '../../assets/media/portrait.jpg';
+
+const snippet = `<Figure caption="Rectangle bleu clair au-dessus d’une bande grise." credit="Image : générée">
+  <Photo src={photo} alt="Rectangle bleu clair au-dessus d’une bande grise" ratio="landscape" />
+</Figure>`;
 ---
 
-<DocsLayout title="Figure · Design system · Paul Perigault">
-  <h1>Figure</h1>
-  <p>
-    Figure associe un média à sa légende par les éléments figure et figcaption ; le crédit, s’il
-    existe, suit la légende en plus petit.
-  </p>
-
-  <h2>Légende et crédit</h2>
+<ComponentPage
+  slug="figure"
+  title="Figure"
+  summary="Figure associe un média à sa légende par les éléments figure et figcaption, avec un crédit facultatif."
+  use={[
+    'Légender une image qui apporte une information, avec figcaption relié au média.',
+    'Donner la source d’une image avec credit, affiché en petit après la légende.',
+  ]}
+  avoid={[
+    'Pour une image sans légende : utiliser Photo seul, Figure refuse une légende vide.',
+    'Pour décrire l’image : la légende ne remplace pas l’alt de Photo.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: ['Figure et figcaption ne sont pas interactifs : ils ne prennent pas le focus.'],
+    screenReader: [
+      'La légende est liée au média par l’élément figcaption, dans le même figure.',
+      'Le crédit est un élément small, lu à la suite de la légende.',
+    ],
+    guaranteed: [
+      'Éléments figure, figcaption et small, sans texte en dur ; zéro JavaScript.',
+      'Légende vide refusée au rendu (test Figure.test.ts).',
+    ],
+    integrator: [
+      'Écrire un alt utile dans Photo : la légende ne le remplace pas.',
+      'Choisir decorative sur Photo seulement si la légende porte déjà le sens de l’image.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'Élément figure, spécification HTML (WHATWG)',
+      href: 'https://html.spec.whatwg.org/multipage/grouping-content.html#the-figure-element',
+    },
+    {
+      label: 'WCAG 1.1.1 Contenu non textuel (A)',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html',
+    },
+    { label: 'Tests : packages/astro/test/Figure.test.ts' },
+  ]}
+>
   <Figure caption="Rectangle bleu clair au-dessus d’une bande grise." credit="Image : générée">
     <Photo src={portrait} decorative ratio="landscape" layout="half" />
   </Figure>
-
-  <h2>Propriétés</h2>
-  <PropsTable item="figure" title="Figure" />
-</DocsLayout>
+</ComponentPage>

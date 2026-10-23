@@ -1,44 +1,64 @@
 ---
-import Gallery from '@paulperigault/astro/Gallery.astro';
-import InvokerFallback from '@paulperigault/astro/InvokerFallback.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
-import capture from '../../assets/media/capture.png';
-import carre from '../../assets/media/carre.jpg';
-import large from '../../assets/media/large.jpg';
-import paysage from '../../assets/media/paysage.jpg';
-import portrait from '../../assets/media/portrait.jpg';
+import ComponentPage from '../../components/ComponentPage.astro';
+import GalleryExamples from '../../components/examples/gallery.astro';
 
-const items = [
-  { src: paysage, alt: 'Soleil orange au-dessus de bandes grise et bleue sur fond encre' },
-  { src: portrait, alt: 'Rectangle bleu clair au-dessus d’une bande grise sur fond clair' },
-  { src: carre, alt: 'Disque bleu clair et rectangle blanc sur fond bleu' },
-  {
-    src: large,
-    alt: 'Disque bleu et colonne grise au-dessus d’une bande d’horizon',
-    caption: 'Format 16:9, recadré au carré dans la grille.',
-  },
-  { src: capture, alt: 'Capture d’interface : barre supérieure, menu latéral, titre et bouton' },
-];
-
-/** Nombre d'images de la grille simple : une rangée à trois colonnes. */
-const SIMPLE = 3;
+const snippet = `<Gallery
+  id="galerie"
+  items={[{ src: photo, alt: 'Description de l’image' }]}
+  enlarge
+  labels={{ open: 'Agrandir', close: 'Fermer' }}
+/>`;
 ---
 
-<DocsLayout title="Gallery · Design system · Paul Perigault">
-  <h1>Gallery</h1>
-  <p>
-    Gallery range les images en une, deux puis trois colonnes selon la largeur de son conteneur ;
-    avec enlarge, chaque vignette est un bouton qui ouvre l’image entière dans un dialogue natif.
-  </p>
-
-  <h2>Grille simple</h2>
-  <Gallery id="galerie-simple" items={items.slice(0, SIMPLE)} ratio="landscape" />
-
-  <h2>Agrandissement</h2>
-  <InvokerFallback />
-  <Gallery id="galerie" items={items} enlarge labels={{ open: 'Agrandir', close: 'Fermer' }} />
-
-  <h2>Propriétés</h2>
-  <PropsTable item="gallery" title="Gallery" />
-</DocsLayout>
+<ComponentPage
+  slug="gallery"
+  title="Gallery"
+  summary="Gallery range des images en une, deux ou trois colonnes selon la largeur de son conteneur."
+  use={[
+    'Présenter plusieurs images d’une même série, chacune avec son texte alternatif.',
+    'Agrandir chaque vignette dans un dialogue natif avec enlarge et labels.',
+  ]}
+  avoid={[
+    'Pour une seule image : utiliser Photo, ou Figure si l’image a une légende.',
+    'Pour un agrandissement sur un navigateur sans Invoker Commands : poser InvokerFallback.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Chaque vignette agrandie est un bouton natif : Tab l’atteint, Entrée ouvre le dialogue.',
+      'Échap ferme le dialogue, et le focus revient sur la vignette.',
+    ],
+    screenReader: [
+      'role="list" garde la sémantique de liste, même sans puces.',
+      'Le bouton porte « Agrandir : » suivi de l’alt ; le dialogue est nommé par l’alt.',
+    ],
+    guaranteed: [
+      'Grille en container queries, sans JavaScript : une, deux puis trois colonnes.',
+      'Dialogue natif modal, fermé par son bouton, par Échap ou par clic hors de la boîte.',
+      'Vignette agrandie d’une cible d’au moins --pp-size-target-min.',
+    ],
+    integrator: [
+      'Fournir les libellés labels.open et labels.close, traduits par le site.',
+      'Écrire un alt par image : Gallery ne le génère pas.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 2.1.1 Clavier (A)',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html',
+    },
+    {
+      label: 'WCAG 2.5.8 Taille de la cible (minimum) (AA)',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html',
+    },
+    {
+      label: 'WCAG 4.1.2 Nom, rôle, valeur (A)',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html',
+    },
+    { label: 'Tests : apps/docs/e2e/gallery.spec.ts (clavier, axe)' },
+    { label: 'Tests : apps/docs/e2e/matrix/targets.spec.ts' },
+    { label: 'Tests : packages/astro/test/Gallery.test.ts' },
+  ]}
+>
+  <GalleryExamples />
+</ComponentPage>
