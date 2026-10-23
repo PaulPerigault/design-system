@@ -50,5 +50,13 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: npm ci --ignore-scripts
       - run: npm run build
+      # Provenance des dépendances et SBOM CycloneDX de la version publiée.
+      - run: npm audit signatures
+      - run: node tools/release/sbom.mjs sbom
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: sbom-cyclonedx
+          path: sbom/
+          retention-days: 90
       # Publie chaque paquet dont la version n'existe pas encore sur npmjs ; préversion → tag next.
       - run: node tools/release/publish-new.mjs
