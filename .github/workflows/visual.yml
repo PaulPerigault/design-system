@@ -30,10 +30,10 @@ jobs:
           - matrice-375x667
           - matrice-393x852
           - matrice-430x932
-          - matrice-800x360-paysage
-          - matrice-667x375-paysage
-          - matrice-852x393-paysage
-          - matrice-932x430-paysage
+          - matrice-360x800-paysage
+          - matrice-375x667-paysage
+          - matrice-393x852-paysage
+          - matrice-430x932-paysage
           - matrice-tablette-820x1180
           - matrice-bureau-1280x800
           - matrice-bureau-1440x900
