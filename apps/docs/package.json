@@ -6,7 +6,7 @@
   "description": "Documentation vivante du design system (ds.paulperigault.dev).",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && pagefind --site dist",
+    "build": "astro build && node scripts/markdown.mjs && pagefind --site dist",
     "check": "astro check",
     "e2e": "playwright test"
   },
