@@ -1,0 +1,48 @@
+---
+import Prose from '@paulperigault/astro/Prose.astro';
+---
+
+<h3>Défaut</h3>
+<Prose>
+  <h1>Titre 1</h1>
+  <p>
+    Ceci est un paragraphe avec du texte normal, un
+    <a href="/">lien</a>, du <code>code inline</code>.
+  </p>
+
+  <h2>Titre 2</h2>
+  <p>Un autre paragraphe avec plus de contexte.</p>
+
+  <h3>Titre 3</h3>
+  <ul>
+    <li>Premier point</li>
+    <li>Deuxième point</li>
+    <li>Troisième point</li>
+  </ul>
+
+  <blockquote>Une citation inspirante du domaine du design.</blockquote>
+
+  <pre><code>function example() {'{'}
+  return 'code block';
+{'}'}</code></pre>
+
+  <table>
+    <caption>Exemple de tableau</caption>
+    <thead>
+      <tr>
+        <th scope="col">Colonne 1</th>
+        <th scope="col">Colonne 2</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Donnée A</td>
+        <td>Donnée B</td>
+      </tr>
+      <tr>
+        <td>Donnée C</td>
+        <td>Donnée D</td>
+      </tr>
+    </tbody>
+  </table>
+</Prose>

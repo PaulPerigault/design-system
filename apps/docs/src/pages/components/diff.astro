@@ -1,7 +1,6 @@
 ---
 import Diff from '@paulperigault/astro/Diff.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
 
 interface Line {
   kind: 'add' | 'del' | 'ctx';
@@ -14,25 +13,76 @@ const lines: Line[] = [
   { kind: 'add', text: '  return items.reduce((sum, item) => sum + item.price, 0);' },
   { kind: 'ctx', text: '}' },
 ];
+
+const snippet = [
+  '---',
+  "import Diff from '@paulperigault/astro/Diff.astro';",
+  '',
+  "const lines: { kind: 'add' | 'del' | 'ctx'; text: string }[] = [",
+  "  { kind: 'del', text: '  return items.length;' },",
+  "  { kind: 'add', text: '  return items.reduce((sum, item) => sum + item.price, 0);' },",
+  '];',
+  '---',
+  '',
+  '<Diff',
+  '  caption="Calcul du total d’un panier"',
+  '  lines={lines}',
+  '  addedLabel="Ligne ajoutée"',
+  '  removedLabel="Ligne supprimée"',
+  '/>',
+].join('\n');
 ---
 
-<DocsLayout title="Diff · Design system · Paul Perigault">
-  <h1>Diff</h1>
-  <p>
-    Diff affiche une différence de texte ligne à ligne, en chasse fixe. Chaque ligne commence par un
-    signe visible (<code>+</code>, <code>-</code> ou espace) : la couleur du bord ne porte jamais
-    l’information seule. Les lecteurs d’écran entendent le libellé fourni avant chaque ligne ajoutée
-    ou supprimée.
-  </p>
-
-  <h2>Exemple</h2>
+<ComponentPage
+  slug="diff"
+  title="Diff"
+  summary="Diff affiche une différence de texte ligne à ligne, en chasse fixe, avec un signe par ligne."
+  use={[
+    'Montrer une modification de code ou de texte que le lecteur doit comparer.',
+    'Garder le sens visible sans couleur : chaque ligne porte son signe, + ou -.',
+  ]}
+  avoid={[
+    'Pour comparer deux images : le composant ne traite que du texte.',
+    'Pour un historique long : le composant rend toutes les lignes, sans repli ni pagination.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'La région défilante reçoit le focus (tabindex="0") : un contenu large se parcourt au clavier.',
+      'Le contour de focus visible entoure la région entière, pas chaque ligne.',
+    ],
+    screenReader: [
+      'La région est nommée par la légende (aria-label reprend caption).',
+      'Chaque ligne ajoutée ou supprimée commence par son libellé, masqué visuellement.',
+      'Le signe visible est masqué aux lecteurs d’écran (aria-hidden="true").',
+    ],
+    guaranteed: [
+      'Signes +, - et espace visibles : l’information ne repose pas sur la couleur seule.',
+      'Sémantique native : ins pour l’ajout, del pour la suppression.',
+      'Le texte des lignes est échappé ; aucun JavaScript, aucun attribut style.',
+    ],
+    integrator: [
+      'Fournir addedLabel et removedLabel dans la langue du site.',
+      'Écrire une légende qui décrit la modification : elle nomme la région défilante.',
+      'Passer du texte brut dans text : le HTML n’est pas interprété.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur',
+      href: 'https://www.w3.org/TR/WCAG22/#use-of-color',
+    },
+    {
+      label: 'WCAG 2.1.1 Clavier',
+      href: 'https://www.w3.org/TR/WCAG22/#keyboard',
+    },
+    { label: 'Tests : packages/astro/test/Diff.test.ts' },
+  ]}
+>
   <Diff
     caption="Calcul du total d’un panier"
     lines={lines}
     addedLabel="Ligne ajoutée"
     removedLabel="Ligne supprimée"
   />
-
-  <h2>Propriétés</h2>
-  <PropsTable item="diff" title="Diff" />
-</DocsLayout>
+</ComponentPage>

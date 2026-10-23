@@ -1,62 +1,64 @@
 ---
-import Prose from '../../../../../packages/astro/src/content/Prose.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+import ProseExamples from '../../components/examples/prose.astro';
+
+const snippet = `<Prose>
+  <h2>Titre de section</h2>
+  <p>Paragraphe avec un <a href="/">lien</a> et du <code>code inline</code>.</p>
+  <ul>
+    <li>Premier point</li>
+  </ul>
+</Prose>`;
 ---
 
-<DocsLayout title="Prose · Design system · Paul Perigault">
-  <h1>Prose</h1>
-  <p>
-    Prose est un conteneur pour le contenu éditorial rendu à partir de Markdown. Il assure une
-    largeur de lecture optimale, un rythme vertical cohérent, et un style uniforme des titres,
-    listes, citations, code et tableaux.
-  </p>
-
-  <h2>Défaut</h2>
-  <Prose>
-    <h1>Titre 1</h1>
-    <p>
-      Ceci est un paragraphe avec du texte normal, un
-      <a href="/">lien</a>, du <code>code inline</code>.
-    </p>
-
-    <h2>Titre 2</h2>
-    <p>Un autre paragraphe avec plus de contexte.</p>
-
-    <h3>Titre 3</h3>
-    <ul>
-      <li>Premier point</li>
-      <li>Deuxième point</li>
-      <li>Troisième point</li>
-    </ul>
-
-    <blockquote>Une citation inspirante du domaine du design.</blockquote>
-
-    <pre><code>function example() {'{'} 
-  return 'code block';
-{'}'}</code></pre>
-
-    <table>
-      <caption>Exemple de tableau</caption>
-      <thead>
-        <tr>
-          <th scope="col">Colonne 1</th>
-          <th scope="col">Colonne 2</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Donnée A</td>
-          <td>Donnée B</td>
-        </tr>
-        <tr>
-          <td>Donnée C</td>
-          <td>Donnée D</td>
-        </tr>
-      </tbody>
-    </table>
-  </Prose>
-
-  <h2>Propriétés</h2>
-  <PropsTable item="prose" title="Prose" />
-</DocsLayout>
+<ComponentPage
+  slug="prose"
+  title="Prose"
+  summary="Prose met en forme un contenu éditorial rendu en Markdown, avec une largeur de lecture bornée."
+  use={[
+    'Afficher un article ou une page de texte rendu depuis du Markdown.',
+    'Appliquer titres, listes, citations, code et tableaux sans classe par élément.',
+  ]}
+  avoid={[
+    'Pour un composant d’interface : Prose ne stylise ni boutons ni champs.',
+    'Pour une mise en page à colonnes : Prose borne la largeur, il ne place pas le contenu.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Les liens restent des éléments a natifs, atteints par Tab.',
+      'Le composant ne pose aucun tabindex : les blocs pre larges ne reçoivent pas le focus.',
+    ],
+    screenReader: [
+      'Titres h1 à h6, listes et tableaux restent natifs, sans rôle ARIA ajouté.',
+      'La légende d’un tableau (caption) est lue avec le tableau : elle vient du contenu.',
+    ],
+    guaranteed: [
+      'Aucun attribut ARIA et aucun JavaScript ajoutés.',
+      'Liens soulignés, citation en italique : l’information ne repose pas sur la couleur seule.',
+      'Largeur de texte bornée par --pp-size-measure.',
+    ],
+    integrator: [
+      'Garder une seule h1 par page : le titre de la page en porte déjà une.',
+      'Ajouter tabindex="0" à un bloc pre large si son contenu doit être atteint au clavier.',
+      'Fournir une caption à chaque tableau de données.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.3.1 Information et relations',
+      href: 'https://www.w3.org/TR/WCAG22/#info-and-relationships',
+    },
+    {
+      label: 'WCAG 1.4.8 Présentation visuelle (AAA), largeur de ligne',
+      href: 'https://www.w3.org/TR/WCAG22/#visual-presentation',
+    },
+    {
+      label: 'Longueur de ligne de 60 à 75 caractères, convention typographique (Bringhurst)',
+    },
+    { label: 'Tests : packages/astro/test/Prose.test.ts' },
+    { label: 'Mesure : apps/docs/e2e/measure.spec.ts' },
+  ]}
+>
+  <ProseExamples />
+</ComponentPage>

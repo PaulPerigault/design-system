@@ -1,48 +1,66 @@
 ---
-import Photo from '@paulperigault/astro/Photo.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
-import capture from '../../assets/media/capture.png';
-import carre from '../../assets/media/carre.jpg';
-import paysage from '../../assets/media/paysage.jpg';
-import portrait from '../../assets/media/portrait.jpg';
+import ComponentPage from '../../components/ComponentPage.astro';
+import PhotoExamples from '../../components/examples/photo.astro';
+
+const snippet = [
+  '---',
+  "import Photo from '@paulperigault/astro/Photo.astro';",
+  "import portrait from './portrait.jpg';",
+  '---',
+  '',
+  '<Photo src={portrait} alt="Portrait recadré, visage au centre" ratio="portrait" focal="top" />',
+].join('\n');
 ---
 
-<DocsLayout title="Photo · Design system · Paul Perigault">
-  <h1>Photo</h1>
-  <p>
-    Photo affiche une image importée localement : AVIF puis WebP, largeurs et sizes tirés des
-    tokens, width et height toujours rendus, fond d’attente à la couleur dominante calculée au
-    build.
-  </p>
-
-  <h2>Image principale</h2>
-  <Photo
-    src={paysage}
-    alt="Composition géométrique : soleil orange au-dessus de bandes grise et bleue sur fond encre"
-    priority
-  />
-
-  <h2>Portrait recadré en haut</h2>
-  <Photo
-    src={portrait}
-    alt="Composition géométrique : rectangle bleu clair au-dessus d’une bande grise"
-    ratio="portrait"
-    focal="top"
-    layout="half"
-  />
-
-  <h2>Décorative</h2>
-  <Photo src={carre} decorative ratio="square" layout="third" />
-
-  <h2>Capture avec filet</h2>
-  <Photo
-    src={capture}
-    alt="Capture d’interface : barre supérieure, menu latéral, titre, bloc de contenu et bouton"
-    kind="capture"
-    rule
-  />
-
-  <h2>Propriétés</h2>
-  <PropsTable item="photo" title="Photo" />
-</DocsLayout>
+<ComponentPage
+  slug="photo"
+  title="Photo"
+  summary="Photo affiche une image importée localement, optimisée au build, avec sa place réservée avant chargement."
+  use={[
+    'Afficher une image locale : Astro la produit en AVIF et WebP, avec un repli JPEG ou PNG.',
+    'Réserver la place de l’image avec width et height, pour éviter le décalage de la mise en page.',
+  ]}
+  avoid={[
+    'Pour une URL distante : le composant refuse une chaîne et exige un import local.',
+    'Pour une légende ou un crédit : utiliser Figure, qui enveloppe une image.',
+    'Pour une galerie : utiliser Gallery, qui gère plusieurs images et leurs libellés.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Photo ne rend aucun élément interactif : rien à atteindre au clavier.',
+      'Le fond d’attente est masqué (aria-hidden="true", focusable="false") : il n’est pas focalisable.',
+    ],
+    screenReader: [
+      'Le texte de l’attribut alt est lu comme nom de l’image.',
+      'Avec decorative, alt="" : l’image est ignorée par les lecteurs d’écran.',
+      'Le fond d’attente à la couleur dominante est masqué aux technologies d’assistance.',
+    ],
+    guaranteed: [
+      'alt est obligatoire : une chaîne vide ou blanche lève une erreur au build.',
+      'alt="" n’est posé qu’avec decorative, jamais par défaut.',
+      'width et height sont toujours rendus.',
+      'priority : loading="eager" et fetchpriority="high" ; sinon loading="lazy" et decoding="async".',
+      'Aucun attribut style.',
+    ],
+    integrator: [
+      'Décrire dans alt ce que l’image apporte : le composant ne vérifie pas le sens.',
+      'Réserver priority à l’image principale, une seule par page.',
+      'Choisir layout selon l’emplacement : il règle sizes et les largeurs générées.',
+      'Entourer l’image d’un lien seulement si le lien a son propre nom accessible.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.1.1 Contenu non textuel',
+      href: 'https://www.w3.org/TR/WCAG22/#non-text-content',
+    },
+    { label: 'Core Web Vitals : CLS sous 0,1 (convention Google)' },
+    {
+      label: 'LCP et CLS sur la page photo : apps/docs/e2e/media.spec.ts',
+    },
+    { label: 'Tests : packages/astro/test/Photo.test.ts' },
+  ]}
+>
+  <PhotoExamples />
+</ComponentPage>

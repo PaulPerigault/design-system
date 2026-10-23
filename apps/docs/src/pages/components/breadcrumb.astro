@@ -1,40 +1,79 @@
 ---
 import Breadcrumb from '@paulperigault/astro/Breadcrumb.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
 
 const items = [
   { href: '/', label: 'Accueil' },
   { href: '/components/', label: 'Composants' },
   { label: 'Breadcrumb' },
 ];
+
+const snippet = `<Breadcrumb
+  label="Fil d’Ariane"
+  items={[
+    { href: '/', label: 'Accueil' },
+    { href: '/components/', label: 'Composants' },
+    { label: 'Breadcrumb' },
+  ]}
+/>`;
 ---
 
-<DocsLayout title="Breadcrumb · Design system · Paul Perigault">
-  <h1>Breadcrumb</h1>
-  <p>
-    Breadcrumb indique l’emplacement de la page dans la hiérarchie du site. La page courante est le
-    dernier élément : elle n’est pas un lien et porte <code>aria-current="page"</code>.
-  </p>
-
-  <h2>Exemple</h2>
+<ComponentPage
+  slug="breadcrumb"
+  title="Breadcrumb"
+  summary="Breadcrumb indique l’emplacement de la page, de la racine à la page courante, sous forme de liens."
+  use={[
+    'Montrer le chemin d’une page profonde dans l’arborescence du site.',
+    'Offrir un retour d’un niveau sans passer par le menu principal.',
+  ]}
+  avoid={[
+    'Pour la navigation principale : le composant ne gère ni sous-menu ni liste déroulante.',
+    'Préférence : pour une page de premier niveau, un titre suffit.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Chaque lien intermédiaire est un élément a natif : Tab l’atteint, Entrée l’active.',
+      'La page courante est un span : elle ne prend pas le focus.',
+      'Le focus visible est un contour de couleur --pp-color-focus sur chaque lien.',
+    ],
+    screenReader: [
+      'Le repère est annoncé par son nom, la valeur de label.',
+      'La liste est annoncée comme liste : role="list" est posé explicitement.',
+      'La page courante porte aria-current="page", que les lecteurs d’écran annoncent.',
+      'Les séparateurs sont générés en CSS avec un texte vide : ils ne sont pas lus.',
+    ],
+    guaranteed: [
+      'Repère nav nommé par label, liste ol avec role="list".',
+      'Le dernier élément est rendu sans lien, avec aria-current="page".',
+      'Liens soulignés, page courante en graisse : l’information ne repose pas sur la couleur.',
+      'Aucun JavaScript.',
+    ],
+    integrator: [
+      'Fournir un label dans la langue du site, par exemple « Fil d’Ariane ».',
+      'Donner un href à chaque étape intermédiaire ; un élément sans href reste du texte.',
+      'Vérifier que chaque href mène à la page que son libellé annonce.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.3.1 Information et relations',
+      href: 'https://www.w3.org/TR/WCAG22/#info-and-relationships',
+    },
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur',
+      href: 'https://www.w3.org/TR/WCAG22/#use-of-color',
+    },
+    {
+      label: 'WCAG 2.4.7 Visibilité du focus',
+      href: 'https://www.w3.org/TR/WCAG22/#focus-visible',
+    },
+    {
+      label: 'Modèle APG « Breadcrumb », W3C WAI-ARIA',
+      href: 'https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/',
+    },
+    { label: 'Tests : packages/astro/test/Breadcrumb.test.ts' },
+  ]}
+>
   <Breadcrumb label="Fil d’Ariane de l’exemple" items={items} />
-
-  <h2>Accessibilité</h2>
-  <ul>
-    <li>
-      Repère <code>nav</code> nommé par <code>label</code>, liste <code>ol</code> avec{' '}
-      <code>role="list"</code>.
-    </li>
-    <li>
-      Les séparateurs sont générés en CSS avec un texte alternatif vide : les lecteurs d’écran ne
-      les annoncent pas.
-    </li>
-    <li>
-      Les liens sont soulignés, la page courante est en graisse moyenne : pas de couleur seule.
-    </li>
-  </ul>
-
-  <h2>Propriétés</h2>
-  <PropsTable item="breadcrumb" title="Breadcrumb" />
-</DocsLayout>
+</ComponentPage>
