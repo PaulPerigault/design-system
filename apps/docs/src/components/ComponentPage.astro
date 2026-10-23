@@ -1,0 +1,95 @@
+---
+/**
+ * Gabarit des pages de composant : neuf blocs dans un ordre fixe (voir SECTIONS), de « À quoi il
+ * sert » à « Preuves et décisions ». Slot par défaut : exemples ; slot `variants` : variantes.
+ */
+import registry from '@paulperigault/astro/registry.json';
+import DocsLayout from '../layouts/DocsLayout.astro';
+import { SECTIONS, validate } from '../lib/component-page.ts';
+import type { ComponentPageData } from '../lib/component-page.ts';
+import '../styles/component-page.css';
+import PropsTable from './PropsTable.astro';
+
+type Props = ComponentPageData;
+
+const data = validate(Astro.props);
+const { slug, title, summary, use, avoid, snippet, a11y, evidence } = data;
+const heading = (id: string) => SECTIONS.find((section) => section.id === id)?.title ?? id;
+const tokens = registry.items.find((item) => item.name === slug)?.meta?.tokens ?? [];
+const hasVariants = Astro.slots.has('variants');
+const notes = [
+  { title: 'Clavier', items: a11y.keyboard },
+  { title: 'Lecteur d’écran', items: a11y.screenReader },
+  { title: 'Garanti par le composant', items: a11y.guaranteed },
+  { title: 'À la charge de l’intégrateur', items: a11y.integrator },
+];
+---
+
+<DocsLayout title={`${title} · Design system · Paul Perigault`}>
+  <div class="pp-component-page">
+    <h1>{title}</h1>
+
+    <h2 id="sert">{heading('sert')}</h2>
+    <p>{summary}</p>
+
+    <h2 id="quand">{heading('quand')}</h2>
+    <ul>
+      {use.map((item) => (
+        <li>{item}</li>
+      ))}
+    </ul>
+
+    <h2 id="eviter">{heading('eviter')}</h2>
+    <ul>
+      {avoid.map((item) => (
+        <li>{item}</li>
+      ))}
+    </ul>
+
+    <h2 id="exemples">{heading('exemples')}</h2>
+    <div class="pp-component-page__examples">
+      <slot />
+    </div>
+    <pre tabindex="0"><code>{snippet}</code></pre>
+
+    {hasVariants && (
+      <>
+        <h2 id="variantes">{heading('variantes')}</h2>
+        <div class="pp-component-page__examples">
+          <slot name="variants" />
+        </div>
+      </>
+    )}
+
+    <h2 id="accessibilite">{heading('accessibilite')}</h2>
+    {notes.map((note) => (
+      <>
+        <h3>{note.title}</h3>
+        <ul>
+          {note.items.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </>
+    ))}
+
+    <h2 id="proprietes">{heading('proprietes')}</h2>
+    <PropsTable item={slug} title={title} />
+
+    <h2 id="jetons">{heading('jetons')}</h2>
+    <ul class="pp-component-page__tokens" role="list">
+      {tokens.map((token) => (
+        <li>
+          <code>{token}</code>
+        </li>
+      ))}
+    </ul>
+
+    <h2 id="preuves">{heading('preuves')}</h2>
+    <ul>
+      {evidence.map((entry) => (
+        <li>{entry.href ? <a href={entry.href}>{entry.label}</a> : entry.label}</li>
+      ))}
+    </ul>
+  </div>
+</DocsLayout>
