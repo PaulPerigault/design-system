@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 
-const STYLE_BLOCK = /<style\b[^>]*>([\s\S]*?)<\/style\s*>/gi;
-const SCRIPT_BLOCK = /<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi;
+const STYLE_BLOCK = /<style\b[^>]*>([\s\S]*?)<\/style[^>]*>/gi;
+const SCRIPT_BLOCK = /<script\b([^>]*)>([\s\S]*?)<\/script[^>]*>/gi;
 const SRC_ATTRIBUTE = /\ssrc\s*=/i;
 const JSON_LD_TYPE = /\stype\s*=\s*["']?application\/ld\+json/i;
 const STYLE_ATTRIBUTE = /<[a-z][^>]*\sstyle\s*=/gi;
