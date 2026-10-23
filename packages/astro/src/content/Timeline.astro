@@ -1,0 +1,107 @@
+---
+/**
+ * Timeline : suite d'étapes datées, en liste ordonnée (`<ol role="list">`). Zéro JavaScript.
+ * Le composant ne trie pas : l'ordre est celui de `items`. `order` est informatif (`data-order`) :
+ * le tri reste à la charge de l'intégrateur. Chaque date est un `<time>`, avec `datetime` si donné.
+ * Le trait et les repères sont des pseudo-éléments sans texte, en bordures `--pp-*` (pas de
+ * dégradé). L'ordre et la date sont écrits en texte : la forme seule ne porte aucun sens (WCAG 2.2,
+ * critère 1.4.1). `role="list"` explicite : `list-style: none` retire la sémantique de liste.
+ */
+interface TimelineItem {
+  /** Date ou moment affiché, dans la langue du site (par exemple « 2024 »). */
+  time: string;
+  /** Valeur machine de `time` (ISO 8601), posée en attribut `datetime`. */
+  datetime?: string;
+  /** Titre de l'étape, lu en premier après la date. */
+  title: string;
+  /** Détail facultatif de l'étape. */
+  description?: string;
+}
+
+interface Props {
+  /** Étapes, dans l'ordre d'affichage. Le composant ne trie pas. */
+  items: TimelineItem[];
+  /** Nom accessible de la liste (`aria-label`). Utile quand la page contient plusieurs chronologies. */
+  label?: string;
+  /** Sens de tri déclaré par l'intégrateur : `data-order` seul, sans effet sur le rendu. */
+  order?: 'asc' | 'desc';
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { items, label, order, class: className } = Astro.props;
+---
+
+<ol class:list={['pp-timeline', className]} role="list" aria-label={label} data-order={order}>
+  {items.map((item) => (
+    <li>
+      <time datetime={item.datetime}>{item.time}</time>
+      <strong>{item.title}</strong>
+      {item.description && <p>{item.description}</p>}
+    </li>
+  ))}
+</ol>
+
+<style>
+  .pp-timeline {
+    display: grid;
+    margin-block: 0;
+    margin-inline: 0;
+    padding-block: 0;
+    padding-inline: 0;
+    list-style: none;
+    color: var(--pp-color-fg);
+  }
+
+  .pp-timeline li {
+    position: relative;
+    display: grid;
+    gap: var(--pp-space-3xs);
+    padding-block-end: var(--pp-space-m);
+    padding-inline-start: var(--pp-space-m);
+  }
+
+  /* Trait vertical : bordure, sur toute la hauteur de l'entrée, pour relier les repères. */
+  .pp-timeline li::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: var(--pp-space-3xs);
+    border-inline-start: var(--pp-size-rule) solid var(--pp-color-line);
+  }
+
+  .pp-timeline li:first-child::before {
+    inset-block-start: var(--pp-space-2xs);
+  }
+
+  .pp-timeline li:last-child::before {
+    display: none;
+  }
+
+  /* Repère : pastille creuse, centrée sur le trait. */
+  .pp-timeline li::after {
+    content: '';
+    position: absolute;
+    inset-block-start: var(--pp-space-2xs);
+    inset-inline-start: 0;
+    inline-size: var(--pp-space-2xs);
+    block-size: var(--pp-space-2xs);
+    border: var(--pp-size-rule) solid var(--pp-color-accent);
+    border-radius: var(--pp-radius-control);
+    background-color: var(--pp-color-bg);
+  }
+
+  .pp-timeline time {
+    font-size: var(--pp-font-size--1);
+    color: var(--pp-color-muted);
+  }
+
+  .pp-timeline strong {
+    font-weight: var(--pp-font-weight-semibold);
+  }
+
+  .pp-timeline p {
+    margin-block: 0;
+    margin-inline: 0;
+  }
+</style>
