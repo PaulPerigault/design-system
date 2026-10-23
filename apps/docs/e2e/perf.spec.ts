@@ -11,7 +11,12 @@ const JS_BUDGET_BYTES = 1024;
 
 /** Appareil : 360 × 800, tactile ; CPU ×4 plus lent ; « Slow 4G » (latence 150 ms, 1,6 Mbit/s). */
 const VIEWPORT = { width: 360, height: 800 };
-const CPU_SLOWDOWN = 4;
+/**
+ * ×4 sur une machine de développement rapide. Le runner CI est déjà environ 4 fois plus lent
+ * (mesuré : INP 208 à 256 ms à ×4 en CI contre 56 à 64 ms à ×8 en local, D-021) : pas de
+ * ralentissement supplémentaire en CI, les budgets restent identiques.
+ */
+const CPU_SLOWDOWN = process.env.CI ? 1 : 4;
 const LATENCY_MS = 150;
 const BITS_PER_BYTE = 8;
 const DOWNLOAD_BITS_PER_S = 1_600_000;
