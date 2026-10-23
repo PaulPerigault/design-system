@@ -10,3 +10,10 @@
   align-items: center;
   min-block-size: var(--pp-size-target-min);
 }
+
+/* Bouton de mise à jour du service worker (créé par /pwa/register.js). */
+.pp-pwa-update {
+  min-block-size: var(--pp-size-target-min);
+  min-inline-size: var(--pp-size-target-min);
+  padding-inline: var(--pp-space-s);
+}

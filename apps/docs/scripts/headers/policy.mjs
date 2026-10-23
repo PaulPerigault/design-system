@@ -77,6 +77,8 @@ export function buildRules(hashes) {
       path: '/_astro/*',
       headers: [['Cache-Control', `public, max-age=${ONE_YEAR_SECONDS}, immutable`]],
     },
+    // Le service worker doit être revalidé à chaque visite (mise à jour explicite).
+    { path: '/sw.js', headers: [['Cache-Control', 'no-cache']] },
   ];
 }
 
