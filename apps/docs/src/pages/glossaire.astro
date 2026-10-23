@@ -1,0 +1,21 @@
+---
+import DocsLayout from '../layouts/DocsLayout.astro';
+import { GLOSSARY } from '../lib/glossary';
+---
+
+<DocsLayout title="Glossaire · Design system · Paul Perigault">
+  <div class="docs-prose">
+    <h1>Glossaire</h1>
+    <p>
+      Chaque terme technique est défini ici une fois. Les autres pages renvoient vers cette liste.
+    </p>
+    <dl>
+      {GLOSSARY.map((entry) => (
+        <>
+          <dt id={entry.id}>{entry.term}</dt>
+          <dd>{entry.definition}</dd>
+        </>
+      ))}
+    </dl>
+  </div>
+</DocsLayout>
