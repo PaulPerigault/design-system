@@ -12,6 +12,7 @@
   ],
   "meta": {
     "tokens": [
+      "--pp-color-fg",
       "--pp-color-line",
       "--pp-duration-base",
       "--pp-easing-standard",
