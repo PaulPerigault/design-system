@@ -7,6 +7,8 @@ const MENU_PATH = '/components/button/';
 const CSP_CONSOLE = /content security policy|refused to (apply|execute|load|connect|create)/i;
 const WINDOW_KEY = '__cspViolations';
 
+test.use({ bypassCSP: false });
+
 type Watcher = { violations: () => Promise<string[]> };
 
 /** Capte les `securitypolicyviolation` (init script) et les messages console de type CSP. */

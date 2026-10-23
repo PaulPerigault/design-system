@@ -13,7 +13,8 @@ export default defineConfig({
   outputDir: './test-results',
   // Références visuelles générées en CI, jamais versionnées (voir matrix/visual.spec.ts).
   snapshotPathTemplate: '.visual/{projectName}/{testFilePath}/{arg}{ext}',
-  use: { baseURL: BASE_URL },
+  // Les tests qui injectent du CSS (espacement du texte) contournent la CSP ; csp.spec.ts la rétablit.
+  use: { baseURL: BASE_URL, bypassCSP: true },
   projects: [
     { name: 'chromium', testIgnore: /matrix\//, use: { ...devices['Desktop Chrome'] } },
     ...MATRIX.map((device) => ({
