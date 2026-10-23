@@ -1,0 +1,2720 @@
+[
+  {
+    "a11y": {
+      "guaranteed": [
+        "Zéro JavaScript : l’état vient du navigateur.",
+        "Le marqueur natif est masqué ; un contour de focus visible entoure le titre.",
+        "L’ouverture n’est animée que sous prefers-reduced-motion: no-preference."
+      ],
+      "integrator": [
+        "Donner des id uniques dans un accordéon : ils servent de slots et de nom de groupe.",
+        "Garder un titre clair : il est le seul libellé du panneau.",
+        "Pour exclusive, prévoir le repli : sans name, les panneaux restent indépendants."
+      ],
+      "keyboard": [
+        "Tab donne le focus à chaque titre, dans l’ordre du document.",
+        "Entrée ou Espace ouvre et ferme le panneau du titre actif."
+      ],
+      "screenReader": [
+        "L’état replié ou déplié vient de details, sans attribut ajouté.",
+        "Le chevron est masqué (aria-hidden=\"true\") : le titre seul porte le nom."
+      ]
+    },
+    "avoid": [
+      "Pour une navigation entre pages : utiliser une liste de liens.",
+      "Pour des contenus à comparer : garder les sections ouvertes (préférence)."
+    ],
+    "evidence": [
+      "[WCAG 2.4.7 Focus visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html)",
+      "[WCAG 4.1.2 Nom, rôle, valeur](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html)",
+      "Tests : packages/astro/test/Accordion.test.ts"
+    ],
+    "group": "content",
+    "props": [
+      {
+        "description": "Sections : `{ id, title, body }` ; le titre ouvre et ferme la section.",
+        "fallback": "—",
+        "name": "items (obligatoire)",
+        "type": "Item[]"
+      },
+      {
+        "description": "Une seule section ouverte à la fois (`<details name>`).",
+        "fallback": "false",
+        "name": "exclusive",
+        "type": "boolean"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "accordion",
+    "snippet": "---\nconst items = [\n  { id: 'one', summary: 'Premier panneau', open: true },\n  { id: 'two', summary: 'Deuxième panneau' },\n];\n---\n<Accordion items={items} exclusive>\n  <p slot=\"one\">Contenu du premier panneau.</p>\n  <p slot=\"two\">Contenu du deuxième panneau.</p>\n</Accordion>",
+    "summary": "Accordion groupe des sections repliables, construites sur les éléments natifs details et summary.",
+    "title": "Accordion",
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-fg",
+      "--pp-color-focus",
+      "--pp-color-line",
+      "--pp-duration-base",
+      "--pp-easing-standard",
+      "--pp-font-weight-medium",
+      "--pp-size-control-height",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-2xs",
+      "--pp-space-s"
+    ],
+    "use": [
+      "Replier des questions fréquentes ou des sections longues d’une même page.",
+      "Limiter l’ouverture à un panneau à la fois avec exclusive, quand les sections s’excluent."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "L’icône est décorative : aria-hidden=\"true\" et focusable=\"false\".",
+        "Le ton est écrit en clair : la couleur ne porte jamais seule l’information.",
+        "En forced-colors, le filet et l’icône passent en CanvasText."
+      ],
+      "integrator": [
+        "Écrire toneLabel dans la langue de la page.",
+        "Poser live seulement sur un message ajouté après le chargement.",
+        "Garder le titre et le corps lisibles sans la couleur."
+      ],
+      "keyboard": [
+        "Le composant n’est pas interactif : il ne prend pas le focus.",
+        "Un lien ou un bouton placé dans l’alerte se parcourt avec Tab."
+      ],
+      "screenReader": [
+        "Sans live, aucun rôle : le message est lu dans le flux de la page.",
+        "live=\"polite\" donne role=\"status\" ; live=\"assertive\" donne role=\"alert\", qui interrompt.",
+        "L’icône est masquée (aria-hidden) : le ton est lu par toneLabel."
+      ]
+    },
+    "avoid": [
+      "Pour un message ajouté après le chargement sans live : aucun rôle n’est posé, rien n’est annoncé.",
+      "Pour une action à confirmer : préférence pour Dialog."
+    ],
+    "evidence": [
+      "[WCAG 1.1.1 Contenu non textuel, niveau A](https://www.w3.org/TR/WCAG22/#non-text-content)",
+      "[WCAG 1.4.1 Utilisation de la couleur, niveau A](https://www.w3.org/TR/WCAG22/#use-of-color)",
+      "[WCAG 4.1.3 Messages d’état, niveau AA : rôles status et alert, dans Alert.test.ts](https://www.w3.org/TR/WCAG22/#status-messages)",
+      "Tests unitaires : packages/astro/test/Alert.test.ts",
+      "Code source : packages/astro/src/feedback/Alert.astro"
+    ],
+    "group": "feedback",
+    "props": [
+      {
+        "description": "Nature du message, écrite en clair dans le texte (la couleur n'est jamais seule).",
+        "fallback": "'info'",
+        "name": "tone",
+        "type": "\"info\" | \"passed\" | \"degraded\" | \"failed\""
+      },
+      {
+        "description": "Libellé visible du ton (par exemple « Information »).",
+        "fallback": "—",
+        "name": "toneLabel (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Titre court du message.",
+        "fallback": "—",
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "description": "Annonce par les lecteurs d'écran : `polite` attend la fin de la lecture, `assertive` interrompt. Absent : aucune annonce.",
+        "fallback": "—",
+        "name": "live",
+        "type": "\"polite\" | \"assertive\""
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "alert",
+    "snippet": "<Alert tone=\"failed\" toneLabel=\"Échec\" title=\"Contrôle de taille\" live=\"polite\">\n  <p>Un fichier dépasse 120 lignes.</p>\n</Alert>",
+    "summary": "Alert met un message en avant, avec un ton écrit en clair et une annonce optionnelle.",
+    "title": "Alert",
+    "tokens": [
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-status-degraded",
+      "--pp-color-status-failed",
+      "--pp-color-status-passed",
+      "--pp-color-status-running",
+      "--pp-color-surface",
+      "--pp-font-line-height-body",
+      "--pp-font-size-1",
+      "--pp-font-weight-semibold",
+      "--pp-radius-surface",
+      "--pp-size-rule",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-s",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Signaler un résultat, un avertissement ou une information qui doit être lu avec la page.",
+      "Annoncer un message inséré après le chargement, avec live=\"polite\" ou live=\"assertive\"."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Chaque source porte width et height de son recadrage : la place est réservée.",
+        "Sources ordonnées narrow, medium, puis image par défaut.",
+        "alt obligatoire, ou decorative : sinon erreur au build.",
+        "priority : loading=\"eager\" et fetchpriority=\"high\" sur le img de repli."
+      ],
+      "integrator": [
+        "Décrire dans alt le sujet commun aux recadrages, pas le détail d’un seul.",
+        "Garder le même sujet dans chaque recadrage : le composant ne le vérifie pas.",
+        "Réserver priority à l’image principale de la page."
+      ],
+      "keyboard": ["Aucun élément interactif : rien à atteindre au clavier."],
+      "screenReader": [
+        "Une seule alt s’applique à toutes les sources : elle décrit le sujet commun.",
+        "Le repli img porte le même alt que les recadrages."
+      ]
+    },
+    "avoid": [
+      "Pour une image lisible à toute taille : Photo suffit, sans recadrage supplémentaire.",
+      "Pour une image sans sujet à recentrer : un recadrage par point de rupture n’apporte rien."
+    ],
+    "evidence": [
+      "[WCAG 1.1.1 Contenu non textuel](https://www.w3.org/TR/WCAG22/#non-text-content)",
+      "LCP et CLS sur la page art-direction : apps/docs/e2e/media.spec.ts",
+      "Tests : packages/astro/test/ArtDirection.test.ts"
+    ],
+    "group": "media",
+    "props": [
+      {
+        "description": "Texte alternatif : ce que l'image apporte au contenu. Vide : erreur au build.",
+        "fallback": "—",
+        "name": "alt",
+        "type": "string"
+      },
+      {
+        "description": "Image purement décorative, rendue avec `alt=\"\"`. Exclusif de `alt`.",
+        "fallback": "—",
+        "name": "decorative",
+        "type": "true"
+      },
+      {
+        "description": "Image par défaut, importée localement.",
+        "fallback": "—",
+        "name": "src (obligatoire)",
+        "type": "ImageMetadata"
+      },
+      {
+        "description": "Recadrages : un par point de rupture (`narrow`, `medium`).",
+        "fallback": "—",
+        "name": "sources (obligatoire)",
+        "type": "ArtSource[]"
+      },
+      {
+        "description": "Image principale de la page (LCP) : chargée tout de suite, en priorité.",
+        "fallback": "false",
+        "name": "priority",
+        "type": "boolean"
+      },
+      {
+        "description": "Emplacement dans la page ; règle `sizes` et les largeurs générées.",
+        "fallback": "'page'",
+        "name": "layout",
+        "type": "\"page\" | \"measure\" | \"half\" | \"third\" | \"avatar\""
+      },
+      {
+        "description": "Nature de l'image ; règle la qualité et le format de repli.",
+        "fallback": "'photo'",
+        "name": "kind",
+        "type": "\"photo\" | \"capture\" | \"illustration\""
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "art-direction",
+    "snippet": "---\nimport ArtDirection from '@paulperigault/astro/ArtDirection.astro';\nimport large from './large.jpg';\nimport largeEtroit from './large-etroit.jpg';\n---\n\n<ArtDirection\n  src={large}\n  sources={[{ at: 'narrow', src: largeEtroit }]}\n  alt=\"Disque bleu et colonne grise\"\n/>",
+    "summary": "ArtDirection sert un recadrage resserré aux écrans étroits, au lieu de réduire l’image large.",
+    "title": "ArtDirection",
+    "tokens": [
+      "--pp-color-line",
+      "--pp-color-media-placeholder",
+      "--pp-media-radius",
+      "--pp-media-rule",
+      "--pp-ratio-landscape",
+      "--pp-ratio-portrait",
+      "--pp-ratio-square",
+      "--pp-ratio-wide",
+      "--pp-size-measure",
+      "--pp-size-page",
+      "--pp-space-3xl",
+      "--pp-space-xl"
+    ],
+    "use": [
+      "Garder le sujet lisible sur mobile, quand une image large perd son détail en se réduisant.",
+      "Fournir un recadrage par point de rupture : narrow sous la mesure, medium sous la page."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Image rendue par Photo, dans picture, avec alt ou alt vide.",
+        "Cadre carré au rayon média, taille par data-size (s, m, l), focal en haut."
+      ],
+      "integrator": [
+        "Écrire un alt si l’image est seule, sans nom à côté.",
+        "Importer l’image localement : Photo n’affiche que des images locales."
+      ],
+      "keyboard": ["Avatar n’est pas interactif : il ne prend pas le focus."],
+      "screenReader": [
+        "Avec decorative, l’image a alt=\"\" et est ignorée des lecteurs d’écran.",
+        "Le nom affiché à côté est lu seul, sans doublon."
+      ]
+    },
+    "avoid": [
+      "Pour une image qui porte seule une information : utiliser Photo avec un alt.",
+      "Pour un sujet placé hors du haut de l’image : le cadrage est fixé en haut."
+    ],
+    "evidence": [
+      "[WCAG 1.1.1 Contenu non textuel (A)](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html)",
+      "Tests : packages/astro/test/Avatar.test.ts",
+      "Tests : packages/astro/test/Photo.test.ts"
+    ],
+    "group": "media",
+    "props": [
+      {
+        "description": "Texte alternatif : ce que l'image apporte au contenu. Vide : erreur au build.",
+        "fallback": "—",
+        "name": "alt",
+        "type": "string"
+      },
+      {
+        "description": "Image purement décorative, rendue avec `alt=\"\"`. Exclusif de `alt`.",
+        "fallback": "—",
+        "name": "decorative",
+        "type": "true"
+      },
+      {
+        "description": "Image carrée, importée localement (aucun visage dans la doc).",
+        "fallback": "—",
+        "name": "src (obligatoire)",
+        "type": "ImageMetadata"
+      },
+      {
+        "description": "Taille : `s`, `m` ou `l` (tokens `--pp-space-xl`, `-2xl`, `-3xl`).",
+        "fallback": "'m'",
+        "name": "size",
+        "type": "\"s\" | \"m\" | \"l\""
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "avatar",
+    "snippet": "<Avatar src={portrait} decorative size=\"m\" />",
+    "summary": "Avatar affiche une image carrée au rayon des médias, recadrée en haut, pour accompagner un nom.",
+    "title": "Avatar",
+    "tokens": ["--pp-space-2xl", "--pp-space-3xl", "--pp-space-xl"],
+    "use": [
+      "Accompagner un nom affiché : l’avatar est alors decorative, le nom est lu seul.",
+      "Afficher une image de profil en trois tailles, s, m ou l, par data-size."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Repère nav nommé par label, liste ol avec role=\"list\".",
+        "Le dernier élément est rendu sans lien, avec aria-current=\"page\".",
+        "Liens soulignés, page courante en graisse : l’information ne repose pas sur la couleur.",
+        "Aucun JavaScript."
+      ],
+      "integrator": [
+        "Fournir un label dans la langue du site, par exemple « Fil d’Ariane ».",
+        "Donner un href à chaque étape intermédiaire ; un élément sans href reste du texte.",
+        "Vérifier que chaque href mène à la page que son libellé annonce."
+      ],
+      "keyboard": [
+        "Chaque lien intermédiaire est un élément a natif : Tab l’atteint, Entrée l’active.",
+        "La page courante est un span : elle ne prend pas le focus.",
+        "Le focus visible est un contour de couleur --pp-color-focus sur chaque lien."
+      ],
+      "screenReader": [
+        "Le repère est annoncé par son nom, la valeur de label.",
+        "La liste est annoncée comme liste : role=\"list\" est posé explicitement.",
+        "La page courante porte aria-current=\"page\", que les lecteurs d’écran annoncent.",
+        "Les séparateurs sont générés en CSS avec un texte vide : ils ne sont pas lus."
+      ]
+    },
+    "avoid": [
+      "Pour la navigation principale : le composant ne gère ni sous-menu ni liste déroulante.",
+      "Préférence : pour une page de premier niveau, un titre suffit."
+    ],
+    "evidence": [
+      "[WCAG 1.3.1 Information et relations](https://www.w3.org/TR/WCAG22/#info-and-relationships)",
+      "[WCAG 1.4.1 Utilisation de la couleur](https://www.w3.org/TR/WCAG22/#use-of-color)",
+      "[WCAG 2.4.7 Visibilité du focus](https://www.w3.org/TR/WCAG22/#focus-visible)",
+      "[Modèle APG « Breadcrumb », W3C WAI-ARIA](https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/)",
+      "Tests : packages/astro/test/Breadcrumb.test.ts"
+    ],
+    "group": "content",
+    "props": [
+      {
+        "description": "Nom accessible du repère de navigation (`aria-label`).",
+        "fallback": "—",
+        "name": "label (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Étapes de la racine à la page courante : `{ label, href? }` ; la dernière est la page courante.",
+        "fallback": "—",
+        "name": "items (obligatoire)",
+        "type": "Item[]"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "breadcrumb",
+    "snippet": "<Breadcrumb\n  label=\"Fil d’Ariane\"\n  items={[\n    { href: '/', label: 'Accueil' },\n    { href: '/components/', label: 'Composants' },\n    { label: 'Breadcrumb' },\n  ]}\n/>",
+    "summary": "Breadcrumb indique l’emplacement de la page, de la racine à la page courante, sous forme de liens.",
+    "title": "Breadcrumb",
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-fg",
+      "--pp-color-focus",
+      "--pp-color-muted",
+      "--pp-font-size-0",
+      "--pp-font-weight-medium",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Montrer le chemin d’une page profonde dans l’arborescence du site.",
+      "Offrir un retour d’un niveau sans passer par le menu principal."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "type vaut button par défaut, sans soumission de formulaire involontaire (Button.test.ts).",
+        "Cible minimale par tokens ; .pp-button ≥ 44 px (targets.spec.ts, forms.spec.ts).",
+        "En mode contraste forcé, le ton primary garde une bordure ButtonText (Button.astro)."
+      ],
+      "integrator": [
+        "Donner un libellé qui décrit l’action seul : « Envoyer », pas « Cliquer ici ».",
+        "Choisir href pour une navigation, et un bouton pour une action.",
+        "Vérifier le contraste des tons dans le thème utilisé : le composant ne le mesure pas."
+      ],
+      "keyboard": [
+        "Un bouton natif reçoit le focus avec Tab et s’active avec Entrée ou Espace.",
+        "Un lien avec href s’active avec Entrée. Le focus visible vient de base.css.",
+        "Un bouton désactivé, ou un lien désactivé sans href, ne reçoit pas le focus."
+      ],
+      "screenReader": [
+        "Le nom accessible vient du contenu du slot : aucun libellé n’est écrit en dur.",
+        "Un bouton désactivé porte l’état natif disabled, exposé aux technologies d’assistance.",
+        "Un lien désactivé porte role=\"link\" et aria-disabled=\"true\"."
+      ]
+    },
+    "avoid": [
+      "Pour une simple navigation sans style de bouton : un lien natif suffit.",
+      "Pour choisir une option parmi plusieurs : utiliser Choice ou Select, pas plusieurs boutons."
+    ],
+    "evidence": [
+      "[WCAG 2.4.7 Focus visible (Focus Visible)](https://www.w3.org/WCAG22/Understanding/focus-visible.html)",
+      "[WCAG 2.5.5 Taille de la cible (AAA) : 44 px pour les contrôles principaux](https://www.w3.org/WCAG22/Understanding/target-size-enhanced.html)",
+      "[WCAG 2.5.8 Taille de la cible (minimum) : 24 px avec espacement](https://www.w3.org/WCAG22/Understanding/target-size-minimum.html)",
+      "[WCAG 4.1.2 Nom, rôle, valeur (Name, Role, Value)](https://www.w3.org/WCAG22/Understanding/name-role-value.html)",
+      "Tests : packages/astro/test/Button.test.ts ; apps/docs/e2e/forms.spec.ts"
+    ],
+    "group": "forms",
+    "props": [
+      {
+        "description": "Importance de l'action (défaut `primary`, l'action principale, une par vue).",
+        "fallback": "—",
+        "name": "tone",
+        "type": "\"primary\" | \"secondary\" | \"quiet\""
+      },
+      {
+        "description": "Taille (défaut `m`) ; les deux respectent la cible de 44 px.",
+        "fallback": "—",
+        "name": "size",
+        "type": "\"m\" | \"l\""
+      },
+      {
+        "description": "Type du bouton ; `submit` seulement dans un formulaire.",
+        "fallback": "'button'",
+        "name": "type",
+        "type": "\"button\" | \"submit\" | \"reset\""
+      },
+      {
+        "description": "Désactive le bouton (ou le lien, rendu `aria-disabled`).",
+        "fallback": "false",
+        "name": "disabled",
+        "type": "boolean"
+      },
+      {
+        "description": "Rend un lien `<a>` stylé en bouton au lieu d'un `<button>` : pour naviguer, pas pour agir.",
+        "fallback": "—",
+        "name": "href",
+        "type": "string"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "button",
+    "snippet": "<Button type=\"submit\">Envoyer</Button>\n<Button tone=\"secondary\">Annuler</Button>\n<Button href=\"/\">Retour à l’accueil</Button>",
+    "summary": "Button rend un bouton natif, ou un lien stylé en bouton quand href est fourni.",
+    "title": "Button",
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-control",
+      "--pp-color-fg",
+      "--pp-color-muted",
+      "--pp-color-on-accent",
+      "--pp-duration-fast",
+      "--pp-easing-standard",
+      "--pp-font-line-height-heading",
+      "--pp-font-size-0",
+      "--pp-font-size-1",
+      "--pp-font-weight-medium",
+      "--pp-radius-control",
+      "--pp-size-control-height",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-m",
+      "--pp-space-s"
+    ],
+    "use": [
+      "Déclencher une action de la page, comme envoyer un formulaire.",
+      "Naviguer vers une adresse avec href : le composant rend alors un lien a.",
+      "Poser une seule action principale par vue, avec tone=\"primary\" (règle de la doc du composant)."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Marges inline automatiques et largeur limitée par --pp-size-measure (Center.test.ts).",
+        "text centre le texte, intrinsic centre les enfants selon leur largeur (Center.astro).",
+        "Aucun attribut style et aucun JavaScript (Center.test.ts)."
+      ],
+      "integrator": [
+        "Choisir as selon le contenu : une seule balise main par page, selon la spécification HTML.",
+        "Tester le texte centré avec un contenu long et des libellés plus longs que ceux de l’exemple.",
+        "Garder gutter sur mobile si le contenu touche les bords de l’écran."
+      ],
+      "keyboard": [
+        "Le composant n’est pas interactif et ne reçoit jamais le focus.",
+        "Les éléments interactifs passés en enfants gardent leur focus natif."
+      ],
+      "screenReader": [
+        "Un div ne porte aucun rôle : le contenu est lu dans l’ordre du DOM.",
+        "as expose le rôle natif de l’élément choisi : main, header, footer, article, section."
+      ]
+    },
+    "avoid": [
+      "Pour un texte long : text centre chaque ligne, ce qui se lit moins bien (convention typographique).",
+      "Pour aligner un bloc à gauche ou à droite : Center n’offre aucune option de ce type."
+    ],
+    "evidence": [
+      "[WCAG 1.4.10 Reflow : marges et largeur limitée ; non testé à 320 px](https://www.w3.org/WCAG22/Understanding/reflow.html)",
+      "Mise en page : layout.spec.ts vérifie marges égales et max-inline-size",
+      "Tests : packages/astro/test/Center.test.ts",
+      "Code source : packages/astro/src/layout/Center.astro"
+    ],
+    "group": "layout",
+    "props": [
+      {
+        "description": "Centre aussi le texte.",
+        "fallback": "false",
+        "name": "text",
+        "type": "boolean"
+      },
+      {
+        "description": "Centre les enfants selon leur largeur propre.",
+        "fallback": "false",
+        "name": "intrinsic",
+        "type": "boolean"
+      },
+      {
+        "description": "Marge intérieure en ligne, pour que le contenu ne touche pas les bords sur mobile.",
+        "fallback": "—",
+        "name": "gutter",
+        "type": "\"s\" | \"m\""
+      },
+      {
+        "description": "Élément HTML rendu (sémantique de la page).",
+        "fallback": "'div'",
+        "name": "as",
+        "type": "\"div\" | \"section\" | \"article\" | \"main\" | \"header\" | \"footer\""
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "center",
+    "snippet": "<Center text gutter=\"m\" as=\"section\">\n  <p>Texte centré, à largeur de lecture.</p>\n</Center>\n<Center intrinsic gutter=\"s\">\n  <button type=\"button\">Action</button>\n</Center>",
+    "summary": "Center centre un bloc dans l’axe inline et limite sa largeur à la mesure de lecture.",
+    "title": "Center",
+    "tokens": ["--pp-size-measure", "--pp-space-m", "--pp-space-s"],
+    "use": [
+      "Centrer une colonne de texte ou une section à largeur de lecture, sur un grand écran.",
+      "Centrer un groupe d’éléments selon leur largeur propre, avec intrinsic."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Contrôle natif et libellé, sans JavaScript et sans texte en dur.",
+        "Le libellé occupe une zone au moins égale à la taille minimale de cible.",
+        "Le focus visible est hérité de @paulperigault/css."
+      ],
+      "integrator": [
+        "Envelopper un groupe de boutons radio dans un fieldset et un legend.",
+        "Donner à chaque radio d’un groupe le même name et un id distinct.",
+        "Relier le message d’erreur par describedBy quand le choix est refusé."
+      ],
+      "keyboard": [
+        "Tab atteint chaque case ou bouton radio, dans l’ordre du document.",
+        "Espace coche une case ; les flèches changent le bouton radio du groupe."
+      ],
+      "screenReader": [
+        "Le libellé relié par for et id donne le nom accessible du contrôle.",
+        "Dans un fieldset, le legend est annoncé avant les choix du groupe."
+      ]
+    },
+    "avoid": [
+      "Pour un réglage qui prend effet tout de suite : préférence pour Switch.",
+      "Pour un choix parmi de nombreuses options : préférence pour Select."
+    ],
+    "evidence": [
+      "[WCAG 1.3.1 Information et relations, niveau A](https://www.w3.org/TR/WCAG22/#info-and-relationships)",
+      "[WCAG 4.1.2 Nom, rôle, valeur, niveau A](https://www.w3.org/TR/WCAG22/#name-role-value)",
+      "WCAG 2.4.7 Focus visible, niveau AA : apps/docs/e2e/forms.spec.ts",
+      "WCAG 2.5.8 Taille de la cible (minimum), niveau AA : apps/docs/e2e/forms.spec.ts",
+      "Tests unitaires : packages/astro/test/Choice.test.ts",
+      "Code source : packages/astro/src/forms/Choice.astro"
+    ],
+    "group": "forms",
+    "props": [
+      {
+        "description": "Case à cocher (choix multiples) ou bouton radio (un seul choix par `name`).",
+        "fallback": "—",
+        "name": "type (obligatoire)",
+        "type": "\"checkbox\" | \"radio\""
+      },
+      {
+        "description": "Identifiant du contrôle, relié à son libellé.",
+        "fallback": "—",
+        "name": "id (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Nom envoyé avec le formulaire.",
+        "fallback": "—",
+        "name": "name (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Valeur envoyée quand le choix est coché.",
+        "fallback": "—",
+        "name": "value (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Libellé visible, cliquable, nom accessible du contrôle.",
+        "fallback": "—",
+        "name": "label (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Coché au chargement.",
+        "fallback": "false",
+        "name": "checked",
+        "type": "boolean"
+      },
+      {
+        "description": "Désactive le contrôle.",
+        "fallback": "false",
+        "name": "disabled",
+        "type": "boolean"
+      },
+      {
+        "description": "Identifiant(s) de l'aide ou du message d'erreur associé (`aria-describedby`).",
+        "fallback": "—",
+        "name": "describedBy",
+        "type": "string"
+      }
+    ],
+    "slug": "choice",
+    "snippet": "<Choice type=\"checkbox\" id=\"news\" name=\"news\" value=\"oui\" label=\"Recevoir les notes\" />",
+    "summary": "Choice rend une case à cocher ou un bouton radio natif, suivi d’un libellé cliquable.",
+    "title": "Choice",
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-fg",
+      "--pp-color-muted",
+      "--pp-size-control-height",
+      "--pp-size-target-min",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Cocher un réglage indépendant, ou plusieurs options à la fois, avec type=\"checkbox\".",
+      "Choisir une seule valeur dans un groupe fermé, avec type=\"radio\" dans un fieldset."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "list-style: none sur ul et ol, avec role=\"list\" explicite.",
+        "Espacement par gap ; les enfants n’ont pas de marge."
+      ],
+      "integrator": [
+        "Donner un label à chaque nav si la page en contient plusieurs.",
+        "Dimensionner les liens et boutons à au moins --pp-target-min : le composant ne le fait pas."
+      ],
+      "keyboard": ["Le composant ne prend pas le focus et ne change pas l’ordre de tabulation."],
+      "screenReader": [
+        "Avec as=\"ul\" ou as=\"ol\", role=\"list\" est posé : VoiceOver garde la sémantique de liste.",
+        "Avec as=\"nav\" et label, le repère est nommé ; sans label, il est anonyme."
+      ]
+    },
+    "avoid": [
+      "Pour des blocs longs ou des paragraphes lus dans l’ordre : utiliser Stack.",
+      "Pour des colonnes de même largeur : utiliser Grid."
+    ],
+    "evidence": [
+      "[WCAG 1.3.1 Information et relations (niveau A) : la liste reste balisée ul ou ol.](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html)",
+      "[WCAG 1.4.10 Reflow (niveau AA) : le passage à la ligne évite le défilement horizontal.](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html)",
+      "Tests : packages/astro/test/Cluster.test.ts, apps/docs/e2e/layout.spec.ts (gap)",
+      "Source citée dans Cluster.astro : Scott O’Hara, « \"Fixing\" Lists », 2019."
+    ],
+    "group": "layout",
+    "props": [
+      {
+        "description": "Espacement entre les enfants (token `--pp-space-*`).",
+        "fallback": "'s'",
+        "name": "space",
+        "type": "\"xs\" | \"s\" | \"m\" | \"l\" | \"xl\""
+      },
+      {
+        "description": "Répartition des enfants dans l'axe en ligne.",
+        "fallback": "'start'",
+        "name": "justify",
+        "type": "\"start\" | \"center\" | \"end\" | \"between\""
+      },
+      {
+        "description": "Alignement des enfants dans l'axe de bloc.",
+        "fallback": "'center'",
+        "name": "align",
+        "type": "\"start\" | \"center\" | \"end\" | \"baseline\""
+      },
+      {
+        "description": "Élément rendu ; avec `ul` ou `ol`, les enfants doivent être des `<li>`.",
+        "fallback": "'div'",
+        "name": "as",
+        "type": "\"div\" | \"ul\" | \"ol\" | \"nav\""
+      },
+      {
+        "description": "Nom accessible, rendu en `aria-label` (utile avec `as=\"nav\"`).",
+        "fallback": "—",
+        "name": "label",
+        "type": "string"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "cluster",
+    "snippet": "<Cluster as=\"nav\" label=\"Liens de l’exemple Cluster\" justify=\"center\" space=\"l\">\n  <a href=\"#accessibilite\">Accessibilité</a>\n  <a href=\"#proprietes\">Propriétés</a>\n</Cluster>",
+    "summary": "Cluster aligne ses enfants sur une ligne, les fait passer à la suivante au besoin et garde le même écart entre eux.",
+    "title": "Cluster",
+    "tokens": ["--pp-space-l", "--pp-space-m", "--pp-space-s", "--pp-space-xl", "--pp-space-xs"],
+    "use": [
+      "Grouper des étiquettes, des boutons ou des liens courts qui doivent rester côte à côte.",
+      "Donner une navigation secondaire courte, avec as=\"nav\" et un label."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Centrage par margin-inline: auto et largeur maximale via --pp-size-page ou --pp-size-measure.",
+        "Gouttière par padding-inline et tokens --pp-space-*."
+      ],
+      "integrator": [
+        "Un seul main par page : choisir as en conséquence.",
+        "Vérifier le contenu à 320 px : la gouttière ne doit pas réduire la place utile à rien."
+      ],
+      "keyboard": ["Le composant ne prend pas le focus et ne change pas l’ordre de tabulation."],
+      "screenReader": [
+        "Avec as=\"main\", le repère main est exposé ; as=\"section\" ne crée un repère que s’il porte un nom.",
+        "Le composant n’ajoute ni rôle ni libellé."
+      ]
+    },
+    "avoid": [
+      "Pour une mise en page à plusieurs colonnes : utiliser Grid, Sidebar ou Switcher.",
+      "Pour centrer un bloc de texte seul, sans gouttière : utiliser Center."
+    ],
+    "evidence": [
+      "[WCAG 1.4.10 Reflow (niveau AA) : test sur chaque page construite.](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html)",
+      "Tests : packages/astro/test/Container.test.ts, apps/docs/e2e/layout.spec.ts (largeur)",
+      "Code source : packages/astro/src/layout/Container.astro"
+    ],
+    "group": "layout",
+    "props": [
+      {
+        "description": "Largeur maximale : la page (`--pp-size-page`) ou la mesure de lecture (`--pp-size-measure`).",
+        "fallback": "'page'",
+        "name": "width",
+        "type": "\"page\" | \"measure\""
+      },
+      {
+        "description": "Marge intérieure en ligne, pour que le contenu ne touche pas les bords.",
+        "fallback": "'s'",
+        "name": "gutter",
+        "type": "\"s\" | \"m\" | \"l\""
+      },
+      {
+        "description": "Élément HTML rendu (sémantique de la page).",
+        "fallback": "'div'",
+        "name": "as",
+        "type": "\"div\" | \"section\" | \"main\" | \"header\" | \"footer\" | \"article\""
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "container",
+    "snippet": "<Container as=\"section\" width=\"measure\" gutter=\"l\">\n  <h2>Titre de la section</h2>\n  <p>Texte limité à la mesure de lecture.</p>\n</Container>",
+    "summary": "Container centre son contenu dans l’axe d’inline, limite sa largeur et réserve une gouttière de chaque côté.",
+    "title": "Container",
+    "tokens": [
+      "--pp-size-measure",
+      "--pp-size-page",
+      "--pp-space-l",
+      "--pp-space-m",
+      "--pp-space-s"
+    ],
+    "use": [
+      "Borner la largeur d’une page ou d’une section, centrée horizontalement.",
+      "Limiter un texte à la mesure de lecture avec width=\"measure\"."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Élément dialog natif, ouvert par show-modal sans script.",
+        "closedby=\"any\" : un clic hors de la boîte la ferme.",
+        "Aucun autofocus et aucun attribut style."
+      ],
+      "integrator": [
+        "Fournir un closeLabel traduit et un title précis.",
+        "Poser InvokerFallback une fois par page pour les navigateurs sans Invoker Commands.",
+        "Donner au déclencheur un nom visible : le composant ne le crée pas."
+      ],
+      "keyboard": [
+        "Entrée sur le déclencheur ouvre la boîte.",
+        "Échap ferme la boîte, et le focus revient au déclencheur.",
+        "Le focus initial va au premier élément focalisable, choisi par le navigateur."
+      ],
+      "screenReader": [
+        "La boîte est nommée par son titre, relié par aria-labelledby.",
+        "Le bouton de fermeture porte le libellé closeLabel.",
+        "Le rôle dialog est implicite : le composant n’ajoute ni rôle ni aria-modal."
+      ]
+    },
+    "avoid": [
+      "Pour une information non bloquante : l’afficher dans la page, sans boîte modale.",
+      "Pour un contenu long : une page dédiée se lit mieux qu’une boîte (préférence)."
+    ],
+    "evidence": [
+      "[WCAG 2.1.2 Pas de piège au clavier](https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html)",
+      "[WCAG 4.1.2 Nom, rôle, valeur](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html)",
+      "Tests : packages/astro/test/Dialog.test.ts",
+      "Tests e2e : apps/docs/e2e/dialog.spec.ts"
+    ],
+    "group": "feedback",
+    "props": [
+      {
+        "description": "Identifiant du `<dialog>`, visé par `commandfor` sur le déclencheur.",
+        "fallback": "—",
+        "name": "id (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Titre visible, rendu en `<h2>` et nom accessible (`aria-labelledby`).",
+        "fallback": "—",
+        "name": "title (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Libellé visible du bouton de fermeture, fourni par le site (traduit).",
+        "fallback": "—",
+        "name": "closeLabel (obligatoire)",
+        "type": "string"
+      }
+    ],
+    "slug": "dialog",
+    "snippet": "<InvokerFallback />\n<button type=\"button\" commandfor=\"confirm\" command=\"show-modal\">Supprimer</button>\n<Dialog id=\"confirm\" title=\"Supprimer le brouillon\" closeLabel=\"Annuler\">\n  <p>Le brouillon sera supprimé.</p>\n  <form slot=\"actions\" method=\"dialog\">\n    <button type=\"submit\" value=\"delete\">Supprimer</button>\n  </form>\n</Dialog>",
+    "summary": "Dialog ouvre une boîte modale native, sans script, depuis un bouton relié par commandfor.",
+    "title": "Dialog",
+    "tokens": [
+      "--pp-color-control",
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-surface",
+      "--pp-duration-base",
+      "--pp-easing-standard",
+      "--pp-font-size-2",
+      "--pp-radius-control",
+      "--pp-radius-surface",
+      "--pp-size-control-height",
+      "--pp-size-measure",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-m",
+      "--pp-space-s"
+    ],
+    "use": [
+      "Confirmer une action difficile à annuler, comme une suppression.",
+      "Bloquer la page derrière jusqu’à une réponse : le reste de la page devient inerte."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Signes +, - et espace visibles : l’information ne repose pas sur la couleur seule.",
+        "Sémantique native : ins pour l’ajout, del pour la suppression.",
+        "Le texte des lignes est échappé ; aucun JavaScript, aucun attribut style."
+      ],
+      "integrator": [
+        "Fournir addedLabel et removedLabel dans la langue du site.",
+        "Écrire une légende qui décrit la modification : elle nomme la région défilante.",
+        "Passer du texte brut dans text : le HTML n’est pas interprété."
+      ],
+      "keyboard": [
+        "La région défilante reçoit le focus (tabindex=\"0\") : un contenu large se parcourt au clavier.",
+        "Le contour de focus visible entoure la région entière, pas chaque ligne."
+      ],
+      "screenReader": [
+        "La région est nommée par la légende (aria-label reprend caption).",
+        "Chaque ligne ajoutée ou supprimée commence par son libellé, masqué visuellement.",
+        "Le signe visible est masqué aux lecteurs d’écran (aria-hidden=\"true\")."
+      ]
+    },
+    "avoid": [
+      "Pour comparer deux images : le composant ne traite que du texte.",
+      "Pour un historique long : le composant rend toutes les lignes, sans repli ni pagination."
+    ],
+    "evidence": [
+      "[WCAG 1.4.1 Utilisation de la couleur](https://www.w3.org/TR/WCAG22/#use-of-color)",
+      "[WCAG 2.1.1 Clavier](https://www.w3.org/TR/WCAG22/#keyboard)",
+      "Tests : packages/astro/test/Diff.test.ts"
+    ],
+    "group": "content",
+    "props": [
+      {
+        "description": "Légende visible, reprise comme nom accessible de la région défilante.",
+        "fallback": "—",
+        "name": "caption (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Lignes du diff : `{ kind: 'added' | 'removed' | 'context', text }`.",
+        "fallback": "—",
+        "name": "lines (obligatoire)",
+        "type": "Line[]"
+      },
+      {
+        "description": "Libellé lu avant chaque ligne ajoutée.",
+        "fallback": "—",
+        "name": "addedLabel (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Libellé lu avant chaque ligne supprimée.",
+        "fallback": "—",
+        "name": "removedLabel (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "diff",
+    "snippet": "---\nimport Diff from '@paulperigault/astro/Diff.astro';\n\nconst lines: { kind: 'add' | 'del' | 'ctx'; text: string }[] = [\n  { kind: 'del', text: '  return items.length;' },\n  { kind: 'add', text: '  return items.reduce((sum, item) => sum + item.price, 0);' },\n];\n---\n\n<Diff\n  caption=\"Calcul du total d’un panier\"\n  lines={lines}\n  addedLabel=\"Ligne ajoutée\"\n  removedLabel=\"Ligne supprimée\"\n/>",
+    "summary": "Diff affiche une différence de texte ligne à ligne, en chasse fixe, avec un signe par ligne.",
+    "title": "Diff",
+    "tokens": [
+      "--pp-color-focus",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-color-status-failed",
+      "--pp-color-status-passed",
+      "--pp-color-surface",
+      "--pp-font-family-mono",
+      "--pp-font-line-height-body",
+      "--pp-font-size--1",
+      "--pp-font-weight-semibold",
+      "--pp-radius-control",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-rule",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Montrer une modification de code ou de texte que le lecteur doit comparer.",
+      "Garder le sens visible sans couleur : chaque ligne porte son signe, + ou -."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Libellé relié par for et id ; identifiants <id>-hint et <id>-error (Field.test.ts).",
+        "Icône d’erreur décorative : aria-hidden=\"true\" et focusable=\"false\" (Field.test.ts).",
+        "Erreur signalée par le texte et l’icône, jamais par la seule couleur (Field.astro)."
+      ],
+      "integrator": [
+        "Poser le même id sur Field et sur le contrôle, puis aria-describedby et aria-invalid.",
+        "Fournir requiredLabel et errorLabel traduits : le composant n’embarque aucun texte.",
+        "Rédiger l’erreur avec la correction attendue, pas seulement « Champ invalide »."
+      ],
+      "keyboard": [
+        "Le champ n’ajoute aucun arrêt de tabulation : seul le contrôle enveloppé reçoit le focus.",
+        "Le libellé est lié par for : un clic sur le libellé place le focus dans le champ."
+      ],
+      "screenReader": [
+        "Le libellé nomme le contrôle, et la mention obligatoire fait partie du même libellé.",
+        "L’indication et l’erreur sont lues avec le champ, quand l’intégrateur pose aria-describedby.",
+        "L’erreur n’est pas une région aria-live : elle n’est pas annoncée à son apparition."
+      ]
+    },
+    "avoid": [
+      "Pour un contrôle sans libellé visible : Field exige la prop label.",
+      "Pour une erreur qui concerne tout le formulaire : Field relie le message à un seul contrôle."
+    ],
+    "evidence": [
+      "[WCAG 1.3.1 Information et relations (Info and Relationships)](https://www.w3.org/WCAG22/Understanding/info-and-relationships.html)",
+      "[WCAG 1.4.1 Utilisation de la couleur (Use of Color)](https://www.w3.org/WCAG22/Understanding/use-of-color.html)",
+      "[WCAG 3.3.1 Identification des erreurs (Error Identification)](https://www.w3.org/WCAG22/Understanding/error-identification.html)",
+      "[WCAG 3.3.2 Étiquettes ou instructions (Labels or Instructions)](https://www.w3.org/WCAG22/Understanding/labels-or-instructions.html)",
+      "Tests : packages/astro/test/Field.test.ts ; apps/docs/e2e/forms.spec.ts"
+    ],
+    "group": "forms",
+    "props": [
+      {
+        "description": "Champ obligatoire : `requiredLabel` est alors exigé et accolé au libellé.",
+        "fallback": "—",
+        "name": "required",
+        "type": "boolean"
+      },
+      {
+        "description": "Texte visible accolé au libellé, par exemple « obligatoire » : jamais un « * » seul.",
+        "fallback": "—",
+        "name": "requiredLabel",
+        "type": "string"
+      },
+      {
+        "description": "Id du contrôle enveloppé ; dérive aussi `<id>-hint` et `<id>-error`.",
+        "fallback": "—",
+        "name": "id (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Libellé visible du champ.",
+        "fallback": "—",
+        "name": "label (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Indication affichée sous le libellé, reliée par `aria-describedby`.",
+        "fallback": "—",
+        "name": "hint",
+        "type": "string"
+      },
+      {
+        "description": "Message d'erreur ; s'il est présent, le champ passe en état invalide.",
+        "fallback": "—",
+        "name": "error",
+        "type": "string"
+      },
+      {
+        "description": "Préfixe de l'erreur, par exemple « Erreur : ». Absent : aucun préfixe rendu.",
+        "fallback": "—",
+        "name": "errorLabel",
+        "type": "string"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "field",
+    "snippet": "<Field id=\"courriel\" label=\"Courriel\" hint=\"Adresse professionnelle.\" required requiredLabel=\"obligatoire\">\n  <Input id=\"courriel\" name=\"email\" type=\"email\" required describedBy=\"courriel-hint\" />\n</Field>",
+    "summary": "Field rend le libellé, l’indication et l’erreur d’un contrôle, et les relie au contrôle par son identifiant.",
+    "title": "Field",
+    "tokens": [
+      "--pp-color-muted",
+      "--pp-color-status-failed",
+      "--pp-font-weight-bold",
+      "--pp-font-weight-medium",
+      "--pp-font-weight-regular",
+      "--pp-font-weight-semibold",
+      "--pp-space-3xs",
+      "--pp-space-s"
+    ],
+    "use": [
+      "Donner un libellé visible et une indication à un champ de formulaire.",
+      "Afficher une erreur sous un champ, avec errorLabel pour le préfixe.",
+      "Marquer un champ obligatoire avec requiredLabel, texte visible accolé au libellé."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Éléments figure, figcaption et small, sans texte en dur ; zéro JavaScript.",
+        "Légende vide refusée au rendu (test Figure.test.ts)."
+      ],
+      "integrator": [
+        "Écrire un alt utile dans Photo : la légende ne le remplace pas.",
+        "Choisir decorative sur Photo seulement si la légende porte déjà le sens de l’image."
+      ],
+      "keyboard": ["Figure et figcaption ne sont pas interactifs : ils ne prennent pas le focus."],
+      "screenReader": [
+        "La légende est liée au média par l’élément figcaption, dans le même figure.",
+        "Le crédit est un élément small, lu à la suite de la légende."
+      ]
+    },
+    "avoid": [
+      "Pour une image sans légende : utiliser Photo seul, Figure refuse une légende vide.",
+      "Pour décrire l’image : la légende ne remplace pas l’alt de Photo."
+    ],
+    "evidence": [
+      "[Élément figure, spécification HTML (WHATWG)](https://html.spec.whatwg.org/multipage/grouping-content.html#the-figure-element)",
+      "[WCAG 1.1.1 Contenu non textuel (A)](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html)",
+      "Tests : packages/astro/test/Figure.test.ts"
+    ],
+    "group": "media",
+    "props": [
+      {
+        "description": "Légende, obligatoire et non vide.",
+        "fallback": "—",
+        "name": "caption (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Crédit complet (ex. « Photo : … »).",
+        "fallback": "—",
+        "name": "credit",
+        "type": "string"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "figure",
+    "snippet": "<Figure caption=\"Rectangle bleu clair au-dessus d’une bande grise.\" credit=\"Image : générée\">\n  <Photo src={photo} alt=\"Rectangle bleu clair au-dessus d’une bande grise\" ratio=\"landscape\" />\n</Figure>",
+    "summary": "Figure associe un média à sa légende par les éléments figure et figcaption, avec un crédit facultatif.",
+    "title": "Figure",
+    "tokens": ["--pp-color-muted", "--pp-font-size--1", "--pp-size-measure", "--pp-space-2xs"],
+    "use": [
+      "Légender une image qui apporte une information, avec figcaption relié au média.",
+      "Donner la source d’une image avec credit, affiché en petit après la légende."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Grille en container queries, sans JavaScript : une, deux puis trois colonnes.",
+        "Dialogue natif modal, fermé par son bouton, par Échap ou par clic hors de la boîte.",
+        "Vignette agrandie d’une cible d’au moins --pp-size-target-min."
+      ],
+      "integrator": [
+        "Fournir les libellés labels.open et labels.close, traduits par le site.",
+        "Écrire un alt par image : Gallery ne le génère pas."
+      ],
+      "keyboard": [
+        "Chaque vignette agrandie est un bouton natif : Tab l’atteint, Entrée ouvre le dialogue.",
+        "Échap ferme le dialogue, et le focus revient sur la vignette."
+      ],
+      "screenReader": [
+        "role=\"list\" garde la sémantique de liste, même sans puces.",
+        "Le bouton porte « Agrandir : » suivi de l’alt ; le dialogue est nommé par l’alt."
+      ]
+    },
+    "avoid": [
+      "Pour une seule image : utiliser Photo, ou Figure si l’image a une légende.",
+      "Pour un agrandissement sur un navigateur sans Invoker Commands : poser InvokerFallback."
+    ],
+    "evidence": [
+      "[WCAG 2.1.1 Clavier (A)](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html)",
+      "[WCAG 2.5.8 Taille de la cible (minimum) (AA)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)",
+      "[WCAG 4.1.2 Nom, rôle, valeur (A)](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html)",
+      "Tests : apps/docs/e2e/gallery.spec.ts (clavier, axe)",
+      "Tests : apps/docs/e2e/matrix/targets.spec.ts",
+      "Tests : packages/astro/test/Gallery.test.ts"
+    ],
+    "group": "media",
+    "props": [
+      {
+        "description": "Préfixe des identifiants des dialogues.",
+        "fallback": "—",
+        "name": "id (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Images : `{ src, alt, caption? }` ; l'alternative est obligatoire.",
+        "fallback": "—",
+        "name": "items (obligatoire)",
+        "type": "GalleryItem[]"
+      },
+      {
+        "description": "Proportion des vignettes.",
+        "fallback": "'square'",
+        "name": "ratio",
+        "type": "\"portrait\" | \"square\" | \"landscape\" | \"wide\""
+      },
+      {
+        "description": "Chaque vignette ouvre l'image entière dans un dialogue natif.",
+        "fallback": "—",
+        "name": "enlarge",
+        "type": "boolean"
+      },
+      {
+        "description": "Libellés `{ open, close }` des boutons d'agrandissement, fournis par le site.",
+        "fallback": "—",
+        "name": "labels",
+        "type": "GalleryLabels"
+      }
+    ],
+    "slug": "gallery",
+    "snippet": "<Gallery\n  id=\"galerie\"\n  items={[{ src: photo, alt: 'Description de l’image' }]}\n  enlarge\n  labels={{ open: 'Agrandir', close: 'Fermer' }}\n/>",
+    "summary": "Gallery range des images en une, deux ou trois colonnes selon la largeur de son conteneur.",
+    "title": "Gallery",
+    "tokens": [
+      "--pp-color-bg",
+      "--pp-color-control",
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-media-radius",
+      "--pp-radius-control",
+      "--pp-radius-surface",
+      "--pp-size-control-height",
+      "--pp-size-measure",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-3xl",
+      "--pp-space-m",
+      "--pp-space-s",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Présenter plusieurs images d’une même série, chacune avec son texte alternatif.",
+      "Agrandir chaque vignette dans un dialogue natif avec enlarge et labels."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Colonnes en repeat(auto-fit, minmax(…, 1fr)), sans media query.",
+        "Enfants directs avec min-inline-size: 0, pour que les colonnes puissent rétrécir."
+      ],
+      "integrator": [
+        "Tester la largeur minimale sur mobile : une colonne trop étroite coupe le texte.",
+        "Vérifier le zoom à 400 % sur les blocs de la grille."
+      ],
+      "keyboard": [
+        "Le composant ne réordonne pas les enfants : l’ordre de tabulation suit le DOM."
+      ],
+      "screenReader": [
+        "Avec as=\"ul\", la liste reste lue comme liste : les puces ne sont pas retirées.",
+        "Le composant n’ajoute ni rôle ni libellé."
+      ]
+    },
+    "avoid": [
+      "Pour deux zones de tailles différentes : utiliser Sidebar.",
+      "Pour des blocs qui se lisent en colonne, dans un ordre strict : utiliser Stack."
+    ],
+    "evidence": [
+      "[WCAG 1.3.2 Ordre de lecture significatif (niveau A) : ordre visuel égal à l’ordre du DOM.](https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html)",
+      "[WCAG 1.4.10 Reflow (niveau AA) : test sur chaque page construite.](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html)",
+      "Tests : packages/astro/test/Grid.test.ts, apps/docs/e2e/layout.spec.ts (display grid)",
+      "Code source : packages/astro/src/layout/Grid.astro"
+    ],
+    "group": "layout",
+    "props": [
+      {
+        "description": "Espacement entre les enfants (token `--pp-space-*`).",
+        "fallback": "'m'",
+        "name": "space",
+        "type": "\"xs\" | \"s\" | \"m\" | \"l\" | \"xl\""
+      },
+      {
+        "description": "Largeur minimale d'une colonne avant passage à la ligne (fraction de la mesure).",
+        "fallback": "'medium'",
+        "name": "min",
+        "type": "\"narrow\" | \"medium\" | \"wide\""
+      },
+      {
+        "description": "Élément rendu ; avec `ul` ou `ol`, les enfants doivent être des `<li>`.",
+        "fallback": "'div'",
+        "name": "as",
+        "type": "\"div\" | \"ul\" | \"ol\" | \"section\""
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "grid",
+    "snippet": "<Grid as=\"ul\" min=\"narrow\" space=\"l\">\n  <li>Premier élément</li>\n  <li>Deuxième élément</li>\n</Grid>",
+    "summary": "Grid répartit ses enfants en colonnes de largeur minimale donnée, sans media query : le nombre de colonnes suit la place.",
+    "title": "Grid",
+    "tokens": [
+      "--pp-size-measure",
+      "--pp-space-l",
+      "--pp-space-m",
+      "--pp-space-s",
+      "--pp-space-xl",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Présenter des cartes ou des blocs de même importance dont le nombre varie avec la largeur.",
+      "Remplacer des media queries qui ne servent qu’à changer le nombre de colonnes."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "id, name, type, autocomplete, inputmode et enterkeyhint transmis tels quels (Input.test.ts).",
+        "Aucun texte en dur : le composant n’écrit ni libellé ni message.",
+        "Hauteur minimale au plus grand de control-height et target-min (forms.spec.ts)."
+      ],
+      "integrator": [
+        "Relier chaque champ à un label par for.",
+        "Choisir autocomplete selon la donnée saisie : WCAG 1.3.5 demande un jeton exact.",
+        "Relier le message d’erreur par describedBy, et poser invalid quand la saisie est fausse."
+      ],
+      "keyboard": [
+        "Champ natif : Tab l’atteint, et la saisie reste gérée par le navigateur.",
+        "Le focus visible vient de base.css, par :focus-visible."
+      ],
+      "screenReader": [
+        "Le nom vient du label for : le placeholder ne sert jamais de nom.",
+        "invalid pose aria-invalid=\"true\", annoncé par les lecteurs d’écran (Input.astro).",
+        "describedBy relie le message d’erreur ; l’intégrateur fournit l’identifiant."
+      ]
+    },
+    "avoid": [
+      "Pour plusieurs lignes de texte : utiliser Textarea.",
+      "Pour une liste de valeurs limitée : utiliser Select.",
+      "Pour remplacer le libellé par un placeholder : un placeholder n’est pas un libellé."
+    ],
+    "evidence": [
+      "[WCAG 1.3.5 Identifier l’objet de la saisie (Identify Input Purpose)](https://www.w3.org/WCAG22/Understanding/identify-input-purpose.html)",
+      "[WCAG 2.5.8 Taille de la cible (minimum) : 24 px avec espacement](https://www.w3.org/WCAG22/Understanding/target-size-minimum.html)",
+      "[WCAG 3.3.2 Étiquettes ou instructions (Labels or Instructions)](https://www.w3.org/WCAG22/Understanding/labels-or-instructions.html)",
+      "[WCAG 4.1.2 Nom, rôle, valeur (Name, Role, Value)](https://www.w3.org/WCAG22/Understanding/name-role-value.html)",
+      "Tests : packages/astro/test/Input.test.ts ; apps/docs/e2e/forms.spec.ts"
+    ],
+    "group": "forms",
+    "props": [
+      {
+        "description": "Identifiant, visé par `<label for>`.",
+        "fallback": "—",
+        "name": "id (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Nom envoyé avec le formulaire.",
+        "fallback": "—",
+        "name": "name (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Type de saisie ; choisit aussi le clavier virtuel sur mobile.",
+        "fallback": "'text'",
+        "name": "type",
+        "type": "\"number\" | \"text\" | \"email\" | \"url\" | \"tel\" | \"search\" | \"password\""
+      },
+      {
+        "description": "Valeur initiale.",
+        "fallback": "—",
+        "name": "value",
+        "type": "string | number"
+      },
+      {
+        "description": "Saisie obligatoire (`required`).",
+        "fallback": "false",
+        "name": "required",
+        "type": "boolean"
+      },
+      {
+        "description": "Désactive le champ.",
+        "fallback": "false",
+        "name": "disabled",
+        "type": "boolean"
+      },
+      {
+        "description": "Jeton `autocomplete` (WCAG 1.3.5), par exemple `email` ou `name`.",
+        "fallback": "—",
+        "name": "autocomplete",
+        "type": "string"
+      },
+      {
+        "description": "Clavier virtuel à afficher quand `type` ne suffit pas.",
+        "fallback": "—",
+        "name": "inputmode",
+        "type": "\"text\" | \"email\" | \"url\" | \"tel\" | \"search\" | \"none\" | \"numeric\" | \"decimal\""
+      },
+      {
+        "description": "Libellé de la touche Entrée du clavier virtuel (`enterkeyhint`), par exemple `next`.",
+        "fallback": "—",
+        "name": "enterkeyhint",
+        "type": "\"search\" | \"enter\" | \"done\" | \"go\" | \"next\" | \"previous\" | \"send\""
+      },
+      {
+        "description": "Identifiants (séparés par des espaces) des éléments d'aide ou d'erreur.",
+        "fallback": "—",
+        "name": "describedBy",
+        "type": "string"
+      },
+      {
+        "description": "Pose `aria-invalid=\"true\"` ; à relier au message d'erreur par `describedBy`.",
+        "fallback": "false",
+        "name": "invalid",
+        "type": "boolean"
+      },
+      {
+        "description": "Exemple de saisie ; jamais à la place du libellé.",
+        "fallback": "—",
+        "name": "placeholder",
+        "type": "string"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "input",
+    "snippet": "<label for=\"courriel\">Adresse e-mail</label>\n<Input id=\"courriel\" name=\"courriel\" type=\"email\" autocomplete=\"email\" invalid describedBy=\"courriel-message\" />\n<p id=\"courriel-message\">Il manque le domaine après l’arobase.</p>",
+    "summary": "Input est un champ de saisie natif sur une ligne, relié à son libellé par son identifiant.",
+    "title": "Input",
+    "tokens": [
+      "--pp-color-bg",
+      "--pp-color-control",
+      "--pp-color-fg",
+      "--pp-color-muted",
+      "--pp-color-status-failed",
+      "--pp-color-surface",
+      "--pp-font-line-height-body",
+      "--pp-font-size-0",
+      "--pp-radius-control",
+      "--pp-size-control-height",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-3xs",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Saisir une donnée courte : nom, courriel, téléphone ou recherche.",
+      "Indiquer type et autocomplete pour le bon clavier et le remplissage automatique.",
+      "Signaler une erreur sur le champ, avec invalid et describedBy."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "alt est obligatoire : une chaîne vide ou blanche lève une erreur au build.",
+        "alt=\"\" n’est posé qu’avec decorative, jamais par défaut.",
+        "width et height sont toujours rendus.",
+        "priority : loading=\"eager\" et fetchpriority=\"high\" ; sinon loading=\"lazy\" et decoding=\"async\".",
+        "Aucun attribut style."
+      ],
+      "integrator": [
+        "Décrire dans alt ce que l’image apporte : le composant ne vérifie pas le sens.",
+        "Réserver priority à l’image principale, une seule par page.",
+        "Choisir layout selon l’emplacement : il règle sizes et les largeurs générées.",
+        "Entourer l’image d’un lien seulement si le lien a son propre nom accessible."
+      ],
+      "keyboard": [
+        "Photo ne rend aucun élément interactif : rien à atteindre au clavier.",
+        "Le fond d’attente est masqué (aria-hidden=\"true\", focusable=\"false\") : il n’est pas focalisable."
+      ],
+      "screenReader": [
+        "Le texte de l’attribut alt est lu comme nom de l’image.",
+        "Avec decorative, alt=\"\" : l’image est ignorée par les lecteurs d’écran.",
+        "Le fond d’attente à la couleur dominante est masqué aux technologies d’assistance."
+      ]
+    },
+    "avoid": [
+      "Pour une URL distante : le composant refuse une chaîne et exige un import local.",
+      "Pour une légende ou un crédit : utiliser Figure, qui enveloppe une image.",
+      "Pour une galerie : utiliser Gallery, qui gère plusieurs images et leurs libellés."
+    ],
+    "evidence": [
+      "[WCAG 1.1.1 Contenu non textuel](https://www.w3.org/TR/WCAG22/#non-text-content)",
+      "Core Web Vitals : CLS sous 0,1 (convention Google)",
+      "LCP et CLS sur la page photo : apps/docs/e2e/media.spec.ts",
+      "Tests : packages/astro/test/Photo.test.ts"
+    ],
+    "group": "media",
+    "props": [
+      {
+        "description": "Texte alternatif : ce que l'image apporte au contenu. Vide : erreur au build.",
+        "fallback": "—",
+        "name": "alt",
+        "type": "string"
+      },
+      {
+        "description": "Image purement décorative, rendue avec `alt=\"\"`. Exclusif de `alt`.",
+        "fallback": "—",
+        "name": "decorative",
+        "type": "true"
+      },
+      {
+        "description": "Image importée localement (`import photo from './photo.jpg'`).",
+        "fallback": "—",
+        "name": "src (obligatoire)",
+        "type": "ImageMetadata"
+      },
+      {
+        "description": "Proportion du cadre ; absente, l'image garde sa proportion propre.",
+        "fallback": "—",
+        "name": "ratio",
+        "type": "\"portrait\" | \"square\" | \"landscape\" | \"wide\""
+      },
+      {
+        "description": "Point gardé visible quand le cadre recadre l'image.",
+        "fallback": "'center'",
+        "name": "focal",
+        "type": "\"center\" | \"top\" | \"bottom\" | \"left\" | \"right\" | \"top-left\" | \"top-right\" | \"bottom-left\" | \"bottom-right\""
+      },
+      {
+        "description": "Image principale de la page (LCP) : chargée tout de suite, en priorité.",
+        "fallback": "false",
+        "name": "priority",
+        "type": "boolean"
+      },
+      {
+        "description": "Emplacement dans la page ; règle `sizes` et les largeurs générées.",
+        "fallback": "'measure'",
+        "name": "layout",
+        "type": "\"page\" | \"measure\" | \"half\" | \"third\" | \"avatar\""
+      },
+      {
+        "description": "Nature de l'image ; règle la qualité et le format de repli (JPEG pour une photo, PNG sinon).",
+        "fallback": "'photo'",
+        "name": "kind",
+        "type": "\"photo\" | \"capture\" | \"illustration\""
+      },
+      {
+        "description": "Filet autour du cadre (captures sur fond clair).",
+        "fallback": "false",
+        "name": "rule",
+        "type": "boolean"
+      },
+      {
+        "description": "Remplace `sizes` déduit de `layout`, quand la hauteur borne l'image (dialogue).",
+        "fallback": "—",
+        "name": "sizes",
+        "type": "string"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "photo",
+    "snippet": "---\nimport Photo from '@paulperigault/astro/Photo.astro';\nimport portrait from './portrait.jpg';\n---\n\n<Photo src={portrait} alt=\"Portrait recadré, visage au centre\" ratio=\"portrait\" focal=\"top\" />",
+    "summary": "Photo affiche une image importée localement, optimisée au build, avec sa place réservée avant chargement.",
+    "title": "Photo",
+    "tokens": [
+      "--pp-color-line",
+      "--pp-color-media-placeholder",
+      "--pp-media-radius",
+      "--pp-media-rule",
+      "--pp-ratio-landscape",
+      "--pp-ratio-portrait",
+      "--pp-ratio-square",
+      "--pp-ratio-wide",
+      "--pp-size-measure",
+      "--pp-size-page",
+      "--pp-space-3xl",
+      "--pp-space-xl"
+    ],
+    "use": [
+      "Afficher une image locale : Astro la produit en AVIF et WebP, avec un repli JPEG ou PNG.",
+      "Réserver la place de l’image avec width et height, pour éviter le décalage de la mise en page."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Élément progress ou meter natif, sans rôle ajouté.",
+        "Aucun script ; la valeur est écrite en texte, jamais par la couleur seule.",
+        "Sous prefers-reduced-motion: reduce, l’animation de la barre indéterminée est retirée."
+      ],
+      "integrator": [
+        "Fournir un libellé visible et court : il nomme la barre.",
+        "Mettre à jour value à chaque changement : le composant n’annonce pas les changements.",
+        "Ajouter valueText quand la valeur compte, par exemple « 3 sur 5 »."
+      ],
+      "keyboard": [
+        "Le composant n’est pas interactif : il ne reçoit jamais le focus.",
+        "Aucune touche n’est gérée par le composant."
+      ],
+      "screenReader": [
+        "Le libellé visible nomme la barre, relié par label for.",
+        "valueText est relié à la barre par aria-describedby.",
+        "Sans value, la barre est indéterminée et n’expose aucune valeur."
+      ]
+    },
+    "avoid": [
+      "Pour l’issue d’une tâche, réussie ou en échec : utiliser Status, la barre ne la porte pas.",
+      "Pour une valeur sans maximum connu : afficher un texte, une barre suggère une fin."
+    ],
+    "evidence": [
+      "[WCAG 1.4.1 Utilisation de la couleur](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+      "[WCAG 4.1.2 Nom, rôle, valeur](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html)",
+      "Tests : packages/astro/test/Progress.test.ts"
+    ],
+    "group": "feedback",
+    "props": [
+      {
+        "description": "Identifiant de la barre, relié à son libellé.",
+        "fallback": "—",
+        "name": "id (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Libellé visible, nom accessible.",
+        "fallback": "—",
+        "name": "label (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "`progress` pour une tâche en cours, `meter` pour une mesure dans une plage connue.",
+        "fallback": "'progress'",
+        "name": "kind",
+        "type": "\"progress\" | \"meter\""
+      },
+      {
+        "description": "Valeur actuelle ; absente pour une progression indéterminée.",
+        "fallback": "—",
+        "name": "value",
+        "type": "number"
+      },
+      {
+        "description": "Valeur maximale (défaut : 1, valeur native).",
+        "fallback": "1",
+        "name": "max",
+        "type": "number"
+      },
+      {
+        "description": "Seuil bas d'une jauge (`meter`).",
+        "fallback": "—",
+        "name": "low",
+        "type": "number"
+      },
+      {
+        "description": "Seuil haut d'une jauge (`meter`).",
+        "fallback": "—",
+        "name": "high",
+        "type": "number"
+      },
+      {
+        "description": "Valeur optimale d'une jauge (`meter`).",
+        "fallback": "—",
+        "name": "optimum",
+        "type": "number"
+      },
+      {
+        "description": "Texte visible de la valeur.",
+        "fallback": "—",
+        "name": "valueText",
+        "type": "string"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "progress",
+    "snippet": "<Progress id=\"upload\" label=\"Envoi du fichier\" value={3} max={5} valueText=\"3 sur 5\" />\n<Progress id=\"archive\" label=\"Préparation de l’archive\" />\n<Progress id=\"disk\" kind=\"meter\" label=\"Espace disque utilisé\" value={0.9} low={0.5} high={0.8} optimum={0.2} valueText=\"90 %\" />",
+    "summary": "Progress affiche l’avancement d’une tâche, ou une mesure dans une plage connue, par un élément natif.",
+    "title": "Progress",
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-control",
+      "--pp-color-status-degraded",
+      "--pp-color-status-failed",
+      "--pp-color-surface",
+      "--pp-duration-base",
+      "--pp-easing-standard",
+      "--pp-radius-control",
+      "--pp-size-rule",
+      "--pp-space-2xs",
+      "--pp-space-3xs"
+    ],
+    "use": [
+      "Suivre un envoi ou un traitement dont la fin est connue : value et max.",
+      "Afficher une mesure dans une plage connue, avec kind=\"meter\" et ses seuils."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Filet (data-rule) autour du cadre, toujours présent.",
+        "Repli PNG pour une capture, JPEG pour une photo (test Avatar.test.ts)."
+      ],
+      "integrator": [
+        "Écrire un alt qui décrit l’interface ou l’image, pas le nom du projet.",
+        "Lier la couverture à la fiche projet par un lien texte : le composant ne l’ajoute pas."
+      ],
+      "keyboard": ["La couverture n’est pas interactive : elle ne prend pas le focus."],
+      "screenReader": [
+        "Le type exige alt ou decorative : une couverture sans texte n’est pas acceptée.",
+        "Le texte alt est lu tel quel ; il décrit l’image affichée."
+      ]
+    },
+    "avoid": [
+      "Pour une image sans rapport avec un projet : utiliser Photo, sans filet.",
+      "Pour un ratio carré ou portrait : le composant n’accepte que landscape ou wide."
+    ],
+    "evidence": [
+      "[WCAG 1.1.1 Contenu non textuel (A)](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html)",
+      "Tests : packages/astro/test/Avatar.test.ts (ProjectCover)"
+    ],
+    "group": "media",
+    "props": [
+      {
+        "description": "Texte alternatif : ce que l'image apporte au contenu. Vide : erreur au build.",
+        "fallback": "—",
+        "name": "alt",
+        "type": "string"
+      },
+      {
+        "description": "Image purement décorative, rendue avec `alt=\"\"`. Exclusif de `alt`.",
+        "fallback": "—",
+        "name": "decorative",
+        "type": "true"
+      },
+      {
+        "description": "Image importée localement.",
+        "fallback": "—",
+        "name": "src (obligatoire)",
+        "type": "ImageMetadata"
+      },
+      {
+        "description": "Proportion du cadre.",
+        "fallback": "'landscape'",
+        "name": "ratio",
+        "type": "\"landscape\" | \"wide\""
+      },
+      {
+        "description": "Emplacement dans la page ; règle `sizes`.",
+        "fallback": "'third'",
+        "name": "layout",
+        "type": "\"third\" | \"half\" | \"page\""
+      },
+      {
+        "description": "Nature de l'image ; une capture garde un texte net.",
+        "fallback": "'capture'",
+        "name": "kind",
+        "type": "\"photo\" | \"capture\" | \"illustration\""
+      },
+      {
+        "description": "Image principale de la page (LCP).",
+        "fallback": "false",
+        "name": "priority",
+        "type": "boolean"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "project-cover",
+    "snippet": "<ProjectCover src={capture} alt=\"Capture d’interface : barre supérieure, menu latéral\" layout=\"half\" />",
+    "summary": "ProjectCover affiche la couverture d’un projet, toujours entourée d’un filet, au ratio paysage ou large.",
+    "title": "ProjectCover",
+    "tokens": [],
+    "use": [
+      "Présenter une capture d’interface sur fond clair : le filet la sépare de la page.",
+      "Illustrer une fiche projet dans une Grid, en layout third ou half."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Aucun attribut ARIA et aucun JavaScript ajoutés.",
+        "Liens soulignés, citation en italique : l’information ne repose pas sur la couleur seule.",
+        "Largeur de texte bornée par --pp-size-measure."
+      ],
+      "integrator": [
+        "Garder une seule h1 par page : le titre de la page en porte déjà une.",
+        "Ajouter tabindex=\"0\" à un bloc pre large si son contenu doit être atteint au clavier.",
+        "Fournir une caption à chaque tableau de données."
+      ],
+      "keyboard": [
+        "Les liens restent des éléments a natifs, atteints par Tab.",
+        "Le composant ne pose aucun tabindex : les blocs pre larges ne reçoivent pas le focus."
+      ],
+      "screenReader": [
+        "Titres h1 à h6, listes et tableaux restent natifs, sans rôle ARIA ajouté.",
+        "La légende d’un tableau (caption) est lue avec le tableau : elle vient du contenu."
+      ]
+    },
+    "avoid": [
+      "Pour un composant d’interface : Prose ne stylise ni boutons ni champs.",
+      "Pour une mise en page à colonnes : Prose borne la largeur, il ne place pas le contenu."
+    ],
+    "evidence": [
+      "[WCAG 1.3.1 Information et relations](https://www.w3.org/TR/WCAG22/#info-and-relationships)",
+      "[WCAG 1.4.8 Présentation visuelle (AAA), largeur de ligne](https://www.w3.org/TR/WCAG22/#visual-presentation)",
+      "Longueur de ligne de 60 à 75 caractères, convention typographique (Bringhurst)",
+      "Tests : packages/astro/test/Prose.test.ts",
+      "Mesure : apps/docs/e2e/measure.spec.ts"
+    ],
+    "group": "content",
+    "props": [
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "prose",
+    "snippet": "<Prose>\n  <h2>Titre de section</h2>\n  <p>Paragraphe avec un <a href=\"/\">lien</a> et du <code>code inline</code>.</p>\n  <ul>\n    <li>Premier point</li>\n  </ul>\n</Prose>",
+    "summary": "Prose met en forme un contenu éditorial rendu en Markdown, avec une largeur de lecture bornée.",
+    "title": "Prose",
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-color-surface",
+      "--pp-font-family-mono",
+      "--pp-font-line-height-heading",
+      "--pp-font-size--1",
+      "--pp-font-size-0",
+      "--pp-font-size-1",
+      "--pp-font-size-2",
+      "--pp-font-size-3",
+      "--pp-font-size-4",
+      "--pp-font-weight-bold",
+      "--pp-radius-surface",
+      "--pp-size-focus-width",
+      "--pp-size-measure",
+      "--pp-size-rule",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-l",
+      "--pp-space-m",
+      "--pp-space-s",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Afficher un article ou une page de texte rendu depuis du Markdown.",
+      "Appliquer titres, listes, citations, code et tableaux sans classe par élément."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Voile color-mix sur les tokens --pp-media-scrim-color, -opacity et -text.",
+        "Aucun dégradé, flou ni ombre ; zéro JavaScript ; aucun style en ligne."
+      ],
+      "integrator": [
+        "Le contrôle vaut pour le pire cas : il ne dispense pas de tester la photo réelle.",
+        "Mettre le média dans le slot media et le texte dans le slot par défaut."
+      ],
+      "keyboard": [
+        "Le composant ne prend pas le focus ; les liens ou boutons du texte gardent le leur."
+      ],
+      "screenReader": [
+        "Le média du slot media suit son alt ; avec decorative, il est masqué.",
+        "Le texte est lu après le média, dans l’ordre du document."
+      ]
+    },
+    "avoid": [
+      "Pour un texte qui n’a pas besoin de l’image : placer le texte hors du média.",
+      "Pour un dégradé ou une ombre : le composant n’en produit pas, le voile est uni."
+    ],
+    "evidence": [
+      "[WCAG 1.4.3 Contraste (minimum) (AA)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)",
+      "Calcul du contraste : packages/astro/src/media/scrim.ts",
+      "Tests : packages/astro/test/Scrim.test.ts"
+    ],
+    "group": "media",
+    "props": [
+      {
+        "description": "Position du texte dans l'axe de bloc.",
+        "fallback": "'end'",
+        "name": "place",
+        "type": "\"start\" | \"end\""
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "scrim",
+    "snippet": "<Scrim place=\"end\">\n  <Photo slot=\"media\" src={photo} decorative ratio=\"landscape\" />\n  <p>Titre sur l’image</p>\n</Scrim>",
+    "summary": "Scrim pose le texte sur un voile uni semi-opaque : contraste d’au moins 7,1:1 sur toute image.",
+    "title": "Scrim",
+    "tokens": [
+      "--pp-media-radius",
+      "--pp-media-scrim-color",
+      "--pp-media-scrim-opacity",
+      "--pp-media-scrim-text",
+      "--pp-space-2xs",
+      "--pp-space-m",
+      "--pp-space-s"
+    ],
+    "use": [
+      "Poser un titre ou une légende sur une photo, quelle que soit l’image dessous.",
+      "Placer le texte en bas (place=\"end\") ou en haut (place=\"start\") de l’image."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Élément select natif, sans JavaScript ; le chevron est masqué (aria-hidden).",
+        "L’erreur passe aussi par une bordure plus épaisse, en plus de la couleur.",
+        "Les options marquées disabled ne peuvent pas être choisies."
+      ],
+      "integrator": [
+        "Fournir un label dont for est égal à id : le composant n’écrit aucun libellé.",
+        "Ne pas faire du placeholder le seul libellé du champ.",
+        "Écrire le message d’erreur et le référencer par describedBy quand invalid est posé."
+      ],
+      "keyboard": [
+        "Tab place le focus sur la liste ; les flèches et la frappe restent natives.",
+        "Le placeholder est une option désactivée : il ne peut pas être choisi."
+      ],
+      "screenReader": [
+        "Le nom du champ vient du label relié par for et id.",
+        "Avec invalid, le champ est annoncé invalide et le message de describedBy est lu."
+      ]
+    },
+    "avoid": [
+      "Pour un choix multiple : Select n’accepte pas multiple, utiliser des Choice de type checkbox.",
+      "Pour deux ou trois options visibles à la fois : préférence pour un groupe de Choice radio."
+    ],
+    "evidence": [
+      "[WCAG 1.3.1 Information et relations, niveau A](https://www.w3.org/TR/WCAG22/#info-and-relationships)",
+      "[WCAG 1.4.1 Utilisation de la couleur, niveau A](https://www.w3.org/TR/WCAG22/#use-of-color)",
+      "[WCAG 4.1.2 Nom, rôle, valeur, niveau A](https://www.w3.org/TR/WCAG22/#name-role-value)",
+      "WCAG 2.4.7 Focus visible, niveau AA : apps/docs/e2e/forms.spec.ts",
+      "WCAG 2.5.8 Taille de la cible (minimum), niveau AA : apps/docs/e2e/forms.spec.ts",
+      "WCAG 3.3.1 Identification des erreurs, niveau A : apps/docs/e2e/forms.spec.ts",
+      "Code source : packages/astro/src/forms/Select.astro"
+    ],
+    "group": "forms",
+    "props": [
+      {
+        "description": "Identifiant, visé par `<label for>`.",
+        "fallback": "—",
+        "name": "id (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Nom envoyé avec le formulaire.",
+        "fallback": "—",
+        "name": "name (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Options proposées : `{ value, label, disabled? }`.",
+        "fallback": "—",
+        "name": "options (obligatoire)",
+        "type": "Option[]"
+      },
+      {
+        "description": "Valeur de l'option sélectionnée.",
+        "fallback": "—",
+        "name": "value",
+        "type": "string"
+      },
+      {
+        "description": "Première option `value=\"\"`, désactivée ; sélectionnée si `value` est absent.",
+        "fallback": "—",
+        "name": "placeholder",
+        "type": "string"
+      },
+      {
+        "description": "Choix obligatoire (`required`).",
+        "fallback": "false",
+        "name": "required",
+        "type": "boolean"
+      },
+      {
+        "description": "Désactive la liste.",
+        "fallback": "false",
+        "name": "disabled",
+        "type": "boolean"
+      },
+      {
+        "description": "Identifiants des textes d'aide ou d'erreur, séparés par des espaces.",
+        "fallback": "—",
+        "name": "describedBy",
+        "type": "string"
+      },
+      {
+        "description": "Pose `aria-invalid=\"true\"` ; à relier au message d'erreur par `describedBy`.",
+        "fallback": "false",
+        "name": "invalid",
+        "type": "boolean"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "select",
+    "snippet": "<label for=\"pays\">Pays</label>\n<Select id=\"pays\" name=\"pays\" options={[{ value: 'fr', label: 'France' }]} placeholder=\"Choisir un pays\" />",
+    "summary": "Select rend une liste déroulante native, avec option vide, états d’erreur et de désactivation.",
+    "title": "Select",
+    "tokens": [
+      "--pp-color-bg",
+      "--pp-color-control",
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-color-status-failed",
+      "--pp-color-surface",
+      "--pp-radius-control",
+      "--pp-size-control-height",
+      "--pp-size-focus-width",
+      "--pp-size-rule",
+      "--pp-space-3xs",
+      "--pp-space-s",
+      "--pp-space-xl",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Choisir une valeur dans une liste fermée et courte, comme un pays.",
+      "Afficher une option vide à choisir avec placeholder quand aucune valeur n’est pré-remplie."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Élément hr natif, sans texte en dur.",
+        "En mode contraste forcé, le filet prend la couleur CanvasText."
+      ],
+      "integrator": [
+        "Choisir decorative seulement si le filet n’apporte aucune information.",
+        "Placer un titre avant le séparateur si la section doit être nommée."
+      ],
+      "keyboard": ["Le filet n’est pas interactif : il ne prend jamais le focus."],
+      "screenReader": [
+        "Par défaut, un hr natif est lu comme séparateur.",
+        "Avec decorative, le filet est masqué (role=\"presentation\", aria-hidden=\"true\")."
+      ]
+    },
+    "avoid": [
+      "Pour espacer deux blocs sans filet visible : utiliser les primitives de layout.",
+      "Pour nommer une section : placer un titre avant le séparateur, le composant n’a pas de libellé."
+    ],
+    "evidence": [
+      "[Élément hr, spécification HTML (WHATWG)](https://html.spec.whatwg.org/multipage/grouping-content.html#the-hr-element)",
+      "Code source : packages/astro/src/content/Separator.astro"
+    ],
+    "group": "content",
+    "props": [
+      {
+        "description": "`true` : filet masqué aux technologies d'assistance ; `false` : séparateur lu.",
+        "fallback": "false",
+        "name": "decorative",
+        "type": "boolean"
+      },
+      {
+        "description": "Espacement autour du filet.",
+        "fallback": "'m'",
+        "name": "space",
+        "type": "\"xs\" | \"s\" | \"m\" | \"l\" | \"xl\""
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "separator",
+    "snippet": "<Separator />\n<Separator decorative />\n<Separator space=\"xl\" />",
+    "summary": "Separator rend un filet horizontal entre deux blocs de contenu, avec un espacement choisi.",
+    "title": "Separator",
+    "tokens": [
+      "--pp-color-line",
+      "--pp-size-rule",
+      "--pp-space-l",
+      "--pp-space-m",
+      "--pp-space-s",
+      "--pp-space-xl",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Séparer deux sections d’une même page quand le changement de sujet doit être lu.",
+      "Poser un filet purement visuel avec decorative, sans effet pour les technologies d’assistance."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Espacement par gap, sans marge ajoutée.",
+        "Bascule en colonne par flex-wrap et flex-basis, sans JavaScript."
+      ],
+      "integrator": [
+        "Placer dans le DOM l’ordre de lecture voulu : side ne change que la colonne fixe.",
+        "Nommer les aside et nav de la page si elles sont plusieurs."
+      ],
+      "keyboard": [
+        "L’ordre de tabulation suit l’ordre du DOM : le composant ne réordonne pas les enfants."
+      ],
+      "screenReader": [
+        "Un aside est lu comme repère complémentaire (rôle complementary).",
+        "Le composant n’ajoute ni rôle ni libellé."
+      ]
+    },
+    "avoid": [
+      "Pour trois colonnes ou plus de même importance : utiliser Grid.",
+      "Pour une barre qui reste visible pendant le défilement : le composant ne la fixe pas."
+    ],
+    "evidence": [
+      "[WCAG 1.3.2 Ordre de lecture significatif (niveau A) : ordre visuel égal à l’ordre du DOM.](https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html)",
+      "[WCAG 1.4.10 Reflow (niveau AA) : test sur chaque page construite.](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html)",
+      "Tests : packages/astro/test/Sidebar.test.ts, apps/docs/e2e/layout.spec.ts (flex-wrap)",
+      "Code source : packages/astro/src/layout/Sidebar.astro"
+    ],
+    "group": "layout",
+    "props": [
+      {
+        "description": "Côté de la barre : `start` = premier enfant, `end` = dernier enfant.",
+        "fallback": "'start'",
+        "name": "side",
+        "type": "\"start\" | \"end\""
+      },
+      {
+        "description": "Espacement entre les enfants (token `--pp-space-*`).",
+        "fallback": "'m'",
+        "name": "space",
+        "type": "\"xs\" | \"s\" | \"m\" | \"l\" | \"xl\""
+      },
+      {
+        "description": "Largeur de la colonne latérale avant que les deux colonnes ne s'empilent.",
+        "fallback": "'narrow'",
+        "name": "sideWidth",
+        "type": "\"narrow\" | \"medium\""
+      },
+      {
+        "description": "Élément HTML rendu (sémantique de la page).",
+        "fallback": "'div'",
+        "name": "as",
+        "type": "\"div\" | \"section\" | \"article\" | \"main\" | \"aside\""
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "sidebar",
+    "snippet": "<Sidebar as=\"section\" side=\"end\" sideWidth=\"medium\" space=\"l\">\n  <div>Contenu principal</div>\n  <aside>Barre latérale</aside>\n</Sidebar>",
+    "summary": "Sidebar place une barre latérale de largeur fixe à côté d’un contenu qui prend le reste, et les empile si la place manque.",
+    "title": "Sidebar",
+    "tokens": [
+      "--pp-size-measure",
+      "--pp-space-l",
+      "--pp-space-m",
+      "--pp-space-s",
+      "--pp-space-xl",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Afficher une navigation ou des métadonnées à côté d’un contenu principal.",
+      "Passer en une seule colonne quand la place manque, sans media query."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Espacement par margin-block et tokens --pp-space-*, sans marge avant le premier enfant.",
+        "L’ordre visuel est celui du DOM : aucune propriété order n’est utilisée."
+      ],
+      "integrator": [
+        "Garder dans le DOM l’ordre de lecture voulu : le composant ne le réordonne pas.",
+        "Avec as=\"ul\", ne mettre que des li comme enfants directs."
+      ],
+      "keyboard": ["Le composant n’ajoute aucun élément interactif et ne modifie pas le focus."],
+      "screenReader": [
+        "Le composant n’ajoute ni rôle ni libellé.",
+        "Avec as=\"ul\" ou as=\"ol\", la liste reste lue comme liste : les puces ne sont pas retirées."
+      ]
+    },
+    "avoid": [
+      "Pour disposer des éléments côte à côte : utiliser Cluster ou Switcher.",
+      "Pour des colonnes de largeur minimale donnée : utiliser Grid.",
+      "Pour des enfants qui gardent leurs propres marges : le composant les remet à zéro."
+    ],
+    "evidence": [
+      "[WCAG 1.3.2 Ordre de lecture significatif (niveau A) : ordre visuel égal à l’ordre du DOM.](https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html)",
+      "[WCAG 1.4.10 Reflow (niveau AA) : test sur chaque page construite.](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html)",
+      "Tests : packages/astro/test/Stack.test.ts, apps/docs/e2e/layout.spec.ts",
+      "Code source : packages/astro/src/layout/Stack.astro"
+    ],
+    "group": "layout",
+    "props": [
+      {
+        "description": "Espacement entre les enfants (token `--pp-space-*`).",
+        "fallback": "'m'",
+        "name": "space",
+        "type": "\"xs\" | \"s\" | \"m\" | \"l\" | \"xl\""
+      },
+      {
+        "description": "Élément rendu. Avec `ul` ou `ol`, les enfants doivent être des `<li>`.",
+        "fallback": "'div'",
+        "name": "as",
+        "type": "\"div\" | \"section\" | \"ul\" | \"ol\" | \"article\""
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "stack",
+    "snippet": "<Stack space=\"l\" as=\"section\">\n  <p>Premier paragraphe.</p>\n  <p>Deuxième paragraphe.</p>\n</Stack>",
+    "summary": "Stack empile ses enfants dans l’axe de bloc, avec un espacement entre eux et aucune marge avant le premier ni après le dernier.",
+    "title": "Stack",
+    "tokens": ["--pp-space-l", "--pp-space-m", "--pp-space-s", "--pp-space-xl", "--pp-space-xs"],
+    "use": [
+      "Espacer des blocs de même niveau, comme des paragraphes ou des sections, avec la prop space.",
+      "Espacer des enfants de hauteur variable sans régler chaque marge à la main."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "L’état est écrit en clair et porté par une forme d’icône distincte pour chaque état.",
+        "La couleur ne colore que l’icône ; le texte garde la couleur de premier plan.",
+        "En forced-colors: active, l’icône prend la couleur CanvasText."
+      ],
+      "integrator": [
+        "Fournir un libellé court qui décrit l’état, dans la langue du site.",
+        "Ne pas ajouter de couleur seule à côté du composant pour transmettre l’état.",
+        "Poser role=\"status\" autour des mises à jour à annoncer : le composant ne le fait pas."
+      ],
+      "keyboard": [
+        "Le composant est statique : il ne reçoit pas le focus.",
+        "Aucune touche n’est gérée par le composant."
+      ],
+      "screenReader": [
+        "Le libellé est le texte lu ; l’icône est masquée (aria-hidden=\"true\").",
+        "Aucun rôle n’est posé : le contenu est lu comme du texte ordinaire."
+      ]
+    },
+    "avoid": [
+      "Pour une progression chiffrée : utiliser Progress, qui porte une valeur.",
+      "Pour un message d’erreur détaillé : Status ne porte qu’un état et un libellé court."
+    ],
+    "evidence": [
+      "[WCAG 1.1.1 Contenu non textuel](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html)",
+      "[WCAG 1.4.1 Utilisation de la couleur](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+      "Tests : packages/astro/test/Status.test.ts"
+    ],
+    "group": "feedback",
+    "props": [
+      {
+        "description": "État affiché, avec sa forme d'icône propre et son libellé.",
+        "fallback": "'running'",
+        "name": "state",
+        "type": "\"passed\" | \"failed\" | \"degraded\" | \"running\""
+      },
+      {
+        "description": "Libellé visible de l'état (par exemple « Réussi »).",
+        "fallback": "—",
+        "name": "label (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Police mono, pour un identifiant tel qu'une empreinte de commit.",
+        "fallback": "false",
+        "name": "mono",
+        "type": "boolean"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "status",
+    "snippet": "<Status state=\"passed\" label=\"Réussi\" />\n<Status state=\"failed\" label=\"Échec\" />\n<Status state=\"degraded\" label=\"Dégradé\" />\n<Status state=\"running\" label=\"En cours\" />\n<Status state=\"passed\" label=\"3f9c2ab\" mono />",
+    "summary": "Status affiche l’état d’un pipeline par un libellé écrit et une icône de forme propre à l’état.",
+    "title": "Status",
+    "tokens": [
+      "--pp-color-fg",
+      "--pp-color-status-degraded",
+      "--pp-color-status-failed",
+      "--pp-color-status-passed",
+      "--pp-color-status-running",
+      "--pp-font-family-mono",
+      "--pp-size-target-min",
+      "--pp-space-2xs"
+    ],
+    "use": [
+      "Afficher le résultat d’un build, d’un test ou d’un déploiement, sur une ligne.",
+      "Afficher un identifiant court, comme une empreinte de commit, avec mono."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Case à cocher native avec role=\"switch\" ; l’état checked est porté par le navigateur.",
+        "L’état se lit à la position du curseur, pas seulement à la couleur.",
+        "Les transitions sont désactivées avec prefers-reduced-motion."
+      ],
+      "integrator": [
+        "Donner un libellé qui dit ce que l’interrupteur active, via la prop label.",
+        "Relier un message d’aide ou d’erreur par describedBy.",
+        "Garder le libellé visible : le composant ne le masque pas."
+      ],
+      "keyboard": [
+        "Tab atteint l’interrupteur ; Espace bascule son état.",
+        "Un interrupteur désactivé est sauté par Tab."
+      ],
+      "screenReader": [
+        "Le rôle switch annonce le contrôle comme interrupteur, activé ou désactivé.",
+        "Le libellé relié par for et id donne le nom accessible."
+      ]
+    },
+    "avoid": [
+      "Pour une case parmi plusieurs options à cocher : utiliser Choice de type checkbox.",
+      "Pour une action qui se lance au clic : utiliser Button."
+    ],
+    "evidence": [
+      "[WCAG 1.4.1 Utilisation de la couleur, niveau A](https://www.w3.org/TR/WCAG22/#use-of-color)",
+      "[WCAG 4.1.2 Nom, rôle, valeur, niveau A](https://www.w3.org/TR/WCAG22/#name-role-value)",
+      "[WCAG 2.3.3 Animation déclenchée par interaction, niveau AAA](https://www.w3.org/TR/WCAG22/#animation-from-interactions)",
+      "WCAG 2.4.7 Focus visible, niveau AA : apps/docs/e2e/forms.spec.ts",
+      "WCAG 2.5.8 Taille de la cible (minimum), niveau AA : apps/docs/e2e/forms.spec.ts",
+      "Code source : packages/astro/src/forms/Switch.astro"
+    ],
+    "group": "forms",
+    "props": [
+      {
+        "description": "Identifiant du contrôle, relié à son libellé.",
+        "fallback": "—",
+        "name": "id (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Nom envoyé avec le formulaire.",
+        "fallback": "—",
+        "name": "name (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Libellé visible, nom accessible de l'interrupteur.",
+        "fallback": "—",
+        "name": "label (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Activé au chargement.",
+        "fallback": "false",
+        "name": "checked",
+        "type": "boolean"
+      },
+      {
+        "description": "Désactive l'interrupteur.",
+        "fallback": "false",
+        "name": "disabled",
+        "type": "boolean"
+      },
+      {
+        "description": "Identifiant(s) du texte d'aide ou d'erreur associé (`aria-describedby`).",
+        "fallback": "—",
+        "name": "describedBy",
+        "type": "string"
+      }
+    ],
+    "slug": "switch",
+    "snippet": "<Switch id=\"alerts\" name=\"alerts\" label=\"Recevoir les alertes\" />",
+    "summary": "Switch rend un interrupteur natif activé ou désactivé, sans JavaScript, avec un libellé visible.",
+    "title": "Switch",
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-bg",
+      "--pp-color-control",
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-color-on-accent",
+      "--pp-duration-fast",
+      "--pp-easing-standard",
+      "--pp-radius-control",
+      "--pp-size-control-height",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-3xs",
+      "--pp-space-m",
+      "--pp-space-s",
+      "--pp-space-xl",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Activer ou désactiver un réglage qui prend effet directement, comme la réception des alertes.",
+      "Afficher un état initial activé avec checked, ou figé avec disabled."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "L’ordre visuel est celui du DOM, quel que soit le seuil (Switcher.astro, aucun order).",
+        "Retour à la ligne en CSS pur, sans JavaScript ni style en ligne (Switcher.test.ts)."
+      ],
+      "integrator": [
+        "Vérifier que l’ordre du DOM se lit bien quand les blocs passent sur plusieurs lignes.",
+        "Avec as=\"ul\" ou as=\"ol\", tester la sémantique de liste : display: flex peut la retirer.",
+        "Tester à la largeur réelle du conteneur, pas seulement à la largeur de la fenêtre."
+      ],
+      "keyboard": [
+        "Le composant n’ajoute aucun élément interactif : Tab ne s’y arrête pas.",
+        "L’ordre de tabulation suit l’ordre du DOM, car aucune propriété order n’est utilisée."
+      ],
+      "screenReader": [
+        "Le composant ne pose aucun rôle : les enfants sont lus dans l’ordre du DOM.",
+        "Avec as=\"ul\" ou as=\"ol\", les enfants doivent être des li."
+      ]
+    },
+    "avoid": [
+      "Pour une disposition en grille à colonnes régulières : utiliser Grid.",
+      "Pour changer l’ordre visuel des blocs : le composant ne réordonne pas, il suit l’ordre du DOM."
+    ],
+    "evidence": [
+      "[WCAG 1.3.2 Ordre de lecture signifié (Meaningful Sequence)](https://www.w3.org/WCAG22/Understanding/meaningful-sequence.html)",
+      "[WCAG 1.4.10 Reflow : layout.spec.ts vérifie flex-wrap: wrap, pas la largeur de 320 px](https://www.w3.org/WCAG22/Understanding/reflow.html)",
+      "Tests : packages/astro/test/Switcher.test.ts ; apps/docs/e2e/layout.spec.ts",
+      "Code source : packages/astro/src/layout/Switcher.astro"
+    ],
+    "group": "layout",
+    "props": [
+      {
+        "description": "Largeur de conteneur sous laquelle les enfants s'empilent.",
+        "fallback": "'measure'",
+        "name": "threshold",
+        "type": "\"measure\" | \"page\""
+      },
+      {
+        "description": "Espacement entre les enfants (token `--pp-space-*`).",
+        "fallback": "'m'",
+        "name": "space",
+        "type": "\"xs\" | \"s\" | \"m\" | \"l\" | \"xl\""
+      },
+      {
+        "description": "Élément rendu ; avec `ul` ou `ol`, les enfants doivent être des `<li>`.",
+        "fallback": "'div'",
+        "name": "as",
+        "type": "\"div\" | \"section\" | \"ul\" | \"ol\" | \"article\""
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "switcher",
+    "snippet": "<Switcher threshold=\"page\" space=\"l\" as=\"section\">\n  <p>Premier bloc.</p>\n  <p>Deuxième bloc.</p>\n</Switcher>",
+    "summary": "Switcher place ses enfants côte à côte au-delà d’un seuil de largeur, puis les empile en dessous.",
+    "title": "Switcher",
+    "tokens": [
+      "--pp-size-measure",
+      "--pp-size-page",
+      "--pp-space-l",
+      "--pp-space-m",
+      "--pp-space-s",
+      "--pp-space-xl",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Regrouper deux ou trois blocs qui se lisent mieux côte à côte sur un grand écran.",
+      "Changer la disposition selon la largeur du conteneur, sans media query ni JavaScript."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "La légende est rendue en caption, et la région porte tabindex=\"0\".",
+        "Les colonnes numériques sont alignées en fin, en chiffres tabulaires.",
+        "Aucun script et aucun attribut style."
+      ],
+      "integrator": [
+        "Fournir une légende qui décrit le contenu : elle sert de nom à la région.",
+        "Passer rowHeader quand la première colonne identifie la ligne.",
+        "Écrire l’unité dans la valeur ou l’en-tête : le composant n’en ajoute pas."
+      ],
+      "keyboard": [
+        "La région reçoit le focus par Tab quand elle défile.",
+        "Le focus visible entoure la région (focus-visible)."
+      ],
+      "screenReader": [
+        "La région est annoncée avec la légende comme nom (aria-label).",
+        "Les en-têtes de colonne sont en scope=\"col\" ; l’en-tête de ligne en scope=\"row\"."
+      ]
+    },
+    "avoid": [
+      "Pour une mise en page : utiliser une grille ou une primitive de layout.",
+      "Pour un contenu sans colonnes de données : utiliser des paragraphes ou une liste."
+    ],
+    "evidence": [
+      "[WCAG 1.3.1 Information et relations](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html)",
+      "[WCAG 2.1.1 Clavier](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html)",
+      "Tests : packages/astro/test/Table.test.ts"
+    ],
+    "group": "content",
+    "props": [
+      {
+        "description": "Légende visible du tableau, reprise comme nom accessible de la région.",
+        "fallback": "—",
+        "name": "caption (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Colonnes : `{ key, label, numeric? }` ; `numeric` aligne en fin et en chiffres tabulaires.",
+        "fallback": "—",
+        "name": "columns (obligatoire)",
+        "type": "Column[]"
+      },
+      {
+        "description": "Lignes : une valeur texte par clé de colonne.",
+        "fallback": "—",
+        "name": "rows (obligatoire)",
+        "type": "Record<string, string>[]"
+      },
+      {
+        "description": "Clé de la colonne rendue en `<th scope=\"row\">`.",
+        "fallback": "—",
+        "name": "rowHeader",
+        "type": "string"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "table",
+    "snippet": "---\nconst columns = [\n  { key: 'name', label: 'Jeton' },\n  { key: 'size', label: 'Valeur (rem)', numeric: true },\n];\nconst rows = [{ name: '--pp-space-s', size: '1' }];\n---\n<Table caption=\"Jetons d’espacement\" columns={columns} rows={rows} rowHeader=\"name\" />",
+    "summary": "Table présente des données en colonnes, dans une région défilante focalisable et nommée par sa légende.",
+    "title": "Table",
+    "tokens": [
+      "--pp-color-focus",
+      "--pp-color-line",
+      "--pp-font-weight-bold",
+      "--pp-font-weight-semibold",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Comparer des valeurs sur plusieurs lignes et colonnes, comme une liste de jetons.",
+      "Aligner des colonnes numériques en fin de ligne avec numeric."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Élément textarea natif, sans JavaScript et sans texte en dur.",
+        "L’erreur passe aussi par une bordure plus épaisse, en plus de la couleur.",
+        "Hauteur minimale fixée par les jetons --pp-size-target-min ou --pp-size-control-height."
+      ],
+      "integrator": [
+        "Fournir un label dont for est égal à id : le composant n’écrit aucun libellé.",
+        "Écrire le message d’erreur et le référencer par describedBy quand invalid est posé.",
+        "Renseigner enterkeyhint si le clavier virtuel doit proposer une action précise."
+      ],
+      "keyboard": [
+        "Tab place le focus dans la zone, dans l’ordre du document.",
+        "Entrée insère un saut de ligne : le comportement reste celui du navigateur."
+      ],
+      "screenReader": [
+        "Le nom du champ vient du label relié par for et id.",
+        "Avec invalid, le champ est annoncé invalide et le message de describedBy est lu."
+      ]
+    },
+    "avoid": [
+      "Pour une saisie sur une seule ligne, comme un nom : utiliser Input.",
+      "Pour choisir une valeur dans une liste fermée : utiliser Select."
+    ],
+    "evidence": [
+      "[WCAG 1.3.1 Information et relations, niveau A](https://www.w3.org/TR/WCAG22/#info-and-relationships)",
+      "[WCAG 1.4.1 Utilisation de la couleur, niveau A](https://www.w3.org/TR/WCAG22/#use-of-color)",
+      "WCAG 2.4.7 Focus visible, niveau AA : apps/docs/e2e/forms.spec.ts",
+      "WCAG 2.5.8 Taille de la cible (minimum), niveau AA : apps/docs/e2e/forms.spec.ts",
+      "WCAG 3.3.1 Identification des erreurs, niveau A : apps/docs/e2e/forms.spec.ts",
+      "Code source : packages/astro/src/forms/Textarea.astro"
+    ],
+    "group": "forms",
+    "props": [
+      {
+        "description": "Identifiant, visé par `<label for>`.",
+        "fallback": "—",
+        "name": "id (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Nom envoyé avec le formulaire.",
+        "fallback": "—",
+        "name": "name (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Texte initial.",
+        "fallback": "''",
+        "name": "value",
+        "type": "string"
+      },
+      {
+        "description": "Saisie obligatoire (`required`).",
+        "fallback": "false",
+        "name": "required",
+        "type": "boolean"
+      },
+      {
+        "description": "Désactive le champ.",
+        "fallback": "false",
+        "name": "disabled",
+        "type": "boolean"
+      },
+      {
+        "description": "Identifiants (séparés par des espaces) de l'aide ou du message d'erreur.",
+        "fallback": "—",
+        "name": "describedBy",
+        "type": "string"
+      },
+      {
+        "description": "Pose `aria-invalid=\"true\"` ; à relier au message d'erreur par `describedBy`.",
+        "fallback": "false",
+        "name": "invalid",
+        "type": "boolean"
+      },
+      {
+        "description": "Hauteur initiale en lignes.",
+        "fallback": "DEFAULT_ROWS",
+        "name": "rows",
+        "type": "number"
+      },
+      {
+        "description": "Libellé de la touche Entrée du clavier virtuel (`enterkeyhint`), par exemple `next`.",
+        "fallback": "—",
+        "name": "enterkeyhint",
+        "type": "\"enter\" | \"done\" | \"go\" | \"next\" | \"previous\" | \"search\" | \"send\""
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "textarea",
+    "snippet": "<label for=\"message\">Message</label>\n<Textarea id=\"message\" name=\"message\" rows={6} />",
+    "summary": "Textarea rend une zone de saisie multiligne native, avec états d’erreur et de désactivation.",
+    "title": "Textarea",
+    "tokens": [
+      "--pp-color-bg",
+      "--pp-color-control",
+      "--pp-color-fg",
+      "--pp-color-muted",
+      "--pp-color-status-failed",
+      "--pp-color-surface",
+      "--pp-font-line-height-body",
+      "--pp-radius-control",
+      "--pp-size-control-height",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Saisir un texte libre de plusieurs lignes, comme un message ou une description.",
+      "Relier un message d’erreur au champ par describedBy quand la saisie est refusée."
+    ]
+  }
+]

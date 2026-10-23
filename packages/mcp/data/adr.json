@@ -1,0 +1,182 @@
+{
+  "adrs": [
+    {
+      "id": "ADR-0001",
+      "text": "# ADR-0001 — Dépôt dédié, paquets npm et exécution déléguée\n\n- Statut : accepté\n- Date : 2026-10-20\n- Contexte de référence : `docs/kickoff.md` (kickoff + addenda), `docs/research-report.md`\n\n## Contexte\n\nLe design system de paulperigault.fr devait d'abord vivre dans un dossier du portfolio, calqué\nsur `worker/` (rapport §4). Le kickoff en fait un vrai produit : réutilisable par d'autres sites,\ny compris non Astro, versionné et publié.\n\n## Décision\n\n1. **Dépôt dédié** `PaulPerigault/design-system`, monorepo npm workspaces, cinq paquets publiés\n   sous `@paulperigault` (`tokens`, `css`, `astro`, `guards`, `create`) et une app `apps/docs`.\n   Dépendances à sens unique : `tokens ← css ← astro` ; `guards` et `create` sans dépendance\n   d'exécution vers les autres.\n2. **Consommation par import** du paquet (semver) ; `eject` reste l'exception (copie verrouillée\n   par `pp-ds.lock.json`). `registry.json` au schéma shadcn sert de métadonnées.\n3. **Registre npmjs public**, publication uniquement par le workflow `release` (trusted\n   publishing OIDC, provenance automatique), jamais depuis un poste (`prepublishOnly`).\n4. **Infrastructure du dépôt en IaC** dans la brique `infra/github` du portfolio (dépôt adopté\n   par blocs `import`), Pages et DNS des docs dans `infra/` ; l'`apply` reste au propriétaire.\n5. **Exécution déléguée** : un dispatcher Node testé (`tools/agents/`) lance chaque tâche\n   atomique dans un worktree isolé, par Kiro en headless (session `kiro-cli login`, aucun\n   secret), contrôle l'acceptation et la propriété des fichiers, et journalise le routage.\n\n## Conséquences\n\n- Le portfolio consommera des versions publiées (dist-tag `next` pour les préversions) ; un\n  garde-fou refuse toute dépendance `file:`/`link:` sur `main`.\n- La couleur (`color`, `contrast`) vit dans `tokens` (D-001), parce que le générateur en a besoin.\n- Le contrôle de propriété est la garantie finale : `--sandbox` n'existe pas dans kiro-cli 2.32\n  et le bac à sable de Claude Code n'a pas fonctionné sur ce poste (D-002, D-005).\n\n## Alternatives écartées\n\n- Dossier `design-system/` dans le portfolio (rapport) : pas de réutilisation hors du site.\n- GitHub Packages : son registre npm exige un jeton même pour installer un paquet public, ce qui\n  casse `npx @paulperigault/create`.\n",
+      "title": "Dépôt dédié, paquets npm et exécution déléguée"
+    },
+    {
+      "id": "ADR-0002",
+      "text": "# ADR-0002 — Identité visuelle « Encre », ancrée sur le favicon\n\n- Statut : accepté (2026-10-20), choisi par l'orchestrateur en l'absence du propriétaire ;\n  relecture demandée dans `docs/identity-review.md`\n- Remplace, pour les sites consommateurs, la charte « CV d'abord » (portfolio, ADR-0006) sur les\n  couleurs, la typographie, les formes, les filets et le mouvement. Seul le favicon est conservé.\n\n## Contexte et ancre\n\nLe favicon du portfolio est conservé à l'identique (empreintes sha256 vérifiées par test côté\nportfolio). Ce qu'il dit, relevé dans `public/image/logo.svg` :\n\n- **Couleur** : une encre quasi noire, `#14161c` = `oklch(0.2008 0.0124 270.7)`, légèrement\n  bleutée, et du blanc. Aucune autre couleur, aucun dégradé, aucune ombre.\n- **Forme** : un carré aux coins arrondis à 14 % (`rx` 28/200) et un « P » géométrique de forte\n  graisse, boucle en demi-cercle, contre-forme par `evenodd`.\n- **Esprit** : construit sur un module (fût et contre-forme de 26/200), monochrome, sobre :\n  une pièce d'ingénierie, pas une illustration.\n\nLe propriétaire est ingénieur DevSecOps & Cloud, alternant en école d'ingénieur : tout en IaC,\nsécurité et RGPD par défaut, code en briques, décisions écrites et prouvées. Le rendu ne doit pas\n« faire IA » (pas de dégradé, de flou, d'ombres décoratives, d'emoji, ni de terminal vert sur noir).\n\n## Quatre directions, mesurées\n\nMêmes rôles et même matrice de contraste pour toutes (WCAG 2.2, sRGB rendu ; calcul du\n2026-10-20, script d'exploration puis `@paulperigault/tokens`).\n\n| Direction    | Idée                                    | Accent (clair / sombre)             | Accent sur fond (clair / sombre) | Gamut sRGB                          | Lien au favicon                                                |\n| ------------ | --------------------------------------- | ----------------------------------- | -------------------------------- | ----------------------------------- | -------------------------------------------------------------- |\n| A. Runbook   | document d'exploitation, neutres chauds | ambre `#875814` / `#eeba70`         | 5,87 / 10,13                     | oui                                 | faible : teinte chaude contre une encre froide                 |\n| B. Blueprint | plan d'architecture, neutres froids     | bleu de plan `#005fad` / `#88c0f9`  | 6,29 / 9,31                      | **non** en clair (chroma à réduire) | moyen ; cliché « plan bleu »                                   |\n| C. Signal    | neutres purs, un accent fort            | vermillon `#c12b09` / `#f68770`     | 5,55 / 7,35                      | oui                                 | faible : le favicon n'a pas de couleur vive                    |\n| **D. Encre** | l'encre du favicon devient le système   | encre saturée `#3749c3` / `#9fb4f8` | **6,93 / 8,86**                  | oui                                 | **fort** : même teinte (270,7), fond sombre = encre du favicon |\n\n## Décision : D, « Encre »\n\n- **Couleur.** Neutres de teinte 270,7 (celle du favicon), chroma ≤ 0,022 ; un seul accent, la\n  même teinte saturée (`oklch(0.47 0.19 270.7)` en clair, `oklch(0.78 0.1 270.7)` en sombre).\n  Le fond sombre **est** l'encre du favicon. Statuts de pipeline (`passed`, `failed`,\n  `degraded`, `running`) toujours avec icône et libellé (WCAG 1.4.1).\n- **Contraste (bloquant, généré depuis `roles.json`)** : 7:1 texte/fond et texte/surface ;\n  4,5:1 texte atténué, liens, texte sur accent, statuts ; 3:1 contrôles et anneau de focus.\n  Atteint : texte 16,8:1 (clair) et 15,4:1 (sombre), accent 6,93:1 et 8,94:1. AAA **partiel**,\n  jamais revendiqué comme conformité AAA.\n- **Typographie.** Atkinson Hyperlegible Next (variable, OFL-1.1) pour tout le texte ; Atkinson\n  Hyperlegible Mono (variable, OFL-1.1) **uniquement** pour le code, les identifiants, les\n  empreintes et les métadonnées. Corps fluide, 18 px minimum (Rello et al. 2016 : soutenu),\n  échelle 1,25, interligne 1,55 (convention, testé par WCAG 1.4.12). Métriques de repli\n  calculées depuis `@capsizecss/metrics`.\n- **Formes.** Rayons modestes, en écho au favicon : 4 px pour les contrôles, 8 px pour les\n  surfaces et médias, 14 % réservé à la marque (logo, avatar). Filets d'un pixel ; anneau de\n  focus 2 px plein, décalé de 2 px. Aucune ombre.\n- **Mouvement.** Quasi nul : 100 et 160 ms, opacité et transformations seulement ; 0 sous\n  `prefers-reduced-motion: reduce`.\n\n## Interdits « anti-IA » : maintenus et levés\n\nMaintenus : dégradés, ombres décoratives, flou, emoji, étiquettes en majuscules espacées,\nnuméros de section, pastilles de tags, palette Tailwind par défaut, valeurs arbitraires,\nimagerie « hacker » (vert sur noir, scanlines, glitch, machine à écrire), phrases génériques.\n\nLevés, avec motif :\n\n1. **Police mono** : levée pour le code, les empreintes, les identifiants et les journaux.\n   Motif fonctionnel : alignement et distinction 0/O, 1/l/I. Aucune étude ne l'établit pour le\n   code (rapport §2) : c'est une **préférence**. Interdite pour la prose.\n2. **Coins quasi droits (2 px)** : remplacés par 4 et 8 px, par cohérence avec les coins à 14 %\n   du favicon. **Préférence**.\n\n## Preuve et réserves\n\n- « Prouvé » : rien dans ce choix ne l'est. Le contraste est une **norme** (WCAG 2.2) ; la\n  sobriété et la prototypicalité sont **soutenues** pour l'attrait perçu (Reinecke et al. 2013,\n  Tuch et al. 2012), sans lien démontré avec la confiance ou l'embauche ; la police est une\n  **préférence argumentée** (aucune étude indépendante).\n- Réversible : tout passe par `packages/tokens` ; les trois autres directions restent décrites\n  dans `packages/tokens/src/directions/` et comparées sur la page `/identite/` de la doc.\n",
+      "title": "Identité visuelle « Encre », ancrée sur le favicon"
+    },
+    {
+      "id": "ADR-0003",
+      "text": "# ADR-0003 — Serveur MCP du design system\n\n- Statut : proposé (2026-10-21). Décision pour la version locale ; la version distante est\n  planifiée, non construite.\n- Référence : gap.md n° 28 à 30 (IA, L14) ; systems.md, section « Documentation et outillage IA ».\n\n## Contexte\n\nTrois systèmes publiés exposent leur design system à un assistant IA par MCP (Model Context\nProtocol) :\n\n- Primer, avec `@primer/mcp` : tokens, composants, motifs. Données embarquées, serveur local\n  (source : README de `@primer/mcp` 0.3.4, cité dans systems.md).\n- Carbon, avec Carbon MCP : documentation, exemples, audit de code. Serveur hébergé, en aperçu\n  public, avec authentification OAuth (source : carbondesignsystem.com, « Carbon MCP overview »).\n- shadcn/ui, avec `shadcn mcp` : parcourt tout registre compatible déclaré dans `components.json`\n  (source : ui.shadcn.com/docs/mcp).\n\nAucun de ces points n'établit que le MCP améliore la qualité du code produit. C'est une\n**convention** de distribution : elle rend les règles du système lisibles par un outil, sans\npreuve de gain mesuré.\n\n## Décision maintenant\n\nNous construisons `@paulperigault/mcp`, un serveur MCP :\n\n- en transport stdio, lancé localement par l'éditeur ou l'agent ;\n- en lecture seule : aucun outil n'écrit de fichier, ne publie, ne modifie de configuration ;\n- avec des données embarquées à la publication du paquet : composants, tokens, documentation,\n  décisions. Le serveur n'ouvre aucune connexion réseau à l'exécution ;\n- avec des entrées validées par zod, schéma par outil, rejet de tout champ inconnu.\n\nOutils prévus :\n\n- `list_components` : liste des composants publiés, avec leur statut ;\n- `get_component` : fiche d'un composant (usage, « quand ne pas l'utiliser », accessibilité,\n  propriétés) ;\n- `get_tokens` : tokens `--pp-*` par rôle et par thème ;\n- `check_contrast` : contraste WCAG 2 entre deux couleurs, calculé par `@paulperigault/tokens` ;\n- `validate_snippet` : analyse statique d'un extrait de code (classes, `style` en ligne, valeurs\n  brutes). Le texte est analysé, jamais exécuté ;\n- `search_docs` : recherche dans la documentation embarquée ;\n- `get_decision` : lecture d'une ADR par numéro.\n\nLe registre shadcn statique (`/r/registry.json`, gap n° 29) est publié en parallèle. Il rend\n`npx shadcn@latest mcp` exploitable sans aucun code serveur de notre part.\n\n## Sécurité\n\nLa surface d'attaque d'un serveur MCP est le contenu qu'il renvoie à un modèle. Règles retenues :\n\n- Injection par le contenu retourné : les réponses sont des données. Toute chaîne issue de la\n  documentation est marquée comme donnée, jamais comme instruction. Un test vérifie qu'un texte\n  contenant une consigne reste inerte.\n- Chemins : aucun outil ne reçoit de chemin de fichier libre. Les identifiants passent par une\n  liste blanche générée à la publication.\n- Exécution : interdite. Aucune dépendance d'évaluation (`eval`, `Function`, sous-processus).\n  `validate_snippet` ne fait que de l'analyse de texte.\n- Entrées : zod, longueur maximale par champ, types stricts (pas de `any`).\n- Dépendances : versions exactes, aucune dépendance `file:` ou `link:` (`check:lockfile`).\n\n## Plus tard : version distante (planifiée, non construite)\n\nAucune ressource n'est créée ni nommée à ce stade. Le plan en cinq étapes :\n\n1. Authentification : choisir OAuth 2.1 ou jeton, à trancher par ADR. Aucune route sans\n   authentification.\n2. Limitation du débit : seuils à définir après mesure ; aucun chiffre n'est retenu aujourd'hui.\n3. Coût mesuré : requêtes, durée, journaux. Les coûts sont à mesurer sur le fournisseur choisi,\n   non estimés ici.\n4. Sécurité du transport : CSP, CORS restreint à des origines listées, aucune donnée personnelle\n   journalisée (RGPD par défaut), journal d'audit des appels d'outils sans contenu de requête.\n5. Infrastructure en OpenTofu, une ADR de plus pour le fournisseur, et un test de charge avant\n   toute mise en service.\n\n## Conséquences\n\n- Le serveur local est le seul livrable de cette ADR. Son code suit les limites d'AGENTS.md :\n  fichiers de 120 lignes au plus, un test par brique.\n- Les données embarquées peuvent diverger de la documentation publiée. Le contrôle\n  `check:registry` bloque la publication si un export n'a pas son fragment.\n- La version distante reste ouverte : les conditions préalables bloquent sa mise en service,\n  pas sa planification.\n\n## Alternatives écartées\n\n- Serveur distant d'emblée : authentification, débit, coût et RGPD à traiter avant la première\n  ligne de code. Trop de surface pour un gain non mesuré.\n- Seulement `llms.txt` : utile et retenu (gap n° 30), mais sans outils, donc sans validation de\n  contraste ni d'extrait.\n- Seulement shadcn MCP : ne couvre que les composants shadcn, pas les tokens, la charte ni les\n  décisions.\n- Pas de MCP : rien à maintenir, mais aucune interface lisible par un assistant. Les trois\n  systèmes publiés cités plus haut en ont une.\n\n## Réserves\n\n- « Prouvé » : rien dans cette ADR ne l'est. Le choix du MCP est une **convention** observée\n  chez trois systèmes.\n- Les délais, les volumes et les coûts ne sont pas connus : ils sont **à mesurer**.\n",
+      "title": "Serveur MCP du design system"
+    }
+  ],
+  "decisions": [
+    {
+      "alternative": "Les placer dans `@paulperigault/astro` (kickoff §1.1), ce qui inverserait le sens des dépendances.",
+      "date": "2026-10-20",
+      "decision": "`color` et `contrast` vivent dans `@paulperigault/tokens` (le générateur en a besoin pour le gamut ; `tokens` ne peut pas dépendre d'`astro`). `astro` les réexporte.",
+      "id": "D-001",
+      "rollback": "Déplacer les deux modules et inverser la réexportation."
+    },
+    {
+      "alternative": "Garder un bac à sable inopérant (fausse assurance).",
+      "date": "2026-10-20",
+      "decision": "Bac à sable de Claude Code **désactivé**, risque accepté : avec `sandbox.enabled` puis `/sandbox`, une écriture dans `~/Documents` a réussi trois fois, sans processus d'enveloppe. Parades restantes : règles `deny` versionnées, chemins `Edit` autorisés limités aux 3 dossiers de travail, discipline de l'orchestrateur, et règles `permissions` de Kiro pour les exécutants.",
+      "id": "D-002",
+      "rollback": "`sandbox.enabled: true` dans `.claude/settings.local.json` du portfolio, puis refaire la sonde `~/Documents`."
+    },
+    {
+      "alternative": "Ordre A puis B du prompt : les blocs `import` échoueraient au `plan`.",
+      "date": "2026-10-20",
+      "decision": "Dépôt créé (étape B) **avant** la PR OpenTofu (étape A).",
+      "id": "D-003",
+      "rollback": "Sans objet (ordre d'exécution)."
+    },
+    {
+      "alternative": "Refuser aussi les squash de GitHub (casserait chaque fusion faite par un autre compte que l'auteur).",
+      "date": "2026-10-20",
+      "decision": "La règle commitlint « pas de signature d'outil » refuse toute ligne `Co-authored-by` et toute mention « Generated with », sans exemption, sur les messages écrits par un humain ou un agent (hook `commit-msg`, plage de chaque PR en CI). Les commits de squash créés par GitHub sur `develop` ne sont pas relintés : GitHub y ajoute `Co-authored-by: DevPaulPOps` quand l'auteur git diffère du compte qui fusionne. Le message de squash du design system est `PR_BODY`.",
+      "id": "D-004",
+      "rollback": "Ajouter un job sur `push` de `develop` qui relit le dernier message."
+    },
+    {
+      "alternative": "`--trust-all-tools` sans isolation réelle.",
+      "date": "2026-10-20",
+      "decision": "Exécutants Kiro lancés **sans** `--trust-all-tools` (le flag `--sandbox` n'existe pas en 2.32.0) : `--trust-tools` avec une liste fermée, règles `permissions.rules` V3 en refus (git commit/push, npm publish, réseau hors registre npm, écriture hors `files:`), capacité `subagent` refusée.",
+      "id": "D-005",
+      "rollback": "Si une version future offre une vraie isolation, réévaluer."
+    },
+    {
+      "alternative": "Escalader de palier pour un oubli de formatage (constaté au pilote : 2,58 crédits Opus pour un formatage).",
+      "date": "2026-10-20",
+      "decision": "Le dispatcher lance `prettier --write` sur les seuls fichiers possédés et touchés avant l'acceptation.",
+      "id": "D-006",
+      "rollback": "Retirer `formatOwned` de `tools/agents/lib/verify.mjs`."
+    },
+    {
+      "alternative": "Exiger le verdict en première ligne (gpt-5.6-terra le fait précéder d'une phrase).",
+      "date": "2026-10-20",
+      "decision": "Verdict de revue extrait par motif (`CHANGEMENTS REQUIS` l'emporte, sinon `APPROUVÉ`, sinon illisible), plus seulement en début de texte.",
+      "id": "D-007",
+      "rollback": "`tools/agents/lib/verdict.mjs`."
+    },
+    {
+      "alternative": "Worktrees depuis `develop` (une dépendance interne au lot serait introuvable avant la fusion du lot).",
+      "date": "2026-10-20",
+      "decision": "Branche d'intégration par lot (`lot/Lx`) : worktrees créés depuis elle, tâches intégrées par cherry-pick (`integrate.mjs`), une PR squash par lot vers `develop`. Une relance due à un défaut d'énoncé repart au palier d'origine.",
+      "id": "D-008",
+      "rollback": "`--base develop` dans le dispatcher."
+    },
+    {
+      "alternative": "Contrôle strict proposé par la revue.",
+      "date": "2026-10-20",
+      "decision": "Revue croisée de T2.01 (gpt-5.6-terra) : demande d'un contrôle de gamut strict (`epsilon = 0`) dans `toHex` **écartée**. Mesure : `#ff0000`, `#00ff00`, `#ffff00` reviennent avec un bruit flottant jusqu'à 1,3e-7 hors de [0, 1] ; un contrôle strict refuserait ces couleurs sRGB valides. La tolérance 1e-4 (< 3 % d'un pas de 8 bits) est conservée.",
+      "id": "D-009",
+      "rollback": "`epsilon` de `inSrgbGamut` dans `packages/tokens/src/lib/color.mjs`."
+    },
+    {
+      "alternative": "Garder `high` partout.",
+      "date": "2026-10-20",
+      "decision": "Effort `medium` par défaut pour les exécutions `hard` et les revues Opus (au lieu de `high`) : T2.01 a coûté 12,4 crédits en `high`, surtout en itérations de mise en forme. L'effort `high` reste possible tâche par tâche.",
+      "id": "D-010",
+      "rollback": "`effort:` dans la tâche, `effort` de `review.mjs`."
+    },
+    {
+      "alternative": "Formater la sortie générée.",
+      "date": "2026-10-20",
+      "decision": "Fichiers générés (`packages/*/generated/`) exclus de Prettier : T2.04 a coûté 23,39 crédits Opus, dont une trentaine de retouches pour rendre une sortie générée conforme à Prettier. La garde de dérive (`build.mjs --check`) suffit. Leçon de coût : préférer Sonnet quand la difficulté est surtout de volume, réserver Opus au raisonnement (couleur, algorithmes, a11y complexe).",
+      "id": "D-011",
+      "rollback": "Retirer la ligne de `.prettierignore`."
+    },
+    {
+      "alternative": "Effort medium partout (D-010).",
+      "date": "2026-10-21",
+      "decision": "Effort Kiro : `medium` pour les tâches std, `high` pour les tâches hard et toutes les revues (consigne du propriétaire ; **remplace D-010**).",
+      "id": "D-012",
+      "rollback": "`effort:` des tâches, `effort` de `review.mjs`."
+    },
+    {
+      "alternative": "`npm ci` par worktree ; aucun plafond commun.",
+      "date": "2026-10-21",
+      "decision": "Coordination par fichiers dans `.agents/` du dépôt principal : sémaphore global des sessions Kiro (5, relevé à 6 après 30 min sans erreur, abaissé d'un cran à chaque erreur de quota), verrou unique des tâches lourdes (Playwright, build Astro, verify), amorce `node_modules` par empreinte du lockfile clonée par `cp -cR` (APFS). État (`runs/`, routage) partagé avec ds-lead.",
+      "id": "D-013",
+      "rollback": "`lib/coordination.mjs` ; supprimer `.agents/slots`, `.agents/seeds`."
+    },
+    {
+      "alternative": "Tout faire séquentiellement par l'orchestrateur.",
+      "date": "2026-10-21",
+      "decision": "Second moteur **ds-lead** (agent Kiro `claude-opus-5.5`, effort high) : reçoit des lots de `.agents/lead-queue.md`, découpe, fait exécuter et relire par le dispatcher, intègre dans `lot/<id>` depuis son worktree `~/dev/ds-wt/lead`. Il n'écrit que `tasks/`, `docs/lots/` et sa section de la file ; aucun git en écriture (le lanceur commite ses tâches et son bilan). L'orchestrateur reste seul validateur et seul à fusionner. Lots confiés : L8 puis L6 (fichiers disjoints de L3–L5, L7).",
+      "id": "D-014",
+      "rollback": "Vider la file ; arrêter le pid de `.agents/lead.pid`."
+    },
+    {
+      "alternative": "Lancer sans vérifier la base.",
+      "date": "2026-10-21",
+      "decision": "Contrôle préalable du batch : chaque commande d'acceptance distincte (hors celles qui citent un fichier de tâche) est lancée une fois sur la base ; base rouge = lot non lancé. Constaté : `astro check` ajouté à l'acceptance de L5 alors que la base échouait, d'où une escalade Opus inutile (T5.04, 7,31) et un échec de T4.09 sur des erreurs hors de son périmètre.",
+      "id": "D-015",
+      "rollback": "`--skip-preflight` ; `tools/agents/lib/preflight.mjs`."
+    },
+    {
+      "alternative": "Acheter des crédits ; `claude -p` en parallèle (refusés par le propriétaire).",
+      "date": "2026-10-21",
+      "decision": "Crédits Kiro épuisés (1000 offerts, non renouvelables) : Kiro marqué indisponible dans `tools/agents/config.json` (run, batch, review et lead refusent). L'orchestrateur exécute les tâches restantes lui-même, en séquence, une tâche = un commit ; un seul relecteur sous-agent par lot, pour les tâches hard ; vérification complète et e2e une fois par lot.",
+      "id": "D-016",
+      "rollback": "`kiro.available: true` dans `tools/agents/config.json`."
+    },
+    {
+      "alternative": "Garder 38 rem (moyenne au bord haut, dépassement selon le texte).",
+      "date": "2026-10-21",
+      "decision": "`--pp-size-measure` recalibré de 38 à **36 rem** : la mesure réelle (Atkinson Hyperlegible Next, 18 px, `measure.spec.ts`) donnait 74 caractères en moyenne par ligne pleine à 38 rem (lignes jusqu'à 77), 69,7 à 36 rem, dans la plage 60–75 et près de l'idéal de 66. Effets : seuils `@container` de Gallery (27 et 36 rem), largeurs générées des images (576 et 1152 px).",
+      "id": "D-017",
+      "rollback": "`measure` dans `packages/tokens/src/tokens/base.tokens.json`, puis `npm -w @paulperigault/tokens run build`."
+    },
+    {
+      "alternative": "Réécrire l'historique ; modifier la configuration globale.",
+      "date": "2026-10-21",
+      "decision": "Identité git : la configuration globale de la machine est `DevPaulPOps <Perigault.pault@…>`, alors que le compte qui ouvre et fusionne les PR est `PaulPerigault` (id 86080467) ; GitHub ajoutait donc `Co-authored-by: DevPaulPOps` à chaque squash (constaté sur les commits de `develop` jusqu'à `d0e5142`). Configuration **locale** des deux dépôts posée à `PaulPerigault <86080467+PaulPerigault@users.noreply.github.com>` (la globale n'est pas touchée) ; historique non réécrit. Job `squash-message` sur `push` de `develop` : relit le commit de squash avec commitlint (D-004).",
+      "id": "D-018",
+      "rollback": "`git config --local --unset user.name` et `user.email` ; retirer le job de `ci.yml`."
+    },
+    {
+      "alternative": "Rester sur « Kiro indisponible » (D-016).",
+      "date": "2026-10-23",
+      "decision": "Reprise avec Kiro (870 crédits environ) : `kiro.available: true`. Le brief demandait « D-018 », déjà pris (identité git) : numéro suivant. Orchestrateur = Kiro ; ordre P1 (fin de L12, L13, L14), P2 sécurité, P3 composants et PWA, P4 vitrine, P5 conformité. Au plus 3 sous-agents en parallèle ; commits par tâche sans signature ; PR squash vers `develop` en fin de lot.",
+      "id": "D-019",
+      "rollback": "`kiro.available: false` dans `tools/agents/config.json`."
+    },
+    {
+      "alternative": "Haiku 4.5 (0,4x) en light.",
+      "date": "2026-10-23",
+      "decision": "Routage : `kiro-cli --list-models` liste `claude-haiku-5.5` à 0,06x (aperçu expérimental) : palier `light` = haiku-5.5, repli haiku-4.5 ; repli `mech` = `minimax-m2.1` (brief) au lieu de `deepseek-3.2`. Escalade d'un palier par échec. Objectif : plus de la moitié des tâches aux paliers mech/light/éco.",
+      "id": "D-020",
+      "rollback": "`tools/agents/models.json`."
+    },
+    {
+      "alternative": "Desserrer le budget ; retirer l'INP.",
+      "date": "2026-10-23",
+      "decision": "Budget d'INP (T12.06) : en CI, 208 à 256 ms à ×4, encore 208 et 224 ms à ×1 ; la décomposition de l'entrée `event` donne ~210 ms d'attente avant traitement, 0 de traitement et 13 à 20 de rendu, même après une attente d'inactivité (`requestIdleCallback`) avant le clic. Le ralentissement CPU n'est donc pas la cause : le délai vient du runner GitHub (2 vCPU, rendu logiciel). Local : 56 à 64 ms à ×8. Décision : budget d'INP (200 ms) **bloquant en local**, mesuré et rapporté (annotation) mais non bloquant en CI ; LCP, CLS, JavaScript et polices restent bloquants partout. Cause du plancher CI non élucidée : convention, pas preuve.",
+      "id": "D-021",
+      "rollback": "`perf.spec.ts` (`process.env.CI`)."
+    },
+    {
+      "alternative": "Garder `deepseek-3.2` en palier « eco ».",
+      "date": "2026-10-23",
+      "decision": "Palier « économique » par multiplicateur retiré : `deepseek-3.2` (0,25x) a coûté 4,7 (glossaire, échec de taille), 12,1 (page d'accessibilité, faits inventés, jetons inexistants) et 4,7 crédits (procédure, trop télégraphique) pour des sorties refusées, contre 1,5 à 3,0 pour Sonnet 5.5 sur des tâches voisines. `claude-haiku-5.5` (0,06x) a réussi les deux mêmes tâches pour 0,16 et 0,07 crédit, sortie de bonne qualité. Le multiplicateur ne prédit pas le coût : mesurer par tâche. Routage : mech `qwen3-coder-next` → light `claude-haiku-5.5` → std → hard.",
+      "id": "D-022",
+      "rollback": "`tools/agents/models.json`, `TIERS` de `tools/agents/lib/task.mjs`."
+    },
+    {
+      "alternative": "Remonter les exemples au-dessus du texte (rompt l'ordre fixe du gabarit, gap.md n° 21).",
+      "date": "2026-10-23",
+      "decision": "Le gabarit de page de composant (T13.01) place les exemples sous le résumé, les listes d'usage et le sommaire : l'image prioritaire de la page Photo n'est plus l'élément LCP à 360 × 800. L'assertion « élément LCP » de `media.spec.ts` est retirée ; restent vérifiés : une seule image prioritaire, chargement sans différé, AVIF. Le test de police (`perf.spec.ts`) accepte désormais la police à chasse fixe des blocs de code en plus du corps préchargé (2 fichiers au plus).",
+      "id": "D-023",
+      "rollback": "`media.spec.ts`, `perf.spec.ts`."
+    }
+  ]
+}
