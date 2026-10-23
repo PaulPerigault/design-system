@@ -1,0 +1,66 @@
+---
+/**
+ * Navigation autour du gabarit ComponentPage, en trois blocs à placer séparément :
+ * `trail` (fil d'Ariane, en tête), `toc` (sommaire de page, après le h1), `pager` (précédent et
+ * suivant, en pied). Le sommaire ne pointe que vers les sections réellement rendues (prop `sections`).
+ */
+import Breadcrumb from '@paulperigault/astro/Breadcrumb.astro';
+import type { Section } from '../lib/component-page.ts';
+import { neighborsOf } from '../lib/neighbors.ts';
+import { hrefOf } from '../navigation';
+import '../styles/page-nav.css';
+
+interface Props {
+  part: 'trail' | 'toc' | 'pager';
+  /** Slug de la page, tel que déclaré dans la navigation. */
+  slug: string;
+  title: string;
+  /** Sections rendues par la page, dans l'ordre d'affichage. Utilisé par `toc`. */
+  sections?: readonly Section[];
+}
+
+const { part, slug, title, sections = [] } = Astro.props;
+const { group, previous, next } = neighborsOf(slug);
+---
+
+{part === 'trail' && (
+  <Breadcrumb
+    class="pp-page-nav__trail"
+    label="Fil d'Ariane"
+    items={[
+      { label: 'Accueil', href: '/' },
+      { label: 'Composants' },
+      { label: group.title },
+      { label: title },
+    ]}
+  />
+)}
+
+{part === 'toc' && (
+  <nav class="pp-page-nav pp-page-nav__toc" aria-label="Sur cette page">
+    <ul role="list" class="pp-page-nav__list">
+      {sections.map((section) => (
+        <li>
+          <a href={`#${section.id}`}>{section.title}</a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}
+
+{part === 'pager' && (
+  <nav class="pp-page-nav pp-page-nav__pager" aria-label="Pages voisines">
+    {previous && (
+      <a class="pp-page-nav__link" href={hrefOf(previous)} rel="prev">
+        <span class="pp-page-nav__direction">Précédent</span>
+        <span>{previous.title}</span>
+      </a>
+    )}
+    {next && (
+      <a class="pp-page-nav__link pp-page-nav__link--next" href={hrefOf(next)} rel="next">
+        <span class="pp-page-nav__direction">Suivant</span>
+        <span>{next.title}</span>
+      </a>
+    )}
+  </nav>
+)}

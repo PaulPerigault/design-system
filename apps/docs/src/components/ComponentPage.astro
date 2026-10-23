@@ -8,6 +8,7 @@ import DocsLayout from '../layouts/DocsLayout.astro';
 import { SECTIONS, validate } from '../lib/component-page.ts';
 import type { ComponentPageData } from '../lib/component-page.ts';
 import '../styles/component-page.css';
+import PageNav from './PageNav.astro';
 import PropsTable from './PropsTable.astro';
 
 type Props = ComponentPageData;
@@ -17,6 +18,7 @@ const { slug, title, summary, use, avoid, snippet, a11y, evidence } = data;
 const heading = (id: string) => SECTIONS.find((section) => section.id === id)?.title ?? id;
 const tokens = registry.items.find((item) => item.name === slug)?.meta?.tokens ?? [];
 const hasVariants = Astro.slots.has('variants');
+const renderedSections = SECTIONS.filter((section) => section.id !== 'variantes' || hasVariants);
 const notes = [
   { title: 'Clavier', items: a11y.keyboard },
   { title: 'Lecteur d’écran', items: a11y.screenReader },
@@ -27,7 +29,9 @@ const notes = [
 
 <DocsLayout title={`${title} · Design system · Paul Perigault`}>
   <div class="pp-component-page">
+    <PageNav part="trail" slug={slug} title={title} />
     <h1>{title}</h1>
+    <PageNav part="toc" slug={slug} title={title} sections={renderedSections} />
 
     <h2 id="sert">{heading('sert')}</h2>
     <p>{summary}</p>
@@ -91,5 +95,7 @@ const notes = [
         <li>{entry.href ? <a href={entry.href}>{entry.label}</a> : entry.label}</li>
       ))}
     </ul>
+
+    <PageNav part="pager" slug={slug} title={title} />
   </div>
 </DocsLayout>
