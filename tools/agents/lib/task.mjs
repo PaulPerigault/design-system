@@ -5,7 +5,7 @@ const FRONT_MATTER = /^---\n([\s\S]*?)\n---\n?([\s\S]*)$/;
 const KEY_LINE = /^([a-z_]+):\s*(.*?)\s*(?:#.*)?$/;
 const ITEM_LINE = /^\s+-\s+(.+?)\s*$/;
 const ENGINES = ['kiro', 'claude'];
-const TIERS = ['mech', 'light', 'eco', 'std', 'hard', 'xreview'];
+const TIERS = ['mech', 'light', 'std', 'hard', 'xreview'];
 const REQUIRED = ['id', 'title', 'engine', 'agent', 'tier', 'files', 'acceptance'];
 
 const scalar = (text) => {

@@ -8,7 +8,7 @@ describe('routing', () => {
     expect(modelFor(models, 'std')).toBe('claude-sonnet-5.5');
     expect(modelFor(models, 'hard')).toBe('claude-opus-5.5');
     expect(nextTier(models, 'hard')).toBeNull();
-    expect(tierPlan(models, 'mech')).toEqual(['mech', 'light', 'eco', 'std', 'hard']);
+    expect(tierPlan(models, 'mech')).toEqual(['mech', 'light', 'std', 'hard']);
     expect(tierPlan(models, 'std')).toEqual(['std', 'hard']);
   });
 });
