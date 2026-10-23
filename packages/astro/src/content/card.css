@@ -1,0 +1,78 @@
+/* Styles de Card : fichier global, classes `.pp-card*`, variantes par `data-*`. */
+.pp-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--pp-space-xs);
+  padding: var(--pp-space-s);
+  border: var(--pp-size-rule) solid var(--pp-color-line);
+  border-radius: var(--pp-radius-surface);
+  background-color: var(--pp-color-surface);
+  color: var(--pp-color-fg);
+}
+
+.pp-card[data-linked='true']:hover {
+  border-color: var(--pp-color-accent);
+}
+
+.pp-card__media {
+  overflow: hidden;
+  border-radius: var(--pp-radius-control);
+}
+
+.pp-card__media > img,
+.pp-card__media > picture {
+  display: block;
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+.pp-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pp-space-3xs);
+}
+
+.pp-card__title {
+  margin-block: 0;
+  font-size: var(--pp-font-size-0);
+  font-weight: var(--pp-font-weight-bold);
+  line-height: var(--pp-font-line-height-heading);
+}
+
+.pp-card__link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: var(--pp-size-focus-offset);
+}
+
+.pp-card__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.pp-card__link:focus-visible {
+  outline: none;
+}
+
+.pp-card__link:focus-visible::after {
+  outline: var(--pp-size-focus-width) solid var(--pp-color-focus);
+  outline-offset: var(--pp-size-focus-offset);
+}
+
+.pp-card__body > * {
+  margin-block: 0;
+}
+
+.pp-card__body > * + * {
+  margin-block-start: var(--pp-space-2xs);
+}
+
+.pp-card__footer {
+  position: relative;
+  z-index: var(--pp-z-sticky);
+  margin-block-start: auto;
+  min-block-size: var(--pp-size-target-min);
+}

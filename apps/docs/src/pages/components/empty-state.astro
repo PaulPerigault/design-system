@@ -1,0 +1,83 @@
+---
+import EmptyState from '@paulperigault/astro/EmptyState.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+import EmptyStateExamples from '../../components/examples/empty-state.astro';
+
+const snippet = `<EmptyState title="Aucun projet">
+  <p>Aucun projet n’est publié pour le moment.</p>
+  <a slot="action" href="/projets/nouveau">Créer un projet</a>
+</EmptyState>
+
+<EmptyState title="Aucun résultat" align="center" headingLevel={3}>
+  <p>Modifiez les filtres pour élargir la recherche.</p>
+</EmptyState>`;
+---
+
+<ComponentPage
+  slug="empty-state"
+  title="EmptyState"
+  summary="EmptyState indique qu’une liste ou un résultat est vide, et propose une action facultative."
+  use={[
+    'Une liste, un résultat de recherche ou un tableau de bord n’a aucune donnée à montrer.',
+    'Une action permet de sortir de l’état vide : créer un élément, modifier les filtres.',
+  ]}
+  avoid={[
+    'Pour un message d’erreur : utiliser Alert, qui porte un ton et un rôle d’annonce.',
+    'Pour un chargement en cours : utiliser Skeleton, qui occupe la place du contenu attendu.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Le composant est statique : il ne reçoit pas le focus.',
+      'Les liens ou boutons du slot action gardent leur comportement clavier natif.',
+    ],
+    screenReader: [
+      'La section est annoncée comme région, nommée par son titre (aria-labelledby).',
+      'Aucun rôle n’est posé sur le contenu : le titre se lit à son niveau headingLevel.',
+    ],
+    guaranteed: [
+      'Le titre est un élément h2, h3 ou h4 réel, au niveau choisi (WCAG 1.3.1).',
+      'La section a un nom accessible : le texte du titre (WCAG 4.1.2).',
+      'Aucune icône : le sens ne repose ni sur une forme ni sur une couleur (WCAG 1.4.1).',
+    ],
+    integrator: [
+      'Choisir headingLevel selon le plan du document ; le titre doit décrire l’état (WCAG 2.4.6).',
+      'Une action doit mesurer 24 px au minimum de chaque côté (WCAG 2.5.8).',
+      'Deux états vides de même titre sur une page ont le même identifiant : varier le titre.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.3.1 Information et relations',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html',
+    },
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html',
+    },
+    {
+      label: 'WCAG 2.4.6 Titres et étiquettes',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/headings-and-labels.html',
+    },
+    {
+      label: 'WCAG 2.5.8 Taille de la cible, minimum',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html',
+    },
+    {
+      label: 'WCAG 4.1.2 Nom, rôle, valeur',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html',
+    },
+    {
+      label: 'HTML-ARIA : section nommée, rôle region',
+      href: 'https://www.w3.org/TR/html-aria/#el-section',
+    },
+    { label: 'Tests : packages/astro/test/EmptyState.test.ts' },
+  ]}
+>
+  <EmptyStateExamples />
+  <Fragment slot="variants">
+    <EmptyState title="Aucun résultat" align="center" headingLevel={3}>
+      <p>Modifiez les filtres pour élargir la recherche.</p>
+    </EmptyState>
+  </Fragment>
+</ComponentPage>
