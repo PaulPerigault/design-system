@@ -8,7 +8,7 @@ export default defineConfig({
       'packages/*',
       { test: { name: 'tools', include: ['tools/**/*.test.mjs'] } },
       // Logique pure de la documentation (aucun composant Astro) : apps/docs/src/**.
-      { test: { name: 'docs', root: 'apps/docs', include: ['src/**/*.test.ts'] } },
+      { test: { name: 'docs', root: 'apps/docs', include: ['src/**/*.test.ts', 'scripts/**/*.test.mjs'] } },
     ],
     passWithNoTests: true,
   },
