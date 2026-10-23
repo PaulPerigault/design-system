@@ -88,11 +88,13 @@ for (const fallback of [false, true]) {
   });
 }
 
-// Depuis T12.05, le menu mobile est un Dialog : chaque page porte le repli, et lui seul.
+// Depuis T12.05, le menu mobile est un Dialog : chaque page porte le repli. Seul autre script
+// permis : l'enregistrement du service worker, brique optionnelle (/pwa/register.js).
 test('le repli est le seul script de la page, un seul fichier partagé', async ({ page }) => {
   const scripts: string[] = [];
   page.on('request', (request) => {
-    if (request.resourceType() === 'script') scripts.push(new URL(request.url()).pathname);
+    const path = new URL(request.url()).pathname;
+    if (request.resourceType() === 'script' && path !== '/pwa/register.js') scripts.push(path);
   });
   await open(page, '/components/stack/', VIEWPORTS[0]);
   await open(page, PATH, VIEWPORTS[0]);

@@ -1,28 +1,12 @@
-// Enregistre le service worker et propose la mise à jour. Aucun stockage, aucun réseau tiers.
-/* global navigator, document, location */
-if ('serviceWorker' in navigator) {
-  const sw = navigator.serviceWorker;
-  const hadController = Boolean(sw.controller);
-  const showUpdate = (worker) => {
-    const box = document.createElement('div');
-    const button = document.createElement('button');
-    box.setAttribute('role', 'status');
-    button.type = 'button';
-    button.className = 'pp-pwa-update';
-    button.textContent = 'Mettre à jour';
-    button.addEventListener('click', () => worker.postMessage({ type: 'SKIP_WAITING' }));
-    box.append(button);
-    document.body.append(box);
-  };
-  const watch = (registration) => {
-    if (registration.waiting) showUpdate(registration.waiting);
-    registration.addEventListener('updatefound', () => {
-      const worker = registration.installing;
-      worker?.addEventListener('statechange', () => {
-        if (worker.state === 'installed' && sw.controller) showUpdate(worker);
-      });
-    });
-  };
-  sw.addEventListener('controllerchange', () => hadController && location.reload());
-  sw.register('/sw.js').then(watch, () => undefined);
-}
+// Enregistre le service worker. Le bouton de mise à jour (update.js) ne se charge que si un
+// worker neuf attend alors qu'un ancien contrôle déjà la page. Aucun stockage, aucun réseau tiers.
+/* global navigator */
+const sw = navigator.serviceWorker;
+const ask = (registration) => import('/pwa/update.js').then((m) => m.offer(registration, sw));
+sw?.register('/sw.js').then(
+  (registration) => {
+    if (sw.controller && registration.waiting) ask(registration);
+    registration.addEventListener('updatefound', () => sw.controller && ask(registration));
+  },
+  () => undefined,
+);
