@@ -40,6 +40,7 @@ const { themeColor } = tokens;
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
   </head>
   <body>
     <a class="docs-skip" href="#contenu">
@@ -71,7 +72,12 @@ const { themeColor } = tokens;
       <nav aria-label="Informations">
         <a href="/glossaire/">Glossaire</a>
         <a href="/accessibilite/">Accessibilité</a>
+        <a href="/declaration-accessibilite/">Déclaration d’accessibilité</a>
+        <a href="/mentions-legales/">Mentions légales</a>
+        <a href="/confidentialite/">Confidentialité</a>
+        <a href="/credits/">Crédits</a>
       </nav>
     </footer>
+    <script is:inline src="/pwa/register.js" defer></script>
   </body>
 </html>
