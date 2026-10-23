@@ -25,7 +25,7 @@
     "check:pack": "npm pack --dry-run --workspaces --json > /dev/null",
     "guard": "npm run check:secrets && npm run check:size && npm run check:lockfile && npm run check:guards && npm run check:tokens && npm run check:registry && npm run check:readability",
     "build": "npm run build --workspaces --if-present",
-    "verify": "npm run guard && npm run lint && npm run format:check && npm test && npm run build && npm -w @paulperigault/docs run check && npm run check:pack",
+    "verify": "npm run guard && npm run lint && npm run format:check && npm test && npm run build && npm run check:mcp-data && npm -w @paulperigault/docs run check && npm run check:pack",
     "agents:run": "node tools/agents/run.mjs",
     "agents:batch": "node tools/agents/batch.mjs",
     "prepare": "husky",
@@ -33,7 +33,8 @@
     "e2e": "playwright test -c apps/docs/playwright.config.ts",
     "check:guards": "node packages/guards/bin/pp-guards.mjs all --config pp-guards.config.json",
     "registry": "node tools/registry/build.mjs",
-    "check:registry": "node tools/registry/build.mjs --check"
+    "check:registry": "node tools/registry/build.mjs --check",
+    "check:mcp-data": "npm -w @paulperigault/mcp run check:data"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.5.0",
