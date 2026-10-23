@@ -1,11 +1,16 @@
 ---
 import DocsLayout from '../layouts/DocsLayout.astro';
+import { graph, personLd, websiteLd } from '../lib/seo.ts';
 import { GROUPS, hrefOf } from '../navigation';
 
 const count = GROUPS.reduce((total, group) => total + group.links.length, 0);
 ---
 
-<DocsLayout title="Design system · Paul Perigault">
+<DocsLayout
+  title="Design system · Paul Perigault"
+  description="Documentation du design system de paulperigault.fr : CSS, composants Astro publiés en source, garde-fous, et une page par composant avec exemples."
+  jsonLd={graph(personLd(), websiteLd())}
+>
   <div class="docs-prose">
     <h1>Design system</h1>
     <p>

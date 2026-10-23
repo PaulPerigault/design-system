@@ -2,14 +2,20 @@
 import tokens from '@paulperigault/tokens/tokens.json';
 import bodyFont from '@fontsource-variable/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-wght-normal.woff2?url';
 import MobileMenu from '../components/MobileMenu.astro';
+import SeoHead from '../components/SeoHead.astro';
+import type { JsonLd } from '../lib/seo.ts';
+import { AUTHOR } from '../lib/site.ts';
 import '../styles/docs.css';
 import '../styles/footer.css';
 
 interface Props {
   title: string;
+  description: string;
+  /** Graphe JSON-LD propre à la page. */
+  jsonLd?: JsonLd;
 }
 
-const { title } = Astro.props;
+const { title, description, jsonLd } = Astro.props;
 const { themeColor } = tokens;
 ---
 
@@ -21,6 +27,12 @@ const { themeColor } = tokens;
     <meta name="theme-color" content={themeColor.light} media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content={themeColor.dark} media="(prefers-color-scheme: dark)" />
     <title>{title}</title>
+    <SeoHead
+      title={title}
+      description={description}
+      pathname={Astro.url.pathname}
+      graphs={jsonLd ? [jsonLd] : []}
+    />
     <link rel="preload" as="font" type="font/woff2" crossorigin href={bodyFont} />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/image/logo.svg" />
@@ -48,7 +60,13 @@ const { themeColor } = tokens;
       <slot />
     </main>
     <footer class="docs-footer">
-      <p>Design system de paulperigault.fr, licence MIT.</p>
+      <p>
+        Design system de paulperigault.fr, licence MIT. Auteur :
+        <a href={AUTHOR.url} rel="author">
+          Paul Périgault
+        </a>
+        .
+      </p>
       <nav aria-label="Informations">
         <a href="/glossaire/">Glossaire</a>
         <a href="/accessibilite/">Accessibilité</a>

@@ -7,6 +7,8 @@ import registry from '@paulperigault/astro/registry.json';
 import DocsLayout from '../layouts/DocsLayout.astro';
 import { SECTIONS, validate } from '../lib/component-page.ts';
 import type { ComponentPageData } from '../lib/component-page.ts';
+import { breadcrumbLd, canonicalOf, graph, techArticleLd, titleOf } from '../lib/seo.ts';
+import { GROUPS } from '../navigation';
 import '../styles/component-page.css';
 import PageNav from './PageNav.astro';
 import PropsTable from './PropsTable.astro';
@@ -19,6 +21,17 @@ const heading = (id: string) => SECTIONS.find((section) => section.id === id)?.t
 const tokens = registry.items.find((item) => item.name === slug)?.meta?.tokens ?? [];
 const hasVariants = Astro.slots.has('variants');
 const renderedSections = SECTIONS.filter((section) => section.id !== 'variantes' || hasVariants);
+const group = GROUPS.find((entry) => entry.links.some((link) => link.slug === slug));
+const url = canonicalOf(`/components/${slug}/`);
+const jsonLd = graph(
+  techArticleLd({ title, description: summary, url }),
+  breadcrumbLd([
+    { name: 'Accueil', path: '/' },
+    { name: 'Composants', path: '/#composants' },
+    ...(group ? [{ name: group.title, path: `/#groupe-${group.id}` }] : []),
+    { name: title, path: url },
+  ]),
+);
 const notes = [
   { title: 'Clavier', items: a11y.keyboard },
   { title: 'Lecteur d’écran', items: a11y.screenReader },
@@ -27,7 +40,7 @@ const notes = [
 ];
 ---
 
-<DocsLayout title={`${title} · Design system · Paul Perigault`}>
+<DocsLayout title={titleOf(title)} description={summary} jsonLd={jsonLd}>
   <div class="pp-component-page">
     <PageNav part="trail" slug={slug} title={title} />
     <h1>{title}</h1>
