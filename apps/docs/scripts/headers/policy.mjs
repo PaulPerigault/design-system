@@ -71,10 +71,7 @@ export function buildRules(hashes) {
   return [
     {
       path: '/*',
-      headers: [
-        ...securityHeaders(),
-        ['Content-Security-Policy', contentSecurityPolicy(hashes)],
-      ],
+      headers: [...securityHeaders(), ['Content-Security-Policy', contentSecurityPolicy(hashes)]],
     },
     {
       path: '/_astro/*',
@@ -98,5 +95,4 @@ export const REQUIRED_HEADERS = [
   'Cross-Origin-Embedder-Policy',
   'X-Frame-Options',
   'X-Permitted-Cross-Domain-Policies',
-  'Cache-Control',
 ];

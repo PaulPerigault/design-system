@@ -88,8 +88,8 @@ describe('buildRules', () => {
     expect(assets.headers).toEqual([['Cache-Control', 'public, max-age=31536000, immutable']]);
   });
 
-  it('revalide /*', () => {
-    expect(all.headers).toContainEqual(['Cache-Control', 'public, max-age=0, must-revalidate']);
+  it('ne pose pas de Cache-Control sur /* (cumul des règles chez Cloudflare et Netlify)', () => {
+    expect(all.headers.map(([name]) => name)).not.toContain('Cache-Control');
   });
 });
 
