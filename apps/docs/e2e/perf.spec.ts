@@ -24,6 +24,8 @@ const UPLOAD_BITS_PER_S = 750_000;
 /** Seuil minimal de `durationThreshold` accepté par Chromium pour les entrées `event`. */
 const EVENT_THRESHOLD_MS = 16;
 const TEST_TIMEOUT_MS = 90_000;
+/** Corps + chasse fixe des blocs de code (ADR-0002). */
+const MAX_FONT_FILES = 2;
 
 const PAGES = ['/', '/components/button/'];
 const BODY_FONT = 'Atkinson Hyperlegible Next Variable';
@@ -107,9 +109,11 @@ for (const path of PAGES) {
     const preloads = page.locator('link[rel=preload][as=font]');
     await expect(preloads).toHaveCount(1);
     const href = await preloads.getAttribute('href');
-    expect(responses.fonts, 'la police préchargée est la seule téléchargée').toEqual([
+    // Le corps est préchargé ; la police à chasse fixe des blocs de code vient en plus, sans préchargement.
+    expect(responses.fonts, 'la police du corps est préchargée').toContain(
       new URL(href ?? '', page.url()).href,
-    ]);
+    );
+    expect(responses.fonts.length, 'fichiers de police').toBeLessThanOrEqual(MAX_FONT_FILES);
     const body = await page.evaluate((family) => {
       const loaded = [...document.fonts].some((f) => f.family === family && f.status === 'loaded');
       return { loaded, stack: getComputedStyle(document.body).fontFamily };

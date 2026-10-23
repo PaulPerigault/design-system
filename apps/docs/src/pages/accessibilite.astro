@@ -1,5 +1,6 @@
 ---
 import Alert from '@paulperigault/astro/Alert.astro';
+import Table from '@paulperigault/astro/Table.astro';
 import DocsLayout from '../layouts/DocsLayout.astro';
 
 const DEFENSEUR_URL = 'https://formulaire.defenseurdesdroits.fr';
@@ -17,6 +18,12 @@ const CHOICES: [string, string, string][] = [
   ['Contraste renforcé de 7:1 (1.4.6, AAA)', 'Convention', 'aucun test de page'],
   ['Zéro JavaScript par défaut', 'Convention', 'forms.spec.ts, sans JavaScript'],
 ];
+const COLUMNS = [
+  { key: 'choix', label: 'Choix' },
+  { key: 'statut', label: 'Statut' },
+  { key: 'preuve', label: 'Preuve' },
+];
+const ROWS = CHOICES.map(([choix, statut, preuve]) => ({ choix, statut, preuve }));
 ---
 
 <DocsLayout title="Accessibilité · Design system · Paul Perigault">
@@ -37,29 +44,12 @@ const CHOICES: [string, string, string][] = [
     </p>
   </div>
 
-  <div class="docs-table-wrap">
-    <table class="docs-table">
-      <caption>Choix d’accessibilité et preuves</caption>
-      <thead>
-        <tr>
-          <th scope="col">Choix</th>
-          <th scope="col">Statut</th>
-          <th scope="col">Preuve</th>
-        </tr>
-      </thead>
-      <tbody>
-        {CHOICES.map(([choix, statut, preuve]) => (
-          <tr>
-            <td>{choix}</td>
-            <td>{statut}</td>
-            <td>
-              <code>{preuve}</code>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
+  <Table
+    caption="Choix d’accessibilité et preuves"
+    columns={COLUMNS}
+    rows={ROWS}
+    rowHeader="choix"
+  />
 
   <div class="docs-prose">
     <h2>Déclaration d’accessibilité</h2>
@@ -90,7 +80,7 @@ const CHOICES: [string, string, string][] = [
     <h3>Voies de recours</h3>
     <p>
       Si la réponse ne vous satisfait pas, saisissez le Défenseur des droits à l’adresse
-      <a href={DEFENSEUR_URL}>{DEFENSEUR_URL}</a>.
+      <a href={DEFENSEUR_URL}>formulaire en ligne du Défenseur des droits</a>.
     </p>
   </div>
 </DocsLayout>

@@ -22,10 +22,11 @@
   border-radius: var(--pp-radius-control);
 }
 
-.pp-component-page pre {
+.pp-component-page__snippet {
   margin-block-start: var(--pp-space-s);
   padding: var(--pp-space-s);
-  overflow-inline: auto;
+  max-inline-size: 100%;
+  overflow: auto;
   border: var(--pp-size-rule) solid var(--pp-color-line);
   border-radius: var(--pp-radius-control);
 }
@@ -36,4 +37,9 @@
   gap: var(--pp-space-xs);
   list-style: none;
   padding: 0;
+}
+
+/* Mots longs (jetons, identifiants) : coupés plutôt que de faire défiler la page (1.4.10, 1.4.12). */
+.pp-component-page :where(li, p, td) {
+  overflow-wrap: anywhere;
 }
