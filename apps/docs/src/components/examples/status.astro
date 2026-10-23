@@ -1,0 +1,12 @@
+---
+/** Exemples vivants de la page Status : les quatre états. La variante mono est dans la page. */
+import Status from '@paulperigault/astro/Status.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+---
+
+<Stack space="xs">
+  <Status state="passed" label="Réussi" />
+  <Status state="failed" label="Échec" />
+  <Status state="degraded" label="Dégradé" />
+  <Status state="running" label="En cours" />
+</Stack>

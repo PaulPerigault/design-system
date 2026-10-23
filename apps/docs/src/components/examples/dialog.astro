@@ -1,0 +1,33 @@
+---
+/** Exemple vivant de la page Dialog : déclencheur, boîte modale et action finale. */
+import Dialog from '@paulperigault/astro/Dialog.astro';
+import InvokerFallback from '@paulperigault/astro/InvokerFallback.astro';
+---
+
+<InvokerFallback />
+<p>
+  <button class="docs-trigger" type="button" commandfor="demo-dialog" command="show-modal">
+    Supprimer le brouillon
+  </button>
+</p>
+<Dialog id="demo-dialog" title="Supprimer le brouillon" closeLabel="Annuler">
+  <p>Le brouillon sera supprimé. Cette action ne peut pas être annulée.</p>
+  <form slot="actions" method="dialog">
+    <button class="docs-trigger" type="submit" value="delete">
+      Supprimer
+    </button>
+  </form>
+</Dialog>
+
+<style>
+  .docs-trigger {
+    min-block-size: max(var(--pp-size-control-height), var(--pp-size-target-min));
+    padding-inline: var(--pp-space-s);
+    border: var(--pp-size-rule) solid var(--pp-color-accent);
+    border-radius: var(--pp-radius-control);
+    background-color: var(--pp-color-accent);
+    color: var(--pp-color-on-accent);
+    font: inherit;
+    cursor: pointer;
+  }
+</style>

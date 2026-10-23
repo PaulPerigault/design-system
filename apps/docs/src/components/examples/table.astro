@@ -1,0 +1,17 @@
+---
+/** Exemple vivant de la page Table : jetons d’espacement, colonne numérique et en-tête de ligne. */
+import Table from '@paulperigault/astro/Table.astro';
+
+const spaceColumns = [
+  { key: 'name', label: 'Jeton' },
+  { key: 'size', label: 'Valeur (rem)', numeric: true },
+];
+const spaceRows = [
+  { name: '--pp-space-3xs', size: '0,25' },
+  { name: '--pp-space-2xs', size: '0,5' },
+  { name: '--pp-space-xs', size: '0,75' },
+  { name: '--pp-space-s', size: '1' },
+];
+---
+
+<Table caption="Jetons d’espacement" columns={spaceColumns} rows={spaceRows} rowHeader="name" />
