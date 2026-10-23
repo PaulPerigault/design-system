@@ -206,6 +206,46 @@
       }
     },
     {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "Carte riche avec un lien unique étendu à toute la carte, média et pied de carte facultatifs, sans JavaScript.",
+      "files": [
+        {
+          "path": "packages/astro/src/content/Card.astro",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/content/card.css",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-fg",
+          "--pp-color-focus",
+          "--pp-color-line",
+          "--pp-color-surface",
+          "--pp-font-line-height-heading",
+          "--pp-font-size-0",
+          "--pp-font-weight-bold",
+          "--pp-radius-control",
+          "--pp-radius-surface",
+          "--pp-size-focus-offset",
+          "--pp-size-focus-width",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-2xs",
+          "--pp-space-3xs",
+          "--pp-space-s",
+          "--pp-space-xs",
+          "--pp-z-sticky"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
       "name": "center",
       "type": "registry:ui",
       "title": "Center",
@@ -349,6 +389,38 @@
           "--pp-size-rule",
           "--pp-space-2xs",
           "--pp-space-3xs",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "empty-state",
+      "type": "registry:ui",
+      "title": "EmptyState",
+      "description": "État vide accessible : titre nommant la section, explication et action facultative, sans icône décorative.",
+      "files": [
+        {
+          "path": "packages/astro/src/content/EmptyState.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-fg",
+          "--pp-color-line",
+          "--pp-color-muted",
+          "--pp-color-surface",
+          "--pp-font-line-height-body",
+          "--pp-font-line-height-heading",
+          "--pp-font-size-1",
+          "--pp-font-weight-semibold",
+          "--pp-radius-surface",
+          "--pp-size-measure",
+          "--pp-size-rule",
+          "--pp-space-2xs",
+          "--pp-space-m",
+          "--pp-space-s",
           "--pp-space-xs"
         ],
         "version": "0.0.0"
@@ -508,6 +580,34 @@
       ],
       "meta": {
         "tokens": [],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "pagination",
+      "type": "registry:ui",
+      "title": "Pagination",
+      "description": "Navigation entre pages de résultats : page courante sans lien, cibles de taille minimale, zéro JavaScript.",
+      "files": [
+        {
+          "path": "packages/astro/src/navigation/Pagination.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-fg",
+          "--pp-color-focus",
+          "--pp-font-size-0",
+          "--pp-font-weight-bold",
+          "--pp-radius-control",
+          "--pp-size-focus-offset",
+          "--pp-size-focus-width",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-xs"
+        ],
         "version": "0.0.0"
       }
     },
@@ -762,6 +862,30 @@
       }
     },
     {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "Emplacement de chargement en lignes : texte lu par les lecteurs d’écran, animation d’opacité supprimée sous prefers-reduced-motion.",
+      "files": [
+        {
+          "path": "packages/astro/src/feedback/Skeleton.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-line",
+          "--pp-duration-base",
+          "--pp-easing-standard",
+          "--pp-font-size-0",
+          "--pp-radius-control",
+          "--pp-size-rule",
+          "--pp-space-3xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
       "name": "stack",
       "type": "registry:ui",
       "title": "Stack",
@@ -779,6 +903,30 @@
           "--pp-space-s",
           "--pp-space-xl",
           "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "stat",
+      "type": "registry:ui",
+      "title": "Stat",
+      "description": "Indicateur chiffré : libellé, valeur et variation écrite en clair, avec une forme d’icône par tendance.",
+      "files": [
+        {
+          "path": "packages/astro/src/content/Stat.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-fg",
+          "--pp-color-muted",
+          "--pp-font-line-height-heading",
+          "--pp-font-size--1",
+          "--pp-font-size-2",
+          "--pp-font-weight-semibold",
+          "--pp-space-3xs"
         ],
         "version": "0.0.0"
       }
@@ -922,6 +1070,35 @@
           "--pp-space-2xs",
           "--pp-space-3xs",
           "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "timeline",
+      "type": "registry:ui",
+      "title": "Timeline",
+      "description": "Suite d’étapes datées en liste ordonnée, dans l’ordre fourni, sans tri automatique.",
+      "files": [
+        {
+          "path": "packages/astro/src/content/Timeline.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-bg",
+          "--pp-color-fg",
+          "--pp-color-line",
+          "--pp-color-muted",
+          "--pp-font-size--1",
+          "--pp-font-weight-semibold",
+          "--pp-radius-control",
+          "--pp-size-rule",
+          "--pp-space-2xs",
+          "--pp-space-3xs",
+          "--pp-space-m"
         ],
         "version": "0.0.0"
       }

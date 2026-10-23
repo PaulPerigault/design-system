@@ -520,6 +520,97 @@
   {
     "a11y": {
       "guaranteed": [
+        "Le focus du lien est visible sur toute la carte, par un anneau de 2 px (WCAG 2.4.7).",
+        "Le lien est souligné : la couleur n’est pas seule à le signaler (WCAG 1.4.1).",
+        "La zone cliquable couvre la carte, au-delà de 24 px de côté (WCAG 2.5.8).",
+        "Le titre est un vrai titre, donc repérable dans la structure (WCAG 1.3.1)."
+      ],
+      "integrator": [
+        "Choisir headingLevel selon la hiérarchie de la page, sans sauter de niveau.",
+        "Donner un titre unique à chaque carte : il sert de nom au lien.",
+        "Ne pas placer de lien ou de bouton dans le slot par défaut ni dans media.",
+        "Fournir un texte alternatif aux images du slot media."
+      ],
+      "keyboard": [
+        "Avec href, la carte compte un seul arrêt de tabulation : le lien du titre.",
+        "Les liens du slot footer ont leur propre arrêt de tabulation.",
+        "Entrée active le lien ; le composant ne gère aucune autre touche."
+      ],
+      "screenReader": [
+        "Le titre est un titre de section (h2, h3 ou h4) ; le lien porte son texte comme nom.",
+        "La carte est un article sans rôle ajouté."
+      ]
+    },
+    "avoid": [
+      "Pour une action sans destination : utiliser Button.",
+      "Pour regrouper des contenus longs : un titre de section et du texte suffisent."
+    ],
+    "evidence": [
+      "[WCAG 2.4.7 Focus visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html)",
+      "[WCAG 1.3.1 Information et relations](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html)",
+      "[WCAG 2.5.8 Taille de la cible (minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)",
+      "Tests : packages/astro/test/Card.test.ts"
+    ],
+    "group": "content",
+    "props": [
+      {
+        "description": "Titre de la carte, rendu dans un titre de section et nom accessible du lien.",
+        "fallback": "—",
+        "name": "title (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Adresse du lien unique. Sans elle, la carte n'est pas cliquable.",
+        "fallback": "—",
+        "name": "href",
+        "type": "string"
+      },
+      {
+        "description": "Niveau du titre (2, 3 ou 4), à choisir selon la hiérarchie de la page.",
+        "fallback": "—",
+        "name": "headingLevel",
+        "type": "2 | 3 | 4"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "card",
+    "snippet": "<Card title=\"Design system\" href=\"/projets/design-system\">\n  <p>Jetons, composants Astro et contrôles de qualité.</p>\n  <a slot=\"footer\" href=\"/etiquettes/astro\">Astro</a>\n</Card>\n<Card title=\"Sans lien\" headingLevel={4}>\n  <p>Carte non cliquable.</p>\n</Card>",
+    "summary": "Card regroupe un titre, un texte, un média et un pied de carte, avec un seul lien qui couvre toute la carte.",
+    "title": "Card",
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-fg",
+      "--pp-color-focus",
+      "--pp-color-line",
+      "--pp-color-surface",
+      "--pp-font-line-height-heading",
+      "--pp-font-size-0",
+      "--pp-font-weight-bold",
+      "--pp-radius-control",
+      "--pp-radius-surface",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-s",
+      "--pp-space-xs",
+      "--pp-z-sticky"
+    ],
+    "use": [
+      "Présenter un projet, un article ou une ressource dans une liste de cartes.",
+      "Ajouter des étiquettes ou des liens secondaires dans le slot footer."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
         "Marges inline automatiques et largeur limitée par --pp-size-measure (Center.test.ts).",
         "text centre le texte, intrinsic centre les enfants selon leur largeur (Center.astro).",
         "Aucun attribut style et aucun JavaScript (Center.test.ts)."
@@ -1010,6 +1101,93 @@
   {
     "a11y": {
       "guaranteed": [
+        "Le titre est un élément h2, h3 ou h4 réel, au niveau choisi (WCAG 1.3.1).",
+        "La section a un nom accessible : le texte du titre (WCAG 4.1.2).",
+        "Aucune icône : le sens ne repose ni sur une forme ni sur une couleur (WCAG 1.4.1)."
+      ],
+      "integrator": [
+        "Choisir headingLevel selon le plan du document ; le titre doit décrire l’état (WCAG 2.4.6).",
+        "Une action doit mesurer 24 px au minimum de chaque côté (WCAG 2.5.8).",
+        "Deux états vides de même titre sur une page ont le même identifiant : varier le titre."
+      ],
+      "keyboard": [
+        "Le composant est statique : il ne reçoit pas le focus.",
+        "Les liens ou boutons du slot action gardent leur comportement clavier natif."
+      ],
+      "screenReader": [
+        "La section est annoncée comme région, nommée par son titre (aria-labelledby).",
+        "Aucun rôle n’est posé sur le contenu : le titre se lit à son niveau headingLevel."
+      ]
+    },
+    "avoid": [
+      "Pour un message d’erreur : utiliser Alert, qui porte un ton et un rôle d’annonce.",
+      "Pour un chargement en cours : utiliser Skeleton, qui occupe la place du contenu attendu."
+    ],
+    "evidence": [
+      "[WCAG 1.3.1 Information et relations](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html)",
+      "[WCAG 1.4.1 Utilisation de la couleur](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+      "[WCAG 2.4.6 Titres et étiquettes](https://www.w3.org/WAI/WCAG22/Understanding/headings-and-labels.html)",
+      "[WCAG 2.5.8 Taille de la cible, minimum](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)",
+      "[WCAG 4.1.2 Nom, rôle, valeur](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html)",
+      "[HTML-ARIA : section nommée, rôle region](https://www.w3.org/TR/html-aria/#el-section)",
+      "Tests : packages/astro/test/EmptyState.test.ts"
+    ],
+    "group": "content",
+    "props": [
+      {
+        "description": "Titre de l'état vide, lu comme nom de la section (par exemple « Aucun résultat »).",
+        "fallback": "—",
+        "name": "title (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Niveau du titre dans le plan du document, de 2 à 4. Défaut : 2.",
+        "fallback": "DEFAULT_HEADING_LEVEL",
+        "name": "headingLevel",
+        "type": "2 | 3 | 4"
+      },
+      {
+        "description": "Alignement du contenu : `start` (défaut) ou `center`.",
+        "fallback": "'start'",
+        "name": "align",
+        "type": "\"start\" | \"center\""
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "empty-state",
+    "snippet": "<EmptyState title=\"Aucun projet\">\n  <p>Aucun projet n’est publié pour le moment.</p>\n  <a slot=\"action\" href=\"/projets/nouveau\">Créer un projet</a>\n</EmptyState>\n\n<EmptyState title=\"Aucun résultat\" align=\"center\" headingLevel={3}>\n  <p>Modifiez les filtres pour élargir la recherche.</p>\n</EmptyState>",
+    "summary": "EmptyState indique qu’une liste ou un résultat est vide, et propose une action facultative.",
+    "title": "EmptyState",
+    "tokens": [
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-color-surface",
+      "--pp-font-line-height-body",
+      "--pp-font-line-height-heading",
+      "--pp-font-size-1",
+      "--pp-font-weight-semibold",
+      "--pp-radius-surface",
+      "--pp-size-measure",
+      "--pp-size-rule",
+      "--pp-space-2xs",
+      "--pp-space-m",
+      "--pp-space-s",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Une liste, un résultat de recherche ou un tableau de bord n’a aucune donnée à montrer.",
+      "Une action permet de sortir de l’état vide : créer un élément, modifier les filtres."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
         "Libellé relié par for et id ; identifiants <id>-hint et <id>-error (Field.test.ts).",
         "Icône d’erreur décorative : aria-hidden=\"true\" et focusable=\"false\" (Field.test.ts).",
         "Erreur signalée par le texte et l’icône, jamais par la seule couleur (Field.astro)."
@@ -1470,6 +1648,94 @@
       "Saisir une donnée courte : nom, courriel, téléphone ou recherche.",
       "Indiquer type et autocomplete pour le bon clavier et le remplissage automatique.",
       "Signaler une erreur sur le champ, avec invalid et describedBy."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "La page courante se distingue par un cadre et une graisse, pas par la couleur seule (critère 1.4.1).",
+        "Liens et page courante font au moins --pp-size-target-min de côté (critère 2.5.8).",
+        "Les liens restent soulignés pour se distinguer du texte (critère 1.4.1)."
+      ],
+      "integrator": [
+        "Fournir tous les libellés dans la langue du site, y compris précédent et suivant.",
+        "Donner un label distinct si la page contient plusieurs repères nav (critère 2.4.1).",
+        "Rendre le libellé de chaque lien compréhensible, par exemple « Page 3 » plutôt que « 3 » seul."
+      ],
+      "keyboard": [
+        "Chaque lien reçoit le focus avec Tab, dans l’ordre du document.",
+        "Le focus visible utilise un contour de la couleur --pp-color-focus (critère 2.4.7)."
+      ],
+      "screenReader": [
+        "Le repère nav porte le nom donné par label.",
+        "La liste porte role=\"list\" : VoiceOver garde la sémantique malgré list-style: none.",
+        "La page courante porte aria-current=\"page\" et n’est pas un lien."
+      ]
+    },
+    "avoid": [
+      "Pour un fil d’Ariane : utiliser Breadcrumb.",
+      "Pour un défilement infini : Pagination suppose des pages à adresse propre.",
+      "Pour calculer les pages : utiliser pageWindow, le composant ne les calcule pas."
+    ],
+    "evidence": [
+      "[WCAG 1.4.1 Utilisation de la couleur](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+      "[WCAG 2.5.8 Taille de la cible (minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)",
+      "[WCAG 2.4.7 Focus visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html)",
+      "Tests : packages/astro/test/Pagination.test.ts"
+    ],
+    "group": "navigation",
+    "props": [
+      {
+        "description": "Nom accessible du repère de navigation (`aria-label`), par exemple « Pagination ».",
+        "fallback": "—",
+        "name": "label (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Pages affichées : `{ label, href, current? }` ; `current` en fait la page courante, sans lien.",
+        "fallback": "—",
+        "name": "items (obligatoire)",
+        "type": "Item[]"
+      },
+      {
+        "description": "Lien vers la page précédente, affiché avant les pages. Absent : rien n'est rendu.",
+        "fallback": "—",
+        "name": "previous",
+        "type": "Link"
+      },
+      {
+        "description": "Lien vers la page suivante, affiché après les pages. Absent : rien n'est rendu.",
+        "fallback": "—",
+        "name": "next",
+        "type": "Link"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "pagination",
+    "snippet": "<Pagination\n  label=\"Pagination des résultats\"\n  items={[\n    { label: '1', href: '/blog/1' },\n    { label: '2', href: '/blog/2', current: true },\n    { label: '3', href: '/blog/3' },\n  ]}\n  previous={{ label: 'Page précédente', href: '/blog/1' }}\n  next={{ label: 'Page suivante', href: '/blog/3' }}\n/>",
+    "summary": "Pagination affiche des liens vers les pages d’une liste, la page courante sans lien, et des liens précédent et suivant.",
+    "title": "Pagination",
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-fg",
+      "--pp-color-focus",
+      "--pp-font-size-0",
+      "--pp-font-weight-bold",
+      "--pp-radius-control",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Parcourir une liste découpée en pages, comme des articles ou des résultats.",
+      "Fournir des liens réels : chaque page a une adresse, sans JavaScript."
     ]
   },
   {
@@ -2204,6 +2470,71 @@
   {
     "a11y": {
       "guaranteed": [
+        "La zone est un message d’état, sans focus volé (WCAG 4.1.3).",
+        "L’animation s’arrête sous prefers-reduced-motion et la ligne reste un aplat fixe.",
+        "En forced-colors: active, chaque ligne reçoit une bordure CanvasText."
+      ],
+      "integrator": [
+        "Retirer le composant dès que le contenu est prêt : l’animation boucle (WCAG 2.2.2).",
+        "Fournir un libellé court, dans la langue de la page.",
+        "Ne pas s’appuyer sur le seul composant pour annoncer une erreur (WCAG 4.1.3)."
+      ],
+      "keyboard": [
+        "Le composant est statique : il ne reçoit pas le focus.",
+        "Aucune touche n’est gérée par le composant."
+      ],
+      "screenReader": [
+        "Le libellé est le texte lu de la zone role=\"status\".",
+        "Les lignes sont masquées aux lecteurs d’écran (aria-hidden=\"true\")."
+      ]
+    },
+    "avoid": [
+      "Pour une attente sans forme de contenu prévisible : utiliser Progress, qui porte une valeur.",
+      "Pour signaler une erreur : utiliser un message d’état, pas un emplacement de chargement."
+    ],
+    "evidence": [
+      "[WCAG 4.1.3 Messages d’état](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html)",
+      "[WCAG 2.2.2 Pause, arrêt, masquage](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html)",
+      "[WCAG 2.3.3 Animation déclenchée par interaction (AAA)](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html)",
+      "[WAI-ARIA 1.2, rôle status](https://www.w3.org/TR/wai-aria-1.2/#status)",
+      "Tests : packages/astro/test/Skeleton.test.ts"
+    ],
+    "group": "feedback",
+    "props": [
+      {
+        "description": "Nombre de lignes, de 1 à 6. Une valeur hors plage est ramenée à la borne la plus proche.",
+        "fallback": "DEFAULT_LINES",
+        "name": "lines",
+        "type": "number"
+      },
+      {
+        "description": "Texte lu par les lecteurs d'écran, par exemple « Chargement du contenu ».",
+        "fallback": "—",
+        "name": "label (obligatoire)",
+        "type": "string"
+      }
+    ],
+    "slug": "skeleton",
+    "snippet": "<Skeleton label=\"Chargement du contenu\" />\n<Skeleton lines={1} label=\"Chargement du titre\" />\n<Skeleton lines={6} label=\"Chargement de l’article\" />",
+    "summary": "Skeleton affiche un emplacement de chargement en lignes, avec un libellé lu par les lecteurs d’écran.",
+    "title": "Skeleton",
+    "tokens": [
+      "--pp-color-line",
+      "--pp-duration-base",
+      "--pp-easing-standard",
+      "--pp-font-size-0",
+      "--pp-radius-control",
+      "--pp-size-rule",
+      "--pp-space-3xs"
+    ],
+    "use": [
+      "Réserver la place d’un contenu qui se charge.",
+      "Signaler qu’une zone se charge, avec un libellé qui décrit ce qui arrive."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
         "Espacement par margin-block et tokens --pp-space-*, sans marge avant le premier enfant.",
         "L’ordre visuel est celui du DOM : aucune propriété order n’est utilisée."
       ],
@@ -2257,6 +2588,89 @@
     "use": [
       "Espacer des blocs de même niveau, comme des paragraphes ou des sections, avec la prop space.",
       "Espacer des enfants de hauteur variable sans régler chaque marge à la main."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "La tendance est écrite en clair dans le delta, sans couleur porteuse de sens.",
+        "Chaque tendance a une forme d’icône distincte : flèche haut, flèche bas, tiret.",
+        "Le composant ne calcule ni ne formate aucune valeur : il affiche ce qu’on lui donne."
+      ],
+      "integrator": [
+        "Fournir un delta dès que trend est donné : le composant refuse sinon.",
+        "Formater la valeur avant l’affichage, par exemple « 1 204 » ou « 420 ms ».",
+        "Annoncer une mise à jour dynamique avec une région live côté intégrateur."
+      ],
+      "keyboard": [
+        "Le composant est statique : il ne reçoit pas le focus.",
+        "Aucune touche n’est gérée par le composant."
+      ],
+      "screenReader": [
+        "Le libellé et la valeur sont du texte ordinaire, dans une liste de description (dl, dt, dd).",
+        "L’icône de tendance est masquée (aria-hidden=\"true\") : le sens passe par le texte du delta."
+      ]
+    },
+    "avoid": [
+      "Pour comparer plusieurs valeurs sur plusieurs lignes : utiliser Table.",
+      "Pour une progression vers un objectif : utiliser Progress, qui porte une valeur maximale."
+    ],
+    "evidence": [
+      "[WCAG 1.1.1 Contenu non textuel](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html)",
+      "[WCAG 1.3.1 Information et relations](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html)",
+      "[WCAG 1.4.1 Utilisation de la couleur](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+      "[WCAG 4.1.3 Messages d’état](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html)",
+      "Tests : packages/astro/test/Stat.test.ts"
+    ],
+    "group": "content",
+    "props": [
+      {
+        "description": "Nom de l'indicateur, par exemple « Visites ».",
+        "fallback": "—",
+        "name": "label (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Valeur affichée, déjà formatée (par exemple « 1 204 »).",
+        "fallback": "—",
+        "name": "value (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Texte de variation, par exemple « +3 depuis la semaine dernière ». Obligatoire si `trend` est donné.",
+        "fallback": "—",
+        "name": "delta",
+        "type": "string"
+      },
+      {
+        "description": "Sens de la variation : `up`, `down` ou `flat`. Défaut : `flat`.",
+        "fallback": "—",
+        "name": "trend",
+        "type": "\"up\" | \"down\" | \"flat\""
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "stat",
+    "snippet": "<Stat label=\"Visites\" value=\"1 204\" delta=\"+3 depuis la semaine dernière\" trend=\"up\" />\n<Stat label=\"Erreurs\" value=\"0\" delta=\"Stable depuis hier\" trend=\"flat\" />\n<Stat label=\"Temps de réponse\" value=\"420 ms\" delta=\"−40 ms depuis la semaine dernière\" trend=\"down\" />",
+    "summary": "Stat affiche un indicateur chiffré, sa variation écrite en clair et une icône de tendance.",
+    "title": "Stat",
+    "tokens": [
+      "--pp-color-fg",
+      "--pp-color-muted",
+      "--pp-font-line-height-heading",
+      "--pp-font-size--1",
+      "--pp-font-size-2",
+      "--pp-font-weight-semibold",
+      "--pp-space-3xs"
+    ],
+    "use": [
+      "Afficher un indicateur clé avec sa variation, sur un tableau de bord.",
+      "Montrer un chiffre unique accompagné d’un libellé et d’une tendance."
     ]
   },
   {
@@ -2715,6 +3129,86 @@
     "use": [
       "Saisir un texte libre de plusieurs lignes, comme un message ou une description.",
       "Relier un message d’erreur au champ par describedBy quand la saisie est refusée."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "La liste est sémantique : role=\"list\" est posé, même sans puces (WCAG 1.3.1).",
+        "La date et le titre portent le sens ; le repère ne le porte pas seul (WCAG 1.4.1).",
+        "Le composant ne trie pas : l’ordre affiché est celui de items."
+      ],
+      "integrator": [
+        "Trier les items avant de les passer : data-order ne trie rien.",
+        "Écrire la date dans la langue du site, et donner datetime en ISO 8601 quand la date est connue.",
+        "Donner un label quand la page contient plusieurs chronologies."
+      ],
+      "keyboard": [
+        "Le composant est statique : il ne reçoit pas le focus.",
+        "Aucune touche n’est gérée par le composant."
+      ],
+      "screenReader": [
+        "La liste est annoncée comme liste, avec le nombre de ses éléments.",
+        "Le trait et les repères sont des pseudo-éléments sans texte : ils ne sont pas lus."
+      ]
+    },
+    "avoid": [
+      "Pour une liste sans ordre : utiliser une liste simple.",
+      "Pour une progression chiffrée : utiliser Progress, qui porte une valeur."
+    ],
+    "evidence": [
+      "[WCAG 1.3.1 Information et relations](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html)",
+      "[WCAG 1.4.1 Utilisation de la couleur](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+      "Tests : packages/astro/test/Timeline.test.ts"
+    ],
+    "group": "content",
+    "props": [
+      {
+        "description": "Étapes, dans l'ordre d'affichage. Le composant ne trie pas.",
+        "fallback": "—",
+        "name": "items (obligatoire)",
+        "type": "TimelineItem[]"
+      },
+      {
+        "description": "Nom accessible de la liste (`aria-label`). Utile quand la page contient plusieurs chronologies.",
+        "fallback": "—",
+        "name": "label",
+        "type": "string"
+      },
+      {
+        "description": "Sens de tri déclaré par l'intégrateur : `data-order` seul, sans effet sur le rendu.",
+        "fallback": "—",
+        "name": "order",
+        "type": "\"asc\" | \"desc\""
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "timeline",
+    "snippet": "<Timeline\n  label=\"Historique\"\n  order=\"asc\"\n  items={[\n    { time: '2024', datetime: '2024', title: 'Lancement', description: 'Première version.' },\n    { time: '2025', datetime: '2025', title: 'Refonte' },\n  ]}\n/>",
+    "summary": "Timeline présente une suite d’étapes datées, dans l’ordre fourni, en liste ordonnée.",
+    "title": "Timeline",
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-bg",
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-font-size--1",
+      "--pp-font-weight-semibold",
+      "--pp-radius-control",
+      "--pp-size-rule",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-m"
+    ],
+    "use": [
+      "Présenter un historique, un journal de versions ou des jalons datés.",
+      "Lister des étapes dont l’ordre compte, avec une date pour chacune."
     ]
   }
 ]
