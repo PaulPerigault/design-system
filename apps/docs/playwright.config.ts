@@ -11,6 +11,8 @@ export default defineConfig({
   retries: 0,
   reporter: 'list',
   outputDir: './test-results',
+  // Références visuelles générées en CI, jamais versionnées (voir matrix/visual.spec.ts).
+  snapshotPathTemplate: '.visual/{projectName}/{testFilePath}/{arg}{ext}',
   use: { baseURL: BASE_URL },
   projects: [
     { name: 'chromium', testIgnore: /matrix\//, use: { ...devices['Desktop Chrome'] } },
