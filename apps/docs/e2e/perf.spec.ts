@@ -1,6 +1,7 @@
 import { gzipSync } from 'node:zlib';
 import { expect, test } from '@playwright/test';
 import type { CDPSession, Page } from '@playwright/test';
+import { readInp } from './inp';
 import { injectVitals, readCls } from './web-vitals';
 
 /** Budgets de L12 (docs/benchmark/gap.md), mesurés sur un téléphone d'entrée de gamme. */
@@ -21,8 +22,6 @@ const LATENCY_MS = 150;
 const BITS_PER_BYTE = 8;
 const DOWNLOAD_BITS_PER_S = 1_600_000;
 const UPLOAD_BITS_PER_S = 750_000;
-/** Seuil minimal de `durationThreshold` accepté par Chromium pour les entrées `event`. */
-const EVENT_THRESHOLD_MS = 16;
 const TEST_TIMEOUT_MS = 90_000;
 
 const PAGES = ['/', '/components/button/'];
@@ -70,26 +69,6 @@ const readLcp = (page: Page): Promise<number> =>
       }),
   );
 
-/** INP (ms) : durée la plus longue des événements d'un clic sur le bouton du menu. */
-async function readInp(page: Page): Promise<number> {
-  await page.evaluate((threshold) => {
-    const durations: number[] = [];
-    (window as unknown as { __ppInp: number[] }).__ppInp = durations;
-    new PerformanceObserver((list) => {
-      for (const entry of list.getEntries()) durations.push(entry.duration);
-    }).observe({
-      type: 'event',
-      durationThreshold: threshold,
-      buffered: true,
-    } as PerformanceObserverInit);
-  }, EVENT_THRESHOLD_MS);
-  await page.locator('.docs-menu-button').click();
-  await expect(page.locator('dialog#docs-menu')).toBeVisible();
-  // Les entrées `event` sont livrées après le rendu de la trame suivant l'interaction.
-  await page.evaluate(() => new Promise((done) => requestAnimationFrame(() => setTimeout(done))));
-  return page.evaluate(() => Math.max(0, ...(window as unknown as { __ppInp: number[] }).__ppInp));
-}
-
 for (const path of PAGES) {
   test(`budgets mobile (360 × 800, CPU ×4, Slow 4G) : ${path}`, async ({ page }) => {
     test.setTimeout(TEST_TIMEOUT_MS);
@@ -100,7 +79,11 @@ for (const path of PAGES) {
     await page.evaluate(() => document.fonts.ready);
 
     expect(await readLcp(page), 'LCP').toBeLessThanOrEqual(LCP_BUDGET_MS);
-    expect(await readInp(page), 'INP').toBeLessThanOrEqual(INP_BUDGET_MS);
+    const inp = await readInp(page);
+    expect(
+      inp.duration,
+      `INP (attente, traitement, rendu) ${inp.parts.map(Math.round)}`,
+    ).toBeLessThanOrEqual(INP_BUDGET_MS);
     expect(await readCls(page), 'CLS').toBeLessThanOrEqual(CLS_BUDGET);
     expect(await responses.scriptBytes(), 'JavaScript gzip').toBeLessThanOrEqual(JS_BUDGET_BYTES);
 
