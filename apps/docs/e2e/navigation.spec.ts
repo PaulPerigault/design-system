@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { COMPONENT_PAGES, VIEWPORTS, open } from './helpers';
 
 test('le sommaire liste exactement les pages de composants construites', async ({ page }) => {
-  await open(page, '/', VIEWPORTS[0]);
+  await open(page, '/composants/', VIEWPORTS[0]);
   const hrefs = await page
     .locator('#composants ~ .docs-summary a')
     .evaluateAll((links) => links.map((link) => link.getAttribute('href')));

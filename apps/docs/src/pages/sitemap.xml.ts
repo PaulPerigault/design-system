@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { adrId } from '../lib/adr.ts';
 import { canonicalOf } from '../lib/seo.ts';
 
 export const prerender = true;
@@ -10,9 +11,15 @@ const pathOf = (file: string): string => {
 };
 
 const escapeXml = (text: string): string => text.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-const urls = Object.keys(import.meta.glob('./**/*.astro'))
-  .map(pathOf)
-  .sort();
+const adrIds = Object.keys(import.meta.glob('../../../../docs/adr/*.md')).map((file) =>
+  adrId(file),
+);
+const urls = [
+  ...Object.keys(import.meta.glob('./**/*.astro'))
+    .filter((file) => !file.includes('['))
+    .map(pathOf),
+  ...adrIds.map((id) => canonicalOf(`/decisions/${id}/`)),
+].sort();
 
 export const GET: APIRoute = () => {
   const body = [

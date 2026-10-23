@@ -27,7 +27,7 @@ const jsonLd = graph(
   techArticleLd({ title, description: summary, url }),
   breadcrumbLd([
     { name: 'Accueil', path: '/' },
-    { name: 'Composants', path: '/#composants' },
+    { name: 'Composants', path: '/composants/' },
     ...(group ? [{ name: group.title, path: `/#groupe-${group.id}` }] : []),
     { name: title, path: url },
   ]),

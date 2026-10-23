@@ -7,6 +7,7 @@ import type { JsonLd } from '../lib/seo.ts';
 import { AUTHOR } from '../lib/site.ts';
 import '../styles/docs.css';
 import '../styles/footer.css';
+import '../styles/wrap.css';
 
 interface Props {
   title: string;
@@ -51,7 +52,7 @@ const { themeColor } = tokens;
       <nav class="docs-nav" aria-label="Principale">
         <a href="/">Accueil</a>
         <a href="/identite/">Identité</a>
-        <a href="/#composants">Composants</a>
+        <a href="/composants/#composants">Composants</a>
         <a href="/recherche/">Recherche</a>
       </nav>
       <MobileMenu />

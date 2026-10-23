@@ -78,7 +78,7 @@ export const techArticleLd = ({ title, description, url }: TechArticleInput): Js
   author: personLd(),
 });
 
-/** URL absolue ; l'ancre est conservée (`/#composants`) pour distinguer les niveaux du fil. */
+/** URL absolue ; l'ancre est conservée (`/composants/`) pour distinguer les niveaux du fil. */
 const absolute = (path: string): string =>
   /^https?:\/\//.test(path) ? path : `${SITE_URL}${path.startsWith('/') ? path : `/${path}`}`;
 

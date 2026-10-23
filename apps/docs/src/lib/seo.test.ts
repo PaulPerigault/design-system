@@ -81,13 +81,13 @@ describe('JSON-LD', () => {
   it('BreadcrumbList : positions consécutives, item absolu', () => {
     const list = breadcrumbLd([
       { name: 'Accueil', path: '/' },
-      { name: 'Composants', path: '/#composants' },
+      { name: 'Composants', path: '/composants/' },
       { name: 'Stack', path: 'https://ds.paulperigault.dev/components/stack/' },
     ]);
     const items = list.itemListElement as { position: number; name: string; item: string }[];
     expect(items.map((entry) => entry.position)).toEqual([1, 2, 3]);
     for (const entry of items) expect(entry.item).toMatch(ABSOLUTE);
-    expect(items[1]?.item).toBe('https://ds.paulperigault.dev/#composants');
+    expect(items[1]?.item).toBe('https://ds.paulperigault.dev/composants/');
   });
 
   it('aucun undefined ni URL relative dans les constructeurs', () => {
