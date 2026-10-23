@@ -1,0 +1,63 @@
+---
+import DocsLayout from '../layouts/DocsLayout.astro';
+import { GROUPS, hrefOf } from '../navigation';
+
+const count = GROUPS.reduce((total, group) => total + group.links.length, 0);
+---
+
+<DocsLayout
+  title="Composants · Design system · Paul Perigault"
+  description="Documentation du design system de paulperigault.fr : CSS, composants Astro publiés en source, garde-fous, et une page par composant avec exemples."
+>
+  <div class="docs-prose">
+    <h1>Composants</h1>
+    <p>
+      Paquets @paulperigault : tokens OKLCH, CSS, {count} composants Astro publiés en source,
+      garde-fous et générateur de site. Chaque composant a sa page : exemples rendus, propriétés,
+      contrôles d’accessibilité.
+    </p>
+  </div>
+
+  <h2 id="composants">Composants</h2>
+  <div class="docs-summary">
+    {GROUPS.map((group) => (
+      <section aria-labelledby={`groupe-${group.id}`}>
+        <h3 id={`groupe-${group.id}`}>{group.title}</h3>
+        <ul role="list" class="docs-summary__list">
+          {group.links.map((item) => (
+            <li>
+              <a href={hrefOf(item)}>{item.title}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</DocsLayout>
+
+<style>
+  .docs-summary {
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(calc(var(--pp-size-measure) / 3), 100%), 1fr)
+    );
+    gap: var(--pp-space-l);
+  }
+
+  .docs-summary h3 {
+    margin-block: 0 var(--pp-space-xs);
+  }
+
+  .docs-summary__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .docs-summary__list a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--pp-size-target-min);
+  }
+</style>
