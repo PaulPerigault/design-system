@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "pagination",
+  "type": "registry:ui",
+  "title": "Pagination",
+  "description": "Navigation entre pages de résultats : page courante sans lien, cibles de taille minimale, zéro JavaScript.",
+  "files": [
+    {
+      "path": "packages/astro/src/navigation/Pagination.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-fg",
+      "--pp-color-focus",
+      "--pp-font-size-0",
+      "--pp-font-weight-bold",
+      "--pp-radius-control",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-xs"
+    ],
+    "version": "0.0.0"
+  }
+}
