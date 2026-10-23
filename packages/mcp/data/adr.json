@@ -177,6 +177,13 @@
       "decision": "Le gabarit de page de composant (T13.01) place les exemples sous le résumé, les listes d'usage et le sommaire : l'image prioritaire de la page Photo n'est plus l'élément LCP à 360 × 800. L'assertion « élément LCP » de `media.spec.ts` est retirée ; restent vérifiés : une seule image prioritaire, chargement sans différé, AVIF. Le test de police (`perf.spec.ts`) accepte désormais la police à chasse fixe des blocs de code en plus du corps préchargé (2 fichiers au plus).",
       "id": "D-023",
       "rollback": "`media.spec.ts`, `perf.spec.ts`."
+    },
+    {
+      "alternative": "Bloquer les PR sur tout écart ; références versionnées (dépendantes du système).",
+      "date": "2026-10-23",
+      "decision": "Régression visuelle (`visual.yml`) : sur `develop`, références recréées à chaque passage (`--update-snapshots=all`) ; sur une PR, comparaison avec les références de `develop` rapportée sans bloquer (`continue-on-error`), différences en artefact. Constaté sur la PR #17 : tout changement de page voulu échoue contre l'ancienne référence ; bloquer rendrait chaque PR visuelle impossible à fusionner. Le gabarit `site` de `ci.yml` empaquette aussi `@paulperigault/mcp`, devenue dépendance du site généré.",
+      "id": "D-025",
+      "rollback": "`visual.yml`, `ci.yml`."
     }
   ]
 }
