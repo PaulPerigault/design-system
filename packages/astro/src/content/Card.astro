@@ -1,0 +1,54 @@
+---
+/**
+ * Card : carte riche en un seul bloc. Zéro JavaScript, aucun attribut `style` (CSP stricte).
+ * Avec `href`, un seul lien couvre la carte (lien étendu) : il est dans le titre et son `::after`
+ * s'étend sur la racine (`position: relative`). Le slot `footer` passe au-dessus et reste
+ * utilisable. Focus visible sur la carte entière (WCAG 2.4.7). Aucun texte en dur : tout vient
+ * des props et des slots. Le contenu des slots est visé avec `:global()`.
+ */
+import './card.css';
+
+const TAGS = { 2: 'h2', 3: 'h3', 4: 'h4' } as const;
+const DEFAULT_TAG = 'h3';
+
+interface Props {
+  /** Titre de la carte, rendu dans un titre de section et nom accessible du lien. */
+  title: string;
+  /** Adresse du lien unique. Sans elle, la carte n'est pas cliquable. */
+  href?: string;
+  /** Niveau du titre (2, 3 ou 4), à choisir selon la hiérarchie de la page. */
+  headingLevel?: keyof typeof TAGS;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { title, href, headingLevel, class: className } = Astro.props;
+const Heading = (headingLevel && TAGS[headingLevel]) || DEFAULT_TAG;
+---
+
+<article class:list={['pp-card', className]} data-linked={href ? 'true' : undefined}>
+  {Astro.slots.has('media') && (
+    <div class="pp-card__media">
+      <slot name="media" />
+    </div>
+  )}
+  <div class="pp-card__content">
+    <Heading class="pp-card__title">
+      {href ? (
+        <a class="pp-card__link" href={href}>
+          {title}
+        </a>
+      ) : (
+        title
+      )}
+    </Heading>
+    <div class="pp-card__body">
+      <slot />
+    </div>
+  </div>
+  {Astro.slots.has('footer') && (
+    <div class="pp-card__footer">
+      <slot name="footer" />
+    </div>
+  )}
+</article>
