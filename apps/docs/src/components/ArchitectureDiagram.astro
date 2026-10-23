@@ -1,0 +1,115 @@
+---
+/**
+ * Schéma SVG des paquets et de leurs dépendances (AGENTS.md). Accessible : `role="img"`, nom et
+ * `<desc>` complets, chaque flèche y est décrite. Couleurs par `currentColor` et jetons `--pp-*`,
+ * sans dégradé ni ombre. Largeur maximale 100 % : viewBox de 480 unités, lisible à 320 px.
+ */
+const WIDTH = 180;
+const HEIGHT = 64;
+const BASELINE = 40;
+const HALF = 2;
+const HALF_WIDTH = WIDTH / HALF;
+
+// Noms des paquets sans le préfixe @paulperigault. Coordonnées en unités du viewBox.
+const BOXES = [
+  { label: 'tokens', x: 40, y: 40 },
+  { label: 'guards', x: 260, y: 40 },
+  { label: 'css', x: 40, y: 160 },
+  { label: 'mcp', x: 260, y: 160 },
+  { label: 'astro', x: 40, y: 280 },
+  { label: 'create', x: 260, y: 280 },
+  { label: 'apps/docs', x: 150, y: 380 },
+];
+
+// Une flèche par dépendance directe. La pointe est côté dépendance.
+const EDGES = [
+  'M130,160 V104', // css vers tokens
+  'M130,280 V224', // astro vers css
+  'M40,312 H20 V72 H40', // astro vers tokens, par la gauche du schéma
+  'M260,192 H240 V72 H220', // mcp vers tokens
+  'M350,160 V104', // mcp vers guards
+];
+
+const TITLE = 'Dépendances entre les paquets du design system';
+const DESCRIPTION = [
+  'Les noms sont ceux des paquets sans le préfixe @paulperigault.',
+  'Chaque flèche part du paquet qui dépend et pointe vers le paquet dont il dépend.',
+  'Flèche 1 : css dépend de tokens. Flèche 2 : astro dépend de css.',
+  'Flèche 3 : astro dépend aussi directement de tokens, par la gauche du schéma.',
+  'Flèche 4 : mcp dépend de tokens. Flèche 5 : mcp dépend de guards.',
+  'tokens, guards et create ne dépendent d’aucun autre paquet à l’exécution.',
+  'apps/docs, en bas, dépend de tous les paquets ; il n’a pas de flèche dessinée.',
+].join(' ');
+---
+
+<svg class="arch" viewBox="0 0 480 464" role="img" aria-labelledby="arch-title arch-desc">
+  <title id="arch-title">{TITLE}</title>
+  <desc id="arch-desc">{DESCRIPTION}</desc>
+  <defs>
+    <marker
+      id="arch-arrow"
+      viewBox="0 0 10 10"
+      refX="9"
+      refY="5"
+      markerWidth="8"
+      markerHeight="8"
+      orient="auto"
+    >
+      <path d="M0,0 L10,5 L0,10 Z" fill="currentColor" />
+    </marker>
+  </defs>
+  {EDGES.map((d) => (
+    <path class="arch__edge" d={d} marker-end="url(#arch-arrow)" />
+  ))}
+  {BOXES.map((box) => (
+    <g>
+      <rect class="arch__node" x={box.x} y={box.y} width={WIDTH} height={HEIGHT} />
+      <text class="arch__label" x={box.x + HALF_WIDTH} y={box.y + BASELINE}>
+        {box.label}
+      </text>
+    </g>
+  ))}
+  <text class="arch__note" x="240" y="460">
+    dépend de tous les paquets
+  </text>
+</svg>
+
+<style>
+  .arch {
+    display: block;
+    inline-size: var(--pp-size-measure);
+    max-inline-size: 100%;
+    block-size: auto;
+    color: var(--pp-color-fg);
+  }
+
+  .arch__node {
+    fill: var(--pp-color-surface);
+  }
+
+  .arch__node,
+  .arch__edge {
+    stroke: currentColor;
+    stroke-width: var(--pp-size-focus-width);
+  }
+
+  .arch__edge {
+    fill: none;
+  }
+
+  .arch__label,
+  .arch__note {
+    text-anchor: middle;
+  }
+
+  .arch__label {
+    fill: currentColor;
+    font-size: var(--pp-font-size-1);
+    font-weight: var(--pp-font-weight-semibold);
+  }
+
+  .arch__note {
+    fill: var(--pp-color-muted);
+    font-size: var(--pp-font-size-0);
+  }
+</style>
