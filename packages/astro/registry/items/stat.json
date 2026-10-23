@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "stat",
+  "type": "registry:ui",
+  "title": "Stat",
+  "description": "Indicateur chiffré : libellé, valeur et variation écrite en clair, avec une forme d’icône par tendance.",
+  "files": [
+    {
+      "path": "packages/astro/src/content/Stat.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-fg",
+      "--pp-color-muted",
+      "--pp-font-line-height-heading",
+      "--pp-font-size--1",
+      "--pp-font-size-2",
+      "--pp-font-weight-semibold",
+      "--pp-space-3xs"
+    ],
+    "version": "0.0.0"
+  }
+}

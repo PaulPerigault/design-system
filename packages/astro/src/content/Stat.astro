@@ -1,0 +1,97 @@
+---
+/**
+ * Stat : indicateur chiffré (KPI). Zéro JavaScript, aucun attribut `style` (CSP stricte).
+ * Le composant ne calcule ni ne formate aucun nombre : `value` et `delta` arrivent tels quels.
+ * La tendance est écrite en clair dans `delta` et portée par une forme d'icône propre (flèche
+ * haut, flèche bas, tiret), masquée aux technologies d'assistance. La couleur ne porte aucun sens
+ * (WCAG 2.2, critère 1.4.1).
+ */
+interface Props {
+  /** Nom de l'indicateur, par exemple « Visites ». */
+  label: string;
+  /** Valeur affichée, déjà formatée (par exemple « 1 204 »). */
+  value: string;
+  /** Texte de variation, par exemple « +3 depuis la semaine dernière ». Obligatoire si `trend` est donné. */
+  delta?: string;
+  /** Sens de la variation : `up`, `down` ou `flat`. Défaut : `flat`. */
+  trend?: 'up' | 'down' | 'flat';
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const ICONS = {
+  up: 'M12 19V5M5 12l7-7l7 7',
+  down: 'M12 5v14M19 12l-7 7l-7-7',
+  flat: 'M5 12h14',
+} as const;
+
+const { label, value, delta, trend, class: className } = Astro.props;
+const hasDelta = Boolean(delta?.trim());
+if (trend !== undefined && !hasDelta) {
+  throw new Error(`Stat « ${label} » : « delta » est obligatoire quand « trend » est donné.`);
+}
+const direction = trend ?? 'flat';
+---
+
+<dl class:list={['pp-stat', className]}>
+  <dt class="pp-stat__label">{label}</dt>
+  <dd class="pp-stat__value">{value}</dd>
+  {hasDelta && (
+    <dd class="pp-stat__delta" data-trend={direction}>
+      <svg
+        class="pp-stat__icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path d={ICONS[direction]}></path>
+      </svg>
+      <span>{delta}</span>
+    </dd>
+  )}
+</dl>
+
+<style>
+  .pp-stat {
+    display: grid;
+    gap: var(--pp-space-3xs);
+    margin-block: 0;
+    margin-inline: 0;
+    color: var(--pp-color-fg);
+  }
+
+  .pp-stat__label {
+    font-size: var(--pp-font-size--1);
+    color: var(--pp-color-muted);
+  }
+
+  .pp-stat__value {
+    margin-block: 0;
+    margin-inline: 0;
+    font-size: var(--pp-font-size-2);
+    font-weight: var(--pp-font-weight-semibold);
+    line-height: var(--pp-font-line-height-heading);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pp-stat__delta {
+    display: flex;
+    align-items: center;
+    gap: var(--pp-space-3xs);
+    margin-block: 0;
+    margin-inline: 0;
+    font-size: var(--pp-font-size--1);
+    color: var(--pp-color-muted);
+  }
+
+  .pp-stat__icon {
+    flex: none;
+    inline-size: var(--pp-font-size--1);
+    block-size: var(--pp-font-size--1);
+  }
+</style>
