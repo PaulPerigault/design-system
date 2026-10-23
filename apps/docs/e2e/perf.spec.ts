@@ -72,7 +72,11 @@ async function readInp(page: Page): Promise<number> {
     (window as unknown as { __ppInp: number[] }).__ppInp = durations;
     new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) durations.push(entry.duration);
-    }).observe({ type: 'event', durationThreshold: threshold, buffered: true });
+    }).observe({
+      type: 'event',
+      durationThreshold: threshold,
+      buffered: true,
+    } as PerformanceObserverInit);
   }, EVENT_THRESHOLD_MS);
   await page.locator('.docs-menu-button').click();
   await expect(page.locator('dialog#docs-menu')).toBeVisible();
