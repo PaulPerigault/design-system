@@ -1,0 +1,60 @@
+---
+import Table from '@paulperigault/astro/Table.astro';
+import DocsLayout from '../layouts/DocsLayout.astro';
+
+// Versions et licences lues dans package-lock.json (Astro, Pagefind, Vite, Playwright, axe-core, Vitest).
+const COLUMNS = [
+  { key: 'outil', label: 'Outil' },
+  { key: 'version', label: 'Version' },
+  { key: 'licence', label: 'Licence' },
+];
+const ROWS = [
+  { outil: 'Astro', version: '7.4.1', licence: 'MIT' },
+  { outil: 'Pagefind', version: '1.5.2', licence: 'MIT' },
+  { outil: 'Vite', version: '8.3.4', licence: 'MIT' },
+  { outil: 'Playwright (@playwright/test)', version: '1.64.1', licence: 'Apache-2.0' },
+  { outil: 'axe-core', version: '4.14.0', licence: 'MPL-2.0' },
+  { outil: 'Vitest', version: '4.1.12', licence: 'MIT' },
+];
+---
+
+<DocsLayout
+  title="Crédits · Design system · Paul Perigault"
+  description="Crédits du site : polices Atkinson Hyperlegible sous licence SIL OFL 1.1, outils de build et de test avec leurs versions, images d'exemple et photo."
+>
+  <div class="docs-prose">
+    <h1>Crédits</h1>
+
+    <h2>Polices</h2>
+    <p>
+      Le site utilise Atkinson Hyperlegible Next pour le texte et Atkinson Hyperlegible Mono pour le
+      code. Les deux polices sont sous licence SIL Open Font License, version 1.1.
+    </p>
+    <p>
+      Le texte de la licence est dans le fichier LICENSE des paquets{' '}
+      <code>@fontsource-variable/atkinson-hyperlegible-next</code> et{' '}
+      <code>@fontsource-variable/atkinson-hyperlegible-mono</code>, version 5.3.0. Les fichiers
+      indiquent les auteurs : « The Atkinson Hyperlegible Next Project Authors » et « The Atkinson
+      Hyperlegible Mono Project Authors ». Le paquet Fontsource indique Google Inc. comme auteur.
+    </p>
+  </div>
+
+  <div class="docs-prose">
+    <h2>Outils</h2>
+  </div>
+  <Table caption="Outils principaux et licences" columns={COLUMNS} rows={ROWS} rowHeader="outil" />
+
+  <div class="docs-prose">
+    <h2>Images</h2>
+    <p>
+      Les images de <code>apps/docs/src/assets/media</code> sont des compositions à aplats, générées
+      par <code>packages/astro/scripts/samples.ts</code>. Elles ne montrent aucun visage.
+    </p>
+
+    <h2>Portrait</h2>
+    <p>
+      Le portrait du portfolio n’est pas dans ce dépôt. Son recadrage et son texte alternatif
+      restent à valider, voir <code>docs/photos-review.md</code>.
+    </p>
+  </div>
+</DocsLayout>

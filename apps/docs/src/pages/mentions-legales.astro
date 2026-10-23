@@ -1,0 +1,48 @@
+---
+import process from 'node:process';
+import DraftNotice from '../components/DraftNotice.astro';
+import DocsLayout from '../layouts/DocsLayout.astro';
+import { LEGAL, assertProductionReady } from '../lib/legal.ts';
+
+// Refuse la compilation de production si l'hébergeur ou le contact manquent (LCEN, article 6 III).
+assertProductionReady(LEGAL, process.env);
+
+const pending = (value: string): string => value || 'à compléter';
+---
+
+<DocsLayout
+  title="Mentions légales · Design system · Paul Perigault"
+  description="Mentions légales du design system : éditeur, directeur de la publication, hébergeur, contact et licences du code et des contenus."
+>
+  <div class="docs-prose">
+    <DraftNotice />
+    <h1>Mentions légales</h1>
+
+    <h2>Éditeur</h2>
+    <p>Le site est édité par {LEGAL.publisher}, personne physique.</p>
+    <p>Adresse postale et téléphone : à compléter (LCEN, article 6 III).</p>
+    <p>Contact : {pending(LEGAL.contact)}</p>
+
+    <h2>Directeur de la publication</h2>
+    <p>Le directeur de la publication est {LEGAL.publisher}.</p>
+
+    <h2>Hébergeur</h2>
+    <p>Hébergeur : {pending(LEGAL.host)}</p>
+
+    <h2>Propriété intellectuelle</h2>
+    <p>
+      Le code du design system est publié sous licence {LEGAL.licenseCode}. Le texte de la licence
+      est dans le fichier LICENSE du dépôt.
+    </p>
+    <p>
+      Contenus et identité : {LEGAL.licenseContent || 'licence à choisir par Paul'}. Les polices et
+      les outils tiers sont listés sur la page <a href="/credits/">Crédits</a>.
+    </p>
+
+    <h2>Données personnelles</h2>
+    <p>
+      Le traitement des données personnelles est décrit sur la page{' '}
+      <a href="/confidentialite/">Confidentialité</a>.
+    </p>
+  </div>
+</DocsLayout>
