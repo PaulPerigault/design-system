@@ -1,0 +1,17 @@
+---
+import SearchBox from '../components/SearchBox.astro';
+import DocsLayout from '../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="Recherche · Design system · Paul Perigault">
+  <div class="docs-prose">
+    <h1>Recherche</h1>
+    <noscript>
+      <p>
+        La recherche demande JavaScript. Sans lui, toutes les pages restent atteignables depuis le
+        <a href="/">sommaire</a>.
+      </p>
+    </noscript>
+    <SearchBox />
+  </div>
+</DocsLayout>
