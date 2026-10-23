@@ -1,29 +1,65 @@
 ---
 import Container from '@paulperigault/astro/Container.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+
+const snippet = `<Container as="section" width="measure" gutter="l">
+  <h2>Titre de la section</h2>
+  <p>Texte limité à la mesure de lecture.</p>
+</Container>`;
 ---
 
-<DocsLayout title="Container · Design system · Paul Perigault">
-  <h1>Container</h1>
-  <p>
-    Container centre son contenu dans l’axe d’inline, limite sa largeur à la largeur de page ou à la
-    mesure de lecture, et réserve une gouttière de chaque côté.
-  </p>
-
-  <h2>Largeur de page</h2>
+<ComponentPage
+  slug="container"
+  title="Container"
+  summary="Container centre son contenu dans l’axe d’inline, limite sa largeur et réserve une gouttière de chaque côté."
+  use={[
+    'Borner la largeur d’une page ou d’une section, centrée horizontalement.',
+    'Limiter un texte à la mesure de lecture avec width="measure".',
+  ]}
+  avoid={[
+    'Pour une mise en page à plusieurs colonnes : utiliser Grid, Sidebar ou Switcher.',
+    'Pour centrer un bloc de texte seul, sans gouttière : utiliser Center.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: ['Le composant ne prend pas le focus et ne change pas l’ordre de tabulation.'],
+    screenReader: [
+      'Avec as="main", le repère main est exposé ; as="section" ne crée un repère que s’il porte un nom.',
+      'Le composant n’ajoute ni rôle ni libellé.',
+    ],
+    guaranteed: [
+      'Centrage par margin-inline: auto et largeur maximale via --pp-size-page ou --pp-size-measure.',
+      'Gouttière par padding-inline et tokens --pp-space-*.',
+    ],
+    integrator: [
+      'Un seul main par page : choisir as en conséquence.',
+      'Vérifier le contenu à 320 px : la gouttière ne doit pas réduire la place utile à rien.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.4.10 Reflow (niveau AA) : test sur chaque page construite.',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/reflow.html',
+    },
+    {
+      label:
+        'Tests : packages/astro/test/Container.test.ts, apps/docs/e2e/layout.spec.ts (largeur)',
+    },
+    { label: 'Code source : packages/astro/src/layout/Container.astro' },
+  ]}
+>
   <Container as="section" width="page" gutter="m">
     <div class="docs-sample">Contenu à la largeur de page, gouttière moyenne.</div>
   </Container>
-
-  <h2>Mesure de lecture</h2>
   <Container as="article" width="measure" gutter="l">
     <div class="docs-sample">Contenu limité à la mesure de lecture, gouttière large.</div>
   </Container>
-
-  <h2>Propriétés</h2>
-  <PropsTable item="container" title="Container" />
-</DocsLayout>
+  <Fragment slot="variants">
+    <Container width="page" gutter="s">
+      <div class="docs-sample">Contenu à la largeur de page, gouttière petite.</div>
+    </Container>
+  </Fragment>
+</ComponentPage>
 
 <style>
   /* Bloc témoin : montre la largeur du conteneur ; ce n'est pas un paragraphe de lecture. */

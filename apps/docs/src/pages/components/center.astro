@@ -1,27 +1,59 @@
 ---
-import Center from '@paulperigault/astro/Center.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+import Examples from '../../components/examples/center.astro';
+
+const snippet = `<Center text gutter="m" as="section">
+  <p>Texte centré, à largeur de lecture.</p>
+</Center>
+<Center intrinsic gutter="s">
+  <button type="button">Action</button>
+</Center>`;
 ---
 
-<DocsLayout title="Center · Design system · Paul Perigault">
-  <h1>Center</h1>
-  <p>
-    Center centre un bloc dans l’axe inline et limite sa largeur à la mesure de lecture définie par
-    le token <code>--pp-size-measure</code>.
-  </p>
-
-  <h2>Texte centré avec marge latérale</h2>
-  <Center text gutter="m" as="section">
-    <p>Ce paragraphe est centré, avec une marge latérale de taille m.</p>
-  </Center>
-
-  <h2>Enfants centrés selon leur largeur propre</h2>
-  <Center intrinsic gutter="s">
-    <p>Un premier paragraphe court.</p>
-    <button type="button">Action</button>
-  </Center>
-
-  <h2>Propriétés</h2>
-  <PropsTable item="center" title="Center" />
-</DocsLayout>
+<ComponentPage
+  slug="center"
+  title="Center"
+  summary="Center centre un bloc dans l’axe inline et limite sa largeur à la mesure de lecture."
+  use={[
+    'Centrer une colonne de texte ou une section à largeur de lecture, sur un grand écran.',
+    'Centrer un groupe d’éléments selon leur largeur propre, avec intrinsic.',
+  ]}
+  avoid={[
+    'Pour un texte long : text centre chaque ligne, ce qui se lit moins bien (convention typographique).',
+    'Pour aligner un bloc à gauche ou à droite : Center n’offre aucune option de ce type.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Le composant n’est pas interactif et ne reçoit jamais le focus.',
+      'Les éléments interactifs passés en enfants gardent leur focus natif.',
+    ],
+    screenReader: [
+      'Un div ne porte aucun rôle : le contenu est lu dans l’ordre du DOM.',
+      'as expose le rôle natif de l’élément choisi : main, header, footer, article, section.',
+    ],
+    guaranteed: [
+      'Marges inline automatiques et largeur limitée par --pp-size-measure (Center.test.ts).',
+      'text centre le texte, intrinsic centre les enfants selon leur largeur (Center.astro).',
+      'Aucun attribut style et aucun JavaScript (Center.test.ts).',
+    ],
+    integrator: [
+      'Choisir as selon le contenu : une seule balise main par page, selon la spécification HTML.',
+      'Tester le texte centré avec un contenu long et des libellés plus longs que ceux de l’exemple.',
+      'Garder gutter sur mobile si le contenu touche les bords de l’écran.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.4.10 Reflow : marges et largeur limitée ; non testé à 320 px',
+      href: 'https://www.w3.org/WCAG22/Understanding/reflow.html',
+    },
+    {
+      label: 'Mise en page : layout.spec.ts vérifie marges égales et max-inline-size',
+    },
+    { label: 'Tests : packages/astro/test/Center.test.ts' },
+    { label: 'Code source : packages/astro/src/layout/Center.astro' },
+  ]}
+>
+  <Examples />
+</ComponentPage>

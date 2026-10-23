@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { VIEWPORTS, open } from './helpers';
-import { injectVitals, isLcp, readCls } from './web-vitals';
+import { injectVitals, readCls } from './web-vitals';
 
 const PAGES = [
   '/components/photo/',
@@ -59,7 +59,9 @@ for (const path of PAGES) {
   });
 }
 
-test('photo : une seule image prioritaire, élément LCP, servie en AVIF', async ({ page }) => {
+test('photo : une seule image prioritaire, chargée sans différé, servie en AVIF', async ({
+  page,
+}) => {
   await injectVitals(page);
   await open(page, '/components/photo/', VIEWPORTS[0]);
   const priority = page.locator(PRIORITY);
@@ -70,5 +72,6 @@ test('photo : une seule image prioritaire, élément LCP, servie en AVIF', async
   ).toHaveCount(0);
   await priority.evaluate((img: HTMLImageElement) => img.decode());
   expect(await priority.evaluate((img: HTMLImageElement) => img.currentSrc)).toMatch(/\.avif$/);
-  await expect.poll(() => isLcp(page, PRIORITY)).toBe(true);
+  // Depuis le gabarit de page (T13.01), l'exemple est sous la ligne de flottaison : il n'est plus
+  // candidat LCP. Le marquage prioritaire reste vérifié ci-dessus (D-023).
 });

@@ -1,0 +1,14 @@
+---
+import Center from '@paulperigault/astro/Center.astro';
+---
+
+<h3>Texte centré avec marge latérale</h3>
+<Center text gutter="m" as="section">
+  <p>Ce paragraphe est centré, avec une marge latérale de taille m.</p>
+</Center>
+
+<h3>Enfants centrés selon leur largeur propre</h3>
+<Center intrinsic gutter="s">
+  <p>Un premier paragraphe court.</p>
+  <button type="button">Action</button>
+</Center>

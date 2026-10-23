@@ -1,56 +1,64 @@
 ---
-import Dialog from '@paulperigault/astro/Dialog.astro';
-import InvokerFallback from '@paulperigault/astro/InvokerFallback.astro';
-import Stack from '@paulperigault/astro/Stack.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+import DialogExamples from '../../components/examples/dialog.astro';
+
+const snippet = `<InvokerFallback />
+<button type="button" commandfor="confirm" command="show-modal">Supprimer</button>
+<Dialog id="confirm" title="Supprimer le brouillon" closeLabel="Annuler">
+  <p>Le brouillon sera supprimé.</p>
+  <form slot="actions" method="dialog">
+    <button type="submit" value="delete">Supprimer</button>
+  </form>
+</Dialog>`;
 ---
 
-<DocsLayout title="Dialog · Design system · Paul Perigault">
-  <h1>Dialog</h1>
-  <p>
-    Dialog est un élément dialog natif ouvert en modale. Le composant ne contient aucun script : le
-    déclencheur porte commandfor et command="show-modal" (API Invoker Commands). Pour les
-    navigateurs sans cette API, InvokerFallback, posé une fois dans la page, rejoue le même balisage
-    avec un petit script externe, inactif là où l’API existe.
-  </p>
-  <InvokerFallback />
-  <Stack space="m">
-    <h2>Démonstration</h2>
-    <p>
-      <button class="docs-trigger" type="button" commandfor="demo-dialog" command="show-modal">
-        Supprimer le brouillon
-      </button>
-    </p>
-    <Dialog id="demo-dialog" title="Supprimer le brouillon" closeLabel="Annuler">
-      <p>Le brouillon sera supprimé. Cette action ne peut pas être annulée.</p>
-      <form slot="actions" method="dialog">
-        <button class="docs-trigger" type="submit" value="delete">
-          Supprimer
-        </button>
-      </form>
-    </Dialog>
-    <h2>Fermeture et focus</h2>
-    <p>
-      La boîte se ferme par le bouton de fermeture, par la touche Échap, et par un clic hors de la
-      boîte (closedby="any", repris par InvokerFallback là où il manque). Le navigateur place le
-      focus sur le premier élément focalisable, puis le rend au déclencheur.
-    </p>
-    <h2>Propriétés</h2>
-    <p>Slots : le contenu par défaut forme le corps ; le slot actions reçoit les boutons finaux.</p>
-    <PropsTable item="dialog" title="Dialog" />
-  </Stack>
-</DocsLayout>
-
-<style>
-  .docs-trigger {
-    min-block-size: max(var(--pp-size-control-height), var(--pp-size-target-min));
-    padding-inline: var(--pp-space-s);
-    border: var(--pp-size-rule) solid var(--pp-color-accent);
-    border-radius: var(--pp-radius-control);
-    background-color: var(--pp-color-accent);
-    color: var(--pp-color-on-accent);
-    font: inherit;
-    cursor: pointer;
-  }
-</style>
+<ComponentPage
+  slug="dialog"
+  title="Dialog"
+  summary="Dialog ouvre une boîte modale native, sans script, depuis un bouton relié par commandfor."
+  use={[
+    'Confirmer une action difficile à annuler, comme une suppression.',
+    'Bloquer la page derrière jusqu’à une réponse : le reste de la page devient inerte.',
+  ]}
+  avoid={[
+    'Pour une information non bloquante : l’afficher dans la page, sans boîte modale.',
+    'Pour un contenu long : une page dédiée se lit mieux qu’une boîte (préférence).',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Entrée sur le déclencheur ouvre la boîte.',
+      'Échap ferme la boîte, et le focus revient au déclencheur.',
+      'Le focus initial va au premier élément focalisable, choisi par le navigateur.',
+    ],
+    screenReader: [
+      'La boîte est nommée par son titre, relié par aria-labelledby.',
+      'Le bouton de fermeture porte le libellé closeLabel.',
+      'Le rôle dialog est implicite : le composant n’ajoute ni rôle ni aria-modal.',
+    ],
+    guaranteed: [
+      'Élément dialog natif, ouvert par show-modal sans script.',
+      'closedby="any" : un clic hors de la boîte la ferme.',
+      'Aucun autofocus et aucun attribut style.',
+    ],
+    integrator: [
+      'Fournir un closeLabel traduit et un title précis.',
+      'Poser InvokerFallback une fois par page pour les navigateurs sans Invoker Commands.',
+      'Donner au déclencheur un nom visible : le composant ne le crée pas.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 2.1.2 Pas de piège au clavier',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html',
+    },
+    {
+      label: 'WCAG 4.1.2 Nom, rôle, valeur',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html',
+    },
+    { label: 'Tests : packages/astro/test/Dialog.test.ts' },
+    { label: 'Tests e2e : apps/docs/e2e/dialog.spec.ts' },
+  ]}
+>
+  <DialogExamples />
+</ComponentPage>

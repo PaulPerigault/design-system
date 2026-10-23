@@ -1,0 +1,69 @@
+/* Recherche : tokens uniquement, propriétés logiques. Focus visible hérité du design system. */
+.docs-search-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: var(--pp-space-2xs);
+}
+
+.docs-search-label {
+  flex-basis: 100%;
+  font-weight: var(--pp-font-weight-semibold);
+}
+
+.docs-search-input {
+  flex: 1 1 var(--pp-size-measure);
+  min-block-size: var(--pp-size-control-height);
+  padding-inline: var(--pp-space-xs);
+  border: var(--pp-size-rule) solid var(--pp-color-control);
+  border-radius: var(--pp-radius-control);
+  background-color: var(--pp-color-bg);
+  color: var(--pp-color-fg);
+  font: inherit;
+}
+
+.docs-search-button {
+  min-block-size: var(--pp-size-control-height);
+  min-inline-size: var(--pp-size-control-height);
+  padding-inline: var(--pp-space-s);
+  border: var(--pp-size-rule) solid var(--pp-color-accent);
+  border-radius: var(--pp-radius-control);
+  background-color: var(--pp-color-accent);
+  color: var(--pp-color-on-accent);
+  font: inherit;
+  font-weight: var(--pp-font-weight-semibold);
+  cursor: pointer;
+}
+
+.docs-search-status {
+  margin-block-start: var(--pp-space-s);
+  color: var(--pp-color-muted);
+}
+
+.docs-search-results {
+  display: grid;
+  gap: var(--pp-space-s);
+  margin: 0;
+  margin-block-start: var(--pp-space-s);
+  padding: 0;
+  list-style: none;
+}
+
+.docs-search-results a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--pp-size-control-height);
+  font-weight: var(--pp-font-weight-semibold);
+}
+
+.docs-search-results p {
+  margin: 0;
+}
+
+/* Fond `line` + texte `fg` : au moins 9:1 en clair comme en sombre (jetons existants). */
+.docs-search-results mark {
+  background-color: var(--pp-color-line);
+  color: var(--pp-color-fg);
+  font-weight: var(--pp-font-weight-bold);
+  text-decoration: underline;
+}

@@ -1,0 +1,39 @@
+---
+import Select from '@paulperigault/astro/Select.astro';
+
+const pays = [
+  { value: 'fr', label: 'France' },
+  { value: 'be', label: 'Belgique' },
+  { value: 'ch', label: 'Suisse' },
+  { value: 'ca', label: 'Canada', disabled: true },
+];
+---
+
+<h3>Par défaut</h3>
+<label for="select-pays">Pays</label>
+<Select
+  id="select-pays"
+  name="pays"
+  options={pays}
+  placeholder="Choisir un pays"
+  required
+  describedBy="select-pays-aide"
+/>
+<p id="select-pays-aide">Le Canada n’est pas encore proposé.</p>
+
+<h3>Erreur</h3>
+<label for="select-pays-erreur">Pays</label>
+<Select
+  id="select-pays-erreur"
+  name="pays-erreur"
+  options={pays}
+  placeholder="Choisir un pays"
+  required
+  invalid
+  describedBy="select-pays-erreur-texte"
+/>
+<p id="select-pays-erreur-texte">Erreur : choisissez un pays.</p>
+
+<h3>Désactivé</h3>
+<label for="select-pays-off">Pays</label>
+<Select id="select-pays-off" name="pays-off" options={pays} value="fr" disabled />

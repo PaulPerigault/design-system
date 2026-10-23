@@ -1,29 +1,58 @@
 ---
-import Textarea from '@paulperigault/astro/Textarea.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+import TextareaExamples from '../../components/examples/textarea.astro';
+
+const snippet = `<label for="message">Message</label>
+<Textarea id="message" name="message" rows={6} />`;
 ---
 
-<DocsLayout title="Textarea · Design system · Paul Perigault">
-  <h1>Textarea</h1>
-  <p>
-    Textarea enveloppe l’élément natif <code>textarea</code> : à utiliser pour une saisie de
-    plusieurs lignes, comme un message.
-  </p>
-
-  <h2>Par défaut</h2>
-  <label for="demo-defaut">Message</label>
-  <Textarea id="demo-defaut" name="demo-defaut" />
-
-  <h2>Erreur</h2>
-  <label for="demo-erreur">Message</label>
-  <Textarea id="demo-erreur" name="demo-erreur" required invalid describedBy="demo-erreur-aide" />
-  <p id="demo-erreur-aide">Le message est obligatoire.</p>
-
-  <h2>Désactivé</h2>
-  <label for="demo-desactive">Message</label>
-  <Textarea id="demo-desactive" name="demo-desactive" disabled value="Saisie indisponible." />
-
-  <h2>Propriétés</h2>
-  <PropsTable item="textarea" title="Textarea" />
-</DocsLayout>
+<ComponentPage
+  slug="textarea"
+  title="Textarea"
+  summary="Textarea rend une zone de saisie multiligne native, avec états d’erreur et de désactivation."
+  use={[
+    'Saisir un texte libre de plusieurs lignes, comme un message ou une description.',
+    'Relier un message d’erreur au champ par describedBy quand la saisie est refusée.',
+  ]}
+  avoid={[
+    'Pour une saisie sur une seule ligne, comme un nom : utiliser Input.',
+    'Pour choisir une valeur dans une liste fermée : utiliser Select.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Tab place le focus dans la zone, dans l’ordre du document.',
+      'Entrée insère un saut de ligne : le comportement reste celui du navigateur.',
+    ],
+    screenReader: [
+      'Le nom du champ vient du label relié par for et id.',
+      'Avec invalid, le champ est annoncé invalide et le message de describedBy est lu.',
+    ],
+    guaranteed: [
+      'Élément textarea natif, sans JavaScript et sans texte en dur.',
+      'L’erreur passe aussi par une bordure plus épaisse, en plus de la couleur.',
+      'Hauteur minimale fixée par les jetons --pp-size-target-min ou --pp-size-control-height.',
+    ],
+    integrator: [
+      'Fournir un label dont for est égal à id : le composant n’écrit aucun libellé.',
+      'Écrire le message d’erreur et le référencer par describedBy quand invalid est posé.',
+      'Renseigner enterkeyhint si le clavier virtuel doit proposer une action précise.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.3.1 Information et relations, niveau A',
+      href: 'https://www.w3.org/TR/WCAG22/#info-and-relationships',
+    },
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur, niveau A',
+      href: 'https://www.w3.org/TR/WCAG22/#use-of-color',
+    },
+    { label: 'WCAG 2.4.7 Focus visible, niveau AA : apps/docs/e2e/forms.spec.ts' },
+    { label: 'WCAG 2.5.8 Taille de la cible (minimum), niveau AA : apps/docs/e2e/forms.spec.ts' },
+    { label: 'WCAG 3.3.1 Identification des erreurs, niveau A : apps/docs/e2e/forms.spec.ts' },
+    { label: 'Code source : packages/astro/src/forms/Textarea.astro' },
+  ]}
+>
+  <TextareaExamples />
+</ComponentPage>

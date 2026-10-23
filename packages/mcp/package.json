@@ -1,0 +1,50 @@
+{
+  "name": "@paulperigault/mcp",
+  "version": "0.0.0",
+  "description": "Serveur MCP (stdio, lecture seule) du design system @paulperigault : composants, jetons, contraste, garde-fous.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Paul Perigault",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "design-system"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PaulPerigault/design-system.git",
+    "directory": "packages/mcp"
+  },
+  "homepage": "https://ds.paulperigault.dev",
+  "bugs": "https://github.com/PaulPerigault/design-system/issues",
+  "engines": {
+    "node": ">=24"
+  },
+  "sideEffects": false,
+  "files": [
+    "bin",
+    "src",
+    "data",
+    "README.md"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "prepublishOnly": "node ../../tools/checks/check-publish-env.mjs && node scripts/build-data.mjs --check",
+    "build:data": "node scripts/build-data.mjs",
+    "check:data": "node scripts/build-data.mjs --check",
+    "test": "vitest run"
+  },
+  "bin": {
+    "pp-mcp": "./bin/pp-mcp.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@paulperigault/guards": "0.0.0",
+    "@paulperigault/tokens": "0.0.0",
+    "zod": "4.6.6"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "pp-ds": {
+      "command": "npx",
+      "args": ["--no-install", "pp-mcp"]
+    }
+  }
+}

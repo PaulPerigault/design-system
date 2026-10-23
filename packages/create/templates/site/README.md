@@ -35,6 +35,12 @@ git commit -m "chore: add lockfile"
 Conventional Commits, sujet en minuscules de 72 caractères au plus. Les lignes `Co-authored-by` et
 les mentions « Generated with » sont refusées, sans exemption (`commitlint.config.mjs`).
 
+## Assistants IA
+
+`AGENTS.md` donne les règles du design system aux assistants IA.
+Le serveur MCP `pp-ds` est déclaré dans `.mcp.json` (Claude Code),
+`.kiro/settings/mcp.json` (Kiro) et `.cursor/mcp.json` (Cursor).
+
 ## Dépendances
 
 `.npmrc` fixe le registre npmjs, enregistre des versions exactes (`save-exact`) et refuse une

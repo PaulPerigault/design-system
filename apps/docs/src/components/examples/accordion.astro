@@ -1,0 +1,21 @@
+---
+/** Exemples vivants de la page Accordion : panneaux indépendants. La variante exclusive est dans la page. */
+import Accordion from '@paulperigault/astro/Accordion.astro';
+
+const items = [
+  { id: 'native', summary: 'Quel élément HTML est utilisé ?', open: true },
+  { id: 'keyboard', summary: 'Comment l’utiliser au clavier ?' },
+  { id: 'motion', summary: 'Quand l’ouverture est-elle animée ?' },
+];
+---
+
+<Accordion items={items}>
+  <p slot="native">
+    Un <code>details</code> par panneau, avec un <code>summary</code> pour titre.
+  </p>
+  <p slot="keyboard">Tab atteint le titre, Entrée ou Espace ouvre et ferme le panneau.</p>
+  <p slot="motion">
+    Sous <code>prefers-reduced-motion: no-preference</code>, si le navigateur gère
+    <code>interpolate-size</code>.
+  </p>
+</Accordion>

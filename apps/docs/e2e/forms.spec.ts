@@ -88,7 +88,7 @@ test.describe('sans JavaScript', () => {
       ['switch', 'Recevoir les alertes', '#demo-default'],
     ] as const) {
       await page.goto(`/components/${name}/`);
-      await page.getByText(label).click();
+      await page.getByText(label, { exact: true }).click();
       await expect(page.locator(id)).toBeChecked();
     }
   });

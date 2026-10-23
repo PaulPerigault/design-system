@@ -1,27 +1,71 @@
 ---
 import ArtDirection from '@paulperigault/astro/ArtDirection.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
 import large from '../../assets/media/large.jpg';
 import largeEtroit from '../../assets/media/large-etroit.jpg';
+
+const snippet = [
+  '---',
+  "import ArtDirection from '@paulperigault/astro/ArtDirection.astro';",
+  "import large from './large.jpg';",
+  "import largeEtroit from './large-etroit.jpg';",
+  '---',
+  '',
+  '<ArtDirection',
+  '  src={large}',
+  "  sources={[{ at: 'narrow', src: largeEtroit }]}",
+  '  alt="Disque bleu et colonne grise"',
+  '/>',
+].join('\n');
 ---
 
-<DocsLayout title="ArtDirection · Design system · Paul Perigault">
-  <h1>ArtDirection</h1>
-  <p>
-    ArtDirection sert un recadrage resserré sur le sujet aux écrans étroits au lieu de réduire
-    l’image large : chaque source porte les dimensions de son recadrage, la place est réservée avant
-    le chargement.
-  </p>
-
-  <h2>Recadrage étroit sous la mesure</h2>
+<ComponentPage
+  slug="art-direction"
+  title="ArtDirection"
+  summary="ArtDirection sert un recadrage resserré aux écrans étroits, au lieu de réduire l’image large."
+  use={[
+    'Garder le sujet lisible sur mobile, quand une image large perd son détail en se réduisant.',
+    'Fournir un recadrage par point de rupture : narrow sous la mesure, medium sous la page.',
+  ]}
+  avoid={[
+    'Pour une image lisible à toute taille : Photo suffit, sans recadrage supplémentaire.',
+    'Pour une image sans sujet à recentrer : un recadrage par point de rupture n’apporte rien.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: ['Aucun élément interactif : rien à atteindre au clavier.'],
+    screenReader: [
+      'Une seule alt s’applique à toutes les sources : elle décrit le sujet commun.',
+      'Le repli img porte le même alt que les recadrages.',
+    ],
+    guaranteed: [
+      'Chaque source porte width et height de son recadrage : la place est réservée.',
+      'Sources ordonnées narrow, medium, puis image par défaut.',
+      'alt obligatoire, ou decorative : sinon erreur au build.',
+      'priority : loading="eager" et fetchpriority="high" sur le img de repli.',
+    ],
+    integrator: [
+      'Décrire dans alt le sujet commun aux recadrages, pas le détail d’un seul.',
+      'Garder le même sujet dans chaque recadrage : le composant ne le vérifie pas.',
+      'Réserver priority à l’image principale de la page.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.1.1 Contenu non textuel',
+      href: 'https://www.w3.org/TR/WCAG22/#non-text-content',
+    },
+    {
+      label: 'LCP et CLS sur la page art-direction : apps/docs/e2e/media.spec.ts',
+    },
+    { label: 'Tests : packages/astro/test/ArtDirection.test.ts' },
+  ]}
+>
+  <h3>Recadrage étroit sous la mesure</h3>
   <ArtDirection
     src={large}
     sources={[{ at: 'narrow', src: largeEtroit }]}
     alt="Composition géométrique : disque bleu et colonne grise au-dessus d’une bande d’horizon"
     priority
   />
-
-  <h2>Propriétés</h2>
-  <PropsTable item="art-direction" title="ArtDirection" />
-</DocsLayout>
+</ComponentPage>

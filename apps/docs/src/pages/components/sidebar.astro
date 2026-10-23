@@ -1,28 +1,72 @@
 ---
 import Sidebar from '@paulperigault/astro/Sidebar.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+
+const snippet = `<Sidebar as="section" side="end" sideWidth="medium" space="l">
+  <div>Contenu principal</div>
+  <aside>Barre latérale</aside>
+</Sidebar>`;
 ---
 
-<DocsLayout title="Sidebar · Design system · Paul Perigault">
-  <h1>Sidebar</h1>
-  <p>
-    Sidebar place une barre latérale de largeur fixe à côté d’un contenu qui occupe le reste, et les
-    empile quand le contenu passerait sous la moitié de la largeur.
-  </p>
-
-  <h2>Barre au début</h2>
+<ComponentPage
+  slug="sidebar"
+  title="Sidebar"
+  summary="Sidebar place une barre latérale de largeur fixe à côté d’un contenu qui prend le reste, et les empile si la place manque."
+  use={[
+    'Afficher une navigation ou des métadonnées à côté d’un contenu principal.',
+    'Passer en une seule colonne quand la place manque, sans media query.',
+  ]}
+  avoid={[
+    'Pour trois colonnes ou plus de même importance : utiliser Grid.',
+    'Pour une barre qui reste visible pendant le défilement : le composant ne la fixe pas.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'L’ordre de tabulation suit l’ordre du DOM : le composant ne réordonne pas les enfants.',
+    ],
+    screenReader: [
+      'Un aside est lu comme repère complémentaire (rôle complementary).',
+      'Le composant n’ajoute ni rôle ni libellé.',
+    ],
+    guaranteed: [
+      'Espacement par gap, sans marge ajoutée.',
+      'Bascule en colonne par flex-wrap et flex-basis, sans JavaScript.',
+    ],
+    integrator: [
+      'Placer dans le DOM l’ordre de lecture voulu : side ne change que la colonne fixe.',
+      'Nommer les aside et nav de la page si elles sont plusieurs.',
+    ],
+  }}
+  evidence={[
+    {
+      label:
+        'WCAG 1.3.2 Ordre de lecture significatif (niveau A) : ordre visuel égal à l’ordre du DOM.',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html',
+    },
+    {
+      label: 'WCAG 1.4.10 Reflow (niveau AA) : test sur chaque page construite.',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/reflow.html',
+    },
+    {
+      label:
+        'Tests : packages/astro/test/Sidebar.test.ts, apps/docs/e2e/layout.spec.ts (flex-wrap)',
+    },
+    { label: 'Code source : packages/astro/src/layout/Sidebar.astro' },
+  ]}
+>
   <Sidebar as="section">
     <nav aria-label="Exemple">Barre latérale</nav>
     <div>Contenu principal, qui prend la largeur restante.</div>
   </Sidebar>
-
-  <h2>Barre à la fin, plus large</h2>
   <Sidebar as="section" side="end" sideWidth="medium" space="l">
     <div>Contenu principal, qui prend la largeur restante.</div>
     <aside>Barre latérale</aside>
   </Sidebar>
-
-  <h2>Propriétés</h2>
-  <PropsTable item="sidebar" title="Sidebar" />
-</DocsLayout>
+  <Fragment slot="variants">
+    <Sidebar as="article" space="xs">
+      <div>Contenu principal, espacement xs.</div>
+      <aside>Barre latérale, espacement xs.</aside>
+    </Sidebar>
+  </Fragment>
+</ComponentPage>

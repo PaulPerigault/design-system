@@ -1,0 +1,12 @@
+---
+/** Exemples vivants de la page Progress : avancement et indéterminé. La variante meter est dans la page. */
+import Progress from '@paulperigault/astro/Progress.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+---
+
+<Stack space="m">
+  <h3>Avancement</h3>
+  <Progress id="demo-progress" label="Envoi du fichier" value={3} max={5} valueText="3 sur 5" />
+  <h3>Indéterminé</h3>
+  <Progress id="demo-indeterminate" label="Préparation de l’archive" />
+</Stack>

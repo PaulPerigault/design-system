@@ -39,6 +39,7 @@
     "pp-guards": "./bin/pp-guards.mjs"
   },
   "exports": {
+    "./design": "./src/design/rules.mjs",
     "./eslint": "./src/eslint.mjs",
     "./package.json": "./package.json"
   },

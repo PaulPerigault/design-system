@@ -1,30 +1,61 @@
 ---
-import Table from '@paulperigault/astro/Table.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+import TableExamples from '../../components/examples/table.astro';
 
-const spaceColumns = [
+const snippet = `---
+const columns = [
   { key: 'name', label: 'Jeton' },
   { key: 'size', label: 'Valeur (rem)', numeric: true },
 ];
-const spaceRows = [
-  { name: '--pp-space-3xs', size: '0,25' },
-  { name: '--pp-space-2xs', size: '0,5' },
-  { name: '--pp-space-xs', size: '0,75' },
-  { name: '--pp-space-s', size: '1' },
-];
+const rows = [{ name: '--pp-space-s', size: '1' }];
+---
+<Table caption="Jetons d’espacement" columns={columns} rows={rows} rowHeader="name" />`;
 ---
 
-<DocsLayout title="Table · Design system · Paul Perigault">
-  <h1>Table</h1>
-  <p>
-    Table rend un tableau de données dans une région qui défile en ligne et reçoit le focus au
-    clavier. La légende sert de nom à la région. Aucun JavaScript.
-  </p>
-
-  <h2>Avec colonne numérique et en-tête de ligne</h2>
-  <Table caption="Jetons d’espacement" columns={spaceColumns} rows={spaceRows} rowHeader="name" />
-
-  <h2>Propriétés</h2>
-  <PropsTable item="table" title="Table" />
-</DocsLayout>
+<ComponentPage
+  slug="table"
+  title="Table"
+  summary="Table présente des données en colonnes, dans une région défilante focalisable et nommée par sa légende."
+  use={[
+    'Comparer des valeurs sur plusieurs lignes et colonnes, comme une liste de jetons.',
+    'Aligner des colonnes numériques en fin de ligne avec numeric.',
+  ]}
+  avoid={[
+    'Pour une mise en page : utiliser une grille ou une primitive de layout.',
+    'Pour un contenu sans colonnes de données : utiliser des paragraphes ou une liste.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'La région reçoit le focus par Tab quand elle défile.',
+      'Le focus visible entoure la région (focus-visible).',
+    ],
+    screenReader: [
+      'La région est annoncée avec la légende comme nom (aria-label).',
+      'Les en-têtes de colonne sont en scope="col" ; l’en-tête de ligne en scope="row".',
+    ],
+    guaranteed: [
+      'La légende est rendue en caption, et la région porte tabindex="0".',
+      'Les colonnes numériques sont alignées en fin, en chiffres tabulaires.',
+      'Aucun script et aucun attribut style.',
+    ],
+    integrator: [
+      'Fournir une légende qui décrit le contenu : elle sert de nom à la région.',
+      'Passer rowHeader quand la première colonne identifie la ligne.',
+      'Écrire l’unité dans la valeur ou l’en-tête : le composant n’en ajoute pas.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.3.1 Information et relations',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html',
+    },
+    {
+      label: 'WCAG 2.1.1 Clavier',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html',
+    },
+    { label: 'Tests : packages/astro/test/Table.test.ts' },
+  ]}
+>
+  <TableExamples />
+</ComponentPage>

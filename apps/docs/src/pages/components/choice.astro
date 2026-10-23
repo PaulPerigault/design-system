@@ -1,18 +1,57 @@
 ---
-import ChoiceExamples from '../../components/ChoiceExamples.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+import ChoiceExamples from '../../components/examples/choice.astro';
+
+const snippet = `<Choice type="checkbox" id="news" name="news" value="oui" label="Recevoir les notes" />`;
 ---
 
-<DocsLayout title="Choice · Design system · Paul Perigault">
-  <h1>Choice</h1>
-  <p>
-    Choice rend une case à cocher ou un bouton radio natif suivi de son libellé, et toute la zone
-    (contrôle et libellé) reste cliquable sur au moins la hauteur d'un contrôle.
-  </p>
-
+<ComponentPage
+  slug="choice"
+  title="Choice"
+  summary="Choice rend une case à cocher ou un bouton radio natif, suivi d’un libellé cliquable."
+  use={[
+    'Cocher un réglage indépendant, ou plusieurs options à la fois, avec type="checkbox".',
+    'Choisir une seule valeur dans un groupe fermé, avec type="radio" dans un fieldset.',
+  ]}
+  avoid={[
+    'Pour un réglage qui prend effet tout de suite : préférence pour Switch.',
+    'Pour un choix parmi de nombreuses options : préférence pour Select.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Tab atteint chaque case ou bouton radio, dans l’ordre du document.',
+      'Espace coche une case ; les flèches changent le bouton radio du groupe.',
+    ],
+    screenReader: [
+      'Le libellé relié par for et id donne le nom accessible du contrôle.',
+      'Dans un fieldset, le legend est annoncé avant les choix du groupe.',
+    ],
+    guaranteed: [
+      'Contrôle natif et libellé, sans JavaScript et sans texte en dur.',
+      'Le libellé occupe une zone au moins égale à la taille minimale de cible.',
+      'Le focus visible est hérité de @paulperigault/css.',
+    ],
+    integrator: [
+      'Envelopper un groupe de boutons radio dans un fieldset et un legend.',
+      'Donner à chaque radio d’un groupe le même name et un id distinct.',
+      'Relier le message d’erreur par describedBy quand le choix est refusé.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.3.1 Information et relations, niveau A',
+      href: 'https://www.w3.org/TR/WCAG22/#info-and-relationships',
+    },
+    {
+      label: 'WCAG 4.1.2 Nom, rôle, valeur, niveau A',
+      href: 'https://www.w3.org/TR/WCAG22/#name-role-value',
+    },
+    { label: 'WCAG 2.4.7 Focus visible, niveau AA : apps/docs/e2e/forms.spec.ts' },
+    { label: 'WCAG 2.5.8 Taille de la cible (minimum), niveau AA : apps/docs/e2e/forms.spec.ts' },
+    { label: 'Tests unitaires : packages/astro/test/Choice.test.ts' },
+    { label: 'Code source : packages/astro/src/forms/Choice.astro' },
+  ]}
+>
   <ChoiceExamples />
-
-  <h2>Propriétés</h2>
-  <PropsTable item="choice" title="Choice" />
-</DocsLayout>
+</ComponentPage>

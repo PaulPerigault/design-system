@@ -23,7 +23,7 @@ test('menu mobile : ouverture, contenu, Échap, focus rendu, clic hors boîte', 
   expect(await dialog.evaluate((el) => el.matches(':modal'))).toBe(true);
   expect(await dialog.evaluate((el) => el.contains(document.activeElement))).toBe(true);
   const hrefs = await dialog
-    .locator('a')
+    .locator('section:not([aria-labelledby="menu-site"]) a')
     .evaluateAll((links) => links.map((a) => a.getAttribute('href')));
   expect([...hrefs].sort()).toEqual(COMPONENT_PAGES);
   await expect(dialog.locator('a[aria-current="page"]')).toHaveAttribute('href', PATH);
