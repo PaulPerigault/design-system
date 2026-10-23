@@ -1,0 +1,11 @@
+---
+/** Exemples vivants de la page Skeleton : une, trois et six lignes. */
+import Skeleton from '@paulperigault/astro/Skeleton.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+---
+
+<Stack space="s">
+  <Skeleton lines={1} label="Chargement du titre" />
+  <Skeleton label="Chargement du contenu" />
+  <Skeleton lines={6} label="Chargement de l’article" />
+</Stack>
