@@ -10,6 +10,20 @@ répondent 404. Le brief demandait des images OG générées au build. Piste : `
 texte exige une police lisible par librsvg (pas de `woff2`), donc à traiter avec soin. Tant que ce
 n'est pas fait, retirer les balises `og:image` plutôt que de publier des liens morts.
 
+**État au 2026-10-24 (session TypeScript strict).** Fusionnés dans `develop` : #24 (images OG,
+police Atkinson en contours), #25 (ADR-0005), #26 (`packages/tokens` en TypeScript strict).
+**En cours : migration de `packages/guards`**, branche `feat/ts-strict-guards`, poussée, **non fusionnée,
+pas de PR**. Les fichiers sont renommés en `.ts` (sauf `bin/pp-guards.mjs`, lanceur) ; tests et
+`check:guards` passent à l'exécution ; `tsc -p packages/guards` donne encore ≈ 280 erreurs (types
+implicites, `unknown` dans les `catch`, résultats de `parseArgs`, JSDoc faux dans `report.ts`).
+Prochaine étape : typer fichier par fichier (`cd packages/guards && npx tsc -p .`), ajouter
+`'packages/guards/**/*.ts'` à `TS_STRICT_FILES` dans `eslint.config.mjs`, `npm run verify`, PR vers
+`develop`, fusion. Puis `packages/create`, puis `tools/agents` (même procédé ; `tools/agents` doit
+aussi mettre à jour `tools/agents/config.json` et les listes d'autorisation `.kiro/agents/*.json`).
+Limite à lever avant publication : Node n'exécute pas de `.ts` sous `node_modules` ; ajouter une
+compilation `tsc` vers `dist/` pour `tokens` et `guards`. Le sujet de commit « wip: » est refusé par
+commitlint : utiliser `chore: wip …`. Le corps de PR doit tenir en lignes de 100 caractères.
+
 **Reprise suggérée.** (1) images OG, (2) intégrer les quatre actions du propriétaire, (3) L9
 (migration du portfolio) une fois les paquets publiés.
 
