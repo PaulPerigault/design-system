@@ -69,7 +69,9 @@ export function layerOfPath(layers: { paths: string[] }[], path: string): number
 /** `@scope/nom/x` devient `@scope/nom`, `nom/x` devient `nom`. */
 function packageName(specifier: string): string {
   const parts = specifier.split('/');
-  return specifier.startsWith('@') ? parts.slice(0, SCOPED_SEGMENTS).join('/') : parts[0];
+  const first = parts[0];
+  if (first === undefined) return '';
+  return specifier.startsWith('@') ? parts.slice(0, SCOPED_SEGMENTS).join('/') : first;
 }
 
 export function layerOfImport(layers: { paths: string[]; packages: string[] }[], file: string, specifier: string): number {

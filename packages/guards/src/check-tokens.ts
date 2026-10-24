@@ -39,12 +39,12 @@ export function unusedTokens(texts: { file: string; text: string }[], names: Ite
 }
 
 interface FsLike {
-  readdirSync: (dir: string, options?: { withFileTypes?: true }) => import('node:fs').Dirent[];
+  readdirSync: (dir: string) => import('node:fs').Dirent[];
 }
 
 /** Fichiers sources d'un dossier, hors dossiers ignorés. */
-export function listSources(dir: string, fs: FsLike = { readdirSync: (): import('node:fs').Dirent[] => [] }): string[] {
-  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+export function listSources(dir: string, fs: FsLike = { readdirSync: () => [] }): string[] {
+  return fs.readdirSync(dir).flatMap((entry) => {
     const path = join(dir, entry.name);
     if (entry.isDirectory()) return SKIPPED.has(entry.name) ? [] : listSources(path, fs);
     return EXTENSIONS.includes(extname(entry.name)) ? [path] : [];
@@ -63,7 +63,7 @@ export function parseArgs(argv: string[]): { tokens: string; dirs: string[] } {
 
 interface TokensIo {
   readFile: (path: string) => string;
-  readdirSync: (dir: string, options?: { withFileTypes?: true }) => import('node:fs').Dirent[];
+  readdirSync: (dir: string) => import('node:fs').Dirent[];
   out: (message: string) => void;
   err: (message: string) => void;
 }
@@ -82,24 +82,12 @@ export function run(argv: string[], io: TokensIo): number {
 if (import.meta.main) {
   const write = (stream: NodeJS.WriteStream): ((message: string) => void) => (message) => stream.write(`${message}\n`);
   const readFile = (file: string): string => readFileSync(file, 'utf8');
-  const io: TokensIo = { 
-    readFile, 
-    readdirSync: (dir: string, options?: { withFileTypes?: true }) => readdirSync(dir, options as import('node:fs').ObjectEncodingOptions & { withFileTypes?: true }) as import('node:fs').Dirent[], 
-    out: write(process.stdout), 
-    err: write(process.stderr) 
+  const io: TokensIo = {
+    readFile,
+    readdirSync: (dir: string) => readdirSync(dir, { withFileTypes: true }),
+    out: write(process.stdout),
+    err: write(process.stderr),
   };
-  try {
-    process.exitCode = run(process.argv.slice(ARGV_START), io);
-  } catch (error: unknown) {
-    if (error instanceof Error) io.err(error.message);
-    process.exitCode = 1;
-  }
-}
-
-if (import.meta.main) {
-  const write = (stream: NodeJS.WriteStream): ((message: string) => void) => (message) => stream.write(`${message}\n`);
-  const readFile = (file: string): string => readFileSync(file, 'utf8');
-  const io = { readFile, readdirSync, out: write(process.stdout), err: write(process.stderr) };
   try {
     process.exitCode = run(process.argv.slice(ARGV_START), io);
   } catch (error: unknown) {

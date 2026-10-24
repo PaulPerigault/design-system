@@ -1,4 +1,5 @@
 // Contrôle : aucun fichier source ne dépasse `max` lignes (on découpe, on ne relève pas).
+import type { GuardIo } from './lib/io.ts';
 import { listFiles } from './lib/files.ts';
 import { GuardUsageError, report } from './lib/report.ts';
 
@@ -41,7 +42,7 @@ interface SizeOptions {
   roots?: string[];
 }
 
-export function run(options: SizeOptions, io: import('./lib/io.ts').GuardIo): 0 | 1 {
+export function run(options: SizeOptions, io: GuardIo): 0 | 1 {
   const max = parseMax(options.max ?? defaults.max) as number;
   const extensions = nonEmpty(options.ext, nonEmpty(options.extensions, defaults.extensions));
   const roots = nonEmpty(options.roots, defaults.roots);

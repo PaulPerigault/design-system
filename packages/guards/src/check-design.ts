@@ -1,5 +1,6 @@
 // Contrôle « design » : interdits anti-IA d'AGENTS.md (dégradés, ombres, flou, emoji, palette
 // Tailwind, valeurs arbitraires, couleurs brutes, effets rétro, phrases génériques).
+import type { GuardIo } from './lib/io.ts';
 import { listFiles } from './lib/files.ts';
 import { matchesPath } from './lib/paths.ts';
 import { GuardUsageError, report } from './lib/report.ts';
@@ -70,7 +71,7 @@ export function checkText(
   return analyze(file, text, enabledRules(file, options));
 }
 
-export function run(options: DesignOptions & typeof defaults, io: import('./lib/io.ts').GuardIo): 0 | 1 {
+export function run(options: DesignOptions & typeof defaults, io: GuardIo): 0 | 1 {
   const merged = { ...defaults, ...options } as DesignOptions & typeof defaults;
   validateOptions(merged);
   const files = listFiles(io, merged.roots as string[], { extensions: merged.extensions as string[] }) as string[];

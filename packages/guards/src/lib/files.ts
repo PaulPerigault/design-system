@@ -1,3 +1,5 @@
+import type { Dirent } from 'node:fs';
+import type { GuardIo } from './io.ts';
 import { normalizePath } from './paths.ts';
 
 export const SKIPPED_DIRS = [
@@ -22,7 +24,7 @@ interface WalkOptions {
   skip: readonly string[];
 }
 
-function walk(io: import('./io.ts').GuardIo, dir: string, options: WalkOptions, found: Set<string>): void {
+function walk(io: GuardIo, dir: string, options: WalkOptions, found: Set<string>): void {
   for (const entry of io.readdir(dir)) {
     const path = join(dir, entry.name);
     if (entry.isDirectory()) {
@@ -33,7 +35,7 @@ function walk(io: import('./io.ts').GuardIo, dir: string, options: WalkOptions, 
   }
 }
 
-export function listFiles(io: import('./io.ts').GuardIo, roots: string[], options: { extensions: string[]; skip?: readonly string[] }): string[] {
+export function listFiles(io: GuardIo, roots: string[], options: { extensions: string[]; skip?: readonly string[] }): string[] {
   const skip = options.skip ?? SKIPPED_DIRS;
   const found = new Set<string>();
   for (const raw of roots) {
@@ -49,7 +51,7 @@ export function listFiles(io: import('./io.ts').GuardIo, roots: string[], option
   return [...found].sort();
 }
 
-function tryReaddir(io: import('./io.ts').GuardIo, path: string): import('node:fs').Dirent[] | null {
+function tryReaddir(io: GuardIo, path: string): Dirent[] | null {
   try {
     return io.readdir(path);
   } catch {

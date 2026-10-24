@@ -77,7 +77,7 @@ interface StepResult {
 function step(bytes: Buffer, offset: number): StepResult | null {
   if (offset + MARKER_SIZE > bytes.length || bytes[offset] !== MARKER) return null;
   const marker = bytes[offset + 1];
-  if (marker === MARKER) return { next: offset + 1 };
+  if (marker === undefined || marker === MARKER) return { next: offset + 1 };
   if (marker === SOS || marker === EOI) return null;
   if (isStandalone(marker)) return { next: offset + MARKER_SIZE };
   const end = segmentEnd(bytes, offset);
@@ -88,8 +88,7 @@ export function jpegMetadata(bytes: Buffer): string[] {
   const found = new Set<string>();
   let offset = SOI.length;
   for (let current = step(bytes, offset); current; current = step(bytes, offset)) {
-    const marker = current.marker;
-    if (marker !== undefined && marker === APP1) {
+    if (current.marker !== undefined && current.marker === APP1) {
       inspectApp1(bytes.subarray(offset + SEGMENT_HEADER, current.next), found);
     }
     offset = current.next;

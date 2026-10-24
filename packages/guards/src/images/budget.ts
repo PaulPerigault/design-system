@@ -1,4 +1,6 @@
 // Budget de poids par fichier image : l'entrée `budgets` au chemin le plus long l'emporte.
+import type { GuardIo } from '../lib/io.ts';
+import type { Problem } from '../lib/report.ts';
 import { matchesPath, normalizePath } from '../lib/paths.ts';
 import { GuardUsageError } from '../lib/report.ts';
 
@@ -51,7 +53,7 @@ export function budgetFor(file: string, { maxKb, budgets }: BudgetSettings): num
   return best === null ? maxKb : best.maxKb;
 }
 
-export function budgetProblems(io: import('../lib/io.ts').GuardIo, files: string[], settings: BudgetSettings): import('../lib/report.ts').Problem[] {
+export function budgetProblems(io: GuardIo, files: string[], settings: BudgetSettings): Problem[] {
   return files.flatMap((file) => {
     const max = budgetFor(file, settings);
     const size = io.size(file);

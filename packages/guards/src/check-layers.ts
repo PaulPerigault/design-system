@@ -1,4 +1,6 @@
 // Contrôle : une couche n'importe jamais une couche plus haute (tokens ← css ← astro).
+import type { GuardIo } from './lib/io.ts';
+import type { Layer } from './layers/layers.ts';
 import { importsOf } from './layers/imports.ts';
 import { layerOfImport, layerOfPath, validateLayers } from './layers/layers.ts';
 import { listFiles } from './lib/files.ts';
@@ -24,8 +26,8 @@ const nonEmpty = (list: string[] | undefined, fallback: string[]): string[] =>
 
 /** Imports d'un fichier de la couche `from` qui visent une couche plus haute. */
 function violationsOf(
-  layers: import('./layers/layers.ts').Layer[],
-  io: import('./lib/io.ts').GuardIo,
+  layers: Layer[],
+  io: GuardIo,
   { file, from }: { file: string; from: number },
 ) {
   return importsOf(io.readText(file), file)
@@ -44,7 +46,7 @@ interface LayersOptions {
   extensions?: string[];
 }
 
-export function run(options: LayersOptions, io: import('./lib/io.ts').GuardIo): 0 | 1 {
+export function run(options: LayersOptions, io: GuardIo): 0 | 1 {
   const layers = validateLayers(options.layers);
   const roots = nonEmpty(options.roots, defaults.roots);
   const extensions = nonEmpty(options.extensions, defaults.extensions);

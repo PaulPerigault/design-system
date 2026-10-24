@@ -1,9 +1,10 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
+import type { Dirent } from 'node:fs';
 
 export interface GuardIo {
   readText: (path: string) => string;
   readBytes: (path: string) => Uint8Array;
-  readdir: (dir: string) => import('node:fs').Dirent[];
+  readdir: (dir: string) => Dirent[];
   size: (path: string) => number;
   exists: (path: string) => boolean;
   out: (message: string) => void;

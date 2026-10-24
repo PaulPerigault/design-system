@@ -1,4 +1,5 @@
 // Configuration de pp-guards : lecture de pp-guards.config.json et fusion des options.
+import type { GuardIo } from './lib/io.ts';
 import { GuardUsageError } from './lib/report.ts';
 
 export const CONFIG_FILE = 'pp-guards.config.json';
@@ -17,7 +18,7 @@ function parseConfig(text: string, path: string): Record<string, Record<string, 
   return data as Record<string, Record<string, unknown>>;
 }
 
-export function loadConfig(io: import('./lib/io.ts').GuardIo, path?: string): Record<string, Record<string, unknown>> {
+export function loadConfig(io: GuardIo, path?: string): Record<string, Record<string, unknown>> {
   if (path !== undefined && !io.exists(path)) {
     throw new GuardUsageError(`configuration introuvable : ${path}`);
   }

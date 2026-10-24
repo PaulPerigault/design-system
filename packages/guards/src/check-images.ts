@@ -1,5 +1,6 @@
 // Garde-fou images : balisage brut hors `allow`, métadonnées EXIF/GPS/XMP (vie privée),
 // budget de poids par fichier. Aucune dépendance : les binaires sont lus à la main.
+import type { GuardIo } from './lib/io.ts';
 import { listFiles } from './lib/files.ts';
 import { normalizePath } from './lib/paths.ts';
 import { report } from './lib/report.ts';
@@ -46,7 +47,7 @@ function settings(options: ImagesOptions) {
 const select = (files: string[], extensions: string[]): string[] =>
   files.filter((file) => extensions.some((ext) => file.toLowerCase().endsWith(ext)));
 
-export function run(options: ImagesOptions, io: import('./lib/io.ts').GuardIo): 0 | 1 {
+export function run(options: ImagesOptions, io: GuardIo): 0 | 1 {
   const { roots, allow, budget } = settings(options ?? {});
   const files = listFiles(io, roots, { extensions: EXTENSIONS }) as string[];
   const problems = [

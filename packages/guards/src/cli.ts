@@ -1,5 +1,6 @@
 // pp-guards <contrôle> [options] [racines…] : dispatch, configuration, codes de sortie.
 import { parseArgs } from 'node:util';
+import type { GuardIo } from './lib/io.ts';
 import { CHECKS, ORDER } from './checks.ts';
 import { loadConfig, mergeOptions } from './config.ts';
 import { GuardUsageError } from './lib/report.ts';
@@ -12,7 +13,7 @@ interface Check {
   name: string;
   defaults: Record<string, unknown>;
   cliOptions: Record<string, { type: 'string' | 'boolean'; multiple?: boolean }>;
-  run: (options: Record<string, unknown>, io: import('./lib/io.ts').GuardIo) => number;
+  run: (options: Record<string, unknown>, io: GuardIo) => number;
 }
 
 /** Erreur de syntaxe de ligne de commande : le message est suivi de l'usage. */
@@ -45,7 +46,7 @@ function parse(args: string[], options: Record<string, { type: 'string' | 'boole
 }
 
 /** Un contrôle qui échoue (usage, configuration) rend 2 sans interrompre `all`. */
-function runChecked(check: Check, options: Record<string, unknown>, io: import('./lib/io.ts').GuardIo): number {
+function runChecked(check: Check, options: Record<string, unknown>, io: GuardIo): number {
   try {
     return check.run(options, io);
   } catch (error: unknown) {
@@ -54,7 +55,7 @@ function runChecked(check: Check, options: Record<string, unknown>, io: import('
   }
 }
 
-function runOne(check: Check, args: string[], io: import('./lib/io.ts').GuardIo): number {
+function runOne(check: Check, args: string[], io: GuardIo): number {
   const { values, positionals } = parse(args, { ...COMMON, ...check.cliOptions }, true);
   if (values.help === true) {
     io.out(usageText(check));
@@ -67,7 +68,7 @@ function runOne(check: Check, args: string[], io: import('./lib/io.ts').GuardIo)
   return check.run(mergeOptions(check.defaults, section, flags, positionals), io);
 }
 
-function runAll(args: string[], io: import('./lib/io.ts').GuardIo): number {
+function runAll(args: string[], io: GuardIo): number {
   const { values } = parse(args, COMMON, false);
   if (values.help === true) {
     io.out(usageText());
@@ -84,7 +85,7 @@ function runAll(args: string[], io: import('./lib/io.ts').GuardIo): number {
   return Math.max(...codes);
 }
 
-function dispatch(first: string, rest: string[], io: import('./lib/io.ts').GuardIo): number {
+function dispatch(first: string, rest: string[], io: GuardIo): number {
   if (first === 'all') return runAll(rest, io);
   if (!Object.hasOwn(CHECKS, first)) throw syntaxError(`contrôle inconnu : ${first}`);
   const check = CHECKS[first];
@@ -92,7 +93,7 @@ function dispatch(first: string, rest: string[], io: import('./lib/io.ts').Guard
   return runOne(check, rest, io);
 }
 
-export function main(argv: string[], io: import('./lib/io.ts').GuardIo): number {
+export function main(argv: string[], io: GuardIo): number {
   const [first, ...rest] = argv;
   if (first === '--help' || first === '-h') {
     io.out(usageText());
