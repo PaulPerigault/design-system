@@ -1,5 +1,5 @@
 Contact: https://github.com/PaulPerigault/design-system/security/advisories/new
 Expires: 2027-09-30T00:00:00.000Z
 Preferred-Languages: fr, en
-Canonical: https://ds.paulperigault.dev/.well-known/security.txt
+Canonical: https://design.paulperigault.dev/.well-known/security.txt
 Policy: https://github.com/PaulPerigault/design-system/security/policy

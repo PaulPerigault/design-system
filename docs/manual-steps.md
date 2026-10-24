@@ -41,7 +41,7 @@ Relire chaque plan avant son `apply` : seuls des imports et des créations doive
 le dépôt `design-system` (aucune destruction). L'`apply` de `infra/github` crée la branche `main`
 (depuis `develop`), les rulesets, l'environnement `npm-publish` et les réglages Actions ; celui de
 `infra/identity` pose le secret Pages ; celui de `infra/` crée le projet Pages des docs et
-l'enregistrement DNS `ds.paulperigault.dev`.
+l'enregistrement DNS `design.paulperigault.dev`.
 
 ## 3. Trusted publisher npm (et `0.0.0` d'amorce si nécessaire)
 

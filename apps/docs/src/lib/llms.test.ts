@@ -3,11 +3,12 @@ import registry from '@paulperigault/astro/registry.json';
 import { GROUPS } from '../navigation';
 import { buildLlms } from './llms.ts';
 
-const SITE = 'https://ds.paulperigault.dev';
+const SITE = 'https://design.paulperigault.dev';
 const SLUGS = GROUPS.flatMap((group) => group.links.map((link) => link.slug));
 const text = buildLlms({ groups: GROUPS, items: registry.items, site: SITE });
 const lines = text.split('\n');
-const MD_LINK = /^- \[[^\]]+\]\(https:\/\/ds\.paulperigault\.dev\/components\/[a-z-]+\.md\): .+$/;
+const MD_LINK =
+  /^- \[[^\]]+\]\(https:\/\/design\.paulperigault\.dev\/components\/[a-z-]+\.md\): .+$/;
 
 describe('buildLlms', () => {
   it('commence par le titre de niveau 1', () => {

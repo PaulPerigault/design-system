@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { htmlToMarkdown } from './html-to-markdown.mjs';
 import { markdownName, run } from './markdown.mjs';
 
-const BASE = 'https://ds.paulperigault.dev';
+const BASE = 'https://design.paulperigault.dev';
 
 describe('htmlToMarkdown', () => {
   it.each([

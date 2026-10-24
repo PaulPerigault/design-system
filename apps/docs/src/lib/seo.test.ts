@@ -29,10 +29,10 @@ describe('titleOf', () => {
 
 describe('canonicalOf', () => {
   it.each([
-    ['/', 'https://ds.paulperigault.dev/'],
-    ['/identite', 'https://ds.paulperigault.dev/identite/'],
-    ['/components/stack/?a=1#x', 'https://ds.paulperigault.dev/components/stack/'],
-    ['glossaire/', 'https://ds.paulperigault.dev/glossaire/'],
+    ['/', 'https://design.paulperigault.dev/'],
+    ['/identite', 'https://design.paulperigault.dev/identite/'],
+    ['/components/stack/?a=1#x', 'https://design.paulperigault.dev/components/stack/'],
+    ['glossaire/', 'https://design.paulperigault.dev/glossaire/'],
   ])('%s', (input, expected) => {
     expect(canonicalOf(input)).toBe(expected);
   });
@@ -40,8 +40,8 @@ describe('canonicalOf', () => {
 
 describe('ogImageOf', () => {
   it('nomme l’image d’après le dernier segment', () => {
-    expect(ogImageOf('/')).toBe('https://ds.paulperigault.dev/og/index.png');
-    expect(ogImageOf('/components/stack/')).toBe('https://ds.paulperigault.dev/og/stack.png');
+    expect(ogImageOf('/')).toBe('https://design.paulperigault.dev/og/index.png');
+    expect(ogImageOf('/components/stack/')).toBe('https://design.paulperigault.dev/og/stack.png');
   });
 });
 
@@ -82,12 +82,12 @@ describe('JSON-LD', () => {
     const list = breadcrumbLd([
       { name: 'Accueil', path: '/' },
       { name: 'Composants', path: '/composants/' },
-      { name: 'Stack', path: 'https://ds.paulperigault.dev/components/stack/' },
+      { name: 'Stack', path: 'https://design.paulperigault.dev/components/stack/' },
     ]);
     const items = list.itemListElement as { position: number; name: string; item: string }[];
     expect(items.map((entry) => entry.position)).toEqual([1, 2, 3]);
     for (const entry of items) expect(entry.item).toMatch(ABSOLUTE);
-    expect(items[1]?.item).toBe('https://ds.paulperigault.dev/composants/');
+    expect(items[1]?.item).toBe('https://design.paulperigault.dev/composants/');
   });
 
   it('aucun undefined ni URL relative dans les constructeurs', () => {

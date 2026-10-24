@@ -39,7 +39,7 @@ design-system/
     guards/   @paulperigault/guards   # check-design, check-size, check-layers, check-tokens, check-images, config ESLint
     create/   @paulperigault/create   # CLI : create, add, eject, diff (node:util parseArgs, FS injecté)
   apps/
-    docs/                   # styleguide Astro = documentation vivante (ds.paulperigault.dev, Cloudflare Pages, IaC)
+    docs/                   # styleguide Astro = documentation vivante (design.paulperigault.dev, Cloudflare Pages, IaC)
 ```
 
 Dépendances à sens unique : `tokens` ← `css` ← `astro` ; `guards` et `create` ne dépendent d'aucun autre paquet à l'exécution. La séparation sert aussi les futurs projets non Astro : ils consomment `tokens` + `css` + `guards`. Un `@paulperigault/react` ne viendra que si un vrai besoin apparaît.
@@ -70,7 +70,7 @@ Pour ne rien bloquer, le dépôt est **créé en L0 avec `gh repo create`** (pub
 - les checks requis ;
 - les réglages Actions ;
 - l'environnement `npm-publish` protégé ;
-- le projet Cloudflare Pages des docs et l'enregistrement DNS `ds.paulperigault.dev`.
+- le projet Cloudflare Pages des docs et l'enregistrement DNS `design.paulperigault.dev`.
 
 Règles :
 - Ne modifie **jamais** à la main un réglage GitHub ou Cloudflare de ce dépôt : toute modification passe par `infra/` du portfolio.
@@ -390,7 +390,7 @@ Ces fichiers sont commités avec chaque fusion de lot. Si je reviens au milieu d
 
 **A. Portfolio** (issue d'abord, puis une branche depuis `develop`) : la stack OpenTofu du §1.4 du kickoff, selon les conventions réelles relevées dans ton plan de vol.
 - `infra/github/design-system.tf`, `imports.tf`, le README, les tests et scripts étendus.
-- Module `ds_docs_site` + `modules/dns-cname` pour `ds.paulperigault.dev`.
+- Module `ds_docs_site` + `modules/dns-cname` pour `design.paulperigault.dev`.
 - Le secret Pages dans `infra/identity`.
 - L'ADR, `CLAUDE.md` et `docs/infra.md` mis à jour.
 - Correction de l'hygiène : topic « angular », README périmé.

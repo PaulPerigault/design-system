@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { PAGES } from './helpers.ts';
 
-const SITE = 'https://ds.paulperigault.dev';
+const SITE = 'https://design.paulperigault.dev';
 const KNOWN_TYPES = new Set([
   'Person',
   'WebSite',

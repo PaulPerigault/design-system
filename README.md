@@ -14,7 +14,7 @@ Design system de [paulperigault.fr](https://paulperigault.fr) : tokens, CSS, com
 | `@paulperigault/create` | CLI `create`, `add`, `eject`, `diff`                                                       |
 | `@paulperigault/mcp`    | serveur MCP (stdio, lecture seule) du design system                                        |
 
-Documentation vivante : `apps/docs` (ds.paulperigault.dev).
+Documentation vivante : `apps/docs` (design.paulperigault.dev).
 
 ## Développement
 

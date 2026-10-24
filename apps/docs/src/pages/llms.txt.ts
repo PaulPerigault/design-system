@@ -4,7 +4,7 @@ import { buildLlms } from '../lib/llms.ts';
 import { GROUPS } from '../navigation';
 
 // Même origine que `site` dans astro.config.mjs.
-const SITE = 'https://ds.paulperigault.dev';
+const SITE = 'https://design.paulperigault.dev';
 
 export const prerender = true;
 

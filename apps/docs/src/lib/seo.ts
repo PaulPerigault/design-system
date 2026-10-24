@@ -2,11 +2,13 @@
 import {
   AUTHOR,
   LICENSE_URL,
+  PERSON_ID,
   REPOSITORY_URL,
   SITE_LANG,
   SITE_NAME,
   SITE_URL,
   TITLE_SUFFIX,
+  WEBSITE_ID,
 } from './site.ts';
 
 export type JsonLd = Record<string, unknown>;
@@ -37,7 +39,7 @@ export const ogImageOf = (pathname: string): string => `${SITE_URL}/og/${ogSlugO
 
 export const personLd = (): JsonLd => ({
   '@type': 'Person',
-  '@id': `${AUTHOR.url}/#person`,
+  '@id': PERSON_ID,
   name: AUTHOR.name,
   url: AUTHOR.url,
   sameAs: [AUTHOR.url, AUTHOR.github],
@@ -46,7 +48,7 @@ export const personLd = (): JsonLd => ({
 
 export const websiteLd = (): JsonLd => ({
   '@type': 'WebSite',
-  '@id': `${SITE_URL}/#website`,
+  '@id': WEBSITE_ID,
   name: SITE_NAME,
   url: `${SITE_URL}/`,
   inLanguage: SITE_LANG,

@@ -9,7 +9,7 @@ export interface RegistryItem {
 export interface LlmsInput {
   groups: readonly DocGroup[];
   items: readonly RegistryItem[];
-  /** Origine absolue : `https://ds.paulperigault.dev`. Une barre finale est tolérée. */
+  /** Origine absolue : `https://design.paulperigault.dev`. Une barre finale est tolérée. */
   site: string;
 }
 
