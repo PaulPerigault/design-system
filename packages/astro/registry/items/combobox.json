@@ -3,11 +3,20 @@
   "name": "combobox",
   "type": "registry:ui",
   "title": "Combobox",
-  "description": "Composant Combobox (provisoire, remplacé par sa tâche).",
+  "description": "Champ avec liste de suggestions filtrée à la saisie, datalist natif sans script, focus gardé dans le champ.",
+  "registryDependencies": ["field"],
   "files": [
     {
       "path": "packages/astro/src/forms/Combobox.astro",
       "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/forms/combobox.css",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/behaviors/combobox.ts",
+      "type": "registry:lib"
     }
   ],
   "meta": {

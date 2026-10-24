@@ -1,4 +1,105 @@
 ---
+/**
+ * Combobox : champ avec liste de suggestions (motif APG « Combobox with List Autocomplete »,
+ * `aria-autocomplete="list"`, aucune sélection automatique à la saisie). Sans script, le champ
+ * reste un `<input list>` natif relié à un `<datalist>`. Le script (fichier externe, CSP
+ * `'self'`) retire `list` et active la liste ARIA ; le focus reste dans le champ
+ * (`aria-activedescendant`). Libellé et aide passent par `Field` ; aucun texte en dur.
+ */
+import { optionId } from '../behaviors/combobox';
+import { describedBy } from './field-ids';
+import Field from './Field.astro';
+import './combobox.css';
+
+interface Option {
+  /** Identifiant de l'option, reporté dans `data-value`. */
+  value: string;
+  /** Texte affiché, filtré et écrit dans le champ quand l'option est validée. */
+  label: string;
+}
+
+interface Props {
+  /** Libellé visible du champ ; nomme aussi la liste de suggestions. */
+  label: string;
+  /** Nom envoyé avec le formulaire (le texte du champ). */
+  name: string;
+  /** Id du champ ; dérive `<id>-listbox`, `<id>-datalist` et `<id>-option-<n>`. */
+  id: string;
+  /** Suggestions proposées : `{ value, label }`. */
+  options: Option[];
+  /** Valeur initiale : `value` d'une option (son libellé est affiché) ou texte libre. */
+  value?: string;
+  /** Indication sous le libellé, reliée par `aria-describedby`. */
+  hint?: string;
+  /** Annonce quand aucune suggestion ne correspond, par exemple « Aucun résultat ». */
+  noResultsLabel: string;
+  /** Annonce du nombre de suggestions, avec `{count}`, par exemple « {count} résultats ». */
+  countLabel: string;
+  /** Saisie obligatoire (`required`). */
+  required?: boolean;
+  /** Texte accolé au libellé si `required`, par exemple « obligatoire ». */
+  requiredLabel?: string;
+  /** Pose `aria-invalid="true"` sur le champ. */
+  invalid?: boolean;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { label, name, id, options, value, hint, noResultsLabel, countLabel } = Astro.props;
+const { required = false, requiredLabel, invalid = false, class: className } = Astro.props;
+const listboxId = `${id}-listbox`;
+const datalistId = `${id}-datalist`;
+const initial = options.find((option) => option.value === value)?.label ?? value;
+const marker = required && requiredLabel ? { required: true as const, requiredLabel } : {};
 ---
 
-<div></div>
+<Field id={id} label={label} hint={hint} class={className} {...marker}>
+  <div
+    class="pp-combobox"
+    data-pp-combobox
+    data-count-label={countLabel}
+    data-no-results-label={noResultsLabel}
+  >
+    <input
+      class="pp-combobox__input"
+      id={id}
+      name={name}
+      type="text"
+      value={initial}
+      required={required}
+      aria-describedby={describedBy({ id, hint })}
+      aria-invalid={invalid ? 'true' : undefined}
+      list={datalistId}
+      autocomplete="off"
+      role="combobox"
+      aria-expanded="false"
+      aria-controls={listboxId}
+      aria-autocomplete="list"
+    />
+    <datalist id={datalistId}>
+      {options.map((option) => (
+        <option value={option.label} />
+      ))}
+    </datalist>
+    <ul class="pp-combobox__listbox" id={listboxId} role="listbox" aria-label={label} hidden>
+      {options.map((option, index) => (
+        <li
+          class="pp-combobox__option"
+          id={optionId(id, index)}
+          role="option"
+          aria-selected="false"
+          data-value={option.value}
+        >
+          {option.label}
+        </li>
+      ))}
+    </ul>
+    <p class="pp-combobox__status" role="status"></p>
+  </div>
+</Field>
+
+<script>
+  import { enhance } from '../behaviors/combobox';
+
+  for (const root of document.querySelectorAll<HTMLElement>('[data-pp-combobox]')) enhance(root);
+</script>

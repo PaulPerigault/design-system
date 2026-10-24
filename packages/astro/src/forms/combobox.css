@@ -1,0 +1,91 @@
+/* Styles de Combobox : fichier global, classes `.pp-combobox*`, états par attributs ARIA. */
+.pp-combobox {
+  position: relative;
+}
+
+/* Mêmes règles que Input : ses styles scopés n'atteignent pas ce champ. */
+.pp-combobox__input {
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-block-size: max(var(--pp-size-control-height), var(--pp-size-target-min));
+  padding-block: var(--pp-space-3xs);
+  padding-inline: var(--pp-space-xs);
+  border: var(--pp-size-rule) solid var(--pp-color-control);
+  border-radius: var(--pp-radius-control);
+  background-color: var(--pp-color-bg);
+  color: var(--pp-color-fg);
+  font: inherit;
+  font-size: var(--pp-font-size-0);
+  line-height: var(--pp-font-line-height-body);
+}
+
+/* Bordure épaissie en plus de la couleur : l'état ne repose pas sur la couleur (WCAG 1.4.1). */
+.pp-combobox__input[aria-invalid='true'],
+.pp-combobox__input:user-invalid {
+  border-width: var(--pp-size-focus-width);
+  border-color: var(--pp-color-status-failed);
+}
+
+/* Hauteur bornée : environ trois options et demie visibles, le reste défile. */
+.pp-combobox__listbox {
+  position: absolute;
+  z-index: var(--pp-z-overlay);
+  inset-inline: 0;
+  inset-block-start: 100%;
+  box-sizing: border-box;
+  max-block-size: calc(var(--pp-space-3xl) + var(--pp-space-2xl));
+  margin-block: var(--pp-space-3xs) 0;
+  margin-inline: 0;
+  padding: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: var(--pp-size-rule) solid var(--pp-color-control);
+  border-radius: var(--pp-radius-control);
+  background-color: var(--pp-color-bg);
+  color: var(--pp-color-fg);
+  list-style: none;
+}
+
+.pp-combobox__listbox[hidden],
+.pp-combobox__option[hidden] {
+  display: none;
+}
+
+.pp-combobox__option {
+  display: flex;
+  align-items: center;
+  min-block-size: max(var(--pp-size-control-height), var(--pp-size-target-min));
+  padding-inline: var(--pp-space-xs);
+  cursor: pointer;
+}
+
+.pp-combobox__option:hover {
+  background-color: var(--pp-color-surface);
+}
+
+/* Option active : fond, couleur et soulignement, pour ne pas dépendre de la couleur seule. */
+.pp-combobox__option[aria-selected='true'] {
+  background-color: var(--pp-color-accent);
+  color: var(--pp-color-on-accent);
+  text-decoration: underline;
+  text-underline-offset: var(--pp-size-focus-offset);
+}
+
+/* Vide sans script : hauteur nulle. Rempli par le script : nombre de résultats visible. */
+.pp-combobox__status {
+  margin-block: var(--pp-space-3xs) 0;
+  color: var(--pp-color-muted);
+  font-size: var(--pp-font-size--1);
+}
+
+.pp-combobox__status:empty {
+  margin-block: 0;
+}
+
+@media (forced-colors: active) {
+  .pp-combobox__option[aria-selected='true'] {
+    forced-color-adjust: none;
+    background-color: Highlight;
+    color: HighlightText;
+  }
+}

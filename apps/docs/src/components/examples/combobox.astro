@@ -1,4 +1,38 @@
 ---
+import Combobox from '@paulperigault/astro/Combobox.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+
+const countries = [
+  { value: 'de', label: 'Allemagne' },
+  { value: 'be', label: 'Belgique' },
+  { value: 'ee', label: 'Estonie' },
+  { value: 'es', label: 'Espagne' },
+  { value: 'eg', label: 'Égypte' },
+  { value: 'fr', label: 'France' },
+  { value: 'it', label: 'Italie' },
+  { value: 'jp', label: 'Japon' },
+];
 ---
 
-<div></div>
+<Stack space="l">
+  <Combobox
+    id="exemple-pays"
+    name="pays"
+    label="Pays"
+    hint="Tapez quelques lettres, puis choisissez avec les flèches."
+    options={countries}
+    noResultsLabel="Aucun pays ne correspond."
+    countLabel="{count} pays proposés."
+  />
+  <Combobox
+    id="exemple-pays-obligatoire"
+    name="pays-livraison"
+    label="Pays de livraison"
+    options={countries}
+    value="fr"
+    required
+    requiredLabel="(obligatoire)"
+    noResultsLabel="Aucun pays ne correspond."
+    countLabel="{count} pays proposés."
+  />
+</Stack>
