@@ -3,15 +3,40 @@
   "name": "menu",
   "type": "registry:ui",
   "title": "Menu",
-  "description": "Composant Menu (provisoire, remplacé par sa tâche).",
+  "description": "Menu d’actions (motif APG Menu Button) en popover, avec flèches, frappe de caractères et repli sans JavaScript.",
   "files": [
     {
       "path": "packages/astro/src/navigation/Menu.astro",
       "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/navigation/menu.css",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/behaviors/menu.ts",
+      "type": "registry:ui"
     }
   ],
   "meta": {
-    "tokens": [],
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-bg",
+      "--pp-color-fg",
+      "--pp-color-focus",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-color-surface",
+      "--pp-radius-control",
+      "--pp-radius-surface",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-s"
+    ],
     "version": "0.0.0"
   }
 }

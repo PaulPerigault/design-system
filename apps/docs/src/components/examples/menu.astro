@@ -1,4 +1,13 @@
 ---
+/** Exemples vivants de la page Menu : un menu d'actions avec une entrée désactivée. */
+import Menu from '@paulperigault/astro/Menu.astro';
+
+const items = [
+  { label: 'Copier le lien', action: 'copy-link' },
+  { label: 'Ouvrir le dépôt', href: 'https://github.com/' },
+  { label: 'Renommer', action: 'rename' },
+  { label: 'Supprimer', action: 'delete', disabled: true },
+];
 ---
 
-<div></div>
+<Menu id="menu-exemple" label="Actions" items={items} />
