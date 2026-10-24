@@ -1,0 +1,113 @@
+/* Styles de CodeBlock : fichier global, classes `.pp-code*`, jetons de coloration par `data-tok`. */
+.pp-code {
+  /* Contraste >= 4,5:1 sur le fond (test). Fonctions et paramètres gardent --pp-color-fg. */
+  --shiki-foreground: var(--pp-color-fg);
+  --shiki-token-comment: var(--pp-color-muted);
+  --shiki-token-keyword: var(--pp-color-accent);
+  --shiki-token-string: var(--pp-color-status-passed);
+  --shiki-token-string-expression: var(--pp-color-status-passed);
+  --shiki-token-constant: var(--pp-color-status-degraded);
+  --shiki-token-punctuation: var(--pp-color-muted);
+  --shiki-token-link: var(--pp-color-accent);
+
+  margin: 0;
+  border: var(--pp-size-rule) solid var(--pp-color-line);
+  border-radius: var(--pp-radius-surface);
+  background-color: var(--pp-color-surface);
+  color: var(--pp-color-fg);
+  overflow: hidden;
+}
+
+.pp-code__filename {
+  display: block;
+  padding-block: var(--pp-space-2xs);
+  padding-inline: var(--pp-space-s);
+  border-block-end: var(--pp-size-rule) solid var(--pp-color-line);
+  color: var(--pp-color-muted);
+  font-family: var(--pp-font-family-mono);
+  font-size: var(--pp-font-size--1);
+}
+
+.pp-code__pre {
+  margin: 0;
+  padding: var(--pp-space-s);
+  overflow-x: auto;
+  font-family: var(--pp-font-family-mono);
+  font-size: var(--pp-font-size--1);
+  line-height: var(--pp-font-line-height-body);
+}
+
+.pp-code__pre:focus-visible,
+.pp-code__copy:focus-visible {
+  outline: var(--pp-size-focus-width) solid var(--pp-color-focus);
+  outline-offset: calc(var(--pp-size-focus-offset) * -1);
+}
+
+.pp-code__tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--pp-space-xs);
+  padding-inline: var(--pp-space-s);
+}
+
+.pp-code__copy {
+  min-inline-size: var(--pp-size-target-min);
+  min-block-size: var(--pp-size-target-min);
+  margin-block-end: var(--pp-space-2xs);
+  padding-inline: var(--pp-space-xs);
+  border: var(--pp-size-rule) solid var(--pp-color-control);
+  border-radius: var(--pp-radius-control);
+  background-color: transparent;
+  color: var(--pp-color-fg);
+  font: inherit;
+  cursor: pointer;
+}
+
+.pp-code__copy[hidden] {
+  display: none;
+}
+
+.pp-code__status {
+  color: var(--pp-color-fg);
+  font-size: var(--pp-font-size--1);
+}
+
+.pp-tok {
+  color: var(--tok);
+}
+
+.pp-tok[data-tok='comment'] {
+  --tok: var(--shiki-token-comment);
+}
+
+.pp-tok[data-tok='keyword'] {
+  --tok: var(--shiki-token-keyword);
+}
+
+.pp-tok[data-tok='string'] {
+  --tok: var(--shiki-token-string);
+}
+
+.pp-tok[data-tok='string-expression'] {
+  --tok: var(--shiki-token-string-expression);
+}
+
+.pp-tok[data-tok='constant'] {
+  --tok: var(--shiki-token-constant);
+}
+
+.pp-tok[data-tok='punctuation'] {
+  --tok: var(--shiki-token-punctuation);
+}
+
+.pp-tok[data-tok='link'] {
+  --tok: var(--shiki-token-link);
+}
+
+@media (forced-colors: active) {
+  .pp-tok {
+    color: CanvasText;
+  }
+}

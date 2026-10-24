@@ -3,10 +3,22 @@
   "name": "code-block",
   "type": "registry:ui",
   "title": "CodeBlock",
-  "description": "Composant CodeBlock (provisoire, remplacé par sa tâche).",
+  "description": "Bloc de code coloré au build, défilable au clavier, avec bouton de copie révélé par un script externe.",
   "files": [
     {
       "path": "packages/astro/src/content/CodeBlock.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/content/code-block.css",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/content/highlight.ts",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/behaviors/copy.ts",
       "type": "registry:ui"
     }
   ],

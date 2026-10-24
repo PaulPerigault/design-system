@@ -1,4 +1,52 @@
 ---
+/**
+ * CodeBlock : bloc de code coloré au build (Shiki, thème à variables CSS : aucun JavaScript pour
+ * colorer, aucun attribut `style`). Le `<pre>` est focalisable (`tabindex="0"`) pour défiler au
+ * clavier (WCAG 2.2, critère 2.1.1) ; nommé, il devient une région (`role="region"`). Le bouton de
+ * copie est masqué sans JavaScript ; le script du composant le révèle si `navigator.clipboard`
+ * existe et annonce le résultat dans un `role="status"`. Aucun texte en dur : tout vient des props.
+ */
+import './code-block.css';
+import { highlight } from './highlight';
+
+interface Props {
+  /** Code à afficher, tel quel (le saut de ligne final est retiré). */
+  code: string;
+  /** Langue : ts, js, json, shellscript, astro, css, html ou yaml. Autre valeur : texte sans couleur. */
+  lang?: string;
+  /** Nom accessible du bloc. À défaut, `filename` sert de nom ; sans les deux, le bloc n'est pas nommé. */
+  label?: string;
+  /** Libellé visible du bouton de copie (par exemple « Copier »). */
+  copyLabel: string;
+  /** Message annoncé après la copie (par exemple « Copié »). */
+  copiedLabel: string;
+  /** Nom de fichier affiché au-dessus du code. */
+  filename?: string;
+}
+
+const { code, lang, label, copyLabel, copiedLabel, filename } = Astro.props;
+const lines = await highlight(code, lang);
+const name = label ?? filename;
 ---
 
-<div></div>
+<figure class="pp-code" data-lang={lang}>
+  {filename && <figcaption class="pp-code__filename">{filename}</figcaption>}
+  <pre
+    class="pp-code__pre"
+    tabindex="0"
+    role={name ? 'region' : undefined}
+    aria-label={name}
+  ><code>{lines.map((line, index) => (<Fragment>{index > 0 ? '\n' : ''}{line.map((token) => token.tok ? <span class="pp-tok" data-tok={token.tok}>{token.text}</span> : token.text)}</Fragment>))}</code></pre>
+  <div class="pp-code__tools">
+    <button type="button" class="pp-code__copy" data-copy data-copied={copiedLabel} hidden>
+      {copyLabel}
+    </button>
+    <span class="pp-code__status" role="status"></span>
+  </div>
+</figure>
+
+<script>
+  import { install } from '../behaviors/copy';
+
+  install(document);
+</script>

@@ -1,10 +1,73 @@
 ---
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+import CodeBlockExamples from '../../components/examples/code-block.astro';
+
+const snippet = `<CodeBlock
+  code={source}
+  lang="ts"
+  filename="astro.config.ts"
+  label="Configuration Astro"
+  copyLabel="Copier le code"
+  copiedLabel="Code copié"
+/>`;
 ---
 
-<DocsLayout
-  title="CodeBlock · Design system · Paul Perigault"
-  description="Page provisoire du composant CodeBlock, remplacée par la documentation complète quand la tâche du composant est intégrée."
+<ComponentPage
+  slug="code-block"
+  title="CodeBlock"
+  summary="CodeBlock affiche du code coloré au build, défilable au clavier, avec un bouton de copie."
+  use={[
+    'Montrer une commande, une configuration ou un extrait de code à lire ou à copier.',
+    'Afficher un nom de fichier au-dessus de l’extrait, avec filename.',
+  ]}
+  avoid={[
+    'Pour un mot de code dans une phrase : utiliser l’élément code seul.',
+    'Pour une comparaison avant-après : utiliser Diff.',
+    'Pour une langue hors liste : le texte s’affiche sans couleur, il faut le savoir.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Le bloc de code reçoit le focus (tabindex="0") : les flèches le font défiler (WCAG 2.1.1).',
+      'Le bouton de copie s’active avec Entrée ou Espace, comme tout bouton natif.',
+    ],
+    screenReader: [
+      'Avec label ou filename, le bloc est une région nommée (role="region", aria-label).',
+      'Le message de copie est écrit dans un role="status" vide au départ, annoncé sans déplacer le focus (WCAG 4.1.3).',
+    ],
+    guaranteed: [
+      'Les couleurs de jetons ont un contraste d’au moins 4,5:1 sur le fond, dans les deux thèmes (WCAG 1.4.3, test automatisé).',
+      'La coloration ne porte aucun sens à elle seule : le code reste lisible en noir et blanc (WCAG 1.4.1).',
+      'Le bouton de copie fait au moins --pp-size-target-min et affiche son libellé (WCAG 2.5.8, 2.5.3).',
+      'Sans JavaScript, le code et la coloration restent ; le bouton reste masqué, car il ne peut pas fonctionner.',
+      'En forced-colors: active, les jetons prennent la couleur CanvasText.',
+    ],
+    integrator: [
+      'Fournir copyLabel et copiedLabel dans la langue du site.',
+      'Nommer chaque bloc avec label ou filename s’il y en a plusieurs sur la page.',
+      "Autoriser le script du composant dans la CSP (script-src 'self') : il est servi en fichier externe.",
+      'Non vérifié : la restitution par lecteur d’écran des régions nommées et de l’annonce de copie.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.4.3 Contraste minimum',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html',
+    },
+    {
+      label: 'WCAG 2.1.1 Clavier',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html',
+    },
+    {
+      label: 'WCAG 4.1.3 Messages d’état',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html',
+    },
+    {
+      label: 'APG : motif Button',
+      href: 'https://www.w3.org/WAI/ARIA/apg/patterns/button/',
+    },
+    { label: 'Tests : packages/astro/test/CodeBlock.test.ts' },
+  ]}
 >
-  <h1>CodeBlock</h1>
-</DocsLayout>
+  <CodeBlockExamples />
+</ComponentPage>
