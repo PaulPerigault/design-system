@@ -1,9 +1,20 @@
 # Rapport d'exécution
 
-**ARRÊT FINAL : à reprendre après la CI de la PR #22.** (Ligne définitive à poser quand tout est fusionné.)
+**ARRÊT FINAL** — raison : tout le travail réalisable sans décision du propriétaire est fusionné
+(L10 à L19 dans `develop`, #22 en dernier) ; le budget n'est pas épuisé (≈ 250 crédits tracés sur
+≈ 870). Restent des décisions de Paul (`docs/manual-steps.md` §6) et un défaut connu, ci-dessous.
 
-**État au 2026-10-24.** L10 à L17 fusionnés dans `develop` (#19 : L15 et L16 ; #21 : L17). PR #22 ouverte
-(`lot/L19`) : lots L18 et L19, 14 composants de niveau 2. Fait depuis la reprise sous Kiro : sécurité et
+**Défaut connu, non corrigé : les images Open Graph ne sont pas générées.** Les pages déclarent
+`og:image` vers `/og/<page>.png` (`lib/seo.ts`), mais aucun fichier n'est produit au build : ces URL
+répondent 404. Le brief demandait des images OG générées au build. Piste : `sharp` est déjà là ; le
+texte exige une police lisible par librsvg (pas de `woff2`), donc à traiter avec soin. Tant que ce
+n'est pas fait, retirer les balises `og:image` plutôt que de publier des liens morts.
+
+**Reprise suggérée.** (1) images OG, (2) intégrer les quatre actions du propriétaire, (3) L9
+(migration du portfolio) une fois les paquets publiés.
+
+**État au 2026-10-24.** L10 à L17 fusionnés dans `develop` (#19 : L15 et L16 ; #21 : L17). #22 : lots L18 et L19, 14
+composants de niveau 2. Fait depuis la reprise sous Kiro : sécurité et
 chaîne d'approvisionnement (L15), vitrine (L16), déclaration d'accessibilité et PWA (L17), composants
 (L18, L19). `verify` : 1789 tests ; e2e local : 5792 passés. Détail : `docs/journal/2026-10-24.md`.
 Reste : audit RGAA et lecteurs d'écran (manuel), relecture des textes par Paul, choix de l'hébergeur et
