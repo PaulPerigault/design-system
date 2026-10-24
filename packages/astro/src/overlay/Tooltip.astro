@@ -1,4 +1,61 @@
 ---
+/**
+ * Tooltip : infobulle qui DÉCRIT un contrôle, jamais son seul nom. Sans JavaScript, le texte reste
+ * masqué (`hidden`) et l'intégrateur pose lui-même `aria-describedby` sur le contrôle : le
+ * composant ne modifie pas l'enfant du slot. Le script du composant (fichier externe, CSP
+ * `'self'`) ajoute `aria-describedby`, affiche au focus et au survol, ferme avec Échap
+ * (WCAG 2.2, critère 1.4.13). Sur écran tactile, le texte n'est pas affiché.
+ */
+interface Props {
+  /** Texte de la description, court et sans balisage. */
+  text: string;
+  /** Identifiant unique de l'infobulle, cible de `aria-describedby`. */
+  id: string;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { text, id, class: className } = Astro.props;
 ---
 
-<div></div>
+<span class:list={['pp-tooltip', className]}>
+  <slot />
+  <span class="pp-tooltip__text" role="tooltip" id={id} hidden>
+    {text}
+  </span>
+</span>
+
+<script>
+  import { install } from '../behaviors/tooltip';
+
+  install(document);
+</script>
+
+<style>
+  .pp-tooltip {
+    position: relative;
+    display: inline-block;
+  }
+
+  .pp-tooltip__text {
+    position: absolute;
+    inset-block-start: 100%;
+    inset-inline-start: 0;
+    z-index: var(--pp-z-overlay);
+    inline-size: max-content;
+    max-inline-size: var(--pp-size-measure);
+    padding: var(--pp-space-3xs) var(--pp-space-2xs);
+    border: var(--pp-size-rule) solid var(--pp-color-control);
+    border-radius: var(--pp-radius-control);
+    background: var(--pp-color-surface);
+    color: var(--pp-color-fg);
+    font-size: var(--pp-font-size--1);
+    line-height: var(--pp-font-line-height-body);
+  }
+
+  @media (forced-colors: active) {
+    .pp-tooltip__text {
+      border-color: CanvasText;
+    }
+  }
+</style>

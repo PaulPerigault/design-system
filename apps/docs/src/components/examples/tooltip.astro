@@ -1,4 +1,10 @@
 ---
+/** Exemple vivant de la page Tooltip : un bouton décrit par une infobulle. */
+import Tooltip from '@paulperigault/astro/Tooltip.astro';
 ---
 
-<div></div>
+<Tooltip id="tooltip-example" text="Copie l’adresse dans le presse-papiers.">
+  <button type="button" aria-describedby="tooltip-example">
+    Copier l’adresse
+  </button>
+</Tooltip>

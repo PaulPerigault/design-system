@@ -3,10 +3,14 @@
   "name": "tooltip",
   "type": "registry:ui",
   "title": "Tooltip",
-  "description": "Composant Tooltip (provisoire, remplacé par sa tâche).",
+  "description": "Infobulle qui décrit un contrôle : focus, survol, Échap (WCAG 1.4.13), jamais affichée au tactile.",
   "files": [
     {
       "path": "packages/astro/src/overlay/Tooltip.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/behaviors/tooltip.ts",
       "type": "registry:ui"
     }
   ],
