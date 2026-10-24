@@ -1,4 +1,22 @@
 ---
+/** Exemple vivant de la page Tabs : trois panneaux, le premier actif. */
+import Tabs from '@paulperigault/astro/Tabs.astro';
+
+const tabs = [
+  { id: 'exemple-tokens', label: 'Jetons' },
+  { id: 'exemple-css', label: 'CSS' },
+  { id: 'exemple-astro', label: 'Composants' },
+];
 ---
 
-<div></div>
+<Tabs label="Couches du design system" tabs={tabs}>
+  <Fragment slot="exemple-tokens">
+    <p>Les jetons définissent couleurs, tailles et espacements, en variables CSS.</p>
+  </Fragment>
+  <Fragment slot="exemple-css">
+    <p>La couche CSS porte la base, le reset, l’impression et les primitives de mise en page.</p>
+  </Fragment>
+  <Fragment slot="exemple-astro">
+    <p>Les composants Astro sont publiés en source et lisent uniquement les jetons.</p>
+  </Fragment>
+</Tabs>

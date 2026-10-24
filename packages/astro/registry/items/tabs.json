@@ -3,10 +3,14 @@
   "name": "tabs",
   "type": "registry:ui",
   "title": "Tabs",
-  "description": "Composant Tabs (provisoire, remplacé par sa tâche).",
+  "description": "Onglets (motif APG Tabs) : sections lisibles sans JavaScript, tablist et clavier ajoutés par un script externe.",
   "files": [
     {
       "path": "packages/astro/src/navigation/Tabs.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/behaviors/tabs.ts",
       "type": "registry:ui"
     }
   ],
