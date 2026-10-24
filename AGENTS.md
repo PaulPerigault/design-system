@@ -14,7 +14,7 @@ Design system de paulperigault.fr, monorepo npm workspaces, Node 24, npm 11, lic
 | `@paulperigault/guards` | contrôles (taille, couleurs, couches, tokens, images), config ESLint                                                    | rien à l'exécution |
 | `@paulperigault/create` | CLI `create`, `add`, `eject`, `diff` (`node:util` parseArgs, FS injecté)                                                | rien à l'exécution |
 | `@paulperigault/mcp`    | serveur MCP stdio en lecture seule (7 outils), données embarquées, aucun accès réseau                                   | `tokens`, `guards` |
-| `apps/docs`             | documentation vivante, ds.paulperigault.dev                                                                             | tous               |
+| `apps/docs`             | documentation vivante, design.paulperigault.dev                                                                         | tous               |
 
 Sens unique : `tokens ← css ← astro`. Un import qui remonte ce sens est une erreur.
 

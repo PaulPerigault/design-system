@@ -13,7 +13,7 @@ import {
   tidy,
 } from './markdown-blocks.mjs';
 
-export const ORIGIN = 'https://ds.paulperigault.dev';
+export const ORIGIN = 'https://design.paulperigault.dev';
 const SAFE_PROTOCOL = /^(https?|mailto|tel):$/;
 const HEADING = /^h([1-6])$/;
 const CONTAINERS = [

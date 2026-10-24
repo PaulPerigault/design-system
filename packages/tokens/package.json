@@ -15,7 +15,7 @@
     "url": "git+https://github.com/PaulPerigault/design-system.git",
     "directory": "packages/tokens"
   },
-  "homepage": "https://ds.paulperigault.dev",
+  "homepage": "https://design.paulperigault.dev",
   "bugs": "https://github.com/PaulPerigault/design-system/issues",
   "engines": {
     "node": ">=24"

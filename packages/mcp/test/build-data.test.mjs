@@ -4,7 +4,7 @@ import * as parse from '../scripts/parse-component.mjs';
 
 // Format de apps/docs/scripts/markdown.mjs ; « # Démo » et « ## Titre 2 » imitent un exemple.
 const BUTTON = [
-  '# Button · Design system · Paul Perigault\n\nSource : https://ds.paulperigault.dev/button/',
+  '# Button · Design system · Paul Perigault\n\nSource : https://design.paulperigault.dev/button/',
   '# Button\n\n## À quoi il sert\n\nButton rend un bouton natif,\nou un lien.',
   '## Quand l’utiliser\n\n- Déclencher une action.\n\n## Quand ne pas l’utiliser\n\n- Naviguer.',
   '## Exemples\n\n### Défaut\n\n# Démo\n\n## Titre 2\n\n```\nfunction demo() {}\n```',

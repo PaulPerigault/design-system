@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Documentation vivante du design system (ds.paulperigault.dev).",
+  "description": "Documentation vivante du design system (design.paulperigault.dev).",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/markdown.mjs && pagefind --site dist && node scripts/sw.mjs && node scripts/headers.mjs",
+    "build": "astro build && node scripts/markdown.mjs && node scripts/og.mjs && pagefind --site dist && node scripts/sw.mjs && node scripts/headers.mjs",
     "check": "astro check",
     "e2e": "playwright test"
   },

@@ -119,7 +119,7 @@ Commandes exactes dans [manual-steps.md](manual-steps.md). Dans l'ordre :
    dépôt `PaulPerigault/design-system` (réglages GitHub, sans API).
 2. **`apply` OpenTofu** des trois briques du portfolio (`infra/github`, `infra/identity`,
    `infra/`), chacune après lecture de son plan : crée `main`, les rulesets, l'environnement
-   `npm-publish`, le projet Pages et `ds.paulperigault.dev`.
+   `npm-publish`, le projet Pages et `design.paulperigault.dev`.
 3. **Trusted publisher npm** pour les cinq paquets (avec une `0.0.0` d'amorce si la page de
    réglages n'existe pas encore), workflow `release.yml`, environnement `npm-publish`.
 4. **Fusions vers `main`** : une PR `develop → main` par release, puis la PR de release-please.
@@ -153,3 +153,11 @@ Commandes exactes dans [manual-steps.md](manual-steps.md). Dans l'ordre :
   PR ; puis L13 et L14.
 - Vérifier : `git switch lot/L12 && npm ci && npm run verify && npm run build && npx playwright
 test -c apps/docs/playwright.config.ts`.
+
+## Lot L20 (2026-10-24) : Open Graph, domaine, liens croisés
+
+- 65 images `dist/og/*.png` (1200×630, identité Encre, contraste testé) ; échec si une balise `og:image` pointe vers un fichier absent.
+- Domaine `design.paulperigault.dev` partout ; `registry.json` et `docs.json` régénérés.
+- `rel="author"`, `sameAs`, JSON-LD contrôlés sur 66 pages ; réciprocité du portfolio sous `PORTFOLIO_LINK_CHECK=1`.
+- Vérifié : `npm run verify`, Playwright chromium (664 réussis, 1 sauté). Non vérifié : rendu des images sous Linux, test réciproque réel.
+- À faire par le propriétaire : DNS et projet Pages pour `design.paulperigault.dev` ; lien retour sur paulperigault.fr. Décision D-026.

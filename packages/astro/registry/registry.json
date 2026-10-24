@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "@paulperigault/astro",
-  "homepage": "https://ds.paulperigault.dev",
+  "homepage": "https://design.paulperigault.dev",
   "items": [
     {
       "name": "accordion",
