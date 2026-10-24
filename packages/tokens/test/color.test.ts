@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import type { Oklch } from '../src/lib/color.ts';
 import {
   formatOklch,
   gammaToLinear,
@@ -9,20 +10,19 @@ import {
   oklchToSrgb,
   parseOklch,
   toHex,
-} from '../src/lib/color.mjs';
+} from '../src/lib/color.ts';
 
 const TOLERANCE_DIGITS = 3; // toBeCloseTo(x, 3) : écart < 5e-4, plus strict que 1e-3
 
-const hueDistance = (a, b) => Math.abs(((a - b + 540) % 360) - 180); // écart angulaire, en °
-
-const expectOklch = (actual, expected) => {
+const hueDistance = (a: number, b: number) => Math.abs(((a - b + 540) % 360) - 180); // écart angulaire, en °
+const expectOklch = (actual: Oklch, expected: Oklch) => {
   expect(actual.l).toBeCloseTo(expected.l, TOLERANCE_DIGITS);
   expect(actual.c).toBeCloseTo(expected.c, TOLERANCE_DIGITS);
   if (expected.c > 0) expect(hueDistance(actual.h, expected.h)).toBeLessThan(0.5);
 };
 
 // CSS Color 4, exemples d'Oklab (sRGB primaires).
-const PRIMARIES = [
+const PRIMARIES: [string, Oklch][] = [
   ['#ff0000', { l: 0.62796, c: 0.25768, h: 29.2339 }],
   ['#00ff00', { l: 0.86644, c: 0.29483, h: 142.4953 }],
   ['#0000ff', { l: 0.45201, c: 0.31321, h: 264.052 }],

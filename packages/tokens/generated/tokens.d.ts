@@ -1,4 +1,4 @@
-// Fichier généré par scripts/build.mjs depuis src/tokens/ : ne pas éditer.
+// Fichier généré par scripts/build.ts depuis src/tokens/ : ne pas éditer.
 export type TokenName =
   | '--pp-color-accent'
   | '--pp-color-bg'

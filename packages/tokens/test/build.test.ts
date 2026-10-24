@@ -1,41 +1,23 @@
 import { readFileSync } from 'node:fs';
 import { URL } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { generate, run } from '../scripts/build.mjs';
-import { cssValue } from '../scripts/lib/css-value.mjs';
-import { flatten, tokenName } from '../scripts/lib/flatten.mjs';
+import { generate, run } from '../scripts/build.ts';
+import { cssValue } from '../scripts/lib/css-value.ts';
+import { flatten, tokenName } from '../scripts/lib/flatten.ts';
+import { io, oklch, readMini, theme } from './mini.ts';
 
-const oklch = (l, c, h) => ({ colorSpace: 'oklch', components: [l, c, h] });
-const dim = (value, unit) => ({ $value: { value, unit } });
-const theme = (bg, ok) => ({
-  color: { $type: 'color', bg: { $value: bg }, status: { ok: { $value: ok } } },
-});
-const MINI = {
-  'resolver.json': {
-    sets: { base: { sources: ['base.json'] } },
-    modifiers: { theme: { contexts: { light: ['light.json'], dark: [{ $ref: 'dark.json' }] } } },
-  },
-  'base.json': {
-    space: { $type: 'dimension', m: dim(1.5, 'rem') },
-    font: { size: { $type: 'dimension', '-1': dim(0.9, 'rem') } },
-    duration: { $type: 'duration', base: dim(160, 'ms') },
-  },
-  'light.json': theme(oklch(1, 0, 0), oklch(0.5, 0.1, 155)),
-  'dark.json': theme(oklch(0, 0, 0), oklch(0.8, 0.1, 155)),
-};
-const readMini = (name) => JSON.stringify(MINI[name]);
-const io = (target, written = {}) => ({
-  readText: readMini,
-  readTarget: (name) => target[name],
-  writeTarget: (name, text) => (written[name] = text),
-});
 const root = new URL('../', import.meta.url);
-const read = (dir) => (name) => readFileSync(new URL(`${dir}/${name}`, root), 'utf8');
-const real = { readText: read('src/tokens'), readTarget: read('generated'), writeTarget() {} };
+const read = (dir: string) => (name: string) =>
+  readFileSync(new URL(`${dir}/${name}`, root), 'utf8');
+const real = {
+  readText: read('src/tokens'),
+  readTarget: read('generated'),
+  writeTarget: () => undefined,
+};
 
 describe('flatten, noms et valeurs CSS', () => {
   it('aplatit en héritant du $type du groupe ; nom = --pp- + chemin joint par -', () => {
-    expect(flatten(MINI['light.json'])).toEqual([
+    expect(flatten(theme(oklch(1, 0, 0), oklch(0.5, 0.1, 155)))).toEqual([
       { path: ['color', 'bg'], type: 'color', value: oklch(1, 0, 0) },
       { path: ['color', 'status', 'ok'], type: 'color', value: oklch(0.5, 0.1, 155) },
     ]);
@@ -67,7 +49,7 @@ describe('generate (source minimale)', () => {
   const out = generate(readMini);
 
   it('CSS : light-dark(), tokens de base, data-theme, mouvement réduit', () => {
-    const css = out['tokens.css'];
+    const css = out['tokens.css'] ?? '';
     expect(css).toMatch(/^\/\*.*généré.*éditer\. \*\/\n\n:root {\n {2}color-scheme: light dark;/);
     expect(css).toContain('--pp-color-bg: light-dark(oklch(100% 0 0), oklch(0% 0 0));');
     expect(css).toContain('-status-ok: light-dark(oklch(50% 0.1 155), oklch(80% 0.1 155));');
@@ -77,7 +59,7 @@ describe('generate (source minimale)', () => {
   });
 
   it('JSON : thèmes, base triée et themeColor', () => {
-    const json = JSON.parse(out['tokens.json']);
+    const json = JSON.parse(out['tokens.json'] ?? '');
     const bg = { oklch: 'oklch(100% 0 0)', hex: '#ffffff' };
     expect(json.themes.light['--pp-color-bg']).toEqual(bg);
     const names = ['--pp-duration-base', '--pp-font-size--1', '--pp-space-m'];
@@ -86,7 +68,7 @@ describe('generate (source minimale)', () => {
   });
 
   it('d.ts : noms triés, themeColor ; sorties déterministes', () => {
-    const dts = out['tokens.d.ts'];
+    const dts = out['tokens.d.ts'] ?? '';
     expect(dts).toContain("TokenName =\n  | '--pp-color-bg'\n  | '--pp-color-status-ok'\n");
     expect(dts).toContain("{ readonly light: '#ffffff'; readonly dark: '#000000' };\n");
     expect(generate(readMini)).toEqual(out);
@@ -95,22 +77,22 @@ describe('generate (source minimale)', () => {
 
 describe('run et --check', () => {
   it('écrit les trois fichiers, puis --check passe', () => {
-    const written = {};
+    const written: Record<string, string> = {};
     expect(run({ check: false, ...io({}, written) }).code).toBe(0);
     expect(Object.keys(written)).toEqual(['tokens.css', 'tokens.json', 'tokens.d.ts']);
     expect(run({ check: true, ...io(written) })).toEqual({ code: 0, files: [] });
   });
 
   it('--check échoue (code 1) et liste les fichiers en dérive, sans rien écrire', () => {
-    const written = {};
-    const target = { ...generate(readMini), 'tokens.json': '{}\n', 'tokens.d.ts': undefined };
+    const written: Record<string, string> = {};
+    const target = { 'tokens.css': generate(readMini)['tokens.css'] ?? '', 'tokens.json': '{}\n' };
     const result = run({ check: true, ...io(target, written) });
     expect(result).toEqual({ code: 1, files: ['tokens.json', 'tokens.d.ts'] });
     expect(written).toEqual({});
   });
 
   it('vraie source : à jour, dans le gamut (toHex lève sinon), fond sombre #14161c', () => {
-    const json = JSON.parse(generate(real.readText)['tokens.json']);
+    const json = JSON.parse(generate(real.readText)['tokens.json'] ?? '');
     expect(json.themeColor.dark).toBe('#14161c');
     expect(json.base['--pp-font-family-sans']).toMatch(/^'Atkinson Hyperlegible Next/);
     expect(real.readTarget('tokens.css')).toContain("sans:\n    'Atkinson Hyperlegible Next");

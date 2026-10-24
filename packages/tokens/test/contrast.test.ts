@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { hexToOklch } from '../src/lib/color.mjs';
-import { apcaLc, contrastRatio, relativeLuminance } from '../src/lib/contrast.mjs';
+import { hexToOklch } from '../src/lib/color.ts';
+import { apcaLc, contrastRatio, relativeLuminance } from '../src/lib/contrast.ts';
 
 const OUT_OF_GAMUT = 'oklch(0.7 0.4 140)';
 

@@ -1,20 +1,21 @@
 /**
  * Générateur DTCG → `generated/tokens.css`, `tokens.json`, `tokens.d.ts` (fichiers versionnés).
- * `node scripts/build.mjs` écrit ; `--check` régénère en mémoire et sort en 1 si un fichier diffère.
+ * `node scripts/build.ts` écrit ; `--check` régénère en mémoire et sort en 1 si un fichier diffère.
  */
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { emitCss } from './lib/emit-css.mjs';
-import { emitDts } from './lib/emit-dts.mjs';
-import { emitJson } from './lib/emit-json.mjs';
-import { entries } from './lib/flatten.mjs';
-import { colorEntry, cssValue } from './lib/css-value.mjs';
-import { readSource } from './lib/read-source.mjs';
+import type { Model, Source } from './lib/types.ts';
+import { emitCss } from './lib/emit-css.ts';
+import { emitDts } from './lib/emit-dts.ts';
+import { emitJson } from './lib/emit-json.ts';
+import { entries } from './lib/flatten.ts';
+import { colorEntry, cssValue } from './lib/css-value.ts';
+import { readSource } from './lib/read-source.ts';
 
 const SOURCE_DIR = new URL('../src/tokens/', import.meta.url);
 const TARGET_DIR = new URL('../generated/', import.meta.url);
 
 /** Arbres DTCG → modèle : tokens de base en CSS, couleurs de thème en OKLCH et hexadécimal. */
-export function buildModel({ base, themes }) {
+export function buildModel({ base, themes }: Source): Model {
   return {
     base: entries(base).map((token) => ({ ...token, css: cssValue(token) })),
     themes: Object.fromEntries(
@@ -23,8 +24,8 @@ export function buildModel({ base, themes }) {
   };
 }
 
-/** @returns {Record<string, string>} contenu de chaque fichier généré, par nom */
-export function generate(readText) {
+/** Contenu de chaque fichier généré, par nom. */
+export function generate(readText: (name: string) => string): Record<string, string> {
   const model = buildModel(readSource(readText));
   return {
     'tokens.css': emitCss(model),
@@ -33,17 +34,29 @@ export function generate(readText) {
   };
 }
 
-/** @returns {string[]} fichiers absents ou différents de la génération */
-export function findDrift(outputs, readTarget) {
+/** Fichiers absents ou différents de la génération. */
+export function findDrift(
+  outputs: Record<string, string>,
+  readTarget: (name: string) => string | undefined,
+): string[] {
   return Object.keys(outputs).filter((name) => readTarget(name) !== outputs[name]);
 }
 
 /**
  * Entrées-sorties injectées : `readText` (source), `readTarget` (généré, `undefined` si absent),
  * `writeTarget` (écriture, hors `--check`).
- * @returns {{ code: 0 | 1, files: string[] }}
  */
-export function run({ check, readText, readTarget, writeTarget }) {
+export interface RunIo {
+  check: boolean;
+  readText: (name: string) => string;
+  readTarget: (name: string) => string | undefined;
+  writeTarget: (name: string, text: string) => void;
+}
+
+export function run({ check, readText, readTarget, writeTarget }: RunIo): {
+  code: 0 | 1;
+  files: string[];
+} {
   const outputs = generate(readText);
   if (check) {
     const files = findDrift(outputs, readTarget);
@@ -53,7 +66,7 @@ export function run({ check, readText, readTarget, writeTarget }) {
   return { code: 0, files: Object.keys(outputs) };
 }
 
-function readOptional(url) {
+function readOptional(url: URL): string | undefined {
   try {
     return readFileSync(url, 'utf8');
   } catch {
@@ -61,7 +74,7 @@ function readOptional(url) {
   }
 }
 
-function writeOutput(name, text) {
+function writeOutput(name: string, text: string): void {
   mkdirSync(TARGET_DIR, { recursive: true });
   writeFileSync(new URL(name, TARGET_DIR), text);
 }

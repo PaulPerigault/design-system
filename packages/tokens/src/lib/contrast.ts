@@ -1,8 +1,9 @@
 /**
- * Contraste : rapport WCAG 2 (normatif) et Lc APCA (informatif). ESM pur ; types : contrast.d.mts.
+ * Contraste : rapport WCAG 2 (normatif) et Lc APCA (informatif). ESM pur.
  * Calcul sur la couleur sRGB rendue (gamma), jamais sur le L d'OKLCH.
  */
-import { gammaToLinear, inSrgbGamut, oklchToSrgb, parseOklch } from './color.mjs';
+import type { Oklch, Rgb } from './color.ts';
+import { gammaToLinear, inSrgbGamut, oklchToSrgb, parseOklch } from './color.ts';
 
 // WCAG 2.2 (W3C, 2023), définitions « relative luminance » et « contrast ratio ».
 // Linéarisation par gammaToLinear (seuil 0.04045 de l'IEC 61966-2-1) ; le 0.03928 historique de
@@ -39,16 +40,19 @@ const HEX_RADIX = 16;
 const HEX_PATTERN = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i;
 
 // Bruit d'arrondi toléré par inSrgbGamut (±1e-4) : ramené dans [0, 1] après le contrôle.
-const clampUnit = (value) => Math.min(1, Math.max(0, value));
+/** `'oklch(L C H)'`, `'#rrggbb'` ou objet OKLCH ; hors gamut sRGB : `RangeError`. */
+export type ContrastColor = string | Oklch;
 
-function hexToSrgb(text) {
+const clampUnit = (value: number): number => Math.min(1, Math.max(0, value));
+
+function hexToSrgb(text: string): Rgb {
   const match = HEX_PATTERN.exec(text);
   if (!match) throw new TypeError(`contraste : « ${text} » attendu #rrggbb.`);
-  const [r, g, b] = match.slice(1).map((pair) => Number.parseInt(pair, HEX_RADIX) / BYTE_MAX);
-  return { r, g, b };
+  const channel = (pair = ''): number => Number.parseInt(pair, HEX_RADIX) / BYTE_MAX;
+  return { r: channel(match[1]), g: channel(match[2]), b: channel(match[3]) };
 }
 
-function oklchToRenderedSrgb(color) {
+function oklchToRenderedSrgb(color: Oklch): Rgb {
   if (!inSrgbGamut(color)) {
     const { l, c, h } = color;
     throw new RangeError(`contraste : oklch(${l} ${c} ${h}) hors gamut sRGB.`);
@@ -58,43 +62,44 @@ function oklchToRenderedSrgb(color) {
 }
 
 /** `oklch(…)`, `#rrggbb` ou `{ l, c, h }` → sRGB gamma dans [0, 1]. */
-function toSrgb(color) {
-  if (typeof color === 'object' && color !== null) return oklchToRenderedSrgb(color);
-  const text = String(color).trim();
+function toSrgb(color: ContrastColor): Rgb {
+  if (typeof color === 'object') return oklchToRenderedSrgb(color);
+  const text = color.trim();
   if (text.startsWith('#')) return hexToSrgb(text);
   return oklchToRenderedSrgb(parseOklch(text));
 }
 
-export function relativeLuminance({ r, g, b }) {
+/** Luminance relative WCAG 2.x, de canaux sRGB gamma dans [0, 1]. */
+export function relativeLuminance({ r, g, b }: Rgb): number {
   return WCAG_RED * gammaToLinear(r) + WCAG_GREEN * gammaToLinear(g) + WCAG_BLUE * gammaToLinear(b);
 }
 
-export function contrastRatio(a, b) {
-  const [lighter, darker] = [a, b]
-    .map((color) => relativeLuminance(toSrgb(color)))
-    .sort((x, y) => y - x);
-  return (lighter + WCAG_FLARE) / (darker + WCAG_FLARE);
+/** Rapport de contraste WCAG 2, de 1 à 21, indépendant de l'ordre des couleurs. */
+export function contrastRatio(a: ContrastColor, b: ContrastColor): number {
+  const first = relativeLuminance(toSrgb(a));
+  const second = relativeLuminance(toSrgb(b));
+  return (Math.max(first, second) + WCAG_FLARE) / (Math.min(first, second) + WCAG_FLARE);
 }
 
 /** Luminance APCA : puissance simple (pas la courbe sRGB), puis rehaussement des noirs. */
-function apcaLuminance({ r, g, b }) {
+function apcaLuminance({ r, g, b }: Rgb): number {
   const { mainTrc, blkThrs, blkClmp } = APCA;
   const y = APCA.red * r ** mainTrc + APCA.green * g ** mainTrc + APCA.blue * b ** mainTrc;
   return y > blkThrs ? y : y + (blkThrs - y) ** blkClmp;
 }
 
-function normalPolarity(textY, backgroundY) {
+function normalPolarity(textY: number, backgroundY: number): number {
   const sapc = (backgroundY ** APCA.normBg - textY ** APCA.normTxt) * APCA.scaleBoW;
   return sapc < APCA.loClip ? 0 : sapc - APCA.loBoWoffset;
 }
 
-function reversePolarity(textY, backgroundY) {
+function reversePolarity(textY: number, backgroundY: number): number {
   const sapc = (backgroundY ** APCA.revBg - textY ** APCA.revTxt) * APCA.scaleWoB;
   return sapc > -APCA.loClip ? 0 : sapc + APCA.loWoBoffset;
 }
 
 /** Lc APCA signé : positif = texte sombre sur fond clair, négatif = texte clair sur fond sombre. */
-export function apcaLc(text, background) {
+export function apcaLc(text: ContrastColor, background: ContrastColor): number {
   const textY = apcaLuminance(toSrgb(text));
   const backgroundY = apcaLuminance(toSrgb(background));
   if (Math.abs(backgroundY - textY) < APCA.deltaYmin) return 0;

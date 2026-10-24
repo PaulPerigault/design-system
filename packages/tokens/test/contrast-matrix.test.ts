@@ -1,25 +1,36 @@
-import { readFileSync } from 'node:fs';
 import { URL } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { contrastRatio } from '../src/lib/contrast.mjs';
+import { contrastRatio } from '../src/lib/contrast.ts';
+import { at, componentsOf, readJson } from './helpers.ts';
 
-const read = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
-const { pairs } = read('../src/roles.json');
+interface Pair {
+  fg: string;
+  bg: string;
+  min: number;
+  norm: string;
+}
+
+/** Valide la forme de `roles.json` à la lecture. */
+function rolePairs(value: unknown): Pair[] {
+  if (!Array.isArray(value)) throw new TypeError('roles.json : pairs doit être une liste.');
+  return value;
+}
+
+const read = (path: string) => readJson(new URL(path, import.meta.url));
+const pairs = rolePairs(read('../src/roles.json').pairs);
 const THEMES = ['light', 'dark'];
 const sources = Object.fromEntries(
   THEMES.map((theme) => [theme, read(`../src/tokens/${theme}.tokens.json`)]),
 );
 
 /** Valeur DTCG d'un rôle (`color.status.passed`), ou undefined s'il n'existe pas. */
-function roleValue(theme, role) {
-  const node = role.split('.').reduce((current, key) => current?.[key], sources[theme]);
-  return node?.$value;
+function roleValue(theme: string, role: string): unknown {
+  return at(sources[theme] ?? {}, `${role}.$value`);
 }
 
 /** Couleur DTCG OKLCH → { l, c, h } pour `contrastRatio`. */
-function toColor(theme, role) {
-  const [l, c, h] = roleValue(theme, role).components;
-  return { l, c, h };
+function toColor(theme: string, role: string) {
+  return componentsOf(roleValue(theme, role));
 }
 
 const roles = [...new Set(pairs.flatMap(({ fg, bg }) => [fg, bg]))];
@@ -28,7 +39,9 @@ const cases = THEMES.flatMap((theme) => pairs.map((pair) => ({ theme, ...pair })
 describe('matrice des rôles', () => {
   it.each(THEMES)('%s : chaque rôle de la matrice existe', (theme) => {
     for (const role of roles) {
-      expect(roleValue(theme, role)?.colorSpace, `${theme} : ${role}`).toBe('oklch');
+      expect(at(sources[theme] ?? {}, `${role}.$value.colorSpace`), `${theme} : ${role}`).toBe(
+        'oklch',
+      );
     }
   });
 
