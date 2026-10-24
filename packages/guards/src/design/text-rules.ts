@@ -20,13 +20,15 @@ const EMOJI = /\p{Emoji_Presentation}|\p{Extended_Pictographic}\uFE0F/gu;
 const PHRASE = new RegExp(PHRASES.map((source) => source.replaceAll(' ', '\\s+')).join('|'), 'giu');
 const TYPOGRAPHIC_APOSTROPHE = '\u2019';
 
-/**
- * @param {string} text
- * @returns {{ rule: string, index: number, excerpt: string }[]}
- */
-export function textHits(text) {
+interface Hit {
+  rule: string;
+  index: number;
+  excerpt: string;
+}
+
+export function textHits(text: string): Hit[] {
   const plain = text.replaceAll(TYPOGRAPHIC_APOSTROPHE, "'");
-  const hit = (rule) => (match) => ({ rule, index: match.index, excerpt: match[0] });
+  const hit = (rule: string) => (match: RegExpMatchArray): Hit => ({ rule, index: match.index ?? 0, excerpt: match[0] });
   return [
     ...[...plain.matchAll(EMOJI)].map(hit('emoji')),
     ...[...plain.matchAll(PHRASE)].map(hit('generic-phrase')),

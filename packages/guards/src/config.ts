@@ -3,30 +3,21 @@ import { GuardUsageError } from './lib/report.ts';
 
 export const CONFIG_FILE = 'pp-guards.config.json';
 
-/**
- * @param {string} text
- * @param {string} path
- * @returns {Record<string, unknown>}
- */
-function parseConfig(text, path) {
-  let data;
+function parseConfig(text: string, path: string): Record<string, Record<string, unknown>> {
+  let data: unknown;
   try {
     data = JSON.parse(text);
-  } catch (error) {
-    throw new GuardUsageError(`${path} : JSON invalide (${error.message})`);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new GuardUsageError(`${path} : JSON invalide (${message})`);
   }
   if (typeof data !== 'object' || data === null || Array.isArray(data)) {
     throw new GuardUsageError(`${path} : un objet JSON est attendu`);
   }
-  return data;
+  return data as Record<string, Record<string, unknown>>;
 }
 
-/**
- * @param {import('./lib/io.ts').GuardIo} io
- * @param {string} [path] valeur de `--config`
- * @returns {Record<string, unknown>}
- */
-export function loadConfig(io, path) {
+export function loadConfig(io: import('./lib/io.ts').GuardIo, path?: string): Record<string, Record<string, unknown>> {
   if (path !== undefined && !io.exists(path)) {
     throw new GuardUsageError(`configuration introuvable : ${path}`);
   }
@@ -34,15 +25,12 @@ export function loadConfig(io, path) {
   return io.exists(file) ? parseConfig(io.readText(file), file) : {};
 }
 
-/**
- * Défauts, puis section du fichier, puis drapeaux ; un tableau remplace. Pure.
- * @param {object} defaults
- * @param {object | undefined} section
- * @param {object} flags
- * @param {string[]} positionals
- * @returns {Record<string, unknown>}
- */
-export function mergeOptions(defaults, section, flags, positionals) {
+export function mergeOptions(
+  defaults: Record<string, unknown>,
+  section: Record<string, unknown> | undefined,
+  flags: Record<string, unknown>,
+  positionals: string[],
+): Record<string, unknown> {
   const merged = { ...defaults, ...section, ...flags };
   return positionals.length > 0 ? { ...merged, roots: [...positionals] } : merged;
 }

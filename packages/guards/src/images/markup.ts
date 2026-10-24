@@ -16,54 +16,32 @@ const JSX_EXTENSIONS = ['.jsx', '.tsx', '.mdx'];
 const RAW_IMG = /<img(?=[\s/>])/gi;
 const BACKGROUND_URL = /(?<![\w-])(background(?:-image)?)\s*:[^;{}]*?url\(/gi;
 
-/** @param {string} file */
-const extensionOf = (file) => file.slice(file.lastIndexOf('.')).toLowerCase();
+const extensionOf = (file: string): string => file.slice(file.lastIndexOf('.')).toLowerCase();
 
-/** @param {string} match */
-const blank = (match) => match.replace(/[^\n]/g, ' ');
+const blank = (match: string): string => match.replace(/[^\n]/g, ' ');
 
-/**
- * Remplace les commentaires par des espaces, lignes conservées : `<!-- -->` partout ;
- * `/* *\/` dans un `.css` et les blocs `<style>` ; `{/* *\/}` dans `.jsx`, `.tsx`, `.mdx`.
- * Ailleurs (chaînes d'un frontmatter, par exemple), `/*` n'ouvre pas de commentaire.
- * @param {string} text
- * @param {string} [extension] extension en minuscules, point compris
- * @returns {string}
- */
-export function neutralizeComments(text, extension = '') {
+export function neutralizeComments(text: string, extension = ''): string {
   if (extension === '.css') return text.replace(BLOCK_COMMENT, blank);
   const plain = text.replace(HTML_COMMENT, blank);
   const styled = plain.replace(STYLE_BLOCK, (block) => block.replace(BLOCK_COMMENT, blank));
   return JSX_EXTENSIONS.includes(extension) ? styled.replace(JSX_COMMENT, blank) : styled;
 }
 
-/**
- * Occurrences interdites d'un texte déjà neutralisé, par ordre d'apparition.
- * @param {string} text
- * @param {string} extension
- * @returns {{ index: number, label: string }[]}
- */
-export function rawImages(text, extension) {
-  const found = [];
+export function rawImages(text: string, extension: string): { index: number; label: string }[] {
+  const found: { index: number; label: string }[] = [];
   if (IMG_EXTENSIONS.includes(extension)) {
     for (const match of text.matchAll(RAW_IMG))
-      found.push({ index: match.index, label: '<img> brut' });
+      found.push({ index: match.index ?? 0, label: '<img> brut' });
   }
   if (BACKGROUND_EXTENSIONS.includes(extension)) {
     for (const match of text.matchAll(BACKGROUND_URL)) {
-      found.push({ index: match.index, label: `${match[1].toLowerCase()}: url(` });
+      found.push({ index: match.index ?? 0, label: `${(match[1] as string).toLowerCase()}: url(` });
     }
   }
   return found.sort((a, b) => a.index - b.index);
 }
 
-/**
- * @param {import('../lib/io.ts').GuardIo} io
- * @param {string[]} files fichiers de balisage ou de style
- * @param {string[]} allow chemins où le balisage brut est permis
- * @returns {import('../lib/report.ts').Problem[]}
- */
-export function markupProblems(io, files, allow) {
+export function markupProblems(io: import('../lib/io.ts').GuardIo, files: string[], allow: string[]): import('../lib/report.ts').Problem[] {
   const outside = allow.length > 0 ? ` hors ${allow.join(', ')}` : '';
   return files
     .filter((file) => !matchesAny(file, allow))

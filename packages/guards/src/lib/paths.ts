@@ -1,25 +1,13 @@
-/**
- * Chemin POSIX : `\` devient `/`, sans `./` initial ni `/` final.
- * @param {string} path
- * @returns {string}
- */
-export function normalizePath(path) {
+export function normalizePath(path: string): string {
   let result = path.replaceAll('\\', '/');
   while (result.startsWith('./')) result = result.slice('./'.length);
   while (result.length > 1 && result.endsWith('/')) result = result.slice(0, -1);
   return result;
 }
 
-/** @param {string} path */
-const segments = (path) => normalizePath(path).split('/').filter(Boolean);
+const segments = (path: string): string[] => normalizePath(path).split('/').filter(Boolean);
 
-/**
- * Vrai si les segments de `entry` apparaissent, contigus, dans ceux de `file`.
- * @param {string} file
- * @param {string} entry
- * @returns {boolean}
- */
-export function matchesPath(file, entry) {
+export function matchesPath(file: string, entry: string): boolean {
   const haystack = segments(file);
   const needle = segments(entry);
   if (needle.length === 0) return false;
@@ -29,11 +17,6 @@ export function matchesPath(file, entry) {
   return false;
 }
 
-/**
- * @param {string} file
- * @param {readonly string[]} entries
- * @returns {boolean}
- */
-export function matchesAny(file, entries) {
+export function matchesAny(file: string, entries: readonly string[]): boolean {
   return entries.some((entry) => matchesPath(file, entry));
 }

@@ -13,24 +13,14 @@ const FRONTMATTER = /^\s*---\r?\n[\s\S]*?\r?\n---/;
 const SCRIPT = /<script\b[^>]*>[\s\S]*?<\/script>/g;
 
 /** Remplace tout sauf les sauts de ligne par des espaces : les numéros de ligne restent exacts. */
-const blank = (text) => text.replace(/[^\n]/g, ' ');
+const blank = (text: string): string => text.replace(/[^\n]/g, ' ');
 
-/**
- * Zones de code d'un `.astro` : frontmatter et balises `<script>`.
- * @param {string} text
- * @returns {[number, number][]}
- */
-function astroRanges(text) {
-  const spans = [FRONTMATTER.exec(text), ...text.matchAll(SCRIPT)].filter(Boolean);
+function astroRanges(text: string): [number, number][] {
+  const spans = [FRONTMATTER.exec(text), ...text.matchAll(SCRIPT)].filter(Boolean) as RegExpExecArray[];
   return spans.map((match) => [match.index, match.index + match[0].length]);
 }
 
-/**
- * Garde les zones de code d'un `.astro`, masque le balisage.
- * @param {string} text
- * @returns {string}
- */
-function codeOfAstro(text) {
+function codeOfAstro(text: string): string {
   let result = '';
   let cursor = 0;
   for (const [start, end] of astroRanges(text)) {
@@ -41,17 +31,13 @@ function codeOfAstro(text) {
   return result + blank(text.slice(cursor));
 }
 
-/**
- * @param {string} text contenu du fichier
- * @param {string} [file] chemin : un `.astro` n'est lu que dans son frontmatter et ses `<script>`
- * @returns {{ specifier: string, line: number }[]} triés par ligne
- */
-export function importsOf(text, file = '') {
+export function importsOf(text: string, file = ''): { specifier: string; line: number }[] {
   const code = file.toLowerCase().endsWith('.astro') ? codeOfAstro(text) : text;
   const found = PATTERNS.flatMap((pattern) =>
     [...code.matchAll(pattern)].map((match) => {
-      const [index] = match.indices[2];
-      return { specifier: match[2], line: lineOf(code, index), index };
+      const indices = match.indices as [number, number][];
+      const [index] = indices[2] ?? [0, 0];
+      return { specifier: match[2] as string, line: lineOf(code, index), index };
     }),
   );
   const unique = new Map(found.map((item) => [item.index, item]));

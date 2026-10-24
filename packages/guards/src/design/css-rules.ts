@@ -20,64 +20,73 @@ const NEUTRAL = new Set(['none', 'inherit', 'initial', 'unset', 'revert']);
 const SHADOW_PROPERTIES = new Set(['box-shadow', 'text-shadow', '-webkit-box-shadow']);
 const BLUR_PROPERTIES = new Set(['backdrop-filter', '-webkit-backdrop-filter']);
 
-/**
- * Déclarations `propriété: valeur` avec leur bloc `{}` d'appartenance.
- * @param {string} css
- * @returns {{ prop: string, value: string, index: number, block: number }[]}
- */
-export function declarations(css) {
-  const found = [];
+interface Declaration {
+  prop: string;
+  value: string;
+  index: number;
+  block: number;
+}
+
+export function declarations(css: string): Declaration[] {
+  const found: Declaration[] = [];
   const stack = [0];
   let created = 0;
   let position = 0;
   for (const match of css.matchAll(/[{}]|$/g)) {
-    const segment = css.slice(position, match.index);
+    const matchIndex = match.index ?? 0;
+    const segment = css.slice(position, matchIndex);
     // Avant `{` : sélecteur ou règle @ ; seules les déclarations closes par `;` comptent.
     const text = match[0] === '{' ? segment.slice(0, segment.lastIndexOf(';') + 1) : segment;
     for (const m of text.matchAll(DECLARATION)) {
       found.push({
-        prop: m[1].toLowerCase(),
-        value: m[2].trim(),
-        index: position + m.index,
-        block: stack.at(-1),
+        prop: (m[1] as string).toLowerCase(),
+        value: (m[2] as string).trim(),
+        index: position + (m.index ?? 0),
+        block: stack.at(-1) ?? 0,
       });
     }
-    position = match.index + match[0].length;
+    position = matchIndex + match[0].length;
     if (match[0] === '{') stack.push((created += 1));
     else if (match[0] === '}' && stack.length > 1) stack.pop();
   }
   return found;
 }
 
-const hit = (rule, d, excerpt = `${d.prop}: ${d.value}`) => ({ rule, index: d.index, excerpt });
-const isNeutral = (value) => NEUTRAL.has(value.toLowerCase());
+interface Hit {
+  rule: string;
+  index: number;
+  excerpt: string;
+}
 
-function namedColor(d, value) {
+const hit = (rule: string, d: Declaration, excerpt = `${d.prop}: ${d.value}`): Hit => ({ rule, index: d.index, excerpt });
+const isNeutral = (value: string): boolean => NEUTRAL.has(value.toLowerCase());
+
+function namedColor(d: Declaration, value: string): boolean {
   if (!COLOR_PROPERTY.test(d.prop)) return false;
   const words = value.replace(/var\(\s*--[\w-]+/gi, '').match(/[a-z]+/gi) ?? [];
   return words.some((word) => NAMED_COLORS.has(word.toLowerCase()));
 }
 
-function colorLiteral(d) {
+function colorLiteral(d: Declaration): Hit | false {
   const value = d.value.replace(/url\([^)]*\)|"[^"]*"|'[^']*'/gi, '');
   const literal = HEX.test(value) || COLOR_FUNCTION.test(value);
   return (literal || namedColor(d, value)) && hit('color-literal', d);
 }
 
-function shadow(d) {
+function shadow(d: Declaration): Hit | false {
   const plain = SHADOW_PROPERTIES.has(d.prop) && !isNeutral(d.value);
   return (plain || DROP_SHADOW.test(d.value)) && hit('shadow', d);
 }
 
-function blur(d) {
+function blur(d: Declaration): Hit | false {
   const plain = BLUR_PROPERTIES.has(d.prop) && !isNeutral(d.value);
   return (plain || BLUR.test(d.value)) && hit('blur', d);
 }
 
-const retro = (d) =>
+const retro = (d: Declaration): Hit | false =>
   d.prop.startsWith('animation') && RETRO.test(d.value) && hit('retro-effect', d);
 
-const CHECKS = [
+const CHECKS: ((d: Declaration) => Hit | false)[] = [
   (d) => GRADIENT.test(d.value) && hit('gradient', d),
   shadow,
   blur,
@@ -86,30 +95,26 @@ const CHECKS = [
   retro,
 ];
 
-const isUppercase = (d) => d.prop === 'text-transform' && /^uppercase\b/i.test(d.value);
-const isPositive = (d) =>
+const isUppercase = (d: Declaration): boolean => d.prop === 'text-transform' && /^uppercase\b/i.test(d.value);
+const isPositive = (d: Declaration): boolean =>
   d.prop === 'letter-spacing' && (Number.parseFloat(d.value) > 0 || WIDE_TRACKING.test(d.value));
 
 /** `text-transform: uppercase` et `letter-spacing` positif dans un même bloc. */
-function spacedCaps(decls) {
+function spacedCaps(decls: Declaration[]): Hit[] {
   const upper = new Set(decls.filter(isUppercase).map((d) => d.block));
   return decls
     .filter((d) => isPositive(d) && upper.has(d.block))
     .map((d) => hit('spaced-caps', d, `text-transform: uppercase + letter-spacing: ${d.value}`));
 }
 
-function keyframes(css) {
+function keyframes(css: string): Hit[] {
   return [...css.matchAll(KEYFRAMES)]
-    .filter((m) => RETRO.test(m[1]))
-    .map((m) => ({ rule: 'retro-effect', index: m.index, excerpt: m[0] }));
+    .filter((m) => RETRO.test(m[1] ?? ''))
+    .map((m) => ({ rule: 'retro-effect', index: m.index ?? 0, excerpt: m[0] }));
 }
 
-/**
- * @param {string} css
- * @returns {{ rule: string, index: number, excerpt: string }[]}
- */
-export function cssHits(css) {
+export function cssHits(css: string): Hit[] {
   const decls = declarations(css);
-  const direct = decls.flatMap((d) => CHECKS.map((check) => check(d)).filter(Boolean));
+  const direct = decls.flatMap((d) => CHECKS.map((check) => check(d)).filter(Boolean) as Hit[]);
   return [...direct, ...spacedCaps(decls), ...keyframes(css)];
 }

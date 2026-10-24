@@ -26,32 +26,21 @@ const SHORT_SIZE = 2;
 const IFD_ENTRY_SIZE = 12;
 const GPS_INFO_TAG = 0x8825;
 
-/** @param {Buffer} bytes @param {Buffer} prefix */
-const startsWith = (bytes, prefix) => bytes.subarray(0, prefix.length).equals(prefix);
+const startsWith = (bytes: Buffer, prefix: Buffer): boolean => bytes.subarray(0, prefix.length).equals(prefix);
 
-/** Marqueurs sans champ de longueur (TEM, RSTn, SOI). @param {number} marker */
-const isStandalone = (marker) => marker === TEM || (marker >= RST0 && marker <= SOI_MARKER);
+const isStandalone = (marker: number): boolean => marker === TEM || (marker >= RST0 && marker <= SOI_MARKER);
 
-/**
- * Lecteur borné d'un en-tête TIFF (`II` petit-boutiste, `MM` gros-boutiste), ou `null`.
- * @param {Buffer} tiff
- */
-function tiffReader(tiff) {
+function tiffReader(tiff: Buffer): { short: (at: number) => number; long: (at: number) => number } | null {
   if (tiff.length < TIFF_HEADER_SIZE) return null;
   const order = tiff.toString('latin1', 0, BYTE_ORDER_SIZE);
   if (order !== 'II' && order !== 'MM') return null;
   const little = order === 'II';
-  const short = (at) => (little ? tiff.readUInt16LE(at) : tiff.readUInt16BE(at));
-  const long = (at) => (little ? tiff.readUInt32LE(at) : tiff.readUInt32BE(at));
+  const short = (at: number): number => (little ? tiff.readUInt16LE(at) : tiff.readUInt16BE(at));
+  const long = (at: number): number => (little ? tiff.readUInt32LE(at) : tiff.readUInt32BE(at));
   return short(TIFF_MAGIC_OFFSET) === TIFF_MAGIC ? { short, long } : null;
 }
 
-/**
- * Vrai si l'IFD0 d'un bloc TIFF contient la balise GPSInfo (0x8825).
- * @param {Buffer} tiff
- * @returns {boolean}
- */
-export function tiffHasGps(tiff) {
+export function tiffHasGps(tiff: Buffer): boolean {
   const read = tiffReader(tiff);
   if (!read) return false;
   const ifd = read.long(IFD0_OFFSET);
@@ -64,8 +53,7 @@ export function tiffHasGps(tiff) {
   return false;
 }
 
-/** @param {Buffer} data charge utile d'un APP1 @param {Set<string>} found */
-function inspectApp1(data, found) {
+function inspectApp1(data: Buffer, found: Set<string>): void {
   if (startsWith(data, EXIF_ID)) {
     found.add('exif');
     if (tiffHasGps(data.subarray(EXIF_ID.length))) found.add('gps');
@@ -74,38 +62,34 @@ function inspectApp1(data, found) {
   }
 }
 
-/**
- * Fin d'un segment à longueur, ou `null` si la longueur est nulle, incohérente ou déborde.
- * @param {Buffer} bytes @param {number} offset position du 0xFF
- */
-function segmentEnd(bytes, offset) {
+function segmentEnd(bytes: Buffer, offset: number): number | null {
   if (offset + SEGMENT_HEADER > bytes.length) return null;
   const length = bytes.readUInt16BE(offset + MARKER_SIZE);
   const end = offset + MARKER_SIZE + length;
   return length < LENGTH_SIZE || end > bytes.length ? null : end;
 }
 
-/** Pas suivant depuis `offset` : `{ next, marker }`, ou `null` pour arrêter. */
-function step(bytes, offset) {
+interface StepResult {
+  next: number;
+  marker?: number | undefined;
+}
+
+function step(bytes: Buffer, offset: number): StepResult | null {
   if (offset + MARKER_SIZE > bytes.length || bytes[offset] !== MARKER) return null;
   const marker = bytes[offset + 1];
   if (marker === MARKER) return { next: offset + 1 };
   if (marker === SOS || marker === EOI) return null;
   if (isStandalone(marker)) return { next: offset + MARKER_SIZE };
   const end = segmentEnd(bytes, offset);
-  return end === null ? null : { next: end, marker };
+  return end === null ? null : { next: end, marker: marker };
 }
 
-/**
- * Constats `exif`, `gps`, `xmp` d'un JPEG (ce qui précède une corruption éventuelle).
- * @param {Buffer} bytes fichier complet, SOI compris
- * @returns {string[]}
- */
-export function jpegMetadata(bytes) {
-  const found = new Set();
+export function jpegMetadata(bytes: Buffer): string[] {
+  const found = new Set<string>();
   let offset = SOI.length;
   for (let current = step(bytes, offset); current; current = step(bytes, offset)) {
-    if (current.marker === APP1) {
+    const marker = current.marker;
+    if (marker !== undefined && marker === APP1) {
       inspectApp1(bytes.subarray(offset + SEGMENT_HEADER, current.next), found);
     }
     offset = current.next;

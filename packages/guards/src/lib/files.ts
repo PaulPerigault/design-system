@@ -10,22 +10,19 @@ export const SKIPPED_DIRS = [
   'playwright-report',
 ];
 
-/** @param {string} dir @param {string} name */
-const join = (dir, name) => (dir === '.' || dir === '' ? name : `${dir}/${name}`);
+const join = (dir: string, name: string): string => (dir === '.' || dir === '' ? name : `${dir}/${name}`);
 
-/** @param {string} path @param {string[]} extensions */
-const hasExtension = (path, extensions) => {
+const hasExtension = (path: string, extensions: string[]): boolean => {
   const lower = path.toLowerCase();
   return extensions.some((ext) => lower.endsWith(ext.toLowerCase()));
 };
 
-/**
- * @param {import('./io.ts').GuardIo} io
- * @param {string} dir
- * @param {{ extensions: string[], skip: readonly string[] }} options
- * @param {Set<string>} found
- */
-function walk(io, dir, options, found) {
+interface WalkOptions {
+  extensions: string[];
+  skip: readonly string[];
+}
+
+function walk(io: import('./io.ts').GuardIo, dir: string, options: WalkOptions, found: Set<string>): void {
   for (const entry of io.readdir(dir)) {
     const path = join(dir, entry.name);
     if (entry.isDirectory()) {
@@ -36,33 +33,23 @@ function walk(io, dir, options, found) {
   }
 }
 
-/**
- * Fichiers des racines (récursif), triés, sans doublon.
- * @param {import('./io.ts').GuardIo} io
- * @param {string[]} roots
- * @param {{ extensions: string[], skip?: readonly string[] }} options
- * @returns {string[]}
- */
-export function listFiles(io, roots, { extensions, skip = SKIPPED_DIRS }) {
-  const found = new Set();
+export function listFiles(io: import('./io.ts').GuardIo, roots: string[], options: { extensions: string[]; skip?: readonly string[] }): string[] {
+  const skip = options.skip ?? SKIPPED_DIRS;
+  const found = new Set<string>();
   for (const raw of roots) {
     const root = normalizePath(raw);
     if (!io.exists(root)) continue;
     const children = tryReaddir(io, root);
     if (children === null) {
-      if (hasExtension(root, extensions)) found.add(root);
+      if (hasExtension(root, options.extensions)) found.add(root);
     } else {
-      walk(io, root, { extensions, skip }, found);
+      walk(io, root, { extensions: options.extensions, skip }, found);
     }
   }
   return [...found].sort();
 }
 
-/**
- * @param {import('./io.ts').GuardIo} io
- * @param {string} path
- */
-function tryReaddir(io, path) {
+function tryReaddir(io: import('./io.ts').GuardIo, path: string): import('node:fs').Dirent[] | null {
   try {
     return io.readdir(path);
   } catch {
@@ -70,13 +57,7 @@ function tryReaddir(io, path) {
   }
 }
 
-/**
- * Numéro de ligne (1 = première) d'un index de caractère.
- * @param {string} text
- * @param {number} index
- * @returns {number}
- */
-export function lineOf(text, index) {
+export function lineOf(text: string, index: number): number {
   let line = 1;
   for (let i = 0; i < index && i < text.length; i += 1) {
     if (text[i] === '\n') line += 1;

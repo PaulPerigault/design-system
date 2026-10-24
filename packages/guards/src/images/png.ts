@@ -18,33 +18,19 @@ const KEYWORDS = new Map([
   ['Raw profile type exif', 'exif'],
 ]);
 
-/**
- * Mot-clé d'un chunk texte : octets latin1 jusqu'au premier NUL (ou toute la donnée).
- * @param {Buffer} data
- */
-function keywordOf(data) {
+function keywordOf(data: Buffer): string {
   const end = data.indexOf(NUL);
   return data.toString('latin1', 0, end === -1 ? data.length : end);
 }
 
-/**
- * @param {string} type
- * @param {Buffer} data
- * @returns {string[]}
- */
-function chunkFindings(type, data) {
+function chunkFindings(type: string, data: Buffer): string[] {
   if (type === EXIF_CHUNK) return tiffHasGps(data) ? ['exif', 'gps'] : ['exif'];
   const finding = TEXT_CHUNKS.has(type) ? KEYWORDS.get(keywordOf(data)) : undefined;
   return finding ? [finding] : [];
 }
 
-/**
- * Constats `exif`, `xmp` d'un PNG (ce qui précède une corruption éventuelle).
- * @param {Buffer} bytes fichier complet, signature comprise
- * @returns {string[]}
- */
-export function pngMetadata(bytes) {
-  const found = new Set();
+export function pngMetadata(bytes: Buffer): string[] {
+  const found = new Set<string>();
   let offset = PNG_SIGNATURE.length;
   while (offset + CHUNK_HEADER <= bytes.length) {
     const length = bytes.readUInt32BE(offset);

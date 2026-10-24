@@ -26,12 +26,21 @@ const CHECKS = [
 const WIDE_TRACKING = /^tracking-(?:wide|wider|widest)$/;
 const CUSTOM_TRACKING = /^tracking-\[\s*([^\]]+)\]$/;
 
+interface Token {
+  raw: string;
+  index: number;
+}
+
+interface ParsedToken extends Token {
+  utility: string;
+}
+
 /** Découpe en jetons ; les séparateurs (virgule comprise) sont ignorés dans les crochets. */
-function tokenize(value) {
-  const tokens = [];
+function tokenize(value: string): Token[] {
+  const tokens: Token[] = [];
   let depth = 0;
   let begin = -1;
-  const flush = (end) => {
+  const flush = (end: number): void => {
     if (begin >= 0) tokens.push({ raw: value.slice(begin, end), index: begin });
     begin = -1;
   };
@@ -47,7 +56,7 @@ function tokenize(value) {
 }
 
 /** Retire variantes (`md:`, `data-[x]:`), `!` et `-` initial : `md:!-mt-2` devient `mt-2`. */
-function utilityOf(token) {
+function utilityOf(token: string): string {
   let depth = 0;
   let cut = 0;
   for (const [i, char] of [...token].entries()) {
@@ -58,32 +67,35 @@ function utilityOf(token) {
   return token.slice(cut).replace(/^[!-]+|!$/g, '');
 }
 
-const isSpaced = ({ utility }) =>
-  WIDE_TRACKING.test(utility) || Number.parseFloat(CUSTOM_TRACKING.exec(utility)?.[1]) > 0;
+interface Hit {
+  rule: string;
+  index: number;
+  excerpt: string;
+}
 
-function spacedCaps(tokens) {
+const isSpaced = ({ utility }: ParsedToken): boolean =>
+  WIDE_TRACKING.test(utility) || Number.parseFloat(CUSTOM_TRACKING.exec(utility)?.[1] ?? '') > 0;
+
+function spacedCaps(tokens: ParsedToken[]): Hit[] {
   if (!tokens.some(({ utility }) => utility === 'uppercase')) return [];
   return tokens
     .filter(isSpaced)
     .map((t) => ({ rule: 'spaced-caps', index: t.index, excerpt: `uppercase ${t.raw}` }));
 }
 
-function tokenHits({ utility, raw, index }) {
-  return CHECKS.filter(([, pattern]) => pattern.test(utility)).map(([rule]) => ({
-    rule,
+function tokenHits({ utility, raw, index }: ParsedToken): Hit[] {
+  return CHECKS.filter(([, pattern]) => (pattern as RegExp).test(utility)).map(([rule]) => ({
+    rule: rule as string,
     index,
     excerpt: raw,
   }));
 }
 
-/**
- * @param {string} text source (commentaires neutralisés)
- * @returns {{ rule: string, index: number, excerpt: string }[]}
- */
-export function classHits(text) {
+export function classHits(text: string): Hit[] {
   return [...text.matchAll(ATTRIBUTE)].flatMap((attribute) => {
-    const [start] = attribute.indices[1];
-    const tokens = tokenize(attribute[1]).map((t) => ({
+    const indices = attribute.indices as [number, number][];
+    const [start] = indices[1] ?? [0, 0];
+    const tokens = tokenize(attribute[1] ?? '').map((t) => ({
       raw: t.raw,
       utility: utilityOf(t.raw),
       index: start + t.index,

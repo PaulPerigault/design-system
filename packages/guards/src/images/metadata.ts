@@ -9,27 +9,17 @@ export const METADATA_EXTENSIONS = ['.jpg', '.jpeg', '.png'];
 const FINDINGS = ['exif', 'gps', 'xmp'];
 
 /** @param {Buffer} bytes @param {Buffer} prefix */
-const startsWith = (bytes, prefix) => bytes.subarray(0, prefix.length).equals(prefix);
+const startsWith = (bytes: Buffer, prefix: Buffer): boolean => bytes.subarray(0, prefix.length).equals(prefix);
 
-/**
- * Constats de métadonnées, dans l'ordre `exif`, `gps`, `xmp` ; vide si propre ou inconnu.
- * @param {Uint8Array} bytes contenu brut du fichier
- * @returns {string[]}
- */
-export function metadataOf(bytes) {
+export function metadataOf(bytes: Uint8Array): string[] {
   const buffer = Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength);
-  let found = [];
+  let found: string[] = [];
   if (startsWith(buffer, SOI)) found = jpegMetadata(buffer);
   else if (startsWith(buffer, PNG_SIGNATURE)) found = pngMetadata(buffer);
   return FINDINGS.filter((finding) => found.includes(finding));
 }
 
-/**
- * @param {import('../lib/io.ts').GuardIo} io
- * @param {string[]} files images JPEG ou PNG (par extension)
- * @returns {import('../lib/report.ts').Problem[]}
- */
-export function metadataProblems(io, files) {
+export function metadataProblems(io: import('../lib/io.ts').GuardIo, files: string[]): import('../lib/report.ts').Problem[] {
   return files.flatMap((file) => {
     const found = metadataOf(io.readBytes(file));
     if (found.length === 0) return [];

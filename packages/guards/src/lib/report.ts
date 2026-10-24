@@ -1,31 +1,22 @@
-/**
- * @typedef {object} Problem
- * @property {string} file
- * @property {number} [line]
- * @property {string} message
- */
+export interface Problem {
+  file: string;
+  line?: number;
+  message: string;
+}
 
 /** Erreur d'usage ou de configuration (code de sortie 2). */
 export class GuardUsageError extends Error {
-  /** @param {string} message */
-  constructor(message) {
+  constructor(message: string) {
     super(message);
     this.name = 'GuardUsageError';
   }
 }
 
-/** @param {import('./io.ts').GuardIo} io */
-function formatProblem({ file, line, message }) {
+function formatProblem({ file, line, message }: Problem): string {
   return line === undefined ? `${file}: ${message}` : `${file}:${line}: ${message}`;
 }
 
-/**
- * Écrit les problèmes sur `err`, la synthèse sur `out`. Retourne le code de sortie.
- * @param {import('./io.ts').GuardIo} io
- * @param {{ name: string, problems: Problem[], checked: number }} result
- * @returns {0 | 1}
- */
-export function report(io, { name, problems, checked }) {
+export function report(io: import('./io.ts').GuardIo, { name, problems, checked }: { name: string; problems: Problem[]; checked: number }): 0 | 1 {
   for (const problem of problems) io.err(formatProblem(problem));
   if (problems.length === 0) {
     io.out(`${name} : OK (${checked} fichiers)`);

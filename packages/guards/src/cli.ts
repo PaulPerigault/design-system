@@ -6,13 +6,20 @@ import { GuardUsageError } from './lib/report.ts';
 
 const EXIT_OK = 0;
 const EXIT_USAGE = 2;
-const COMMON = { config: { type: 'string' }, help: { type: 'boolean' } };
+const COMMON: Record<string, { type: 'string' | 'boolean'; multiple?: boolean }> = { config: { type: 'string' as const }, help: { type: 'boolean' as const } };
+
+interface Check {
+  name: string;
+  defaults: Record<string, unknown>;
+  cliOptions: Record<string, { type: 'string' | 'boolean'; multiple?: boolean }>;
+  run: (options: Record<string, unknown>, io: import('./lib/io.ts').GuardIo) => number;
+}
 
 /** Erreur de syntaxe de ligne de commande : le message est suivi de l'usage. */
-const syntaxError = (message) => Object.assign(new GuardUsageError(message), { showUsage: true });
+const syntaxError = (message: string): Error & { showUsage: boolean } =>
+  Object.assign(new GuardUsageError(message), { showUsage: true });
 
-/** @param {{ name: string, cliOptions: object } | undefined} check */
-export function usageText(check) {
+export function usageText(check?: Check): string {
   if (check === undefined) {
     return [
       'usage : pp-guards <contrôle> [options] [racines…]',
@@ -21,73 +28,71 @@ export function usageText(check) {
       '  --help               cette aide, ou celle du contrôle',
     ].join('\n');
   }
-  const flags = Object.entries(check.cliOptions).map(([flag, spec]) =>
+  const flags = Object.entries(check?.cliOptions ?? {}).map(([flag, spec]) =>
     spec.multiple ? `  --${flag} <valeur>   (répétable)` : `  --${flag} <valeur>`,
   );
   const head = `usage : pp-guards ${check.name} [options] [racines…]`;
   return [head, ...flags, '  --config <fichier>', '  --help'].join('\n');
 }
 
-/** @param {string[]} args @param {object} options @param {boolean} allowPositionals */
-function parse(args, options, allowPositionals) {
+function parse(args: string[], options: Record<string, { type: 'string' | 'boolean'; multiple?: boolean }>, allowPositionals: boolean) {
   try {
     return parseArgs({ args, options, allowPositionals, strict: true });
-  } catch (error) {
-    throw syntaxError(error.message);
+  } catch (error: unknown) {
+    if (error instanceof Error) throw syntaxError(error.message);
+    throw syntaxError(String(error));
   }
 }
 
 /** Un contrôle qui échoue (usage, configuration) rend 2 sans interrompre `all`. */
-function runChecked(check, options, io) {
+function runChecked(check: Check, options: Record<string, unknown>, io: import('./lib/io.ts').GuardIo): number {
   try {
     return check.run(options, io);
-  } catch (error) {
-    io.err(error.message);
+  } catch (error: unknown) {
+    if (error instanceof Error) io.err(error.message);
     return EXIT_USAGE;
   }
 }
 
-function runOne(check, args, io) {
+function runOne(check: Check, args: string[], io: import('./lib/io.ts').GuardIo): number {
   const { values, positionals } = parse(args, { ...COMMON, ...check.cliOptions }, true);
-  if (values.help) {
+  if (values.help === true) {
     io.out(usageText(check));
     return EXIT_OK;
   }
   const flags = Object.fromEntries(
     Object.entries(values).filter(([flag]) => !Object.hasOwn(COMMON, flag)),
   );
-  const section = loadConfig(io, values.config)[check.name];
+  const section = loadConfig(io, values.config as string | undefined)?.[check.name];
   return check.run(mergeOptions(check.defaults, section, flags, positionals), io);
 }
 
-function runAll(args, io) {
+function runAll(args: string[], io: import('./lib/io.ts').GuardIo): number {
   const { values } = parse(args, COMMON, false);
-  if (values.help) {
+  if (values.help === true) {
     io.out(usageText());
     return EXIT_OK;
   }
-  const config = loadConfig(io, values.config);
+  const config = loadConfig(io, values.config as string | undefined);
   const names = ORDER.filter((name) => config[name] !== undefined);
   if (names.length === 0) throw new GuardUsageError('all : aucune section de contrôle trouvée');
   const codes = names.map((name) => {
     const check = CHECKS[name];
+    if (!check) return EXIT_USAGE;
     return runChecked(check, mergeOptions(check.defaults, config[name], {}, []), io);
   });
   return Math.max(...codes);
 }
 
-function dispatch(first, rest, io) {
+function dispatch(first: string, rest: string[], io: import('./lib/io.ts').GuardIo): number {
   if (first === 'all') return runAll(rest, io);
   if (!Object.hasOwn(CHECKS, first)) throw syntaxError(`contrôle inconnu : ${first}`);
-  return runOne(CHECKS[first], rest, io);
+  const check = CHECKS[first];
+  if (!check) throw syntaxError(`contrôle inconnu : ${first}`);
+  return runOne(check, rest, io);
 }
 
-/**
- * @param {string[]} argv arguments après `node pp-guards`
- * @param {import('./lib/io.ts').GuardIo} io
- * @returns {number} code de sortie : 0 ok, 1 problèmes, 2 usage ou configuration
- */
-export function main(argv, io) {
+export function main(argv: string[], io: import('./lib/io.ts').GuardIo): number {
   const [first, ...rest] = argv;
   if (first === '--help' || first === '-h') {
     io.out(usageText());
@@ -96,9 +101,11 @@ export function main(argv, io) {
   try {
     if (first === undefined) throw syntaxError('contrôle manquant');
     return dispatch(first, rest, io);
-  } catch (error) {
-    io.err(error.message);
-    if (error.showUsage) io.err(usageText());
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      io.err(error.message);
+      if ('showUsage' in error && error.showUsage) io.err(usageText());
+    }
     return EXIT_USAGE;
   }
 }

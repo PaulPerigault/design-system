@@ -24,17 +24,13 @@ const VALUES = new Map([
   ['resize', /^(?:horizontal|vertical)$/],
 ]);
 
-function logicalOf({ prop, value }) {
-  const property = PROPERTIES.find(([pattern]) => pattern.test(prop));
-  if (property) return property[1];
+function logicalOf({ prop, value }: { prop: string; value: string }): string | undefined {
+  const property = PROPERTIES.find(([pattern]) => (pattern as RegExp).test(prop));
+  if (property) return property[1] as string;
   return VALUES.get(prop)?.test(value.toLowerCase()) ? 'start|end, inline|block' : undefined;
 }
 
-/**
- * @param {string} css texte CSS, commentaires neutralisés
- * @returns {{ rule: string, index: number, excerpt: string }[]}
- */
-export function logicalHits(css) {
+export function logicalHits(css: string): { rule: string; index: number; excerpt: string }[] {
   return declarations(css).flatMap((d) => {
     const logical = logicalOf(d);
     if (logical === undefined) return [];

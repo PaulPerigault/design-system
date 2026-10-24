@@ -14,19 +14,28 @@ export const defaults = {
   disable: [],
 };
 
-export const cliOptions = {
-  roots: { type: 'string', multiple: true },
-  extensions: { type: 'string', multiple: true },
-  allow: { type: 'string', multiple: true },
-  disable: { type: 'string', multiple: true },
+export const cliOptions: Record<string, { type: 'string' | 'boolean'; multiple?: boolean }> = {
+  roots: { type: 'string' as const, multiple: true },
+  extensions: { type: 'string' as const, multiple: true },
+  allow: { type: 'string' as const, multiple: true },
+  disable: { type: 'string' as const, multiple: true },
 };
+
+interface DesignAllowEntry {
+  path: string;
+  rules?: string[];
+}
+
+interface DesignOptions {
+  allow?: (string | DesignAllowEntry)[];
+  disable?: string[];
+}
 
 /**
  * Lève `GuardUsageError` pour une entrée `allow` mal formée ou un identifiant de règle inconnu.
- * @param {{ allow?: unknown[], disable?: string[] }} options
  */
-export function validateOptions({ allow = [], disable = [] }) {
-  const entries = allow.filter((entry) => typeof entry !== 'string');
+export function validateOptions({ allow = [], disable = [] }: DesignOptions) {
+  const entries = allow.filter((entry) => typeof entry !== 'string') as DesignAllowEntry[];
   if (entries.some((entry) => typeof entry?.path !== 'string')) {
     throw new GuardUsageError('design : chaque entrée « allow » objet doit avoir un « path »');
   }
@@ -40,37 +49,31 @@ export function validateOptions({ allow = [], disable = [] }) {
 }
 
 /** Règles coupées par une entrée `allow` : toutes pour une chaîne, sinon celles citées. */
-const allowedRules = (entry) => (typeof entry === 'string' ? RULE_IDS : (entry.rules ?? RULE_IDS));
-const allowedPath = (entry) => (typeof entry === 'string' ? entry : entry.path);
+const allowedRules = (entry: string | DesignAllowEntry): readonly string[] =>
+  typeof entry === 'string' ? RULE_IDS : (entry.rules ?? RULE_IDS);
+const allowedPath = (entry: string | DesignAllowEntry): string =>
+  typeof entry === 'string' ? entry : entry.path;
 
 /** Règles actives pour un fichier, après `disable` et `allow`. */
-function enabledRules(file, { allow = [], disable = [] }) {
+function enabledRules(file: string, { allow = [], disable = [] }: DesignOptions) {
   const matching = allow.filter((entry) => matchesPath(file, allowedPath(entry)));
-  const off = new Set([...disable, ...matching.flatMap(allowedRules)]);
+  const off = new Set<string>([...disable, ...matching.flatMap(allowedRules)]);
   return new Set(RULE_IDS.filter((rule) => !off.has(rule)));
 }
 
-/**
- * Analyse pure d'un fichier.
- * @param {string} file chemin POSIX
- * @param {string} text contenu
- * @param {{ allow?: unknown[], disable?: string[] }} options
- * @returns {{ file: string, line: number, rule: string, message: string }[]}
- */
-export function checkText(file, text, options = {}) {
+export function checkText(
+  file: string,
+  text: string,
+  options: DesignOptions = {},
+): { file: string; line: number; rule: string; message: string }[] {
   validateOptions(options);
   return analyze(file, text, enabledRules(file, options));
 }
 
-/**
- * @param {typeof defaults} options options fusionnées (défauts, fichier, drapeaux)
- * @param {import('./lib/io.ts').GuardIo} io
- * @returns {0 | 1}
- */
-export function run(options, io) {
-  const merged = { ...defaults, ...options };
+export function run(options: DesignOptions & typeof defaults, io: import('./lib/io.ts').GuardIo): 0 | 1 {
+  const merged = { ...defaults, ...options } as DesignOptions & typeof defaults;
   validateOptions(merged);
-  const files = listFiles(io, merged.roots, { extensions: merged.extensions });
+  const files = listFiles(io, merged.roots as string[], { extensions: merged.extensions as string[] }) as string[];
   const problems = files.flatMap((file) => checkText(file, io.readText(file), merged));
   return report(io, { name, problems, checked: files.length });
 }

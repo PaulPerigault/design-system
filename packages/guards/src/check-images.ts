@@ -20,17 +20,21 @@ export const defaults = {
 };
 
 /** Options `node:util` `parseArgs` ; `budgets` reçoit du JSON en ligne de commande. */
-export const cliOptions = {
-  allow: { type: 'string', multiple: true },
-  maxKb: { type: 'string' },
-  budgets: { type: 'string' },
+export const cliOptions: Record<string, { type: 'string' | 'boolean'; multiple?: boolean }> = {
+  allow: { type: 'string' as const, multiple: true },
+  maxKb: { type: 'string' as const },
+  budgets: { type: 'string' as const },
 };
 
-/**
- * @param {Record<string, unknown>} options options fusionnées par la CLI
- */
-function settings(options) {
-  const roots = options.roots?.length > 0 ? options.roots : defaults.roots;
+interface ImagesOptions {
+  roots?: string[];
+  allow?: string | string[];
+  maxKb?: number | string;
+  budgets?: unknown;
+}
+
+function settings(options: ImagesOptions) {
+  const roots = options.roots && options.roots.length > 0 ? options.roots : defaults.roots;
   const allow = [options.allow ?? defaults.allow].flat().map(normalizePath);
   const budget = budgetSettings({
     maxKb: options.maxKb ?? defaults.maxKb,
@@ -39,18 +43,12 @@ function settings(options) {
   return { roots, allow, budget };
 }
 
-/** @param {string[]} files @param {string[]} extensions */
-const select = (files, extensions) =>
+const select = (files: string[], extensions: string[]): string[] =>
   files.filter((file) => extensions.some((ext) => file.toLowerCase().endsWith(ext)));
 
-/**
- * @param {Record<string, unknown>} options `roots`, `allow`, `maxKb`, `budgets`
- * @param {import('./lib/io.ts').GuardIo} io
- * @returns {0 | 1}
- */
-export function run(options, io) {
+export function run(options: ImagesOptions, io: import('./lib/io.ts').GuardIo): 0 | 1 {
   const { roots, allow, budget } = settings(options ?? {});
-  const files = listFiles(io, roots, { extensions: EXTENSIONS });
+  const files = listFiles(io, roots, { extensions: EXTENSIONS }) as string[];
   const problems = [
     ...markupProblems(io, select(files, MARKUP_EXTENSIONS), allow),
     ...metadataProblems(io, select(files, METADATA_EXTENSIONS)),
