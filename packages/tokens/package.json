@@ -34,17 +34,17 @@
   },
   "scripts": {
     "prepublishOnly": "node ../../tools/checks/check-publish-env.mjs",
-    "build": "node scripts/build.mjs",
-    "check": "node scripts/build.mjs --check"
+    "build": "node scripts/build.ts",
+    "check": "node scripts/build.ts --check"
   },
   "exports": {
     "./color": {
-      "types": "./src/lib/color.d.mts",
-      "default": "./src/lib/color.mjs"
+      "types": "./src/lib/color.ts",
+      "default": "./src/lib/color.ts"
     },
     "./contrast": {
-      "types": "./src/lib/contrast.d.mts",
-      "default": "./src/lib/contrast.mjs"
+      "types": "./src/lib/contrast.ts",
+      "default": "./src/lib/contrast.ts"
     },
     "./tokens.css": "./generated/tokens.css",
     "./tokens.json": "./generated/tokens.json",
