@@ -310,15 +310,49 @@
       "name": "code-block",
       "type": "registry:ui",
       "title": "CodeBlock",
-      "description": "Composant CodeBlock (provisoire, remplacé par sa tâche).",
+      "description": "Bloc de code coloré au build, défilable au clavier, avec bouton de copie révélé par un script externe.",
       "files": [
         {
           "path": "packages/astro/src/content/CodeBlock.astro",
           "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/content/code-block.css",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/content/highlight.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/behaviors/copy.ts",
+          "type": "registry:ui"
         }
       ],
       "meta": {
-        "tokens": [],
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-control",
+          "--pp-color-fg",
+          "--pp-color-focus",
+          "--pp-color-line",
+          "--pp-color-muted",
+          "--pp-color-status-degraded",
+          "--pp-color-status-passed",
+          "--pp-color-surface",
+          "--pp-font-family-mono",
+          "--pp-font-line-height-body",
+          "--pp-font-size--1",
+          "--pp-radius-control",
+          "--pp-radius-surface",
+          "--pp-size-focus-offset",
+          "--pp-size-focus-width",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-2xs",
+          "--pp-space-s",
+          "--pp-space-xs"
+        ],
         "version": "0.0.0"
       }
     },
@@ -326,15 +360,47 @@
       "name": "combobox",
       "type": "registry:ui",
       "title": "Combobox",
-      "description": "Composant Combobox (provisoire, remplacé par sa tâche).",
+      "description": "Champ avec liste de suggestions filtrée à la saisie, datalist natif sans script, focus gardé dans le champ.",
+      "registryDependencies": ["field"],
       "files": [
         {
           "path": "packages/astro/src/forms/Combobox.astro",
           "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/forms/combobox.css",
+          "type": "registry:lib"
+        },
+        {
+          "path": "packages/astro/src/behaviors/combobox.ts",
+          "type": "registry:lib"
         }
       ],
       "meta": {
-        "tokens": [],
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-bg",
+          "--pp-color-control",
+          "--pp-color-fg",
+          "--pp-color-muted",
+          "--pp-color-on-accent",
+          "--pp-color-status-failed",
+          "--pp-color-surface",
+          "--pp-font-line-height-body",
+          "--pp-font-size--1",
+          "--pp-font-size-0",
+          "--pp-radius-control",
+          "--pp-size-control-height",
+          "--pp-size-focus-offset",
+          "--pp-size-focus-width",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-2xl",
+          "--pp-space-3xl",
+          "--pp-space-3xs",
+          "--pp-space-xs",
+          "--pp-z-overlay"
+        ],
         "version": "0.0.0"
       }
     },
@@ -364,15 +430,31 @@
       "name": "diagram",
       "type": "registry:ui",
       "title": "Diagram",
-      "description": "Composant Diagram (provisoire, remplacé par sa tâche).",
+      "description": "Schéma SVG avec titre, description complète et légende : le nom accessible vient du texte, la couleur n’est jamais seule porteuse du sens, zéro JavaScript.",
       "files": [
         {
           "path": "packages/astro/src/media/Diagram.astro",
           "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/media/diagram.css",
+          "type": "registry:lib"
         }
       ],
       "meta": {
-        "tokens": [],
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-fg",
+          "--pp-color-focus",
+          "--pp-color-muted",
+          "--pp-color-surface",
+          "--pp-font-family-sans",
+          "--pp-font-size--1",
+          "--pp-size-focus-offset",
+          "--pp-size-focus-width",
+          "--pp-size-measure",
+          "--pp-space-2xs"
+        ],
         "version": "0.0.0"
       }
     },
@@ -635,15 +717,40 @@
       "name": "menu",
       "type": "registry:ui",
       "title": "Menu",
-      "description": "Composant Menu (provisoire, remplacé par sa tâche).",
+      "description": "Menu d’actions (motif APG Menu Button) en popover, avec flèches, frappe de caractères et repli sans JavaScript.",
       "files": [
         {
           "path": "packages/astro/src/navigation/Menu.astro",
           "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/navigation/menu.css",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/behaviors/menu.ts",
+          "type": "registry:ui"
         }
       ],
       "meta": {
-        "tokens": [],
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-bg",
+          "--pp-color-fg",
+          "--pp-color-focus",
+          "--pp-color-line",
+          "--pp-color-muted",
+          "--pp-color-surface",
+          "--pp-radius-control",
+          "--pp-radius-surface",
+          "--pp-size-focus-offset",
+          "--pp-size-focus-width",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-2xs",
+          "--pp-space-3xs",
+          "--pp-space-s"
+        ],
         "version": "0.0.0"
       }
     },
@@ -732,15 +839,34 @@
       "name": "popover",
       "type": "registry:ui",
       "title": "Popover",
-      "description": "Composant Popover (provisoire, remplacé par sa tâche).",
+      "description": "Panneau flottant ouvert par un bouton, par l’API HTML popover, ancré en CSS, sans JavaScript.",
       "files": [
         {
           "path": "packages/astro/src/overlay/Popover.astro",
           "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/overlay/popover.css",
+          "type": "registry:ui"
         }
       ],
       "meta": {
-        "tokens": [],
+        "tokens": [
+          "--pp-color-fg",
+          "--pp-color-focus",
+          "--pp-color-line",
+          "--pp-color-surface",
+          "--pp-radius-control",
+          "--pp-radius-surface",
+          "--pp-size-focus-offset",
+          "--pp-size-focus-width",
+          "--pp-size-measure",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-2xs",
+          "--pp-space-3xs",
+          "--pp-space-s"
+        ],
         "version": "0.0.0"
       }
     },
@@ -1128,15 +1254,33 @@
       "name": "tabs",
       "type": "registry:ui",
       "title": "Tabs",
-      "description": "Composant Tabs (provisoire, remplacé par sa tâche).",
+      "description": "Onglets (motif APG Tabs) : sections lisibles sans JavaScript, tablist et clavier ajoutés par un script externe.",
       "files": [
         {
           "path": "packages/astro/src/navigation/Tabs.astro",
           "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/behaviors/tabs.ts",
+          "type": "registry:ui"
         }
       ],
       "meta": {
-        "tokens": [],
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-fg",
+          "--pp-color-focus",
+          "--pp-color-line",
+          "--pp-color-muted",
+          "--pp-font-weight-bold",
+          "--pp-size-focus-offset",
+          "--pp-size-focus-width",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-3xs",
+          "--pp-space-s",
+          "--pp-space-xs"
+        ],
         "version": "0.0.0"
       }
     },
@@ -1204,15 +1348,43 @@
       "name": "toast",
       "type": "registry:ui",
       "title": "Toast",
-      "description": "Composant Toast (provisoire, remplacé par sa tâche).",
+      "description": "Région de notifications non bloquantes : minuteur suspendu au survol et au focus, Échap, bouton de fermeture visible.",
       "files": [
         {
           "path": "packages/astro/src/feedback/Toast.astro",
           "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/behaviors/toast.ts",
+          "type": "registry:lib"
         }
       ],
       "meta": {
-        "tokens": [],
+        "tokens": [
+          "--pp-color-control",
+          "--pp-color-fg",
+          "--pp-color-focus",
+          "--pp-color-line",
+          "--pp-color-status-failed",
+          "--pp-color-status-passed",
+          "--pp-color-surface",
+          "--pp-duration-base",
+          "--pp-easing-standard",
+          "--pp-font-line-height-body",
+          "--pp-radius-control",
+          "--pp-radius-surface",
+          "--pp-size-control-height",
+          "--pp-size-focus-offset",
+          "--pp-size-focus-width",
+          "--pp-size-measure",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-2xs",
+          "--pp-space-3xs",
+          "--pp-space-s",
+          "--pp-space-xs",
+          "--pp-z-overlay"
+        ],
         "version": "0.0.0"
       }
     },
@@ -1220,15 +1392,31 @@
       "name": "tooltip",
       "type": "registry:ui",
       "title": "Tooltip",
-      "description": "Composant Tooltip (provisoire, remplacé par sa tâche).",
+      "description": "Infobulle qui décrit un contrôle : focus, survol, Échap (WCAG 1.4.13), jamais affichée au tactile.",
       "files": [
         {
           "path": "packages/astro/src/overlay/Tooltip.astro",
           "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/behaviors/tooltip.ts",
+          "type": "registry:ui"
         }
       ],
       "meta": {
-        "tokens": [],
+        "tokens": [
+          "--pp-color-control",
+          "--pp-color-fg",
+          "--pp-color-surface",
+          "--pp-font-line-height-body",
+          "--pp-font-size--1",
+          "--pp-radius-control",
+          "--pp-size-measure",
+          "--pp-size-rule",
+          "--pp-space-2xs",
+          "--pp-space-3xs",
+          "--pp-z-overlay"
+        ],
         "version": "0.0.0"
       }
     }

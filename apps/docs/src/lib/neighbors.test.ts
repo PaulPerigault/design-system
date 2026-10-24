@@ -10,8 +10,8 @@ describe('neighborsOf', () => {
   });
 
   it('renvoie aucun suivant pour la dernière page de la navigation', () => {
-    const result = neighborsOf('gallery');
-    expect(result.previous?.slug).toBe('project-cover');
+    const result = neighborsOf('diagram');
+    expect(result.previous?.slug).toBe('gallery');
     expect(result.next).toBeUndefined();
     expect(result.group.id).toBe('images');
   });

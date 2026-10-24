@@ -15,7 +15,31 @@
     }
   ],
   "meta": {
-    "tokens": [],
+    "tokens": [
+      "--pp-color-control",
+      "--pp-color-fg",
+      "--pp-color-focus",
+      "--pp-color-line",
+      "--pp-color-status-failed",
+      "--pp-color-status-passed",
+      "--pp-color-surface",
+      "--pp-duration-base",
+      "--pp-easing-standard",
+      "--pp-font-line-height-body",
+      "--pp-radius-control",
+      "--pp-radius-surface",
+      "--pp-size-control-height",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-measure",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-s",
+      "--pp-space-xs",
+      "--pp-z-overlay"
+    ],
     "version": "0.0.0"
   }
 }

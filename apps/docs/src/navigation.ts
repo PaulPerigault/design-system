@@ -76,7 +76,7 @@ export const GROUPS: readonly DocGroup[] = [
   {
     id: 'navigation',
     title: 'Navigation',
-    links: [link('pagination', 'Pagination')],
+    links: [link('pagination', 'Pagination'), link('tabs', 'Tabs'), link('menu', 'Menu')],
   },
   {
     id: 'surcouches',
@@ -94,8 +94,6 @@ export const GROUPS: readonly DocGroup[] = [
       link('avatar', 'Avatar'),
       link('project-cover', 'ProjectCover'),
       link('gallery', 'Gallery'),
-      link('tabs', 'Tabs'),
-      link('menu', 'Menu'),
       link('diagram', 'Diagram'),
     ],
   },

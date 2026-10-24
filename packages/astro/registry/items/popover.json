@@ -15,7 +15,22 @@
     }
   ],
   "meta": {
-    "tokens": [],
+    "tokens": [
+      "--pp-color-fg",
+      "--pp-color-focus",
+      "--pp-color-line",
+      "--pp-color-surface",
+      "--pp-radius-control",
+      "--pp-radius-surface",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-measure",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-s"
+    ],
     "version": "0.0.0"
   }
 }
