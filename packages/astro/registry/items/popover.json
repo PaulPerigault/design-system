@@ -3,10 +3,14 @@
   "name": "popover",
   "type": "registry:ui",
   "title": "Popover",
-  "description": "Composant Popover (provisoire, remplacé par sa tâche).",
+  "description": "Panneau flottant ouvert par un bouton, par l’API HTML popover, ancré en CSS, sans JavaScript.",
   "files": [
     {
       "path": "packages/astro/src/overlay/Popover.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/overlay/popover.css",
       "type": "registry:ui"
     }
   ],

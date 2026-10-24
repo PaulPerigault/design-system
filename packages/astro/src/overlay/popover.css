@@ -1,0 +1,67 @@
+/* Styles de Popover : fichier global, classes `.pp-popover*`, aucun attribut `style`. */
+.pp-popover {
+  display: inline-block;
+  anchor-scope: --pp-popover;
+}
+
+.pp-popover__trigger {
+  min-inline-size: var(--pp-size-target-min);
+  min-block-size: var(--pp-size-target-min);
+  padding-inline: var(--pp-space-s);
+  border: var(--pp-size-rule) solid var(--pp-color-line);
+  border-radius: var(--pp-radius-control);
+  background-color: var(--pp-color-surface);
+  color: var(--pp-color-fg);
+  font: inherit;
+  cursor: pointer;
+  anchor-name: --pp-popover;
+}
+
+.pp-popover__trigger:focus-visible {
+  outline: var(--pp-size-focus-width) solid var(--pp-color-focus);
+  outline-offset: var(--pp-size-focus-offset);
+}
+
+/* Repli sans ancrage : le panneau reste dans la couche supérieure, collé au bas de la fenêtre. */
+.pp-popover__panel {
+  position: fixed;
+  inset-block: auto var(--pp-space-s);
+  inset-inline: 0;
+  margin: 0;
+  margin-inline: auto;
+  inline-size: max-content;
+  max-inline-size: min(var(--pp-size-measure), calc(100% - var(--pp-space-s) - var(--pp-space-s)));
+  max-block-size: calc(100% - var(--pp-space-s) - var(--pp-space-s));
+  overflow: auto;
+  padding: var(--pp-space-s);
+  border: var(--pp-size-rule) solid var(--pp-color-line);
+  border-radius: var(--pp-radius-surface);
+  background-color: var(--pp-color-surface);
+  color: var(--pp-color-fg);
+}
+
+.pp-popover__panel > * {
+  margin-block: 0;
+}
+
+.pp-popover__panel > * + * {
+  margin-block-start: var(--pp-space-2xs);
+}
+
+@supports (anchor-name: --x) {
+  .pp-popover__panel {
+    position-anchor: --pp-popover;
+    position-area: block-end span-inline-end;
+    position-try-fallbacks: flip-block, flip-inline;
+    inset: auto;
+    margin: var(--pp-space-3xs) 0;
+    max-inline-size: min(var(--pp-size-measure), 100%);
+  }
+}
+
+@media (forced-colors: active) {
+  .pp-popover__panel,
+  .pp-popover__trigger {
+    border-color: CanvasText;
+  }
+}

@@ -1,4 +1,30 @@
 ---
+/**
+ * Popover : panneau flottant ouvert par un bouton, via l'API HTML `popover` (zéro JavaScript).
+ * Le navigateur fournit Échap, le clic extérieur et le retour du focus. Le bouton porte
+ * `popovertarget`, le panneau `popover="auto"`. Positionnement par ancrage CSS (voir popover.css),
+ * avec un repli en bas de fenêtre. Aucun attribut `style` : CSP stricte.
+ */
+import './popover.css';
+
+interface Props {
+  /** Texte visible du bouton qui ouvre le panneau. */
+  triggerLabel: string;
+  /** Identifiant du panneau, obligatoire : il relie le bouton au panneau. */
+  id: string;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { triggerLabel, id, class: className } = Astro.props;
+if (!id) throw new Error('Popover : la propriété `id` est obligatoire.');
 ---
 
-<div></div>
+<span class:list={['pp-popover', className]}>
+  <button type="button" class="pp-popover__trigger" popovertarget={id} popovertargetaction="toggle">
+    {triggerLabel}
+  </button>
+  <div id={id} class="pp-popover__panel" popover="auto">
+    <slot />
+  </div>
+</span>
