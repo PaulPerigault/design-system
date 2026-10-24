@@ -14,8 +14,8 @@ n'est pas fait, retirer les balises `og:image` plutôt que de publier des liens 
 police Atkinson en contours), #25 (ADR-0005), #26 (`packages/tokens` en TypeScript strict).
 **En cours : migration de `packages/guards`**, branche `feat/ts-strict-guards`, poussée, **non fusionnée,
 pas de PR**. Les fichiers sont renommés en `.ts` (sauf `bin/pp-guards.mjs`, lanceur) ; tests et
-`check:guards` passent à l'exécution ; `tsc -p packages/guards` donne encore ≈ 280 erreurs (types
-implicites, `unknown` dans les `catch`, résultats de `parseArgs`, JSDoc faux dans `report.ts`).
+`check:guards` passent à l'exécution ; `tsc -p packages/guards` donne encore 384 erreurs (types
+implicites, JSDoc ignoré par TS (à convertir en annotations ; `import()` interdit par ESLint : utiliser `import type`), `unknown` dans les `catch`, résultats de `parseArgs`, JSDoc faux dans `report.ts`).
 Prochaine étape : typer fichier par fichier (`cd packages/guards && npx tsc -p .`), ajouter
 `'packages/guards/**/*.ts'` à `TS_STRICT_FILES` dans `eslint.config.mjs`, `npm run verify`, PR vers
 `develop`, fusion. Puis `packages/create`, puis `tools/agents` (même procédé ; `tools/agents` doit
