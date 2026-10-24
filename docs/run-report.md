@@ -1,8 +1,8 @@
 # Rapport d'exécution
 
-**ARRÊT FINAL** — raison : tout le travail réalisable sans décision du propriétaire est fusionné
-(L10 à L19 dans `develop`, #22 en dernier) ; le budget n'est pas épuisé (≈ 250 crédits tracés sur
-≈ 870). Restent des décisions de Paul (`docs/manual-steps.md` §6) et un défaut connu, ci-dessous.
+**ARRÊT FINAL** — raison : arrêt de session après la fusion de L18 et L19 (#22), pas un manque de
+crédits (≈ 250 tracés sur ≈ 870). Il reste du travail faisable sans Paul (images OG, ci-dessous) et
+des décisions qui lui reviennent (`docs/manual-steps.md` §6).
 
 **Défaut connu, non corrigé : les images Open Graph ne sont pas générées.** Les pages déclarent
 `og:image` vers `/og/<page>.png` (`lib/seo.ts`), mais aucun fichier n'est produit au build : ces URL
