@@ -106,7 +106,7 @@ describe('Combobox (source CSS)', () => {
   it('cibles et hauteur par jetons, liste défilable, option active soulignée', () => {
     expect(css).toContain('var(--pp-size-target-min)');
     expect(css).toMatch(/\.pp-combobox__listbox\s*\{[^}]*max-block-size: calc\(var\(--pp-space/);
-    expect(css).toMatch(/\.pp-combobox__listbox\s*\{[^}]*overflow-y: auto/);
+    expect(css).toMatch(/\.pp-combobox__listbox\s*\{[^}]*overflow-block: auto/);
     expect(css).toMatch(/\[aria-selected='true'\]\s*\{[^}]*text-decoration: underline/);
   });
 

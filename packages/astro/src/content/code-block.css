@@ -31,7 +31,7 @@
 .pp-code__pre {
   margin: 0;
   padding: var(--pp-space-s);
-  overflow-x: auto;
+  overflow-inline: auto;
   font-family: var(--pp-font-family-mono);
   font-size: var(--pp-font-size--1);
   line-height: var(--pp-font-line-height-body);

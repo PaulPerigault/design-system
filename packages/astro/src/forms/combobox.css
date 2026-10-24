@@ -37,7 +37,7 @@
   margin-block: var(--pp-space-3xs) 0;
   margin-inline: 0;
   padding: 0;
-  overflow-y: auto;
+  overflow-block: auto;
   overscroll-behavior: contain;
   border: var(--pp-size-rule) solid var(--pp-color-control);
   border-radius: var(--pp-radius-control);
