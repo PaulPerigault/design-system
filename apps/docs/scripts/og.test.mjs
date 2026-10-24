@@ -85,7 +85,9 @@ it('buildSvg : 1200 × 630, texte échappé, aucun dégradé, ombre ni flou', ()
 it('buildSvg : le titre sur 3 lignes laisse la description au-dessus du pied', () => {
   const title = 'mot '.repeat(80);
   const svg = buildSvg({ title, description: title, colors, logoUri: 'data:x' });
-  const ys = [...svg.matchAll(/<text [^>]*y="(\d+(?:\.\d+)?)"/gu)].map((match) => Number(match[1]));
+  const ys = [...svg.matchAll(/<g [^>]*data-y="(\d+(?:\.\d+)?)"/gu)].map((match) =>
+    Number(match[1]),
+  );
   assert.ok(ys.length > 0 && ys.every((y) => y <= 630), ys.join(','));
   assert.equal(new Set(ys).size, ys.length);
 });

@@ -1,22 +1,21 @@
 import { URL } from 'node:url';
 import { OG_IMAGE, SITE_NAME, SITE_URL } from '../src/lib/site.ts';
+import { textPath } from './og-fonts.mjs';
 import { wrapText } from './og-text.mjs';
 
 /**
  * SVG de l'image Open Graph (1200 × 630) : aplats uniquement, aucun dégradé, ombre ni flou.
- * Polices : piles génériques, seules disponibles de façon fiable sous librsvg (le dépôt ne
- * fournit que du woff2 variable, que librsvg ne charge pas).
+ * Police : Atkinson Hyperlegible Next en .ttf (voir og-fonts.mjs), texte converti en contours.
  */
 
 export const WIDTH = OG_IMAGE.width;
 export const HEIGHT = OG_IMAGE.height;
-const FONT_STACK = 'Helvetica, Arial, sans-serif';
 const MARGIN = 64;
 const LOGO_SIZE = 56;
 const LOGO_GAP = 20;
-/** Largeur moyenne d'un caractère en em : volontairement large (DejaVu Sans, Helvetica gras). */
+/** Largeur moyenne d'un caractère en em : volontairement large (Atkinson gras). */
 const CHAR_EM = 0.6;
-const BRAND = { size: 28, weight: 600 };
+const BRAND = { size: 28, weight: 700 };
 /** Espace entre le logo et le filet d'accent. */
 const RULE_OFFSET = 40;
 const RULE = { width: 96, height: 8, top: MARGIN + LOGO_SIZE + RULE_OFFSET };
@@ -29,14 +28,9 @@ const HALF = 2;
 /** Décalage de la ligne de base pour centrer un texte capitale/bas-de-casse sur un axe. */
 const BASELINE_SHIFT_EM = 0.35;
 
-const escapeXml = (text) => text.replace(/[&<>"']/gu, (char) => `&#${char.codePointAt(0)};`);
-
 const maxCharsOf = (size) => Math.floor((WIDTH - HALF * MARGIN) / (size * CHAR_EM));
 
-function textLine({ x, y, size, weight, fill, text }) {
-  const attrs = `x="${x}" y="${y}" font-family="${FONT_STACK}" font-size="${size}"`;
-  return `<text ${attrs} font-weight="${weight}" fill="${fill}">${escapeXml(text)}</text>`;
-}
+const textLine = textPath;
 
 /** Lignes successives à partir de la première ligne de base `y`. */
 function block(lines, style, y) {
