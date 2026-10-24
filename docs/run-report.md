@@ -1,10 +1,19 @@
 # Rapport d'exécution
 
-**État au 2026-10-23, 23:55 (reprise sous Kiro).** L10 à L14 fusionnés. Lot courant `lot/L15` : sécurité
-(Dependabot, CodeQL, Scorecard, SBOM, `SECURITY.md`, en-têtes générés, adaptateurs d'hébergeurs,
-ADR-0004) et vitrine (SEO, accueil, architecture, décisions, preuves, auteur, utiliser, mentions
-légales, confidentialité, crédits). `verify` : 1464 tests ; e2e : 4354. Détail : `docs/journal/2026-10-23.md`.
-Reste : PWA, composants de niveau 2 (P3), déclaration d'accessibilité, bilan de crédits à jour.
+**ARRÊT FINAL : à reprendre après la CI de la PR #22.** (Ligne définitive à poser quand tout est fusionné.)
+
+**État au 2026-10-24.** L10 à L17 fusionnés dans `develop` (#19 : L15 et L16 ; #21 : L17). PR #22 ouverte
+(`lot/L19`) : lots L18 et L19, 14 composants de niveau 2. Fait depuis la reprise sous Kiro : sécurité et
+chaîne d'approvisionnement (L15), vitrine (L16), déclaration d'accessibilité et PWA (L17), composants
+(L18, L19). `verify` : 1789 tests ; e2e local : 5792 passés. Détail : `docs/journal/2026-10-24.md`.
+Reste : audit RGAA et lecteurs d'écran (manuel), relecture des textes par Paul, choix de l'hébergeur et
+de la licence des contenus (`docs/manual-steps.md` §6), puis les quatre actions du propriétaire.
+
+**Crédits Kiro depuis la reprise (23 octobre) : ≈ 250 tracés sur ≈ 870.** haiku-5.5 : 17 tâches, 14 ;
+sonnet-5.5 : 19, 103 ; opus-5.5 : 2, 133 (T14.05 : 102 ; Combobox : 31). Les paliers mech et light font
+45 % des tentatives, sous la cible de 50 % : les composants à comportement clavier ont demandé
+sonnet ou opus. Les revues croisées de Combobox n'ont rendu aucun verdict (permissions refusées en
+mode non interactif) ; relue par l'orchestrateur. Consommation réelle côté Kiro : non mesurée.
 
 Dernière mise à jour : 2026-10-21, 10:01, après la fusion de L7. Le journal détaillé est dans
 `docs/journal/`, les décisions dans `docs/decisions-log.md`, chaque lot dans `docs/lots/`.

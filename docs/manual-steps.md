@@ -82,3 +82,24 @@ l'assistant prépare (CI verte) et que le propriétaire fusionne. La fusion déc
 
 `kiro-cli login` (IAM Identity Center) est à refaire si la session expire ; l'assistant ne gère
 aucun identifiant Kiro.
+
+## 6. Vitrine : ce que Paul doit trancher ou écrire
+
+1. **Relire et réécrire les brouillons** marqués « à relire par Paul » (`DraftNotice`) : accueil,
+   auteur, utiliser, architecture, déclaration d'accessibilité. Aucun texte à la première personne
+   n'est définitif. Rien n'a été inventé : employeur, formation et dates sont absents.
+2. **Choisir l'hébergeur** et compléter `apps/docs/src/lib/legal.ts` (`host`, `contact`). Le build
+   de production (`PP_PRODUCTION=1`) échoue tant qu'ils sont vides. Comparatif : ADR-0004. Les
+   adaptateurs d'en-têtes (Cloudflare Pages, Netlify, Vercel, Nginx) sont prêts et testés.
+3. **Licence des contenus et de l'identité** (le code est MIT). Proposition : CC BY 4.0 pour les
+   textes et schémas (réutilisables avec mention de l'auteur) ; logo, favicon et nom **réservés**
+   (tous droits réservés), car l'identité distingue l'auteur. Alternative : CC BY-NC-SA 4.0 si tu
+   refuses la réutilisation commerciale ; elle gêne l'usage par des tiers. À inscrire dans
+   `lib/legal.ts` (`licenseContent`) puis dans la page Mentions légales.
+4. **Déclaration d'accessibilité** (`lib/a11y-statement.ts`) : date et contact à compléter. Le
+   taux RGAA n'est pas mesuré ; seul un audit manuel le fournirait. Question à trancher : le site
+   personnel entre-t-il dans le champ de la directive (UE) 2019/882 ou de l'art. 47 de la loi de 2005 ?
+5. **Procédure VoiceOver / TalkBack** (`docs/a11y/manual-checklist.md`) : aucun résultat consigné.
+6. **PWA** : essayer l'installation sur un vrai appareil (Chrome Android, Safari iOS) ; non fait.
+7. **Combobox, Menu, Tabs, Tooltip** : les comportements clavier sont testés en logique pure, pas au
+   clavier réel dans un navigateur ni avec un lecteur d'écran. Un passage manuel est utile.
