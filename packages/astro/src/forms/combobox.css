@@ -75,7 +75,7 @@
 .pp-combobox__status {
   margin-block: var(--pp-space-3xs) 0;
   color: var(--pp-color-muted);
-  font-size: var(--pp-font-size--1);
+  font-size: var(--pp-font-size-0);
 }
 
 .pp-combobox__status:empty {
