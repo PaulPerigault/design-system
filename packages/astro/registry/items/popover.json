@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "popover",
+  "type": "registry:ui",
+  "title": "Popover",
+  "description": "Composant Popover (provisoire, remplacé par sa tâche).",
+  "files": [
+    {
+      "path": "packages/astro/src/overlay/Popover.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [],
+    "version": "0.0.0"
+  }
+}

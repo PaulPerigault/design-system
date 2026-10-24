@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tabs",
+  "type": "registry:ui",
+  "title": "Tabs",
+  "description": "Composant Tabs (provisoire, remplacé par sa tâche).",
+  "files": [
+    {
+      "path": "packages/astro/src/navigation/Tabs.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [],
+    "version": "0.0.0"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "menu",
+  "type": "registry:ui",
+  "title": "Menu",
+  "description": "Composant Menu (provisoire, remplacé par sa tâche).",
+  "files": [
+    {
+      "path": "packages/astro/src/navigation/Menu.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [],
+    "version": "0.0.0"
+  }
+}

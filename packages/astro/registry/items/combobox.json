@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "combobox",
+  "type": "registry:ui",
+  "title": "Combobox",
+  "description": "Composant Combobox (provisoire, remplacé par sa tâche).",
+  "files": [
+    {
+      "path": "packages/astro/src/forms/Combobox.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [],
+    "version": "0.0.0"
+  }
+}

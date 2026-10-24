@@ -307,6 +307,38 @@
       }
     },
     {
+      "name": "code-block",
+      "type": "registry:ui",
+      "title": "CodeBlock",
+      "description": "Composant CodeBlock (provisoire, remplacé par sa tâche).",
+      "files": [
+        {
+          "path": "packages/astro/src/content/CodeBlock.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "combobox",
+      "type": "registry:ui",
+      "title": "Combobox",
+      "description": "Composant Combobox (provisoire, remplacé par sa tâche).",
+      "files": [
+        {
+          "path": "packages/astro/src/forms/Combobox.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [],
+        "version": "0.0.0"
+      }
+    },
+    {
       "name": "container",
       "type": "registry:ui",
       "title": "Container",
@@ -325,6 +357,22 @@
           "--pp-space-m",
           "--pp-space-s"
         ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "diagram",
+      "type": "registry:ui",
+      "title": "Diagram",
+      "description": "Composant Diagram (provisoire, remplacé par sa tâche).",
+      "files": [
+        {
+          "path": "packages/astro/src/media/Diagram.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [],
         "version": "0.0.0"
       }
     },
@@ -584,6 +632,22 @@
       }
     },
     {
+      "name": "menu",
+      "type": "registry:ui",
+      "title": "Menu",
+      "description": "Composant Menu (provisoire, remplacé par sa tâche).",
+      "files": [
+        {
+          "path": "packages/astro/src/navigation/Menu.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [],
+        "version": "0.0.0"
+      }
+    },
+    {
       "name": "pagination",
       "type": "registry:ui",
       "title": "Pagination",
@@ -661,6 +725,22 @@
           "--pp-space-3xl",
           "--pp-space-xl"
         ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover",
+      "description": "Composant Popover (provisoire, remplacé par sa tâche).",
+      "files": [
+        {
+          "path": "packages/astro/src/overlay/Popover.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [],
         "version": "0.0.0"
       }
     },
@@ -1045,6 +1125,22 @@
       }
     },
     {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "Composant Tabs (provisoire, remplacé par sa tâche).",
+      "files": [
+        {
+          "path": "packages/astro/src/navigation/Tabs.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [],
+        "version": "0.0.0"
+      }
+    },
+    {
       "name": "textarea",
       "type": "registry:ui",
       "title": "Textarea",
@@ -1101,6 +1197,38 @@
           "--pp-space-3xs",
           "--pp-space-m"
         ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "toast",
+      "type": "registry:ui",
+      "title": "Toast",
+      "description": "Composant Toast (provisoire, remplacé par sa tâche).",
+      "files": [
+        {
+          "path": "packages/astro/src/feedback/Toast.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "Composant Tooltip (provisoire, remplacé par sa tâche).",
+      "files": [
+        {
+          "path": "packages/astro/src/overlay/Tooltip.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [],
         "version": "0.0.0"
       }
     }

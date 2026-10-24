@@ -38,7 +38,8 @@
   },
   "dependencies": {
     "@paulperigault/css": "0.0.0",
-    "@paulperigault/tokens": "0.0.0"
+    "@paulperigault/tokens": "0.0.0",
+    "shiki": "4.5.0"
   },
   "peerDependencies": {
     "astro": "^7.4.0"
@@ -91,6 +92,14 @@
     "./scrim": "./src/media/scrim.ts",
     "./media-types": "./src/media/types.ts",
     "./registry.json": "./registry/registry.json",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./Tabs.astro": "./src/navigation/Tabs.astro",
+    "./Popover.astro": "./src/overlay/Popover.astro",
+    "./Tooltip.astro": "./src/overlay/Tooltip.astro",
+    "./Toast.astro": "./src/feedback/Toast.astro",
+    "./Menu.astro": "./src/navigation/Menu.astro",
+    "./CodeBlock.astro": "./src/content/CodeBlock.astro",
+    "./Diagram.astro": "./src/media/Diagram.astro",
+    "./Combobox.astro": "./src/forms/Combobox.astro"
   }
 }

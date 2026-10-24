@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tooltip",
+  "type": "registry:ui",
+  "title": "Tooltip",
+  "description": "Composant Tooltip (provisoire, remplacé par sa tâche).",
+  "files": [
+    {
+      "path": "packages/astro/src/overlay/Tooltip.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [],
+    "version": "0.0.0"
+  }
+}
