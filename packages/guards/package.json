@@ -39,8 +39,8 @@
     "pp-guards": "./bin/pp-guards.mjs"
   },
   "exports": {
-    "./design": "./src/design/rules.mjs",
-    "./eslint": "./src/eslint.mjs",
+    "./design": "./src/design/rules.ts",
+    "./eslint": "./src/eslint.ts",
     "./package.json": "./package.json"
   },
   "peerDependencies": {
