@@ -3,11 +3,15 @@
   "name": "toast",
   "type": "registry:ui",
   "title": "Toast",
-  "description": "Composant Toast (provisoire, remplacé par sa tâche).",
+  "description": "Région de notifications non bloquantes : minuteur suspendu au survol et au focus, Échap, bouton de fermeture visible.",
   "files": [
     {
       "path": "packages/astro/src/feedback/Toast.astro",
       "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/behaviors/toast.ts",
+      "type": "registry:lib"
     }
   ],
   "meta": {
