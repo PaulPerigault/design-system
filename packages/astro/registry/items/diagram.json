@@ -3,11 +3,15 @@
   "name": "diagram",
   "type": "registry:ui",
   "title": "Diagram",
-  "description": "Composant Diagram (provisoire, remplacé par sa tâche).",
+  "description": "Schéma SVG avec titre, description complète et légende : le nom accessible vient du texte, la couleur n’est jamais seule porteuse du sens, zéro JavaScript.",
   "files": [
     {
       "path": "packages/astro/src/media/Diagram.astro",
       "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/media/diagram.css",
+      "type": "registry:lib"
     }
   ],
   "meta": {
