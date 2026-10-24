@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "timeline",
+  "type": "registry:ui",
+  "title": "Timeline",
+  "description": "Suite d’étapes datées en liste ordonnée, dans l’ordre fourni, sans tri automatique.",
+  "files": [
+    {
+      "path": "packages/astro/src/content/Timeline.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-bg",
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-font-size--1",
+      "--pp-font-weight-semibold",
+      "--pp-radius-control",
+      "--pp-size-rule",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-m"
+    ],
+    "version": "0.0.0"
+  }
+}

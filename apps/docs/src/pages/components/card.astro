@@ -1,0 +1,73 @@
+---
+import Card from '@paulperigault/astro/Card.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+import CardExamples from '../../components/examples/card.astro';
+
+const snippet = `<Card title="Design system" href="/projets/design-system">
+  <p>Jetons, composants Astro et contrôles de qualité.</p>
+  <a slot="footer" href="/etiquettes/astro">Astro</a>
+</Card>
+<Card title="Sans lien" headingLevel={4}>
+  <p>Carte non cliquable.</p>
+</Card>`;
+---
+
+<ComponentPage
+  slug="card"
+  title="Card"
+  summary="Card regroupe un titre, un texte, un média et un pied de carte, avec un seul lien qui couvre toute la carte."
+  use={[
+    'Présenter un projet, un article ou une ressource dans une liste de cartes.',
+    'Ajouter des étiquettes ou des liens secondaires dans le slot footer.',
+  ]}
+  avoid={[
+    'Pour une action sans destination : utiliser Button.',
+    'Pour regrouper des contenus longs : un titre de section et du texte suffisent.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Avec href, la carte compte un seul arrêt de tabulation : le lien du titre.',
+      'Les liens du slot footer ont leur propre arrêt de tabulation.',
+      'Entrée active le lien ; le composant ne gère aucune autre touche.',
+    ],
+    screenReader: [
+      'Le titre est un titre de section (h2, h3 ou h4) ; le lien porte son texte comme nom.',
+      'La carte est un article sans rôle ajouté.',
+    ],
+    guaranteed: [
+      'Le focus du lien est visible sur toute la carte, par un anneau de 2 px (WCAG 2.4.7).',
+      'Le lien est souligné : la couleur n’est pas seule à le signaler (WCAG 1.4.1).',
+      'La zone cliquable couvre la carte, au-delà de 24 px de côté (WCAG 2.5.8).',
+      'Le titre est un vrai titre, donc repérable dans la structure (WCAG 1.3.1).',
+    ],
+    integrator: [
+      'Choisir headingLevel selon la hiérarchie de la page, sans sauter de niveau.',
+      'Donner un titre unique à chaque carte : il sert de nom au lien.',
+      'Ne pas placer de lien ou de bouton dans le slot par défaut ni dans media.',
+      'Fournir un texte alternatif aux images du slot media.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 2.4.7 Focus visible',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html',
+    },
+    {
+      label: 'WCAG 1.3.1 Information et relations',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html',
+    },
+    {
+      label: 'WCAG 2.5.8 Taille de la cible (minimum)',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html',
+    },
+    { label: 'Tests : packages/astro/test/Card.test.ts' },
+  ]}
+>
+  <CardExamples />
+  <Fragment slot="variants">
+    <Card title="Niveau 2" headingLevel={2}>
+      <p>Titre de niveau 2.</p>
+    </Card>
+  </Fragment>
+</ComponentPage>

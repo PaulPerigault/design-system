@@ -1,0 +1,81 @@
+---
+/**
+ * Diagram : enveloppe un schéma SVG (le contenu du slot) avec son titre, sa description et sa
+ * légende. Le composant n'écrit pas le SVG. Zéro JavaScript, aucun `style` en ligne. Le nom
+ * accessible du schéma est le titre suivi de la description. Les styles viennent de `diagram.css`
+ * (classes `pp-diagram__line`, `__box`, `__label`, `__accent`, `__head`), à employer dans le slot.
+ */
+import './diagram.css';
+
+interface Props {
+  /** Préfixe unique des ids de titre et de description : lettres, chiffres et tirets. */
+  id: string;
+  /** Titre court du schéma, premier élément du nom accessible. */
+  title: string;
+  /** Alternative textuelle complète : étapes, relations, sens des flèches. */
+  description: string;
+  /** Légende visible sous le schéma. */
+  caption?: string;
+  /** Boîte du SVG, « min-x min-y largeur hauteur », par exemple « 0 0 360 120 ». */
+  viewBox: string;
+  /** Schéma à largeur naturelle, dans un conteneur défilable et focalisable au clavier. */
+  scroll?: boolean;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const ID_PATTERN = /^[A-Za-z][\w-]*$/;
+const VIEWBOX_FIELDS = 4;
+const WIDTH_INDEX = 2;
+
+const { id, title, description, caption, viewBox, scroll = false, class: className } = Astro.props;
+
+const requireText = (name: string, value: unknown): void => {
+  if (typeof value !== 'string' || value.trim() === '') {
+    throw new TypeError(`Diagram : ${name} vide. Le schéma doit porter une alternative textuelle.`);
+  }
+};
+
+/** Largeur (troisième champ) d'un viewBox à quatre nombres. */
+const viewBoxWidth = (value: string): number => {
+  const fields = value.trim().split(/\s+/).map(Number);
+  if (fields.length !== VIEWBOX_FIELDS || fields.some((field) => Number.isNaN(field))) {
+    throw new TypeError('Diagram : viewBox attend quatre nombres, par exemple « 0 0 360 120 ».');
+  }
+  return fields[WIDTH_INDEX] ?? 0;
+};
+
+requireText('title', title);
+requireText('description', description);
+if (typeof id !== 'string' || !ID_PATTERN.test(id)) {
+  throw new TypeError('Diagram : id attendu, sans espace (lettres, chiffres et tirets).');
+}
+
+const width = viewBoxWidth(viewBox);
+const flag = scroll ? 'true' : undefined;
+---
+
+<figure class:list={['pp-diagram', className]}>
+  <div
+    class="pp-diagram__frame"
+    data-scroll={flag}
+    role={scroll ? 'group' : undefined}
+    tabindex={scroll ? '0' : undefined}
+    aria-labelledby={scroll ? `${id}-t` : undefined}
+  >
+    <svg
+      class="pp-diagram__svg"
+      data-scroll={flag}
+      width={scroll ? width : undefined}
+      viewBox={viewBox}
+      role="img"
+      aria-labelledby={`${id}-t ${id}-d`}
+      focusable="false"
+    >
+      <title id={`${id}-t`}>{title}</title>
+      <desc id={`${id}-d`}>{description}</desc>
+      <slot />
+    </svg>
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>

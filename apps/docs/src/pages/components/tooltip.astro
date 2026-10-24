@@ -1,0 +1,60 @@
+---
+import ComponentPage from '../../components/ComponentPage.astro';
+import TooltipExamples from '../../components/examples/tooltip.astro';
+
+const snippet = `<Tooltip id="aide-copie" text="Copie l’adresse dans le presse-papiers.">
+  <button type="button" aria-describedby="aide-copie">Copier l’adresse</button>
+</Tooltip>`;
+---
+
+<ComponentPage
+  slug="tooltip"
+  title="Tooltip"
+  summary="Tooltip affiche une courte description d’un contrôle au focus clavier et au survol. Elle complète le nom du contrôle, elle ne le remplace pas."
+  use={[
+    'Préciser l’effet d’un bouton dont le nom est court.',
+    'Ajouter une précision utile mais non indispensable à un contrôle.',
+  ]}
+  avoid={[
+    'Pour un contenu essentiel : sur écran tactile, le texte n’est jamais affiché.',
+    'Pour nommer un contrôle : le nom visible reste dans le contrôle.',
+    'Pour un contenu interactif : utiliser Popover.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Le focus clavier sur le contrôle affiche l’infobulle.',
+      'Échap ferme l’infobulle sans déplacer le focus.',
+      'L’infobulle ne reçoit pas le focus.',
+    ],
+    screenReader: [
+      'L’infobulle porte role="tooltip" et son id.',
+      'Le script ajoute aria-describedby sur le contrôle : le texte est lu comme description.',
+      'Non vérifié : le rendu vocal avec VoiceOver, NVDA et JAWS.',
+    ],
+    guaranteed: [
+      'Fermeture par Échap, survol de l’infobulle et maintien tant que le focus ou le survol demeure (WCAG 1.4.13).',
+      'Avec (hover: none), le texte n’est jamais affiché.',
+      'Bordure visible en plus du fond ; en forced-colors: active, elle prend CanvasText.',
+    ],
+    integrator: [
+      'Sans JavaScript, poser aria-describedby sur le contrôle, avec l’id de l’infobulle : le composant ne modifie pas son slot.',
+      'Placer un seul élément focalisable dans le slot.',
+      'Ne jamais mettre dans l’infobulle une information nécessaire à la tâche.',
+      'Garder un id unique par page.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.4.13 Contenu au survol ou au focus',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html',
+    },
+    {
+      label: 'Motif APG Tooltip',
+      href: 'https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/',
+    },
+    { label: 'Tests : packages/astro/test/Tooltip.test.ts' },
+  ]}
+>
+  <TooltipExamples />
+</ComponentPage>

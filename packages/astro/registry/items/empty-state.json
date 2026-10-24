@@ -1,0 +1,33 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "empty-state",
+  "type": "registry:ui",
+  "title": "EmptyState",
+  "description": "État vide accessible : titre nommant la section, explication et action facultative, sans icône décorative.",
+  "files": [
+    {
+      "path": "packages/astro/src/content/EmptyState.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-color-surface",
+      "--pp-font-line-height-body",
+      "--pp-font-line-height-heading",
+      "--pp-font-size-1",
+      "--pp-font-weight-semibold",
+      "--pp-radius-surface",
+      "--pp-size-measure",
+      "--pp-size-rule",
+      "--pp-space-2xs",
+      "--pp-space-m",
+      "--pp-space-s",
+      "--pp-space-xs"
+    ],
+    "version": "0.0.0"
+  }
+}

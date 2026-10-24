@@ -1,0 +1,92 @@
+---
+/**
+ * Menu : menu d'actions (motif APG « Menu Button »). À ne pas employer pour la navigation du
+ * site : une liste de liens dans `nav` suffit. Sans JavaScript, `popovertarget` ouvre le panneau
+ * (`popover="auto"` : Échap et clic extérieur ferment) et les liens fonctionnent. Le script
+ * ajoute les flèches, Début/Fin, la frappe de caractères et le focus. Variantes par `data-*`.
+ */
+import './menu.css';
+
+interface Item {
+  /** Texte de l'entrée. */
+  label: string;
+  /** Adresse : l'entrée est alors un lien (`<a>`), sinon un bouton. */
+  href?: string;
+  /** Nom de l'action d'un bouton, émise par l'évènement `pp-menu-action`. */
+  action?: string;
+  /** Entrée grisée mais focalisable (`aria-disabled`), sans effet au clic. */
+  disabled?: boolean;
+}
+
+interface Props {
+  /** Texte du bouton, qui sert aussi de nom accessible au menu. */
+  label: string;
+  /** Identifiant du panneau ; le bouton a pour id `<id>-button`. Unique dans la page. */
+  id: string;
+  /** Entrées du menu, dans l'ordre d'affichage. */
+  items: Item[];
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { label, id, items, class: className } = Astro.props;
+---
+
+<div class:list={['pp-menu', className]}>
+  <button
+    type="button"
+    id={`${id}-button`}
+    class="pp-menu__button"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    aria-controls={id}
+    popovertarget={id}
+  >
+    <span>{label}</span>
+    <svg
+      class="pp-menu__icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M6 9l6 6l6-6"></path>
+    </svg>
+  </button>
+  <div {id} class="pp-menu__panel" popover="auto" role="menu" aria-labelledby={`${id}-button`}>
+    {items.map((item) =>
+      item.href ? (
+        <a
+          class="pp-menu__item"
+          role="menuitem"
+          tabindex="-1"
+          href={item.href}
+          aria-disabled={item.disabled ? 'true' : undefined}
+        >
+          {item.label}
+        </a>
+      ) : (
+        <button
+          type="button"
+          class="pp-menu__item"
+          role="menuitem"
+          tabindex="-1"
+          data-action={item.action}
+          aria-disabled={item.disabled ? 'true' : undefined}
+        >
+          {item.label}
+        </button>
+      ),
+    )}
+  </div>
+</div>
+
+<script>
+  import { install } from '../behaviors/menu';
+
+  install(document);
+</script>

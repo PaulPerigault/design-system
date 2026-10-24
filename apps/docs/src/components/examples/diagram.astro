@@ -1,0 +1,90 @@
+---
+/**
+ * Exemples vivants de la page Diagram : un schéma à largeur fluide (trois blocs) et un schéma
+ * défilable (quatre blocs). Chaque marqueur de flèche a son propre id, pour deux schémas par page.
+ */
+import Diagram from '@paulperigault/astro/Diagram.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+---
+
+<Stack space="m">
+  <Diagram
+    id="diagram-chaine"
+    title="Chaîne de dépendances"
+    description="Les jetons alimentent css, css alimente astro. Le sens des flèches va de la source vers le consommateur."
+    caption="Trois paquets, un seul sens de dépendance."
+    viewBox="0 0 360 120"
+  >
+    <defs>
+      <marker
+        id="pp-diagram-arrow"
+        viewBox="0 0 10 10"
+        refX="10"
+        refY="5"
+        markerWidth="8"
+        markerHeight="8"
+        markerUnits="userSpaceOnUse"
+        orient="auto"
+      >
+        <path class="pp-diagram__head" d="M0 0L10 5L0 10Z"></path>
+      </marker>
+    </defs>
+    <rect class="pp-diagram__box" x="8" y="40" width="96" height="40"></rect>
+    <rect class="pp-diagram__box" x="128" y="40" width="96" height="40"></rect>
+    <rect class="pp-diagram__box pp-diagram__accent" x="248" y="40" width="96" height="40"></rect>
+    <text class="pp-diagram__label" x="56" y="65" text-anchor="middle">
+      tokens
+    </text>
+    <text class="pp-diagram__label" x="176" y="65" text-anchor="middle">
+      css
+    </text>
+    <text class="pp-diagram__label" x="296" y="65" text-anchor="middle">
+      astro
+    </text>
+    <path class="pp-diagram__line" d="M104 60H124" marker-end="url(#pp-diagram-arrow)"></path>
+    <path class="pp-diagram__line" d="M224 60H244" marker-end="url(#pp-diagram-arrow)"></path>
+  </Diagram>
+
+  <Diagram
+    id="diagram-chaine-large"
+    title="Chaîne de dépendances, largeur naturelle"
+    description="Les jetons alimentent css, css alimente astro, astro alimente apps/docs. Le sens des flèches va de la source vers le consommateur."
+    caption="Même chaîne à quatre blocs : défilement horizontal au clavier sur petit écran."
+    viewBox="0 0 480 120"
+    scroll
+  >
+    <defs>
+      <marker
+        id="pp-diagram-arrow-large"
+        viewBox="0 0 10 10"
+        refX="10"
+        refY="5"
+        markerWidth="8"
+        markerHeight="8"
+        markerUnits="userSpaceOnUse"
+        orient="auto"
+      >
+        <path class="pp-diagram__head" d="M0 0L10 5L0 10Z"></path>
+      </marker>
+    </defs>
+    <rect class="pp-diagram__box" x="8" y="40" width="96" height="40"></rect>
+    <rect class="pp-diagram__box" x="128" y="40" width="96" height="40"></rect>
+    <rect class="pp-diagram__box" x="248" y="40" width="96" height="40"></rect>
+    <rect class="pp-diagram__box pp-diagram__accent" x="368" y="40" width="96" height="40"></rect>
+    <text class="pp-diagram__label" x="56" y="65" text-anchor="middle">
+      tokens
+    </text>
+    <text class="pp-diagram__label" x="176" y="65" text-anchor="middle">
+      css
+    </text>
+    <text class="pp-diagram__label" x="296" y="65" text-anchor="middle">
+      astro
+    </text>
+    <text class="pp-diagram__label" x="416" y="65" text-anchor="middle">
+      docs
+    </text>
+    <path class="pp-diagram__line" d="M104 60H124" marker-end="url(#pp-diagram-arrow-large)"></path>
+    <path class="pp-diagram__line" d="M224 60H244" marker-end="url(#pp-diagram-arrow-large)"></path>
+    <path class="pp-diagram__line" d="M344 60H364" marker-end="url(#pp-diagram-arrow-large)"></path>
+  </Diagram>
+</Stack>

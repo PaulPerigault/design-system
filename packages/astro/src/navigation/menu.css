@@ -1,0 +1,96 @@
+/* Styles de Menu : fichier global, classes `.pp-menu*`. Aucun attribut `style`. */
+.pp-menu {
+  display: inline-block;
+}
+
+.pp-menu__button,
+.pp-menu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--pp-space-2xs);
+  min-block-size: var(--pp-size-target-min);
+  padding-inline: var(--pp-space-s);
+  color: var(--pp-color-fg);
+  font: inherit;
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.pp-menu__button {
+  border: var(--pp-size-rule) solid var(--pp-color-line);
+  border-radius: var(--pp-radius-control);
+  background-color: var(--pp-color-surface);
+}
+
+.pp-menu__button:hover,
+.pp-menu__button[aria-expanded='true'] {
+  border-color: var(--pp-color-accent);
+}
+
+.pp-menu__icon {
+  flex: none;
+  inline-size: var(--pp-space-s);
+  block-size: var(--pp-space-s);
+}
+
+.pp-menu__panel {
+  inset: auto;
+  margin: 0;
+  padding: var(--pp-space-3xs);
+  border: var(--pp-size-rule) solid var(--pp-color-line);
+  border-radius: var(--pp-radius-surface);
+  background-color: var(--pp-color-surface);
+  color: var(--pp-color-fg);
+}
+
+.pp-menu__panel:popover-open {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ancrage CSS (ancre implicite de `popovertarget`) : sous le bouton, retourné si l'espace manque. */
+@supports (position-area: block-end) {
+  .pp-menu__panel {
+    position-area: block-end span-inline-end;
+    position-try-fallbacks: flip-block;
+  }
+}
+
+/* Repli sans ancrage : le script pose --menu-inline et --menu-block sous le bouton. */
+@supports not (position-area: block-end) {
+  .pp-menu__panel {
+    inset-inline-start: var(--menu-inline, 0);
+    inset-block-start: var(--menu-block, 0);
+  }
+}
+
+.pp-menu__item {
+  inline-size: 100%;
+  border: 0;
+  border-radius: var(--pp-radius-control);
+  background-color: transparent;
+}
+
+.pp-menu__item:hover,
+.pp-menu__item:focus {
+  background-color: var(--pp-color-bg);
+}
+
+.pp-menu__item:focus-visible,
+.pp-menu__button:focus-visible {
+  outline: var(--pp-size-focus-width) solid var(--pp-color-focus);
+  outline-offset: var(--pp-size-focus-offset);
+}
+
+.pp-menu__item[aria-disabled='true'] {
+  color: var(--pp-color-muted);
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
+@media (forced-colors: active) {
+  .pp-menu__item[aria-disabled='true'] {
+    color: GrayText;
+  }
+}

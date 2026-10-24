@@ -1,0 +1,33 @@
+---
+/** Exemples vivants de la page CodeBlock : bloc nommé avec fichier, et bloc sans coloration. */
+import CodeBlock from '@paulperigault/astro/CodeBlock.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+
+const config = `import { defineConfig } from 'astro/config';
+
+export default defineConfig({ site: 'https://ds.paulperigault.dev' });`;
+---
+
+<Stack space="s">
+  <CodeBlock
+    code={config}
+    lang="ts"
+    filename="astro.config.ts"
+    label="Configuration Astro"
+    copyLabel="Copier le code"
+    copiedLabel="Code copié"
+  />
+  <CodeBlock
+    code="npm run verify"
+    lang="shellscript"
+    label="Commande de vérification"
+    copyLabel="Copier la commande"
+    copiedLabel="Commande copiée"
+  />
+  <CodeBlock
+    code="texte brut, sans langue"
+    label="Texte sans coloration"
+    copyLabel="Copier le texte"
+    copiedLabel="Texte copié"
+  />
+</Stack>

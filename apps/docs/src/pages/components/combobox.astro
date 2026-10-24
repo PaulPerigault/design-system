@@ -1,0 +1,108 @@
+---
+import Combobox from '@paulperigault/astro/Combobox.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+import ComboboxExamples from '../../components/examples/combobox.astro';
+
+const cities = [
+  { value: 'bdx', label: 'Bordeaux' },
+  { value: 'lyo', label: 'Lyon' },
+  { value: 'nte', label: 'Nantes' },
+  { value: 'stx', label: 'Saint-Étienne' },
+];
+
+const snippet = `<Combobox
+  id="pays"
+  name="pays"
+  label="Pays"
+  hint="Tapez quelques lettres."
+  options={[
+    { value: 'fr', label: 'France' },
+    { value: 'ee', label: 'Estonie' },
+  ]}
+  noResultsLabel="Aucun pays ne correspond."
+  countLabel="{count} pays proposés."
+/>`;
+---
+
+<ComponentPage
+  slug="combobox"
+  title="Combobox"
+  summary="Combobox est un champ texte qui propose une liste de suggestions, filtrée à chaque saisie."
+  use={[
+    'Choisir dans une longue liste connue, comme des pays ou des villes.',
+    'Accepter aussi une saisie libre : le formulaire envoie le texte du champ.',
+  ]}
+  avoid={[
+    'Pour quelques choix seulement : Select ou Choice les montrent sans saisie.',
+    'Pour une recherche qui interroge un serveur : le filtre porte sur les options rendues.',
+    'Pour envoyer un identifiant distinct du libellé : le champ envoie le libellé.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Flèche bas et flèche haut ouvrent la liste, déplacent l’option active et bouclent (motif APG Combobox).',
+      'Entrée écrit l’option active dans le champ et ferme la liste.',
+      'Échap ferme la liste ; un second Échap vide le champ.',
+      'Tab ferme la liste sans valider ; Début et Fin restent au curseur du champ.',
+      'Le focus reste dans le champ : l’option active passe par aria-activedescendant.',
+    ],
+    screenReader: [
+      'Le champ a le rôle combobox, son nom vient du <label for> (WCAG 4.1.2).',
+      'aria-expanded indique si la liste est ouverte ; aria-controls la désigne.',
+      'Une zone role="status" annonce le nombre de suggestions (WCAG 4.1.3).',
+      'Rendu non testé avec VoiceOver, NVDA ni JAWS : à vérifier avant usage critique.',
+    ],
+    guaranteed: [
+      'Sans script, le champ reste un <input list> relié à un <datalist> natif.',
+      'La saisie filtre sans sélectionner d’option d’elle-même (aria-autocomplete="list").',
+      'Le filtre ignore la casse et les accents : « ege » trouve « Égypte ».',
+      'Options d’au moins --pp-size-target-min de haut (WCAG 2.5.8).',
+      'L’option active est soulignée en plus du fond coloré (WCAG 1.4.1).',
+      'La liste a une hauteur bornée et défile ; l’option active défile dans la vue.',
+    ],
+    integrator: [
+      'Fournir label, noResultsLabel et countLabel dans la langue du site.',
+      'Avec required, fournir requiredLabel pour signaler le champ obligatoire en texte (WCAG 3.3.2).',
+      'Avec invalid, afficher le message d’erreur près du champ (WCAG 3.3.1).',
+      "Servir le script en fichier externe : la CSP doit autoriser script-src 'self'.",
+    ],
+  }}
+  evidence={[
+    {
+      label: 'APG : Combobox with List Autocomplete',
+      href: 'https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-autocomplete-list/',
+    },
+    {
+      label: 'WCAG 4.1.2 Nom, rôle et valeur',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html',
+    },
+    {
+      label: 'WCAG 4.1.3 Messages d’état',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html',
+    },
+    {
+      label: 'WCAG 2.5.8 Taille de la cible (minimum)',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html',
+    },
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html',
+    },
+    { label: 'Tests : packages/astro/test/Combobox.test.ts' },
+    { label: 'Tests : packages/astro/test/combobox.behavior.test.ts' },
+  ]}
+>
+  <ComboboxExamples />
+  <Fragment slot="variants">
+    <Combobox
+      id="variante-ville"
+      name="ville"
+      label="Ville"
+      options={cities}
+      value="Lille"
+      hint="Saisie libre acceptée : Lille n’est pas dans la liste."
+      noResultsLabel="Aucune ville ne correspond."
+      countLabel="{count} villes proposées."
+    />
+  </Fragment>
+</ComponentPage>

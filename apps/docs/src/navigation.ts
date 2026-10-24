@@ -41,6 +41,7 @@ export const GROUPS: readonly DocGroup[] = [
       link('select', 'Select'),
       link('choice', 'Choice'),
       link('switch', 'Switch'),
+      link('combobox', 'Combobox'),
     ],
   },
   {
@@ -51,6 +52,8 @@ export const GROUPS: readonly DocGroup[] = [
       link('progress', 'Progress'),
       link('dialog', 'Dialog'),
       link('status', 'Status'),
+      link('skeleton', 'Skeleton'),
+      link('toast', 'Toast'),
     ],
   },
   {
@@ -63,7 +66,22 @@ export const GROUPS: readonly DocGroup[] = [
       link('breadcrumb', 'Breadcrumb'),
       link('prose', 'Prose'),
       link('diff', 'Diff'),
+      link('empty-state', 'EmptyState'),
+      link('stat', 'Stat'),
+      link('timeline', 'Timeline'),
+      link('card', 'Card'),
+      link('code-block', 'CodeBlock'),
     ],
+  },
+  {
+    id: 'navigation',
+    title: 'Navigation',
+    links: [link('pagination', 'Pagination'), link('tabs', 'Tabs'), link('menu', 'Menu')],
+  },
+  {
+    id: 'surcouches',
+    title: 'Surcouches',
+    links: [link('popover', 'Popover'), link('tooltip', 'Tooltip')],
   },
   {
     id: 'images',
@@ -76,6 +94,7 @@ export const GROUPS: readonly DocGroup[] = [
       link('avatar', 'Avatar'),
       link('project-cover', 'ProjectCover'),
       link('gallery', 'Gallery'),
+      link('diagram', 'Diagram'),
     ],
   },
 ];

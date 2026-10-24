@@ -1,0 +1,117 @@
+---
+/**
+ * Pagination : navigation entre pages de résultats. `<nav aria-label>` + `<ul role="list">`
+ * (`role="list"` explicite : `list-style: none` retire la sémantique de liste sous VoiceOver).
+ * La page courante est un `<span aria-current="page">`, sans lien. Le composant ne calcule pas les
+ * pages : voir `pageWindow` (`pagination.ts`). Zéro JavaScript, aucun texte en dur, aucun `style`.
+ * La page courante se distingue par un cadre et une graisse, jamais par la couleur seule
+ * (WCAG 2.2, critère 1.4.1). Cibles ≥ `--pp-size-target-min` (critère 2.5.8).
+ */
+interface Link {
+  label: string;
+  href: string;
+}
+
+interface Item extends Link {
+  current?: boolean;
+}
+
+interface Props {
+  /** Nom accessible du repère de navigation (`aria-label`), par exemple « Pagination ». */
+  label: string;
+  /** Pages affichées : `{ label, href, current? }` ; `current` en fait la page courante, sans lien. */
+  items: Item[];
+  /** Lien vers la page précédente, affiché avant les pages. Absent : rien n'est rendu. */
+  previous?: Link;
+  /** Lien vers la page suivante, affiché après les pages. Absent : rien n'est rendu. */
+  next?: Link;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { label, items, previous, next, class: className } = Astro.props;
+---
+
+<nav class:list={['pp-pagination', className]} aria-label={label}>
+  <ul role="list">
+    {previous && (
+      <li data-kind="previous">
+        <a href={previous.href} rel="prev">
+          {previous.label}
+        </a>
+      </li>
+    )}
+    {items.map((item) => (
+      <li data-kind="page">
+        {item.current ? (
+          <span aria-current="page">{item.label}</span>
+        ) : (
+          <a href={item.href}>{item.label}</a>
+        )}
+      </li>
+    ))}
+    {next && (
+      <li data-kind="next">
+        <a href={next.href} rel="next">
+          {next.label}
+        </a>
+      </li>
+    )}
+  </ul>
+</nav>
+
+<style>
+  .pp-pagination ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--pp-space-xs);
+    margin-block: 0;
+    margin-inline: 0;
+    padding-block: 0;
+    padding-inline: 0;
+    list-style: none;
+    font-size: var(--pp-font-size-0);
+  }
+
+  .pp-pagination a,
+  .pp-pagination [aria-current='page'] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-inline-size: var(--pp-size-target-min);
+    min-block-size: var(--pp-size-target-min);
+    padding-inline: var(--pp-space-xs);
+    border: var(--pp-size-rule) solid transparent;
+    border-radius: var(--pp-radius-control);
+  }
+
+  .pp-pagination a {
+    color: var(--pp-color-accent);
+    text-decoration: underline;
+  }
+
+  .pp-pagination a:hover {
+    color: var(--pp-color-fg);
+  }
+
+  .pp-pagination a:focus-visible {
+    outline: var(--pp-size-focus-width) solid var(--pp-color-focus);
+    outline-offset: var(--pp-size-focus-offset);
+  }
+
+  .pp-pagination [aria-current='page'] {
+    border-color: var(--pp-color-fg);
+    color: var(--pp-color-fg);
+    font-weight: var(--pp-font-weight-bold);
+  }
+
+  .pp-pagination li[data-kind='previous'] {
+    margin-inline-end: var(--pp-space-xs);
+  }
+
+  .pp-pagination li[data-kind='next'] {
+    margin-inline-start: var(--pp-space-xs);
+  }
+</style>

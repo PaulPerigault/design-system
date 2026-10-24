@@ -1,0 +1,75 @@
+---
+import Timeline from '@paulperigault/astro/Timeline.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+import TimelineExamples from '../../components/examples/timeline.astro';
+
+const descending = [
+  {
+    time: '2025',
+    datetime: '2025',
+    title: 'Refonte',
+    description: 'Nouvelle structure des pages.',
+  },
+  { time: '2024', datetime: '2024', title: 'Lancement', description: 'Première version publiée.' },
+];
+
+const snippet = `<Timeline
+  label="Historique"
+  order="asc"
+  items={[
+    { time: '2024', datetime: '2024', title: 'Lancement', description: 'Première version.' },
+    { time: '2025', datetime: '2025', title: 'Refonte' },
+  ]}
+/>`;
+---
+
+<ComponentPage
+  slug="timeline"
+  title="Timeline"
+  summary="Timeline présente une suite d’étapes datées, dans l’ordre fourni, en liste ordonnée."
+  use={[
+    'Présenter un historique, un journal de versions ou des jalons datés.',
+    'Lister des étapes dont l’ordre compte, avec une date pour chacune.',
+  ]}
+  avoid={[
+    'Pour une liste sans ordre : utiliser une liste simple.',
+    'Pour une progression chiffrée : utiliser Progress, qui porte une valeur.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Le composant est statique : il ne reçoit pas le focus.',
+      'Aucune touche n’est gérée par le composant.',
+    ],
+    screenReader: [
+      'La liste est annoncée comme liste, avec le nombre de ses éléments.',
+      'Le trait et les repères sont des pseudo-éléments sans texte : ils ne sont pas lus.',
+    ],
+    guaranteed: [
+      'La liste est sémantique : role="list" est posé, même sans puces (WCAG 1.3.1).',
+      'La date et le titre portent le sens ; le repère ne le porte pas seul (WCAG 1.4.1).',
+      'Le composant ne trie pas : l’ordre affiché est celui de items.',
+    ],
+    integrator: [
+      'Trier les items avant de les passer : data-order ne trie rien.',
+      'Écrire la date dans la langue du site, et donner datetime en ISO 8601 quand la date est connue.',
+      'Donner un label quand la page contient plusieurs chronologies.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.3.1 Information et relations',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html',
+    },
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html',
+    },
+    { label: 'Tests : packages/astro/test/Timeline.test.ts' },
+  ]}
+>
+  <TimelineExamples />
+  <Fragment slot="variants">
+    <Timeline label="Ordre décroissant" order="desc" items={descending} />
+  </Fragment>
+</ComponentPage>

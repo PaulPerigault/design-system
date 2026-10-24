@@ -206,6 +206,46 @@
       }
     },
     {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "Carte riche avec un lien unique étendu à toute la carte, média et pied de carte facultatifs, sans JavaScript.",
+      "files": [
+        {
+          "path": "packages/astro/src/content/Card.astro",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/content/card.css",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-fg",
+          "--pp-color-focus",
+          "--pp-color-line",
+          "--pp-color-surface",
+          "--pp-font-line-height-heading",
+          "--pp-font-size-0",
+          "--pp-font-weight-bold",
+          "--pp-radius-control",
+          "--pp-radius-surface",
+          "--pp-size-focus-offset",
+          "--pp-size-focus-width",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-2xs",
+          "--pp-space-3xs",
+          "--pp-space-s",
+          "--pp-space-xs",
+          "--pp-z-sticky"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
       "name": "center",
       "type": "registry:ui",
       "title": "Center",
@@ -267,6 +307,103 @@
       }
     },
     {
+      "name": "code-block",
+      "type": "registry:ui",
+      "title": "CodeBlock",
+      "description": "Bloc de code coloré au build, défilable au clavier, avec bouton de copie révélé par un script externe.",
+      "files": [
+        {
+          "path": "packages/astro/src/content/CodeBlock.astro",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/content/code-block.css",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/content/highlight.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/behaviors/copy.ts",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-control",
+          "--pp-color-fg",
+          "--pp-color-focus",
+          "--pp-color-line",
+          "--pp-color-muted",
+          "--pp-color-status-degraded",
+          "--pp-color-status-passed",
+          "--pp-color-surface",
+          "--pp-font-family-mono",
+          "--pp-font-line-height-body",
+          "--pp-font-size--1",
+          "--pp-radius-control",
+          "--pp-radius-surface",
+          "--pp-size-focus-offset",
+          "--pp-size-focus-width",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-2xs",
+          "--pp-space-s",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "combobox",
+      "type": "registry:ui",
+      "title": "Combobox",
+      "description": "Champ avec liste de suggestions filtrée à la saisie, datalist natif sans script, focus gardé dans le champ.",
+      "registryDependencies": ["field"],
+      "files": [
+        {
+          "path": "packages/astro/src/forms/Combobox.astro",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/forms/combobox.css",
+          "type": "registry:lib"
+        },
+        {
+          "path": "packages/astro/src/behaviors/combobox.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-bg",
+          "--pp-color-control",
+          "--pp-color-fg",
+          "--pp-color-muted",
+          "--pp-color-on-accent",
+          "--pp-color-status-failed",
+          "--pp-color-surface",
+          "--pp-font-line-height-body",
+          "--pp-font-size-0",
+          "--pp-radius-control",
+          "--pp-size-control-height",
+          "--pp-size-focus-offset",
+          "--pp-size-focus-width",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-2xl",
+          "--pp-space-3xl",
+          "--pp-space-3xs",
+          "--pp-space-xs",
+          "--pp-z-overlay"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
       "name": "container",
       "type": "registry:ui",
       "title": "Container",
@@ -284,6 +421,38 @@
           "--pp-space-l",
           "--pp-space-m",
           "--pp-space-s"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "diagram",
+      "type": "registry:ui",
+      "title": "Diagram",
+      "description": "Schéma SVG avec titre, description complète et légende : le nom accessible vient du texte, la couleur n’est jamais seule porteuse du sens, zéro JavaScript.",
+      "files": [
+        {
+          "path": "packages/astro/src/media/Diagram.astro",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/media/diagram.css",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-fg",
+          "--pp-color-focus",
+          "--pp-color-muted",
+          "--pp-color-surface",
+          "--pp-font-family-sans",
+          "--pp-font-size--1",
+          "--pp-size-focus-offset",
+          "--pp-size-focus-width",
+          "--pp-size-measure",
+          "--pp-space-2xs"
         ],
         "version": "0.0.0"
       }
@@ -349,6 +518,38 @@
           "--pp-size-rule",
           "--pp-space-2xs",
           "--pp-space-3xs",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "empty-state",
+      "type": "registry:ui",
+      "title": "EmptyState",
+      "description": "État vide accessible : titre nommant la section, explication et action facultative, sans icône décorative.",
+      "files": [
+        {
+          "path": "packages/astro/src/content/EmptyState.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-fg",
+          "--pp-color-line",
+          "--pp-color-muted",
+          "--pp-color-surface",
+          "--pp-font-line-height-body",
+          "--pp-font-line-height-heading",
+          "--pp-font-size-1",
+          "--pp-font-weight-semibold",
+          "--pp-radius-surface",
+          "--pp-size-measure",
+          "--pp-size-rule",
+          "--pp-space-2xs",
+          "--pp-space-m",
+          "--pp-space-s",
           "--pp-space-xs"
         ],
         "version": "0.0.0"
@@ -512,6 +713,75 @@
       }
     },
     {
+      "name": "menu",
+      "type": "registry:ui",
+      "title": "Menu",
+      "description": "Menu d’actions (motif APG Menu Button) en popover, avec flèches, frappe de caractères et repli sans JavaScript.",
+      "files": [
+        {
+          "path": "packages/astro/src/navigation/Menu.astro",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/navigation/menu.css",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/behaviors/menu.ts",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-bg",
+          "--pp-color-fg",
+          "--pp-color-focus",
+          "--pp-color-line",
+          "--pp-color-muted",
+          "--pp-color-surface",
+          "--pp-radius-control",
+          "--pp-radius-surface",
+          "--pp-size-focus-offset",
+          "--pp-size-focus-width",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-2xs",
+          "--pp-space-3xs",
+          "--pp-space-s"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "pagination",
+      "type": "registry:ui",
+      "title": "Pagination",
+      "description": "Navigation entre pages de résultats : page courante sans lien, cibles de taille minimale, zéro JavaScript.",
+      "files": [
+        {
+          "path": "packages/astro/src/navigation/Pagination.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-fg",
+          "--pp-color-focus",
+          "--pp-font-size-0",
+          "--pp-font-weight-bold",
+          "--pp-radius-control",
+          "--pp-size-focus-offset",
+          "--pp-size-focus-width",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
       "name": "photo",
       "type": "registry:ui",
       "title": "Photo",
@@ -560,6 +830,41 @@
           "--pp-size-page",
           "--pp-space-3xl",
           "--pp-space-xl"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover",
+      "description": "Panneau flottant ouvert par un bouton, par l’API HTML popover, ancré en CSS, sans JavaScript.",
+      "files": [
+        {
+          "path": "packages/astro/src/overlay/Popover.astro",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/overlay/popover.css",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-fg",
+          "--pp-color-focus",
+          "--pp-color-line",
+          "--pp-color-surface",
+          "--pp-radius-control",
+          "--pp-radius-surface",
+          "--pp-size-focus-offset",
+          "--pp-size-focus-width",
+          "--pp-size-measure",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-2xs",
+          "--pp-space-3xs",
+          "--pp-space-s"
         ],
         "version": "0.0.0"
       }
@@ -762,6 +1067,31 @@
       }
     },
     {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "Emplacement de chargement en lignes : texte lu par les lecteurs d’écran, animation d’opacité supprimée sous prefers-reduced-motion.",
+      "files": [
+        {
+          "path": "packages/astro/src/feedback/Skeleton.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-fg",
+          "--pp-color-line",
+          "--pp-duration-base",
+          "--pp-easing-standard",
+          "--pp-font-size-0",
+          "--pp-radius-control",
+          "--pp-size-rule",
+          "--pp-space-3xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
       "name": "stack",
       "type": "registry:ui",
       "title": "Stack",
@@ -779,6 +1109,30 @@
           "--pp-space-s",
           "--pp-space-xl",
           "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "stat",
+      "type": "registry:ui",
+      "title": "Stat",
+      "description": "Indicateur chiffré : libellé, valeur et variation écrite en clair, avec une forme d’icône par tendance.",
+      "files": [
+        {
+          "path": "packages/astro/src/content/Stat.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-fg",
+          "--pp-color-muted",
+          "--pp-font-line-height-heading",
+          "--pp-font-size--1",
+          "--pp-font-size-2",
+          "--pp-font-weight-semibold",
+          "--pp-space-3xs"
         ],
         "version": "0.0.0"
       }
@@ -896,6 +1250,40 @@
       }
     },
     {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "Onglets (motif APG Tabs) : sections lisibles sans JavaScript, tablist et clavier ajoutés par un script externe.",
+      "files": [
+        {
+          "path": "packages/astro/src/navigation/Tabs.astro",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/behaviors/tabs.ts",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-fg",
+          "--pp-color-focus",
+          "--pp-color-line",
+          "--pp-color-muted",
+          "--pp-font-weight-bold",
+          "--pp-size-focus-offset",
+          "--pp-size-focus-width",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-3xs",
+          "--pp-space-s",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
       "name": "textarea",
       "type": "registry:ui",
       "title": "Textarea",
@@ -922,6 +1310,111 @@
           "--pp-space-2xs",
           "--pp-space-3xs",
           "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "timeline",
+      "type": "registry:ui",
+      "title": "Timeline",
+      "description": "Suite d’étapes datées en liste ordonnée, dans l’ordre fourni, sans tri automatique.",
+      "files": [
+        {
+          "path": "packages/astro/src/content/Timeline.astro",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-bg",
+          "--pp-color-fg",
+          "--pp-color-line",
+          "--pp-color-muted",
+          "--pp-font-size--1",
+          "--pp-font-weight-semibold",
+          "--pp-radius-control",
+          "--pp-size-rule",
+          "--pp-space-2xs",
+          "--pp-space-3xs",
+          "--pp-space-m"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "toast",
+      "type": "registry:ui",
+      "title": "Toast",
+      "description": "Région de notifications non bloquantes : minuteur suspendu au survol et au focus, Échap, bouton de fermeture visible.",
+      "files": [
+        {
+          "path": "packages/astro/src/feedback/Toast.astro",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/behaviors/toast.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-control",
+          "--pp-color-fg",
+          "--pp-color-focus",
+          "--pp-color-line",
+          "--pp-color-status-failed",
+          "--pp-color-status-passed",
+          "--pp-color-surface",
+          "--pp-duration-base",
+          "--pp-easing-standard",
+          "--pp-font-line-height-body",
+          "--pp-radius-control",
+          "--pp-radius-surface",
+          "--pp-size-control-height",
+          "--pp-size-focus-offset",
+          "--pp-size-focus-width",
+          "--pp-size-measure",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-2xs",
+          "--pp-space-3xs",
+          "--pp-space-s",
+          "--pp-space-xs",
+          "--pp-z-overlay"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "Infobulle qui décrit un contrôle : focus, survol, Échap (WCAG 1.4.13), jamais affichée au tactile.",
+      "files": [
+        {
+          "path": "packages/astro/src/overlay/Tooltip.astro",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/behaviors/tooltip.ts",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-control",
+          "--pp-color-fg",
+          "--pp-color-surface",
+          "--pp-font-line-height-body",
+          "--pp-font-size--1",
+          "--pp-radius-control",
+          "--pp-size-measure",
+          "--pp-size-rule",
+          "--pp-space-2xs",
+          "--pp-space-3xs",
+          "--pp-z-overlay"
         ],
         "version": "0.0.0"
       }

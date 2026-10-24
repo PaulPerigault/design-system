@@ -38,7 +38,8 @@
   },
   "dependencies": {
     "@paulperigault/css": "0.0.0",
-    "@paulperigault/tokens": "0.0.0"
+    "@paulperigault/tokens": "0.0.0",
+    "shiki": "4.5.0"
   },
   "peerDependencies": {
     "astro": "^7.4.0"
@@ -75,6 +76,12 @@
     "./Breadcrumb.astro": "./src/content/Breadcrumb.astro",
     "./Prose.astro": "./src/content/Prose.astro",
     "./Diff.astro": "./src/content/Diff.astro",
+    "./EmptyState.astro": "./src/content/EmptyState.astro",
+    "./Skeleton.astro": "./src/feedback/Skeleton.astro",
+    "./Stat.astro": "./src/content/Stat.astro",
+    "./Timeline.astro": "./src/content/Timeline.astro",
+    "./Pagination.astro": "./src/navigation/Pagination.astro",
+    "./Card.astro": "./src/content/Card.astro",
     "./Photo.astro": "./src/media/Photo.astro",
     "./ArtDirection.astro": "./src/media/ArtDirection.astro",
     "./Figure.astro": "./src/media/Figure.astro",
@@ -85,6 +92,14 @@
     "./scrim": "./src/media/scrim.ts",
     "./media-types": "./src/media/types.ts",
     "./registry.json": "./registry/registry.json",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./Tabs.astro": "./src/navigation/Tabs.astro",
+    "./Popover.astro": "./src/overlay/Popover.astro",
+    "./Tooltip.astro": "./src/overlay/Tooltip.astro",
+    "./Toast.astro": "./src/feedback/Toast.astro",
+    "./Menu.astro": "./src/navigation/Menu.astro",
+    "./CodeBlock.astro": "./src/content/CodeBlock.astro",
+    "./Diagram.astro": "./src/media/Diagram.astro",
+    "./Combobox.astro": "./src/forms/Combobox.astro"
   }
 }

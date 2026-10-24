@@ -1,0 +1,118 @@
+---
+/**
+ * Toast : région de notifications non bloquantes, à poser une fois par page. Le composant ne rend
+ * que la région vide (`role="status"`, `aria-live="polite"`) : sans script, rien ne s'affiche.
+ * L'intégrateur appelle `show(region, { message })` du module `behaviors/toast`. Le ton passe par
+ * `data-tone` (CSP : aucun `style`) ; le message écrit porte le sens, jamais la couleur seule
+ * (WCAG 2.2, critère 1.4.1). Durée et suspension : voir le module (critère 2.2.1).
+ */
+interface Props {
+  /** Nom accessible de la région (par exemple « Notifications »). */
+  label: string;
+  /** Texte du bouton de fermeture de chaque toast (par exemple « Fermer »). */
+  dismissLabel: string;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { label, dismissLabel, class: className } = Astro.props;
+---
+
+<div
+  class:list={['pp-toast-region', className]}
+  role="status"
+  aria-live="polite"
+  aria-atomic="false"
+  aria-label={label}
+  data-dismiss-label={dismissLabel}
+></div>
+
+<script>
+  import { install } from '../behaviors/toast';
+
+  install(document);
+</script>
+
+<style is:global>
+  .pp-toast-region {
+    position: fixed;
+    inset-inline: 0;
+    inset-block-end: 0;
+    z-index: var(--pp-z-overlay);
+    display: flex;
+    flex-direction: column;
+    gap: var(--pp-space-2xs);
+    padding: var(--pp-space-s);
+    pointer-events: none;
+  }
+
+  .pp-toast-region .pp-toast {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--pp-space-s);
+    max-inline-size: var(--pp-size-measure);
+    padding-block: var(--pp-space-xs);
+    padding-inline: var(--pp-space-s);
+    border: var(--pp-size-rule) solid var(--pp-color-line);
+    border-inline-start: var(--pp-space-3xs) solid var(--toast-tone);
+    border-radius: var(--pp-radius-surface);
+    background-color: var(--pp-color-surface);
+    color: var(--pp-color-fg);
+    line-height: var(--pp-font-line-height-body);
+    pointer-events: auto;
+    animation: pp-toast-in var(--pp-duration-base) var(--pp-easing-standard);
+  }
+
+  .pp-toast-region .pp-toast[data-tone='neutral'] {
+    --toast-tone: var(--pp-color-line);
+  }
+
+  .pp-toast-region .pp-toast[data-tone='success'] {
+    --toast-tone: var(--pp-color-status-passed);
+  }
+
+  .pp-toast-region .pp-toast[data-tone='error'] {
+    --toast-tone: var(--pp-color-status-failed);
+  }
+
+  .pp-toast-region .pp-toast__message {
+    margin-block: 0;
+  }
+
+  .pp-toast-region .pp-toast__close {
+    flex: none;
+    min-inline-size: var(--pp-size-target-min);
+    min-block-size: max(var(--pp-size-control-height), var(--pp-size-target-min));
+    padding-inline: var(--pp-space-xs);
+    border: var(--pp-size-rule) solid var(--pp-color-control);
+    border-radius: var(--pp-radius-control);
+    background-color: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .pp-toast-region .pp-toast__close:focus-visible {
+    outline: var(--pp-size-focus-width) solid var(--pp-color-focus);
+    outline-offset: var(--pp-size-focus-offset);
+  }
+
+  @keyframes pp-toast-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pp-toast-region .pp-toast {
+      animation: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .pp-toast-region .pp-toast {
+      border-inline-start-color: CanvasText;
+    }
+  }
+</style>

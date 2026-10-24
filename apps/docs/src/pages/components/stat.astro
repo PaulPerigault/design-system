@@ -1,0 +1,64 @@
+---
+import ComponentPage from '../../components/ComponentPage.astro';
+import StatExamples from '../../components/examples/stat.astro';
+
+const snippet = `<Stat label="Visites" value="1 204" delta="+3 depuis la semaine dernière" trend="up" />
+<Stat label="Erreurs" value="0" delta="Stable depuis hier" trend="flat" />
+<Stat label="Temps de réponse" value="420 ms" delta="−40 ms depuis la semaine dernière" trend="down" />`;
+---
+
+<ComponentPage
+  slug="stat"
+  title="Stat"
+  summary="Stat affiche un indicateur chiffré, sa variation écrite en clair et une icône de tendance."
+  use={[
+    'Afficher un indicateur clé avec sa variation, sur un tableau de bord.',
+    'Montrer un chiffre unique accompagné d’un libellé et d’une tendance.',
+  ]}
+  avoid={[
+    'Pour comparer plusieurs valeurs sur plusieurs lignes : utiliser Table.',
+    'Pour une progression vers un objectif : utiliser Progress, qui porte une valeur maximale.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Le composant est statique : il ne reçoit pas le focus.',
+      'Aucune touche n’est gérée par le composant.',
+    ],
+    screenReader: [
+      'Le libellé et la valeur sont du texte ordinaire, dans une liste de description (dl, dt, dd).',
+      'L’icône de tendance est masquée (aria-hidden="true") : le sens passe par le texte du delta.',
+    ],
+    guaranteed: [
+      'La tendance est écrite en clair dans le delta, sans couleur porteuse de sens.',
+      'Chaque tendance a une forme d’icône distincte : flèche haut, flèche bas, tiret.',
+      'Le composant ne calcule ni ne formate aucune valeur : il affiche ce qu’on lui donne.',
+    ],
+    integrator: [
+      'Fournir un delta dès que trend est donné : le composant refuse sinon.',
+      'Formater la valeur avant l’affichage, par exemple « 1 204 » ou « 420 ms ».',
+      'Annoncer une mise à jour dynamique avec une région live côté intégrateur.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.1.1 Contenu non textuel',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html',
+    },
+    {
+      label: 'WCAG 1.3.1 Information et relations',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html',
+    },
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html',
+    },
+    {
+      label: 'WCAG 4.1.3 Messages d’état',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html',
+    },
+    { label: 'Tests : packages/astro/test/Stat.test.ts' },
+  ]}
+>
+  <StatExamples />
+</ComponentPage>

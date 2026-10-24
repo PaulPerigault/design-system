@@ -1,0 +1,73 @@
+---
+import ComponentPage from '../../components/ComponentPage.astro';
+import MenuExamples from '../../components/examples/menu.astro';
+
+const snippet = `<Menu
+  id="actions"
+  label="Actions"
+  items={[
+    { label: 'Copier le lien', action: 'copy-link' },
+    { label: 'Ouvrir le dépôt', href: '/depot' },
+    { label: 'Supprimer', action: 'delete', disabled: true },
+  ]}
+/>`;
+---
+
+<ComponentPage
+  slug="menu"
+  title="Menu"
+  summary="Menu ouvre une liste d’actions depuis un bouton, selon le motif APG Menu Button. Il ne sert pas à la navigation du site."
+  use={[
+    'Regrouper des actions sur un objet : copier, renommer, supprimer.',
+    'Fermer le menu après le choix d’une entrée : le composant le fait.',
+  ]}
+  avoid={[
+    'Pour la navigation du site : une liste de liens dans nav suffit et se lit mieux.',
+    'Pour un choix de formulaire : utiliser un champ select ou des boutons radio.',
+    'Pour une seule action : un bouton simple suffit.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Entrée, Espace et Flèche bas ouvrent le menu et placent le focus sur la première entrée.',
+      'Flèche haut ouvre le menu et place le focus sur la dernière entrée.',
+      'Les flèches haut et bas bouclent ; Début et Fin vont aux extrémités.',
+      'Une lettre tapée va à la première entrée dont le libellé commence par elle.',
+      'Échap ferme le menu et rend le focus au bouton ; Tab ferme le menu.',
+    ],
+    screenReader: [
+      'Le bouton annonce aria-haspopup="menu" et son état aria-expanded (APG Menu Button).',
+      'Le panneau a role="menu", nommé par le bouton ; chaque entrée a role="menuitem".',
+      'Une entrée désactivée porte aria-disabled="true" et reste focalisable, comme l’APG le recommande.',
+    ],
+    guaranteed: [
+      'Sans JavaScript, le bouton ouvre le panneau (popover) et les liens fonctionnent.',
+      'Le bouton et les entrées font au moins la taille du jeton --pp-size-target-min (WCAG 2.5.8).',
+      'Le focus est visible sur le bouton et les entrées (WCAG 2.4.7). Le texte garde la couleur de premier plan.',
+      'Une entrée désactivée est aussi barrée : la couleur n’est pas seule (WCAG 1.4.1).',
+    ],
+    integrator: [
+      'Fournir un id unique par menu et un libellé de bouton explicite.',
+      'Écouter l’évènement pp-menu-action (detail.action) sur le panneau pour les entrées à action.',
+      'Non testé avec VoiceOver, NVDA ou JAWS : à vérifier sur les cibles du site.',
+      'Le repli de position sans ancrage CSS suppose une écriture de gauche à droite : non vérifié en RTL.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'APG : motif Menu Button',
+      href: 'https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/',
+    },
+    {
+      label: 'WCAG 2.1.1 Clavier',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html',
+    },
+    {
+      label: 'WCAG 2.5.8 Taille de la cible (minimum)',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html',
+    },
+    { label: 'Tests : packages/astro/test/Menu.test.ts, menu.behavior.test.ts' },
+  ]}
+>
+  <MenuExamples />
+</ComponentPage>

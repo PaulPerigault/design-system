@@ -1,0 +1,85 @@
+---
+import ComponentPage from '../../components/ComponentPage.astro';
+import DiagramExamples from '../../components/examples/diagram.astro';
+
+const snippet = `<Diagram
+  id="chaine"
+  title="Chaîne de dépendances"
+  description="Les jetons alimentent css, css alimente astro."
+  caption="Trois paquets, un seul sens de dépendance."
+  viewBox="0 0 360 120"
+>
+  <defs>
+    <marker id="pp-diagram-arrow" viewBox="0 0 10 10" refX="10" refY="5"
+      markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path class="pp-diagram__head" d="M0 0L10 5L0 10Z" />
+    </marker>
+  </defs>
+  <rect class="pp-diagram__box" x="8" y="40" width="96" height="40" />
+  <rect class="pp-diagram__box" x="128" y="40" width="96" height="40" />
+  <text class="pp-diagram__label" x="56" y="65" text-anchor="middle">tokens</text>
+  <text class="pp-diagram__label" x="176" y="65" text-anchor="middle">css</text>
+  <path class="pp-diagram__line" d="M104 60H124" marker-end="url(#pp-diagram-arrow)" />
+</Diagram>`;
+---
+
+<ComponentPage
+  slug="diagram"
+  title="Diagram"
+  summary="Diagram enveloppe un schéma SVG avec un titre, une description complète et une légende visible."
+  use={[
+    'Montrer une chaîne de trois à cinq blocs reliés par des flèches.',
+    'Fournir une description complète, lue à la place du schéma par les lecteurs d’écran.',
+  ]}
+  avoid={[
+    'Pour une photo ou une illustration : utiliser Photo ou Figure.',
+    'Pour un graphe de plus de cinq blocs : simplifier le schéma ou le décrire en liste.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Sans scroll, le schéma ne reçoit pas le focus et n’a pas de touche propre.',
+      'Avec scroll, le conteneur reçoit le focus (tabindex="0") et se parcourt au clavier.',
+      'Le contour de focus entoure le conteneur (WCAG 2.4.7).',
+    ],
+    screenReader: [
+      'Le nom du schéma est le titre suivi de la description (aria-labelledby).',
+      'Le SVG a le rôle img : ses blocs et ses flèches ne sont pas lus un à un.',
+      'Avec scroll, le conteneur est un groupe nommé par le titre.',
+    ],
+    guaranteed: [
+      'Le SVG expose un titre et une description (WCAG 1.1.1).',
+      'Traits, boîtes et étiquettes viennent de jetons ; aucun dégradé, ombre ni flou.',
+      'En forced-colors: active, traits et textes passent en CanvasText, les boîtes en Canvas.',
+      'Aucun JavaScript et aucun attribut style.',
+    ],
+    integrator: [
+      'Écrire une description qui donne les étapes, les relations et le sens des flèches (WCAG 1.1.1).',
+      'Ne pas porter le sens par la couleur d’accent seule : le texte doit le dire (WCAG 1.4.1).',
+      'Vérifier le contraste des traits et des boîtes, non garanti par le composant (WCAG 1.4.11).',
+      'Choisir un viewBox proche de la taille d’affichage : le texte suit l’échelle du schéma.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.1.1 Contenu non textuel',
+      href: 'https://www.w3.org/TR/WCAG22/#non-text-content',
+    },
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur',
+      href: 'https://www.w3.org/TR/WCAG22/#use-of-color',
+    },
+    {
+      label: 'WCAG 1.4.11 Contraste non textuel',
+      href: 'https://www.w3.org/TR/WCAG22/#non-text-contrast',
+    },
+    {
+      label: 'WCAG 2.4.7 Focus visible',
+      href: 'https://www.w3.org/TR/WCAG22/#focus-visible',
+    },
+    { label: 'Motif APG : aucun motif APG ne couvre les schémas SVG (non vérifié)' },
+    { label: 'Tests : packages/astro/test/Diagram.test.ts' },
+  ]}
+>
+  <DiagramExamples />
+</ComponentPage>

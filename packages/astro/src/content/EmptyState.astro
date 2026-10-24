@@ -1,0 +1,105 @@
+---
+/**
+ * EmptyState : état vide d'une liste, d'un résultat ou d'un tableau de bord. Zéro JavaScript,
+ * zéro icône décorative. Rendu en `<section>` nommée par son titre (`aria-labelledby`) ; le
+ * niveau du titre se règle par `headingLevel` pour rester dans le plan du document.
+ * Alignement par `data-align` (CSP : aucun `style`). Les couleurs passent par les jetons `--pp-*`.
+ */
+// Niveaux de titre admis : constantes nommées, pour que le type ne porte aucun littéral numérique.
+const LEVEL_2 = 2;
+const LEVEL_3 = 3;
+const LEVEL_4 = 4;
+const HEADING_LEVELS = [LEVEL_2, LEVEL_3, LEVEL_4] as const;
+type HeadingLevel = (typeof HEADING_LEVELS)[number];
+const DEFAULT_HEADING_LEVEL = LEVEL_2;
+
+interface Props {
+  /** Titre de l'état vide, lu comme nom de la section (par exemple « Aucun résultat »). */
+  title: string;
+  /** Niveau du titre dans le plan du document, de 2 à 4. Défaut : 2. */
+  headingLevel?: HeadingLevel;
+  /** Alignement du contenu : `start` (défaut) ou `center`. */
+  align?: 'start' | 'center';
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const {
+  title,
+  headingLevel = DEFAULT_HEADING_LEVEL,
+  align = 'start',
+  class: className,
+} = Astro.props;
+// Un niveau hors liste (appel JS non typé) retombe sur le défaut, sans produire `h7`.
+const level = HEADING_LEVELS.includes(headingLevel) ? headingLevel : DEFAULT_HEADING_LEVEL;
+const Heading = `h${level}` as const;
+// Identifiant dérivé du titre : sans accents, sans espaces, stable d'un rendu à l'autre.
+const slug = title
+  .normalize('NFD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-|-$/g, '');
+const titleId = `pp-empty-state-${slug}`;
+const hasAction = Astro.slots.has('action');
+---
+
+<section class:list={['pp-empty-state', className]} data-align={align} aria-labelledby={titleId}>
+  <Heading id={titleId} class="pp-empty-state__title">
+    {title}
+  </Heading>
+  <div class="pp-empty-state__body">
+    <slot />
+  </div>
+  {hasAction && (
+    <div class="pp-empty-state__action">
+      <slot name="action" />
+    </div>
+  )}
+</section>
+
+<style>
+  .pp-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--pp-space-xs);
+    box-sizing: border-box;
+    max-inline-size: var(--pp-size-measure);
+    padding-block: var(--pp-space-m);
+    padding-inline: var(--pp-space-s);
+    border: var(--pp-size-rule) solid var(--pp-color-line);
+    border-radius: var(--pp-radius-surface);
+    background-color: var(--pp-color-surface);
+    color: var(--pp-color-fg);
+    line-height: var(--pp-font-line-height-body);
+  }
+
+  .pp-empty-state[data-align='center'] {
+    align-items: center;
+    text-align: center;
+  }
+
+  .pp-empty-state__title {
+    margin-block: 0;
+    font-size: var(--pp-font-size-1);
+    font-weight: var(--pp-font-weight-semibold);
+    line-height: var(--pp-font-line-height-heading);
+  }
+
+  .pp-empty-state__body {
+    color: var(--pp-color-muted);
+  }
+
+  .pp-empty-state__body > :global(*) {
+    margin-block: 0;
+  }
+
+  .pp-empty-state__body > :global(* + *) {
+    margin-block-start: var(--pp-space-2xs);
+  }
+
+  .pp-empty-state__action {
+    margin-block-start: var(--pp-space-2xs);
+  }
+</style>

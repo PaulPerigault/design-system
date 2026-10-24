@@ -1,0 +1,76 @@
+---
+import ComponentPage from '../../components/ComponentPage.astro';
+import ToastExamples from '../../components/examples/toast.astro';
+
+const snippet = `---
+import Toast from '@paulperigault/astro/Toast.astro';
+---
+<Toast label="Notifications" dismissLabel="Fermer" />
+
+<script>
+  import { show } from './behaviors/toast';
+
+  const region = document.querySelector('.pp-toast-region');
+  if (region) show(region, { message: 'Réussi : brouillon enregistré.', tone: 'success' });
+</script>`;
+---
+
+<ComponentPage
+  slug="toast"
+  title="Toast"
+  summary="Toast affiche une notification courte qui ne bloque pas la page et se ferme seule ou au bouton."
+  use={[
+    'Confirmer une action sans quitter la page, par exemple « Brouillon enregistré ».',
+    'Signaler un échec qui n’empêche pas de continuer. Le texte du message nomme le ton.',
+  ]}
+  avoid={[
+    'Pour une erreur qui exige une action : utiliser Alert ou Dialog, qui restent à l’écran.',
+    'Pour un message que l’utilisateur doit relire : mettre duration à 0 ou choisir Alert.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Chaque toast contient un bouton de fermeture atteignable à la touche Tab.',
+      'Échap ferme le toast qui contient le focus.',
+      'Après la fermeture, le focus retourne au document. Le renvoyer à un élément précis reste à faire.',
+    ],
+    screenReader: [
+      'La région a role="status", aria-live="polite" et aria-atomic="false" : seul le toast ajouté est annoncé (WCAG 4.1.3).',
+      'La région porte un nom (label). Le bouton de fermeture a un texte visible (dismissLabel).',
+    ],
+    guaranteed: [
+      'Le minuteur est suspendu au survol et au focus, puis repart du début (WCAG 2.2.1). duration: 0 désactive la fermeture automatique.',
+      'La durée par défaut est de 8 000 ms. Ce chiffre est une convention, pas une valeur imposée par la norme.',
+      'Le ton passe par data-tone et par une bordure de début. Le texte du message porte le sens (WCAG 1.4.1).',
+      'Le bouton de fermeture a une cible d’au moins --pp-size-target-min (WCAG 2.5.8).',
+      'L’apparition se fait par opacité. Elle est supprimée sous prefers-reduced-motion (WCAG 2.3.3).',
+    ],
+    integrator: [
+      'Poser une seule région par page et écrire des messages qui disent le résultat, dans la langue du site.',
+      'Sans script, la région reste vide : prévoir un autre retour pour les actions importantes.',
+      'Le toast fixé en bas peut masquer du contenu focalisé (WCAG 2.4.11). Cela n’a pas été vérifié sur tous les gabarits.',
+      'Les lecteurs d’écran n’annoncent pas toujours une région ajoutée en même temps que son contenu. Non vérifié ici.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 2.2.1 Délai réglable',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/timing-adjustable.html',
+    },
+    {
+      label: 'WCAG 4.1.3 Messages d’état',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html',
+    },
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html',
+    },
+    {
+      label: 'WCAG 2.5.8 Taille de la cible (minimum)',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html',
+    },
+    { label: 'Tests : packages/astro/test/Toast.test.ts et toast.behavior.test.ts' },
+  ]}
+>
+  <ToastExamples />
+</ComponentPage>

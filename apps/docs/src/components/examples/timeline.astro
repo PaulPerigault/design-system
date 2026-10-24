@@ -1,0 +1,12 @@
+---
+/** Exemple vivant de la page Timeline : trois étapes, dans l'ordre de lecture. */
+import Timeline from '@paulperigault/astro/Timeline.astro';
+
+const steps = [
+  { time: 'Étape 1', title: 'Tokens', description: 'Source au format DTCG 2025.10.' },
+  { time: 'Étape 2', title: 'Composants', description: 'Composants Astro publiés en source.' },
+  { time: 'Étape 3', title: 'Registre', description: 'Fiches décrivant chaque composant.' },
+];
+---
+
+<Timeline label="Parcours du design system" order="asc" items={steps} />

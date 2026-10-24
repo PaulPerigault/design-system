@@ -1,0 +1,65 @@
+---
+import ComponentPage from '../../components/ComponentPage.astro';
+import TabsExamples from '../../components/examples/tabs.astro';
+
+const snippet = `<Tabs label="Langages" tabs={[{ id: 'a', label: 'Astro' }, { id: 'b', label: 'CSS' }]}>
+  <Fragment slot="a"><p>Contenu du premier panneau.</p></Fragment>
+  <Fragment slot="b"><p>Contenu du second panneau.</p></Fragment>
+</Tabs>`;
+---
+
+<ComponentPage
+  slug="tabs"
+  title="Tabs"
+  summary="Tabs répartit un contenu en panneaux, dont un seul est visible à la fois. Sans JavaScript, tous les panneaux restent lisibles."
+  use={[
+    'Regrouper des panneaux de même nature, que le lecteur compare ou parcourt un à un.',
+    'Garder tout le contenu accessible quand le script ne se charge pas.',
+  ]}
+  avoid={[
+    'Pour naviguer entre des pages : utiliser des liens dans un repère nav.',
+    'Pour un contenu à lire en continu : des sections ordinaires suffisent.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Flèche droite et flèche gauche changent d’onglet et l’activent (activation automatique, motif APG Tabs).',
+      'Les flèches suivent dir : en rtl, elles sont inversées. Home et End vont aux extrémités, avec bouclage.',
+      'Un seul onglet est dans l’ordre de tabulation (tabindex itinérant) ; Tab mène ensuite au panneau.',
+    ],
+    screenReader: [
+      'Le script pose role="tablist", role="tab" et role="tabpanel", avec aria-selected et aria-controls.',
+      'La liste porte le nom donné par label ; chaque panneau est nommé par son onglet.',
+      'Non vérifié avec VoiceOver, NVDA ou JAWS : seul le DOM produit est testé.',
+    ],
+    guaranteed: [
+      'Sans script, les liens d’ancre et les sections titrées gardent tout le contenu lisible (WCAG 1.3.1).',
+      'L’onglet actif se distingue par un trait et une graisse, pas par la couleur seule (WCAG 1.4.1).',
+      'Les onglets font au moins la taille minimale de cible (WCAG 2.5.8).',
+      'Le panneau actif reçoit tabindex="0" s’il ne contient rien de focalisable (motif APG Tabs).',
+    ],
+    integrator: [
+      'Fournir des id uniques dans la page, et un slot du même nom pour chaque onglet.',
+      'Le titre de panneau est un h3 : vérifier qu’il suit un h2 dans la page (WCAG 1.3.1).',
+      'Écrire des libellés courts et distincts, dans la langue du site (WCAG 2.4.6).',
+      'L’ancre de l’URL ne choisit pas l’onglet actif : utiliser selected.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'APG : motif Tabs',
+      href: 'https://www.w3.org/WAI/ARIA/apg/patterns/tabs/',
+    },
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html',
+    },
+    {
+      label: 'WCAG 2.5.8 Taille de la cible (minimum)',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html',
+    },
+    { label: 'Tests : packages/astro/test/Tabs.test.ts et tabs.behavior.test.ts' },
+  ]}
+>
+  <TabsExamples />
+</ComponentPage>

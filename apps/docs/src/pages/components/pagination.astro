@@ -1,0 +1,76 @@
+---
+import Pagination from '@paulperigault/astro/Pagination.astro';
+import ComponentPage from '../../components/ComponentPage.astro';
+import PaginationExamples from '../../components/examples/pagination.astro';
+
+const snippet = `<Pagination
+  label="Pagination des résultats"
+  items={[
+    { label: '1', href: '/blog/1' },
+    { label: '2', href: '/blog/2', current: true },
+    { label: '3', href: '/blog/3' },
+  ]}
+  previous={{ label: 'Page précédente', href: '/blog/1' }}
+  next={{ label: 'Page suivante', href: '/blog/3' }}
+/>`;
+---
+
+<ComponentPage
+  slug="pagination"
+  title="Pagination"
+  summary="Pagination affiche des liens vers les pages d’une liste, la page courante sans lien, et des liens précédent et suivant."
+  use={[
+    'Parcourir une liste découpée en pages, comme des articles ou des résultats.',
+    'Fournir des liens réels : chaque page a une adresse, sans JavaScript.',
+  ]}
+  avoid={[
+    'Pour un fil d’Ariane : utiliser Breadcrumb.',
+    'Pour un défilement infini : Pagination suppose des pages à adresse propre.',
+    'Pour calculer les pages : utiliser pageWindow, le composant ne les calcule pas.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Chaque lien reçoit le focus avec Tab, dans l’ordre du document.',
+      'Le focus visible utilise un contour de la couleur --pp-color-focus (critère 2.4.7).',
+    ],
+    screenReader: [
+      'Le repère nav porte le nom donné par label.',
+      'La liste porte role="list" : VoiceOver garde la sémantique malgré list-style: none.',
+      'La page courante porte aria-current="page" et n’est pas un lien.',
+    ],
+    guaranteed: [
+      'La page courante se distingue par un cadre et une graisse, pas par la couleur seule (critère 1.4.1).',
+      'Liens et page courante font au moins --pp-size-target-min de côté (critère 2.5.8).',
+      'Les liens restent soulignés pour se distinguer du texte (critère 1.4.1).',
+    ],
+    integrator: [
+      'Fournir tous les libellés dans la langue du site, y compris précédent et suivant.',
+      'Donner un label distinct si la page contient plusieurs repères nav (critère 2.4.1).',
+      'Rendre le libellé de chaque lien compréhensible, par exemple « Page 3 » plutôt que « 3 » seul.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html',
+    },
+    {
+      label: 'WCAG 2.5.8 Taille de la cible (minimum)',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html',
+    },
+    {
+      label: 'WCAG 2.4.7 Focus visible',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html',
+    },
+    { label: 'Tests : packages/astro/test/Pagination.test.ts' },
+  ]}
+>
+  <PaginationExamples />
+  <Fragment slot="variants">
+    <Pagination
+      label="Pagination, page unique"
+      items={[{ label: '1', href: '#page-1', current: true }]}
+    />
+  </Fragment>
+</ComponentPage>

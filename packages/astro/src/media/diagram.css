@@ -1,0 +1,87 @@
+/*
+ * Schéma SVG (Diagram) : fichier global, classes à employer dans le slot. Traits, boîtes et
+ * étiquettes viennent de jetons `--pp-*` ; aucun dégradé, ombre ou flou.
+ * Épaisseur des traits : `--pp-size-focus-width` (2px), faute de jeton dédié aux schémas.
+ */
+.pp-diagram {
+  margin-block: 0;
+  margin-inline: 0;
+  color: var(--pp-color-fg);
+}
+
+.pp-diagram__frame[data-scroll] {
+  overflow-inline: auto;
+}
+
+.pp-diagram__frame:focus-visible {
+  outline: var(--pp-size-focus-width) solid var(--pp-color-focus);
+  outline-offset: var(--pp-size-focus-offset);
+}
+
+.pp-diagram__svg {
+  display: block;
+  block-size: auto;
+}
+
+/* Sans `scroll`, le SVG suit la largeur du conteneur. Avec `scroll`, il garde sa largeur de viewBox. */
+.pp-diagram__svg:not([data-scroll]) {
+  inline-size: 100%;
+}
+
+.pp-diagram figcaption {
+  max-inline-size: var(--pp-size-measure);
+  margin-block-start: var(--pp-space-2xs);
+  color: var(--pp-color-muted);
+  font-size: var(--pp-font-size--1);
+}
+
+.pp-diagram__line {
+  fill: none;
+  stroke: var(--pp-color-muted);
+  stroke-width: var(--pp-size-focus-width);
+}
+
+/* Pointe d'une flèche (marker) : elle hérite de son `<defs>`, pas du trait qui la référence. */
+.pp-diagram__head {
+  fill: var(--pp-color-muted);
+}
+
+.pp-diagram__box {
+  fill: var(--pp-color-surface);
+  stroke: var(--pp-color-muted);
+  stroke-width: var(--pp-size-focus-width);
+}
+
+.pp-diagram__accent {
+  stroke: var(--pp-color-accent);
+}
+
+.pp-diagram__label {
+  fill: var(--pp-color-fg);
+  font-family: var(--pp-font-family-sans);
+  font-size: var(--pp-font-size--1);
+}
+
+@media (forced-colors: active) {
+  .pp-diagram figcaption {
+    color: CanvasText;
+  }
+
+  .pp-diagram__line,
+  .pp-diagram__box {
+    stroke: CanvasText;
+  }
+
+  .pp-diagram__head,
+  .pp-diagram__label {
+    fill: CanvasText;
+  }
+
+  .pp-diagram__box {
+    fill: Canvas;
+  }
+
+  .pp-diagram__accent {
+    stroke: CanvasText;
+  }
+}

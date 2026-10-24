@@ -1,0 +1,60 @@
+---
+import ComponentPage from '../../components/ComponentPage.astro';
+import PopoverExamples from '../../components/examples/popover.astro';
+
+const snippet = `<Popover id="details" triggerLabel="Voir les détails">
+  <p>Le build a duré 42 secondes.</p>
+</Popover>`;
+---
+
+<ComponentPage
+  slug="popover"
+  title="Popover"
+  summary="Popover affiche un panneau court sous un bouton, avec l’API HTML popover et sans JavaScript."
+  use={[
+    'Donner un détail court lié à un bouton, comme une aide ou un résumé.',
+    'Afficher un contenu qui peut se fermer par Échap ou par un clic à l’extérieur.',
+  ]}
+  avoid={[
+    'Pour un dialogue qui bloque la page : utiliser un élément dialog modal.',
+    'Pour une info-bulle au survol : un popover s’ouvre au clic, pas au survol.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Entrée ou Espace sur le bouton ouvre et ferme le panneau.',
+      'Échap ferme le panneau ; le navigateur rend le focus au bouton.',
+    ],
+    screenReader: [
+      'Le bouton est nommé par son texte (WCAG 4.1.2).',
+      'Les navigateurs récents exposent l’état ouvert ou fermé du bouton. Non vérifié avec un lecteur d’écran.',
+    ],
+    guaranteed: [
+      'Le bouton est un élément button natif d’au moins la cible minimale (WCAG 2.5.8).',
+      'Le panneau a une bordure visible, pas seulement une couleur de fond (WCAG 1.4.11).',
+      'En forced-colors: active, les bordures prennent la couleur CanvasText.',
+    ],
+    integrator: [
+      'Fournir un id unique par panneau : le composant lève une erreur sans id.',
+      'Garder le contenu court ; mettre un bouton de fermeture si le panneau contient des liens.',
+      'Sans ancrage CSS, le panneau s’affiche en bas de la fenêtre, pas sous le bouton.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 4.1.2 Nom, rôle et valeur',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html',
+    },
+    {
+      label: 'WCAG 2.5.8 Taille de cible (minimum)',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html',
+    },
+    {
+      label: 'WCAG 1.4.11 Contraste des éléments non textuels',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html',
+    },
+    { label: 'Tests : packages/astro/test/Popover.test.ts' },
+  ]}
+>
+  <PopoverExamples />
+</ComponentPage>

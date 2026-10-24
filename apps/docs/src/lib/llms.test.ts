@@ -14,9 +14,9 @@ describe('buildLlms', () => {
     expect(lines[0]).toBe('# Design system @paulperigault');
   });
 
-  it('cite les 31 composants de la navigation, sans invoker-fallback', () => {
+  it('cite chaque composant de la navigation, sans invoker-fallback', () => {
     const componentLinks = lines.filter((line) => line.includes('/components/'));
-    expect(componentLinks).toHaveLength(31);
+    expect(componentLinks).toHaveLength(SLUGS.length);
     for (const slug of SLUGS) {
       expect(text).toContain(`${SITE}/components/${slug}.md`);
     }
@@ -34,7 +34,7 @@ describe('buildLlms', () => {
 
   it('forme chaque lien .md de composant de façon correcte', () => {
     const mdLines = lines.filter((line) => line.includes('.md)'));
-    expect(mdLines).toHaveLength(31);
+    expect(mdLines).toHaveLength(SLUGS.length);
     for (const line of mdLines) {
       expect(line).toMatch(MD_LINK);
     }

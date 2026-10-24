@@ -1,0 +1,48 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "combobox",
+  "type": "registry:ui",
+  "title": "Combobox",
+  "description": "Champ avec liste de suggestions filtrée à la saisie, datalist natif sans script, focus gardé dans le champ.",
+  "registryDependencies": ["field"],
+  "files": [
+    {
+      "path": "packages/astro/src/forms/Combobox.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/forms/combobox.css",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/behaviors/combobox.ts",
+      "type": "registry:lib"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-bg",
+      "--pp-color-control",
+      "--pp-color-fg",
+      "--pp-color-muted",
+      "--pp-color-on-accent",
+      "--pp-color-status-failed",
+      "--pp-color-surface",
+      "--pp-font-line-height-body",
+      "--pp-font-size-0",
+      "--pp-radius-control",
+      "--pp-size-control-height",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-2xl",
+      "--pp-space-3xl",
+      "--pp-space-3xs",
+      "--pp-space-xs",
+      "--pp-z-overlay"
+    ],
+    "version": "0.0.0"
+  }
+}

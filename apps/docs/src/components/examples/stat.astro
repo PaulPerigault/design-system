@@ -1,0 +1,16 @@
+---
+/** Exemples vivants de la page Stat : une tendance à la hausse, une stable, une à la baisse. */
+import Stack from '@paulperigault/astro/Stack.astro';
+import Stat from '@paulperigault/astro/Stat.astro';
+---
+
+<Stack space="xs">
+  <Stat label="Visites" value="1 204" delta="+3 depuis la semaine dernière" trend="up" />
+  <Stat label="Erreurs" value="0" delta="Stable depuis hier" trend="flat" />
+  <Stat
+    label="Temps de réponse"
+    value="420 ms"
+    delta="−40 ms depuis la semaine dernière"
+    trend="down"
+  />
+</Stack>

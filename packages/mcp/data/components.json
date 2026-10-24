@@ -520,6 +520,97 @@
   {
     "a11y": {
       "guaranteed": [
+        "Le focus du lien est visible sur toute la carte, par un anneau de 2 px (WCAG 2.4.7).",
+        "Le lien est souligné : la couleur n’est pas seule à le signaler (WCAG 1.4.1).",
+        "La zone cliquable couvre la carte, au-delà de 24 px de côté (WCAG 2.5.8).",
+        "Le titre est un vrai titre, donc repérable dans la structure (WCAG 1.3.1)."
+      ],
+      "integrator": [
+        "Choisir headingLevel selon la hiérarchie de la page, sans sauter de niveau.",
+        "Donner un titre unique à chaque carte : il sert de nom au lien.",
+        "Ne pas placer de lien ou de bouton dans le slot par défaut ni dans media.",
+        "Fournir un texte alternatif aux images du slot media."
+      ],
+      "keyboard": [
+        "Avec href, la carte compte un seul arrêt de tabulation : le lien du titre.",
+        "Les liens du slot footer ont leur propre arrêt de tabulation.",
+        "Entrée active le lien ; le composant ne gère aucune autre touche."
+      ],
+      "screenReader": [
+        "Le titre est un titre de section (h2, h3 ou h4) ; le lien porte son texte comme nom.",
+        "La carte est un article sans rôle ajouté."
+      ]
+    },
+    "avoid": [
+      "Pour une action sans destination : utiliser Button.",
+      "Pour regrouper des contenus longs : un titre de section et du texte suffisent."
+    ],
+    "evidence": [
+      "[WCAG 2.4.7 Focus visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html)",
+      "[WCAG 1.3.1 Information et relations](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html)",
+      "[WCAG 2.5.8 Taille de la cible (minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)",
+      "Tests : packages/astro/test/Card.test.ts"
+    ],
+    "group": "content",
+    "props": [
+      {
+        "description": "Titre de la carte, rendu dans un titre de section et nom accessible du lien.",
+        "fallback": "—",
+        "name": "title (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Adresse du lien unique. Sans elle, la carte n'est pas cliquable.",
+        "fallback": "—",
+        "name": "href",
+        "type": "string"
+      },
+      {
+        "description": "Niveau du titre (2, 3 ou 4), à choisir selon la hiérarchie de la page.",
+        "fallback": "—",
+        "name": "headingLevel",
+        "type": "2 | 3 | 4"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "card",
+    "snippet": "<Card title=\"Design system\" href=\"/projets/design-system\">\n  <p>Jetons, composants Astro et contrôles de qualité.</p>\n  <a slot=\"footer\" href=\"/etiquettes/astro\">Astro</a>\n</Card>\n<Card title=\"Sans lien\" headingLevel={4}>\n  <p>Carte non cliquable.</p>\n</Card>",
+    "summary": "Card regroupe un titre, un texte, un média et un pied de carte, avec un seul lien qui couvre toute la carte.",
+    "title": "Card",
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-fg",
+      "--pp-color-focus",
+      "--pp-color-line",
+      "--pp-color-surface",
+      "--pp-font-line-height-heading",
+      "--pp-font-size-0",
+      "--pp-font-weight-bold",
+      "--pp-radius-control",
+      "--pp-radius-surface",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-s",
+      "--pp-space-xs",
+      "--pp-z-sticky"
+    ],
+    "use": [
+      "Présenter un projet, un article ou une ressource dans une liste de cartes.",
+      "Ajouter des étiquettes ou des liens secondaires dans le slot footer."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
         "Marges inline automatiques et largeur limitée par --pp-size-measure (Center.test.ts).",
         "text centre le texte, intrinsic centre les enfants selon leur largeur (Center.astro).",
         "Aucun attribut style et aucun JavaScript (Center.test.ts)."
@@ -770,6 +861,264 @@
   {
     "a11y": {
       "guaranteed": [
+        "Les couleurs de jetons ont un contraste d’au moins 4,5:1 sur le fond, dans les deux thèmes (WCAG 1.4.3, test automatisé).",
+        "La coloration ne porte aucun sens à elle seule : le code reste lisible en noir et blanc (WCAG 1.4.1).",
+        "Le bouton de copie fait au moins --pp-size-target-min et affiche son libellé (WCAG 2.5.8, 2.5.3).",
+        "Sans JavaScript, le code et la coloration restent ; le bouton reste masqué, car il ne peut pas fonctionner.",
+        "En forced-colors: active, les jetons prennent la couleur CanvasText."
+      ],
+      "integrator": [
+        "Fournir copyLabel et copiedLabel dans la langue du site.",
+        "Nommer chaque bloc avec label ou filename s’il y en a plusieurs sur la page.",
+        "Autoriser le script du composant dans la CSP (script-src 'self') : il est servi en fichier externe.",
+        "Non vérifié : la restitution par lecteur d’écran des régions nommées et de l’annonce de copie."
+      ],
+      "keyboard": [
+        "Le bloc de code reçoit le focus (tabindex=\"0\") : les flèches le font défiler (WCAG 2.1.1).",
+        "Le bouton de copie s’active avec Entrée ou Espace, comme tout bouton natif."
+      ],
+      "screenReader": [
+        "Avec label ou filename, le bloc est une région nommée (role=\"region\", aria-label).",
+        "Le message de copie est écrit dans un role=\"status\" vide au départ, annoncé sans déplacer le focus (WCAG 4.1.3)."
+      ]
+    },
+    "avoid": [
+      "Pour un mot de code dans une phrase : utiliser l’élément code seul.",
+      "Pour une comparaison avant-après : utiliser Diff.",
+      "Pour une langue hors liste : le texte s’affiche sans couleur, il faut le savoir."
+    ],
+    "evidence": [
+      "[WCAG 1.4.3 Contraste minimum](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)",
+      "[WCAG 2.1.1 Clavier](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html)",
+      "[WCAG 4.1.3 Messages d’état](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html)",
+      "[APG : motif Button](https://www.w3.org/WAI/ARIA/apg/patterns/button/)",
+      "Tests : packages/astro/test/CodeBlock.test.ts"
+    ],
+    "group": "content",
+    "props": [
+      {
+        "description": "Code à afficher, tel quel (le saut de ligne final est retiré).",
+        "fallback": "—",
+        "name": "code (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Langue : ts, js, json, shellscript, astro, css, html ou yaml. Autre valeur : texte sans couleur.",
+        "fallback": "—",
+        "name": "lang",
+        "type": "string"
+      },
+      {
+        "description": "Nom accessible du bloc. À défaut, `filename` sert de nom ; sans les deux, le bloc n'est pas nommé.",
+        "fallback": "—",
+        "name": "label",
+        "type": "string"
+      },
+      {
+        "description": "Libellé visible du bouton de copie (par exemple « Copier »).",
+        "fallback": "—",
+        "name": "copyLabel (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Message annoncé après la copie (par exemple « Copié »).",
+        "fallback": "—",
+        "name": "copiedLabel (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Nom de fichier affiché au-dessus du code.",
+        "fallback": "—",
+        "name": "filename",
+        "type": "string"
+      }
+    ],
+    "slug": "code-block",
+    "snippet": "<CodeBlock\n  code={source}\n  lang=\"ts\"\n  filename=\"astro.config.ts\"\n  label=\"Configuration Astro\"\n  copyLabel=\"Copier le code\"\n  copiedLabel=\"Code copié\"\n/>",
+    "summary": "CodeBlock affiche du code coloré au build, défilable au clavier, avec un bouton de copie.",
+    "title": "CodeBlock",
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-control",
+      "--pp-color-fg",
+      "--pp-color-focus",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-color-status-degraded",
+      "--pp-color-status-passed",
+      "--pp-color-surface",
+      "--pp-font-family-mono",
+      "--pp-font-line-height-body",
+      "--pp-font-size--1",
+      "--pp-radius-control",
+      "--pp-radius-surface",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-2xs",
+      "--pp-space-s",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Montrer une commande, une configuration ou un extrait de code à lire ou à copier.",
+      "Afficher un nom de fichier au-dessus de l’extrait, avec filename."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Sans script, le champ reste un <input list> relié à un <datalist> natif.",
+        "La saisie filtre sans sélectionner d’option d’elle-même (aria-autocomplete=\"list\").",
+        "Le filtre ignore la casse et les accents : « ege » trouve « Égypte ».",
+        "Options d’au moins --pp-size-target-min de haut (WCAG 2.5.8).",
+        "L’option active est soulignée en plus du fond coloré (WCAG 1.4.1).",
+        "La liste a une hauteur bornée et défile ; l’option active défile dans la vue."
+      ],
+      "integrator": [
+        "Fournir label, noResultsLabel et countLabel dans la langue du site.",
+        "Avec required, fournir requiredLabel pour signaler le champ obligatoire en texte (WCAG 3.3.2).",
+        "Avec invalid, afficher le message d’erreur près du champ (WCAG 3.3.1).",
+        "Servir le script en fichier externe : la CSP doit autoriser script-src 'self'."
+      ],
+      "keyboard": [
+        "Flèche bas et flèche haut ouvrent la liste, déplacent l’option active et bouclent (motif APG Combobox).",
+        "Entrée écrit l’option active dans le champ et ferme la liste.",
+        "Échap ferme la liste ; un second Échap vide le champ.",
+        "Tab ferme la liste sans valider ; Début et Fin restent au curseur du champ.",
+        "Le focus reste dans le champ : l’option active passe par aria-activedescendant."
+      ],
+      "screenReader": [
+        "Le champ a le rôle combobox, son nom vient du <label for> (WCAG 4.1.2).",
+        "aria-expanded indique si la liste est ouverte ; aria-controls la désigne.",
+        "Une zone role=\"status\" annonce le nombre de suggestions (WCAG 4.1.3).",
+        "Rendu non testé avec VoiceOver, NVDA ni JAWS : à vérifier avant usage critique."
+      ]
+    },
+    "avoid": [
+      "Pour quelques choix seulement : Select ou Choice les montrent sans saisie.",
+      "Pour une recherche qui interroge un serveur : le filtre porte sur les options rendues.",
+      "Pour envoyer un identifiant distinct du libellé : le champ envoie le libellé."
+    ],
+    "evidence": [
+      "[APG : Combobox with List Autocomplete](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-autocomplete-list/)",
+      "[WCAG 4.1.2 Nom, rôle et valeur](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html)",
+      "[WCAG 4.1.3 Messages d’état](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html)",
+      "[WCAG 2.5.8 Taille de la cible (minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)",
+      "[WCAG 1.4.1 Utilisation de la couleur](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+      "Tests : packages/astro/test/Combobox.test.ts",
+      "Tests : packages/astro/test/combobox.behavior.test.ts"
+    ],
+    "group": "forms",
+    "props": [
+      {
+        "description": "Libellé visible du champ ; nomme aussi la liste de suggestions.",
+        "fallback": "—",
+        "name": "label (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Nom envoyé avec le formulaire (le texte du champ).",
+        "fallback": "—",
+        "name": "name (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Id du champ ; dérive `<id>-listbox`, `<id>-datalist` et `<id>-option-<n>`.",
+        "fallback": "—",
+        "name": "id (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Suggestions proposées : `{ value, label }`.",
+        "fallback": "—",
+        "name": "options (obligatoire)",
+        "type": "Option[]"
+      },
+      {
+        "description": "Valeur initiale : `value` d'une option (son libellé est affiché) ou texte libre.",
+        "fallback": "—",
+        "name": "value",
+        "type": "string"
+      },
+      {
+        "description": "Indication sous le libellé, reliée par `aria-describedby`.",
+        "fallback": "—",
+        "name": "hint",
+        "type": "string"
+      },
+      {
+        "description": "Annonce quand aucune suggestion ne correspond, par exemple « Aucun résultat ».",
+        "fallback": "—",
+        "name": "noResultsLabel (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Annonce du nombre de suggestions, avec `{count}`, par exemple « {count} résultats ».",
+        "fallback": "—",
+        "name": "countLabel (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Saisie obligatoire (`required`).",
+        "fallback": "false",
+        "name": "required",
+        "type": "boolean"
+      },
+      {
+        "description": "Texte accolé au libellé si `required`, par exemple « obligatoire ».",
+        "fallback": "—",
+        "name": "requiredLabel",
+        "type": "string"
+      },
+      {
+        "description": "Pose `aria-invalid=\"true\"` sur le champ.",
+        "fallback": "false",
+        "name": "invalid",
+        "type": "boolean"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "combobox",
+    "snippet": "<Combobox\n  id=\"pays\"\n  name=\"pays\"\n  label=\"Pays\"\n  hint=\"Tapez quelques lettres.\"\n  options={[\n    { value: 'fr', label: 'France' },\n    { value: 'ee', label: 'Estonie' },\n  ]}\n  noResultsLabel=\"Aucun pays ne correspond.\"\n  countLabel=\"{count} pays proposés.\"\n/>",
+    "summary": "Combobox est un champ texte qui propose une liste de suggestions, filtrée à chaque saisie.",
+    "title": "Combobox",
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-bg",
+      "--pp-color-control",
+      "--pp-color-fg",
+      "--pp-color-muted",
+      "--pp-color-on-accent",
+      "--pp-color-status-failed",
+      "--pp-color-surface",
+      "--pp-font-line-height-body",
+      "--pp-font-size-0",
+      "--pp-radius-control",
+      "--pp-size-control-height",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-2xl",
+      "--pp-space-3xl",
+      "--pp-space-3xs",
+      "--pp-space-xs",
+      "--pp-z-overlay"
+    ],
+    "use": [
+      "Choisir dans une longue liste connue, comme des pays ou des villes.",
+      "Accepter aussi une saisie libre : le formulaire envoie le texte du champ."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
         "Centrage par margin-inline: auto et largeur maximale via --pp-size-page ou --pp-size-measure.",
         "Gouttière par padding-inline et tokens --pp-space-*."
       ],
@@ -833,6 +1182,110 @@
     "use": [
       "Borner la largeur d’une page ou d’une section, centrée horizontalement.",
       "Limiter un texte à la mesure de lecture avec width=\"measure\"."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Le SVG expose un titre et une description (WCAG 1.1.1).",
+        "Traits, boîtes et étiquettes viennent de jetons ; aucun dégradé, ombre ni flou.",
+        "En forced-colors: active, traits et textes passent en CanvasText, les boîtes en Canvas.",
+        "Aucun JavaScript et aucun attribut style."
+      ],
+      "integrator": [
+        "Écrire une description qui donne les étapes, les relations et le sens des flèches (WCAG 1.1.1).",
+        "Ne pas porter le sens par la couleur d’accent seule : le texte doit le dire (WCAG 1.4.1).",
+        "Vérifier le contraste des traits et des boîtes, non garanti par le composant (WCAG 1.4.11).",
+        "Choisir un viewBox proche de la taille d’affichage : le texte suit l’échelle du schéma."
+      ],
+      "keyboard": [
+        "Sans scroll, le schéma ne reçoit pas le focus et n’a pas de touche propre.",
+        "Avec scroll, le conteneur reçoit le focus (tabindex=\"0\") et se parcourt au clavier.",
+        "Le contour de focus entoure le conteneur (WCAG 2.4.7)."
+      ],
+      "screenReader": [
+        "Le nom du schéma est le titre suivi de la description (aria-labelledby).",
+        "Le SVG a le rôle img : ses blocs et ses flèches ne sont pas lus un à un.",
+        "Avec scroll, le conteneur est un groupe nommé par le titre."
+      ]
+    },
+    "avoid": [
+      "Pour une photo ou une illustration : utiliser Photo ou Figure.",
+      "Pour un graphe de plus de cinq blocs : simplifier le schéma ou le décrire en liste."
+    ],
+    "evidence": [
+      "[WCAG 1.1.1 Contenu non textuel](https://www.w3.org/TR/WCAG22/#non-text-content)",
+      "[WCAG 1.4.1 Utilisation de la couleur](https://www.w3.org/TR/WCAG22/#use-of-color)",
+      "[WCAG 1.4.11 Contraste non textuel](https://www.w3.org/TR/WCAG22/#non-text-contrast)",
+      "[WCAG 2.4.7 Focus visible](https://www.w3.org/TR/WCAG22/#focus-visible)",
+      "Motif APG : aucun motif APG ne couvre les schémas SVG (non vérifié)",
+      "Tests : packages/astro/test/Diagram.test.ts"
+    ],
+    "group": "media",
+    "props": [
+      {
+        "description": "Préfixe unique des ids de titre et de description : lettres, chiffres et tirets.",
+        "fallback": "—",
+        "name": "id (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Titre court du schéma, premier élément du nom accessible.",
+        "fallback": "—",
+        "name": "title (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Alternative textuelle complète : étapes, relations, sens des flèches.",
+        "fallback": "—",
+        "name": "description (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Légende visible sous le schéma.",
+        "fallback": "—",
+        "name": "caption",
+        "type": "string"
+      },
+      {
+        "description": "Boîte du SVG, « min-x min-y largeur hauteur », par exemple « 0 0 360 120 ».",
+        "fallback": "—",
+        "name": "viewBox (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Schéma à largeur naturelle, dans un conteneur défilable et focalisable au clavier.",
+        "fallback": "false",
+        "name": "scroll",
+        "type": "boolean"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "diagram",
+    "snippet": "<Diagram\n  id=\"chaine\"\n  title=\"Chaîne de dépendances\"\n  description=\"Les jetons alimentent css, css alimente astro.\"\n  caption=\"Trois paquets, un seul sens de dépendance.\"\n  viewBox=\"0 0 360 120\"\n>\n  <defs>\n    <marker id=\"pp-diagram-arrow\" viewBox=\"0 0 10 10\" refX=\"10\" refY=\"5\"\n      markerWidth=\"8\" markerHeight=\"8\" markerUnits=\"userSpaceOnUse\" orient=\"auto\">\n      <path class=\"pp-diagram__head\" d=\"M0 0L10 5L0 10Z\" />\n    </marker>\n  </defs>\n  <rect class=\"pp-diagram__box\" x=\"8\" y=\"40\" width=\"96\" height=\"40\" />\n  <rect class=\"pp-diagram__box\" x=\"128\" y=\"40\" width=\"96\" height=\"40\" />\n  <text class=\"pp-diagram__label\" x=\"56\" y=\"65\" text-anchor=\"middle\">tokens</text>\n  <text class=\"pp-diagram__label\" x=\"176\" y=\"65\" text-anchor=\"middle\">css</text>\n  <path class=\"pp-diagram__line\" d=\"M104 60H124\" marker-end=\"url(#pp-diagram-arrow)\" />\n</Diagram>",
+    "summary": "Diagram enveloppe un schéma SVG avec un titre, une description complète et une légende visible.",
+    "title": "Diagram",
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-fg",
+      "--pp-color-focus",
+      "--pp-color-muted",
+      "--pp-color-surface",
+      "--pp-font-family-sans",
+      "--pp-font-size--1",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-measure",
+      "--pp-space-2xs"
+    ],
+    "use": [
+      "Montrer une chaîne de trois à cinq blocs reliés par des flèches.",
+      "Fournir une description complète, lue à la place du schéma par les lecteurs d’écran."
     ]
   },
   {
@@ -1005,6 +1458,93 @@
     "use": [
       "Montrer une modification de code ou de texte que le lecteur doit comparer.",
       "Garder le sens visible sans couleur : chaque ligne porte son signe, + ou -."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Le titre est un élément h2, h3 ou h4 réel, au niveau choisi (WCAG 1.3.1).",
+        "La section a un nom accessible : le texte du titre (WCAG 4.1.2).",
+        "Aucune icône : le sens ne repose ni sur une forme ni sur une couleur (WCAG 1.4.1)."
+      ],
+      "integrator": [
+        "Choisir headingLevel selon le plan du document ; le titre doit décrire l’état (WCAG 2.4.6).",
+        "Une action doit mesurer 24 px au minimum de chaque côté (WCAG 2.5.8).",
+        "Deux états vides de même titre sur une page ont le même identifiant : varier le titre."
+      ],
+      "keyboard": [
+        "Le composant est statique : il ne reçoit pas le focus.",
+        "Les liens ou boutons du slot action gardent leur comportement clavier natif."
+      ],
+      "screenReader": [
+        "La section est annoncée comme région, nommée par son titre (aria-labelledby).",
+        "Aucun rôle n’est posé sur le contenu : le titre se lit à son niveau headingLevel."
+      ]
+    },
+    "avoid": [
+      "Pour un message d’erreur : utiliser Alert, qui porte un ton et un rôle d’annonce.",
+      "Pour un chargement en cours : utiliser Skeleton, qui occupe la place du contenu attendu."
+    ],
+    "evidence": [
+      "[WCAG 1.3.1 Information et relations](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html)",
+      "[WCAG 1.4.1 Utilisation de la couleur](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+      "[WCAG 2.4.6 Titres et étiquettes](https://www.w3.org/WAI/WCAG22/Understanding/headings-and-labels.html)",
+      "[WCAG 2.5.8 Taille de la cible, minimum](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)",
+      "[WCAG 4.1.2 Nom, rôle, valeur](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html)",
+      "[HTML-ARIA : section nommée, rôle region](https://www.w3.org/TR/html-aria/#el-section)",
+      "Tests : packages/astro/test/EmptyState.test.ts"
+    ],
+    "group": "content",
+    "props": [
+      {
+        "description": "Titre de l'état vide, lu comme nom de la section (par exemple « Aucun résultat »).",
+        "fallback": "—",
+        "name": "title (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Niveau du titre dans le plan du document, de 2 à 4. Défaut : 2.",
+        "fallback": "DEFAULT_HEADING_LEVEL",
+        "name": "headingLevel",
+        "type": "2 | 3 | 4"
+      },
+      {
+        "description": "Alignement du contenu : `start` (défaut) ou `center`.",
+        "fallback": "'start'",
+        "name": "align",
+        "type": "\"start\" | \"center\""
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "empty-state",
+    "snippet": "<EmptyState title=\"Aucun projet\">\n  <p>Aucun projet n’est publié pour le moment.</p>\n  <a slot=\"action\" href=\"/projets/nouveau\">Créer un projet</a>\n</EmptyState>\n\n<EmptyState title=\"Aucun résultat\" align=\"center\" headingLevel={3}>\n  <p>Modifiez les filtres pour élargir la recherche.</p>\n</EmptyState>",
+    "summary": "EmptyState indique qu’une liste ou un résultat est vide, et propose une action facultative.",
+    "title": "EmptyState",
+    "tokens": [
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-color-surface",
+      "--pp-font-line-height-body",
+      "--pp-font-line-height-heading",
+      "--pp-font-size-1",
+      "--pp-font-weight-semibold",
+      "--pp-radius-surface",
+      "--pp-size-measure",
+      "--pp-size-rule",
+      "--pp-space-2xs",
+      "--pp-space-m",
+      "--pp-space-s",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Une liste, un résultat de recherche ou un tableau de bord n’a aucune donnée à montrer.",
+      "Une action permet de sortir de l’état vide : créer un élément, modifier les filtres."
     ]
   },
   {
@@ -1475,6 +2015,186 @@
   {
     "a11y": {
       "guaranteed": [
+        "Sans JavaScript, le bouton ouvre le panneau (popover) et les liens fonctionnent.",
+        "Le bouton et les entrées font au moins la taille du jeton --pp-size-target-min (WCAG 2.5.8).",
+        "Le focus est visible sur le bouton et les entrées (WCAG 2.4.7). Le texte garde la couleur de premier plan.",
+        "Une entrée désactivée est aussi barrée : la couleur n’est pas seule (WCAG 1.4.1)."
+      ],
+      "integrator": [
+        "Fournir un id unique par menu et un libellé de bouton explicite.",
+        "Écouter l’évènement pp-menu-action (detail.action) sur le panneau pour les entrées à action.",
+        "Non testé avec VoiceOver, NVDA ou JAWS : à vérifier sur les cibles du site.",
+        "Le repli de position sans ancrage CSS suppose une écriture de gauche à droite : non vérifié en RTL."
+      ],
+      "keyboard": [
+        "Entrée, Espace et Flèche bas ouvrent le menu et placent le focus sur la première entrée.",
+        "Flèche haut ouvre le menu et place le focus sur la dernière entrée.",
+        "Les flèches haut et bas bouclent ; Début et Fin vont aux extrémités.",
+        "Une lettre tapée va à la première entrée dont le libellé commence par elle.",
+        "Échap ferme le menu et rend le focus au bouton ; Tab ferme le menu."
+      ],
+      "screenReader": [
+        "Le bouton annonce aria-haspopup=\"menu\" et son état aria-expanded (APG Menu Button).",
+        "Le panneau a role=\"menu\", nommé par le bouton ; chaque entrée a role=\"menuitem\".",
+        "Une entrée désactivée porte aria-disabled=\"true\" et reste focalisable, comme l’APG le recommande."
+      ]
+    },
+    "avoid": [
+      "Pour la navigation du site : une liste de liens dans nav suffit et se lit mieux.",
+      "Pour un choix de formulaire : utiliser un champ select ou des boutons radio.",
+      "Pour une seule action : un bouton simple suffit."
+    ],
+    "evidence": [
+      "[APG : motif Menu Button](https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/)",
+      "[WCAG 2.1.1 Clavier](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html)",
+      "[WCAG 2.5.8 Taille de la cible (minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)",
+      "Tests : packages/astro/test/Menu.test.ts, menu.behavior.test.ts"
+    ],
+    "group": "navigation",
+    "props": [
+      {
+        "description": "Texte du bouton, qui sert aussi de nom accessible au menu.",
+        "fallback": "—",
+        "name": "label (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Identifiant du panneau ; le bouton a pour id `<id>-button`. Unique dans la page.",
+        "fallback": "—",
+        "name": "id (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Entrées du menu, dans l'ordre d'affichage.",
+        "fallback": "—",
+        "name": "items (obligatoire)",
+        "type": "Item[]"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "menu",
+    "snippet": "<Menu\n  id=\"actions\"\n  label=\"Actions\"\n  items={[\n    { label: 'Copier le lien', action: 'copy-link' },\n    { label: 'Ouvrir le dépôt', href: '/depot' },\n    { label: 'Supprimer', action: 'delete', disabled: true },\n  ]}\n/>",
+    "summary": "Menu ouvre une liste d’actions depuis un bouton, selon le motif APG Menu Button. Il ne sert pas à la navigation du site.",
+    "title": "Menu",
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-bg",
+      "--pp-color-fg",
+      "--pp-color-focus",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-color-surface",
+      "--pp-radius-control",
+      "--pp-radius-surface",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-s"
+    ],
+    "use": [
+      "Regrouper des actions sur un objet : copier, renommer, supprimer.",
+      "Fermer le menu après le choix d’une entrée : le composant le fait."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "La page courante se distingue par un cadre et une graisse, pas par la couleur seule (critère 1.4.1).",
+        "Liens et page courante font au moins --pp-size-target-min de côté (critère 2.5.8).",
+        "Les liens restent soulignés pour se distinguer du texte (critère 1.4.1)."
+      ],
+      "integrator": [
+        "Fournir tous les libellés dans la langue du site, y compris précédent et suivant.",
+        "Donner un label distinct si la page contient plusieurs repères nav (critère 2.4.1).",
+        "Rendre le libellé de chaque lien compréhensible, par exemple « Page 3 » plutôt que « 3 » seul."
+      ],
+      "keyboard": [
+        "Chaque lien reçoit le focus avec Tab, dans l’ordre du document.",
+        "Le focus visible utilise un contour de la couleur --pp-color-focus (critère 2.4.7)."
+      ],
+      "screenReader": [
+        "Le repère nav porte le nom donné par label.",
+        "La liste porte role=\"list\" : VoiceOver garde la sémantique malgré list-style: none.",
+        "La page courante porte aria-current=\"page\" et n’est pas un lien."
+      ]
+    },
+    "avoid": [
+      "Pour un fil d’Ariane : utiliser Breadcrumb.",
+      "Pour un défilement infini : Pagination suppose des pages à adresse propre.",
+      "Pour calculer les pages : utiliser pageWindow, le composant ne les calcule pas."
+    ],
+    "evidence": [
+      "[WCAG 1.4.1 Utilisation de la couleur](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+      "[WCAG 2.5.8 Taille de la cible (minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)",
+      "[WCAG 2.4.7 Focus visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html)",
+      "Tests : packages/astro/test/Pagination.test.ts"
+    ],
+    "group": "navigation",
+    "props": [
+      {
+        "description": "Nom accessible du repère de navigation (`aria-label`), par exemple « Pagination ».",
+        "fallback": "—",
+        "name": "label (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Pages affichées : `{ label, href, current? }` ; `current` en fait la page courante, sans lien.",
+        "fallback": "—",
+        "name": "items (obligatoire)",
+        "type": "Item[]"
+      },
+      {
+        "description": "Lien vers la page précédente, affiché avant les pages. Absent : rien n'est rendu.",
+        "fallback": "—",
+        "name": "previous",
+        "type": "Link"
+      },
+      {
+        "description": "Lien vers la page suivante, affiché après les pages. Absent : rien n'est rendu.",
+        "fallback": "—",
+        "name": "next",
+        "type": "Link"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "pagination",
+    "snippet": "<Pagination\n  label=\"Pagination des résultats\"\n  items={[\n    { label: '1', href: '/blog/1' },\n    { label: '2', href: '/blog/2', current: true },\n    { label: '3', href: '/blog/3' },\n  ]}\n  previous={{ label: 'Page précédente', href: '/blog/1' }}\n  next={{ label: 'Page suivante', href: '/blog/3' }}\n/>",
+    "summary": "Pagination affiche des liens vers les pages d’une liste, la page courante sans lien, et des liens précédent et suivant.",
+    "title": "Pagination",
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-fg",
+      "--pp-color-focus",
+      "--pp-font-size-0",
+      "--pp-font-weight-bold",
+      "--pp-radius-control",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Parcourir une liste découpée en pages, comme des articles ou des résultats.",
+      "Fournir des liens réels : chaque page a une adresse, sans JavaScript."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
         "alt est obligatoire : une chaîne vide ou blanche lève une erreur au build.",
         "alt=\"\" n’est posé qu’avec decorative, jamais par défaut.",
         "width et height sont toujours rendus.",
@@ -1598,6 +2318,83 @@
     "use": [
       "Afficher une image locale : Astro la produit en AVIF et WebP, avec un repli JPEG ou PNG.",
       "Réserver la place de l’image avec width et height, pour éviter le décalage de la mise en page."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Le bouton est un élément button natif d’au moins la cible minimale (WCAG 2.5.8).",
+        "Le panneau a une bordure visible, pas seulement une couleur de fond (WCAG 1.4.11).",
+        "En forced-colors: active, les bordures prennent la couleur CanvasText."
+      ],
+      "integrator": [
+        "Fournir un id unique par panneau : le composant lève une erreur sans id.",
+        "Garder le contenu court ; mettre un bouton de fermeture si le panneau contient des liens.",
+        "Sans ancrage CSS, le panneau s’affiche en bas de la fenêtre, pas sous le bouton."
+      ],
+      "keyboard": [
+        "Entrée ou Espace sur le bouton ouvre et ferme le panneau.",
+        "Échap ferme le panneau ; le navigateur rend le focus au bouton."
+      ],
+      "screenReader": [
+        "Le bouton est nommé par son texte (WCAG 4.1.2).",
+        "Les navigateurs récents exposent l’état ouvert ou fermé du bouton. Non vérifié avec un lecteur d’écran."
+      ]
+    },
+    "avoid": [
+      "Pour un dialogue qui bloque la page : utiliser un élément dialog modal.",
+      "Pour une info-bulle au survol : un popover s’ouvre au clic, pas au survol."
+    ],
+    "evidence": [
+      "[WCAG 4.1.2 Nom, rôle et valeur](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html)",
+      "[WCAG 2.5.8 Taille de cible (minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)",
+      "[WCAG 1.4.11 Contraste des éléments non textuels](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)",
+      "Tests : packages/astro/test/Popover.test.ts"
+    ],
+    "group": "overlay",
+    "props": [
+      {
+        "description": "Texte visible du bouton qui ouvre le panneau.",
+        "fallback": "—",
+        "name": "triggerLabel (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Identifiant du panneau, obligatoire : il relie le bouton au panneau.",
+        "fallback": "—",
+        "name": "id (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "popover",
+    "snippet": "<Popover id=\"details\" triggerLabel=\"Voir les détails\">\n  <p>Le build a duré 42 secondes.</p>\n</Popover>",
+    "summary": "Popover affiche un panneau court sous un bouton, avec l’API HTML popover et sans JavaScript.",
+    "title": "Popover",
+    "tokens": [
+      "--pp-color-fg",
+      "--pp-color-focus",
+      "--pp-color-line",
+      "--pp-color-surface",
+      "--pp-radius-control",
+      "--pp-radius-surface",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-measure",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-s"
+    ],
+    "use": [
+      "Donner un détail court lié à un bouton, comme une aide ou un résumé.",
+      "Afficher un contenu qui peut se fermer par Échap ou par un clic à l’extérieur."
     ]
   },
   {
@@ -2204,6 +3001,73 @@
   {
     "a11y": {
       "guaranteed": [
+        "Le libellé est visible au-dessus des lignes : aucun texte masqué à l’œil.",
+        "La zone est un message d’état, sans focus volé (WCAG 4.1.3).",
+        "L’animation s’arrête sous prefers-reduced-motion et la ligne reste un aplat fixe.",
+        "En forced-colors: active, chaque ligne reçoit une bordure CanvasText."
+      ],
+      "integrator": [
+        "Retirer le composant dès que le contenu est prêt : l’animation boucle (WCAG 2.2.2).",
+        "Fournir un libellé court, dans la langue de la page.",
+        "Ne pas s’appuyer sur le seul composant pour annoncer une erreur (WCAG 4.1.3)."
+      ],
+      "keyboard": [
+        "Le composant est statique : il ne reçoit pas le focus.",
+        "Aucune touche n’est gérée par le composant."
+      ],
+      "screenReader": [
+        "Le libellé est le texte lu de la zone role=\"status\".",
+        "Les lignes sont masquées aux lecteurs d’écran (aria-hidden=\"true\")."
+      ]
+    },
+    "avoid": [
+      "Pour une attente sans forme de contenu prévisible : utiliser Progress, qui porte une valeur.",
+      "Pour signaler une erreur : utiliser un message d’état, pas un emplacement de chargement."
+    ],
+    "evidence": [
+      "[WCAG 4.1.3 Messages d’état](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html)",
+      "[WCAG 2.2.2 Pause, arrêt, masquage](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html)",
+      "[WCAG 2.3.3 Animation déclenchée par interaction (AAA)](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html)",
+      "[WAI-ARIA 1.2, rôle status](https://www.w3.org/TR/wai-aria-1.2/#status)",
+      "Tests : packages/astro/test/Skeleton.test.ts"
+    ],
+    "group": "feedback",
+    "props": [
+      {
+        "description": "Nombre de lignes, de 1 à 6. Une valeur hors plage est ramenée à la borne la plus proche.",
+        "fallback": "DEFAULT_LINES",
+        "name": "lines",
+        "type": "number"
+      },
+      {
+        "description": "Texte visible et lu par les lecteurs d'écran, par exemple « Chargement du contenu ».",
+        "fallback": "—",
+        "name": "label (obligatoire)",
+        "type": "string"
+      }
+    ],
+    "slug": "skeleton",
+    "snippet": "<Skeleton label=\"Chargement du contenu\" />\n<Skeleton lines={1} label=\"Chargement du titre\" />\n<Skeleton lines={6} label=\"Chargement de l’article\" />",
+    "summary": "Skeleton affiche un emplacement de chargement en lignes, avec un libellé lu par les lecteurs d’écran.",
+    "title": "Skeleton",
+    "tokens": [
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-duration-base",
+      "--pp-easing-standard",
+      "--pp-font-size-0",
+      "--pp-radius-control",
+      "--pp-size-rule",
+      "--pp-space-3xs"
+    ],
+    "use": [
+      "Réserver la place d’un contenu qui se charge.",
+      "Signaler qu’une zone se charge, avec un libellé qui décrit ce qui arrive."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
         "Espacement par margin-block et tokens --pp-space-*, sans marge avant le premier enfant.",
         "L’ordre visuel est celui du DOM : aucune propriété order n’est utilisée."
       ],
@@ -2257,6 +3121,89 @@
     "use": [
       "Espacer des blocs de même niveau, comme des paragraphes ou des sections, avec la prop space.",
       "Espacer des enfants de hauteur variable sans régler chaque marge à la main."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "La tendance est écrite en clair dans le delta, sans couleur porteuse de sens.",
+        "Chaque tendance a une forme d’icône distincte : flèche haut, flèche bas, tiret.",
+        "Le composant ne calcule ni ne formate aucune valeur : il affiche ce qu’on lui donne."
+      ],
+      "integrator": [
+        "Fournir un delta dès que trend est donné : le composant refuse sinon.",
+        "Formater la valeur avant l’affichage, par exemple « 1 204 » ou « 420 ms ».",
+        "Annoncer une mise à jour dynamique avec une région live côté intégrateur."
+      ],
+      "keyboard": [
+        "Le composant est statique : il ne reçoit pas le focus.",
+        "Aucune touche n’est gérée par le composant."
+      ],
+      "screenReader": [
+        "Le libellé et la valeur sont du texte ordinaire, dans une liste de description (dl, dt, dd).",
+        "L’icône de tendance est masquée (aria-hidden=\"true\") : le sens passe par le texte du delta."
+      ]
+    },
+    "avoid": [
+      "Pour comparer plusieurs valeurs sur plusieurs lignes : utiliser Table.",
+      "Pour une progression vers un objectif : utiliser Progress, qui porte une valeur maximale."
+    ],
+    "evidence": [
+      "[WCAG 1.1.1 Contenu non textuel](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html)",
+      "[WCAG 1.3.1 Information et relations](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html)",
+      "[WCAG 1.4.1 Utilisation de la couleur](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+      "[WCAG 4.1.3 Messages d’état](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html)",
+      "Tests : packages/astro/test/Stat.test.ts"
+    ],
+    "group": "content",
+    "props": [
+      {
+        "description": "Nom de l'indicateur, par exemple « Visites ».",
+        "fallback": "—",
+        "name": "label (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Valeur affichée, déjà formatée (par exemple « 1 204 »).",
+        "fallback": "—",
+        "name": "value (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Texte de variation, par exemple « +3 depuis la semaine dernière ». Obligatoire si `trend` est donné.",
+        "fallback": "—",
+        "name": "delta",
+        "type": "string"
+      },
+      {
+        "description": "Sens de la variation : `up`, `down` ou `flat`. Défaut : `flat`.",
+        "fallback": "—",
+        "name": "trend",
+        "type": "\"up\" | \"down\" | \"flat\""
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "stat",
+    "snippet": "<Stat label=\"Visites\" value=\"1 204\" delta=\"+3 depuis la semaine dernière\" trend=\"up\" />\n<Stat label=\"Erreurs\" value=\"0\" delta=\"Stable depuis hier\" trend=\"flat\" />\n<Stat label=\"Temps de réponse\" value=\"420 ms\" delta=\"−40 ms depuis la semaine dernière\" trend=\"down\" />",
+    "summary": "Stat affiche un indicateur chiffré, sa variation écrite en clair et une icône de tendance.",
+    "title": "Stat",
+    "tokens": [
+      "--pp-color-fg",
+      "--pp-color-muted",
+      "--pp-font-line-height-heading",
+      "--pp-font-size--1",
+      "--pp-font-size-2",
+      "--pp-font-weight-semibold",
+      "--pp-space-3xs"
+    ],
+    "use": [
+      "Afficher un indicateur clé avec sa variation, sur un tableau de bord.",
+      "Montrer un chiffre unique accompagné d’un libellé et d’une tendance."
     ]
   },
   {
@@ -2599,6 +3546,92 @@
   {
     "a11y": {
       "guaranteed": [
+        "Sans script, les liens d’ancre et les sections titrées gardent tout le contenu lisible (WCAG 1.3.1).",
+        "L’onglet actif se distingue par un trait et une graisse, pas par la couleur seule (WCAG 1.4.1).",
+        "Les onglets font au moins la taille minimale de cible (WCAG 2.5.8).",
+        "Le panneau actif reçoit tabindex=\"0\" s’il ne contient rien de focalisable (motif APG Tabs)."
+      ],
+      "integrator": [
+        "Fournir des id uniques dans la page, et un slot du même nom pour chaque onglet.",
+        "Le titre de panneau est un h3 : vérifier qu’il suit un h2 dans la page (WCAG 1.3.1).",
+        "Écrire des libellés courts et distincts, dans la langue du site (WCAG 2.4.6).",
+        "L’ancre de l’URL ne choisit pas l’onglet actif : utiliser selected."
+      ],
+      "keyboard": [
+        "Flèche droite et flèche gauche changent d’onglet et l’activent (activation automatique, motif APG Tabs).",
+        "Les flèches suivent dir : en rtl, elles sont inversées. Home et End vont aux extrémités, avec bouclage.",
+        "Un seul onglet est dans l’ordre de tabulation (tabindex itinérant) ; Tab mène ensuite au panneau."
+      ],
+      "screenReader": [
+        "Le script pose role=\"tablist\", role=\"tab\" et role=\"tabpanel\", avec aria-selected et aria-controls.",
+        "La liste porte le nom donné par label ; chaque panneau est nommé par son onglet.",
+        "Non vérifié avec VoiceOver, NVDA ou JAWS : seul le DOM produit est testé."
+      ]
+    },
+    "avoid": [
+      "Pour naviguer entre des pages : utiliser des liens dans un repère nav.",
+      "Pour un contenu à lire en continu : des sections ordinaires suffisent."
+    ],
+    "evidence": [
+      "[APG : motif Tabs](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/)",
+      "[WCAG 1.4.1 Utilisation de la couleur](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+      "[WCAG 2.5.8 Taille de la cible (minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)",
+      "Tests : packages/astro/test/Tabs.test.ts et tabs.behavior.test.ts"
+    ],
+    "group": "navigation",
+    "props": [
+      {
+        "description": "Nom accessible de la liste d'onglets (`aria-label`), par exemple « Langages ».",
+        "fallback": "—",
+        "name": "label (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Onglets, au moins deux. Chaque `id` désigne un slot nommé qui porte le contenu du panneau.",
+        "fallback": "—",
+        "name": "tabs (obligatoire)",
+        "type": "Tab[]"
+      },
+      {
+        "description": "`id` de l'onglet actif au chargement. Défaut : le premier.",
+        "fallback": "—",
+        "name": "selected",
+        "type": "string"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "tabs",
+    "snippet": "<Tabs label=\"Langages\" tabs={[{ id: 'a', label: 'Astro' }, { id: 'b', label: 'CSS' }]}>\n  <Fragment slot=\"a\"><p>Contenu du premier panneau.</p></Fragment>\n  <Fragment slot=\"b\"><p>Contenu du second panneau.</p></Fragment>\n</Tabs>",
+    "summary": "Tabs répartit un contenu en panneaux, dont un seul est visible à la fois. Sans JavaScript, tous les panneaux restent lisibles.",
+    "title": "Tabs",
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-fg",
+      "--pp-color-focus",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-font-weight-bold",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-3xs",
+      "--pp-space-s",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Regrouper des panneaux de même nature, que le lecteur compare ou parcourt un à un.",
+      "Garder tout le contenu accessible quand le script ne se charge pas."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
         "Élément textarea natif, sans JavaScript et sans texte en dur.",
         "L’erreur passe aussi par une bordure plus épaisse, en plus de la couleur.",
         "Hauteur minimale fixée par les jetons --pp-size-target-min ou --pp-size-control-height."
@@ -2715,6 +3748,254 @@
     "use": [
       "Saisir un texte libre de plusieurs lignes, comme un message ou une description.",
       "Relier un message d’erreur au champ par describedBy quand la saisie est refusée."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "La liste est sémantique : role=\"list\" est posé, même sans puces (WCAG 1.3.1).",
+        "La date et le titre portent le sens ; le repère ne le porte pas seul (WCAG 1.4.1).",
+        "Le composant ne trie pas : l’ordre affiché est celui de items."
+      ],
+      "integrator": [
+        "Trier les items avant de les passer : data-order ne trie rien.",
+        "Écrire la date dans la langue du site, et donner datetime en ISO 8601 quand la date est connue.",
+        "Donner un label quand la page contient plusieurs chronologies."
+      ],
+      "keyboard": [
+        "Le composant est statique : il ne reçoit pas le focus.",
+        "Aucune touche n’est gérée par le composant."
+      ],
+      "screenReader": [
+        "La liste est annoncée comme liste, avec le nombre de ses éléments.",
+        "Le trait et les repères sont des pseudo-éléments sans texte : ils ne sont pas lus."
+      ]
+    },
+    "avoid": [
+      "Pour une liste sans ordre : utiliser une liste simple.",
+      "Pour une progression chiffrée : utiliser Progress, qui porte une valeur."
+    ],
+    "evidence": [
+      "[WCAG 1.3.1 Information et relations](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html)",
+      "[WCAG 1.4.1 Utilisation de la couleur](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+      "Tests : packages/astro/test/Timeline.test.ts"
+    ],
+    "group": "content",
+    "props": [
+      {
+        "description": "Étapes, dans l'ordre d'affichage. Le composant ne trie pas.",
+        "fallback": "—",
+        "name": "items (obligatoire)",
+        "type": "TimelineItem[]"
+      },
+      {
+        "description": "Nom accessible de la liste (`aria-label`). Utile quand la page contient plusieurs chronologies.",
+        "fallback": "—",
+        "name": "label",
+        "type": "string"
+      },
+      {
+        "description": "Sens de tri déclaré par l'intégrateur : `data-order` seul, sans effet sur le rendu.",
+        "fallback": "—",
+        "name": "order",
+        "type": "\"asc\" | \"desc\""
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "timeline",
+    "snippet": "<Timeline\n  label=\"Historique\"\n  order=\"asc\"\n  items={[\n    { time: '2024', datetime: '2024', title: 'Lancement', description: 'Première version.' },\n    { time: '2025', datetime: '2025', title: 'Refonte' },\n  ]}\n/>",
+    "summary": "Timeline présente une suite d’étapes datées, dans l’ordre fourni, en liste ordonnée.",
+    "title": "Timeline",
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-bg",
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-font-size--1",
+      "--pp-font-weight-semibold",
+      "--pp-radius-control",
+      "--pp-size-rule",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-m"
+    ],
+    "use": [
+      "Présenter un historique, un journal de versions ou des jalons datés.",
+      "Lister des étapes dont l’ordre compte, avec une date pour chacune."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Le minuteur est suspendu au survol et au focus, puis repart du début (WCAG 2.2.1). duration: 0 désactive la fermeture automatique.",
+        "La durée par défaut est de 8 000 ms. Ce chiffre est une convention, pas une valeur imposée par la norme.",
+        "Le ton passe par data-tone et par une bordure de début. Le texte du message porte le sens (WCAG 1.4.1).",
+        "Le bouton de fermeture a une cible d’au moins --pp-size-target-min (WCAG 2.5.8).",
+        "L’apparition se fait par opacité. Elle est supprimée sous prefers-reduced-motion (WCAG 2.3.3)."
+      ],
+      "integrator": [
+        "Poser une seule région par page et écrire des messages qui disent le résultat, dans la langue du site.",
+        "Sans script, la région reste vide : prévoir un autre retour pour les actions importantes.",
+        "Le toast fixé en bas peut masquer du contenu focalisé (WCAG 2.4.11). Cela n’a pas été vérifié sur tous les gabarits.",
+        "Les lecteurs d’écran n’annoncent pas toujours une région ajoutée en même temps que son contenu. Non vérifié ici."
+      ],
+      "keyboard": [
+        "Chaque toast contient un bouton de fermeture atteignable à la touche Tab.",
+        "Échap ferme le toast qui contient le focus.",
+        "Après la fermeture, le focus retourne au document. Le renvoyer à un élément précis reste à faire."
+      ],
+      "screenReader": [
+        "La région a role=\"status\", aria-live=\"polite\" et aria-atomic=\"false\" : seul le toast ajouté est annoncé (WCAG 4.1.3).",
+        "La région porte un nom (label). Le bouton de fermeture a un texte visible (dismissLabel)."
+      ]
+    },
+    "avoid": [
+      "Pour une erreur qui exige une action : utiliser Alert ou Dialog, qui restent à l’écran.",
+      "Pour un message que l’utilisateur doit relire : mettre duration à 0 ou choisir Alert."
+    ],
+    "evidence": [
+      "[WCAG 2.2.1 Délai réglable](https://www.w3.org/WAI/WCAG22/Understanding/timing-adjustable.html)",
+      "[WCAG 4.1.3 Messages d’état](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html)",
+      "[WCAG 1.4.1 Utilisation de la couleur](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+      "[WCAG 2.5.8 Taille de la cible (minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)",
+      "Tests : packages/astro/test/Toast.test.ts et toast.behavior.test.ts"
+    ],
+    "group": "feedback",
+    "props": [
+      {
+        "description": "Nom accessible de la région (par exemple « Notifications »).",
+        "fallback": "—",
+        "name": "label (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Texte du bouton de fermeture de chaque toast (par exemple « Fermer »).",
+        "fallback": "—",
+        "name": "dismissLabel (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "toast",
+    "snippet": "---\nimport Toast from '@paulperigault/astro/Toast.astro';\n---\n<Toast label=\"Notifications\" dismissLabel=\"Fermer\" />\n\n<script>\n  import { show } from './behaviors/toast';\n\n  const region = document.querySelector('.pp-toast-region');\n  if (region) show(region, { message: 'Réussi : brouillon enregistré.', tone: 'success' });\n</script>",
+    "summary": "Toast affiche une notification courte qui ne bloque pas la page et se ferme seule ou au bouton.",
+    "title": "Toast",
+    "tokens": [
+      "--pp-color-control",
+      "--pp-color-fg",
+      "--pp-color-focus",
+      "--pp-color-line",
+      "--pp-color-status-failed",
+      "--pp-color-status-passed",
+      "--pp-color-surface",
+      "--pp-duration-base",
+      "--pp-easing-standard",
+      "--pp-font-line-height-body",
+      "--pp-radius-control",
+      "--pp-radius-surface",
+      "--pp-size-control-height",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-measure",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-s",
+      "--pp-space-xs",
+      "--pp-z-overlay"
+    ],
+    "use": [
+      "Confirmer une action sans quitter la page, par exemple « Brouillon enregistré ».",
+      "Signaler un échec qui n’empêche pas de continuer. Le texte du message nomme le ton."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Fermeture par Échap, survol de l’infobulle et maintien tant que le focus ou le survol demeure (WCAG 1.4.13).",
+        "Avec (hover: none), le texte n’est jamais affiché.",
+        "Bordure visible en plus du fond ; en forced-colors: active, elle prend CanvasText."
+      ],
+      "integrator": [
+        "Sans JavaScript, poser aria-describedby sur le contrôle, avec l’id de l’infobulle : le composant ne modifie pas son slot.",
+        "Placer un seul élément focalisable dans le slot.",
+        "Ne jamais mettre dans l’infobulle une information nécessaire à la tâche.",
+        "Garder un id unique par page."
+      ],
+      "keyboard": [
+        "Le focus clavier sur le contrôle affiche l’infobulle.",
+        "Échap ferme l’infobulle sans déplacer le focus.",
+        "L’infobulle ne reçoit pas le focus."
+      ],
+      "screenReader": [
+        "L’infobulle porte role=\"tooltip\" et son id.",
+        "Le script ajoute aria-describedby sur le contrôle : le texte est lu comme description.",
+        "Non vérifié : le rendu vocal avec VoiceOver, NVDA et JAWS."
+      ]
+    },
+    "avoid": [
+      "Pour un contenu essentiel : sur écran tactile, le texte n’est jamais affiché.",
+      "Pour nommer un contrôle : le nom visible reste dans le contrôle.",
+      "Pour un contenu interactif : utiliser Popover."
+    ],
+    "evidence": [
+      "[WCAG 1.4.13 Contenu au survol ou au focus](https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html)",
+      "[Motif APG Tooltip](https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/)",
+      "Tests : packages/astro/test/Tooltip.test.ts"
+    ],
+    "group": "overlay",
+    "props": [
+      {
+        "description": "Texte de la description, court et sans balisage.",
+        "fallback": "—",
+        "name": "text (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Identifiant unique de l'infobulle, cible de `aria-describedby`.",
+        "fallback": "—",
+        "name": "id (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "tooltip",
+    "snippet": "<Tooltip id=\"aide-copie\" text=\"Copie l’adresse dans le presse-papiers.\">\n  <button type=\"button\" aria-describedby=\"aide-copie\">Copier l’adresse</button>\n</Tooltip>",
+    "summary": "Tooltip affiche une courte description d’un contrôle au focus clavier et au survol. Elle complète le nom du contrôle, elle ne le remplace pas.",
+    "title": "Tooltip",
+    "tokens": [
+      "--pp-color-control",
+      "--pp-color-fg",
+      "--pp-color-surface",
+      "--pp-font-line-height-body",
+      "--pp-font-size--1",
+      "--pp-radius-control",
+      "--pp-size-measure",
+      "--pp-size-rule",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-z-overlay"
+    ],
+    "use": [
+      "Préciser l’effet d’un bouton dont le nom est court.",
+      "Ajouter une précision utile mais non indispensable à un contrôle."
     ]
   }
 ]

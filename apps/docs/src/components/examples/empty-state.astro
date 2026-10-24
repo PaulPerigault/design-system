@@ -1,0 +1,11 @@
+---
+/** Exemples vivants de la page EmptyState : état vide aligné au début, avec action. */
+import EmptyState from '@paulperigault/astro/EmptyState.astro';
+---
+
+<EmptyState title="Aucun projet">
+  <p>Aucun projet n’est publié pour le moment.</p>
+  <a slot="action" href="/projets/nouveau">
+    Créer un projet
+  </a>
+</EmptyState>

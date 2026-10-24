@@ -1,0 +1,65 @@
+---
+import ComponentPage from '../../components/ComponentPage.astro';
+import SkeletonExamples from '../../components/examples/skeleton.astro';
+
+const snippet = `<Skeleton label="Chargement du contenu" />
+<Skeleton lines={1} label="Chargement du titre" />
+<Skeleton lines={6} label="Chargement de l’article" />`;
+---
+
+<ComponentPage
+  slug="skeleton"
+  title="Skeleton"
+  summary="Skeleton affiche un emplacement de chargement en lignes, avec un libellé lu par les lecteurs d’écran."
+  use={[
+    'Réserver la place d’un contenu qui se charge.',
+    'Signaler qu’une zone se charge, avec un libellé qui décrit ce qui arrive.',
+  ]}
+  avoid={[
+    'Pour une attente sans forme de contenu prévisible : utiliser Progress, qui porte une valeur.',
+    'Pour signaler une erreur : utiliser un message d’état, pas un emplacement de chargement.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Le composant est statique : il ne reçoit pas le focus.',
+      'Aucune touche n’est gérée par le composant.',
+    ],
+    screenReader: [
+      'Le libellé est le texte lu de la zone role="status".',
+      'Les lignes sont masquées aux lecteurs d’écran (aria-hidden="true").',
+    ],
+    guaranteed: [
+      'Le libellé est visible au-dessus des lignes : aucun texte masqué à l’œil.',
+      'La zone est un message d’état, sans focus volé (WCAG 4.1.3).',
+      'L’animation s’arrête sous prefers-reduced-motion et la ligne reste un aplat fixe.',
+      'En forced-colors: active, chaque ligne reçoit une bordure CanvasText.',
+    ],
+    integrator: [
+      'Retirer le composant dès que le contenu est prêt : l’animation boucle (WCAG 2.2.2).',
+      'Fournir un libellé court, dans la langue de la page.',
+      'Ne pas s’appuyer sur le seul composant pour annoncer une erreur (WCAG 4.1.3).',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 4.1.3 Messages d’état',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html',
+    },
+    {
+      label: 'WCAG 2.2.2 Pause, arrêt, masquage',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html',
+    },
+    {
+      label: 'WCAG 2.3.3 Animation déclenchée par interaction (AAA)',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html',
+    },
+    {
+      label: 'WAI-ARIA 1.2, rôle status',
+      href: 'https://www.w3.org/TR/wai-aria-1.2/#status',
+    },
+    { label: 'Tests : packages/astro/test/Skeleton.test.ts' },
+  ]}
+>
+  <SkeletonExamples />
+</ComponentPage>

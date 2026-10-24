@@ -1,0 +1,120 @@
+---
+/**
+ * Tabs : onglets (APG « Tabs », activation automatique). Sans JavaScript : liens d'ancre et
+ * sections titrées, tout reste lisible. Le script du composant (`behaviors/tabs.ts`, externe)
+ * pose `tablist`, `tab`, `tabpanel`, un `tabindex` itinérant et masque les panneaux inactifs.
+ * Onglet actif : trait et graisse, jamais la couleur seule (WCAG 1.4.1). Cibles : WCAG 2.5.8.
+ */
+interface Tab {
+  /** Identifiant du panneau : nom du slot et ancre (`#id`). Unique dans la page. */
+  id: string;
+  /** Libellé visible de l'onglet et titre du panneau. */
+  label: string;
+}
+
+interface Props {
+  /** Nom accessible de la liste d'onglets (`aria-label`), par exemple « Langages ». */
+  label: string;
+  /** Onglets, au moins deux. Chaque `id` désigne un slot nommé qui porte le contenu du panneau. */
+  tabs: Tab[];
+  /** `id` de l'onglet actif au chargement. Défaut : le premier. */
+  selected?: string;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const MIN_TABS = 2;
+const { label, tabs, selected, class: className } = Astro.props;
+if (tabs.length < MIN_TABS) throw new Error('Tabs : au moins deux onglets sont requis.');
+
+const active = tabs.some((tab) => tab.id === selected) ? selected : tabs[0].id;
+const panels = await Promise.all(
+  tabs.map(async (tab) => ({ ...tab, html: await Astro.slots.render(tab.id) })),
+);
+---
+
+<div class:list={['pp-tabs', className]} data-pp-tabs data-selected={active}>
+  <ul class="pp-tabs__list" role="list" aria-label={label} data-pp-tabs-list>
+    {tabs.map((tab) => (
+      <li>
+        <a id={`${tab.id}-tab`} href={`#${tab.id}`} data-pp-tab>
+          {tab.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+  {panels.map((panel) => (
+    <section
+      class="pp-tabs__panel"
+      id={panel.id}
+      aria-labelledby={`${panel.id}-title`}
+      data-pp-panel
+    >
+      <h3 class="pp-tabs__title" id={`${panel.id}-title`} data-pp-panel-title>
+        {panel.label}
+      </h3>
+      <Fragment set:html={panel.html} />
+    </section>
+  ))}
+</div>
+
+<script>
+  import { install } from '../behaviors/tabs';
+
+  install(document);
+</script>
+
+<style>
+  .pp-tabs__list {
+    display: flex;
+    gap: var(--pp-space-3xs);
+    margin-block: 0;
+    margin-inline: 0;
+    padding-block: 0;
+    padding-inline: 0;
+    overflow-inline: auto;
+    list-style: none;
+    border-block-end: var(--pp-size-rule) solid var(--pp-color-line);
+  }
+
+  .pp-tabs__list a {
+    display: inline-flex;
+    align-items: center;
+    box-sizing: border-box;
+    min-inline-size: var(--pp-size-target-min);
+    min-block-size: var(--pp-size-target-min);
+    padding-inline: var(--pp-space-xs);
+    border-block-end: var(--pp-size-rule) solid transparent;
+    color: var(--pp-color-accent);
+    text-decoration: underline;
+    white-space: nowrap;
+  }
+
+  .pp-tabs[data-enhanced] .pp-tabs__list a {
+    color: var(--pp-color-muted);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .pp-tabs[data-enhanced] .pp-tabs__list a[aria-selected='true'] {
+    border-block-end-color: var(--pp-color-fg);
+    color: var(--pp-color-fg);
+    font-weight: var(--pp-font-weight-bold);
+  }
+
+  .pp-tabs__list a:focus-visible,
+  .pp-tabs__panel:focus-visible {
+    outline: var(--pp-size-focus-width) solid var(--pp-color-focus);
+    outline-offset: var(--pp-size-focus-offset);
+  }
+
+  .pp-tabs__panel {
+    padding-block: var(--pp-space-s);
+  }
+
+  @media (forced-colors: active) {
+    .pp-tabs[data-enhanced] .pp-tabs__list a[aria-selected='true'] {
+      border-block-end-color: Highlight;
+    }
+  }
+</style>

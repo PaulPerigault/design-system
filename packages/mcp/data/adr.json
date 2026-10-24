@@ -189,6 +189,13 @@
       "decision": "CSS de la documentation servi en fichiers (`inlineStylesheets: 'never'`) : avec `always`, chaque page porte un `<style>` distinct, donc 36 hachages dans la CSP ; la fusion en une politique unique dépasse 2 000 caractères, limite d'un en-tête dans le fichier `_headers` de Cloudflare Pages (documentation Cloudflare Pages, limites). `style-src 'self'` sans hachage est plus court et plus strict. Budgets mobile inchangés (`perf.spec.ts` vert). La logique de hachage reste dans `scripts/headers/hashes.mjs` pour tout contenu en ligne futur.",
       "id": "D-024",
       "rollback": "`build.inlineStylesheets` dans `apps/docs/astro.config.mjs`."
+    },
+    {
+      "alternative": "Barre fixe en bas ; coloration par un script client ; PWA incluse dans le budget de 1 Kio.",
+      "date": "2026-10-24",
+      "decision": "Barre d'onglets mobile en bas : écartée (benchmark L11, gap n° 3). `Status` tient lieu de « badge d'état ». `shiki` 4.5.0 ajouté à `@paulperigault/astro` pour la coloration au build (thème à variables CSS, aucun `style` en ligne). La PWA reste une brique optionnelle : script d'enregistrement de 358 octets gzip par page, hors du « seul script » de `dialog.spec.ts`.",
+      "id": "D-025",
+      "rollback": "Retirer l'entrée de `Dialog`/`DocsLayout` (`/pwa/register.js`) ; retirer `shiki` et `CodeBlock`."
     }
   ]
 }

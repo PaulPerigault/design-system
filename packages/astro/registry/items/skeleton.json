@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "skeleton",
+  "type": "registry:ui",
+  "title": "Skeleton",
+  "description": "Emplacement de chargement en lignes : texte lu par les lecteurs d’écran, animation d’opacité supprimée sous prefers-reduced-motion.",
+  "files": [
+    {
+      "path": "packages/astro/src/feedback/Skeleton.astro",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-duration-base",
+      "--pp-easing-standard",
+      "--pp-font-size-0",
+      "--pp-radius-control",
+      "--pp-size-rule",
+      "--pp-space-3xs"
+    ],
+    "version": "0.0.0"
+  }
+}

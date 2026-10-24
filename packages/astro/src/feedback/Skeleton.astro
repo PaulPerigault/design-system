@@ -1,0 +1,81 @@
+---
+/**
+ * Skeleton : emplacement de chargement, sous forme de lignes. Zéro JavaScript, variante par
+ * propriété et non par `style`. Le texte (`label`) est visible et lu : un libellé masqué à l'œil
+ * serait signalé comme texte coupé par le contrôle 1.4.12. Il est dans une zone `role="status"`
+ * occupée (`aria-busy`). Les lignes sont masquées aux lecteurs d'écran : elles ne transmettent
+ * aucune information que le texte ne donne déjà.
+ * L'animation est une opacité sans dégradé ni ombre ; `prefers-reduced-motion` la supprime.
+ */
+interface Props {
+  /** Nombre de lignes, de 1 à 6. Une valeur hors plage est ramenée à la borne la plus proche. */
+  lines?: number;
+  /** Texte visible et lu par les lecteurs d'écran, par exemple « Chargement du contenu ». */
+  label: string;
+}
+
+const MIN_LINES = 1;
+const DEFAULT_LINES = 3;
+const MAX_LINES = 6;
+
+const { lines = DEFAULT_LINES, label } = Astro.props;
+const count = Math.min(Math.max(Math.trunc(lines), MIN_LINES), MAX_LINES);
+---
+
+<div class="pp-skeleton" role="status" aria-busy="true">
+  <span class="pp-skeleton__label">{label}</span>
+  {Array.from({ length: count }, () => (
+    <span class="pp-skeleton__line" aria-hidden="true" />
+  ))}
+</div>
+
+<style>
+  .pp-skeleton {
+    position: relative;
+    display: grid;
+    gap: var(--pp-space-3xs);
+    inline-size: 100%;
+  }
+
+  .pp-skeleton__line {
+    display: block;
+    block-size: var(--pp-font-size-0);
+    inline-size: 100%;
+    border-radius: var(--pp-radius-control);
+    background-color: var(--pp-color-line);
+    animation: pp-skeleton-fade calc(var(--pp-duration-base) * 4) var(--pp-easing-standard) infinite
+      alternate;
+  }
+
+  .pp-skeleton__line:last-child {
+    inline-size: 60%;
+  }
+
+  .pp-skeleton__label {
+    color: var(--pp-color-fg);
+    font-size: var(--pp-font-size-0);
+  }
+
+  @keyframes pp-skeleton-fade {
+    from {
+      opacity: 1;
+    }
+
+    to {
+      opacity: 0.5;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pp-skeleton__line {
+      animation: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .pp-skeleton__line {
+      background-color: transparent;
+      border: var(--pp-size-rule) solid CanvasText;
+    }
+  }
+</style>

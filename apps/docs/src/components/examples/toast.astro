@@ -1,0 +1,61 @@
+---
+/** Exemple vivant de la page Toast : une région, trois déclencheurs (un par ton). */
+import Toast from '@paulperigault/astro/Toast.astro';
+
+const ACTIONS = [
+  { tone: 'neutral', label: 'Afficher une note', message: 'Le brouillon est ouvert.' },
+  { tone: 'success', label: 'Enregistrer', message: 'Réussi : le brouillon est enregistré.' },
+  { tone: 'error', label: 'Envoyer', message: 'Échec : l’envoi n’a pas abouti.' },
+] as const;
+---
+
+<Toast label="Notifications" dismissLabel="Fermer" />
+<ul class="docs-actions" role="list">
+  {ACTIONS.map(({ tone, label, message }) => (
+    <li>
+      <button
+        class="docs-trigger"
+        type="button"
+        data-toast-tone={tone}
+        data-toast-message={message}
+      >
+        {label}
+      </button>
+    </li>
+  ))}
+</ul>
+
+<script>
+  import { show } from '../../../../../packages/astro/src/behaviors/toast';
+  import type { Tone } from '../../../../../packages/astro/src/behaviors/toast';
+
+  const region = document.querySelector('.pp-toast-region');
+  document.querySelectorAll<HTMLButtonElement>('[data-toast-tone]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const { toastTone, toastMessage } = button.dataset;
+      if (region && toastMessage) show(region, { message: toastMessage, tone: toastTone as Tone });
+    });
+  });
+</script>
+
+<style>
+  .docs-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--pp-space-2xs);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .docs-trigger {
+    min-block-size: max(var(--pp-size-control-height), var(--pp-size-target-min));
+    padding-inline: var(--pp-space-s);
+    border: var(--pp-size-rule) solid var(--pp-color-accent);
+    border-radius: var(--pp-radius-control);
+    background-color: var(--pp-color-accent);
+    color: var(--pp-color-on-accent);
+    font: inherit;
+    cursor: pointer;
+  }
+</style>

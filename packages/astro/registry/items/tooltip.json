@@ -1,0 +1,33 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tooltip",
+  "type": "registry:ui",
+  "title": "Tooltip",
+  "description": "Infobulle qui décrit un contrôle : focus, survol, Échap (WCAG 1.4.13), jamais affichée au tactile.",
+  "files": [
+    {
+      "path": "packages/astro/src/overlay/Tooltip.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/behaviors/tooltip.ts",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-control",
+      "--pp-color-fg",
+      "--pp-color-surface",
+      "--pp-font-line-height-body",
+      "--pp-font-size--1",
+      "--pp-radius-control",
+      "--pp-size-measure",
+      "--pp-size-rule",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-z-overlay"
+    ],
+    "version": "0.0.0"
+  }
+}

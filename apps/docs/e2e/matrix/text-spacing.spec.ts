@@ -19,7 +19,9 @@ function findProblems(): Problem[] {
   const CLIPPING = ['hidden', 'clip'];
   const hasText = (el: Element) =>
     [...el.childNodes].some((n) => n.nodeType === Node.TEXT_NODE && n.textContent?.trim());
-  const isBox = (el: HTMLElement) => !['inline', 'none'].includes(getComputedStyle(el).display);
+  // Le texte SVG n'a pas de boîte CSS (clientWidth sans sens) : vérifié par capture (Diagram).
+  const isBox = (el: HTMLElement) =>
+    !(el instanceof SVGElement) && !['inline', 'none'].includes(getComputedStyle(el).display);
   const reasons = (el: HTMLElement) => {
     const style = getComputedStyle(el);
     const clips = CLIPPING.includes(style.overflowY) || CLIPPING.includes(style.overflowX);
