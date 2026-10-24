@@ -80,9 +80,9 @@ jobs:
 
   e2e:
     # Documentation construite puis testée dans Chromium : axe (WCAG 2.2 AA), 1.4.12, 2.5.8,
-    # mouvement réduit.
+    # mouvement réduit. 45 min : ≈ 19 min avec 31 composants, annulé à 20 min avec 45 (5 800 tests).
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
