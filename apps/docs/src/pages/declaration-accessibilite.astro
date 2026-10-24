@@ -1,0 +1,94 @@
+---
+import Alert from '@paulperigault/astro/Alert.astro';
+import Prose from '@paulperigault/astro/Prose.astro';
+import Table from '@paulperigault/astro/Table.astro';
+import DraftNotice from '../components/DraftNotice.astro';
+import DocsLayout from '../layouts/DocsLayout.astro';
+import { FIELD_LABELS, STATEMENT, statementProblems } from '../lib/a11y-statement.ts';
+
+const problems = statementProblems(STATEMENT).map((field) => FIELD_LABELS[field]);
+const pending = (value: string): string => (value.trim() === '' ? 'à compléter' : value);
+const rate = STATEMENT.rate === null ? 'non mesuré' : `${STATEMENT.rate} %`;
+const COLUMNS = [
+  { key: 'element', label: 'Élément' },
+  { key: 'valeur', label: 'Valeur' },
+];
+const ROWS = [
+  { element: 'Référentiel', valeur: STATEMENT.standard },
+  { element: 'État de conformité', valeur: STATEMENT.conformity },
+  { element: 'Taux de conformité', valeur: rate },
+  { element: 'Date d’établissement', valeur: pending(STATEMENT.date) },
+  { element: 'Contact', valeur: pending(STATEMENT.contact) },
+  { element: 'Voie de recours', valeur: STATEMENT.appeal.name },
+];
+---
+
+<DocsLayout
+  title="Déclaration d'accessibilité · Design system · Paul Perigault"
+  description="Déclaration d'accessibilité du design system : référentiel RGAA 4.1, état non évalué, contrôles automatisés, procédure manuelle, contact et voies de recours."
+>
+  <Prose>
+    <DraftNotice />
+    <h1>Déclaration d'accessibilité</h1>
+    <p>
+      Cette déclaration couvre le design system et sa documentation, sur ds.paulperigault.dev. Elle
+      suit la structure du RGAA 4.1.
+    </p>
+    {problems.length > 0 && (
+      <Alert tone="degraded" toneLabel="Champs à compléter">
+        <p>Champs vides : {problems.join(', ')}.</p>
+      </Alert>
+    )}
+  </Prose>
+
+  <Table caption="Synthèse de la déclaration" columns={COLUMNS} rows={ROWS} rowHeader="element" />
+
+  <Prose>
+    <h2>État de conformité</h2>
+    <p>Le design system n’est pas évalué au regard du RGAA 4.1. Son taux n’est pas mesuré.</p>
+    <p>Aucun audit RGAA manuel n’a été réalisé.</p>
+
+    <h2>Contrôles automatisés</h2>
+    <p>
+      Le test axe vérifie les critères WCAG 2.2 niveau A et AA sur toutes les pages construites.
+    </p>
+    <p>Il tourne en thème clair et en thème sombre, sur les appareils de la matrice.</p>
+    <p>
+      Il est défini dans <code>apps/docs/e2e/matrix/axe.spec.ts</code>. Un contrôle automatisé ne
+      couvre pas tous les critères.
+    </p>
+
+    <h2>Tests avec lecteurs d’écran</h2>
+    <p>
+      Les tests suivent une procédure manuelle : VoiceOver sur macOS et iOS, TalkBack sur Android.
+    </p>
+    <p>Aucun résultat n’est encore consigné dans le dépôt.</p>
+    <p>
+      La procédure est dans <code>docs/a11y/manual-checklist.md</code>.
+    </p>
+
+    <h2>Contenus non accessibles</h2>
+    <p>Aucune liste de contenus non accessibles n’a été établie, faute d’audit manuel complet.</p>
+
+    <h2>Établissement de la déclaration</h2>
+    <p>Date d’établissement : {pending(STATEMENT.date)}.</p>
+    <p>Elle ne repose sur aucun audit RGAA.</p>
+
+    <h2>Retour d’information et contact</h2>
+    <p>Pour signaler un problème d’accessibilité, écrivez à : {pending(STATEMENT.contact)}.</p>
+
+    <h2>Voies de recours</h2>
+    <p>
+      Si la réponse ne vous satisfait pas, saisissez le
+      <a href={STATEMENT.appeal.url}>{STATEMENT.appeal.name}</a>.
+    </p>
+
+    <h2>Cadre légal</h2>
+    <p>
+      Deux textes touchent à l’accessibilité numérique : la directive (UE) 2019/882 du 17 avril
+      2019, et l’article 47 de la loi n° 2005-102 du 11 février 2005.
+    </p>
+    <p>Chacun vise des personnes et des organismes précis.</p>
+    <p>À vérifier par Paul : ce site entre-t-il dans le champ de l’un de ces textes ?</p>
+  </Prose>
+</DocsLayout>

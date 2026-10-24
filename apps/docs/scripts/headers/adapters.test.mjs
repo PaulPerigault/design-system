@@ -84,7 +84,7 @@ describe('formats spécifiques', () => {
 
   it('vercel : sources path-to-regexp et options', () => {
     const json = vercel(rules, REDIRECTS);
-    expect(json.headers.map((h) => h.source)).toEqual(['/(.*)', '/_astro/(.*)']);
+    expect(json.headers.map((h) => h.source)).toEqual(['/(.*)', '/_astro/(.*)', '/sw.js']);
     expect(json).toMatchObject({ trailingSlash: true, cleanUrls: false });
   });
 

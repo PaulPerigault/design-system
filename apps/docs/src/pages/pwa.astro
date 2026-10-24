@@ -1,0 +1,118 @@
+---
+import Alert from '@paulperigault/astro/Alert.astro';
+import Prose from '@paulperigault/astro/Prose.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+import Table from '@paulperigault/astro/Table.astro';
+import DocsLayout from '../layouts/DocsLayout.astro';
+
+const COLUMNS = [
+  { key: 'requete', label: 'Requête' },
+  { key: 'strategie', label: 'Stratégie' },
+];
+const ROWS = [
+  { requete: 'Navigation, même origine', strategie: 'Réseau d’abord, cache en repli' },
+  { requete: '/_astro/* et /pwa/*', strategie: 'Cache d’abord' },
+  { requete: '/pagefind/*', strategie: 'Réseau seul, jamais en cache' },
+  { requete: 'Autre origine, méthode autre que GET', strategie: 'Réseau, non interceptée' },
+  { requete: 'Autre ressource, même origine', strategie: 'Réseau, non interceptée' },
+];
+---
+
+<DocsLayout
+  title="PWA installable · Design system · Paul Perigault"
+  description="Brique PWA du design system : manifeste, icônes, service worker, mise à jour explicite, limites et étapes pour l'activer dans un autre site."
+>
+  <Stack space="l">
+    <Prose>
+      <h1>PWA installable</h1>
+      <p>
+        La PWA est une brique optionnelle du design system. Ce n’est pas un composant : on la copie
+        depuis ce dépôt.
+      </p>
+      <h2>Manifeste et icônes</h2>
+      <p>
+        Le manifeste est servi sur <code>/manifest.webmanifest</code> en <code>standalone</code>.
+        Ses couleurs lisent <code>themeColor.light</code> dans les jetons. Son nom vient de
+        <code>SITE_NAME</code>.
+      </p>
+      <p>
+        Trois icônes PNG viennent de <code>public/image/logo.svg</code>, lu sans être modifié : 192
+        et 512 px en <code>any</code>, 512 px en <code>maskable</code>.
+      </p>
+      <h2>Service worker</h2>
+      <p>
+        <code>scripts/sw.mjs</code> écrit <code>dist/sw.js</code> après le build, sans précache. Sa
+        version est un SHA-256 de la liste des fichiers de <code>dist/</code>.
+      </p>
+    </Prose>
+    <Table caption="Stratégies de cache" columns={COLUMNS} rows={ROWS} rowHeader="requete" />
+    <Prose>
+      <p>
+        Le cache s’appelle <code>pp-docs-</code> suivi de la version. L’activation supprime les
+        autres <code>pp-docs-*</code>. Seules les réponses réussies de même origine sont copiées.
+      </p>
+      <h2>Mise à jour</h2>
+      <p>
+        Le worker n’appelle pas <code>skipWaiting()</code> seul. Un bouton « Mettre à jour »
+        apparaît quand une version attend. Le clic envoie <code>SKIP_WAITING</code>.
+      </p>
+      <h2>Données et en-têtes</h2>
+      <p>Aucune collecte. Le seul stockage est le cache du worker, dans l’origine du site.</p>
+      <p>
+        La CSP autorise <code>worker-src 'self'</code> et <code>manifest-src 'self'</code>.
+        <code>/sw.js</code> reçoit <code>Cache-Control: no-cache</code>.
+      </p>
+      <h2>Activer dans un autre site</h2>
+      <ol>
+        <li>
+          Copier <code>src/lib/pwa.ts</code> et fournir <code>SITE_NAME</code>,{' '}
+          <code>SITE_LANG</code>.
+        </li>
+        <li>
+          Ajouter l’endpoint <code>src/pages/manifest.webmanifest.ts</code>.
+        </li>
+        <li>
+          Copier <code>src/lib/sw-core.js</code> et <code>scripts/sw.mjs</code>.
+        </li>
+        <li>
+          Lancer <code>node scripts/sw.mjs</code> en dernier, après le build.
+        </li>
+        <li>
+          Copier <code>public/pwa/register.js</code>, le charger avec <code>defer</code>.
+        </li>
+        <li>
+          Déclarer <code>&lt;link rel="manifest"&gt;</code>, lancer <code>pwa-icons.mjs</code>.
+        </li>
+        <li>
+          Ajouter les en-têtes CSP et <code>no-cache</code> sur <code>/sw.js</code>.
+        </li>
+      </ol>
+    </Prose>
+    <Alert tone="degraded" toneLabel="Limites">
+      <ul>
+        <li>Seules les pages déjà visitées sont lisibles hors ligne. Pas de précache.</li>
+        <li>
+          Images, <code>/favicon.ico</code> et <code>/r/registry.json</code> ne sont pas en cache.
+        </li>
+        <li>
+          La recherche est indisponible hors ligne (<code>/pagefind/*</code>, réseau seul).
+        </li>
+        <li>
+          La version ne dépend que des noms : un contenu modifié sans nouveau nom ne purge rien.
+        </li>
+        <li>
+          Les icônes ne sont pas régénérées par le build : <code>pwa-icons.mjs</code> est manuel.
+        </li>
+        <li>
+          Le bouton <code>pp-pwa-update</code> n’a aucun style défini dans le dépôt.
+        </li>
+        <li>
+          Le test e2e est prévu dans <code>apps/docs/e2e/pwa.spec.ts</code>, il n’est pas encore là.
+        </li>
+      </ul>
+    </Alert>
+    <Prose>
+      <p>Aucune note Lighthouse n’est revendiquée pour cette PWA.</p>
+    </Prose>
+  </Stack>
+</DocsLayout>
