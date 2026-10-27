@@ -88,6 +88,15 @@ depends_on: [T1.01]
 
 `develop` = intégration (PR squash par lot, par l'orchestrateur seul). `main` = production, fusions par le propriétaire uniquement. Conventional Commits, sujet en minuscules ≤ 72 caractères, aucune signature d'outil (`Co-authored-by`, « Generated with » : refusés par commitlint, sans exemption).
 
+Fusion d'une PR (squash : le message = titre + corps de la PR, jamais la liste des commits) :
+
+```
+gh pr merge <n> --squash --delete-branch --subject "<titre>" --body-file <fichier du corps>
+```
+
+Titre ≤ 72 caractères sans `(#n)` (GitHub l'ajoute), corps ≤ 90 colonnes par ligne. Sans `--subject`
+et `--body-file`, GitHub reprend la liste des commits et `squash-message` échoue sur `develop`.
+
 ## Coordination (orchestrateur et ds-lead)
 
 Plafond global de sessions Kiro (`.agents/slots/`), une seule tâche lourde locale à la fois

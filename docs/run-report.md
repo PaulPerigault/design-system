@@ -29,9 +29,10 @@ avec `node:path`) ; la CI (Linux) fait foi. Les jobs `visuel` mobiles échouent 
 **Ordre validé par Paul (2026-10-27, D-027) :** 1bis, F2a, F2b, puis étapes 2 à 11
 (`docs/process/proposal-foundations.md` §6). Modèle : `main` seule, preview Cloudflare par PR.
 
-1. **1bis-a (hooks et CI) : faite** (D-028, `docs/process/ci-audit.md`). **Étape suivante : 1bis-b**
-   (e2e sous quelques minutes, Visuel assaini, tests Windows). Reste de 1bis : 17 échecs `npm test` (chemins `node:path`), 7 échecs e2e
-   (`COMPONENT_PAGES` vide), `check:mcp-data`, `check:pack`.
+1. **1bis-a (hooks et CI) : faite** (D-028, `docs/process/ci-audit.md`). **1bis-b1 : faite** (D-029 : e2e et
+   Visuel seulement quand c'est pertinent, Chromium en cache, `squash-message` corrigé). **Étape suivante :
+   1bis-b2** (snapshots Visuel Linux, tests Windows : 17 échecs `npm test`, 7 échecs e2e `COMPONENT_PAGES`
+   vide, `check:mcp-data`, `check:pack`), puis F2a, F2b, étapes 2 à 11.
 2. **F2a** : Project, labels, milestones, bascule vers `main` (suppression de `develop`).
 3. **F2b** : modèles, issues de rattrapage.
 4. **Étapes 2 à 11** : ADR Architecture ; guards ; create ; mcp + générateur de tokens ; tools/agents puis

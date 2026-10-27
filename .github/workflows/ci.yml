@@ -8,32 +8,33 @@ on:
     types: [opened, synchronize, reopened, edited]
   push:
     branches: [develop]
+  # Passage complet hebdomadaire (lundi 04:00 UTC) et déclenchement manuel avant la prod : e2e sur
+  # toute la matrice. Jamais de e2e sur un push vers `develop` : il a déjà tourné sur la PR (D-029).
+  schedule:
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
 
 permissions:
   contents: read
 
+# Une modification du titre ou du corps (`edited`) a son propre groupe : elle n'annule plus un e2e
+# en cours sur la même PR.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event.action == 'edited' && 'edited' || 'code' }}
   cancel-in-progress: true
 
 jobs:
   commitlint:
-    # Chaque commit de la PR, puis titre + corps de la PR (le message de squash = corps de la PR) :
-    # Conventional Commits et aucune signature d'outil, sans exemption.
+    # Titre + corps de la PR : c'est le message du commit de squash. Les commits de la branche ne
+    # sont pas contrôlés (ils disparaissent au squash ; le hook commit-msg les vérifie en local).
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          fetch-depth: 0
           persist-credentials: false
       - uses: ./.github/actions/setup
-      - name: commits de la PR
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: npx --no -- commitlint --from "$BASE_SHA" --to "$HEAD_SHA" --verbose
       - name: titre et corps de la PR (futur message de squash)
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
@@ -41,20 +42,21 @@ jobs:
         run: printf '%s\n\n%s\n' "$PR_TITLE" "$PR_BODY" | npx --no -- commitlint --verbose
 
   squash-message:
-    # D-004 : sur `develop`, relit le commit de squash créé par GitHub (conventions et aucune
-    # signature d'outil ; un `Co-authored-by` ajouté par GitHub signale un auteur git différent du
-    # compte qui fusionne).
+    # D-004 : sur `develop`, relit le commit de squash créé par GitHub (sujet et corps : conventions
+    # et aucune signature d'outil ; un `Co-authored-by` ajouté par GitHub signale un auteur git
+    # différent du compte qui fusionne). Le suffixe « (#n) » ajouté par GitHub au sujet est retiré
+    # avant le contrôle : la limite de 72 caractères porte sur le titre de la PR. Fusionner avec
+    # `gh pr merge --squash --subject --body-file` (AGENTS.md), sinon le corps est la liste des commits.
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          fetch-depth: 2
           persist-credentials: false
       - uses: ./.github/actions/setup
       - name: message du dernier commit de develop
-        run: npx --no -- commitlint --from HEAD~1 --to HEAD --verbose
+        run: git log -1 --format=%B | sed -E '1s/ \(#[0-9]+\)$//' | npx --no -- commitlint --verbose
 
   verify:
     runs-on: ubuntu-latest
@@ -67,12 +69,14 @@ jobs:
       - run: npm run verify
 
   changes:
-    # Une PR (ou un push) qui ne touche que la documentation et les modèles GitHub ne lance pas
-    # e2e (Visuel a son propre filtre `paths-ignore`). Le job `ci` reste toujours exécuté.
+    # Décide si e2e tourne et sur quel périmètre. `render` : la PR touche le rendu (css, tokens,
+    # astro, apps, dépendance de rendu pour Dependabot). `full` : toute la matrice d'appareils
+    # (déclenchement manuel, cron, PR de release-please, PR vers `main`). Jamais sur un push (D-029).
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
-      code: ${{ steps.diff.outputs.code }}
+      render: ${{ steps.diff.outputs.render }}
+      full: ${{ steps.diff.outputs.full }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -80,19 +84,33 @@ jobs:
           persist-credentials: false
       - id: diff
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha || 'HEAD~1' }}
+          EVENT: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BASE_REF: ${{ github.base_ref }}
+          HEAD_REF: ${{ github.head_ref }}
         run: |
-          if git diff --name-only "$BASE_SHA" HEAD | grep -Evq '^(docs/|\.github/(ISSUE_TEMPLATE/|PULL_REQUEST_TEMPLATE)|.*\.md$)'; then
-            echo "code=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "code=false" >> "$GITHUB_OUTPUT"
+          render=false
+          full=false
+          if [ "$EVENT" = workflow_dispatch ] || [ "$EVENT" = schedule ]; then
+            render=true; full=true
+          elif [ "$EVENT" = pull_request ]; then
+            if [[ "$HEAD_REF" == release-please--* || "$BASE_REF" == main ]]; then
+              render=true; full=true
+            elif git diff --name-only "$BASE_SHA" HEAD | grep -Eq '^(packages/(css|tokens|astro)/|apps/)'; then
+              render=true
+            elif [[ "$HEAD_REF" =~ ^dependabot/.*(astro|tailwind|vite|playwright|axe-core|pagefind|fontkit) ]]; then
+              render=true
+            fi
           fi
+          echo "render=$render" >> "$GITHUB_OUTPUT"
+          echo "full=$full" >> "$GITHUB_OUTPUT"
 
   e2e:
     # Documentation construite puis testée dans Chromium : axe (WCAG 2.2 AA), 1.4.12, 2.5.8,
-    # mouvement réduit. 45 min : ≈ 19 min avec 31 composants, annulé à 20 min avec 45 (5 800 tests).
+    # mouvement réduit. Sur une PR de rendu : projet `chromium` + deux appareils de référence
+    # (mobile 375x667, bureau 1280x800). Matrice complète (13 appareils) quand `full`.
     needs: changes
-    if: needs.changes.outputs.code == 'true'
+    if: needs.changes.outputs.render == 'true' && github.event.action != 'edited'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -100,9 +118,17 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/setup
-      - run: npx playwright install --with-deps chromium
+      - uses: ./.github/actions/playwright
       - run: npm run build
-      - run: npm run e2e
+      - name: e2e
+        env:
+          FULL: ${{ needs.changes.outputs.full }}
+        run: |
+          if [ "$FULL" = true ]; then
+            npm run e2e
+          else
+            npm run e2e -- --project=chromium --project=matrice-375x667 --project=matrice-bureau-1280x800
+          fi
 
   site:
     # Génère un site consommateur avec la CLI, l'installe sur les paquets du commit, puis verify.
@@ -146,8 +172,10 @@ jobs:
           min-severity: medium
 
   ci:
-    # Check requis unique : vert seulement si tous les jobs précédents le sont (ou sautés à bon droit).
-    if: always()
+    # Check requis unique : vert seulement si aucun job n'a échoué ni été annulé, les jobs sautés à
+    # bon droit comptant comme réussis. `!cancelled()` plutôt que `always()` : quand la concurrence
+    # annule tout le run, `ci` est annulé lui aussi (pas rouge) ; le run suivant porte le verdict.
+    if: ${{ !cancelled() }}
     needs: [commitlint, squash-message, changes, verify, e2e, site, zizmor]
     runs-on: ubuntu-latest
     timeout-minutes: 5
