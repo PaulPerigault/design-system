@@ -1,8 +1,9 @@
 // Règles sur les déclarations CSS (texte CSS, commentaires neutralisés).
 import { PALETTE_HUES, SHADES } from './class-rules.ts';
+import type { Declaration } from './declarations.ts';
+import { declarations } from './declarations.ts';
 import { NAMED_COLORS } from './named-colors.ts';
 
-const DECLARATION = /([\w-]+)\s*:\s*([^;]*)(?:;|$)/g;
 const GRADIENT = /(?:repeating-)?(?:linear|radial|conic)-gradient\s*\(/i;
 const BLUR = /\bblur\s*\(/i;
 const DROP_SHADOW = /drop-shadow\s*\(/i;
@@ -20,45 +21,17 @@ const NEUTRAL = new Set(['none', 'inherit', 'initial', 'unset', 'revert']);
 const SHADOW_PROPERTIES = new Set(['box-shadow', 'text-shadow', '-webkit-box-shadow']);
 const BLUR_PROPERTIES = new Set(['backdrop-filter', '-webkit-backdrop-filter']);
 
-interface Declaration {
-  prop: string;
-  value: string;
-  index: number;
-  block: number;
-}
-
-export function declarations(css: string): Declaration[] {
-  const found: Declaration[] = [];
-  const stack = [0];
-  let created = 0;
-  let position = 0;
-  for (const match of css.matchAll(/[{}]|$/g)) {
-    const matchIndex = match.index ?? 0;
-    const segment = css.slice(position, matchIndex);
-    // Avant `{` : sélecteur ou règle @ ; seules les déclarations closes par `;` comptent.
-    const text = match[0] === '{' ? segment.slice(0, segment.lastIndexOf(';') + 1) : segment;
-    for (const m of text.matchAll(DECLARATION)) {
-      found.push({
-        prop: (m[1] as string).toLowerCase(),
-        value: (m[2] as string).trim(),
-        index: position + (m.index ?? 0),
-        block: stack.at(-1) ?? 0,
-      });
-    }
-    position = matchIndex + match[0].length;
-    if (match[0] === '{') stack.push((created += 1));
-    else if (match[0] === '}' && stack.length > 1) stack.pop();
-  }
-  return found;
-}
-
 interface Hit {
   rule: string;
   index: number;
   excerpt: string;
 }
 
-const hit = (rule: string, d: Declaration, excerpt = `${d.prop}: ${d.value}`): Hit => ({ rule, index: d.index, excerpt });
+const hit = (rule: string, d: Declaration, excerpt = `${d.prop}: ${d.value}`): Hit => ({
+  rule,
+  index: d.index,
+  excerpt,
+});
 const isNeutral = (value: string): boolean => NEUTRAL.has(value.toLowerCase());
 
 function namedColor(d: Declaration, value: string): boolean {
@@ -95,7 +68,8 @@ const CHECKS: ((d: Declaration) => Hit | false)[] = [
   retro,
 ];
 
-const isUppercase = (d: Declaration): boolean => d.prop === 'text-transform' && /^uppercase\b/i.test(d.value);
+const isUppercase = (d: Declaration): boolean =>
+  d.prop === 'text-transform' && /^uppercase\b/i.test(d.value);
 const isPositive = (d: Declaration): boolean =>
   d.prop === 'letter-spacing' && (Number.parseFloat(d.value) > 0 || WIDE_TRACKING.test(d.value));
 
@@ -115,6 +89,11 @@ function keyframes(css: string): Hit[] {
 
 export function cssHits(css: string): Hit[] {
   const decls = declarations(css);
-  const direct = decls.flatMap((d) => CHECKS.map((check) => check(d)).filter(Boolean) as Hit[]);
+  const direct = decls.flatMap((d) =>
+    CHECKS.flatMap((check) => {
+      const found = check(d);
+      return found ? [found] : [];
+    }),
+  );
   return [...direct, ...spacedCaps(decls), ...keyframes(css)];
 }

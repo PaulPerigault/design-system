@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { neutralizeComments, rawImages } from '../src/images/markup.ts';
 
-const labels = (text, ext) => rawImages(neutralizeComments(text, ext), ext).map((f) => f.label);
+const labels = (text: string, ext: string) =>
+  rawImages(neutralizeComments(text, ext), ext).map((f) => f.label);
 
 describe('markup', () => {
   it('vise <img brut, insensible à la casse, pas <Image ni <Picture', () => {

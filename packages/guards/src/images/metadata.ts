@@ -2,14 +2,16 @@
 // Limite : seuls JPEG et PNG sont analysés (fichiers `.jpg`, `.jpeg`, `.png`). WebP, AVIF,
 // GIF, HEIC et SVG ne le sont pas : leurs métadonnées éventuelles passent ce contrôle.
 import { Buffer } from 'node:buffer';
+import type { GuardIo } from '../lib/io.ts';
+import type { Problem } from '../lib/report.ts';
 import { SOI, jpegMetadata } from './jpeg.ts';
 import { PNG_SIGNATURE, pngMetadata } from './png.ts';
 
 export const METADATA_EXTENSIONS = ['.jpg', '.jpeg', '.png'];
 const FINDINGS = ['exif', 'gps', 'xmp'];
 
-/** @param {Buffer} bytes @param {Buffer} prefix */
-const startsWith = (bytes: Buffer, prefix: Buffer): boolean => bytes.subarray(0, prefix.length).equals(prefix);
+const startsWith = (bytes: Buffer, prefix: Buffer): boolean =>
+  bytes.subarray(0, prefix.length).equals(prefix);
 
 export function metadataOf(bytes: Uint8Array): string[] {
   const buffer = Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength);
@@ -19,7 +21,7 @@ export function metadataOf(bytes: Uint8Array): string[] {
   return FINDINGS.filter((finding) => found.includes(finding));
 }
 
-export function metadataProblems(io: import('../lib/io.ts').GuardIo, files: string[]): import('../lib/report.ts').Problem[] {
+export function metadataProblems(io: GuardIo, files: string[]): Problem[] {
   return files.flatMap((file) => {
     const found = metadataOf(io.readBytes(file));
     if (found.length === 0) return [];

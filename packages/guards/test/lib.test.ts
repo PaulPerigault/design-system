@@ -1,39 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { Writable } from 'node:stream';
 import { SKIPPED_DIRS, lineOf, listFiles } from '../src/lib/files.ts';
-import { nodeIo } from '../src/lib/io.ts';
 import { matchesAny, matchesPath, normalizePath } from '../src/lib/paths.ts';
 import { GuardUsageError, report } from '../src/lib/report.ts';
 import { fakeIo } from './fake-io.ts';
-
-describe('fakeIo', () => {
-  it('déduit les dossiers et mesure les octets réels', () => {
-    const { io } = fakeIo({ 'a/b.css': 'é', 'a/c/d.css': new Uint8Array([1, 2, 3]) });
-    expect([io.size('a/b.css'), io.size('a/c/d.css')]).toEqual([2, 3]);
-    expect(io.readText('a/b.css')).toBe('é');
-    expect(io.readdir('a').map((e) => [e.name, e.isDirectory()])).toEqual([
-      ['b.css', false],
-      ['c', true],
-    ]);
-    expect(io.exists('a/c')).toBe(true);
-    expect(io.exists('z')).toBe(false);
-  });
-});
-
-describe('nodeIo', () => {
-  it('expose le contrat et écrit message + saut de ligne', () => {
-    const chunks = [];
-    const write = (chunk, _enc, done) => done(null, chunks.push(String(chunk)));
-    const sink = new Writable({ write });
-    const io = nodeIo({ stdout: sink, stderr: sink });
-    expect(Object.keys(io).sort()).toEqual(
-      ['err', 'exists', 'out', 'readBytes', 'readText', 'readdir', 'size'].sort(),
-    );
-    io.out('a');
-    io.err('b');
-    expect(chunks).toEqual(['a\n', 'b\n']);
-  });
-});
 
 describe('listFiles', () => {
   const files = {

@@ -1,7 +1,10 @@
 // Garde-fou images : balisage brut hors `allow`, métadonnées EXIF/GPS/XMP (vie privée),
 // budget de poids par fichier. Aucune dépendance : les binaires sont lus à la main.
+import type { CliOptions } from './lib/check.ts';
 import type { GuardIo } from './lib/io.ts';
 import { listFiles } from './lib/files.ts';
+import { listOption, nonEmptyListOption } from './lib/options.ts';
+import type { Options } from './lib/options.ts';
 import { normalizePath } from './lib/paths.ts';
 import { report } from './lib/report.ts';
 import { BUDGET_EXTENSIONS, budgetProblems, budgetSettings } from './images/budget.ts';
@@ -21,22 +24,22 @@ export const defaults = {
 };
 
 /** Options `node:util` `parseArgs` ; `budgets` reçoit du JSON en ligne de commande. */
-export const cliOptions: Record<string, { type: 'string' | 'boolean'; multiple?: boolean }> = {
+export const cliOptions: CliOptions = {
   allow: { type: 'string' as const, multiple: true },
   maxKb: { type: 'string' as const },
   budgets: { type: 'string' as const },
 };
 
-interface ImagesOptions {
-  roots?: string[];
-  allow?: string | string[];
-  maxKb?: number | string;
-  budgets?: unknown;
+/** `allow` : une liste, ou une chaîne seule ; absent, il vaut `defaults.allow`. */
+function allowedPaths(options: Options): string[] {
+  const { allow } = options;
+  const list = typeof allow === 'string' ? [allow] : listOption(options, 'allow', defaults.allow);
+  return list.map(normalizePath);
 }
 
-function settings(options: ImagesOptions) {
-  const roots = options.roots && options.roots.length > 0 ? options.roots : defaults.roots;
-  const allow = [options.allow ?? defaults.allow].flat().map(normalizePath);
+function settings(options: Options) {
+  const roots = nonEmptyListOption(options, 'roots', defaults.roots);
+  const allow = allowedPaths(options);
   const budget = budgetSettings({
     maxKb: options.maxKb ?? defaults.maxKb,
     budgets: options.budgets ?? defaults.budgets,
@@ -47,9 +50,9 @@ function settings(options: ImagesOptions) {
 const select = (files: string[], extensions: string[]): string[] =>
   files.filter((file) => extensions.some((ext) => file.toLowerCase().endsWith(ext)));
 
-export function run(options: ImagesOptions, io: GuardIo): 0 | 1 {
-  const { roots, allow, budget } = settings(options ?? {});
-  const files = listFiles(io, roots, { extensions: EXTENSIONS }) as string[];
+export function run(options: Options, io: GuardIo): 0 | 1 {
+  const { roots, allow, budget } = settings(options);
+  const files = listFiles(io, roots, { extensions: EXTENSIONS });
   const problems = [
     ...markupProblems(io, select(files, MARKUP_EXTENSIONS), allow),
     ...metadataProblems(io, select(files, METADATA_EXTENSIONS)),

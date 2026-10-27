@@ -6,7 +6,7 @@ import { budgetFor, budgetSettings, BYTES_PER_KB } from '../src/images/budget.ts
 import { GuardUsageError } from '../src/lib/report.ts';
 import { fakeIo } from './fake-io.ts';
 
-const kb = (n) => new Uint8Array(n * BYTES_PER_KB);
+const kb = (n: number) => new Uint8Array(n * BYTES_PER_KB);
 // SOI, APP1 Exif `II` dont l'IFD0 porte GPSInfo (0x8825), EOI.
 const exifPayload = `457869660000 49492a0008000000 0100 2588 ${'0'.repeat(28)}`;
 const gpsJpeg = Buffer.from(`ffd8 ffe1 0022 ${exifPayload} ffd9`.replaceAll(' ', ''), 'hex');

@@ -28,7 +28,9 @@ interface Hit {
 
 export function textHits(text: string): Hit[] {
   const plain = text.replaceAll(TYPOGRAPHIC_APOSTROPHE, "'");
-  const hit = (rule: string) => (match: RegExpMatchArray): Hit => ({ rule, index: match.index ?? 0, excerpt: match[0] });
+  const hit =
+    (rule: string) =>
+    (match: RegExpMatchArray): Hit => ({ rule, index: match.index ?? 0, excerpt: match[0] });
   return [
     ...[...plain.matchAll(EMOJI)].map(hit('emoji')),
     ...[...plain.matchAll(PHRASE)].map(hit('generic-phrase')),

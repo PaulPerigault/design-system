@@ -1,6 +1,7 @@
 // Garde-fou : chaque `var(--pp-…)` pointe vers un token défini ; les tokens jamais utilisés
 // sont signalés. Aucune dépendance d'exécution : la liste des noms vient de `tokens.json`.
 import { readdirSync, readFileSync } from 'node:fs';
+import type { DirEntry } from './lib/io.ts';
 import { extname, join } from 'node:path';
 import process from 'node:process';
 
@@ -10,16 +11,27 @@ const SKIPPED = new Set(['node_modules', 'dist', 'generated']);
 const REFERENCE = /var\(\s*(--pp-[\w-]+)/g;
 const DECLARATION = /(--pp-[\w-]+)\s*:/g;
 
-export function tokenNames(json: { themes?: Record<string, Record<string, unknown>>; base?: Record<string, unknown> }): Set<string> {
-  const groups: Record<string, unknown>[] = [...Object.values(json.themes ?? {}), json.base ?? {}] as Record<string, unknown>[];
-  return new Set(groups.flatMap((group) => Object.keys(group)).filter((key): key is string => typeof key === 'string'));
+export function tokenNames(json: {
+  themes?: Record<string, Record<string, unknown>>;
+  base?: Record<string, unknown>;
+}): Set<string> {
+  const groups: Record<string, unknown>[] = [...Object.values(json.themes ?? {}), json.base ?? {}];
+  return new Set(
+    groups
+      .flatMap((group) => Object.keys(group))
+      .filter((key): key is string => typeof key === 'string'),
+  );
 }
 
 const lineOf = (text: string, index: number): number => text.slice(0, index).split('\n').length;
 
+/** Premier groupe capturé de chaque occurrence de `pattern` (motif global). */
+const captured = (text: string, pattern: RegExp): string[] =>
+  [...text.matchAll(pattern)].flatMap((m) => (m[1] === undefined ? [] : [m[1]]));
+
 /** Propriétés `--pp-*` déclarées localement (variables internes d'un composant). */
 const localDeclarations = (texts: { file: string; text: string }[]): Set<string> =>
-  new Set(texts.flatMap(({ text }) => [...text.matchAll(DECLARATION)].map((m) => m[1] as string)));
+  new Set(texts.flatMap(({ text }) => captured(text, DECLARATION)));
 
 export function unknownReferences(
   texts: { file: string; text: string }[],
@@ -27,19 +39,24 @@ export function unknownReferences(
 ): { file: string; line: number; name: string }[] {
   const known = new Set([...names, ...localDeclarations(texts)]);
   return texts.flatMap(({ file, text }) =>
-    [...text.matchAll(REFERENCE)]
-      .filter((match) => match[1] !== undefined && !known.has(match[1]))
-      .map((match) => ({ file, line: lineOf(text, match.index), name: match[1] as string })),
+    [...text.matchAll(REFERENCE)].flatMap((match) => {
+      const name = match[1];
+      if (name === undefined || known.has(name)) return [];
+      return [{ file, line: lineOf(text, match.index), name }];
+    }),
   );
 }
 
-export function unusedTokens(texts: { file: string; text: string }[], names: Iterable<string>): string[] {
-  const used = new Set(texts.flatMap(({ text }) => [...text.matchAll(REFERENCE)].map((m) => m[1] as string)));
+export function unusedTokens(
+  texts: { file: string; text: string }[],
+  names: Iterable<string>,
+): string[] {
+  const used = new Set(texts.flatMap(({ text }) => captured(text, REFERENCE)));
   return [...names].filter((name) => !used.has(name)).sort();
 }
 
 interface FsLike {
-  readdirSync: (dir: string) => import('node:fs').Dirent[];
+  readdirSync: (dir: string) => DirEntry[];
 }
 
 /** Fichiers sources d'un dossier, hors dossiers ignorés. */
@@ -63,7 +80,7 @@ export function parseArgs(argv: string[]): { tokens: string; dirs: string[] } {
 
 interface TokensIo {
   readFile: (path: string) => string;
-  readdirSync: (dir: string) => import('node:fs').Dirent[];
+  readdirSync: (dir: string) => DirEntry[];
   out: (message: string) => void;
   err: (message: string) => void;
 }
@@ -80,7 +97,10 @@ export function run(argv: string[], io: TokensIo): number {
 }
 
 if (import.meta.main) {
-  const write = (stream: NodeJS.WriteStream): ((message: string) => void) => (message) => stream.write(`${message}\n`);
+  const write =
+    (stream: NodeJS.WriteStream): ((message: string) => void) =>
+    (message) =>
+      stream.write(`${message}\n`);
   const readFile = (file: string): string => readFileSync(file, 'utf8');
   const io: TokensIo = {
     readFile,

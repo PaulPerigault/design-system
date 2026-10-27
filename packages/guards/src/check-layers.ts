@@ -4,6 +4,8 @@ import type { Layer } from './layers/layers.ts';
 import { importsOf } from './layers/imports.ts';
 import { layerOfImport, layerOfPath, validateLayers } from './layers/layers.ts';
 import { listFiles } from './lib/files.ts';
+import { nonEmptyListOption } from './lib/options.ts';
+import type { Options } from './lib/options.ts';
 import { report } from './lib/report.ts';
 
 export const name = 'layers';
@@ -21,9 +23,6 @@ const NO_LAYER = {
   message: "aucun fichier n'appartient à une couche : vérifier layers[].paths",
 };
 
-const nonEmpty = (list: string[] | undefined, fallback: string[]): string[] =>
-  list && list.length > 0 ? list : fallback;
-
 /** Imports d'un fichier de la couche `from` qui visent une couche plus haute. */
 function violationsOf(
   layers: Layer[],
@@ -40,17 +39,11 @@ function violationsOf(
     }));
 }
 
-interface LayersOptions {
-  layers?: unknown;
-  roots?: string[];
-  extensions?: string[];
-}
-
-export function run(options: LayersOptions, io: GuardIo): 0 | 1 {
+export function run(options: Options, io: GuardIo): 0 | 1 {
   const layers = validateLayers(options.layers);
-  const roots = nonEmpty(options.roots, defaults.roots);
-  const extensions = nonEmpty(options.extensions, defaults.extensions);
-  const files = listFiles(io, roots, { extensions }) as string[];
+  const roots = nonEmptyListOption(options, 'roots', defaults.roots);
+  const extensions = nonEmptyListOption(options, 'extensions', defaults.extensions);
+  const files = listFiles(io, roots, { extensions });
   const owned = files
     .map((file) => ({ file, from: layerOfPath(layers, file) }))
     .filter(({ from }) => from >= 0);

@@ -26,11 +26,15 @@ const SHORT_SIZE = 2;
 const IFD_ENTRY_SIZE = 12;
 const GPS_INFO_TAG = 0x8825;
 
-const startsWith = (bytes: Buffer, prefix: Buffer): boolean => bytes.subarray(0, prefix.length).equals(prefix);
+const startsWith = (bytes: Buffer, prefix: Buffer): boolean =>
+  bytes.subarray(0, prefix.length).equals(prefix);
 
-const isStandalone = (marker: number): boolean => marker === TEM || (marker >= RST0 && marker <= SOI_MARKER);
+const isStandalone = (marker: number): boolean =>
+  marker === TEM || (marker >= RST0 && marker <= SOI_MARKER);
 
-function tiffReader(tiff: Buffer): { short: (at: number) => number; long: (at: number) => number } | null {
+function tiffReader(
+  tiff: Buffer,
+): { short: (at: number) => number; long: (at: number) => number } | null {
   if (tiff.length < TIFF_HEADER_SIZE) return null;
   const order = tiff.toString('latin1', 0, BYTE_ORDER_SIZE);
   if (order !== 'II' && order !== 'MM') return null;
@@ -78,10 +82,14 @@ function step(bytes: Buffer, offset: number): StepResult | null {
   if (offset + MARKER_SIZE > bytes.length || bytes[offset] !== MARKER) return null;
   const marker = bytes[offset + 1];
   if (marker === undefined || marker === MARKER) return { next: offset + 1 };
+  return afterMarker(bytes, offset, marker);
+}
+
+function afterMarker(bytes: Buffer, offset: number, marker: number): StepResult | null {
   if (marker === SOS || marker === EOI) return null;
   if (isStandalone(marker)) return { next: offset + MARKER_SIZE };
   const end = segmentEnd(bytes, offset);
-  return end === null ? null : { next: end, marker: marker };
+  return end === null ? null : { next: end, marker };
 }
 
 export function jpegMetadata(bytes: Buffer): string[] {

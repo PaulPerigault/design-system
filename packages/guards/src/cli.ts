@@ -1,20 +1,22 @@
 // pp-guards <contrôle> [options] [racines…] : dispatch, configuration, codes de sortie.
 import { parseArgs } from 'node:util';
+import type { Check, CliOptions } from './lib/check.ts';
 import type { GuardIo } from './lib/io.ts';
 import { CHECKS, ORDER } from './checks.ts';
 import { loadConfig, mergeOptions } from './config.ts';
+import type { Options } from './lib/options.ts';
 import { GuardUsageError } from './lib/report.ts';
 
 const EXIT_OK = 0;
 const EXIT_USAGE = 2;
-const COMMON: Record<string, { type: 'string' | 'boolean'; multiple?: boolean }> = { config: { type: 'string' as const }, help: { type: 'boolean' as const } };
+const COMMON: CliOptions = {
+  config: { type: 'string' as const },
+  help: { type: 'boolean' as const },
+};
 
-interface Check {
-  name: string;
-  defaults: Record<string, unknown>;
-  cliOptions: Record<string, { type: 'string' | 'boolean'; multiple?: boolean }>;
-  run: (options: Record<string, unknown>, io: GuardIo) => number;
-}
+/** Chemin `--config` : une chaîne, ou rien. */
+const configPath = (value: unknown): string | undefined =>
+  typeof value === 'string' ? value : undefined;
 
 /** Erreur de syntaxe de ligne de commande : le message est suivi de l'usage. */
 const syntaxError = (message: string): Error & { showUsage: boolean } =>
@@ -36,7 +38,7 @@ export function usageText(check?: Check): string {
   return [head, ...flags, '  --config <fichier>', '  --help'].join('\n');
 }
 
-function parse(args: string[], options: Record<string, { type: 'string' | 'boolean'; multiple?: boolean }>, allowPositionals: boolean) {
+function parse(args: string[], options: CliOptions, allowPositionals: boolean) {
   try {
     return parseArgs({ args, options, allowPositionals, strict: true });
   } catch (error: unknown) {
@@ -46,7 +48,7 @@ function parse(args: string[], options: Record<string, { type: 'string' | 'boole
 }
 
 /** Un contrôle qui échoue (usage, configuration) rend 2 sans interrompre `all`. */
-function runChecked(check: Check, options: Record<string, unknown>, io: GuardIo): number {
+function runChecked(check: Check, options: Options, io: GuardIo): number {
   try {
     return check.run(options, io);
   } catch (error: unknown) {
@@ -64,7 +66,7 @@ function runOne(check: Check, args: string[], io: GuardIo): number {
   const flags = Object.fromEntries(
     Object.entries(values).filter(([flag]) => !Object.hasOwn(COMMON, flag)),
   );
-  const section = loadConfig(io, values.config as string | undefined)?.[check.name];
+  const section = loadConfig(io, configPath(values.config))[check.name];
   return check.run(mergeOptions(check.defaults, section, flags, positionals), io);
 }
 
@@ -74,7 +76,7 @@ function runAll(args: string[], io: GuardIo): number {
     io.out(usageText());
     return EXIT_OK;
   }
-  const config = loadConfig(io, values.config as string | undefined);
+  const config = loadConfig(io, configPath(values.config));
   const names = ORDER.filter((name) => config[name] !== undefined);
   if (names.length === 0) throw new GuardUsageError('all : aucune section de contrôle trouvée');
   const codes = names.map((name) => {

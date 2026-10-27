@@ -1,5 +1,6 @@
 // Budget de poids par fichier image : l'entrée `budgets` au chemin le plus long l'emporte.
 import type { GuardIo } from '../lib/io.ts';
+import { isRecord } from '../lib/options.ts';
 import type { Problem } from '../lib/report.ts';
 import { matchesPath, normalizePath } from '../lib/paths.ts';
 import { GuardUsageError } from '../lib/report.ts';
@@ -10,7 +11,9 @@ export const BYTES_PER_KB = 1024;
 export function toKb(value: unknown, label: string): number {
   const kb = typeof value === 'string' && value.trim() !== '' ? Number(value) : value;
   if (typeof kb !== 'number' || !Number.isFinite(kb) || kb <= 0) {
-    throw new GuardUsageError(`${label} doit être un nombre de Ko positif (reçu : ${String(value)})`);
+    throw new GuardUsageError(
+      `${label} doit être un nombre de Ko positif (reçu : ${String(value)})`,
+    );
   }
   return kb;
 }
@@ -25,8 +28,8 @@ function parseBudgets(raw: unknown): unknown {
 }
 
 function budgetEntry(entry: unknown, index: number): { path: string; maxKb: number } {
-  const e = entry as { path?: unknown; maxKb?: unknown };
-  const path = typeof e?.path === 'string' ? normalizePath(e.path) : '';
+  const e = isRecord(entry) ? entry : {};
+  const path = typeof e.path === 'string' ? normalizePath(e.path) : '';
   if (path === '') throw new GuardUsageError(`budgets[${index}].path manquant`);
   return { path, maxKb: toKb(e.maxKb, `budgets[${index}].maxKb`) };
 }

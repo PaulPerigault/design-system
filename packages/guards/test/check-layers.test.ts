@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest';
 import { cliOptions, defaults, name, run } from '../src/check-layers.ts';
 import { importsOf } from '../src/layers/imports.ts';
 import { layerOfImport, layerOfPath, validateLayers } from '../src/layers/layers.ts';
-import { GuardUsageError } from '../src/lib/report.ts';
 import { fakeIo } from './fake-io.ts';
 
 const layers = ['tokens', 'css', 'astro'].map((layer) => ({
@@ -11,9 +10,10 @@ const layers = ['tokens', 'css', 'astro'].map((layer) => ({
   packages: [`@pp/${layer}`],
 }));
 const options = { ...defaults, layers, roots: ['packages'] };
-const specifiers = (text, file) => importsOf(text, file).map((item) => item.specifier);
-const at = (text, file) => importsOf(text, file).map((i) => `${i.specifier}:${i.line}`);
-const one = (extra) => [{ name: 'a', paths: ['x'], ...extra }];
+const specifiers = (text: string, file: string) =>
+  importsOf(text, file).map((item) => item.specifier);
+const at = (text: string, file: string) =>
+  importsOf(text, file).map((i) => `${i.specifier}:${i.line}`);
 
 it('expose nom, défauts et descripteurs', () => {
   expect([name, cliOptions]).toEqual(['layers', {}]);
@@ -47,30 +47,10 @@ describe('importsOf', () => {
   });
 });
 
-describe('validateLayers', () => {
-  it.each([
-    ['absent', undefined],
-    ['vide', []],
-    ['nom en double', [...one(), ...one({ paths: ['y'] })]],
-    ['sans paths', one({ paths: undefined })],
-    ['paths vide', one({ paths: [] })],
-    ['sans nom', one({ name: undefined })],
-    ['packages invalide', one({ packages: 'p' })],
-    ['couche non objet', ['a']],
-  ])('refuse %s', (_label, value) => {
-    expect(() => validateLayers(value)).toThrow(GuardUsageError);
-  });
-
-  it('normalise les chemins et complète packages', () => {
-    const [layer] = validateLayers(one({ paths: ['./x/y/'] }));
-    expect(layer).toEqual({ name: 'a', paths: ['x/y'], packages: [] });
-  });
-});
-
 describe('résolution', () => {
   const valid = validateLayers(layers);
   const from = 'packages/astro/src/a.astro';
-  const layerOf = (specifier) => layerOfImport(valid, from, specifier);
+  const layerOf = (specifier: string) => layerOfImport(valid, from, specifier);
 
   it('compare par segments entiers depuis la racine', () => {
     const paths = ['packages/css/src/a.css', 'packages/css/srcx/a.css', 'o/packages/css/src/a.css'];

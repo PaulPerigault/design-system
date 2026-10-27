@@ -1,3 +1,4 @@
+import type { GuardIo } from './io.ts';
 export interface Problem {
   file: string;
   line?: number;
@@ -16,7 +17,13 @@ function formatProblem({ file, line, message }: Problem): string {
   return line === undefined ? `${file}: ${message}` : `${file}:${line}: ${message}`;
 }
 
-export function report(io: import('./io.ts').GuardIo, { name, problems, checked }: { name: string; problems: Problem[]; checked: number }): 0 | 1 {
+export interface Summary {
+  name: string;
+  problems: Problem[];
+  checked: number;
+}
+
+export function report(io: GuardIo, { name, problems, checked }: Summary): 0 | 1 {
   for (const problem of problems) io.err(formatProblem(problem));
   if (problems.length === 0) {
     io.out(`${name} : OK (${checked} fichiers)`);

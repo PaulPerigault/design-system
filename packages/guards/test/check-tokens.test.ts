@@ -45,15 +45,15 @@ describe('unusedTokens', () => {
   });
 });
 
-const tree = {
+const tree: Record<string, string[]> = {
   '/src': ['a.css', 'notes.md', 'node_modules', 'generated', 'sub'],
   '/src/sub': ['b.ts'],
 };
-const dirent = (dir, name) => ({
+const dirent = (dir: string, name: string) => ({
   name,
   isDirectory: () => `${dir}/${name}` in tree || ['node_modules', 'generated'].includes(name),
 });
-const fakeFs = { readdirSync: (dir) => (tree[dir] ?? []).map((n) => dirent(dir, n)) };
+const fakeFs = { readdirSync: (dir: string) => (tree[dir] ?? []).map((n) => dirent(dir, n)) };
 
 describe('listSources', () => {
   it('retient les extensions sources et saute les dossiers générés', () => {
@@ -75,19 +75,19 @@ describe('parseArgs', () => {
 });
 
 describe('run', () => {
-  const files = {
+  const files: Record<string, string> = {
     't.json': JSON.stringify({ themes: { light: { '--pp-color-fg': {}, '--pp-space-2': {} } } }),
     '/src/a.css': 'a { color: var(--pp-color-fg); }',
     '/src/sub/b.ts': "const x = 'var(--pp-oops)';",
   };
   const make = () => {
-    const out = [];
-    const err = [];
+    const out: string[] = [];
+    const err: string[] = [];
     const io = {
       ...fakeFs,
-      readFile: (f) => files[f],
-      out: (m) => out.push(m),
-      err: (m) => err.push(m),
+      readFile: (f: string) => files[f] ?? '',
+      out: (m: string) => void out.push(m),
+      err: (m: string) => void err.push(m),
     };
     return { io, out, err };
   };

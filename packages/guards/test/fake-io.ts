@@ -1,50 +1,52 @@
 import { TextDecoder, TextEncoder } from 'node:util';
+import type { DirEntry, GuardIo } from '../src/lib/io.ts';
 
-/** @param {string | Uint8Array} content */
-const toBytes = (content) =>
+type Content = string | Uint8Array;
+
+const toBytes = (content: Content): Uint8Array =>
   typeof content === 'string' ? new TextEncoder().encode(content) : content;
 
-/** @param {string} path */
-const notFound = (path) => new Error(`ENOENT: ${path}`);
+const notFound = (path: string): Error => new Error(`ENOENT: ${path}`);
 
-/**
- * Dossier -> noms enfants, déduits des chemins de fichiers.
- * @param {string[]} paths
- * @returns {Map<string, Map<string, boolean>>}
- */
-function buildTree(paths) {
-  const tree = new Map();
+/** Dossier -> noms enfants (vrai si dossier), déduits des chemins de fichiers. */
+function buildTree(paths: string[]): Map<string, Map<string, boolean>> {
+  const tree = new Map<string, Map<string, boolean>>();
   for (const path of paths) {
     const parts = path.split('/');
     parts.forEach((name, i) => {
       const dir = i === 0 ? '.' : parts.slice(0, i).join('/');
-      if (!tree.has(dir)) tree.set(dir, new Map());
-      tree.get(dir).set(name, i < parts.length - 1);
+      const children = tree.get(dir) ?? new Map<string, boolean>();
+      children.set(name, i < parts.length - 1);
+      tree.set(dir, children);
     });
   }
   return tree;
 }
 
-/**
- * @param {Record<string, string | Uint8Array>} files
- * @returns {{ io: import('../src/lib/io.ts').GuardIo, out: string[], err: string[] }}
- */
-export function fakeIo(files) {
-  const out = [];
-  const err = [];
+export interface FakeIo {
+  io: GuardIo;
+  out: string[];
+  err: string[];
+}
+
+export function fakeIo(files: Record<string, Content>): FakeIo {
+  const out: string[] = [];
+  const err: string[] = [];
   const tree = buildTree(Object.keys(files));
-  const bytesOf = (path) => {
-    if (!(path in files)) throw notFound(path);
-    return toBytes(files[path]);
+  const bytesOf = (path: string): Uint8Array => {
+    const content = files[path];
+    if (content === undefined) throw notFound(path);
+    return toBytes(content);
   };
-  const io = {
+  const readdir = (dir: string): DirEntry[] => {
+    const children = tree.get(dir === '' ? '.' : dir);
+    if (!children) throw notFound(dir);
+    return [...children].map(([name, isDir]) => ({ name, isDirectory: () => isDir }));
+  };
+  const io: GuardIo = {
     readText: (path) => new TextDecoder().decode(bytesOf(path)),
     readBytes: bytesOf,
-    readdir: (dir) => {
-      const children = tree.get(dir === '' ? '.' : dir);
-      if (!children) throw notFound(dir);
-      return [...children].map(([name, isDir]) => ({ name, isDirectory: () => isDir }));
-    },
+    readdir,
     size: (path) => bytesOf(path).byteLength,
     exists: (path) => path in files || tree.has(path) || path === '.',
     out: (message) => void out.push(message),

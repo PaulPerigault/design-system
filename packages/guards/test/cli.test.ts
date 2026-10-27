@@ -9,11 +9,11 @@ const files = {
   'src/ok.css': 'p { color: var(--pp-a); }\n',
   'src/t.md': 'Bonjour le monde\n',
 };
-const exec = (argv, extra = {}) => {
+const exec = (argv: string[], extra: Record<string, string> = {}) => {
   const fake = fakeIo({ ...files, ...extra });
   return { code: main(argv, fake.io), out: fake.out, err: fake.err };
 };
-const conf = (data, name = 'pp-guards.config.json') => ({ [name]: JSON.stringify(data) });
+const conf = (data: unknown, name = 'pp-guards.config.json') => ({ [name]: JSON.stringify(data) });
 const tokensSection = { tokens: 'tokens.json', roots: ['src'] };
 
 describe('usage et aide', () => {

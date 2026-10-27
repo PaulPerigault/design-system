@@ -1,39 +1,35 @@
 // Configuration des couches et résolution d'un import vers sa couche.
 import { posix } from 'node:path';
+import { isRecord, isStrings } from '../lib/options.ts';
 import { normalizePath } from '../lib/paths.ts';
 import { GuardUsageError } from '../lib/report.ts';
 
 const RELATIVE = /^\.\.?(\/|$)/;
 const SCOPED_SEGMENTS = 2;
 
-const isStrings = (list: unknown): list is string[] =>
-  Array.isArray(list) && list.every((item) => typeof item === 'string');
-
-function checkLayer(layer: unknown, index: number) {
-  const label = `layers[${index}]`;
-  if (typeof layer !== 'object' || layer === null) {
-    throw new GuardUsageError(`${label} doit être un objet { name, paths }`);
-  }
-  const obj = layer as { name?: unknown; paths?: unknown; packages?: unknown };
-  if (typeof obj.name !== 'string' || obj.name === '') {
-    throw new GuardUsageError(`${label}.name est requis`);
-  }
-  checkLists(obj as { name: string; paths?: unknown; packages?: unknown }, label);
-}
-
-function checkLists(layer: { name: string; paths?: unknown; packages?: unknown }, label: string) {
-  if (!isStrings(layer.paths) || layer.paths.length === 0) {
-    throw new GuardUsageError(`${label} (${layer.name}) : paths est requis, non vide`);
-  }
-  if (layer.packages !== undefined && !isStrings(layer.packages)) {
-    throw new GuardUsageError(`${label} (${layer.name}) : packages doit être une liste de noms`);
-  }
-}
-
 export interface Layer {
   name: string;
   paths: string[];
   packages: string[];
+}
+
+function packagesOf(value: unknown, label: string, name: string): string[] {
+  if (value === undefined) return [];
+  if (isStrings(value)) return value;
+  throw new GuardUsageError(`${label} (${name}) : packages doit être une liste de noms`);
+}
+
+function parseLayer(layer: unknown, index: number): Layer {
+  const label = `layers[${index}]`;
+  if (!isRecord(layer)) throw new GuardUsageError(`${label} doit être un objet { name, paths }`);
+  const { name, paths, packages } = layer;
+  if (typeof name !== 'string' || name === '') {
+    throw new GuardUsageError(`${label}.name est requis`);
+  }
+  if (!isStrings(paths) || paths.length === 0) {
+    throw new GuardUsageError(`${label} (${name}) : paths est requis, non vide`);
+  }
+  return { name, paths: paths.map(normalizePath), packages: packagesOf(packages, label, name) };
 }
 
 export function validateLayers(layers: unknown): Layer[] {
@@ -42,15 +38,11 @@ export function validateLayers(layers: unknown): Layer[] {
       'layers est requis : liste non vide, de la plus basse à la plus haute',
     );
   }
-  layers.forEach(checkLayer);
-  const names = layers.map((layer) => layer.name);
+  const parsed = layers.map(parseLayer);
+  const names = parsed.map((layer) => layer.name);
   const duplicate = names.find((layerName, i) => names.indexOf(layerName) !== i);
   if (duplicate !== undefined) throw new GuardUsageError(`couche en double : ${duplicate}`);
-  return layers.map((layer: { name: string; paths: unknown[]; packages?: unknown[] }) => ({
-    name: layer.name,
-    paths: layer.paths.map((p) => normalizePath(p !== undefined ? String(p) : '')),
-    packages: (layer.packages ?? []) as string[],
-  }));
+  return parsed;
 }
 
 const segmentsOf = (path: string): string[] => normalizePath(path).split('/').filter(Boolean);
@@ -74,7 +66,11 @@ function packageName(specifier: string): string {
   return specifier.startsWith('@') ? parts.slice(0, SCOPED_SEGMENTS).join('/') : first;
 }
 
-export function layerOfImport(layers: { paths: string[]; packages: string[] }[], file: string, specifier: string): number {
+export function layerOfImport(
+  layers: { paths: string[]; packages: string[] }[],
+  file: string,
+  specifier: string,
+): number {
   if (RELATIVE.test(specifier)) {
     return layerOfPath(layers, posix.join(posix.dirname(normalizePath(file)), specifier));
   }

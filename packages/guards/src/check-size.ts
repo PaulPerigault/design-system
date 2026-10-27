@@ -1,6 +1,9 @@
 // Contrôle : aucun fichier source ne dépasse `max` lignes (on découpe, on ne relève pas).
 import type { GuardIo } from './lib/io.ts';
+import type { CliOptions } from './lib/check.ts';
 import { listFiles } from './lib/files.ts';
+import { nonEmptyListOption } from './lib/options.ts';
+import type { Options } from './lib/options.ts';
 import { GuardUsageError, report } from './lib/report.ts';
 
 export const name = 'size';
@@ -13,7 +16,7 @@ export const defaults = {
   roots: ['src'],
 };
 
-export const cliOptions: Record<string, { type: 'string' | 'boolean'; multiple?: boolean }> = {
+export const cliOptions: CliOptions = {
   max: { type: 'string' as const },
   ext: { type: 'string' as const, multiple: true },
 };
@@ -24,29 +27,26 @@ export const cliOptions: Record<string, { type: 'string' | 'boolean'; multiple?:
 export const countLines = (text: string): number =>
   text.endsWith('\n') ? text.split('\n').length - 1 : text.split('\n').length;
 
+function toNumber(value: unknown): number {
+  if (typeof value === 'number') return value;
+  if (typeof value === 'string' && value.trim() !== '') return Number(value);
+  return Number.NaN;
+}
+
 function parseMax(value: unknown): number {
-  const max = typeof value === 'string' ? Number(value.trim() === '' ? Number.NaN : value) : (value as number);
+  const max = toNumber(value);
   if (!Number.isInteger(max) || max <= 0) {
     throw new GuardUsageError(`--max doit être un entier positif (reçu : ${String(value)})`);
   }
   return max;
 }
 
-const nonEmpty = (list: string[] | undefined, fallback: string[]): string[] =>
-  list && list.length > 0 ? list : fallback;
-
-interface SizeOptions {
-  max?: number | string;
-  extensions?: string[];
-  ext?: string[];
-  roots?: string[];
-}
-
-export function run(options: SizeOptions, io: GuardIo): 0 | 1 {
-  const max = parseMax(options.max ?? defaults.max) as number;
-  const extensions = nonEmpty(options.ext, nonEmpty(options.extensions, defaults.extensions));
-  const roots = nonEmpty(options.roots, defaults.roots);
-  const files = listFiles(io, roots, { extensions }) as string[];
+export function run(options: Options, io: GuardIo): 0 | 1 {
+  const max = parseMax(options.max ?? defaults.max);
+  const fallback = nonEmptyListOption(options, 'extensions', defaults.extensions);
+  const extensions = nonEmptyListOption(options, 'ext', fallback);
+  const roots = nonEmptyListOption(options, 'roots', defaults.roots);
+  const files = listFiles(io, roots, { extensions });
   const problems = files
     .map((file) => ({ file, lines: countLines(io.readText(file)) }))
     .filter(({ lines }) => lines > max)

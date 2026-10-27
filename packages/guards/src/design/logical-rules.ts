@@ -1,10 +1,10 @@
 // Règle « propriétés logiques » : une déclaration CSS physique (gauche, droite, haut, bas,
 // largeur, hauteur) casse l'écriture de droite à gauche et l'écriture verticale.
-import { declarations } from './css-rules.ts';
+import { declarations } from './declarations.ts';
 
 const SIDE = '(?:top|right|bottom|left)';
 /** Propriétés physiques et leur équivalent logique, pour le message. */
-const PROPERTIES = [
+const PROPERTIES: [RegExp, string][] = [
   [
     new RegExp(`^(?:margin|padding|scroll-margin|scroll-padding)-${SIDE}$`),
     'margin|padding-block|inline-start|end',
@@ -25,8 +25,8 @@ const VALUES = new Map([
 ]);
 
 function logicalOf({ prop, value }: { prop: string; value: string }): string | undefined {
-  const property = PROPERTIES.find(([pattern]) => (pattern as RegExp).test(prop));
-  if (property) return property[1] as string;
+  const property = PROPERTIES.find(([pattern]) => pattern.test(prop));
+  if (property) return property[1];
   return VALUES.get(prop)?.test(value.toLowerCase()) ? 'start|end, inline|block' : undefined;
 }
 

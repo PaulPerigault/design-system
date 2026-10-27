@@ -49,7 +49,7 @@ describe('checkText', () => {
 
 describe('phrases, police mono et lignes', () => {
   it('refuse les phrases FR et EN, sans tenir compte de la casse', () => {
-    const rules = (file, text) => checkText(file, text, {}).map((p) => p.rule);
+    const rules = (file: string, text: string) => checkText(file, text, {}).map((p) => p.rule);
     expect(rules('a.md', 'Passionné par le web.')).toEqual(['generic-phrase']);
     expect(rules('a.md', 'N’hésitez pas à écrire')).toEqual(['generic-phrase']);
     expect(rules('a.astro', '<p>Cutting-Edge and seamless</p>')).toHaveLength(2);
@@ -65,9 +65,9 @@ describe('phrases, police mono et lignes', () => {
   it('garde des numéros de ligne justes après neutralisation des commentaires', () => {
     const text = '/* a\nb */\na {\n  color: #fff;\n}\n<!-- x -->';
     const [problem] = checkText('a.css', text, {});
-    expect(problem.line).toBe(4);
-    expect(problem.message).toContain('« color-literal »');
-    expect(problem.message).toContain('color: #fff');
+    expect(problem?.line).toBe(4);
+    expect(problem?.message).toContain('« color-literal »');
+    expect(problem?.message).toContain('color: #fff');
   });
 });
 

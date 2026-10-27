@@ -16,7 +16,9 @@ const SCRIPT = /<script\b[^>]*>[\s\S]*?<\/script>/g;
 const blank = (text: string): string => text.replace(/[^\n]/g, ' ');
 
 function astroRanges(text: string): [number, number][] {
-  const spans = [FRONTMATTER.exec(text), ...text.matchAll(SCRIPT)].filter(Boolean) as RegExpExecArray[];
+  const spans = [FRONTMATTER.exec(text), ...text.matchAll(SCRIPT)].filter(
+    (match): match is RegExpExecArray => match !== null,
+  );
   return spans.map((match) => [match.index, match.index + match[0].length]);
 }
 
@@ -35,9 +37,8 @@ export function importsOf(text: string, file = ''): { specifier: string; line: n
   const code = file.toLowerCase().endsWith('.astro') ? codeOfAstro(text) : text;
   const found = PATTERNS.flatMap((pattern) =>
     [...code.matchAll(pattern)].map((match) => {
-      const indices = match.indices as [number, number][];
-      const [index] = indices[2] ?? [0, 0];
-      return { specifier: match[2] as string, line: lineOf(code, index), index };
+      const [index] = match.indices?.[2] ?? [0, 0];
+      return { specifier: match[2] ?? '', line: lineOf(code, index), index };
     }),
   );
   const unique = new Map(found.map((item) => [item.index, item]));

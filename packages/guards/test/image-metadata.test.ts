@@ -1,42 +1,23 @@
 import { Buffer } from 'node:buffer';
 import { describe, expect, it } from 'vitest';
 import { metadataOf } from '../src/images/metadata.ts';
+import {
+  app0,
+  chunk,
+  exif,
+  hex,
+  jpeg,
+  latin1,
+  png,
+  segment,
+  SIGNATURE,
+  SOI,
+  text,
+  tiff,
+  xmp,
+} from './image-fixtures.ts';
 
-const hex = (s) => Buffer.from(s.replace(/\s/g, ''), 'hex');
-const latin1 = (s) => Buffer.from(s, 'latin1');
-const meta = (...parts) => metadataOf(Buffer.concat(parts));
-const u16 = (n) => hex(n.toString(16).padStart(4, '0'));
-const segment = (marker, payload) =>
-  Buffer.concat([Buffer.from([0xff, marker]), u16(payload.length + 2), payload]);
-
-/** En-tête TIFF + IFD0 avec les balises données, dans le boutisme demandé. */
-function tiff(order, tags, count = tags.length) {
-  const little = order === 'II';
-  const b = Buffer.alloc(10 + tags.length * 12 + 4);
-  b.write(order, 0, 'latin1');
-  const w16 = (v, at) => (little ? b.writeUInt16LE(v, at) : b.writeUInt16BE(v, at));
-  w16(42, 2);
-  b[little ? 4 : 7] = 8; // décalage de l'IFD0 (uint32), dans le boutisme demandé
-  w16(count, 8);
-  tags.forEach((tag, i) => w16(tag, 10 + i * 12));
-  return b;
-}
-
-const SOI = hex('ffd8');
-const exif = (order, tags, count) =>
-  segment(0xe1, Buffer.concat([latin1('Exif\0\0'), tiff(order, tags, count)]));
-const xmp = segment(0xe1, latin1('http://ns.adobe.com/xap/1.0/\0<x/>'));
-const app0 = segment(0xe0, latin1('JFIF\0\x01\x02'));
-const scan = Buffer.concat([hex('ffda 0004 0000'), exif('II', [0x8825]), hex('ffd9')]);
-const jpeg = (...parts) => Buffer.concat([SOI, ...parts, scan]);
-
-const u32 = (n) => hex(n.toString(16).padStart(8, '0'));
-const chunk = (type, data = Buffer.alloc(0)) =>
-  Buffer.concat([u32(data.length), latin1(type), data, Buffer.alloc(4)]);
-const SIGNATURE = hex('89504e470d0a1a0a');
-const png = (...chunks) =>
-  Buffer.concat([SIGNATURE, chunk('IHDR', Buffer.alloc(13)), ...chunks, chunk('IEND')]);
-const text = (type, data) => png(chunk(type, latin1(data)));
+const meta = (...parts: Buffer[]) => metadataOf(Buffer.concat(parts));
 
 describe('metadataOf : JPEG', () => {
   it('lit Exif II et MM, avec et sans GPS', () => {
@@ -71,7 +52,8 @@ describe('metadataOf : JPEG', () => {
 
 describe('metadataOf : PNG', () => {
   it('lit eXIf et les mots-clés des chunks texte', () => {
-    const exifOf = (order, tags) => metadataOf(png(chunk('eXIf', tiff(order, tags))));
+    const exifOf = (order: 'II' | 'MM', tags: number[]) =>
+      metadataOf(png(chunk('eXIf', tiff(order, tags))));
     expect([exifOf('II', [0x010f]), exifOf('II', [0x8825])]).toEqual([['exif'], ['exif', 'gps']]);
     expect(metadataOf(text('iTXt', 'XML:com.adobe.xmp\0\0\0\0\0<x/>'))).toEqual(['xmp']);
     expect(metadataOf(text('zTXt', 'XML:com.adobe.xmp\0\0xx'))).toEqual(['xmp']);
@@ -115,6 +97,6 @@ describe('metadataOf : robustesse', () => {
   it('reconnaît le format à la signature, ignore les autres', () => {
     expect(metadataOf(new Uint8Array(0))).toEqual([]);
     expect(metadataOf(latin1('GIF89a'))).toEqual([]);
-    expect(metadataOf(new Uint8Array(samples[1]))).toEqual(['exif', 'gps']);
+    expect(metadataOf(new Uint8Array(samples[1] ?? []))).toEqual(['exif', 'gps']);
   });
 });

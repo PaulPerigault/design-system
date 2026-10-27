@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { analyze, RULE_IDS } from '../src/design/rules.ts';
 
 const ALL = new Set(RULE_IDS);
-const rulesOf = (file, text) => analyze(file, text, ALL).map((p) => p.rule);
-const css = (text) => rulesOf('a.css', text);
-const markup = (text) => rulesOf('a.astro', text);
+const rulesOf = (file: string, text: string) => analyze(file, text, ALL).map((p) => p.rule);
+const css = (text: string) => rulesOf('a.css', text);
+const markup = (text: string) => rulesOf('a.astro', text);
 
 describe('gradient', () => {
   it('refuse les fonctions et les classes', () => {

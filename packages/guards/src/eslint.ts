@@ -46,8 +46,6 @@ export const testRelaxations = {
 
 /**
  * Génère une config plate ESLint avec les règles de conception.
- * @param {{ testFiles?: string[] }} [options] options
- * @returns {Array<{ rules: object, files?: string[] }>}
  */
 export function designConfig({ testFiles = DEFAULT_TEST_FILES } = {}) {
   return [{ rules: designRules }, { files: testFiles, rules: testRelaxations }];

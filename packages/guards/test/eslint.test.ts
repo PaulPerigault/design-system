@@ -45,15 +45,19 @@ describe('designConfig', () => {
     const config = designConfig();
     expect(config).toHaveLength(2);
     expect(config[0]).toEqual({ rules: designRules });
-    expect(config[1].files).toEqual(['**/*.test.{ts,mjs,js}', '**/test/**/*.ts', '**/e2e/**/*.ts']);
-    expect(config[1].rules).toEqual(testRelaxations);
+    expect(config[1]?.files).toEqual([
+      '**/*.test.{ts,mjs,js}',
+      '**/test/**/*.ts',
+      '**/e2e/**/*.ts',
+    ]);
+    expect(config[1]?.rules).toEqual(testRelaxations);
   });
 
   it('accepte des testFiles personnalisés', () => {
     const custom = ['**/*.spec.ts', '**/__tests__/**/*.ts'];
     const config = designConfig({ testFiles: custom });
-    expect(config[1].files).toEqual(custom);
-    expect(config[1].rules).toEqual(testRelaxations);
+    expect(config[1]?.files).toEqual(custom);
+    expect(config[1]?.rules).toEqual(testRelaxations);
   });
 
   it("respecte l'identité des exports racine", () => {

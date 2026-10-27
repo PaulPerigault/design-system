@@ -9,7 +9,7 @@ const SEPARATOR = /[\s"'`,{}]/;
 const PALETTE = new RegExp(
   `^(?:[a-z]+-)+(?:${PALETTE_HUES.join('|')})-(?:${SHADES.join('|')})(?:/[\\w.%\\[\\]-]+)?$`,
 );
-const CHECKS = [
+const CHECKS: [string, RegExp][] = [
   ['gradient', /^bg-(?:gradient-|linear-|radial|conic)/],
   ['shadow', /^(?:drop-|text-|inset-)?shadow(?:-(?!none$)|$)/],
   ['blur', /^(?:blur(?:-|$)|backdrop-)/],
@@ -84,8 +84,8 @@ function spacedCaps(tokens: ParsedToken[]): Hit[] {
 }
 
 function tokenHits({ utility, raw, index }: ParsedToken): Hit[] {
-  return CHECKS.filter(([, pattern]) => (pattern as RegExp).test(utility)).map(([rule]) => ({
-    rule: rule as string,
+  return CHECKS.filter(([, pattern]) => pattern.test(utility)).map(([rule]) => ({
+    rule,
     index,
     excerpt: raw,
   }));
@@ -93,8 +93,7 @@ function tokenHits({ utility, raw, index }: ParsedToken): Hit[] {
 
 export function classHits(text: string): Hit[] {
   return [...text.matchAll(ATTRIBUTE)].flatMap((attribute) => {
-    const indices = attribute.indices as [number, number][];
-    const [start] = indices[1] ?? [0, 0];
+    const [start] = attribute.indices?.[1] ?? [0, 0];
     const tokens = tokenize(attribute[1] ?? '').map((t) => ({
       raw: t.raw,
       utility: utilityOf(t.raw),

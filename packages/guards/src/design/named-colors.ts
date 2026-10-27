@@ -19,5 +19,4 @@ seashell sienna silver skyblue slateblue slategray slategrey snow springgreen st
 thistle tomato turquoise violet wheat white whitesmoke yellow yellowgreen
 `;
 
-/** @type {ReadonlySet<string>} */
 export const NAMED_COLORS = new Set(NAMES.trim().split(/\s+/));

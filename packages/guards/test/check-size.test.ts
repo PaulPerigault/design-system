@@ -3,7 +3,7 @@ import { GuardUsageError } from '../src/lib/report.ts';
 import { cliOptions, countLines, defaults, name, run } from '../src/check-size.ts';
 import { fakeIo } from './fake-io.ts';
 
-const lines = (count) => `${'a\n'.repeat(count)}`;
+const lines = (count: number) => `${'a\n'.repeat(count)}`;
 
 describe('contrat', () => {
   it('expose nom, défauts et descripteurs parseArgs', () => {
@@ -13,7 +13,7 @@ describe('contrat', () => {
       extensions: ['.ts', '.astro', '.css', '.mjs'],
       roots: ['src'],
     });
-    expect(cliOptions.max.type).toBe('string');
+    expect(cliOptions.max?.type).toBe('string');
     expect(cliOptions.ext).toEqual({ type: 'string', multiple: true });
   });
 });

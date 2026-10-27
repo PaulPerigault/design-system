@@ -1,5 +1,4 @@
-import type { Dirent } from 'node:fs';
-import type { GuardIo } from './io.ts';
+import type { DirEntry, GuardIo } from './io.ts';
 import { normalizePath } from './paths.ts';
 
 export const SKIPPED_DIRS = [
@@ -12,7 +11,8 @@ export const SKIPPED_DIRS = [
   'playwright-report',
 ];
 
-const join = (dir: string, name: string): string => (dir === '.' || dir === '' ? name : `${dir}/${name}`);
+const join = (dir: string, name: string): string =>
+  dir === '.' || dir === '' ? name : `${dir}/${name}`;
 
 const hasExtension = (path: string, extensions: string[]): boolean => {
   const lower = path.toLowerCase();
@@ -35,7 +35,11 @@ function walk(io: GuardIo, dir: string, options: WalkOptions, found: Set<string>
   }
 }
 
-export function listFiles(io: GuardIo, roots: string[], options: { extensions: string[]; skip?: readonly string[] }): string[] {
+export function listFiles(
+  io: GuardIo,
+  roots: string[],
+  options: { extensions: string[]; skip?: readonly string[] },
+): string[] {
   const skip = options.skip ?? SKIPPED_DIRS;
   const found = new Set<string>();
   for (const raw of roots) {
@@ -51,7 +55,7 @@ export function listFiles(io: GuardIo, roots: string[], options: { extensions: s
   return [...found].sort();
 }
 
-function tryReaddir(io: GuardIo, path: string): Dirent[] | null {
+function tryReaddir(io: GuardIo, path: string): DirEntry[] | null {
   try {
     return io.readdir(path);
   } catch {

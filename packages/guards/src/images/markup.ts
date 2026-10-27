@@ -2,7 +2,9 @@
 // `<Image`, `<Picture` et le `src: url()` d'une police ne sont pas visés. Les commentaires
 // sont remplacés par des espaces, sauts de ligne conservés, avant la recherche.
 import { lineOf } from '../lib/files.ts';
+import type { GuardIo } from '../lib/io.ts';
 import { matchesAny } from '../lib/paths.ts';
+import type { Problem } from '../lib/report.ts';
 
 const IMG_EXTENSIONS = ['.astro', '.html', '.md', '.mdx', '.jsx', '.tsx'];
 const BACKGROUND_EXTENSIONS = ['.css', '.astro'];
@@ -35,13 +37,13 @@ export function rawImages(text: string, extension: string): { index: number; lab
   }
   if (BACKGROUND_EXTENSIONS.includes(extension)) {
     for (const match of text.matchAll(BACKGROUND_URL)) {
-      found.push({ index: match.index ?? 0, label: `${(match[1] as string).toLowerCase()}: url(` });
+      found.push({ index: match.index ?? 0, label: `${(match[1] ?? '').toLowerCase()}: url(` });
     }
   }
   return found.sort((a, b) => a.index - b.index);
 }
 
-export function markupProblems(io: import('../lib/io.ts').GuardIo, files: string[], allow: string[]): import('../lib/report.ts').Problem[] {
+export function markupProblems(io: GuardIo, files: string[], allow: string[]): Problem[] {
   const outside = allow.length > 0 ? ` hors ${allow.join(', ')}` : '';
   return files
     .filter((file) => !matchesAny(file, allow))

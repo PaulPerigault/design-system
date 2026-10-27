@@ -20,6 +20,7 @@ export const MESSAGES = {
   'physical-property': 'propriété physique interdite, utiliser la propriété logique',
 };
 export const RULE_IDS = Object.keys(MESSAGES);
+const MESSAGE_OF: ReadonlyMap<string, string> = new Map(Object.entries(MESSAGES));
 
 interface Hit {
   rule: string;
@@ -47,8 +48,7 @@ function styleOnly(text: string): string {
   let kept = '';
   let position = 0;
   for (const match of text.matchAll(STYLE_BLOCK)) {
-    const indices = match.indices as [number, number][];
-    const [start, end] = indices[1] ?? [0, 0];
+    const [start, end] = match.indices?.[1] ?? [0, 0];
     kept += blank(text.slice(position, start)) + text.slice(start, end);
     position = end;
   }
@@ -70,7 +70,11 @@ function excerptOf(raw: string): string {
   return flat.length > EXCERPT_MAX ? `${flat.slice(0, EXCERPT_MAX)}…` : flat;
 }
 
-export function analyze(file: string, text: string, enabled: ReadonlySet<string>): { file: string; line: number; rule: string; message: string }[] {
+export function analyze(
+  file: string,
+  text: string,
+  enabled: ReadonlySet<string>,
+): { file: string; line: number; rule: string; message: string }[] {
   const ext = file.slice(file.lastIndexOf('.')).toLowerCase();
   const clean = neutralize(text, ext);
   const seen = new Set<string>();
@@ -84,6 +88,6 @@ export function analyze(file: string, text: string, enabled: ReadonlySet<string>
       file,
       line: lineOf(clean, index),
       rule,
-      message: `règle « ${rule} » : ${MESSAGES[rule as keyof typeof MESSAGES]} (${excerptOf(excerpt)})`,
+      message: `règle « ${rule} » : ${MESSAGE_OF.get(rule) ?? rule} (${excerptOf(excerpt)})`,
     }));
 }
