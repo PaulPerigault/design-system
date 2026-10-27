@@ -22,8 +22,7 @@
   },
   "sideEffects": false,
   "files": [
-    "bin",
-    "src",
+    "dist",
     "README.md"
   ],
   "publishConfig": {
@@ -32,15 +31,25 @@
     "provenance": true
   },
   "scripts": {
+    "build": "node --eval \"fs.rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.build.json",
+    "prepack": "npm run build",
     "prepublishOnly": "node ../../tools/checks/check-publish-env.mjs",
     "test": "vitest run"
   },
   "bin": {
-    "pp-guards": "./bin/pp-guards.mjs"
+    "pp-guards": "./dist/bin.js"
   },
   "exports": {
-    "./design": "./src/design/rules.mjs",
-    "./eslint": "./src/eslint.mjs",
+    "./design": {
+      "types": "./dist/design/rules.d.ts",
+      "development": "./src/design/rules.ts",
+      "default": "./dist/design/rules.js"
+    },
+    "./eslint": {
+      "types": "./dist/eslint.d.ts",
+      "development": "./src/eslint.ts",
+      "default": "./dist/eslint.js"
+    },
     "./package.json": "./package.json"
   },
   "peerDependencies": {
