@@ -10,10 +10,11 @@ répondent 404. Le brief demandait des images OG générées au build. Piste : `
 texte exige une police lisible par librsvg (pas de `woff2`), donc à traiter avec soin. Tant que ce
 n'est pas fait, retirer les balises `og:image` plutôt que de publier des liens morts.
 
-**Chantier « architecture, TypeScript strict et Rust » : étape 1 faite (2026-10-27), étape suivante : 2.**
+**Chantier « architecture, TypeScript strict et Rust » : étape 1 codée (2026-10-27), fusion en attente, étape suivante : 2.**
 Fusionnés dans `develop` : #24 (images OG, police Atkinson en contours), #25 (ADR-0005), #26
 (`packages/tokens` en TypeScript strict). Étape 1 : `packages/guards` en TypeScript strict, branche
-`feat/ts-strict-guards` (PR vers `develop`, fusion automatique quand la CI est verte). `tsc -p
+`feat/ts-strict-guards`, PR #29 vers `develop`. **Dernier commit non poussé** : le hook `pre-push`
+lance `npm run verify`, en échec sous Windows (17 tests, déjà rouges sur `develop`) ; PR non fusionnée. `tsc -p
 packages/guards` : 0 erreur (384 au départ) ; `packages/guards/**/*.ts` est dans `TS_STRICT_FILES`, donc
 ni `any`, ni assertion `as`, ni `!` ; les options des contrôles sont validées à la frontière
 (`lib/options.ts`, contrat `lib/check.ts`). Le plan de migration d'ADR-0005 continue avec
