@@ -29,14 +29,17 @@ avec `node:path`) ; la CI (Linux) fait foi. Les jobs `visuel` mobiles échouent 
 **Ordre validé par Paul (2026-10-27, D-027) :** 1bis, F2a, F2b, puis étapes 2 à 11
 (`docs/process/proposal-foundations.md` §6). Modèle : `main` seule, preview Cloudflare par PR.
 
-1. **1bis (hooks, CI, tests Windows, non commencée).** Rationaliser les hooks (pertinence, rapidité) et
-   rendre les tests compatibles Windows : 17 échecs `npm test` (chemins `node:path`), 7 échecs e2e
+1. **1bis-a (hooks et CI) : faite** (D-028, `docs/process/ci-audit.md`). **Étape suivante : 1bis-b**
+   (e2e sous quelques minutes, Visuel assaini, tests Windows). Reste de 1bis : 17 échecs `npm test` (chemins `node:path`), 7 échecs e2e
    (`COMPONENT_PAGES` vide), `check:mcp-data`, `check:pack`.
 2. **F2a** : Project, labels, milestones, bascule vers `main` (suppression de `develop`).
 3. **F2b** : modèles, issues de rattrapage.
 4. **Étapes 2 à 11** : ADR Architecture ; guards ; create ; mcp + générateur de tokens ; tools/agents puis
    `dist/` pour chaque paquet publié ; crate Rust `pp-color` ; paquet `color` WebAssembly ; mesure du
    pipeline d'images ; Green IT ; Renovate/Dependabot Cargo, docs, bilan.
+
+**À planifier après les fondations (demande de Paul) :** une partie « analyse de données » avec
+composants (Rust si une mesure le justifie, sinon la meilleure solution visuelle).
 
 **Reprise suggérée.** (1) images OG, (2) intégrer les quatre actions du propriétaire, (3) L9
 (migration du portfolio) une fois les paquets publiés.

@@ -28,11 +28,7 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-      - run: npm ci --ignore-scripts
+      - uses: ./.github/actions/setup
       - name: commits de la PR
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
@@ -56,11 +52,7 @@ jobs:
         with:
           fetch-depth: 2
           persist-credentials: false
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-      - run: npm ci --ignore-scripts
+      - uses: ./.github/actions/setup
       - name: message du dernier commit de develop
         run: npx --no -- commitlint --from HEAD~1 --to HEAD --verbose
 
@@ -71,27 +63,43 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-      - run: npm ci --ignore-scripts
+      - uses: ./.github/actions/setup
       - run: npm run verify
+
+  changes:
+    # Une PR (ou un push) qui ne touche que la documentation et les modèles GitHub ne lance pas
+    # e2e (Visuel a son propre filtre `paths-ignore`). Le job `ci` reste toujours exécuté.
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      code: ${{ steps.diff.outputs.code }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - id: diff
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || 'HEAD~1' }}
+        run: |
+          if git diff --name-only "$BASE_SHA" HEAD | grep -Evq '^(docs/|\.github/(ISSUE_TEMPLATE/|PULL_REQUEST_TEMPLATE)|.*\.md$)'; then
+            echo "code=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "code=false" >> "$GITHUB_OUTPUT"
+          fi
 
   e2e:
     # Documentation construite puis testée dans Chromium : axe (WCAG 2.2 AA), 1.4.12, 2.5.8,
     # mouvement réduit. 45 min : ≈ 19 min avec 31 composants, annulé à 20 min avec 45 (5 800 tests).
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-      - run: npm ci --ignore-scripts
+      - uses: ./.github/actions/setup
       - run: npx playwright install --with-deps chromium
       - run: npm run build
       - run: npm run e2e
@@ -104,11 +112,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-      - run: npm ci --ignore-scripts
+      - uses: ./.github/actions/setup
       - name: compilation de guards (dist/)
         run: npm -w @paulperigault/guards run build
       - name: paquets du commit
@@ -144,7 +148,7 @@ jobs:
   ci:
     # Check requis unique : vert seulement si tous les jobs précédents le sont (ou sautés à bon droit).
     if: always()
-    needs: [commitlint, squash-message, verify, e2e, site, zizmor]
+    needs: [commitlint, squash-message, changes, verify, e2e, site, zizmor]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
