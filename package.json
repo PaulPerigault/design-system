@@ -57,9 +57,6 @@
     "vitest": "^4.1.12"
   },
   "lint-staged": {
-    "*": [
-      "secretlint"
-    ],
     "*.{ts,mjs,astro}": [
       "eslint --fix --no-warn-ignored",
       "prettier --write"

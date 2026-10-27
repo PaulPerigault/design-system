@@ -215,6 +215,13 @@
       "decision": "Avec `main` seule (preview Cloudflare par PR, release-please, dist-tags npm), la règle « jamais main » devient : jamais de push direct sur `main`, jamais de `publish` ; les fusions vers `main` se font uniquement par PR, avec CI verte. Tant que `main` n'existe pas, les PR visent `develop`. Motif : `develop` n'ajoutait qu'une étape manuelle (`develop → main` jamais faite) et aucun canal npm intermédiaire. Remplace, pour `main`, la consigne de `CLAUDE.md` (« jamais vers `main` ») ; `develop` supprimée à l'étape F2a.",
       "id": "D-027",
       "rollback": "Revenir à `develop` seule ; voir `docs/process/proposal-foundations.md` §5."
+    },
+    {
+      "alternative": "Garder `verify` en pre-push ; un hook par contrôle.",
+      "date": "2026-10-27",
+      "decision": "Un contrôle, un seul endroit : la CI Linux fait foi, les hooks locaux se limitent à `commit-msg` (commitlint) et `pre-commit` (eslint et prettier sur les fichiers indexés). `pre-push` supprimé. Installation npm unique (`.github/actions/setup`). e2e et Visuel sautés pour les PR de documentation ; le job `ci` reste l'agrégat exigible. Mesures : `docs/process/ci-audit.md`.",
+      "id": "D-028",
+      "rollback": "Recréer `.husky/pre-push` ; retirer le job `changes`."
     }
   ]
 }
