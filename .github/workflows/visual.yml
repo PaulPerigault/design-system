@@ -1,27 +1,15 @@
 name: Visuel
 
-# Régression visuelle (gap.md n° 20). Les captures dépendent du système : références générées
-# sur le runner, mises en cache par appareil, jamais versionnées. Sur `develop` : les références
-# sont recréées à chaque passage (la branche fait foi). Sur une PR : comparaison avec les
-# références de `develop`, rapportée sans bloquer (un changement visuel voulu diffère par nature) ;
-# les différences sont téléversées pour relecture (D-025).
+# Régression visuelle (gap.md n° 20). PROVISOIRE (D-029, étape 1bis-b1) : tant que les captures de
+# référence Linux n'existent pas (réparation en 1bis-b2), ce workflow n'est exigé par aucun check
+# (le job agrégé `ci` ne l'attend pas) et ne tourne qu'à la main (workflow_dispatch) et chaque
+# lundi à 05:00 UTC, jamais sur une PR ni sur un push. Les références sont recréées à chaque
+# passage et mises en cache par appareil ; les différences sont téléversées pour relecture.
 
 on:
-  pull_request:
-    branches: [develop]
-    paths-ignore:
-      - 'docs/**'
-      - '**/*.md'
-      - '.github/ISSUE_TEMPLATE/**'
-      - '.github/PULL_REQUEST_TEMPLATE*'
-  push:
-    branches: [develop]
-    paths-ignore:
-      - 'docs/**'
-      - '**/*.md'
-      - '.github/ISSUE_TEMPLATE/**'
-      - '.github/PULL_REQUEST_TEMPLATE*'
   workflow_dispatch:
+  schedule:
+    - cron: '0 5 * * 1'
 
 permissions:
   contents: read
@@ -34,7 +22,6 @@ jobs:
   visuel:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    continue-on-error: ${{ github.event_name == 'pull_request' }}
     strategy:
       fail-fast: false
       matrix:
@@ -57,7 +44,7 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/setup
-      - run: npx playwright install --with-deps chromium
+      - uses: ./.github/actions/playwright
       - run: npm run build
       - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
@@ -68,7 +55,7 @@ jobs:
         env:
           PP_VISUAL: '1'
           PROJECT: ${{ matrix.project }}
-          SNAPSHOTS: ${{ github.event_name == 'pull_request' && 'none' || 'all' }}
+          SNAPSHOTS: all
         run: >
           npx playwright test -c apps/docs/playwright.config.ts
           --project="$PROJECT" visual.spec.ts --update-snapshots="$SNAPSHOTS"

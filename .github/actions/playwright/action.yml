@@ -1,0 +1,22 @@
+name: Chromium pour Playwright
+description: Navigateur Chromium en cache (clé = version de Playwright) ; dépendances système installées à chaque run.
+
+runs:
+  using: composite
+  steps:
+    - id: version
+      run: echo "playwright=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+      shell: bash
+    - id: cache
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ~/.cache/ms-playwright
+        key: playwright-${{ runner.os }}-${{ steps.version.outputs.playwright }}
+    # Cache absent : téléchargement de Chromium et dépendances système. Cache présent : seules les
+    # dépendances système (apt) sont installées, le navigateur vient du cache.
+    - if: steps.cache.outputs.cache-hit != 'true'
+      run: npx playwright install --with-deps chromium
+      shell: bash
+    - if: steps.cache.outputs.cache-hit == 'true'
+      run: npx playwright install-deps chromium
+      shell: bash
