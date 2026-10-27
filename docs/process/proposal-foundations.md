@@ -1,6 +1,6 @@
 # Proposition F1 : fondations du processus
 
-Proposition à valider par Paul (2026-10-27). Rien n'a été créé sur GitHub.
+Décisions de Paul validées le 2026-10-27 (voir « Décisions validées » en fin de fichier). Rien n'a été créé sur GitHub.
 
 ## 1. Inventaire (lecture seule)
 
@@ -22,11 +22,11 @@ On supprime les 10 labels par défaut ; on garde `dependencies`.
 
 | Famille   | Labels                                                                                     |
 | --------- | ------------------------------------------------------------------------------------------ |
-| `type:`   | `fonction`, `bogue`, `tâche`, `rattrapage`, `décision`, `doc`, `accessibilité`, `chantier` |
+| `type:`   | `fonction`, `bogue`, `tache`, `rattrapage`, `decision`, `doc`, `accessibilite`, `chantier` |
 | `pkg:`    | `tokens`, `css`, `astro`, `guards`, `create`, `mcp`, `docs`, `agents`, `ci`, `processus`   |
 | `prio:`   | `bloquant`, `haute`, `normale`, `basse`                                                    |
 | `taille:` | `trait` (≤ 30 min), `page` (une session Sonnet), `cahier` (à découper, jamais assignée)    |
-| `état:`   | `à-valider` (attend Paul), `bloqué` (cite l'issue bloquante)                               |
+| `etat:`   | `a-valider` (attend Paul), `bloque` (cite l'issue bloquante)                               |
 
 **Milestones** : `M-histoire` (L0 à L20, fermé), `M0 fondations`, `M1 TypeScript strict`,
 `M2 publication npm 0.x`, `M3 migration du portfolio (L9)`, `M4 Rust pp-color (conditionnel)`, `M5 1.0`.
@@ -36,8 +36,8 @@ champs `Status` (`à trier`, `prêt`, `en cours`, `en revue`, `fait`), `Lot` (`L
 chantier TypeScript, `P` pour le processus), `Priorité`, `Taille`, `Paquet` (miroirs des labels,
 remplis par automatisation). Vues : tableau par Status, feuille de route par milestone, « à valider ».
 
-**Branches** : `<type>/<issue>-<slug>`, minuscules : `fonction/142-cluster-gap`, `tâche/155-hook-pre-push`
-(types : `fonction`, `bogue`, `tâche`, `doc`, `chantier`). Une branche =
+**Branches** : `<type>/<issue>-<slug>`, minuscules : `fonction/142-cluster-gap`, `tache/155-hook-pre-push`
+(types : `fonction`, `bogue`, `tache`, `doc`, `chantier`). Une branche =
 une issue = une PR. Commits en Conventional Commits avec `Refs #142` ; la PR porte `Closes #142`.
 
 **Chaîne** : issue (assignee, labels, projet, milestone, description complète) → branche → commits →
@@ -69,52 +69,49 @@ non publiés, aucun commit).
 Les lots à deux numéros donnent deux issues vers le même SHA. Hors lot, une issue fermée chacune : #4 (9d43175), #12 (d0e5142), #23 (7bd1518), #25 (9c426eb), #26 (a1aa102), #30 (fc43ef4). #27 et #28
 (dependabot) restent sans issue. Ordre : labels et milestones, Project, issues, rattachement des PR.
 
-## 5. `main` seule + previews Cloudflare, ou `develop`
+## 5. `main` seule + previews Cloudflare (décision validée)
 
-- **`main` seule** : une étape (PR → `main`) ; release-please sur `main` ; dist-tags `next` à chaque
-  fusion et `latest` à la release ; URL de preview dans la PR ; un déploiement Pages par PR, nettoyé
-  seul ; risque : `main` instable si la CI est faible, d'où un ruleset ; « jamais main » devient
-  « jamais sans PR verte ».
-- **`develop` + `main`** : deux étapes, dont `develop → main` jamais faite ; pas de canal npm
-  intermédiaire ; aucune revue visuelle avant `develop` ; deux suites de CI par changement ; filet
-  redondant avec un ruleset.
+Modèle retenu : **`main` seule**, une preview Cloudflare Pages par PR pour `apps/docs`, versionnement par
+release-please (un tag par paquet) et dist-tags npm (`next` à chaque fusion, `latest` à la release).
+Ruleset sur `main` : PR obligatoire, CI `ci` requise, pas de push forcé, historique linéaire. La PR de
+release est fusionnée par Paul seul. `develop` est supprimée à l'étape F2a, pas avant ; tant que `main`
+n'existe pas, les PR visent `develop`. Les workflows `ci`, `visual`, `supply-chain` et
+`dependabot-automerge` ciblent `develop` : ils basculent à l'étape F2a.
 
-**Recommandation : `main` seule.** `develop` ne fait aujourd'hui qu'ajouter une étape manuelle.
-Conditions : ruleset sur `main` (PR obligatoire, CI `ci` requise, pas de push forcé, historique
-linéaire) ; preview Cloudflare Pages par PR pour `apps/docs` ; release-please avec un tag par paquet ;
-la PR de release fusionnée par Paul seul. Séquence : geler `develop`, la fusionner dans `main`,
-changer la branche par défaut, retarger dependabot, supprimer `develop` après accord de Paul.
-`ci`, `visual`, `supply-chain`, `dependabot-automerge` ciblent `develop` : tâche A5.
+Écarté : `develop` + `main` (deux étapes dont `develop → main` jamais faite, pas de canal npm
+intermédiaire, deux suites de CI par changement).
 
-## 6. Découpage du reste (chaque ligne = une future issue, une session Sonnet)
+## 6. Ordre des étapes (numérotation validée)
 
-Étapes 2 à 11 absentes du dépôt (ADR-0005 : `create`, `tools/agents`, `mcp`) : numérotation reconstruite.
+Chaque ligne = une future issue, une session Sonnet.
 
-- **A1** (page, processus) : script `gh` rejouable : milestones, labels, champs du Project.
-- **A2** (page, processus) : modèles d'issue et de PR, `config.yml`, `SECURITY.md`, `CODEOWNERS`.
-- **A3** (page, processus) : les 21 issues de rattrapage et les 6 hors lot, fermées, dans le Project.
-- **A4** (page, ci) : ruleset `main` ; contrôle CI « PR liée à une issue ».
-- **A5** (cahier, ci) : workflows vers `main`, preview Cloudflare, dependabot ; à découper en A5a-c.
-- **A6** (trait, ci) : supprimer `develop` et `feat/ts-strict-guards`, après accord de Paul.
-- **1bis-a** (trait, ci) : hooks réduits à `commit-msg` et lint-staged ; ni `pre-push` ni `check:size`.
-- **1bis-b** (page ×3, guards, docs, mcp) : Windows : `check-tokens` en `node:path/posix` (17 échecs),
-  e2e `COMPONENT_PAGES` vide (7), `check:mcp-data`, `check:pack` ; une issue chacun.
-- **1bis-c** (page ×2, ci) : Visuel : snapshots mobiles absents (à produire en CI Linux) ; écarts de
-  pixels bureau et tablette (polices, animations, seuil).
-- **1bis-d** (page, ci) : matrice « qui vérifie quoi » (hook, `verify`, CI), suppression des doublons.
-- **2a-c** (page, create) : TS strict : lib et `parseArgs`, `add` et `eject`, `diff` et `bin`.
-- **3a-c** (page, agents) : `tools/agents` en TS strict, avec `config.json` et `.kiro/agents`.
-- **4a, 4b** (page, mcp) : `mcp` en TS strict, sept outils sur deux sessions.
-- **5** (page, tokens) : `tokens` et `create` publiés compilés (`dist`, condition `development`).
-- **6** (page ×2, tokens, create) : accent et police chacun en une variable (`--pp-accent`,
-  `--pp-font-sans`, teintes dérivées en OKLCH, test d'override), puis option `--accent` de `create`.
-- **7** (page, ci) : release-please, un tag par paquet, `CHANGELOG`, dist-tags `next` et `latest`.
-- **8** (cahier, docs) : première publication `0.x` (geste de Paul), puis L9 (portfolio).
-- **9** (page, docs) : images OG, défaut connu : corriger ou retirer les balises.
-- **10** (cahier, tokens) : Rust `pp-color` (ADR-0005 étape A), seulement sur décision explicite.
+- **1bis** (hooks, CI, tests Windows) :
+  - **1bis-a** (trait, ci) : hooks réduits à `commit-msg` et lint-staged ; ni `pre-push` ni `check:size`.
+  - **1bis-b** (page ×3, guards, docs, mcp) : `check-tokens` en `node:path/posix` (17 échecs), e2e
+    `COMPONENT_PAGES` vide (7), `check:mcp-data`, `check:pack` ; une issue chacun.
+  - **1bis-c** (page ×2, ci) : Visuel : snapshots mobiles absents (à produire en CI Linux) ; écarts de
+    pixels bureau et tablette (polices, animations, seuil).
+  - **1bis-d** (page, ci) : matrice « qui vérifie quoi » (hook, `verify`, CI), suppression des doublons.
+- **F2a** (page, processus) : Project, labels, milestones (script `gh` rejouable), ruleset `main`,
+  workflows vers `main`, preview Cloudflare, dependabot, bascule vers `main`, puis suppression de
+  `develop` après accord de Paul. À découper en sous-issues.
+- **F2b** (page, processus) : modèles d'issue et de PR, `config.yml`, `SECURITY.md`, `CODEOWNERS`, contrôle
+  CI « PR liée à une issue », les 21 issues de rattrapage et les 6 hors lot, dans le Project.
+- **2** : ADR Architecture.
+- **3** : guards (TypeScript strict + architecture).
+- **4** : `create`.
+- **5** : `mcp` + générateur de tokens.
+- **6** : `tools/agents`, puis `tsc` vers `dist/` pour chaque paquet publié (`tokens` y compris).
+- **7** : crate Rust `pp-color`.
+- **8** : paquet `@paulperigault/color` en WebAssembly.
+- **9** : mesure du pipeline d'images.
+- **10** : Green IT (budgets de poids, carbone, page Sobriété).
+- **11** : Renovate/Dependabot Cargo, documentation, bilan.
 
-## Points à valider par Paul
+## Décisions validées (Paul, 2026-10-27)
 
-1. Suppression de `feat/ts-strict-guards` (locale et distante ; #29 fermée, remplacée par #30) : **non faite**.
-2. `main` seule ou `develop` conservée (section 5).
-3. Numérotation des étapes (section 6). 4. Labels avec accents (`tâche`) ou ASCII (`tache`).
+1. `feat/ts-strict-guards` supprimée (locale et distante) : son contenu est dans `develop` via #30.
+2. Modèle de branches : `main` seule, preview Cloudflare par PR, release-please et dist-tags npm.
+   `develop` supprimée à l'étape F2a.
+3. Numérotation des étapes 2 à 11 : celle de la section 6.
+4. Labels en ASCII, sans accents.

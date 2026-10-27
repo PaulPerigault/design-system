@@ -208,6 +208,13 @@
       "decision": "Domaine de la documentation : `design.paulperigault.dev` remplace `ds.paulperigault.dev`. Images Open Graph produites au build par `apps/docs/scripts/og.mjs` (sharp, police `Helvetica, Arial, sans-serif` : librsvg ne charge pas le woff2 d'Atkinson ; rendu différent sur Linux, non testé). « Test d'activation conditionnelle » : aucune spécification antérieure n'a été retrouvée dans le dépôt ; retenu = la vérification que paulperigault.fr renvoie un lien vers le site ne s'exécute que si `PORTFOLIO_LINK_CHECK=1` (aucun réseau par défaut).",
       "id": "D-026",
       "rollback": "Retirer `og.mjs` de `build` ; supprimer `cross-links.*`."
+    },
+    {
+      "alternative": "`develop` + `main` ; « jamais main » maintenu.",
+      "date": "2026-10-27",
+      "decision": "Avec `main` seule (preview Cloudflare par PR, release-please, dist-tags npm), la règle « jamais main » devient : jamais de push direct sur `main`, jamais de `publish` ; les fusions vers `main` se font uniquement par PR, avec CI verte. Tant que `main` n'existe pas, les PR visent `develop`. Motif : `develop` n'ajoutait qu'une étape manuelle (`develop → main` jamais faite) et aucun canal npm intermédiaire. Remplace, pour `main`, la consigne de `CLAUDE.md` (« jamais vers `main` ») ; `develop` supprimée à l'étape F2a.",
+      "id": "D-027",
+      "rollback": "Revenir à `develop` seule ; voir `docs/process/proposal-foundations.md` §5."
     }
   ]
 }
