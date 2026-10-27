@@ -31,9 +31,9 @@
     "agents:run": "node tools/agents/run.mjs",
     "agents:batch": "node tools/agents/batch.mjs",
     "prepare": "husky",
-    "check:tokens": "npm -w @paulperigault/tokens run check && node packages/guards/src/check-tokens.mjs --tokens packages/tokens/generated/tokens.json packages/css/src packages/astro/src apps/docs/src",
+    "check:tokens": "npm -w @paulperigault/tokens run check && node packages/guards/src/check-tokens.ts --tokens packages/tokens/generated/tokens.json packages/css/src packages/astro/src apps/docs/src",
     "e2e": "playwright test -c apps/docs/playwright.config.ts",
-    "check:guards": "node packages/guards/bin/pp-guards.mjs all --config pp-guards.config.json",
+    "check:guards": "node packages/guards/src/bin.ts all --config pp-guards.config.json",
     "registry": "node tools/registry/build.mjs",
     "check:registry": "node tools/registry/build.mjs --check",
     "check:mcp-data": "npm -w @paulperigault/mcp run check:data"

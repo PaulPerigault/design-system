@@ -10,6 +10,24 @@ répondent 404. Le brief demandait des images OG générées au build. Piste : `
 texte exige une police lisible par librsvg (pas de `woff2`), donc à traiter avec soin. Tant que ce
 n'est pas fait, retirer les balises `og:image` plutôt que de publier des liens morts.
 
+**Chantier « architecture, TypeScript strict et Rust » : étape 1 codée (2026-10-27), étape suivante : 2.**
+Fusionnés dans `develop` : #24 (images OG), #25 (ADR-0005), #26 (`packages/tokens` en TypeScript
+strict). Étape 1 : `packages/guards` en TypeScript strict, branche `feat/ts-strict-guards-2` (la PR #29 a été fermée : un sujet de commit de la branche d'origine est refusé par commitlint). `tsc -p packages/guards` : 0 erreur ;
+`packages/guards/**/*.ts` est dans `TS_STRICT_FILES` (ni `any`, ni `as`, ni `!`) ; options des
+contrôles validées à la frontière (`lib/options.ts`, `lib/check.ts`). `guards` est publié compilé :
+`dist/` par `tsc` (`prepack`), `exports` avec la condition `development` pour les sources du dépôt.
+`tokens` reste publié en `.ts` : même limite (Node n'exécute pas de `.ts` sous `node_modules`), à traiter
+au même titre avant publication, puis `packages/create` et `tools/agents` (qui doit aussi mettre à jour
+`tools/agents/config.json` et les listes `.kiro/agents/*.json`). Le sujet de commit « wip: » est refusé
+par commitlint : utiliser `chore: wip …`.
+Sous Windows, `npm test` donne 17 échecs, déjà présents sur `develop` (`check-tokens` joint les chemins
+avec `node:path`) ; la CI (Linux) fait foi. Les jobs `visuel` mobiles échouent déjà sur les PR
+(« snapshot doesn't exist », #26 et #28).
+
+**Étape 1bis (avant l'étape 2, non commencée).** Rationaliser les hooks (pertinence, rapidité) et rendre
+les tests compatibles Windows : 17 échecs `npm test` (chemins `node:path`), 7 échecs e2e
+(`COMPONENT_PAGES` vide), `check:mcp-data`, `check:pack`.
+
 **Reprise suggérée.** (1) images OG, (2) intégrer les quatre actions du propriétaire, (3) L9
 (migration du portfolio) une fois les paquets publiés.
 

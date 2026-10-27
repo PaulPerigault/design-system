@@ -109,6 +109,8 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci --ignore-scripts
+      - name: compilation de guards (dist/)
+        run: npm -w @paulperigault/guards run build
       - name: paquets du commit
         run: |
           mkdir -p "$RUNNER_TEMP/packs"
