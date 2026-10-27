@@ -26,6 +26,8 @@ commitlint : utiliser `chore: wip …`. Le corps de PR doit tenir en lignes de 1
 Sous Windows, 6 tests de `guards` (`check-tokens`, `cli`) échouent déjà sur `develop` : `check-tokens`
 joint les chemins avec `node:path` (séparateur `\`). La CI (Linux) fait foi.
 
+**Étape 1bis (avant l'étape 2, non commencée).** Rationaliser les hooks (pertinence, rapidité) et rendre les tests compatibles Windows : 17 échecs `npm test` (chemins `node:path`), 7 échecs e2e (`COMPONENT_PAGES` vide), `check:mcp-data`, `check:pack`.
+
 **Reprise suggérée.** (1) images OG, (2) intégrer les quatre actions du propriétaire, (3) L9
 (migration du portfolio) une fois les paquets publiés.
 
