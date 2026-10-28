@@ -5,7 +5,7 @@
  * serveur MCP.
  */
 import { readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { posix } from 'node:path';
 import ts from 'typescript';
 import { defaultsOf, frontmatterOf } from './frontmatter.ts';
 
@@ -31,7 +31,8 @@ const OPTIONS: ts.CompilerOptions = {
 
 /** Programme TypeScript dont le seul fichier propre est le frontmatter, posé à côté du composant. */
 function checkerFor(component: string, script: string) {
-  const virtual = join(dirname(component), VIRTUAL);
+  // TypeScript normalise les noms de fichiers en `/` : le nom virtuel doit l'être aussi.
+  const virtual = posix.join(posix.dirname(component.replaceAll('\\', '/')), VIRTUAL);
   const host = ts.createCompilerHost(OPTIONS);
   const read = host.getSourceFile.bind(host);
   host.getSourceFile = (name, version) =>

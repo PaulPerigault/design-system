@@ -1,6 +1,6 @@
 import { Buffer } from 'node:buffer';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { dirname, join, resolve } from 'node:path';
+import { dirname, join, posix, resolve } from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
@@ -56,7 +56,7 @@ export async function generate({ distDir = DIST_DIR, fs = diskFs, render = raste
   const targets = targetsOf(await readPages(fs, distDir));
   for (const [target, { title, description }] of targets) {
     const svg = buildSvg({ title: imageTitleOf(title), description, colors, logoUri });
-    await fs.write(join(distDir, target), await render(svg));
+    await fs.write(posix.join(distDir, target), await render(svg));
   }
   return [...targets.keys()];
 }

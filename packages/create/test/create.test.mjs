@@ -105,7 +105,7 @@ describe('gabarit', () => {
   it('ignore les entrées commençant par `.` (.DS_Store)', () => {
     const e = (name, dir = false) => ({ name, isDirectory: () => dir });
     const tree = { '/t/site': [e('.DS_Store'), e('a'), e('s', true)], '/t/site/s': [e('.x')] };
-    const io = { cwd: () => '/', readdir: (dir) => tree[dir], readText: () => '{}' };
+    const io = { cwd: '/', readdir: (dir) => tree[dir], readText: () => '{}' };
     expect(loadTemplate(io, '/t').files.map((file) => file.path)).toEqual(['a']);
   });
 

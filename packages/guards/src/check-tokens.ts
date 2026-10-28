@@ -2,7 +2,7 @@
 // sont signalés. Aucune dépendance d'exécution : la liste des noms vient de `tokens.json`.
 import { readdirSync, readFileSync } from 'node:fs';
 import type { DirEntry } from './lib/io.ts';
-import { extname, join } from 'node:path';
+import { posix } from 'node:path';
 import process from 'node:process';
 
 const ARGV_START = 2;
@@ -62,9 +62,9 @@ interface FsLike {
 /** Fichiers sources d'un dossier, hors dossiers ignorés. */
 export function listSources(dir: string, fs: FsLike = { readdirSync: () => [] }): string[] {
   return fs.readdirSync(dir).flatMap((entry) => {
-    const path = join(dir, entry.name);
+    const path = posix.join(dir, entry.name);
     if (entry.isDirectory()) return SKIPPED.has(entry.name) ? [] : listSources(path, fs);
-    return EXTENSIONS.includes(extname(entry.name)) ? [path] : [];
+    return EXTENSIONS.includes(posix.extname(entry.name)) ? [path] : [];
   });
 }
 

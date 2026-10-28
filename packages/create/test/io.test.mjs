@@ -29,10 +29,20 @@ describe('nodeIo', () => {
     expect([io.cwd, outBuf, errBuf]).toEqual(['/projet', ['x\n'], ['y\n']]);
   });
 
-  it('refuse un cwd non POSIX (Windows)', () => {
+  it('refuse un cwd relatif', () => {
     const stream = { write: () => undefined };
-    expect(() => nodeIo({ cwd: 'C:/p', stdout: stream, stderr: stream })).toThrow(
-      "chemin de travail non POSIX : Windows non pris en charge pour l'instant",
+    expect(() => nodeIo({ cwd: 'p', stdout: stream, stderr: stream })).toThrow(
+      'chemin de travail non absolu',
     );
+  });
+
+  it('accepte un lecteur Windows et garde la lettre en résolvant', () => {
+    const stream = { write: () => undefined };
+    const io = nodeIo({ cwd: 'C:\\p', stdout: stream, stderr: stream });
+    expect([io.cwd, resolveIn(io, 'a/../b'), resolveIn(io, 'D:/x/./y')]).toEqual([
+      'C:/p',
+      'C:/p/b',
+      'D:/x/y',
+    ]);
   });
 });

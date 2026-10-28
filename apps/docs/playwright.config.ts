@@ -11,8 +11,8 @@ export default defineConfig({
   retries: 0,
   reporter: 'list',
   outputDir: './test-results',
-  // Références visuelles générées en CI, jamais versionnées (voir matrix/visual.spec.ts).
-  snapshotPathTemplate: '.visual/{projectName}/{testFilePath}/{arg}{ext}',
+  // Références visuelles Linux, versionnées ; régénérées par le workflow Visuel (matrix/visual.spec.ts).
+  snapshotPathTemplate: 'e2e/references/{projectName}/{arg}{ext}',
   // Les tests qui injectent du CSS (espacement du texte) contournent la CSP ; csp.spec.ts la rétablit.
   use: { baseURL: BASE_URL, bypassCSP: true },
   projects: [

@@ -24,7 +24,7 @@
     "check:security-txt": "node tools/checks/check-security-txt.mjs",
     "check:lockfile": "node tools/checks/check-lockfile.mjs",
     "check:secrets": "secretlint \"**/*\"",
-    "check:pack": "npm pack --dry-run --workspaces --json > /dev/null",
+    "check:pack": "node tools/checks/check-pack.mjs",
     "guard": "npm run check:secrets && npm run check:size && npm run check:lockfile && npm run check:guards && npm run check:tokens && npm run check:registry && npm run check:install-scripts && npm run check:security-txt && npm run check:readability",
     "build": "npm run build --workspaces --if-present",
     "verify": "npm run guard && npm run lint && npm run format:check && npm test && npm run build && npm run check:mcp-data && npm -w @paulperigault/docs run check && npm run check:pack",

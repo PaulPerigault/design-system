@@ -1,5 +1,5 @@
 import { Buffer } from 'node:buffer';
-import { join } from 'node:path';
+import { posix } from 'node:path';
 import { OG_IMAGE } from '../src/lib/site.ts';
 import { ogFileOf } from './og-pages.mjs';
 
@@ -40,7 +40,7 @@ export async function problemOf(page, { fs, distDir, size = OG_IMAGE }) {
   if (!page.image) return null;
   const file = fileOf(page.image);
   if (file.problem) return `${page.file} : ${file.problem}`;
-  const data = await fs.read(join(distDir, file.path)).catch(() => null);
+  const data = await fs.read(posix.join(distDir, file.path)).catch(() => null);
   if (!data) return `${page.file} : ${file.path} absent`;
   const found = pngSize(Buffer.from(data));
   if (!found) return `${page.file} : ${file.path} n'est pas un PNG`;

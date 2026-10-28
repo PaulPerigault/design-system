@@ -1,6 +1,6 @@
 /** Écrit le jumeau Markdown de chaque page de `dist/` et `llms-full.txt` (après `astro build`). */
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { dirname, join, sep } from 'node:path';
+import { dirname, join, posix, sep } from 'node:path';
 import process from 'node:process';
 import { URL } from 'node:url';
 import { extractCanonical, extractTitle, htmlToMarkdown, ORIGIN } from './html-to-markdown.mjs';
@@ -49,10 +49,10 @@ function buildPage(rel, html) {
 export function run({ dist, read, write, list, out = process.stdout }) {
   const pages = list(dist)
     .filter(isPage)
-    .map((rel) => buildPage(rel, read(join(dist, rel))))
+    .map((rel) => buildPage(rel, read(posix.join(dist, rel))))
     .sort((a, b) => a.key.localeCompare(b.key, 'en'));
-  for (const page of pages) write(join(dist, page.name), page.md);
-  write(join(dist, 'llms-full.txt'), `${pages.map((p) => p.md.trimEnd()).join(SEPARATOR)}\n`);
+  for (const page of pages) write(posix.join(dist, page.name), page.md);
+  write(posix.join(dist, 'llms-full.txt'), `${pages.map((p) => p.md.trimEnd()).join(SEPARATOR)}\n`);
   out.write(`markdown : ${pages.length} pages, llms-full.txt\n`);
   return pages.length;
 }

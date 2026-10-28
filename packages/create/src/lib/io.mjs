@@ -3,7 +3,7 @@ import { posix } from 'node:path';
 
 /**
  * @typedef {object} CreateIo
- * @property {string} cwd absolu, POSIX
+ * @property {string} cwd absolu, séparateurs `/`, lettre de lecteur admise
  * @property {(path: string) => string} readText
  * @property {(path: string, text: string) => void} writeText crée les dossiers parents
  * @property {(path: string) => boolean} exists
@@ -12,6 +12,11 @@ import { posix } from 'node:path';
  * @property {(message: string) => void} err
  */
 
+const DRIVE = /^[A-Za-z]:(?=\/)/u;
+
+/** Vrai pour `/x` et pour `C:/x` (séparateurs déjà normalisés en `/`). */
+const isAbsolutePath = (path) => posix.isAbsolute(path) || DRIVE.test(path);
+
 /**
  * Chemin absolu POSIX d'un chemin relatif à `io.cwd` (un chemin absolu est conservé).
  * @param {{ cwd: string }} io
@@ -19,7 +24,10 @@ import { posix } from 'node:path';
  * @returns {string}
  */
 export function resolveIn(io, rel) {
-  return posix.resolve(io.cwd, rel);
+  const path = rel.replaceAll('\\', '/');
+  if (DRIVE.test(path)) return posix.normalize(path);
+  const drive = DRIVE.exec(io.cwd)?.[0] ?? '';
+  return drive + posix.resolve(io.cwd.slice(drive.length), path);
 }
 
 /**
@@ -29,10 +37,8 @@ export function resolveIn(io, rel) {
  */
 export function nodeIo({ cwd, stdout, stderr }) {
   const posixCwd = cwd.split('\\').join('/');
-  if (!posix.isAbsolute(posixCwd)) {
-    throw new Error(
-      `chemin de travail non POSIX : Windows non pris en charge pour l'instant (${cwd})`,
-    );
+  if (!isAbsolutePath(posixCwd)) {
+    throw new Error(`chemin de travail non absolu (${cwd})`);
   }
   return {
     cwd: posixCwd,
