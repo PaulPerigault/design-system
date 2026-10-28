@@ -1,8 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { decide, mergeRefusal, mergeSegments, targetOf } from './guard-pr-merge.mjs';
 
-const BASES = { 3: 'main', 4: 'develop', 5: 'feat/x' };
-const readBase = ({ pr }) => BASES[pr] ?? null;
+const PRS = {
+  3: { base: 'main', head: 'feat/y' },
+  4: { base: 'develop', head: 'feat/z' },
+  5: { base: 'feat/x', head: 'feat/w' },
+  6: { base: 'main', head: 'release-please--branches--main' },
+};
+const readBase = ({ pr }) => PRS[pr] ?? null;
 
 describe('mergeSegments et targetOf', () => {
   it('ne voit une fusion que dans une commande gh … pr merge', () => {
@@ -29,6 +34,7 @@ describe('mergeRefusal', () => {
   it.each([
     ['gh pr merge 4 --squash', /« develop »/],
     ['gh pr merge 5', /« feat\/x »/],
+    ['gh pr merge 6 --squash', /PR de release/],
     ['gh pr merge 99', /illisible/],
     ['gh pr merge --squash', /numéro/],
     ['gh pr merge 3 && gh pr merge 4', /#4/],
