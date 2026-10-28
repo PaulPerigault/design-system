@@ -166,8 +166,10 @@ se branche aux ports sans toucher au cœur.
 ## Points ouverts et risques
 
 1. Méthode d'estimation carbone (étape 10) : à choisir et à sourcer ; aucune n'est retenue ici.
-2. Où et quand réaliser le contrat « une variable pour l'accent, une pour la typographie » : étape
-   de `tokens` à créer ; le nom des variables reste à fixer.
+2. ~~Où et quand réaliser le contrat « une variable pour l'accent, une pour la typographie »~~ :
+   noms fixés le 2026-10-28 (D-039) : `--pp-accent-hue` et `--pp-font-stack` (détail : ADR-0007,
+   point ouvert 1). Dérivation livrée par `@paulperigault/dataviz` (#120) ; branchement dans le
+   build de `tokens` et dans `create` : issue #121.
 3. Liaison d'un futur back Go aux crates : bibliothèque C, binaire ou WebAssembly (WASI) ; à trancher à l'arrivée du back.
 4. Migration des paquets vers la structure type : risque de découpage mécanique qui multiplie les
    fichiers sans clarté ; vérifié à la revue à chaque étape (une étape, une PR).

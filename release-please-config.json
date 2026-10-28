@@ -38,6 +38,10 @@
       "component": "css",
       "package-name": "@paulperigault/css"
     },
+    "packages/dataviz": {
+      "component": "dataviz",
+      "package-name": "@paulperigault/dataviz"
+    },
     "packages/astro": {
       "component": "astro",
       "package-name": "@paulperigault/astro"

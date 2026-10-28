@@ -104,7 +104,9 @@ non-scaling-stroke`. Étiquettes directes plutôt que légende.
 - **Catégorielle** (6 couleurs) : la teinte d'accent en tête, puis des écarts de teinte et une
   alternance de deux niveaux de clarté, pour que deux couleurs voisines diffèrent aussi en
   luminance (ce qui survit aux daltonismes). Les écarts sont fixés et calibrés en V2a sous la
-  contrainte ci-dessous. Au-delà de 6 séries : regrouper, ne pas étirer la palette.
+  contrainte ci-dessous. _Réalisé en V2-0 (D-039) :_ la catégorielle n'est pas une table d'écarts
+  fixes mais un échantillonnage du point le plus éloigné, par teinte, qui atteint ΔE00 ≥ 15 sur 12
+  teintes et deux thèmes ; une table fixe plafonnait vers 8 à 9 en pire cas. Au-delà de 6 séries : regrouper, ne pas étirer la palette.
 - **Séquentielle** : une teinte (l'accent), 7 pas de clarté monotone, contrôlés en luminance
   croissante (ColorBrewer, Brewer, 2003, pour le principe ; pas de palette empruntée).
 - **Divergente** : deux extrémités (l'accent et sa teinte opposée) de clarté décroissante vers un
@@ -188,8 +190,13 @@ non-scaling-stroke`. Étiquettes directes plutôt que légende.
 
 ## Points ouverts et risques
 
-1. Noms et lieu du contrat d'une variable (teinte d'accent, pile de police) : repris d'ADR-0006
-   (point 2) ; à fixer avant #94.
+1. ~~Noms et lieu du contrat d'une variable (teinte d'accent, pile de police)~~ : fermé le
+   2026-10-28 (D-039). Entrées `--pp-accent-hue` (teinte OKLCH en degrés ; clarté et chroma fixés par
+   le système : clair `oklch(47% 0.19 h)`, sombre `oklch(78% 0.1 h)`) et `--pp-font-stack` (pile du
+   texte, dont dérive `--pp-font-family-sans` ; `--pp-font-family-mono` à part). Sorties inchangées :
+   `--pp-color-accent`, `--pp-chart-*`, `--pp-font-family-*`. Les neutres d'Encre (teinte 270.7) ne
+   suivent pas l'accent : choix explicite à trancher au branchement dans `tokens` et `create`. La
+   dérivation est livrée par `@paulperigault/dataviz` (V2-0, #120) ; le branchement est l'issue #121.
 2. Seuils ΔE00 (10 et 3) : conventions ; la calibration de V2a peut les ajuster, sans les affaiblir
    sans écrit. Risque : 6 couleurs tritan-sûres sur fond sombre et clair sont peut-être
    inatteignables ; repli : 5 séries au plus, motifs de trait plus visibles.

@@ -364,3 +364,26 @@ curl.exe -sI https://<url du lien Details> | Select-String 'x-robots-tag|content
 
 `gh issue close 79 --repo PaulPerigault/design-system` si la PR F2a-3 n'a pas fermé l'issue ; cocher
 #105 et #106 pour ce qui concerne ces briques.
+
+## 12. V2-0 : paquet dataviz, ce qui reste à Paul
+
+Issues #120 (V2-0) et #121 (branchement des variables d'entrée). Rien d'autre n'a été refusé que
+les appels ci-dessous (écriture refusée à l'agent) ; à lancer depuis la racine du dépôt :
+
+```powershell
+gh api -X POST repos/PaulPerigault/design-system/labels -f name=pkg:dataviz -f color=3d4f63 -f "description=Paquet @paulperigault/dataviz (contrat de données, palettes)"
+gh issue edit 120 --add-label pkg:dataviz
+$sub = gh api repos/PaulPerigault/design-system/issues/120 --jq .id
+gh api -X POST repos/PaulPerigault/design-system/issues/101/sub_issues -F sub_issue_id=$sub
+$blocker = gh api repos/PaulPerigault/design-system/issues/120 --jq .id
+gh api -X POST repos/PaulPerigault/design-system/issues/94/dependencies/blocked_by -F issue_id=$blocker
+$blocker = gh api repos/PaulPerigault/design-system/issues/120 --jq .id
+gh api -X POST repos/PaulPerigault/design-system/issues/121/dependencies/blocked_by -F issue_id=$blocker
+```
+
+Le script `sync-labels.mjs --apply` n'a pas été lancé : il supprimerait aussi `autorelease: pending`
+(label de release-please, absent de `labels.json`). À décider : l'ajouter au fichier, ou garder la
+création de label à la main pour ce cas.
+
+Project 13 : le champ `Paquet` n'a pas l'option `dataviz` (ajouter l'option dans _Settings_ → champ
+`Paquet`, puis la poser sur #120). `Status` de #94 : passer à `Pret` une fois #120 fusionnée.

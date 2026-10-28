@@ -41,6 +41,11 @@
   },
   { "name": "pkg:tokens", "color": "3d4f63", "description": "Paquet @paulperigault/tokens" },
   { "name": "pkg:css", "color": "3d4f63", "description": "Paquet @paulperigault/css" },
+  {
+    "name": "pkg:dataviz",
+    "color": "3d4f63",
+    "description": "Paquet @paulperigault/dataviz (contrat de données, palettes)"
+  },
   { "name": "pkg:astro", "color": "3d4f63", "description": "Paquet @paulperigault/astro" },
   { "name": "pkg:guards", "color": "3d4f63", "description": "Paquet @paulperigault/guards" },
   { "name": "pkg:create", "color": "3d4f63", "description": "Paquet @paulperigault/create (CLI)" },

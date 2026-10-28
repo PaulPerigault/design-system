@@ -5,7 +5,11 @@ import tseslint from 'typescript-eslint';
 import { designRules, testRelaxations } from './eslint.design-rules.mjs';
 
 /** Paquets déjà migrés en TypeScript strict : on ajoute ici un paquet par PR de migration. */
-const TS_STRICT_FILES = ['packages/tokens/**/*.ts', 'packages/guards/**/*.ts'];
+const TS_STRICT_FILES = [
+  'packages/tokens/**/*.ts',
+  'packages/guards/**/*.ts',
+  'packages/dataviz/**/*.ts',
+];
 
 export default tseslint.config(
   {
