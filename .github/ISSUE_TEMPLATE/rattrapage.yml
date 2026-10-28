@@ -1,0 +1,123 @@
+name: Rattrapage
+description: Issue rétroactive d'un lot livré avant le processus (L0 à L20).
+title: 'rattrapage: '
+labels: ['type:rattrapage']
+assignees: [PaulPerigault]
+projects: ['PaulPerigault/13']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Issue créée après coup, fermée à la création. Aucun commit n'est réécrit : l'issue cite
+        le SHA et la PR d'origine.
+  - type: input
+    id: lot
+    attributes:
+      label: Lot
+      description: L0 à L20.
+      placeholder: L12
+    validations:
+      required: true
+  - type: input
+    id: sha
+    attributes:
+      label: SHA de fusion
+      placeholder: 5a08edc
+    validations:
+      required: true
+  - type: input
+    id: pr
+    attributes:
+      label: PR d'origine
+      placeholder: '#15'
+    validations:
+      required: true
+  - type: input
+    id: date
+    attributes:
+      label: Date de livraison
+      placeholder: 2026-10-22
+    validations:
+      required: true
+  - type: textarea
+    id: contexte
+    attributes:
+      label: Contexte
+      description: Ce que le lot devait apporter, d'après `docs/lots/Lx.md`.
+    validations:
+      required: true
+  - type: textarea
+    id: perimetre
+    attributes:
+      label: Périmètre livré
+      description: Ce qui a été fait, en faits vérifiables.
+    validations:
+      required: true
+  - type: textarea
+    id: criteres
+    attributes:
+      label: Critères d'acceptation
+      description: Les critères du lot, cochés quand ils ont été tenus.
+      value: |
+        - [x]
+    validations:
+      required: true
+  - type: textarea
+    id: ecarts
+    attributes:
+      label: Écarts connus
+      description: Ce qui n'a pas été livré ou reste à corriger. Écrire « aucun » si c'est le cas.
+    validations:
+      required: true
+  - type: input
+    id: bilan
+    attributes:
+      label: Bilan du lot
+      description: Chemin du bilan dans le dépôt.
+      placeholder: docs/lots/L12.md
+    validations:
+      required: true
+  - type: dropdown
+    id: paquet
+    attributes:
+      label: Paquet concerné
+      options: [tokens, css, astro, guards, create, mcp, docs, agents, ci, processus]
+    validations:
+      required: true
+  - type: dropdown
+    id: taille
+    attributes:
+      label: Taille
+      options: [trait, page, cahier]
+    validations:
+      required: true
+  - type: dropdown
+    id: jalon
+    attributes:
+      label: Jalon à rattacher
+      description: Le milestone ne se règle pas depuis le formulaire. Paul ou Claude Code le renseigne.
+      options:
+        - M-histoire
+        - M0 fondations
+        - M1 TypeScript strict
+        - M2 publication npm 0.x
+        - M3 migration du portfolio (L9)
+        - M4 Rust pp-color (conditionnel)
+        - M5 1.0
+        - M-analyse
+    validations:
+      required: true
+  - type: input
+    id: parente
+    attributes:
+      label: Issue parente
+      placeholder: '#12'
+  - type: checkboxes
+    id: fini
+    attributes:
+      label: Définition de fini
+      options:
+        - label: SHA et PR vérifiés dans l'historique.
+          required: true
+        - label: Issue fermée, carte du Project à « fait ».
+          required: true

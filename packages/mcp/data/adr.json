@@ -250,6 +250,13 @@
       "decision": "`main` seule, `develop` supprimée par renommage (faite par Paul) ; ruleset : PR obligatoire, check `ci` requis, historique linéaire, force-push et suppression interdits ; fusions par PR avec CI verte, dépôt en squash seul. Remplace la règle « les PR visent `develop` » de D-027. Garde `guard-pr-merge` : base autorisée `main`. e2e et Visuel ne tournent jamais sur un push vers `main` ; la matrice complète reste réservée à `workflow_dispatch`, au cron et aux PR de release-please (la condition « PR vers `main` » de D-029 est retirée, toutes les PR visant `main`).",
       "id": "D-032",
       "rollback": "Recréer `develop` depuis `main` ; rétablir `develop` dans les workflows, `dependabot.yml` et la garde de fusion."
+    },
+    {
+      "alternative": "Modèles GitHub par défaut ; issues vierges autorisées.",
+      "date": "2026-10-28",
+      "decision": "Modèles d'issue et de PR rédigés pour le projet (formulaires `.github/ISSUE_TEMPLATE/` : fonctionnalité, bogue, tâche, rattrapage, épique ; `PULL_REQUEST_TEMPLATE.md`), sans issue vierge (`blank_issues_enabled: false`, liens vers la politique de sécurité et la documentation). Issue complète exigée : contexte, objectif, critères d'acceptation, paquet, taille, jalon, définition de fini obligatoires ; assignee, label `type:` et projet 13 posés par le formulaire ; le milestone, que les formulaires ne savent pas régler, est indiqué par le champ « Jalon à rattacher ». Contrôle `check:issue-templates` (labels et paquets alignés sur `.github/labels.json`).",
+      "id": "D-033",
+      "rollback": "Supprimer `.github/ISSUE_TEMPLATE/`, `PULL_REQUEST_TEMPLATE.md` et `tools/checks/check-issue-templates.*`."
     }
   ]
 }

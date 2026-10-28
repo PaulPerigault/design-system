@@ -1,0 +1,85 @@
+name: Épique
+description: Issue parente d'un chantier. Elle liste ses sous-issues en cases à cocher.
+title: 'chantier: '
+labels: ['type:chantier']
+assignees: [PaulPerigault]
+projects: ['PaulPerigault/13']
+body:
+  - type: textarea
+    id: contexte
+    attributes:
+      label: Contexte
+      description: Pourquoi ce chantier, avec les décisions ou ADR qui le fondent.
+    validations:
+      required: true
+  - type: textarea
+    id: objectif
+    attributes:
+      label: Objectif
+      description: L'état final attendu, mesurable.
+    validations:
+      required: true
+  - type: textarea
+    id: sous-issues
+    attributes:
+      label: Sous-issues
+      description: Une case par sous-issue, avec son numéro. Créez les sous-issues, puis listez-les.
+      value: |
+        - [ ] #
+        - [ ] #
+    validations:
+      required: true
+  - type: textarea
+    id: criteres
+    attributes:
+      label: Critères d'acceptation
+      description: Vérifiables sur l'ensemble du chantier.
+      value: |
+        - [ ] Toutes les sous-issues sont fermées.
+        - [ ]
+    validations:
+      required: true
+  - type: dropdown
+    id: paquet
+    attributes:
+      label: Paquet principal
+      options: [tokens, css, astro, guards, create, mcp, docs, agents, ci, processus]
+    validations:
+      required: true
+  - type: dropdown
+    id: taille
+    attributes:
+      label: Taille
+      description: Une épique est presque toujours « cahier ».
+      options: [cahier, page, trait]
+    validations:
+      required: true
+  - type: dropdown
+    id: jalon
+    attributes:
+      label: Jalon à rattacher
+      description: Le milestone ne se règle pas depuis le formulaire. Paul ou Claude Code le renseigne.
+      options:
+        - M0 fondations
+        - M1 TypeScript strict
+        - M2 publication npm 0.x
+        - M3 migration du portfolio (L9)
+        - M4 Rust pp-color (conditionnel)
+        - M5 1.0
+        - M-analyse
+    validations:
+      required: true
+  - type: input
+    id: lot
+    attributes:
+      label: Lot
+      placeholder: T
+  - type: checkboxes
+    id: fini
+    attributes:
+      label: Définition de fini
+      options:
+        - label: Chaque sous-issue est fermée par une PR fusionnée.
+          required: true
+        - label: Le bilan est consigné (journal, lot ou ADR).
+          required: true
