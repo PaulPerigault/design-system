@@ -236,6 +236,13 @@
       "decision": "Politique Rust : Rust n'a pas à prouver un gain de performance. Critères : aucune régression (parité de comportement prouvée en CI, poids du `.wasm` budgété, temps de chargement non dégradé), erreurs typées, aucun `panic` ni `unwrap` hors tests, crates partageables avec de futurs backends Rust. Le site reste statique sur Cloudflare Pages ; le `.wasm` est compilé en CI et publié dans le paquet npm. Remplace le critère « seulement si une mesure le justifie » d'ADR-0005 (qui reste valable pour la décision passée sur les garde-fous : à réexaminer à l'étape 2).",
       "id": "D-030",
       "rollback": "Rétablir le critère de mesure d'ADR-0005 ; retirer les crates `pp-color` et `pp-data`."
+    },
+    {
+      "alternative": "Labels créés à la main ; labels par défaut conservés.",
+      "date": "2026-10-28",
+      "decision": "GitHub Project « design system » (n° 13), labels et milestones versionnés dans le dépôt, synchronisés par script. Les labels viennent de `.github/labels.json` (`tools/github/sync-labels.mjs`, dry-run par défaut) ; les 12 labels par défaut ou de Dependabot autres que `dependencies` sont supprimés. Vues, workflows du Project, options de `Status` et milestones : étapes manuelles de Paul (`docs/manual-steps.md` §7), les appels `gh api` correspondants ayant été refusés par les permissions de l'agent.",
+      "id": "D-031",
+      "rollback": "Supprimer le Project ; revenir aux labels par défaut ; retirer `tools/github`."
     }
   ]
 }
