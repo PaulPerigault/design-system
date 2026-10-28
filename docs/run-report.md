@@ -33,7 +33,7 @@ V5, crate `pp-data`), étape 8 (`@paulperigault/color` en WebAssembly), étapes 
 
 1. **1bis-a, 1bis-b1 : faites** (D-028, D-029, `docs/process/ci-audit.md`). **1bis-b2 : faite** (tests
    Windows, références Visuel Linux, Visuel dans `ci`, D-030). Reste 1bis-d (matrice « qui vérifie quoi »).
-   **Étape suivante : F2b-2, puis F2a-3.**
+   **Étape suivante : F2b-2b, puis F2a-3.**
 2. **F2a-1 : faite** (Project n° 13, 28 labels versionnés et synchronisés, D-031,
    `docs/process/github-setup.md`). Reste à Paul : options de `Status`, milestones, vues et workflows du
    Project (`docs/manual-steps.md` §7). **F2a-2 : faite** (`develop` renommée en `main` par Paul, workflows,
@@ -41,8 +41,9 @@ V5, crate `pp-data`), étape 8 (`@paulperigault/color` en WebAssembly), étapes 
    (`docs/manual-steps.md` §8). **F2a-3** : previews Cloudflare (`tofu apply` par Paul),
    puis F2b. Références Visuel :
    48 Mo ; si elles grossissent avec les composants d'analyse, passer les PNG sous Git LFS.
-3. **F2b** : F2b-1 faite (modèles d'issue et de PR, D-033, `docs/process/templates.md`) ; reste F2b-2
-   (issues de rattrapage), puis F2a-3 (previews Cloudflare, jeton de release-please).
+3. **F2b** : F2b-1 faite (modèles d'issue et de PR, D-033, `docs/process/templates.md`) ; F2b-2a codée (issues de rattrapage : `docs/history/catch-up.md`, D-034 ; **Paul lance
+   `powershell -ExecutionPolicy Bypass -File tmp/create-catchup-issues.ps1`**, les appels `gh` d'écriture ayant
+   été refusés), reste F2b-2b (issues du reste du chantier), puis F2a-3 (previews Cloudflare, jeton de release-please).
 4. **Ensuite** : étape 2, étape 7 (7a, 7b), lot BI (V1, V2a, V2b, V3a, V3b, V4a, V4b, V5), étape 8,
    étapes 3 à 6, étapes 9 à 11.
 

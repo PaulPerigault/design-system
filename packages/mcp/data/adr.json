@@ -257,6 +257,13 @@
       "decision": "Modèles d'issue et de PR rédigés pour le projet (formulaires `.github/ISSUE_TEMPLATE/` : fonctionnalité, bogue, tâche, rattrapage, épique ; `PULL_REQUEST_TEMPLATE.md`), sans issue vierge (`blank_issues_enabled: false`, liens vers la politique de sécurité et la documentation). Issue complète exigée : contexte, objectif, critères d'acceptation, paquet, taille, jalon, définition de fini obligatoires ; assignee, label `type:` et projet 13 posés par le formulaire ; le milestone, que les formulaires ne savent pas régler, est indiqué par le champ « Jalon à rattacher ». Contrôle `check:issue-templates` (labels et paquets alignés sur `.github/labels.json`).",
       "id": "D-033",
       "rollback": "Supprimer `.github/ISSUE_TEMPLATE/`, `PULL_REQUEST_TEMPLATE.md` et `tools/checks/check-issue-templates.*`."
+    },
+    {
+      "alternative": "Réécrire l'historique ; une issue par commit hors lot ; aucun rattrapage.",
+      "date": "2026-10-28",
+      "decision": "Historique L0 à L20 rattaché par issues de rattrapage, sans réécriture : une issue fermée par lot (`type:rattrapage`, milestone `M-histoire`), L9 ouverte (rien livré), une issue « divers » par période pour les commits hors lot, une issue parente `[Historique] Lots L0 à L20`. Correspondance lot, issue, PR et SHA dans `docs/history/catch-up.md`. **Remplace le plan de F1** (une issue par commit hors lot, aucune pour Dependabot).",
+      "id": "D-034",
+      "rollback": "Fermer les issues de rattrapage ; `docs/history/catch-up.md` reste lisible seul."
     }
   ]
 }

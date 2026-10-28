@@ -189,3 +189,19 @@ Autre réglage manquant : `release.yml` échoue sur `main` (« GitHub Actions is
 or approve pull requests »). _Settings_ → _Actions_ → _General_ → _Workflow permissions_ : cocher
 _Allow GitHub Actions to create and approve pull requests_ (ou le faire porter par l'`apply`
 OpenTofu, §2).
+
+## 9. Issues de rattrapage (F2b-2a)
+
+Les appels `gh` d'écriture ont été refusés à l'agent : le script est dans `tmp/` (hors dépôt,
+`tmp/` est exclu par `.git/info/exclude`). À lancer par Paul :
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tmp/create-catchup-issues.ps1
+```
+
+Le script est idempotent (une issue dont le titre existe n'est pas recréée). Il crée 24 issues
+(21 lots, 3 « divers ») plus la parente `[Historique] Lots L0 à L20`, les ajoute au Project 13 avec
+les champs `Lot` et `Paquet`, ferme les lots livrés (L9 reste ouverte) et relie les sous-issues si
+l'API l'accepte. Les champs `Taille` et `Priorite` ne sont pas posés : les labels `taille:` portent
+la taille. Ensuite, nettoyage : `Remove-Item -Recurse tmp/catchup, tmp/create-catchup-issues.ps1, tmp/gen-catchup.mjs`.
+Reporter les numéros d'issue dans `docs/history/catch-up.md` n'est pas nécessaire : la parente les liste.

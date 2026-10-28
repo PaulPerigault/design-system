@@ -57,3 +57,11 @@ issues vierges désactivées.
 Sections courtes : quoi et pourquoi, issue liée (`Closes #n`), type, vérifications, impact visuel
 ou accessibilité, notes pour la fusion. Titre en Conventional Commits, minuscules, 72 caractères au
 plus avec `(#n)`. Corps à 90 colonnes au plus. Aucune signature d'outil.
+
+## Retrouver un commit ancien
+
+1. Les lots L0 à L20 et les commits hors lot sont rattachés par des issues de rattrapage (D-034).
+2. Ouvrir `docs/history/catch-up.md` : le tableau donne, pour chaque lot, l'issue, la PR et le SHA.
+3. Chercher le SHA court ou le numéro de PR ; `git show <sha>` affiche le diff d'origine.
+4. L'issue du lot décrit le périmètre ; `docs/lots/Lx.md` en donne le bilan.
+5. Aucun commit n'est réécrit : le SHA de `main` reste la référence.
