@@ -184,8 +184,30 @@ jobs:
     if: ${{ !cancelled() }}
     needs: [commitlint, squash-message, changes, verify, e2e, visuel, site, zizmor]
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 50
+    permissions:
+      checks: read
     steps:
+      - name: e2e et visuel du run de code (run edited)
+        # Un run `edited` saute e2e et visuel et publierait un `ci` vert qui masque le run de code
+        # encore en cours ou rouge sur le même SHA : on attend leur verdict.
+        if: ${{ github.event.action == 'edited' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ github.event.pull_request.head.sha }}
+          REPO: ${{ github.repository }}
+        run: |
+          for i in $(seq 180); do
+            runs=$(gh api "repos/$REPO/commits/$SHA/check-runs" --paginate \
+              --jq '.check_runs[] | select(.name == "e2e" or (.name | startswith("visuel"))) | "\(.status) \(.conclusion)"')
+            if echo "$runs" | grep -Eq 'failure|cancelled|timed_out'; then echo "$runs"; exit 1; fi
+            # Vide : le run de code n'a pas encore créé e2e/visuel (job `changes`) ou la PR ne
+            # touche pas le rendu ; on laisse deux minutes avant de conclure à l'absence.
+            if [ -z "$runs" ] && [ "$i" -lt 8 ]; then sleep 15; continue; fi
+            if ! echo "$runs" | grep -Eq 'queued|in_progress|waiting'; then exit 0; fi
+            sleep 15
+          done
+          echo "e2e ou visuel toujours en cours" && exit 1
       - name: agrégat
         env:
           RESULTS: ${{ toJSON(needs.*.result) }}
