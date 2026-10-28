@@ -10,7 +10,7 @@ répondent 404. Le brief demandait des images OG générées au build. Piste : `
 texte exige une police lisible par librsvg (pas de `woff2`), donc à traiter avec soin. Tant que ce
 n'est pas fait, retirer les balises `og:image` plutôt que de publier des liens morts.
 
-**Chantier « architecture, TypeScript strict et Rust » : étape 1 codée (2026-10-27), étape suivante : 2.**
+**Chantier « architecture, TypeScript strict et Rust » : étape 1 codée (2026-10-27), étape 2 faite (ADR-0006, D-037, #82), étapes suivantes : 3 (#83) et, en parallèle, V1 (#93, ne dépend plus de `pp-color`).**
 Fusionnés dans `main` : #24 (images OG), #25 (ADR-0005), #26 (`packages/tokens` en TypeScript
 strict). Étape 1 : `packages/guards` en TypeScript strict, **PR #30 fusionnée** (la PR #29 avait été fermée : un sujet de commit de la branche d'origine est refusé par commitlint). `tsc -p packages/guards` : 0 erreur ;
 `packages/guards/**/*.ts` est dans `TS_STRICT_FILES` (ni `any`, ni `as`, ni `!`) ; options des
@@ -34,7 +34,7 @@ les PR de rendu (`docs/process/visual-references.md`).
 1. **1bis-a, 1bis-b1 : faites** (D-028, D-029, `docs/process/ci-audit.md`). **1bis-b2 : faite** (tests
    Windows, références Visuel Linux, Visuel dans `ci`, D-030). Reste 1bis-d (matrice « qui vérifie quoi », issue « [1bis-d] »).
    **F2a-3 : faite côté dépôt** (D-036, #79 ; reste `tofu apply` et le secret par Paul, `docs/manual-steps.md` §11).
-   **Étape suivante : étape 2** (#82, ADR Architecture), puis V1 à V3 en parallèle de la crate `pp-color`
+   **Étape 2 faite** (ADR-0006, #82). **Étape suivante : étape 3** (#83) et en parallèle V1 (#93), puis V2 et V3 en parallèle de la crate `pp-color`
    (V1, #93, ne dépend plus de l'étape 7b ; seule V4a, #98, la garde).
 2. **F2a-1 : faite** (Project n° 13, 28 labels versionnés et synchronisés, D-031,
    `docs/process/github-setup.md`). Reste à Paul : options de `Status`, milestones, vues et workflows du
