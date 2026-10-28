@@ -20,16 +20,12 @@ Les composants Astro et le CSS n'y sont pas soumis (décision 3).
 
 Structure type d'un paquet :
 
-```
-src/
-  domain/          # règles pures : types, fonctions, valeurs ; aucune E/S
-  application/     # cas d'usage ; orchestrent le domaine via des ports
-    ports.ts       # interfaces (FS, horloge, process, fetch) : inversion de dépendance
-  infrastructure/  # adaptateurs : fs, réseau, CLI (parseArgs), sortie console
-  errors.ts        # erreurs typées du paquet, une union fermée
-  index.ts         # API publique
-test/              # miroir de src/ ; le domaine se teste sans double
-```
+- `src/domain/` : règles pures (types, fonctions, valeurs), aucune E/S.
+- `src/application/` : cas d'usage, qui orchestrent le domaine via des ports ; `ports.ts` déclare les
+  interfaces (FS, horloge, process, fetch), c'est l'inversion de dépendance.
+- `src/infrastructure/` : adaptateurs (fs, réseau, CLI avec `parseArgs`, sortie console).
+- `src/errors.ts` : erreurs typées du paquet, une union fermée ; `src/index.ts` : API publique.
+- `test/` : miroir de `src/` ; le domaine se teste sans double.
 
 - **Règle de dépendance vers l'intérieur** : `infrastructure → application → domain`. `domain`
   n'importe rien d'autre que lui-même et les types ; `application` n'importe que `domain` et ses
