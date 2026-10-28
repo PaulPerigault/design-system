@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@paulperigault/css": "0.0.0",
+    "@paulperigault/dataviz": "0.0.0",
     "@paulperigault/tokens": "0.0.0",
     "shiki": "4.5.0"
   },

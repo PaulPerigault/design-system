@@ -1,0 +1,92 @@
+/*
+ * Courbe (LineChart) : fichier global. Couleurs par `--pp-chart-*`, textes par les jetons de
+ * police, traits en multiples de `--pp-size-rule` ; aucun dégradé, ombre ni flou. Aucune
+ * animation : rien à réduire sous `prefers-reduced-motion`. Chaque rang de série porte aussi un
+ * motif de trait ; la forme du marqueur est dans la géométrie.
+ */
+.pp-line-chart {
+  display: grid;
+  gap: var(--pp-space-xs);
+  margin-block: 0;
+  margin-inline: 0;
+  color: var(--pp-color-fg);
+}
+
+.pp-line-chart__title {
+  font-weight: var(--pp-font-weight-semibold);
+}
+
+.pp-line-chart__state {
+  margin-block: 0;
+  color: var(--pp-color-muted);
+}
+
+.pp-line-chart__svg {
+  display: block;
+  inline-size: 100%;
+  max-inline-size: var(--pp-size-measure);
+  block-size: auto;
+}
+
+.pp-line-chart__grid,
+.pp-line-chart__axis,
+.pp-line-chart__line {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.pp-line-chart__grid {
+  stroke: var(--pp-color-line);
+  stroke-width: var(--pp-size-rule);
+}
+
+.pp-line-chart__axis {
+  stroke: var(--pp-color-muted);
+  stroke-width: var(--pp-size-rule);
+}
+
+.pp-line-chart__tick {
+  fill: var(--pp-color-muted);
+  font-family: var(--pp-font-family-sans);
+  font-size: var(--pp-font-size--1);
+  font-variant-numeric: tabular-nums;
+}
+
+.pp-line-chart__tick[data-axis='y'] {
+  text-anchor: end;
+  dominant-baseline: central;
+}
+
+.pp-line-chart__tick[data-axis='x'] {
+  text-anchor: middle;
+}
+
+.pp-line-chart__data summary {
+  cursor: pointer;
+  display: list-item;
+  min-block-size: var(--pp-size-target-min);
+  padding-block: var(--pp-space-3xs);
+  color: var(--pp-color-muted);
+  font-size: var(--pp-font-size--1);
+}
+
+@media print {
+  .pp-line-chart {
+    color-scheme: light;
+  }
+
+  .pp-line-chart__data::details-content {
+    content-visibility: visible;
+  }
+}
+
+@media (forced-colors: active) {
+  .pp-line-chart__grid,
+  .pp-line-chart__axis {
+    stroke: GrayText;
+  }
+
+  .pp-line-chart__tick {
+    fill: CanvasText;
+  }
+}

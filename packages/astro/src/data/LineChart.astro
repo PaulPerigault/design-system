@@ -1,0 +1,100 @@
+---
+/**
+ * LineChart : courbe d'une ou plusieurs séries, SVG statique généré au build. Zéro JavaScript,
+ * aucun attribut `style` (CSP stricte). La géométrie vient de `@paulperigault/dataviz` : ce
+ * composant ne fait que poser des éléments. Le jeu de données est validé à la frontière ; une
+ * donnée invalide fait échouer le build avec le code d'erreur. La couleur ne porte jamais seule
+ * une série : chaque rang a aussi un motif de trait et un marqueur (WCAG 1.4.1). Une série de
+ * plus de 500 points est sous-échantillonnée par LTTB ; le tableau lié garde la donnée complète.
+ */
+import type { Dataset } from '@paulperigault/dataviz';
+import Table from '../content/Table.astro';
+import './line-chart.css';
+import './line-chart-series.css';
+import ChartAxes from './chart/ChartAxes.astro';
+import LineLegend from './chart/LineLegend.astro';
+import { describe } from './chart/summary.ts';
+import { HEIGHT, WIDTH } from './chart/frame.ts';
+import { prepareLine } from './chart/prepare.ts';
+
+interface Props {
+  /** Préfixe unique des ids du titre et de la description : lettres, chiffres et tirets. */
+  id: string;
+  /** Titre du graphique, premier élément de son nom accessible. */
+  title: string;
+  /** Jeu de données (`schema: 1`) : validé, sinon le build échoue avec le code d'erreur. */
+  dataset: Dataset;
+  /** Locale des nombres et des dates. Défaut : `fr`. */
+  locale?: string;
+  /** Libellé du tableau de données lié. */
+  tableLabel?: string;
+  /** Message de l'état vide (aucune valeur présente). */
+  emptyLabel?: string;
+  /** Début du message d'erreur de rendu ; le code d'erreur le suit. */
+  errorLabel?: string;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const ID_PATTERN = /^[A-Za-z][\w-]*$/;
+const {
+  id,
+  title,
+  dataset,
+  locale = 'fr',
+  tableLabel = 'Données du graphique',
+  emptyLabel = 'Aucune donnée à afficher.',
+  errorLabel = 'Le graphique ne peut pas être dessiné',
+  class: className,
+} = Astro.props;
+
+if (typeof id !== 'string' || !ID_PATTERN.test(id)) {
+  throw new TypeError('LineChart : id attendu, sans espace (lettres, chiffres et tirets).');
+}
+const prepared = prepareLine(dataset, locale, `LineChart « ${title} »`);
+const { model, table, empty, renderError } = prepared;
+const description = describe(prepared.dataset, prepared.summary, model?.offZero ?? false);
+---
+
+<figure class:list={['pp-line-chart', className]}>
+  <figcaption class="pp-line-chart__title">{title}</figcaption>
+  {empty && (
+    <p class="pp-line-chart__state" role="status">
+      {emptyLabel}
+    </p>
+  )}
+  {renderError && (
+    <p class="pp-line-chart__state" data-state="error">
+      {errorLabel} ({renderError.code}).
+    </p>
+  )}
+  {model && (
+    <svg
+      class="pp-line-chart__svg"
+      viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+      role="img"
+      aria-labelledby={`${id}-t ${id}-d`}
+      focusable="false"
+    >
+      <title id={`${id}-t`}>{title}</title>
+      <desc id={`${id}-d`}>{description}</desc>
+      <ChartAxes model={model} />
+      {model.series.map((s) => (
+        <g data-series={s.index + 1}>
+          <path class="pp-line-chart__line" d={s.d}></path>
+          <path class="pp-line-chart__marker" d={s.markers}></path>
+        </g>
+      ))}
+    </svg>
+  )}
+  {model && model.series.length > 1 && <LineLegend series={model.series} />}
+  <details class="pp-line-chart__data">
+    <summary>{tableLabel}</summary>
+    <Table
+      caption={`${title} : ${tableLabel}`}
+      columns={table.columns}
+      rows={table.rows}
+      rowHeader="x"
+    />
+  </details>
+</figure>

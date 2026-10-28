@@ -1,0 +1,29 @@
+---
+/** Grille, axe horizontal, graduations et unité d'un graphique : éléments SVG sans calcul. */
+import { LABEL_GAP, PLOT, UNIT_RISE, X_LABEL_DROP } from './frame.ts';
+import type { LineModel } from './model.ts';
+
+interface Props {
+  model: Pick<LineModel, 'grid' | 'yTicks' | 'xTicks' | 'unit'>;
+}
+
+const { model } = Astro.props;
+---
+
+<path class="pp-line-chart__grid" d={model.grid}></path>
+<path class="pp-line-chart__axis" d={`M${PLOT.left} ${PLOT.bottom}H${PLOT.right}`}></path>
+{model.yTicks.map((tick) => (
+  <text class="pp-line-chart__tick" data-axis="y" x={PLOT.left - LABEL_GAP} y={tick.y}>
+    {tick.label}
+  </text>
+))}
+{model.xTicks.map((tick) => (
+  <text class="pp-line-chart__tick" data-axis="x" x={tick.x} y={PLOT.bottom + X_LABEL_DROP}>
+    {tick.label}
+  </text>
+))}
+{model.unit !== '' && (
+  <text class="pp-line-chart__tick" data-axis="unit" x={PLOT.left} y={PLOT.top - UNIT_RISE}>
+    {model.unit}
+  </text>
+)}

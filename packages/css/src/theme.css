@@ -12,6 +12,12 @@
 
   --color-accent: var(--pp-color-accent);
   --color-bg: var(--pp-color-bg);
+  --color-chart-1: var(--pp-chart-1);
+  --color-chart-2: var(--pp-chart-2);
+  --color-chart-3: var(--pp-chart-3);
+  --color-chart-4: var(--pp-chart-4);
+  --color-chart-5: var(--pp-chart-5);
+  --color-chart-6: var(--pp-chart-6);
   --color-control: var(--pp-color-control);
   --color-fg: var(--pp-color-fg);
   --color-focus: var(--pp-color-focus);

@@ -100,7 +100,7 @@ describe('theme.css', () => {
 
   it('expose chaque rôle de couleur, y compris les statuts', () => {
     for (const variable of Object.keys(tokens.themes.light)) {
-      const role = variable.replace('--pp-color-', '');
+      const role = variable.replace(/^--pp-(color-)?/, '');
       expect(css).toContain(`--color-${role}: var(${variable});`);
     }
   });

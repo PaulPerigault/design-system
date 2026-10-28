@@ -7,6 +7,7 @@ export { derivePalettes } from './domain/palette/derive.ts';
 export { lightDarkTokens, paletteTokens } from './domain/palette/tokens.ts';
 export type { Palettes, Theme, ThemeBase } from './domain/palette/types.ts';
 export type { Result } from './domain/result.ts';
+export { fail, ok } from './domain/result.ts';
 export type { DatavizError, ErrorCode } from './errors.ts';
 export { createFormatter } from './infrastructure/intl-formatter.ts';
 export { parseDataset } from './infrastructure/parse-dataset.ts';
