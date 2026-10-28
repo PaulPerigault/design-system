@@ -101,6 +101,8 @@
     "./Menu.astro": "./src/navigation/Menu.astro",
     "./CodeBlock.astro": "./src/content/CodeBlock.astro",
     "./Diagram.astro": "./src/media/Diagram.astro",
-    "./Combobox.astro": "./src/forms/Combobox.astro"
+    "./Combobox.astro": "./src/forms/Combobox.astro",
+    "./LineChart.astro": "./src/data/LineChart.astro",
+    "./BarChart.astro": "./src/data/BarChart.astro"
   }
 }

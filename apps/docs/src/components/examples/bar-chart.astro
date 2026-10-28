@@ -1,0 +1,28 @@
+---
+/** Exemples vivants de la page BarChart : verticales, horizontales, groupées, négatives. */
+import BarChart from '@paulperigault/astro/BarChart.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+import { bySection, bySectionAndYear, gapToTarget, longLabels } from './chart-data.ts';
+---
+
+<Stack space="l">
+  <BarChart id="demo-bar-vertical" title="Visites par rubrique" dataset={bySection} showValues />
+  <BarChart
+    id="demo-bar-horizontal"
+    title="Visites par rubrique, barres horizontales"
+    dataset={bySection}
+    orientation="horizontal"
+  />
+  <BarChart
+    id="demo-bar-grouped"
+    title="Visites par rubrique et par année"
+    dataset={bySectionAndYear}
+  />
+  <BarChart id="demo-bar-negative" title="Écart à l’objectif par trimestre" dataset={gapToTarget} />
+  <BarChart
+    id="demo-bar-long"
+    title="Parcours des sessions, libellés longs"
+    dataset={longLabels}
+    orientation="horizontal"
+  />
+</Stack>
