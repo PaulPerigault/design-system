@@ -1,6 +1,6 @@
 {
   "transport": "headless",
-  "baseBranch": "develop",
+  "baseBranch": "main",
   "worktreeRoot": "../ds-wt",
   "runsDir": ".agents/runs",
   "routingLog": ".agents/routing-log.jsonl",

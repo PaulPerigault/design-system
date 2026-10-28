@@ -243,6 +243,13 @@
       "decision": "GitHub Project « design system » (n° 13), labels et milestones versionnés dans le dépôt, synchronisés par script. Les labels viennent de `.github/labels.json` (`tools/github/sync-labels.mjs`, dry-run par défaut) ; les 12 labels par défaut ou de Dependabot autres que `dependencies` sont supprimés. Vues, workflows du Project, options de `Status` et milestones : étapes manuelles de Paul (`docs/manual-steps.md` §7), les appels `gh api` correspondants ayant été refusés par les permissions de l'agent.",
       "id": "D-031",
       "rollback": "Supprimer le Project ; revenir aux labels par défaut ; retirer `tools/github`."
+    },
+    {
+      "alternative": "`develop` + `main` (écarté en D-027).",
+      "date": "2026-10-28",
+      "decision": "`main` seule, `develop` supprimée par renommage (faite par Paul) ; ruleset : PR obligatoire, check `ci` requis, historique linéaire, force-push et suppression interdits ; fusions par PR avec CI verte, dépôt en squash seul. Remplace la règle « les PR visent `develop` » de D-027. Garde `guard-pr-merge` : base autorisée `main`. e2e et Visuel ne tournent jamais sur un push vers `main` ; la matrice complète reste réservée à `workflow_dispatch`, au cron et aux PR de release-please (la condition « PR vers `main` » de D-029 est retirée, toutes les PR visant `main`).",
+      "id": "D-032",
+      "rollback": "Recréer `develop` depuis `main` ; rétablir `develop` dans les workflows, `dependabot.yml` et la garde de fusion."
     }
   ]
 }

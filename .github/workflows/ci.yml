@@ -2,14 +2,14 @@ name: CI
 
 on:
   pull_request:
-    branches: [develop, main]
+    branches: [main]
     # `edited` : le titre et le corps de la PR (futur message de squash) sont revérifiés après
     # modification ; sans lui, le contrôle reste sur l'ancien texte.
     types: [opened, synchronize, reopened, edited]
   push:
-    branches: [develop]
+    branches: [main]
   # Passage complet hebdomadaire (lundi 04:00 UTC) et déclenchement manuel avant la prod : e2e sur
-  # toute la matrice. Jamais de e2e sur un push vers `develop` : il a déjà tourné sur la PR (D-029).
+  # toute la matrice. Jamais de e2e sur un push vers `main` : il a déjà tourné sur la PR (D-029).
   schedule:
     - cron: '0 4 * * 1'
   workflow_dispatch:
@@ -42,7 +42,7 @@ jobs:
         run: printf '%s\n\n%s\n' "$PR_TITLE" "$PR_BODY" | npx --no -- commitlint --verbose
 
   squash-message:
-    # D-004 : sur `develop`, relit le commit de squash créé par GitHub (sujet et corps : conventions
+    # D-004 : sur `main`, relit le commit de squash créé par GitHub (sujet et corps : conventions
     # et aucune signature d'outil ; un `Co-authored-by` ajouté par GitHub signale un auteur git
     # différent du compte qui fusionne). Le suffixe « (#n) » ajouté par GitHub au sujet est retiré
     # avant le contrôle : la limite de 72 caractères porte sur le titre de la PR. Fusionner avec
@@ -55,7 +55,7 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/setup
-      - name: message du dernier commit de develop
+      - name: message du dernier commit de main
         run: git log -1 --format=%B | sed -E '1s/ \(#[0-9]+\)$//' | npx --no -- commitlint --verbose
 
   verify:
@@ -71,7 +71,7 @@ jobs:
   changes:
     # Décide si e2e tourne et sur quel périmètre. `render` : la PR touche le rendu (css, tokens,
     # astro, apps, dépendance de rendu pour Dependabot). `full` : toute la matrice d'appareils
-    # (déclenchement manuel, cron, PR de release-please, PR vers `main`). Jamais sur un push (D-029).
+    # (déclenchement manuel, cron, PR de release-please). Jamais sur un push (D-029).
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
@@ -86,7 +86,6 @@ jobs:
         env:
           EVENT: ${{ github.event_name }}
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          BASE_REF: ${{ github.base_ref }}
           HEAD_REF: ${{ github.head_ref }}
         run: |
           render=false
@@ -94,7 +93,7 @@ jobs:
           if [ "$EVENT" = workflow_dispatch ] || [ "$EVENT" = schedule ]; then
             render=true; full=true
           elif [ "$EVENT" = pull_request ]; then
-            if [[ "$HEAD_REF" == release-please--* || "$BASE_REF" == main ]]; then
+            if [[ "$HEAD_REF" == release-please--* ]]; then
               render=true; full=true
             elif git diff --name-only "$BASE_SHA" HEAD | grep -Eq '^(packages/(css|tokens|astro)/|apps/)'; then
               render=true

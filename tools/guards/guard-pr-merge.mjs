@@ -1,7 +1,6 @@
 // Hook PreToolUse de Claude Code (Bash et PowerShell) : toute commande `gh pr merge` n'est admise
-// que si elle vise une PR numérotée dont la base réelle, lue par `gh pr view`, est `develop`.
-// Toute fusion vers `main` (release-please comprise) est le geste du propriétaire. PR sans numéro,
-// base illisible ou autre base = blocage (code 2, raison sur stderr).
+// que si elle vise une PR numérotée dont la base réelle, lue par `gh pr view`, est `main`.
+// PR sans numéro, base illisible ou autre base = blocage (code 2, raison sur stderr).
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 
@@ -51,8 +50,8 @@ export function mergeRefusal(command, readBase = readBaseWithGh) {
     const target = targetOf(args);
     if (!target) return 'Fusion refusée : citer le numéro de la PR (gh pr merge <n>).';
     const base = readBase(target);
-    if (base !== 'develop') {
-      return `Fusion refusée : la PR #${target.pr} vise « ${base ?? 'illisible'} » ; seul develop est admis.`;
+    if (base !== 'main') {
+      return `Fusion refusée : la PR #${target.pr} vise « ${base ?? 'illisible'} » ; seul main est admis.`;
     }
   }
   return null;

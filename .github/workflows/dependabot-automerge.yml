@@ -1,11 +1,11 @@
 name: Dependabot auto-merge
 
 # Active la fusion automatique (squash) des PR Dependabot de correctif ou de version mineure vers
-# `develop`. GitHub ne fusionne qu'une fois les vérifications requises du ruleset passées. Les
+# `main`. GitHub ne fusionne qu'une fois les vérifications requises du ruleset passées. Les
 # versions majeures ne sont jamais fusionnées ici : relecture humaine.
 on:
   pull_request:
-    branches: [develop]
+    branches: [main]
 
 permissions: {}
 

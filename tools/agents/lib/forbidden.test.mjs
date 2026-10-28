@@ -5,7 +5,7 @@ import { forbiddenReason } from './forbidden.mjs';
 describe('forbiddenReason', () => {
   it.each([
     'git commit -m "x"',
-    'git push origin develop',
+    'git push origin main',
     'git checkout -b x',
     'npm publish --dry-run',
     'npm install left-pad',

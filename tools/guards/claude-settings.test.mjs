@@ -30,7 +30,7 @@ const FORBIDDEN = [
   'cp x ~/.claude/settings.json',
   'git push origin main',
   'git push origin HEAD:main',
-  'git push --force origin develop',
+  'git push --force origin main',
   'git push origin feat/x --force-with-lease',
   'git push origin +feat/x',
   'gh pr merge 3 --admin',
@@ -45,8 +45,7 @@ const FORBIDDEN = [
 
 const ALLOWED = [
   'git push -u origin chore/l0-squelette',
-  'git push origin develop',
-  'gh pr create --base develop --title "chore: x"',
+  'gh pr create --base main --title "chore: x"',
   'gh pr merge 3 --squash',
   'gh pr view 3',
   'gh api repos/o/r --jq .default_branch',

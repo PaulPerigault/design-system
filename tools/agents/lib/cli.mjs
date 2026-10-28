@@ -18,7 +18,7 @@ const git = (args, { cwd } = {}) =>
 
 const readJson = async (file) => JSON.parse(await readFile(join(REPO_ROOT, file), 'utf8'));
 
-/** Dépendances réelles du dispatcher. `base` = branche d'intégration du lot (sinon develop). */
+/** Dépendances réelles du dispatcher. `base` = branche d'intégration du lot (sinon main). */
 export async function realDeps({ base } = {}) {
   const config = await readJson('tools/agents/config.json');
   const models = await readJson('tools/agents/models.json');

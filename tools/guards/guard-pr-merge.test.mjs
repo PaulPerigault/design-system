@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { decide, mergeRefusal, mergeSegments, targetOf } from './guard-pr-merge.mjs';
 
-const BASES = { 3: 'develop', 4: 'main', 5: 'feat/x' };
+const BASES = { 3: 'main', 4: 'develop', 5: 'feat/x' };
 const readBase = ({ pr }) => BASES[pr] ?? null;
 
 describe('mergeSegments et targetOf', () => {
@@ -22,12 +22,12 @@ describe('mergeSegments et targetOf', () => {
 });
 
 describe('mergeRefusal', () => {
-  it('admet une PR vers develop', () => {
+  it('admet une PR vers main', () => {
     expect(mergeRefusal('gh pr merge 3 --squash --delete-branch', readBase)).toBeNull();
   });
 
   it.each([
-    ['gh pr merge 4 --squash', /« main »/],
+    ['gh pr merge 4 --squash', /« develop »/],
     ['gh pr merge 5', /« feat\/x »/],
     ['gh pr merge 99', /illisible/],
     ['gh pr merge --squash', /numéro/],
@@ -39,14 +39,14 @@ describe('mergeRefusal', () => {
   });
 
   it('ignore les commandes qui ne fusionnent pas', () => {
-    expect(mergeRefusal('gh pr create --base develop', readBase)).toBeNull();
+    expect(mergeRefusal('gh pr create --base main', readBase)).toBeNull();
   });
 });
 
 describe('decide', () => {
   it('lit la commande de l’événement de hook', () => {
     const event = JSON.stringify({ tool_input: { command: 'gh pr merge 4' } });
-    expect(decide(event, readBase)).toMatch(/main/);
+    expect(decide(event, readBase)).toMatch(/develop/);
   });
 
   it('refuse un événement illisible', () => {
