@@ -88,7 +88,7 @@ Chaque ligne = une future issue, une session Sonnet. Ordre d'exécution :
 1. **1bis-b2** (Windows, Visuel) : `npm test` (17 échecs, chemins `node:path`), `check:data` (props vides :
    nom de fichier virtuel TypeScript avec `\`), `check:pack` (redirection `> /dev/null` de `cmd.exe`), e2e
    `COMPONENT_PAGES` vide (`readdir` renvoie des `\`), références Visuel Linux, Visuel exigé par `ci` sur
-   les PR de rendu. Fait ; reste 1bis-d (matrice « qui vérifie quoi »).
+   les PR de rendu. Faite ; reste 1bis-d (matrice « qui vérifie quoi »).
 2. **F2a** (page, processus) : Project, labels, milestones (script `gh` rejouable), ruleset `main`,
    workflows vers `main`, preview Cloudflare, dependabot, bascule vers `main`, puis suppression de
    `develop` après accord de Paul. À découper en sous-issues.

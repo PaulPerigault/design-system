@@ -3,8 +3,8 @@ name: Visuel
 # Régression visuelle (gap.md n° 20) : captures pleine page de chaque page et de chaque thème,
 # comparées aux références Linux versionnées dans apps/docs/e2e/references. Projets : VISUAL_PROJECTS
 # (apps/docs/e2e/devices.ts). Appelé par `ci` sur les PR de rendu ; lancé à la main avec `update`
-# pour régénérer les références (artefact `visuel-references`, à committer par PR) ; chaque lundi
-# 05:00 UTC en comparaison.
+# pour régénérer les références (artefact `visuel-references`, à committer par PR : procédure dans
+# docs/process/visual-references.md) ; chaque lundi 05:00 UTC en comparaison.
 
 on:
   workflow_dispatch:

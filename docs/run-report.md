@@ -20,27 +20,27 @@ contrôles validées à la frontière (`lib/options.ts`, `lib/check.ts`). `guard
 au même titre avant publication, puis `packages/create` et `tools/agents` (qui doit aussi mettre à jour
 `tools/agents/config.json` et les listes `.kiro/agents/*.json`). Le sujet de commit « wip: » est refusé
 par commitlint : utiliser `chore: wip …`.
-Sous Windows, `npm test` donne 17 échecs, déjà présents sur `develop` (`check-tokens` joint les chemins
-avec `node:path`) ; la CI (Linux) fait foi. Les jobs `visuel` mobiles échouent déjà sur les PR
-(« snapshot doesn't exist », #26 et #28).
+Sous Windows, `npm test` (1849 tests), `check:mcp-data`, `check:pack` et les e2e de pages passent
+depuis 1bis-b2 (chemins `posix` à la source). Visuel : références Linux versionnées, exigé par `ci` sur
+les PR de rendu (`docs/process/visual-references.md`).
 
 **Étape F1 (2026-10-27) :** proposition de processus dans `docs/process/proposal-foundations.md`, validée par Paul (F1b) ; rien créé sur GitHub.
 
-**Ordre validé par Paul (2026-10-27, D-027) :** 1bis, F2a, F2b, puis étapes 2 à 11
-(`docs/process/proposal-foundations.md` §6). Modèle : `main` seule, preview Cloudflare par PR.
+**Ordre validé par Paul (2026-10-28)** (`docs/process/proposal-foundations.md` §6) : 1bis-b2, F2a, F2b,
+étape 2 (ADR Architecture, D-030), étape 7 en deux sessions (crate `pp-color`), lot analyse de données (V1 à
+V5, crate `pp-data`), étape 8 (`@paulperigault/color` en WebAssembly), étapes 3 à 6 (TypeScript strict),
+étapes 9 à 11. Modèle : `main` seule, preview Cloudflare par PR (D-027).
 
-1. **1bis-a (hooks et CI) : faite** (D-028, `docs/process/ci-audit.md`). **1bis-b1 : faite** (D-029 : e2e et
-   Visuel seulement quand c'est pertinent, Chromium en cache, `squash-message` corrigé). **Étape suivante :
-   1bis-b2** (snapshots Visuel Linux, tests Windows : 17 échecs `npm test`, 7 échecs e2e `COMPONENT_PAGES`
-   vide, `check:mcp-data`, `check:pack`), puis F2a, F2b, étapes 2 à 11.
+1. **1bis-a, 1bis-b1 : faites** (D-028, D-029, `docs/process/ci-audit.md`). **1bis-b2 : faite** (tests
+   Windows, références Visuel Linux, Visuel dans `ci`, D-030). Reste 1bis-d (matrice « qui vérifie quoi »).
+   **Étape suivante : F2a.**
 2. **F2a** : Project, labels, milestones, bascule vers `main` (suppression de `develop`).
 3. **F2b** : modèles, issues de rattrapage.
-4. **Étapes 2 à 11** : ADR Architecture ; guards ; create ; mcp + générateur de tokens ; tools/agents puis
-   `dist/` pour chaque paquet publié ; crate Rust `pp-color` ; paquet `color` WebAssembly ; mesure du
-   pipeline d'images ; Green IT ; Renovate/Dependabot Cargo, docs, bilan.
+4. **Ensuite** : étape 2, étape 7 (7a, 7b), lot BI (V1, V2a, V2b, V3a, V3b, V4a, V4b, V5), étape 8,
+   étapes 3 à 6, étapes 9 à 11.
 
-**À planifier après les fondations (demande de Paul) :** une partie « analyse de données » avec
-composants (Rust si une mesure le justifie, sinon la meilleure solution visuelle).
+**Analyse de données (BI) :** planifiée après l'étape 7 (V1 à V5) ; Rust sans preuve de gain de
+performance (D-030).
 
 **Reprise suggérée.** (1) images OG, (2) intégrer les quatre actions du propriétaire, (3) L9
 (migration du portfolio) une fois les paquets publiés.

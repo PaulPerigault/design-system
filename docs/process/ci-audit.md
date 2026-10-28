@@ -49,3 +49,9 @@ Source : `gh run view` sur les runs de `develop` (#31, #32) et de la PR `docs/pr
 | PR de documentation | 27 min + 16 min            | environ 2 min (verify), e2e et Visuel sautés |
 | PR de code          | 27 min                     | inchangé (1bis-b : e2e, Visuel)              |
 | `git push` local    | `verify` (Windows : échec) | aucun hook                                   |
+
+## Suite (1bis-b2, 2026-10-28)
+
+Visuel : 198 captures comparées en 3 min, dans un seul job (une installation, un Chromium, un build)
+au lieu de 13 jobs. Il est appelé par `ci` sur les PR de rendu seulement et exigé par l'agrégat `ci`.
+Périmètre, poids et procédure de régénération : `docs/process/visual-references.md`.
