@@ -83,3 +83,10 @@ describe('run', () => {
     expect(() => run({ exec, read, log: () => {} })).toThrow(LabelSyncError);
   });
 });
+
+describe('validateLabels : nom', () => {
+  it('admet le nom de release-please et refuse deux espaces', () => {
+    expect(() => validateLabels([label('autorelease: pending')])).not.toThrow();
+    expect(() => validateLabels([label('a  b')])).toThrow(LabelSyncError);
+  });
+});
