@@ -2,7 +2,12 @@ export type { Aggregator, Formatter } from './application/ports.ts';
 export type { Axis, Dataset, Series } from './domain/dataset.ts';
 export { DATASET_SCHEMA, MAX_POINTS, MAX_SERIES } from './domain/dataset.ts';
 export { parseIsoDate } from './domain/iso-date.ts';
-export { checkSeriesCount, checkSharedUnit } from './domain/limits.ts';
+export {
+  MAX_BAR_CATEGORIES,
+  checkBarCategories,
+  checkSeriesCount,
+  checkSharedUnit,
+} from './domain/limits.ts';
 export { derivePalettes } from './domain/palette/derive.ts';
 export { lightDarkTokens, paletteTokens } from './domain/palette/tokens.ts';
 export type { Palettes, Theme, ThemeBase } from './domain/palette/types.ts';

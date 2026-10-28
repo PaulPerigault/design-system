@@ -9,6 +9,7 @@ export const ERROR_CODES = [
   'dataset.unit-mismatch',
   'dataset.too-many-points',
   'chart.too-many-series',
+  'bar.too-many-categories',
   'scale.bad-domain',
   'scale.bad-range',
   'geometry.bad-input',

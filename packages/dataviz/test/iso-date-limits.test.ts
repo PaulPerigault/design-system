@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { parseIsoDate } from '../src/domain/iso-date.ts';
-import { checkSeriesCount, checkSharedUnit } from '../src/domain/limits.ts';
+import {
+  MAX_BAR_CATEGORIES,
+  checkBarCategories,
+  checkSeriesCount,
+  checkSharedUnit,
+} from '../src/domain/limits.ts';
 import { parseDataset } from '../src/infrastructure/parse-dataset.ts';
 import { valid } from './fixtures.ts';
 
@@ -46,5 +51,22 @@ describe('limites de graphique', () => {
     if (!mixed.ok) throw new Error('jeu invalide');
     const result = checkSharedUnit(mixed.value);
     expect(!result.ok && result.error.code).toBe('dataset.unit-mismatch');
+  });
+
+  it('refuse plus de 40 catégories de barres, avec le conseil', () => {
+    const categories = (count: number) => ({
+      schema: 1 as const,
+      x: {
+        kind: 'category' as const,
+        label: '',
+        values: Array.from({ length: count }, (_, i) => `c${i}`),
+      },
+      series: [{ id: 'a', label: '', unit: '', values: Array.from({ length: count }, () => 1) }],
+    });
+    const result = checkBarCategories(categories(MAX_BAR_CATEGORIES + 1));
+    expect(!result.ok && result.error.code).toBe('bar.too-many-categories');
+    expect(!result.ok && result.error.message).toContain('courbe');
+    expect(!result.ok && result.error.path).toBe('x.values');
+    expect(checkBarCategories(categories(MAX_BAR_CATEGORIES)).ok).toBe(true);
   });
 });

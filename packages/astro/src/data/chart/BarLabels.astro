@@ -1,0 +1,30 @@
+---
+/** Libellés de catégories et valeurs écrites : textes SVG déjà positionnés, sans calcul. */
+import type { CategoryLabel } from './bar-categories.ts';
+import { LINE_HEIGHT } from './bar-layout.ts';
+import type { ValueLabel } from './bar-values.ts';
+
+interface Props {
+  categories: readonly CategoryLabel[];
+  values: readonly ValueLabel[];
+}
+
+const { categories, values } = Astro.props;
+---
+
+{categories.map((label) => (
+  <text class="pp-bar-chart__tick" data-axis={label.axis} x={label.x} y={label.y}>
+    {label.lines[0]}
+    {label.lines.slice(1).map((line) => (
+      <tspan x={label.x} dy={LINE_HEIGHT}>
+        {line}
+      </tspan>
+    ))}
+    {label.truncated && <title>{label.full}</title>}
+  </text>
+))}
+{values.map((value) => (
+  <text class="pp-bar-chart__value" data-anchor={value.anchor} x={value.x} y={value.y}>
+    {value.text}
+  </text>
+))}

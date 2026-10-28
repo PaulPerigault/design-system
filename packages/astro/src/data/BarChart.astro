@@ -1,0 +1,65 @@
+---
+/**
+ * BarChart : barres verticales ou horizontales, simples ou groupées (6 séries au plus), SVG
+ * statique généré au build. Zéro JavaScript, aucun attribut `style` (CSP stricte). La géométrie
+ * vient de `@paulperigault/dataviz` : ce composant ne fait que poser des éléments. L'axe des
+ * valeurs part toujours de zéro. Chaque rang de série a un motif de remplissage en plus de sa
+ * couleur (WCAG 1.4.1). Une valeur manquante laisse un vide et se dit dans le tableau lié. Plus
+ * de 40 catégories : le build échoue (`bar.too-many-categories`), mieux vaut une courbe.
+ */
+import './chart-base.css';
+import './chart-series.css';
+import './bar-chart.css';
+import ChartAxes from './chart/ChartAxes.astro';
+import ChartFrame from './chart/ChartFrame.astro';
+import ChartLegend from './chart/ChartLegend.astro';
+import BarLabels from './chart/BarLabels.astro';
+import BarPatterns from './chart/BarPatterns.astro';
+import { barSwatch, patternFill } from './chart/bar-patterns.ts';
+import { describeBars } from './chart/bar-summary.ts';
+import { prepareBar } from './chart/prepare-bar.ts';
+import type { ChartProps } from './chart/props.ts';
+import { DEFAULT_LABELS, assertChartId } from './chart/props.ts';
+
+interface Props extends ChartProps {
+  /** `vertical` (défaut) : catégories en abscisse ; `horizontal` : catégories en ordonnée. */
+  orientation?: 'vertical' | 'horizontal';
+  /** Écrit la valeur dans chaque barre, seulement si toutes y tiennent. */
+  showValues?: boolean;
+}
+
+const BLOCK = 'pp-bar-chart';
+const { id, title, dataset, locale = 'fr', class: className, ...rest } = Astro.props;
+const { orientation = 'vertical', showValues = false } = rest;
+const labels = {
+  table: rest.tableLabel ?? DEFAULT_LABELS.table,
+  empty: rest.emptyLabel ?? DEFAULT_LABELS.empty,
+  error: rest.errorLabel ?? DEFAULT_LABELS.error,
+};
+
+assertChartId(id, 'BarChart');
+const prepared = prepareBar(dataset, locale, `BarChart « ${title} »`, { orientation, showValues });
+const { model } = prepared;
+const description = describeBars(prepared.dataset, prepared.summary, orientation);
+const swatches = (model?.series ?? []).map((s) => barSwatch(id, s.index, s.label));
+---
+
+<ChartFrame
+  block={BLOCK}
+  id={id}
+  title={title}
+  description={description}
+  prepared={prepared}
+  labels={labels}
+  class={className}
+>
+  {model && <BarPatterns id={id} count={model.series.length} />}
+  {model && <ChartAxes block={BLOCK} axes={model.axes} />}
+  {model?.series.map((s) => (
+    <g data-series={s.index + 1}>
+      <path class="pp-bar-chart__bar" d={s.d} fill={patternFill(id, s.index)}></path>
+    </g>
+  ))}
+  {model && <BarLabels categories={model.categories} values={model.values} />}
+  <ChartLegend slot="legend" block={BLOCK} series={swatches} />
+</ChartFrame>

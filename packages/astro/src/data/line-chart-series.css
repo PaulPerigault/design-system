@@ -1,81 +1,25 @@
-/*
- * Séries du LineChart : couleur `--pp-chart-N`, motif de trait et marqueur par rang, légende.
- * Le rang, non la couleur, porte l'identité d'une série (WCAG 1.4.1).
- */
+/* Motif de trait par rang de série du LineChart : continu, tirets, points (WCAG 1.4.1). */
 .pp-line-chart [data-series='1'] {
-  --pp-series: var(--pp-chart-1);
   --pp-dash: none;
 }
 
 .pp-line-chart [data-series='2'] {
-  --pp-series: var(--pp-chart-2);
   --pp-dash: calc(var(--pp-size-rule) * 6) calc(var(--pp-size-rule) * 3);
 }
 
 .pp-line-chart [data-series='3'] {
-  --pp-series: var(--pp-chart-3);
   --pp-dash: calc(var(--pp-size-rule) * 2) calc(var(--pp-size-rule) * 3);
 }
 
 .pp-line-chart [data-series='4'] {
-  --pp-series: var(--pp-chart-4);
   --pp-dash: calc(var(--pp-size-rule) * 10) calc(var(--pp-size-rule) * 3)
     calc(var(--pp-size-rule) * 2) calc(var(--pp-size-rule) * 3);
 }
 
 .pp-line-chart [data-series='5'] {
-  --pp-series: var(--pp-chart-5);
   --pp-dash: calc(var(--pp-size-rule) * 14) calc(var(--pp-size-rule) * 4);
 }
 
 .pp-line-chart [data-series='6'] {
-  --pp-series: var(--pp-chart-6);
   --pp-dash: calc(var(--pp-size-rule) * 3) calc(var(--pp-size-rule) * 3);
-}
-
-.pp-line-chart__line {
-  stroke: var(--pp-series);
-  stroke-width: calc(var(--pp-size-rule) * 2);
-  stroke-dasharray: var(--pp-dash);
-  stroke-linejoin: round;
-}
-
-.pp-line-chart__marker {
-  fill: var(--pp-series);
-  stroke: var(--pp-color-bg);
-  stroke-width: var(--pp-size-rule);
-  vector-effect: non-scaling-stroke;
-}
-
-.pp-line-chart__legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--pp-space-3xs) var(--pp-space-s);
-  margin-block: 0;
-  padding-inline: 0;
-  list-style: none;
-  font-size: var(--pp-font-size--1);
-}
-
-.pp-line-chart__legend li {
-  display: flex;
-  align-items: center;
-  gap: var(--pp-space-2xs);
-}
-
-.pp-line-chart__swatch {
-  flex: none;
-  inline-size: calc(var(--pp-font-size-0) * 2);
-  block-size: var(--pp-font-size-0);
-}
-
-@media (forced-colors: active) {
-  .pp-line-chart__line {
-    stroke: CanvasText;
-  }
-
-  .pp-line-chart__marker {
-    fill: CanvasText;
-    stroke: Canvas;
-  }
 }

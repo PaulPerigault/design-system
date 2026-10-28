@@ -1,0 +1,62 @@
+---
+/**
+ * Cadre commun des graphiques : titre, états vide et erreur, SVG nommé par son titre et sa
+ * description, légende, puis tableau de données lié dans un `details` fermé. Le contenu du SVG
+ * arrive par le slot par défaut, la légende par le slot `legend`.
+ */
+import Table from '../../content/Table.astro';
+import { HEIGHT, WIDTH } from './frame.ts';
+import type { Prepared } from './prepare.ts';
+
+interface Props {
+  /** Bloc de classes du graphique : `pp-line-chart`, `pp-bar-chart`. */
+  block: string;
+  id: string;
+  title: string;
+  /** Alternative textuelle du SVG (`<desc>`). */
+  description: string;
+  prepared: Pick<Prepared<unknown>, 'model' | 'empty' | 'renderError' | 'table'>;
+  labels: { table: string; empty: string; error: string };
+  class?: string;
+}
+
+const { block, id, title, description, prepared, labels, class: className } = Astro.props;
+const { model, empty, renderError, table } = prepared;
+---
+
+<figure class:list={[block, className]}>
+  <figcaption class={`${block}__title`}>{title}</figcaption>
+  {empty && (
+    <p class={`${block}__state`} role="status">
+      {labels.empty}
+    </p>
+  )}
+  {renderError && (
+    <p class={`${block}__state`} data-state="error">
+      {labels.error} ({renderError.code}).
+    </p>
+  )}
+  {model && (
+    <svg
+      class={`${block}__svg`}
+      viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+      role="img"
+      aria-labelledby={`${id}-t ${id}-d`}
+      focusable="false"
+    >
+      <title id={`${id}-t`}>{title}</title>
+      <desc id={`${id}-d`}>{description}</desc>
+      <slot />
+    </svg>
+  )}
+  {model && <slot name="legend" />}
+  <details class={`${block}__data`}>
+    <summary>{labels.table}</summary>
+    <Table
+      caption={`${title} : ${labels.table}`}
+      columns={table.columns}
+      rows={table.rows}
+      rowHeader="x"
+    />
+  </details>
+</figure>

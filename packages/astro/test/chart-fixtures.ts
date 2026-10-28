@@ -53,3 +53,63 @@ export const large = (series: number): Dataset =>
       values: wave(500, 100 + 30 * i, 5 + i),
     })),
   );
+
+const categories = (
+  labels: string[],
+  columns: { id: string; label: string; unit?: string; values: (number | null)[] }[],
+): Dataset => ({
+  schema: 1,
+  x: { kind: 'category', label: 'Pays', values: labels },
+  series: columns.map(({ unit = '', ...rest }) => ({ ...rest, unit })),
+});
+
+const COUNTRIES = ['France', 'Belgique', 'Suisse', 'Canada', 'Luxembourg'];
+
+/** Une série, cinq catégories. */
+export const barsSimple = (): Dataset =>
+  categories(COUNTRIES, [
+    { id: 'v', label: 'Visites', unit: 'visites', values: [1240, 860, 640, 410, 95] },
+  ]);
+
+/** Trois séries groupées. */
+export const barsGrouped = (): Dataset =>
+  categories(COUNTRIES, [
+    { id: 'a', label: '2024', unit: 'visites', values: [1100, 720, 580, 360, 80] },
+    { id: 'b', label: '2025', unit: 'visites', values: [1240, 860, 640, 410, 95] },
+    { id: 'c', label: '2026', unit: 'visites', values: [1390, 910, 600, 480, 120] },
+  ]);
+
+/** Libellés longs, pour des barres horizontales. */
+export const barsLongLabels = (): Dataset =>
+  categories(
+    [
+      'Direction des systèmes d’information et du numérique',
+      'Ressources humaines',
+      'Service juridique, conformité et protection des données',
+      'Achats',
+      'Communication',
+    ],
+    [{ id: 'b', label: 'Budget', unit: 'k€', values: [820, 310, 275, 190, 140] }],
+  );
+
+/** Valeurs négatives et trous. */
+export const barsNegativeGaps = (): Dataset =>
+  categories(
+    ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'],
+    [
+      { id: 'r', label: 'Résultat', unit: 'k€', values: [42, -18, null, -35, 27, null] },
+      { id: 'p', label: 'Prévision', unit: 'k€', values: [30, 10, -12, -20, 15, 22] },
+    ],
+  );
+
+/** Jeu réaliste de `count` catégories et `series` séries (budgets de poids). */
+export const barsLarge = (count: number, series: number): Dataset =>
+  categories(
+    Array.from({ length: count }, (_, i) => `Catégorie ${i + 1}`),
+    Array.from({ length: series }, (_, s) => ({
+      id: `s${s}`,
+      label: `Série ${s + 1}`,
+      unit: '€',
+      values: wave(count, 100 + 20 * s, 3 + s),
+    })),
+  );

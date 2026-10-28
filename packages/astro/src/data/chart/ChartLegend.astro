@@ -1,0 +1,37 @@
+---
+/**
+ * Légende : un échantillon et le libellé de chaque série, pour une série au moins deux. Le rang
+ * porte l'identité de la série, jamais la couleur seule (WCAG 1.4.1). L'échantillon est une liste
+ * de tracés fournie par le graphique (`swatchMarks`).
+ */
+import type { Swatch } from './swatch.ts';
+import { SWATCH } from './frame.ts';
+
+interface Props {
+  block: string;
+  series: readonly Swatch[];
+}
+
+const { block, series } = Astro.props;
+---
+
+{series.length > 1 && (
+  <ul class={`${block}__legend`} role="list">
+    {series.map((s) => (
+      <li>
+        <svg
+          class={`${block}__swatch`}
+          viewBox={`0 0 ${SWATCH.width} ${SWATCH.height}`}
+          data-series={s.index + 1}
+          aria-hidden="true"
+          focusable="false"
+        >
+          {s.marks.map((mark) => (
+            <path class={`${block}__${mark.kind}`} d={mark.d} fill={mark.fill}></path>
+          ))}
+        </svg>
+        <span>{s.label}</span>
+      </li>
+    ))}
+  </ul>
+)}

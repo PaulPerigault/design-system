@@ -7,94 +7,52 @@
  * une série : chaque rang a aussi un motif de trait et un marqueur (WCAG 1.4.1). Une série de
  * plus de 500 points est sous-échantillonnée par LTTB ; le tableau lié garde la donnée complète.
  */
-import type { Dataset } from '@paulperigault/dataviz';
-import Table from '../content/Table.astro';
+import './chart-base.css';
+import './chart-series.css';
 import './line-chart.css';
 import './line-chart-series.css';
+import { lineAxes } from './chart/axes.ts';
 import ChartAxes from './chart/ChartAxes.astro';
-import LineLegend from './chart/LineLegend.astro';
-import { describe } from './chart/summary.ts';
-import { HEIGHT, WIDTH } from './chart/frame.ts';
+import ChartFrame from './chart/ChartFrame.astro';
+import ChartLegend from './chart/ChartLegend.astro';
 import { prepareLine } from './chart/prepare.ts';
+import type { ChartProps } from './chart/props.ts';
+import { DEFAULT_LABELS, assertChartId } from './chart/props.ts';
+import { lineSwatch } from './chart/swatch.ts';
+import { describe } from './chart/summary.ts';
 
-interface Props {
-  /** Préfixe unique des ids du titre et de la description : lettres, chiffres et tirets. */
-  id: string;
-  /** Titre du graphique, premier élément de son nom accessible. */
-  title: string;
-  /** Jeu de données (`schema: 1`) : validé, sinon le build échoue avec le code d'erreur. */
-  dataset: Dataset;
-  /** Locale des nombres et des dates. Défaut : `fr`. */
-  locale?: string;
-  /** Libellé du tableau de données lié. */
-  tableLabel?: string;
-  /** Message de l'état vide (aucune valeur présente). */
-  emptyLabel?: string;
-  /** Début du message d'erreur de rendu ; le code d'erreur le suit. */
-  errorLabel?: string;
-  /** Réservé au placement du composant dans son parent. */
-  class?: string;
-}
+type Props = ChartProps;
 
-const ID_PATTERN = /^[A-Za-z][\w-]*$/;
-const {
-  id,
-  title,
-  dataset,
-  locale = 'fr',
-  tableLabel = 'Données du graphique',
-  emptyLabel = 'Aucune donnée à afficher.',
-  errorLabel = 'Le graphique ne peut pas être dessiné',
-  class: className,
-} = Astro.props;
+const BLOCK = 'pp-line-chart';
+const { id, title, dataset, locale = 'fr', class: className, ...texts } = Astro.props;
+const labels = {
+  table: texts.tableLabel ?? DEFAULT_LABELS.table,
+  empty: texts.emptyLabel ?? DEFAULT_LABELS.empty,
+  error: texts.errorLabel ?? DEFAULT_LABELS.error,
+};
 
-if (typeof id !== 'string' || !ID_PATTERN.test(id)) {
-  throw new TypeError('LineChart : id attendu, sans espace (lettres, chiffres et tirets).');
-}
+assertChartId(id, 'LineChart');
 const prepared = prepareLine(dataset, locale, `LineChart « ${title} »`);
-const { model, table, empty, renderError } = prepared;
+const { model } = prepared;
 const description = describe(prepared.dataset, prepared.summary, model?.offZero ?? false);
+const swatches = (model?.series ?? []).map((s) => lineSwatch(s.index, s.label));
 ---
 
-<figure class:list={['pp-line-chart', className]}>
-  <figcaption class="pp-line-chart__title">{title}</figcaption>
-  {empty && (
-    <p class="pp-line-chart__state" role="status">
-      {emptyLabel}
-    </p>
-  )}
-  {renderError && (
-    <p class="pp-line-chart__state" data-state="error">
-      {errorLabel} ({renderError.code}).
-    </p>
-  )}
-  {model && (
-    <svg
-      class="pp-line-chart__svg"
-      viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-      role="img"
-      aria-labelledby={`${id}-t ${id}-d`}
-      focusable="false"
-    >
-      <title id={`${id}-t`}>{title}</title>
-      <desc id={`${id}-d`}>{description}</desc>
-      <ChartAxes model={model} />
-      {model.series.map((s) => (
-        <g data-series={s.index + 1}>
-          <path class="pp-line-chart__line" d={s.d}></path>
-          <path class="pp-line-chart__marker" d={s.markers}></path>
-        </g>
-      ))}
-    </svg>
-  )}
-  {model && model.series.length > 1 && <LineLegend series={model.series} />}
-  <details class="pp-line-chart__data">
-    <summary>{tableLabel}</summary>
-    <Table
-      caption={`${title} : ${tableLabel}`}
-      columns={table.columns}
-      rows={table.rows}
-      rowHeader="x"
-    />
-  </details>
-</figure>
+<ChartFrame
+  block={BLOCK}
+  id={id}
+  title={title}
+  description={description}
+  prepared={prepared}
+  labels={labels}
+  class={className}
+>
+  {model && <ChartAxes block={BLOCK} axes={lineAxes(model)} />}
+  {model?.series.map((s) => (
+    <g data-series={s.index + 1}>
+      <path class="pp-line-chart__line" d={s.d}></path>
+      <path class="pp-line-chart__marker" d={s.markers}></path>
+    </g>
+  ))}
+  <ChartLegend slot="legend" block={BLOCK} series={swatches} />
+</ChartFrame>

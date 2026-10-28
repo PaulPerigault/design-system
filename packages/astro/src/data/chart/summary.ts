@@ -1,31 +1,11 @@
 import type { Axis, Dataset, Formatter, Series } from '@paulperigault/dataviz';
+import type { Found } from './found.ts';
+import { extremes, missingNote, xLabel } from './found.ts';
 
 const PERCENT = 100;
 const TENTH = 10;
-
-/** Libellé d'une abscisse : date en toutes lettres, nombre formaté ou catégorie telle quelle. */
-export function xLabel(axis: Axis, index: number, fmt: Formatter): string {
-  const value = axis.values[index];
-  if (value === undefined) return '';
-  if (typeof value === 'number') return fmt.number(value);
-  return axis.kind === 'time' ? fmt.dateLabel(value) : value;
-}
-
-interface Found {
-  readonly value: number;
-  readonly index: number;
-}
-
-function extremes(series: Series): { first: Found; last: Found; min: Found; max: Found } | null {
-  const present = series.values.flatMap((value, index): Found[] =>
-    value === null ? [] : [{ value, index }],
-  );
-  const [first, last] = [present[0], present[present.length - 1]];
-  if (first === undefined || last === undefined) return null;
-  const pick = (better: (a: number, b: number) => boolean): Found =>
-    present.reduce((best, item) => (better(item.value, best.value) ? item : best));
-  return { first, last, min: pick((a, b) => a < b), max: pick((a, b) => a > b) };
-}
+/** Dernière phrase de toute description de graphique : le tableau lié suit le SVG. */
+export const TABLE_POINTER = 'Le tableau des données suit le graphique.';
 
 /** « hausse de 12,5 % », « baisse de 3 % » ou « stable », à partir du premier et du dernier point. */
 function trend(first: number, last: number, fmt: Formatter): string {
@@ -42,17 +22,12 @@ export function summarizeSeries(series: Series, axis: Axis, fmt: Formatter): str
   if (found === null) return `${label} : aucune donnée.`;
   const at = (item: Found): string =>
     `${fmt.number(item.value, series.unit)} (${xLabel(axis, item.index, fmt)})`;
-  const missing = series.values.filter((value) => value === null).length;
-  const gaps =
-    missing === 0
-      ? ''
-      : ` ${missing} ${missing === 1 ? 'donnée manquante' : 'données manquantes'}.`;
   const parts = [
     `de ${at(found.first)} à ${at(found.last)}, ${trend(found.first.value, found.last.value, fmt)}`,
     `minimum ${at(found.min)}`,
     `maximum ${at(found.max)}`,
   ];
-  return `${label} : ${parts.join(' ; ')}.${gaps}`;
+  return `${label} : ${parts.join(' ; ')}.${missingNote(series)}`;
 }
 
 /** Résumé du graphique, lisible seul : une phrase par série (ordre du DOM : titre, résumé). */
@@ -65,5 +40,5 @@ export function describe(dataset: Dataset, summary: string, offZero: boolean): s
   const unit = dataset.series[0]?.unit ?? '';
   const axes = `Axe horizontal : ${dataset.x.label}${unit === '' ? '' : `, axe vertical : ${unit}`}.`;
   const origin = offZero ? " L'axe vertical ne part pas de zéro." : '';
-  return `${summary} ${axes}${origin} Le tableau des données suit le graphique.`;
+  return `${summary} ${axes}${origin} ${TABLE_POINTER}`;
 }

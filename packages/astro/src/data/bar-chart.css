@@ -1,0 +1,73 @@
+/*
+ * Barres (BarChart) : fichier global, en plus de `chart-base.css` et `chart-series.css`. Remplissage
+ * par motifs `<pattern>` (tuile de la couleur de la série, traits de la couleur du fond), contour
+ * de la couleur de la série ; aucun dégradé, ombre ni flou, aucune animation. Les valeurs écrites
+ * dans les barres portent un liseré de la couleur du fond (`paint-order`), pas une ombre.
+ */
+.pp-bar-chart__bar {
+  stroke: var(--pp-series);
+  stroke-width: var(--pp-size-rule);
+  vector-effect: non-scaling-stroke;
+}
+
+.pp-bar-chart__tile {
+  fill: var(--pp-series);
+}
+
+.pp-bar-chart__mark {
+  fill: none;
+  stroke: var(--pp-color-bg);
+  stroke-width: calc(var(--pp-size-rule) * 2);
+}
+
+.pp-bar-chart [data-series='3'] > .pp-bar-chart__mark {
+  stroke-width: calc(var(--pp-size-rule) * 3);
+  stroke-linecap: round;
+}
+
+.pp-bar-chart__tick[data-axis='unit'][data-align='end'] {
+  text-anchor: end;
+}
+
+.pp-bar-chart__value {
+  dominant-baseline: central;
+  fill: var(--pp-color-fg);
+  stroke: var(--pp-color-bg);
+  stroke-width: calc(var(--pp-size-rule) * 2);
+  paint-order: stroke;
+  stroke-linejoin: round;
+  font-family: var(--pp-font-family-sans);
+  font-size: var(--pp-font-size--1);
+  font-variant-numeric: tabular-nums;
+}
+
+.pp-bar-chart__value[data-anchor='start'] {
+  text-anchor: start;
+}
+
+.pp-bar-chart__value[data-anchor='middle'] {
+  text-anchor: middle;
+}
+
+.pp-bar-chart__value[data-anchor='end'] {
+  text-anchor: end;
+}
+
+@media (forced-colors: active) {
+  .pp-bar-chart__bar {
+    stroke: CanvasText;
+  }
+
+  .pp-bar-chart__tile {
+    fill: CanvasText;
+  }
+
+  .pp-bar-chart__mark,
+  .pp-bar-chart__value {
+    stroke: Canvas;
+  }
+
+  .pp-bar-chart__value {
+    fill: CanvasText;
+  }
+}
