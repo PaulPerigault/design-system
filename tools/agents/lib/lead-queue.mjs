@@ -1,5 +1,5 @@
 // File de travail de ds-lead (`.agents/lead-queue.md`, hors git) : une section par lot,
-//   ## L8 · statut : à faire · base : develop · essais : 0
+//   ## L8 · statut : à faire · base : main · essais : 0
 // suivie de la spécification du lot (et, si renvoyé, des retours de l'orchestrateur).
 // Statuts : à faire, en cours, prêt pour validation, renvoyé, validé, abandonné.
 

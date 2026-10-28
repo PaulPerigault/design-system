@@ -60,7 +60,7 @@ export function world(overrides = {}) {
     config: CONFIG,
     emptyNpmrc: '/e',
     repoRoot: '/r',
-    base: 'develop',
+    base: 'main',
   };
   return { deps, calls };
 }

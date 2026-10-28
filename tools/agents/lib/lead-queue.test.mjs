@@ -11,11 +11,11 @@ const QUEUE = `# File de ds-lead
 
 Lots confiés par l'orchestrateur.
 
-## L8 · statut : validé · base : develop · essais : 1
+## L8 · statut : validé · base : main · essais : 1
 
 Garde-fous et CLI.
 
-## L6 · statut : à faire · base : develop · essais : 0
+## L6 · statut : à faire · base : main · essais : 0
 
 Images et photos.
 
@@ -28,8 +28,8 @@ describe('file de ds-lead', () => {
   it('lit et réécrit la file sans perte', () => {
     const queue = parseQueue(QUEUE);
     expect(queue.lots.map((lot) => [lot.id, lot.status, lot.base, lot.attempts])).toEqual([
-      ['L8', 'validé', 'develop', 1],
-      ['L6', 'à faire', 'develop', 0],
+      ['L8', 'validé', 'main', 1],
+      ['L6', 'à faire', 'main', 0],
       ['L6b', 'renvoyé', 'lot/L6', 2],
     ]);
     expect(queue.lots[1].body).toBe('Images et photos.');

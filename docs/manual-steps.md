@@ -74,9 +74,8 @@ tokens » une fois le premier vrai publish réussi.
 
 ## 4. Fusions vers `main`
 
-Le dépôt n'a que `develop` jusqu'à l'étape 2. Ensuite, une PR `develop → main` par release, que
-l'assistant prépare (CI verte) et que le propriétaire fusionne. La fusion déclenche
-`release.yml` (release-please), dont la PR de release se fusionne aussi à la main.
+Le dépôt n'a que `main` (D-032). Chaque fusion de PR déclenche `release.yml` (release-please), dont
+la PR de release est fusionnée par le propriétaire seul.
 
 ## 5. Session Kiro
 
@@ -166,3 +165,7 @@ Apport : le tableau montre le travail en cours ; la feuille de route, l'avanceme
 - **Item reopened** : activer, `Status` = `En cours`.
 - **Auto-archive items** : activer, filtre `is:closed updated:<@today-14d`. Apport : le tableau reste
   lisible.
+
+## 8. Bascule vers `main` (F2a-2)
+
+État : `develop` renommée en `main` par Paul (2026-10-28), branche par défaut `main`.

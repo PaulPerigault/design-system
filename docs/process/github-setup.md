@@ -1,6 +1,6 @@
 # Configuration GitHub
 
-État au 2026-10-28 (étape F2a-1). Source : `docs/process/proposal-foundations.md`, décision D-031.
+État au 2026-10-28 (étapes F2a-1 et F2a-2). Source : `docs/process/proposal-foundations.md`, décision D-031.
 
 ## État
 
@@ -11,7 +11,7 @@
 | Champs          | `Lot`, `Priorite`, `Taille`, `Paquet` créés ; options de `Status` : manuel |
 | Milestones      | décrits, à créer par Paul (`docs/manual-steps.md` §7.2)                    |
 | Vues, workflows | manuels (`docs/manual-steps.md` §7.3 et §7.4)                              |
-| Ruleset, `main` | non touchés : étape F2a-2                                                  |
+| Ruleset, `main` | `develop` renommée en `main` ; ruleset et options : voir ci-dessous        |
 
 ## Relancer la synchronisation des labels
 
@@ -35,7 +35,7 @@ Types : `fonction`, `bogue`, `tache`, `doc`, `chantier` ; les étapes de process
 1. **Issue** : assignee, labels (`type:`, `pkg:`, `prio:`, `taille:`), milestone, description complète.
 2. **Branche** nommée d'après l'issue.
 3. **Commits** en Conventional Commits, sujet en minuscules, `Refs #n` dans le corps.
-4. **PR** vers `develop` (vers `main` après F2a-2) : `Closes #n` dans la description, ajoutée au Project
+4. **PR** vers `main` : `Closes #n` dans la description, ajoutée au Project
    (`gh project item-add 13 --owner PaulPerigault --url <PR>`).
 5. **Fusion** squash (`gh pr merge <n> --squash --delete-branch --subject … --body-file …`) : l'issue se
    ferme, la carte passe à `Fait`.
@@ -46,5 +46,4 @@ n'est posté dans les issues ni les PR : les informations vont dans la descripti
 
 ## Suite
 
-F2a-2 : bascule vers `main` (branche par défaut, ruleset, workflows, previews Cloudflare,
-release-please), puis F2b (modèles, contrôle « PR liée à une issue », issues de rattrapage).
+F2a-3 : previews Cloudflare (`tofu apply` par Paul), puis F2b (modèles, contrôle « PR liée à une issue », issues de rattrapage).

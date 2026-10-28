@@ -11,7 +11,7 @@ texte exige une police lisible par librsvg (pas de `woff2`), donc à traiter ave
 n'est pas fait, retirer les balises `og:image` plutôt que de publier des liens morts.
 
 **Chantier « architecture, TypeScript strict et Rust » : étape 1 codée (2026-10-27), étape suivante : 2.**
-Fusionnés dans `develop` : #24 (images OG), #25 (ADR-0005), #26 (`packages/tokens` en TypeScript
+Fusionnés dans `main` : #24 (images OG), #25 (ADR-0005), #26 (`packages/tokens` en TypeScript
 strict). Étape 1 : `packages/guards` en TypeScript strict, **PR #30 fusionnée** (la PR #29 avait été fermée : un sujet de commit de la branche d'origine est refusé par commitlint). `tsc -p packages/guards` : 0 erreur ;
 `packages/guards/**/*.ts` est dans `TS_STRICT_FILES` (ni `any`, ni `as`, ni `!`) ; options des
 contrôles validées à la frontière (`lib/options.ts`, `lib/check.ts`). `guards` est publié compilé :
@@ -33,11 +33,12 @@ V5, crate `pp-data`), étape 8 (`@paulperigault/color` en WebAssembly), étapes 
 
 1. **1bis-a, 1bis-b1 : faites** (D-028, D-029, `docs/process/ci-audit.md`). **1bis-b2 : faite** (tests
    Windows, références Visuel Linux, Visuel dans `ci`, D-030). Reste 1bis-d (matrice « qui vérifie quoi »).
-   **Étape suivante : F2a-2.**
+   **Étape suivante : F2a-3.**
 2. **F2a-1 : faite** (Project n° 13, 28 labels versionnés et synchronisés, D-031,
    `docs/process/github-setup.md`). Reste à Paul : options de `Status`, milestones, vues et workflows du
-   Project (`docs/manual-steps.md` §7). **F2a-2** : bascule vers `main` (branche par défaut, ruleset,
-   workflows, previews Cloudflare, release-please), puis suppression de `develop`. Références Visuel :
+   Project (`docs/manual-steps.md` §7). **F2a-2 : faite** (`develop` renommée en `main` par Paul, workflows,
+   Dependabot, garde de fusion, ruleset, D-032). **F2a-3** : previews Cloudflare (`tofu apply` par Paul),
+   puis F2b. Références Visuel :
    48 Mo ; si elles grossissent avec les composants d'analyse, passer les PNG sous Git LFS.
 3. **F2b** : modèles, issues de rattrapage.
 4. **Ensuite** : étape 2, étape 7 (7a, 7b), lot BI (V1, V2a, V2b, V3a, V3b, V4a, V4b, V5), étape 8,
@@ -169,7 +170,7 @@ Commandes exactes dans [manual-steps.md](manual-steps.md). Dans l'ordre :
    `npm-publish`, le projet Pages et `design.paulperigault.dev`.
 3. **Trusted publisher npm** pour les cinq paquets (avec une `0.0.0` d'amorce si la page de
    réglages n'existe pas encore), workflow `release.yml`, environnement `npm-publish`.
-4. **Fusions vers `main`** : une PR `develop → main` par release, puis la PR de release-please.
+4. **Fusions vers `main`** : chaque PR vers `main`, puis la PR de release-please (fusionnée par Paul).
 5. Ensuite : L9 (migration du portfolio vers `next`), reprise par l'assistant.
 
 ## PR

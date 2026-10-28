@@ -15,7 +15,7 @@ const must = async (git, args, cwd) => {
 };
 
 /**
- * Crée le worktree depuis `base` (branche d'intégration du lot, sinon develop).
+ * Crée le worktree depuis `base` (branche d'intégration du lot, sinon main).
  * @returns {Promise<{ path: string, branch: string, baseSha: string }>}
  */
 export async function createWorktree({ git, repoRoot, worktreeRoot, id, base }) {

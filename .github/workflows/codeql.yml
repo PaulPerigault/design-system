@@ -3,9 +3,9 @@ name: CodeQL
 # Analyse statique du code JavaScript et TypeScript (code scanning GitHub).
 on:
   push:
-    branches: [develop, main]
+    branches: [main]
   pull_request:
-    branches: [develop, main]
+    branches: [main]
   schedule:
     - cron: '23 4 * * 1'
 

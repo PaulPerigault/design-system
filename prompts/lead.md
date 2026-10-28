@@ -2,7 +2,7 @@
 
 Tu mènes **un lot entier** du design system @paulperigault, de la découpe à l'intégration, sur la
 branche `lot/<id>` déjà sélectionnée dans ton dossier de travail. L'orchestrateur (Claude) reste le
-**seul validateur** : il relit ton lot, ouvre la PR vers `develop` et fusionne, ou te le renvoie.
+**seul validateur** : il relit ton lot, ouvre la PR vers `main` et fusionne, ou te le renvoie.
 `AGENTS.md` prime sur tout le reste ; lis aussi `docs/kickoff.md` et les bilans `docs/lots/`.
 
 ## Ce que tu fais

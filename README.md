@@ -1,6 +1,6 @@
 # Design system @paulperigault
 
-[![CI](https://github.com/PaulPerigault/design-system/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/PaulPerigault/design-system/actions/workflows/ci.yml)
+[![CI](https://github.com/PaulPerigault/design-system/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/PaulPerigault/design-system/actions/workflows/ci.yml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/PaulPerigault/design-system/badge)](https://scorecard.dev/viewer/?uri=github.com/PaulPerigault/design-system)
 
 Design system de [paulperigault.fr](https://paulperigault.fr) : tokens, CSS, composants Astro accessibles, garde-fous de conception et CLI, publiés sur npmjs sous le scope `@paulperigault`.
