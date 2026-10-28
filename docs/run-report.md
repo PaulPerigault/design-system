@@ -37,7 +37,8 @@ V5, crate `pp-data`), étape 8 (`@paulperigault/color` en WebAssembly), étapes 
 2. **F2a-1 : faite** (Project n° 13, 28 labels versionnés et synchronisés, D-031,
    `docs/process/github-setup.md`). Reste à Paul : options de `Status`, milestones, vues et workflows du
    Project (`docs/manual-steps.md` §7). **F2a-2 : faite** (`develop` renommée en `main` par Paul, workflows,
-   Dependabot, garde de fusion, ruleset, D-032). **F2a-3** : previews Cloudflare (`tofu apply` par Paul),
+   Dependabot, garde de fusion, D-032, PR #37) ; reste à Paul le ruleset et les options du dépôt
+   (`docs/manual-steps.md` §8). **F2a-3** : previews Cloudflare (`tofu apply` par Paul),
    puis F2b. Références Visuel :
    48 Mo ; si elles grossissent avec les composants d'analyse, passer les PNG sous Git LFS.
 3. **F2b** : modèles, issues de rattrapage.
