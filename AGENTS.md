@@ -109,7 +109,8 @@ ADR dans `docs/adr/`, choix ouverts dans `docs/decisions-log.md`, journal daté 
 
 ## GitHub (règle opérationnelle)
 
-- Chaque PR référence son issue (`Closes #n`). Chaîne : issue → branche `<type>/<n>-<slug>` → commits →
+- Chaque PR, y compris celles de Claude Code, contient `Closes #n` dans son corps (une étape = une
+  issue, D-035). Chaîne : issue → branche `<type>/<n>-<slug>` → commits →
   PR → Project.
 - Les labels viennent de `.github/labels.json` (`node tools/github/sync-labels.mjs`, `--apply` pour
   agir) : ne jamais en créer à la main.
