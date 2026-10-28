@@ -1,0 +1,106 @@
+[
+  {
+    "name": "type:fonction",
+    "color": "1f3a5f",
+    "description": "Nouvelle capacité d'un paquet ou de la documentation"
+  },
+  {
+    "name": "type:bogue",
+    "color": "1f3a5f",
+    "description": "Comportement observé différent du comportement attendu"
+  },
+  {
+    "name": "type:tache",
+    "color": "1f3a5f",
+    "description": "Travail délimité : fichiers autorisés et commande d'acceptation"
+  },
+  {
+    "name": "type:rattrapage",
+    "color": "1f3a5f",
+    "description": "Issue rétroactive d'un lot livré avant le processus"
+  },
+  {
+    "name": "type:decision",
+    "color": "1f3a5f",
+    "description": "Choix à trancher ou à consigner (ADR, decisions-log)"
+  },
+  {
+    "name": "type:doc",
+    "color": "1f3a5f",
+    "description": "Rédaction ou correction de documentation"
+  },
+  {
+    "name": "type:accessibilite",
+    "color": "1f3a5f",
+    "description": "Défaut ou amélioration d'accessibilité (WCAG, lecteurs d'écran)"
+  },
+  {
+    "name": "type:chantier",
+    "color": "1f3a5f",
+    "description": "Issue parente : liste ses sous-issues en cases à cocher"
+  },
+  { "name": "pkg:tokens", "color": "3d4f63", "description": "Paquet @paulperigault/tokens" },
+  { "name": "pkg:css", "color": "3d4f63", "description": "Paquet @paulperigault/css" },
+  { "name": "pkg:astro", "color": "3d4f63", "description": "Paquet @paulperigault/astro" },
+  { "name": "pkg:guards", "color": "3d4f63", "description": "Paquet @paulperigault/guards" },
+  { "name": "pkg:create", "color": "3d4f63", "description": "Paquet @paulperigault/create (CLI)" },
+  {
+    "name": "pkg:mcp",
+    "color": "3d4f63",
+    "description": "Paquet @paulperigault/mcp (serveur MCP)"
+  },
+  {
+    "name": "pkg:docs",
+    "color": "3d4f63",
+    "description": "Application apps/docs (documentation vivante)"
+  },
+  {
+    "name": "pkg:agents",
+    "color": "3d4f63",
+    "description": "Outillage d'agents : tools/agents, tâches, Kiro"
+  },
+  { "name": "pkg:ci", "color": "3d4f63", "description": "Workflows GitHub Actions et hooks" },
+  {
+    "name": "pkg:processus",
+    "color": "3d4f63",
+    "description": "Règles, modèles, GitHub Project, conventions du dépôt"
+  },
+  {
+    "name": "prio:bloquant",
+    "color": "b42318",
+    "description": "Arrête les autres travaux tant qu'il n'est pas traité"
+  },
+  {
+    "name": "prio:haute",
+    "color": "55616e",
+    "description": "À traiter avant les travaux de priorité normale"
+  },
+  { "name": "prio:normale", "color": "8a949e", "description": "Priorité par défaut" },
+  {
+    "name": "prio:basse",
+    "color": "bcc3ca",
+    "description": "À traiter quand rien de plus urgent n'attend"
+  },
+  { "name": "taille:trait", "color": "2f5d50", "description": "30 minutes au plus" },
+  { "name": "taille:page", "color": "2f5d50", "description": "Une session de travail" },
+  {
+    "name": "taille:cahier",
+    "color": "2f5d50",
+    "description": "Trop large : à découper en issues, jamais assignée"
+  },
+  {
+    "name": "etat:a-valider",
+    "color": "6b5b3e",
+    "description": "Attend la décision ou la relecture de Paul"
+  },
+  {
+    "name": "etat:bloque",
+    "color": "6b5b3e",
+    "description": "Attend une autre issue, citée dans la description"
+  },
+  {
+    "name": "dependencies",
+    "color": "0366d6",
+    "description": "Mise à jour de dépendances (Dependabot)"
+  }
+]

@@ -103,3 +103,66 @@ aucun identifiant Kiro.
 6. **PWA** : essayer l'installation sur un vrai appareil (Chrome Android, Safari iOS) ; non fait.
 7. **Combobox, Menu, Tabs, Tooltip** : les comportements clavier sont testés en logique pure, pas au
    clavier réel dans un navigateur ni avec un lecteur d'écran. Un passage manuel est utile.
+
+## 7. GitHub Project « design system »
+
+Créé : Project n° 13 (public, lié au dépôt), champs `Lot`, `Priorite`, `Taille`, `Paquet`, labels
+synchronisés. L'API de `gh` ne couvre pas ce qui suit : à faire par Paul, dans cet ordre.
+
+### 7.1 Options du champ `Status` (appel GraphQL refusé deux fois)
+
+Le champ garde Todo, In Progress, Done. Dans le Project : menu du champ `Status` → _Edit_ (ou
+_Settings_ → _Status_), remplacer les options par celles-ci (nom, couleur, description) :
+
+| Nom      | Couleur | Description                         |
+| -------- | ------- | ----------------------------------- |
+| A trier  | gris    | Nouvelle, pas encore qualifiée      |
+| Pret     | bleu    | Qualifiée, prête à être prise       |
+| En cours | jaune   | Branche et PR ouvertes              |
+| En revue | orange  | PR en attente de CI ou de relecture |
+| Fait     | vert    | Fusionnée, issue fermée             |
+
+Apport : un état par carte, commun aux vues et aux workflows ci-dessous.
+
+### 7.2 Milestones (appel `gh api` refusé deux fois)
+
+Soit à la main (Issues → Milestones → _New milestone_, titre et description, sans date), soit en
+lançant ces commandes toi-même :
+
+```shell
+gh api -X POST repos/PaulPerigault/design-system/milestones -f title="M-histoire" -f description="Lots L0 à L20, livrés avant le processus : issues de rattrapage fermées."
+gh api -X POST repos/PaulPerigault/design-system/milestones -f title="M0 fondations" -f description="Processus : GitHub Project, labels, bascule vers main, modèles d'issue et de PR."
+gh api -X POST repos/PaulPerigault/design-system/milestones -f title="M1 TypeScript strict" -f description="Migration des paquets et outils vers TypeScript strict (ADR-0005), tsc vers dist/."
+gh api -X POST repos/PaulPerigault/design-system/milestones -f title="M2 publication npm 0.x" -f description="Première publication des paquets sur npm, dist-tags next et latest."
+gh api -X POST repos/PaulPerigault/design-system/milestones -f title="M3 migration du portfolio (L9)" -f description="Le portfolio consomme les paquets publiés (lot L9)."
+gh api -X POST repos/PaulPerigault/design-system/milestones -f title="M4 Rust pp-color (conditionnel)" -f description="Crate pp-color (OKLCH, sRGB, gamut, contraste) et paquet WebAssembly, selon D-030."
+gh api -X POST repos/PaulPerigault/design-system/milestones -f title="M5 1.0" -f description="Version 1.0 : API publique stabilisée."
+gh api -X PATCH repos/PaulPerigault/design-system/milestones/1 -f state=closed
+```
+
+Le dernier appel ferme `M-histoire` (numéro 1 si le dépôt n'a jamais eu de milestone). Apport : la
+feuille de route par échéance, et les lots passés rangés hors du travail courant.
+
+### 7.3 Vues
+
+Dans le Project : _+ New view_, puis _Save changes_ pour chacune.
+
+| Vue              | Disposition | Filtre                   | Regroupement      | Tri / champs                |
+| ---------------- | ----------- | ------------------------ | ----------------- | --------------------------- |
+| Tableau          | Board       | `-status:Fait`           | colonnes `Status` | `Priorite` croissant        |
+| Feuille de route | Roadmap     | aucun                    | `Milestone`       | marqueurs : `Milestone`     |
+| A valider        | Table       | `label:"etat:a-valider"` | `Paquet`          | `Priorite`, `Taille`, `Lot` |
+
+Apport : le tableau montre le travail en cours ; la feuille de route, l'avancement par milestone ;
+« A valider » liste ce qui attend Paul.
+
+### 7.4 Workflows (_Settings_ → _Workflows_ du Project)
+
+- **Item added to project** : activer, `Status` = `A trier`. Toute issue ou PR ajoutée arrive à trier.
+- **Auto-add to project** : activer, dépôt `PaulPerigault/design-system`, filtre `is:issue,pr is:open`.
+  Apport : plus d'ajout manuel des issues et PR.
+- **Pull request merged** : activer, `Status` = `Fait`.
+- **Item closed** : activer, `Status` = `Fait`.
+- **Item reopened** : activer, `Status` = `En cours`.
+- **Auto-archive items** : activer, filtre `is:closed updated:<@today-14d`. Apport : le tableau reste
+  lisible.

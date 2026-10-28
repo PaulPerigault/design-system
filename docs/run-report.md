@@ -33,8 +33,12 @@ V5, crate `pp-data`), étape 8 (`@paulperigault/color` en WebAssembly), étapes 
 
 1. **1bis-a, 1bis-b1 : faites** (D-028, D-029, `docs/process/ci-audit.md`). **1bis-b2 : faite** (tests
    Windows, références Visuel Linux, Visuel dans `ci`, D-030). Reste 1bis-d (matrice « qui vérifie quoi »).
-   **Étape suivante : F2a.**
-2. **F2a** : Project, labels, milestones, bascule vers `main` (suppression de `develop`).
+   **Étape suivante : F2a-2.**
+2. **F2a-1 : faite** (Project n° 13, 28 labels versionnés et synchronisés, D-031,
+   `docs/process/github-setup.md`). Reste à Paul : options de `Status`, milestones, vues et workflows du
+   Project (`docs/manual-steps.md` §7). **F2a-2** : bascule vers `main` (branche par défaut, ruleset,
+   workflows, previews Cloudflare, release-please), puis suppression de `develop`. Références Visuel :
+   48 Mo ; si elles grossissent avec les composants d'analyse, passer les PNG sous Git LFS.
 3. **F2b** : modèles, issues de rattrapage.
 4. **Ensuite** : étape 2, étape 7 (7a, 7b), lot BI (V1, V2a, V2b, V3a, V3b, V4a, V4b, V5), étape 8,
    étapes 3 à 6, étapes 9 à 11.

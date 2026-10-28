@@ -106,3 +106,12 @@ ds-lead : `prompts/lead.md`, file `.agents/lead-queue.md`, moteur `tools/agents/
 ## Décisions et journal
 
 ADR dans `docs/adr/`, choix ouverts dans `docs/decisions-log.md`, journal daté dans `docs/journal/`, bilan dans `docs/run-report.md`.
+
+## GitHub (règle opérationnelle)
+
+- Chaque PR référence son issue (`Closes #n`). Chaîne : issue → branche `<type>/<n>-<slug>` → commits →
+  PR → Project.
+- Les labels viennent de `.github/labels.json` (`node tools/github/sync-labels.mjs`, `--apply` pour
+  agir) : ne jamais en créer à la main.
+- Claude Code ne poste aucun commentaire dans les issues ni les PR : les informations vont dans la
+  description ou le journal.
