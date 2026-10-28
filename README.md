@@ -5,14 +5,15 @@
 
 Design system de [paulperigault.fr](https://paulperigault.fr) : tokens, CSS, composants Astro accessibles, garde-fous de conception et CLI, publiés sur npmjs sous le scope `@paulperigault`.
 
-| Paquet                  | Rôle                                                                                       |
-| ----------------------- | ------------------------------------------------------------------------------------------ |
-| `@paulperigault/tokens` | design tokens au format DTCG 2025.10, générés en CSS, JSON et types ; couleur et contraste |
-| `@paulperigault/css`    | base, reset, impression, polices et thème Tailwind v4                                      |
-| `@paulperigault/astro`  | composants `.astro` publiés en source                                                      |
-| `@paulperigault/guards` | contrôles de conception et config ESLint                                                   |
-| `@paulperigault/create` | CLI `create`, `add`, `eject`, `diff`                                                       |
-| `@paulperigault/mcp`    | serveur MCP (stdio, lecture seule) du design system                                        |
+| Paquet                   | Rôle                                                                                       |
+| ------------------------ | ------------------------------------------------------------------------------------------ |
+| `@paulperigault/tokens`  | design tokens au format DTCG 2025.10, générés en CSS, JSON et types ; couleur et contraste |
+| `@paulperigault/css`     | base, reset, impression, polices et thème Tailwind v4                                      |
+| `@paulperigault/dataviz` | contrat de données, formatage fr et palettes accessibles dérivées de l'accent              |
+| `@paulperigault/astro`   | composants `.astro` publiés en source                                                      |
+| `@paulperigault/guards`  | contrôles de conception et config ESLint                                                   |
+| `@paulperigault/create`  | CLI `create`, `add`, `eject`, `diff`                                                       |
+| `@paulperigault/mcp`     | serveur MCP (stdio, lecture seule) du design system                                        |
 
 Documentation vivante : `apps/docs` (design.paulperigault.dev).
 
