@@ -7,7 +7,7 @@ export const SITE_LOCALE = 'fr_FR';
 export const TITLE_SUFFIX = 'Design system · Paul Perigault';
 
 export const AUTHOR = {
-  name: 'Paul Périgault',
+  name: 'Paul Perigault',
   url: 'https://paulperigault.fr',
   github: 'https://github.com/PaulPerigault',
   jobTitle: 'DevOps / DevSecOps',

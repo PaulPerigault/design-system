@@ -50,7 +50,7 @@ describe('JSON-LD', () => {
     const person = personLd();
     expect(person).toMatchObject({
       '@type': 'Person',
-      name: 'Paul Périgault',
+      name: 'Paul Perigault',
       url: 'https://paulperigault.fr',
       jobTitle: 'DevOps / DevSecOps',
       sameAs: ['https://paulperigault.fr', 'https://github.com/PaulPerigault'],
