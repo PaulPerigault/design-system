@@ -271,6 +271,13 @@
       "decision": "Une étape = une issue ; chaque PR porte `Closes #n` ; les épiques (`type:chantier`) regroupent leurs sous-issues en cases `- [ ] #n` et par le lien d'API « sous-issue » quand il est accepté. Issues de rattrapage fermées pour les étapes déjà fusionnées (étape 1, F1 à F2b-2a) sous une parente `[Processus] Fondations du chantier (étapes déjà livrées)` ; une issue par tâche manuelle de Paul, préfixée `[Paul]`, aucun label ne les distinguant. Étapes 10 et 11 rangées dans M5 faute de placement dans la proposition ; étape 9 dans M4. Correspondance dans `docs/history/roadmap-issues.md`.",
       "id": "D-035",
       "rollback": "Fermer les issues du chantier ; `docs/history/roadmap-issues.md` reste lisible seul."
+    },
+    {
+      "alternative": "Déploiement par workflow avec wrangler ; GitHub App dédiée.",
+      "date": "2026-10-28",
+      "decision": "Previews : intégration Git native de Cloudflare Pages (une URL par PR, branche de production `main`), qui remplace la branche `develop` ; aucun workflow ni jeton Cloudflare dans le dépôt, le projet est déclaré en OpenTofu (apply par Paul). `_headers` et `_redirects` produits au build s'appliquent aux previews, qui reçoivent `X-Robots-Tag: noindex` de Cloudflare (documentation Cloudflare Pages). Release-please utilise le secret `RELEASE_PLEASE_TOKEN` (jeton fine-grained limité au dépôt, Contents et Pull requests en écriture, 90 jours) : les PR créées avec `GITHUB_TOKEN` ne déclenchent pas `ci`.",
+      "id": "D-036",
+      "rollback": "Retirer `token:` de `release.yml` ; déployer par workflow ; `docs/process/previews.md`, `release-token.md`."
     }
   ]
 }

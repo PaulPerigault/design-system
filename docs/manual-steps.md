@@ -225,3 +225,142 @@ Idempotent : une issue dont le titre existe est reprise. Correspondance : `docs/
 (Rust), `V` (visualisation), `S` (sobriété). Labels `pkg:color` et `pkg:data` : absents de
 `.github/labels.json`, donc à ajouter au fichier puis à synchroniser (`node tools/github/sync-labels.mjs`).
 Ensuite : `Remove-Item -Recurse tmp/roadmap, tmp/create-roadmap-issues.ps1, tmp/gen-roadmap.mjs`.
+
+## 11. F2a-3 : previews Cloudflare par PR et jeton de release-please
+
+Issue de l'étape : #79. Les étapes A et B relèvent de #105 (jetons IaC) et #106 (`apply` OpenTofu) ;
+décisions D-036, `docs/process/previews.md`, `docs/process/release-token.md`. Faire A à F dans l'ordre.
+
+### A. Autoriser l'application GitHub de Cloudflare sur le dépôt (aucune API ne le fait)
+
+1. <https://dash.cloudflare.com> → Workers & Pages → Create → Pages → Connect to Git.
+2. Autoriser « Cloudflare Workers & Pages » sur GitHub, dépôts : _Only select repositories_ →
+   `PaulPerigault/design-system`. Quitter l'assistant sans créer de projet (OpenTofu le crée).
+
+À voir : <https://github.com/settings/installations> liste l'application avec ce seul dépôt.
+
+### B. Brique IaC du projet Pages (dépôt portfolio, que cette étape ne modifie pas)
+
+Le jeton Cloudflare de l'IaC doit avoir le droit _Cloudflare Pages : Edit_ (voir #105). Afficher le
+projet Pages déjà déclaré pour les docs et la version du fournisseur :
+
+```powershell
+cd ~/dev/PaulPerigault.githun.io
+git switch develop; git pull --ff-only
+Select-String -Path infra/*.tf -Pattern 'cloudflare_pages_project' -Context 0,12
+npm run infra:tf -- providers
+```
+
+Dans le bloc `cloudflare_pages_project` trouvé, aligner ces réglages (syntaxe attributs du
+fournisseur `cloudflare` v5 ; en v4 ce sont des blocs `source {}`, `build_config {}`) :
+
+```hcl
+  production_branch = "main"
+  source = {
+    type = "github"
+    config = {
+      owner                         = "PaulPerigault"
+      repo_name                     = "design-system"
+      production_branch             = "main"
+      production_deployments_enabled = true
+      preview_deployment_setting    = "all"
+      preview_branch_includes       = ["*"]
+      pr_comments_enabled           = true
+    }
+  }
+  build_config = {
+    build_command   = "npm ci && npm -w @paulperigault/docs run build"
+    destination_dir = "apps/docs/dist"
+    root_dir        = "/"
+  }
+  deployment_configs = {
+    preview    = { env_vars = { NODE_VERSION = { type = "plain_text", value = "24" } } }
+    production = { env_vars = { NODE_VERSION = { type = "plain_text", value = "24" } } }
+  }
+```
+
+Puis, brique par brique, en lisant le plan avant l'`apply` :
+
+```powershell
+npm run infra:tf -- plan -out=pages.tfplan
+```
+
+À voir : `Plan: 0 to add, 1 to change, 0 to destroy` (ou `1 to add` si le projet n'existe pas), seul
+`cloudflare_pages_project` modifié, aucune destruction. Sinon, s'arrêter. Si le plan est conforme :
+
+```powershell
+npm run infra:tf -- apply pages.tfplan
+```
+
+À voir : `Apply complete! Resources: 1 added, 0 changed, 0 destroyed.` (ou `0 added, 1 changed`),
+puis dans le tableau de bord, projet des docs → Settings → Builds : source `PaulPerigault/design-system`,
+branche de production `main`.
+
+### C. Jeton de release-please (voir `docs/process/release-token.md`)
+
+1. <https://github.com/settings/personal-access-tokens/new> : nom `RELEASE_PLEASE_TOKEN`, expiration
+   90 jours, _Only select repositories_ → `design-system`, droits _Contents_ et _Pull requests_ en
+   _Read and write_ (_Metadata_ lecture seule est ajouté d'office). Copier le jeton.
+2. Le poser en secret, sans trace : `Read-Host -AsSecureString` ne l'affiche pas, la conversion en
+   texte n'existe qu'en mémoire, `gh` le reçoit par l'entrée standard (ni fichier, ni argument, ni historique).
+
+```powershell
+$secure = Read-Host 'Jeton RELEASE_PLEASE_TOKEN' -AsSecureString
+$ptr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secure)
+try {
+  [Runtime.InteropServices.Marshal]::PtrToStringBSTR($ptr) |
+    gh secret set RELEASE_PLEASE_TOKEN --repo PaulPerigault/design-system
+} finally {
+  [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($ptr)
+}
+gh secret list --repo PaulPerigault/design-system
+```
+
+À voir : `✓ Set Actions secret RELEASE_PLEASE_TOKEN for PaulPerigault/design-system`, puis la liste
+avec `RELEASE_PLEASE_TOKEN`. Ajouter à ton agenda la rotation à 90 jours.
+
+### D. Fusion de la PR F2a-3, puis release-please
+
+Après la fusion, le workflow `Release` s'exécute sur `main`. À voir :
+
+```powershell
+gh run list --repo PaulPerigault/design-system --workflow release.yml --limit 1
+gh pr list --repo PaulPerigault/design-system --state open --search 'chore: release in:title'
+```
+
+Le run est `completed success` ; s'il existe un changement publiable, la PR « chore: release … »
+apparaît. Vérifier que `ci` tourne dessus :
+
+```powershell
+$n = gh pr list --repo PaulPerigault/design-system --search 'chore: release in:title' --json number --jq '.[0].number'
+gh pr checks $n --repo PaulPerigault/design-system
+```
+
+À voir : une ligne `ci` en `pending` puis `pass` (avant ce changement, aucune ligne `ci`).
+
+### E. Première preview, sur une PR de test
+
+```powershell
+cd D:\design-system
+git switch main; git pull --ff-only
+git switch -c processus/test-preview
+git commit --allow-empty -m "chore: test de preview"
+git push -u origin processus/test-preview
+gh pr create --repo PaulPerigault/design-system --base main --title "chore: test de preview" --body "Test de preview, a fermer."
+gh pr checks --repo PaulPerigault/design-system
+```
+
+À voir : une ligne « Cloudflare Pages » (statut `pass`, lien « Details » vers l'URL
+`https://<hash>.<projet>.pages.dev`). Vérifier les en-têtes (remplacer l'URL par celle du lien) :
+
+```powershell
+curl.exe -sI https://<url du lien Details> | Select-String 'x-robots-tag|content-security-policy|strict-transport'
+```
+
+À voir : `x-robots-tag: noindex`, la CSP et HSTS. Fermer sans fusionner :
+`gh pr close --delete-branch --repo PaulPerigault/design-system processus/test-preview`.
+
+### F. Clôture
+
+`gh issue close 79 --repo PaulPerigault/design-system` si la PR F2a-3 n'a pas fermé l'issue ; cocher
+#105 et #106 pour ce qui concerne ces briques.

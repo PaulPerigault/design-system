@@ -27,13 +27,15 @@ les PR de rendu (`docs/process/visual-references.md`).
 **Étape F1 (2026-10-27) :** proposition de processus dans `docs/process/proposal-foundations.md`, validée par Paul (F1b) ; rien créé sur GitHub.
 
 **Ordre validé par Paul (2026-10-28)** (`docs/process/proposal-foundations.md` §6) : 1bis-b2, F2a, F2b,
-étape 2 (ADR Architecture, D-030), étape 7 en deux sessions (crate `pp-color`), lot analyse de données (V1 à
-V5, crate `pp-data`), étape 8 (`@paulperigault/color` en WebAssembly), étapes 3 à 6 (TypeScript strict),
+étape 2 (ADR Architecture, D-030), puis étape 7 en deux sessions (crate `pp-color`) en parallèle de V1 à V3
+(lot analyse, sans dépendance à `pp-color`), V4a après l'étape 7b (crate `pp-data`), étape 8 (`@paulperigault/color` en WebAssembly), étapes 3 à 6 (TypeScript strict),
 étapes 9 à 11. Modèle : `main` seule, preview Cloudflare par PR (D-027).
 
 1. **1bis-a, 1bis-b1 : faites** (D-028, D-029, `docs/process/ci-audit.md`). **1bis-b2 : faite** (tests
    Windows, références Visuel Linux, Visuel dans `ci`, D-030). Reste 1bis-d (matrice « qui vérifie quoi », issue « [1bis-d] »).
-   **Étape suivante : F2a-3** (issue « [F2a-3] previews Cloudflare… »).
+   **F2a-3 : faite côté dépôt** (D-036, #79 ; reste `tofu apply` et le secret par Paul, `docs/manual-steps.md` §11).
+   **Étape suivante : étape 2** (#82, ADR Architecture), puis V1 à V3 en parallèle de la crate `pp-color`
+   (V1, #93, ne dépend plus de l'étape 7b ; seule V4a, #98, la garde).
 2. **F2a-1 : faite** (Project n° 13, 28 labels versionnés et synchronisés, D-031,
    `docs/process/github-setup.md`). Reste à Paul : options de `Status`, milestones, vues et workflows du
    Project (`docs/manual-steps.md` §7). **F2a-2 : faite** (`develop` renommée en `main` par Paul, workflows,
@@ -52,7 +54,7 @@ V5, crate `pp-data`), étape 8 (`@paulperigault/color` en WebAssembly), étapes 
    M-analyse), étape 8 (M4), étapes 3 à 6 (M1), étape 9 (M4), étapes 10 et 11 (M5). L9 : #51 (M3).
    Chaque PR porte `Closes #n`.
 
-**Analyse de données (BI) :** planifiée après l'étape 7 (V1 à V5) ; Rust sans preuve de gain de
+**Analyse de données (BI) :** V1 à V3 en parallèle de l'étape 7, V4a après l'étape 7b (V1 à V5) ; Rust sans preuve de gain de
 performance (D-030).
 
 **Reprise suggérée.** (1) images OG, (2) intégrer les quatre actions du propriétaire, (3) L9
