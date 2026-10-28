@@ -29,6 +29,14 @@ if (base.ok) {
 
 Aucune fonction publique ne lève d'exception : toute erreur est un `Result` typé (`errors.ts`).
 
+## Géométrie pure (V2a-1)
+
+- `linearScale`, `verticalScale` (axe Y SVG inversé), `bandScale`, `timeDomain`, `timeScale` : domaine vers étendue.
+- `niceTicks` (pas 1, 2, 5 × 10^n, domaine élargi) et `timeTicks` (jour, semaine, mois, année, alignés UTC).
+- `lttb(xs, values, cible)` : indices retenus ; premier et dernier points gardés, `null` jamais inventés.
+- `linePath` (`d` interrompu aux `null`, points isolés signalés) et `barRects` / `rectsPath` (barres groupées).
+- Toutes renvoient un `Result` typé (`scale.*`, `geometry.bad-input`, `downsample.bad-target`).
+
 ## Changer l'accent en une variable
 
 `--pp-accent-hue` : un nombre, la teinte OKLCH en degrés (`270.7` par défaut). Elle ne règle que la
@@ -53,5 +61,5 @@ d'abord, puis la candidate la plus distincte des couleurs déjà prises.
 
 ## Structure
 
-`src/domain` (contrat, dates ISO, couleur, palettes : pur, sans E/S), `src/application` (ports),
+`src/domain` (contrat, dates ISO, couleur, palettes, échelles, LTTB, géométrie : pur, sans E/S), `src/application` (ports),
 `src/infrastructure` (validation à la frontière, `Intl`, lecture de `tokens.json`), `src/errors.ts`.
