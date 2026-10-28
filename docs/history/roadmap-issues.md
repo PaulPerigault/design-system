@@ -40,7 +40,7 @@ Milestones : M0 fondations, M1 TypeScript strict, M2 publication npm 0.x, M3 mig
 | Étape 8   | [Étape 8] paquet @paulperigault/color en WebAssembly               | M4        | Étape 7b           |
 | Étape 9   | [Étape 9] mesure du pipeline d'images                              | M4        | Étape 6            |
 | épique    | [Rust] Crate pp-color et paquet WebAssembly                        | M4        | —                  |
-| V1        | [V1] ADR visualisation de données                                  | M-analyse | Étape 7b           |
+| V1        | [V1] ADR visualisation de données                                  | M-analyse | —                  |
 | V2a       | [V2a] graphiques SVG statiques : courbe et barres                  | M-analyse | V1                 |
 | V2b       | [V2b] graphiques SVG statiques : aire et jauge                     | M-analyse | V2a                |
 | V3a       | [V3a] KPI et sparklines                                            | M-analyse | V2a                |
