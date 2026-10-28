@@ -32,8 +32,8 @@ V5, crate `pp-data`), étape 8 (`@paulperigault/color` en WebAssembly), étapes 
 étapes 9 à 11. Modèle : `main` seule, preview Cloudflare par PR (D-027).
 
 1. **1bis-a, 1bis-b1 : faites** (D-028, D-029, `docs/process/ci-audit.md`). **1bis-b2 : faite** (tests
-   Windows, références Visuel Linux, Visuel dans `ci`, D-030). Reste 1bis-d (matrice « qui vérifie quoi »).
-   **Étape suivante : F2b-2b, puis F2a-3.**
+   Windows, références Visuel Linux, Visuel dans `ci`, D-030). Reste 1bis-d (matrice « qui vérifie quoi », issue « [1bis-d] »).
+   **Étape suivante : F2a-3** (issue « [F2a-3] previews Cloudflare… »).
 2. **F2a-1 : faite** (Project n° 13, 28 labels versionnés et synchronisés, D-031,
    `docs/process/github-setup.md`). Reste à Paul : options de `Status`, milestones, vues et workflows du
    Project (`docs/manual-steps.md` §7). **F2a-2 : faite** (`develop` renommée en `main` par Paul, workflows,
@@ -41,11 +41,16 @@ V5, crate `pp-data`), étape 8 (`@paulperigault/color` en WebAssembly), étapes 
    (`docs/manual-steps.md` §8). **F2a-3** : previews Cloudflare (`tofu apply` par Paul),
    puis F2b. Références Visuel :
    48 Mo ; si elles grossissent avec les composants d'analyse, passer les PNG sous Git LFS.
-3. **F2b** : F2b-1 faite (modèles d'issue et de PR, D-033, `docs/process/templates.md`) ; F2b-2a codée (issues de rattrapage : `docs/history/catch-up.md`, D-034 ; **Paul lance
-   `powershell -ExecutionPolicy Bypass -File tmp/create-catchup-issues.ps1`**, les appels `gh` d'écriture ayant
-   été refusés), reste F2b-2b (issues du reste du chantier), puis F2a-3 (previews Cloudflare, jeton de release-please).
-4. **Ensuite** : étape 2, étape 7 (7a, 7b), lot BI (V1, V2a, V2b, V3a, V3b, V4a, V4b, V5), étape 8,
-   étapes 3 à 6, étapes 9 à 11.
+3. **F2b** : F2b-1 faite (modèles d'issue et de PR, D-033, `docs/process/templates.md`, issue
+   « [F2b-1] »). F2b-2a faite (issues #42 à #66, D-034, `docs/history/catch-up.md`). **F2b-2b faite**
+   (D-035) : une étape = une issue, `docs/history/roadmap-issues.md` donne étape, issue, milestone et
+   dépendances ; **Paul lance `powershell -ExecutionPolicy Bypass -File tmp/create-roadmap-issues.ps1`**
+   (appels `gh` d'écriture refusés à l'agent), puis les numéros sont ceux de l'issue de chaque étape.
+   Étape F2a-3 : previews Cloudflare, jeton de release-please.
+4. **Ensuite** (chacune a son issue, jalon et dépendances dans `docs/history/roadmap-issues.md`) :
+   F2a-3, 1bis-d, étape 2 (M1), étape 7 (7a, 7b ; M4), lot BI (V1, V2a, V2b, V3a, V3b, V4a, V4b, V5 ;
+   M-analyse), étape 8 (M4), étapes 3 à 6 (M1), étape 9 (M4), étapes 10 et 11 (M5). L9 : #51 (M3).
+   Chaque PR porte `Closes #n`.
 
 **Analyse de données (BI) :** planifiée après l'étape 7 (V1 à V5) ; Rust sans preuve de gain de
 performance (D-030).

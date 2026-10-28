@@ -264,6 +264,13 @@
       "decision": "Historique L0 à L20 rattaché par issues de rattrapage, sans réécriture : une issue fermée par lot (`type:rattrapage`, milestone `M-histoire`), L9 ouverte (rien livré), une issue « divers » par période pour les commits hors lot, une issue parente `[Historique] Lots L0 à L20`. Correspondance lot, issue, PR et SHA dans `docs/history/catch-up.md`. **Remplace le plan de F1** (une issue par commit hors lot, aucune pour Dependabot).",
       "id": "D-034",
       "rollback": "Fermer les issues de rattrapage ; `docs/history/catch-up.md` reste lisible seul."
+    },
+    {
+      "alternative": "Une issue par lot ou par chantier ; PR sans issue ; étapes 10 et 11 dans M2.",
+      "date": "2026-10-28",
+      "decision": "Une étape = une issue ; chaque PR porte `Closes #n` ; les épiques (`type:chantier`) regroupent leurs sous-issues en cases `- [ ] #n` et par le lien d'API « sous-issue » quand il est accepté. Issues de rattrapage fermées pour les étapes déjà fusionnées (étape 1, F1 à F2b-2a) sous une parente `[Processus] Fondations du chantier (étapes déjà livrées)` ; une issue par tâche manuelle de Paul, préfixée `[Paul]`, aucun label ne les distinguant. Étapes 10 et 11 rangées dans M5 faute de placement dans la proposition ; étape 9 dans M4. Correspondance dans `docs/history/roadmap-issues.md`.",
+      "id": "D-035",
+      "rollback": "Fermer les issues du chantier ; `docs/history/roadmap-issues.md` reste lisible seul."
     }
   ]
 }

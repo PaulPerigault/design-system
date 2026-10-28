@@ -205,3 +205,23 @@ les champs `Lot` et `Paquet`, ferme les lots livrés (L9 reste ouverte) et relie
 l'API l'accepte. Les champs `Taille` et `Priorite` ne sont pas posés : les labels `taille:` portent
 la taille. Ensuite, nettoyage : `Remove-Item -Recurse tmp/catchup, tmp/create-catchup-issues.ps1, tmp/gen-catchup.mjs`.
 Reporter les numéros d'issue dans `docs/history/catch-up.md` n'est pas nécessaire : la parente les liste.
+
+## 10. Issues du reste du chantier (F2b-2b)
+
+Les appels `gh` d'écriture ont de nouveau été refusés à l'agent. Le script est dans `tmp/` (hors dépôt).
+À lancer par Paul, depuis la racine du dépôt :
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tmp/create-roadmap-issues.ps1 -DryRun   # affiche sans écrire
+powershell -ExecutionPolicy Bypass -File tmp/create-roadmap-issues.ps1
+```
+
+Il crée 47 issues (9 rattrapages et leur parente fermés, les étapes à venir, six épiques, neuf
+tâches `[Paul]`), pose labels, assignee, milestone, Project 13 (`Status`, `Lot`, `Paquet`, `Taille`,
+`Priorite`), dépendances et sous-issues, relie #51 à M3, puis affiche la correspondance clé → numéro.
+Idempotent : une issue dont le titre existe est reprise. Correspondance : `docs/history/roadmap-issues.md`.
+
+À ajouter à la main dans le Project (champ `Lot`, options absentes ; le script les signale) : `R`
+(Rust), `V` (visualisation), `S` (sobriété). Labels `pkg:color` et `pkg:data` : absents de
+`.github/labels.json`, donc à ajouter au fichier puis à synchroniser (`node tools/github/sync-labels.mjs`).
+Ensuite : `Remove-Item -Recurse tmp/roadmap, tmp/create-roadmap-issues.ps1, tmp/gen-roadmap.mjs`.
