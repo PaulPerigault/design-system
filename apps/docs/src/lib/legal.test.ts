@@ -3,7 +3,7 @@ import { LEGAL, assertProductionReady, legalProblems } from './legal.ts';
 import type { Legal } from './legal.ts';
 
 const COMPLETE: Legal = {
-  publisher: 'Paul Périgault',
+  publisher: 'Paul Perigault',
   host: 'Hébergeur exemple, 1 rue Exemple',
   contact: 'contact@exemple.test',
   licenseCode: 'MIT',

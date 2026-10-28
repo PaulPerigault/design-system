@@ -3,7 +3,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 
 const LABELS_FILE = '.github/labels.json';
-const NAME_PATTERN = /^[a-z0-9:-]+$/;
+const NAME_PATTERN = /^[a-z0-9:-]+( [a-z0-9:-]+)?$/;
 const COLOR_PATTERN = /^[0-9a-f]{6}$/;
 const DESCRIPTION_MAX = 100;
 const ENDPOINT = 'repos/{owner}/{repo}/labels';
@@ -19,7 +19,7 @@ export class LabelSyncError extends Error {
 const key = (name) => name.toLowerCase();
 
 const RULES = [
-  [({ name }) => !NAME_PATTERN.test(name), 'nom hors [a-z0-9:-]'],
+  [({ name }) => !NAME_PATTERN.test(name), 'nom hors [a-z0-9:-] (un espace admis)'],
   [({ color }) => !COLOR_PATTERN.test(color), 'couleur hors hexadécimal à 6 chiffres'],
   [({ description = '' }) => description.length > DESCRIPTION_MAX, 'description trop longue'],
 ];

@@ -309,6 +309,11 @@
       "decision": "Paquet `@paulperigault/dataviz` créé (V2-0, #120) : contrat `Dataset` validé à la frontière, erreurs typées sans `throw`, formatage fr par `Intl`, palettes catégorielle, séquentielle et divergente dérivées d'une teinte par farthest-point sampling (ΔE00 ≥ 10 et ≥ 3 sous trois daltonismes, contraste 3:1 et 4,5:1). Variables d'entrée : `--pp-accent-hue` (teinte seule, clarté et chroma fixés par le système) et `--pp-font-stack` ; sorties inchangées ; neutres d'Encre inchangés (point ouvert, branchement en #121). Fermeture des points ouverts d'ADR-0006 (2) et d'ADR-0007 (1).",
       "id": "D-039",
       "rollback": "Retirer le paquet et ses entrées de `release-please`, `pp-guards.config.json` et `eslint.config.mjs`."
+    },
+    {
+      "date": "2026-10-28",
+      "decision": "Géométrie pure de dataviz (V2a-1, #94) : échelles linéaire, temporelle (ms UTC) et par bandes ; graduations rondes en 1, 2, 5 × 10^n (Heckbert, 1990) et calendaires (jour, semaine, mois, année) ; LTTB (Steinarsson, 2013) qui rend des indices, garde premier et dernier point de chaque suite et un `null` par trou ; chemins de courbe et de barres en données ou chaînes `d`, sans balise. Fonctions pures dans `src/domain`, résultats typés, quatre codes d'erreur ajoutés (`scale.bad-domain`, `scale.bad-range`, `geometry.bad-input`, `downsample.bad-target`). Choix : le pas des graduations est arrondi vers le haut pour ne jamais dépasser la cible ; une cible LTTB trop basse pour les suites est une erreur, pas un dépassement silencieux.",
+      "id": "D-040"
     }
   ]
 }

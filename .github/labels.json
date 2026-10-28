@@ -44,7 +44,7 @@
   {
     "name": "pkg:dataviz",
     "color": "3d4f63",
-    "description": "Paquet @paulperigault/dataviz (contrat de données, palettes)"
+    "description": "Paquet @paulperigault/dataviz : contrat de données et palettes"
   },
   { "name": "pkg:astro", "color": "3d4f63", "description": "Paquet @paulperigault/astro" },
   { "name": "pkg:guards", "color": "3d4f63", "description": "Paquet @paulperigault/guards" },
@@ -107,5 +107,10 @@
     "name": "dependencies",
     "color": "0366d6",
     "description": "Mise à jour de dépendances (Dependabot)"
+  },
+  {
+    "name": "autorelease: pending",
+    "color": "ededed",
+    "description": "PR de release-please en attente de publication"
   }
 ]

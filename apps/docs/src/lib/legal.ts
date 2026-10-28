@@ -16,7 +16,7 @@ export interface Legal {
 export type Env = Readonly<Record<string, string | undefined>>;
 
 export const LEGAL: Legal = {
-  publisher: 'Paul Périgault',
+  publisher: 'Paul Perigault',
   host: '',
   contact: '',
   licenseCode: 'MIT',
