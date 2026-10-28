@@ -7,7 +7,9 @@ const DIST = fileURLToPath(new URL('../dist/', import.meta.url));
 /** Chemins des pages construites (`…/index.html`), lus dans `dist/` : aucune liste à la main. */
 function builtPages(): string[] {
   const files = readdirSync(DIST, { recursive: true, encoding: 'utf8' });
+  // `readdir` renvoie des `\` sous Windows : les chemins de pages sont des URL.
   const pages = files
+    .map((file) => file.replaceAll('\\', '/'))
     .filter((file) => file === 'index.html' || file.endsWith('/index.html'))
     .map((file) => `/${file.slice(0, -'index.html'.length)}`)
     .sort();

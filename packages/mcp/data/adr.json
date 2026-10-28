@@ -229,6 +229,13 @@
       "decision": "Tests par pertinence : ciblés par PR, suite complète avant la prod et périodique, non-régression légère après la prod ; e2e et Visuel jamais sur push `develop`/`main`. e2e : PR de rendu seulement (`packages/css`, `tokens`, `astro`, `apps/**`, Dependabot sur une dépendance de rendu), sur `chromium` + 2 appareils (375x667, 1280x800) ; matrice complète sur `workflow_dispatch`, PR de release-please, PR vers `main` et cron du lundi. Chromium en cache (clé = version de Playwright). Visuel provisoire : manuel et cron seulement, non exigé par `ci` (réparé en 1bis-b2). `ci` : `!cancelled()`, vert si e2e sauté, rouge si e2e échoue. `squash-message` contrôle sujet (sans `(#n)`) et corps du squash ; `commitlint` de PR : titre et corps seulement. Non-régression légère après la prod : à planifier.",
       "id": "D-029",
       "rollback": "Retirer le filtre `changes` ; remettre `pull_request` dans `visual.yml`."
+    },
+    {
+      "alternative": "Garder le critère de mesure d'ADR-0005 ; TypeScript seul.",
+      "date": "2026-10-28",
+      "decision": "Politique Rust : Rust n'a pas à prouver un gain de performance. Critères : aucune régression (parité de comportement prouvée en CI, poids du `.wasm` budgété, temps de chargement non dégradé), erreurs typées, aucun `panic` ni `unwrap` hors tests, crates partageables avec de futurs backends Rust. Le site reste statique sur Cloudflare Pages ; le `.wasm` est compilé en CI et publié dans le paquet npm. Remplace le critère « seulement si une mesure le justifie » d'ADR-0005 (qui reste valable pour la décision passée sur les garde-fous : à réexaminer à l'étape 2).",
+      "id": "D-030",
+      "rollback": "Rétablir le critère de mesure d'ADR-0005 ; retirer les crates `pp-color` et `pp-data`."
     }
   ]
 }

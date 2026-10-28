@@ -1,6 +1,6 @@
 // Worktree isolé par tâche : `git worktree add <racine>/<id> -b agent/<id> <base>`, SHA de base
 // noté pour le contrôle de propriété. Git est injecté (`git(args, opts) → { code, stdout }`).
-import { join, resolve } from 'node:path';
+import { posix, resolve } from 'node:path';
 
 /** Chemin et branche du worktree d'une tâche. */
 export function worktreeOf(repoRoot, worktreeRoot, id) {
@@ -39,4 +39,4 @@ export async function missingDependencies({ git, repoRoot, base, dependsOn }) {
   return dependsOn.filter((id) => !new RegExp(`\\b${id.replace('.', '\\.')}\\b`).test(log));
 }
 
-export const runsPath = (repoRoot, runsDir, file) => join(repoRoot, runsDir, file);
+export const runsPath = (repoRoot, runsDir, file) => posix.join(repoRoot, runsDir, file);

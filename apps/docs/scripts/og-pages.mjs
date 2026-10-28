@@ -1,5 +1,5 @@
 import { readFile, readdir } from 'node:fs/promises';
-import { join } from 'node:path';
+import { posix } from 'node:path';
 import { URL } from 'node:url';
 
 /**
@@ -68,7 +68,7 @@ export function ogFileOf(image) {
 
 /** Une page : chemin du fichier HTML (relatif à `dist`) et ses balises Open Graph. */
 export async function pageOf(fs, distDir, file) {
-  const html = (await fs.read(join(distDir, file))).toString('utf8');
+  const html = (await fs.read(posix.join(distDir, file))).toString('utf8');
   return { file, ...readOgMeta(html) };
 }
 

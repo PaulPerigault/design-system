@@ -45,3 +45,15 @@ export function contextOf(device: MatrixDevice) {
     reducedMotion: device.reducedMotion ? ('reduce' as const) : ('no-preference' as const),
   };
 }
+
+/**
+ * Projets de la régression visuelle, un par largeur de conteneur distincte : 360 (sous le seuil de
+ * 27 rem des requêtes de conteneur), 820 (au-dessus de 36 rem, page plus étroite que son plafond),
+ * 1440 (page à son plafond). Les autres téléphones tombent dans le cas de 360 ; le paysage et le
+ * mouvement réduit ne changent ni la mise en page ni, animations coupées, la capture.
+ */
+export const VISUAL_PROJECTS: readonly string[] = [
+  'matrice-360x800',
+  'matrice-tablette-820x1180',
+  'matrice-bureau-1440x900',
+];

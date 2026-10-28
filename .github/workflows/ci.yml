@@ -130,6 +130,13 @@ jobs:
             npm run e2e -- --project=chromium --project=matrice-375x667 --project=matrice-bureau-1280x800
           fi
 
+  visuel:
+    # Régression visuelle : captures comparées aux références Linux versionnées (workflow Visuel).
+    # Seulement sur une PR de rendu ; jamais sur un push ni quand seul le titre est modifié (D-029).
+    needs: changes
+    if: github.event_name == 'pull_request' && needs.changes.outputs.render == 'true' && github.event.action != 'edited'
+    uses: ./.github/workflows/visual.yml
+
   site:
     # Génère un site consommateur avec la CLI, l'installe sur les paquets du commit, puis verify.
     runs-on: ubuntu-latest
@@ -176,7 +183,7 @@ jobs:
     # bon droit comptant comme réussis. `!cancelled()` plutôt que `always()` : quand la concurrence
     # annule tout le run, `ci` est annulé lui aussi (pas rouge) ; le run suivant porte le verdict.
     if: ${{ !cancelled() }}
-    needs: [commitlint, squash-message, changes, verify, e2e, site, zizmor]
+    needs: [commitlint, squash-message, changes, verify, e2e, visuel, site, zizmor]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

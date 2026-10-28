@@ -1,5 +1,5 @@
 /** Orchestration : lit `dist/*.html`, calcule la politique, écrit les fichiers d'hébergement. */
-import { join } from 'node:path';
+import { posix } from 'node:path';
 import { renderHeaders, renderRedirects } from './cloudflare.mjs';
 import { inlineHashes, inlineStyleAttributes } from './hashes.mjs';
 import { render as netlify } from './netlify.mjs';
@@ -22,7 +22,7 @@ export function collectHashes(dist, { list, read }) {
   const styles = new Set();
   const scripts = new Set();
   for (const rel of list(dist).filter(isHtml)) {
-    const html = read(join(dist, rel));
+    const html = read(posix.join(dist, rel));
     if (inlineStyleAttributes(html) > 0) {
       throw new Error(`${rel} : attribut style="" interdit (la CSP stricte l'ignore)`);
     }
@@ -54,18 +54,18 @@ export function assertRequiredHeaders(paths, read) {
  *   out?: { write: (t: string) => unknown } }} io
  * @returns {string[]} fichiers écrits
  */
-export function run({ dist, deploy = join(dist, '..', 'deploy'), list, read, write, out }) {
+export function run({ dist, deploy = posix.join(dist, '..', 'deploy'), list, read, write, out }) {
   const rules = buildRules(collectHashes(dist, { list, read }));
   const withHeaders = [
-    [join(dist, '_headers'), renderHeaders(rules)],
-    [join(deploy, 'netlify.toml'), netlify(rules, REDIRECTS)],
+    [posix.join(dist, '_headers'), renderHeaders(rules)],
+    [posix.join(deploy, 'netlify.toml'), netlify(rules, REDIRECTS)],
     [
-      join(deploy, 'vercel.json'),
+      posix.join(deploy, 'vercel.json'),
       `${JSON.stringify(vercel(rules, REDIRECTS), null, JSON_INDENT)}\n`,
     ],
-    [join(deploy, 'nginx.conf'), nginx(rules, REDIRECTS)],
+    [posix.join(deploy, 'nginx.conf'), nginx(rules, REDIRECTS)],
   ];
-  const redirects = [join(dist, '_redirects'), renderRedirects(REDIRECTS)];
+  const redirects = [posix.join(dist, '_redirects'), renderRedirects(REDIRECTS)];
   const files = [...withHeaders, redirects];
   for (const [path, text] of files) write(path, text);
   assertRequiredHeaders(
