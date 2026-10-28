@@ -10,7 +10,7 @@ répondent 404. Le brief demandait des images OG générées au build. Piste : `
 texte exige une police lisible par librsvg (pas de `woff2`), donc à traiter avec soin. Tant que ce
 n'est pas fait, retirer les balises `og:image` plutôt que de publier des liens morts.
 
-**Chantier « architecture, TypeScript strict et Rust » : étape 1 codée (2026-10-27), étape 2 faite (ADR-0006, D-037, #82), étapes suivantes : 3 (#83) et, en parallèle, V1 (#93, ne dépend plus de `pp-color`).**
+**Chantier « architecture, TypeScript strict et Rust » : étape 1 codée (2026-10-27), étape 2 faite (ADR-0006, D-037, #82), V1 faite (ADR-0007, D-038, #93) ; étapes suivantes : V2a (#94, après l'issue « [V2-0] paquet dataviz » proposée) et, en parallèle, l'étape 3 (#83).**
 Fusionnés dans `main` : #24 (images OG), #25 (ADR-0005), #26 (`packages/tokens` en TypeScript
 strict). Étape 1 : `packages/guards` en TypeScript strict, **PR #30 fusionnée** (la PR #29 avait été fermée : un sujet de commit de la branche d'origine est refusé par commitlint). `tsc -p packages/guards` : 0 erreur ;
 `packages/guards/**/*.ts` est dans `TS_STRICT_FILES` (ni `any`, ni `as`, ni `!`) ; options des

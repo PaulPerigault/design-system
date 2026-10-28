@@ -44,10 +44,18 @@ Structure type d'un paquet :
 - **DDD, sans cérémonie** : le vocabulaire du domaine (jeton, contrôle, violation, composant) nomme
   les types ; pas d'agrégats ni de dépôts génériques là où une fonction pure suffit.
 
-## Décision 2 : Effect-TS écarté, résultats typés maison
+## Décision 2 : Effect-TS non adopté dans le cœur, option facultative plus tard
 
-Recommandation : **écarter Effect-TS**, garder un type `Result` maison dans `domain/` de chaque
-paquet (ou un module commun de `tokens` s'il est partagé).
+Effect-TS : non adopté dans le cœur. Prévu plus tard comme OPTION FACULTATIVE, hors cœur : un
+paquet séparé (`@paulperigault/effect` : adaptateurs des ports en `Layer`, erreurs typées,
+validation `Schema`) et une option de la CLI `create` (Effect oui/non). Les paquets du cœur n'ont
+aucune dépendance à Effect ; les ports restent des interfaces TypeScript et le domaine reste pur,
+ce qui rend l'ajout possible sans réécriture. À réaliser après les chantiers en cours ; évaluer
+alors le serveur MCP effect-mcp (https://github.com/niklaserik/effect-mcp) pour limiter les erreurs
+d'API avec Sonnet.
+
+Le cœur garde un type `Result` maison dans `domain/` de chaque paquet (ou un module commun de
+`tokens` s'il est partagé).
 
 | Critère                | Effect-TS                                                       | Résultats maison                       |
 | ---------------------- | --------------------------------------------------------------- | -------------------------------------- |
@@ -58,12 +66,11 @@ paquet (ou un module commun de `tokens` s'il est partagé).
 | Sécurité, chaîne       | grosse surface, mises à jour fréquentes à auditer               | rien à auditer                         |
 | Contributeurs, Sonnet  | apprentissage requis, erreurs de typage difficiles à lire       | schéma que tout modèle écrit sans aide |
 
-Raisons : D-030 et la sobriété (décision 5) imposent « aucune dépendance d'exécution inutile » ; les
-paquets publiés `guards`, `create` et `tokens` n'ont aucune dépendance d'exécution ; les ports
-injectés (décision 1) couvrent déjà ce qu'Effect apporte ici (injection, erreurs typées, tests sans
-E/S). Ce qu'Effect ferait de plus (concurrence structurée, reprise, ressources) n'a pas de besoin
-dans des outils synchrones d'une seconde. Réexamen : si un futur back en TypeScript le justifie,
-une ADR dédiée ; il ne s'appliquerait pas rétroactivement aux paquets publiés.
+Raisons du refus dans le cœur : D-030 et la sobriété (décision 5) imposent « aucune dépendance
+d'exécution inutile » ; les paquets publiés `guards`, `create` et `tokens` n'ont aucune dépendance
+d'exécution ; les ports injectés (décision 1) couvrent déjà l'injection, les erreurs typées et les
+tests sans E/S. L'option reste utile à qui bâtit un site ou une application et veut Effect : elle
+se branche aux ports sans toucher au cœur.
 
 ## Décision 3 : composants Astro
 
@@ -117,7 +124,7 @@ une ADR dédiée ; il ne s'appliquerait pas rétroactivement aux paquets publié
 - Un budget de poids par page et par ressource (HTML, CSS, JS, police, image, `.wasm`), bloquant en CI.
 - Une estimation carbone par page, méthode à choisir et à sourcer à l'étape 10.
 - Rester dans l'offre gratuite de Cloudflare Pages (builds, bande passante, requêtes) ; surveiller.
-- Aucune dépendance d'exécution inutile : chaque ajout est justifié par écrit (ex. Effect-TS, écarté).
+- Aucune dépendance d'exécution inutile : chaque ajout est justifié par écrit (ex. Effect-TS, hors cœur).
 - Zéro JS par défaut, images au plus juste, polices limitées : la sobriété est une contrainte de conception.
 
 ## Décision 6 : ordre d'application
