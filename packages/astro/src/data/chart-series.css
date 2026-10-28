@@ -1,0 +1,50 @@
+/*
+ * Séries des graphiques SVG : couleur `--pp-chart-N` par rang (`data-series`) et légende. Le rang,
+ * non la couleur, porte l'identité d'une série (WCAG 1.4.1) : trait et marqueur pour la courbe,
+ * motif de remplissage pour les barres.
+ */
+:is(.pp-line-chart, .pp-bar-chart) [data-series='1'] {
+  --pp-series: var(--pp-chart-1);
+}
+
+:is(.pp-line-chart, .pp-bar-chart) [data-series='2'] {
+  --pp-series: var(--pp-chart-2);
+}
+
+:is(.pp-line-chart, .pp-bar-chart) [data-series='3'] {
+  --pp-series: var(--pp-chart-3);
+}
+
+:is(.pp-line-chart, .pp-bar-chart) [data-series='4'] {
+  --pp-series: var(--pp-chart-4);
+}
+
+:is(.pp-line-chart, .pp-bar-chart) [data-series='5'] {
+  --pp-series: var(--pp-chart-5);
+}
+
+:is(.pp-line-chart, .pp-bar-chart) [data-series='6'] {
+  --pp-series: var(--pp-chart-6);
+}
+
+:is(.pp-line-chart, .pp-bar-chart) [class$='__legend'] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pp-space-3xs) var(--pp-space-s);
+  margin-block: 0;
+  padding-inline: 0;
+  list-style: none;
+  font-size: var(--pp-font-size--1);
+}
+
+:is(.pp-line-chart, .pp-bar-chart) [class$='__legend'] li {
+  display: flex;
+  align-items: center;
+  gap: var(--pp-space-2xs);
+}
+
+:is(.pp-line-chart, .pp-bar-chart) [class$='__swatch'] {
+  flex: none;
+  inline-size: calc(var(--pp-font-size-0) * 2);
+  block-size: var(--pp-font-size-0);
+}

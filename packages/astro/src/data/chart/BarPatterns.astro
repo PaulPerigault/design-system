@@ -1,0 +1,27 @@
+---
+/** Motifs de remplissage des séries : un par rang, ids propres au graphique. */
+import { PATTERN_MARKS, TILE, patternId } from './bar-patterns.ts';
+
+interface Props {
+  id: string;
+  /** Nombre de séries du graphique : seuls leurs motifs sont écrits. */
+  count: number;
+}
+
+const { id, count } = Astro.props;
+---
+
+<defs>
+  {PATTERN_MARKS.slice(0, count).map((mark, index) => (
+    <pattern
+      id={patternId(id, index)}
+      data-series={index + 1}
+      width={TILE}
+      height={TILE}
+      patternUnits="userSpaceOnUse"
+    >
+      <rect class="pp-bar-chart__tile" width={TILE} height={TILE}></rect>
+      {mark !== '' && <path class="pp-bar-chart__mark" d={mark}></path>}
+    </pattern>
+  ))}
+</defs>

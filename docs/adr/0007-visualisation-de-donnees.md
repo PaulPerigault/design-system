@@ -33,7 +33,7 @@ seulement pour le calcul (`pp-data`), sans que le rendu en dépende. Réutilisab
   donnée non validée (ADR-0006, décision 1).
 - **Erreurs typées** (`errors.ts`, union fermée à champ `code`) : `dataset.empty`,
   `dataset.length-mismatch`, `dataset.non-finite`, `dataset.duplicate-id`, `dataset.bad-date`,
-  `dataset.unit-mismatch`, `dataset.too-many-points`, `chart.too-many-series`. Type `Result` maison,
+  `dataset.unit-mismatch`, `dataset.too-many-points`, `chart.too-many-series`, `bar.too-many-categories`. Type `Result` maison,
   TypeScript strict (ADR-0005), aucun `any`.
 - **Compatibilité Rust/WebAssembly** : `pp-data` consomme et produit le même `Dataset` (`f64` plus
   masque des manquants). Port `Aggregator` : `(Dataset, Spec) → Result<Dataset, ChartError>`,
@@ -62,8 +62,8 @@ seulement pour le calcul (`pp-data`), sans que le rendu en dépende. Réutilisab
   et boîte à moustaches (après `pp-data`), barres empilées, temps réel, zoom et défilement,
   export d'image.
 - **Budgets** (conventions, mesurées en CI à partir de V2a) : au plus 400 nœuds SVG et 10 ko bruts
-  par graphique (tableau lié exclu) ; sparkline ≤ 1,5 ko ; 6 séries au plus ; barres ≤ 60
-  catégories (au-delà : tri et regroupement « autres », ou tableau) ; tableau lié ≤ 200 lignes
+  par graphique (tableau lié exclu) ; sparkline ≤ 1,5 ko ; 6 séries au plus ; barres ≤ 40
+  catégories (D-042 ; au-delà : courbe, ou tri et regroupement « autres », ou tableau) ; tableau lié ≤ 200 lignes
   (au-delà : en-tête et pagination par le composant `Table`).
 - **Sous-échantillonnage** : courbes et aires plafonnées à 500 points par série (environ un point
   par pixel de la largeur de référence) par LTTB au build ; le tableau lié garde la donnée complète

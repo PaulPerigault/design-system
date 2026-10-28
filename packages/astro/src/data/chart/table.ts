@@ -1,5 +1,5 @@
 import type { Dataset, Formatter } from '@paulperigault/dataviz';
-import { xLabel } from './summary.ts';
+import { xLabel } from './found.ts';
 
 export interface TableModel {
   columns: { key: string; label: string; numeric?: boolean }[];

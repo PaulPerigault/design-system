@@ -1,29 +1,26 @@
 ---
-/** Grille, axe horizontal, graduations et unité d'un graphique : éléments SVG sans calcul. */
-import { LABEL_GAP, PLOT, UNIT_RISE, X_LABEL_DROP } from './frame.ts';
-import type { LineModel } from './model.ts';
+/** Grille, axe de référence, graduations et unité d'un graphique : éléments SVG sans calcul. */
+import type { AxesModel } from './axes.ts';
 
 interface Props {
-  model: Pick<LineModel, 'grid' | 'yTicks' | 'xTicks' | 'unit'>;
+  /** Bloc de classes du graphique : `pp-line-chart`, `pp-bar-chart`. */
+  block: string;
+  axes: AxesModel;
 }
 
-const { model } = Astro.props;
+const { block, axes } = Astro.props;
 ---
 
-<path class="pp-line-chart__grid" d={model.grid}></path>
-<path class="pp-line-chart__axis" d={`M${PLOT.left} ${PLOT.bottom}H${PLOT.right}`}></path>
-{model.yTicks.map((tick) => (
-  <text class="pp-line-chart__tick" data-axis="y" x={PLOT.left - LABEL_GAP} y={tick.y}>
+<path class={`${block}__grid`} d={axes.grid}></path>
+<path class={`${block}__axis`} d={axes.axis}></path>
+{axes.ticks.map((tick) => (
+  <text
+    class={`${block}__tick`}
+    data-axis={tick.axis}
+    data-align={tick.align}
+    x={tick.x}
+    y={tick.y}
+  >
     {tick.label}
   </text>
 ))}
-{model.xTicks.map((tick) => (
-  <text class="pp-line-chart__tick" data-axis="x" x={tick.x} y={PLOT.bottom + X_LABEL_DROP}>
-    {tick.label}
-  </text>
-))}
-{model.unit !== '' && (
-  <text class="pp-line-chart__tick" data-axis="unit" x={PLOT.left} y={PLOT.top - UNIT_RISE}>
-    {model.unit}
-  </text>
-)}

@@ -9,6 +9,8 @@ const read = (path: string): string =>
 const FIGURE = read('astro/test/fixtures/line-chart.html');
 const STYLES = [
   read('tokens/generated/tokens.css'),
+  read('astro/src/data/chart-base.css'),
+  read('astro/src/data/chart-series.css'),
   read('astro/src/data/line-chart.css'),
   read('astro/src/data/line-chart-series.css'),
 ].join('\n');
