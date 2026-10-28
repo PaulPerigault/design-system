@@ -1,0 +1,16 @@
+---
+/** Exemples vivants de la page LineChart : une série, plusieurs séries, valeurs manquantes. */
+import LineChart from '@paulperigault/astro/LineChart.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+import { monthlyVisits, visitsBySection, visitsWithGaps } from './chart-data.ts';
+---
+
+<Stack space="l">
+  <LineChart id="demo-line-simple" title="Visites mensuelles en 2025" dataset={monthlyVisits} />
+  <LineChart id="demo-line-multi" title="Visites par rubrique en 2025" dataset={visitsBySection} />
+  <LineChart
+    id="demo-line-gaps"
+    title="Visites mensuelles, relevés manquants"
+    dataset={visitsWithGaps}
+  />
+</Stack>

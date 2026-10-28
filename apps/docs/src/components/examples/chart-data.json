@@ -1,0 +1,175 @@
+{
+  "monthlyVisits": {
+    "schema": 1,
+    "x": {
+      "kind": "time",
+      "label": "Mois",
+      "values": [
+        "2025-01-01",
+        "2025-02-01",
+        "2025-03-01",
+        "2025-04-01",
+        "2025-05-01",
+        "2025-06-01",
+        "2025-07-01",
+        "2025-08-01",
+        "2025-09-01",
+        "2025-10-01",
+        "2025-11-01",
+        "2025-12-01"
+      ]
+    },
+    "series": [
+      {
+        "id": "visites",
+        "label": "Visites",
+        "unit": "visites",
+        "values": [820, 790, 880, 940, 1010, 980, 870, 810, 1050, 1180, 1240, 1190]
+      }
+    ]
+  },
+  "visitsBySection": {
+    "schema": 1,
+    "x": {
+      "kind": "time",
+      "label": "Mois",
+      "values": [
+        "2025-01-01",
+        "2025-02-01",
+        "2025-03-01",
+        "2025-04-01",
+        "2025-05-01",
+        "2025-06-01",
+        "2025-07-01",
+        "2025-08-01",
+        "2025-09-01",
+        "2025-10-01",
+        "2025-11-01",
+        "2025-12-01"
+      ]
+    },
+    "series": [
+      {
+        "id": "guides",
+        "label": "Guides",
+        "unit": "visites",
+        "values": [410, 400, 450, 480, 520, 500, 430, 400, 540, 600, 640, 610]
+      },
+      {
+        "id": "references",
+        "label": "Références",
+        "unit": "visites",
+        "values": [290, 270, 300, 330, 350, 340, 310, 300, 360, 400, 420, 410]
+      },
+      {
+        "id": "journal",
+        "label": "Journal",
+        "unit": "visites",
+        "values": [120, 120, 130, 130, 140, 140, 130, 110, 150, 180, 180, 170]
+      }
+    ]
+  },
+  "visitsWithGaps": {
+    "schema": 1,
+    "x": {
+      "kind": "time",
+      "label": "Mois",
+      "values": [
+        "2025-01-01",
+        "2025-02-01",
+        "2025-03-01",
+        "2025-04-01",
+        "2025-05-01",
+        "2025-06-01",
+        "2025-07-01",
+        "2025-08-01",
+        "2025-09-01",
+        "2025-10-01",
+        "2025-11-01",
+        "2025-12-01"
+      ]
+    },
+    "series": [
+      {
+        "id": "visites-lacunes",
+        "label": "Visites",
+        "unit": "visites",
+        "values": [820, 790, 880, null, null, 980, 870, 810, null, 1180, 1240, 1190]
+      }
+    ]
+  },
+  "bySection": {
+    "schema": 1,
+    "x": {
+      "kind": "category",
+      "label": "Rubrique",
+      "values": ["Accueil", "Guides", "Références", "Journal", "Contact"]
+    },
+    "series": [
+      {
+        "id": "visites",
+        "label": "Visites",
+        "unit": "visites",
+        "values": [3400, 2600, 1900, 700, 260]
+      }
+    ]
+  },
+  "bySectionAndYear": {
+    "schema": 1,
+    "x": {
+      "kind": "category",
+      "label": "Rubrique",
+      "values": ["Accueil", "Guides", "Références", "Journal", "Contact"]
+    },
+    "series": [
+      {
+        "id": "a",
+        "label": "2024",
+        "unit": "visites",
+        "values": [3100, 2200, 1600, 620, 240]
+      },
+      {
+        "id": "b",
+        "label": "2025",
+        "unit": "visites",
+        "values": [3400, 2600, 1900, 700, 260]
+      }
+    ]
+  },
+  "gapToTarget": {
+    "schema": 1,
+    "x": {
+      "kind": "category",
+      "label": "Trimestre",
+      "values": ["T1", "T2", "T3", "T4"]
+    },
+    "series": [
+      {
+        "id": "ecart",
+        "label": "Écart à l’objectif",
+        "unit": "%",
+        "values": [-8, 3, 12, -4]
+      }
+    ]
+  },
+  "longLabels": {
+    "schema": 1,
+    "x": {
+      "kind": "category",
+      "label": "Parcours",
+      "values": [
+        "Page d’accueil puis lecture d’un guide",
+        "Recherche interne puis page de référence",
+        "Arrivée directe sur le journal"
+      ]
+    },
+    "series": [
+      {
+        "id": "parcours",
+        "label": "Sessions",
+        "unit": "sessions",
+        "values": [940, 610, 280]
+      }
+    ]
+  }
+}

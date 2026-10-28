@@ -1,0 +1,165 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "bar-chart",
+  "type": "registry:ui",
+  "title": "BarChart",
+  "description": "Barres verticales ou horizontales, simples ou groupées, en SVG statique : motif par rang, base zéro, 40 catégories au plus.",
+  "dependencies": ["@paulperigault/dataviz"],
+  "registryDependencies": ["table"],
+  "files": [
+    {
+      "path": "packages/astro/src/data/BarChart.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/data/bar-chart.css",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/data/chart/BarLabels.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/data/chart/BarPatterns.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/data/chart/bar-axis.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/bar-categories.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/bar-layout.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/bar-model.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/bar-patterns.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/bar-summary.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/bar-values.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/labels.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/prepare-bar.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart-base.css",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/data/chart-series.css",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/data/chart/ChartAxes.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/data/chart/ChartFrame.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/data/chart/ChartLegend.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/data/chart/axes.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/errors.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/found.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/frame.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/line-series.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/markers.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/model.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/prepare.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/props.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/summary.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/swatch.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/table.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/x-axis.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/y-axis.ts",
+      "type": "registry:lib"
+    }
+  ],
+  "meta": {
+    "version": "0.0.0",
+    "tokens": [
+      "--pp-chart-1",
+      "--pp-chart-2",
+      "--pp-chart-3",
+      "--pp-chart-4",
+      "--pp-chart-5",
+      "--pp-chart-6",
+      "--pp-color-bg",
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-font-family-sans",
+      "--pp-font-size--1",
+      "--pp-font-size-0",
+      "--pp-font-weight-semibold",
+      "--pp-size-measure",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-s",
+      "--pp-space-xs"
+    ]
+  }
+}

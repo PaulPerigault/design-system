@@ -326,6 +326,13 @@
       "decision": "BarChart : SVG statique accessible, briques communes avec LineChart (V2a-3, #94) : composant `BarChart.astro` (barres verticales ou horizontales, simples ou groupées jusqu'à 6 séries, valeurs négatives, `null` = pas de barre et « donnée manquante » dans le tableau), mêmes principes que D-041. Factorisation sans changer le rendu de `LineChart` (HTML identique octet pour octet et captures identiques sur 3 jeux, 2 thèmes, 2 largeurs) : cadre `ChartFrame` (titre, états, SVG nommé, légende, tableau lié), `ChartAxes` et `AxesModel`, `ChartLegend` et `Swatch`, `prepare` générique (`Kind`), `found.ts`, `props.ts`, CSS `chart-base.css` et `chart-series.css`. Barres : axe des valeurs toujours ancré à zéro ; géométrie 100 % `dataviz` (`bandScale`, `barRects`, `rectsPath`), un chemin par série ; un motif `<pattern>` par rang (plein, diagonale, points, horizontales, verticales, quadrillage) en plus de la couleur ; libellés de catégories à la ligne puis tronqués avec le texte complet en `<title>`, espacés si la place manque ; valeurs écrites dans la barre si elle est assez grande, sinon à son bout, tout ou rien. Budget : au plus 40 catégories (ADR-0007 disait 60) sinon `bar.too-many-categories` avec le conseil (courbe ou agrégation) ; moins de 10 ko et 400 nœuds jusqu'à 120 barres (40×3, 20×6) ; 40×6 = 240 barres pèse 11,9 ko, sous 400 nœuds mais hors budget d'octets (illisible de toute façon). Ni registre ni page : V2a-4.",
       "id": "D-042",
       "rollback": "Retirer `BarChart` et rétablir `LineLegend`."
+    },
+    {
+      "alternative": "Élément partagé `chart-base` (jetons de page incomplets) ; démonstration par surcharge CSS de `--pp-chart-*` (ne prouve rien sur `--pp-accent-hue`).",
+      "date": "2026-10-29",
+      "decision": "LineChart et BarChart enregistrés et documentés (V2a-4, #94) : exports `./LineChart.astro` et `./BarChart.astro`, fragments `line-chart` et `bar-chart` (chacun liste ses fichiers, dont le socle commun, et dépend de `table` et de `@paulperigault/dataviz`) pour que `add` soit autonome ; `apps/docs` déclare `@paulperigault/dataviz` ; groupe « Données » dans la navigation ; pages sur le gabarit `ComponentPage` (exemples sur jeux fictifs `chart-data.json`, budgets, limites, accessibilité). `--pp-accent-hue` : démonstration en tableau calculé au build par `derivePalettes`, avec la mention que `--pp-chart-1..6` restent figés sur l'accent par défaut tant que #121 n'est pas faite. Références Visuel : voir journal.",
+      "id": "D-043",
+      "rollback": "Retirer les deux exports, fragments, pages et le groupe de navigation."
     }
   ]
 }

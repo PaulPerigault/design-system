@@ -1,0 +1,82 @@
+---
+import ComponentPage from '../../components/ComponentPage.astro';
+import AccentHueDemo from '../../components/examples/accent-hue-demo.astro';
+import BarChartExamples from '../../components/examples/bar-chart.astro';
+
+const snippet = `---
+import BarChart from '@paulperigault/astro/BarChart.astro';
+import type { Dataset } from '@paulperigault/dataviz';
+
+const visites: Dataset = {
+  schema: 1,
+  x: { kind: 'category', label: 'Rubrique', values: ['Accueil', 'Guides', 'Journal'] },
+  series: [{ id: 'visites', label: 'Visites', unit: 'visites', values: [3400, 2600, 700] }],
+};
+---
+
+<BarChart id="visites-rubrique" title="Visites par rubrique" dataset={visites} orientation="horizontal" showValues />`;
+---
+
+<ComponentPage
+  slug="bar-chart"
+  title="BarChart"
+  summary="BarChart compare des catégories par des barres verticales ou horizontales, simples ou groupées, en SVG statique."
+  use={[
+    'Comparer des catégories : répartition, classement, volumes par rubrique.',
+    'Grouper jusqu’à six séries par catégorie, par exemple une série par année.',
+    'Montrer des valeurs négatives : l’axe part toujours de zéro, la barre descend sous la ligne.',
+  ]}
+  avoid={[
+    'Pour une évolution continue dans le temps : utiliser LineChart.',
+    'Au-delà de 40 catégories : le build échoue avec le code bar.too-many-categories ; agréger ou passer à une courbe.',
+    'Des libellés génériques trop longs pour la place disponible sont coupés ; l’intégralité reste dans le title et le tableau lié.',
+    'Pour une interaction (survol, tri, infobulle) : le rendu est statique, sans JavaScript.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Le SVG n’est pas interactif et ne reçoit pas le focus.',
+      'Le tableau lié se déplie au clavier (élément details natif) et défile au clavier.',
+    ],
+    screenReader: [
+      'Le SVG porte role="img", nommé par un title et décrit par un desc.',
+      'Le desc résume la plus grande et la plus petite barre et signale les données manquantes.',
+      'Le tableau de toutes les données est lié sous le graphique, dans un details fermé.',
+    ],
+    guaranteed: [
+      'Chaque rang de série a un motif de remplissage en plus de sa couleur (WCAG 1.4.1).',
+      'Jetons --pp-chart-1..6 en clair et en sombre ; aucun attribut style.',
+      'Une valeur manquante laisse un vide et se dit dans le tableau lié, jamais un zéro.',
+      'Zéro JavaScript et aucune animation : rien à retirer sous prefers-reduced-motion: reduce.',
+      'Impression : motifs et tableau conservés, sans dépendre de la couleur.',
+    ],
+    integrator: [
+      'Donner un id unique par page (lettres, chiffres, tirets) : il relie titre, résumé et motifs.',
+      'N’activer showValues que si les valeurs doivent être écrites : tout ou rien, selon la place.',
+      'Fournir un jeu de données valide : sinon le build échoue avec son code d’erreur.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.1.1 Contenu non textuel',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html',
+    },
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html',
+    },
+    { label: 'ADR-0007 : visualisation de données' },
+    { label: 'Tests : packages/astro/test/BarChart.test.ts' },
+  ]}
+>
+  <BarChartExamples />
+  <Fragment slot="variants">
+    <h3>Budgets de poids</h3>
+    <ul>
+      <li>Jusqu’à 120 barres (40 catégories × 3 séries, 20 × 6) sous 10 ko et 400 nœuds.</li>
+      <li>Cas extrême 40 × 6 : 11,9 ko, moins de 400 nœuds ; hors budget réaliste.</li>
+    </ul>
+    <h3>Teinte d’accent</h3>
+    <AccentHueDemo />
+  </Fragment>
+</ComponentPage>

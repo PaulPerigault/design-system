@@ -341,6 +341,138 @@
   {
     "a11y": {
       "guaranteed": [
+        "Chaque rang de série a un motif de remplissage en plus de sa couleur (WCAG 1.4.1).",
+        "Jetons --pp-chart-1..6 en clair et en sombre ; aucun attribut style.",
+        "Une valeur manquante laisse un vide et se dit dans le tableau lié, jamais un zéro.",
+        "Zéro JavaScript et aucune animation : rien à retirer sous prefers-reduced-motion: reduce.",
+        "Impression : motifs et tableau conservés, sans dépendre de la couleur."
+      ],
+      "integrator": [
+        "Donner un id unique par page (lettres, chiffres, tirets) : il relie titre, résumé et motifs.",
+        "N’activer showValues que si les valeurs doivent être écrites : tout ou rien, selon la place.",
+        "Fournir un jeu de données valide : sinon le build échoue avec son code d’erreur."
+      ],
+      "keyboard": [
+        "Le SVG n’est pas interactif et ne reçoit pas le focus.",
+        "Le tableau lié se déplie au clavier (élément details natif) et défile au clavier."
+      ],
+      "screenReader": [
+        "Le SVG porte role=\"img\", nommé par un title et décrit par un desc.",
+        "Le desc résume la plus grande et la plus petite barre et signale les données manquantes.",
+        "Le tableau de toutes les données est lié sous le graphique, dans un details fermé."
+      ]
+    },
+    "avoid": [
+      "Pour une évolution continue dans le temps : utiliser LineChart.",
+      "Au-delà de 40 catégories : le build échoue avec le code bar.too-many-categories ; agréger ou passer à une courbe.",
+      "Des libellés génériques trop longs pour la place disponible sont coupés ; l’intégralité reste dans le title et le tableau lié.",
+      "Pour une interaction (survol, tri, infobulle) : le rendu est statique, sans JavaScript."
+    ],
+    "evidence": [
+      "[WCAG 1.1.1 Contenu non textuel](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html)",
+      "[WCAG 1.4.1 Utilisation de la couleur](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+      "ADR-0007 : visualisation de données",
+      "Tests : packages/astro/test/BarChart.test.ts"
+    ],
+    "group": "data",
+    "props": [
+      {
+        "description": "`vertical` (défaut) : catégories en abscisse ; `horizontal` : catégories en ordonnée.",
+        "fallback": "—",
+        "name": "orientation",
+        "type": "\"vertical\" | \"horizontal\""
+      },
+      {
+        "description": "Écrit la valeur dans chaque barre, seulement si toutes y tiennent.",
+        "fallback": "—",
+        "name": "showValues",
+        "type": "boolean"
+      },
+      {
+        "description": "Préfixe unique des ids du titre et de la description : lettres, chiffres et tirets.",
+        "fallback": "—",
+        "name": "id (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Titre du graphique, premier élément de son nom accessible.",
+        "fallback": "—",
+        "name": "title (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Jeu de données (`schema: 1`) : validé, sinon le build échoue avec le code d'erreur.",
+        "fallback": "—",
+        "name": "dataset (obligatoire)",
+        "type": "Dataset"
+      },
+      {
+        "description": "Locale des nombres et des dates. Défaut : `fr`.",
+        "fallback": "'fr'",
+        "name": "locale",
+        "type": "string"
+      },
+      {
+        "description": "Libellé du tableau de données lié.",
+        "fallback": "—",
+        "name": "tableLabel",
+        "type": "string"
+      },
+      {
+        "description": "Message de l'état vide (aucune valeur présente).",
+        "fallback": "—",
+        "name": "emptyLabel",
+        "type": "string"
+      },
+      {
+        "description": "Début du message d'erreur de rendu ; le code d'erreur le suit.",
+        "fallback": "—",
+        "name": "errorLabel",
+        "type": "string"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "bar-chart",
+    "snippet": "---\nimport BarChart from '@paulperigault/astro/BarChart.astro';\nimport type { Dataset } from '@paulperigault/dataviz';\n\nconst visites: Dataset = {\n  schema: 1,\n  x: { kind: 'category', label: 'Rubrique', values: ['Accueil', 'Guides', 'Journal'] },\n  series: [{ id: 'visites', label: 'Visites', unit: 'visites', values: [3400, 2600, 700] }],\n};\n---\n\n<BarChart id=\"visites-rubrique\" title=\"Visites par rubrique\" dataset={visites} orientation=\"horizontal\" showValues />",
+    "summary": "BarChart compare des catégories par des barres verticales ou horizontales, simples ou groupées, en SVG statique.",
+    "title": "BarChart",
+    "tokens": [
+      "--pp-chart-1",
+      "--pp-chart-2",
+      "--pp-chart-3",
+      "--pp-chart-4",
+      "--pp-chart-5",
+      "--pp-chart-6",
+      "--pp-color-bg",
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-font-family-sans",
+      "--pp-font-size--1",
+      "--pp-font-size-0",
+      "--pp-font-weight-semibold",
+      "--pp-size-measure",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-s",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Comparer des catégories : répartition, classement, volumes par rubrique.",
+      "Grouper jusqu’à six séries par catégorie, par exemple une série par année.",
+      "Montrer des valeurs négatives : l’axe part toujours de zéro, la barre descend sous la ligne."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
         "Repère nav nommé par label, liste ol avec role=\"list\".",
         "Le dernier élément est rendu sans lien, avec aria-current=\"page\".",
         "Liens soulignés, page courante en graisse : l’information ne repose pas sur la couleur.",
@@ -2010,6 +2142,125 @@
       "Saisir une donnée courte : nom, courriel, téléphone ou recherche.",
       "Indiquer type et autocomplete pour le bon clavier et le remplissage automatique.",
       "Signaler une erreur sur le champ, avec invalid et describedBy."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Chaque rang a un trait et un marqueur propres : la couleur ne porte jamais seule (WCAG 1.4.1).",
+        "Jetons --pp-chart-1..6 en clair et en sombre, contrastes vérifiés ; aucun attribut style.",
+        "Zéro JavaScript et aucune animation : rien à retirer sous prefers-reduced-motion: reduce.",
+        "Impression : le SVG et le tableau gardent leurs jetons ; le details reste dans l’état choisi."
+      ],
+      "integrator": [
+        "Donner un id unique par page (lettres, chiffres, tirets) : il relie le titre et le résumé.",
+        "Écrire un titre qui dit ce que le graphique montre, pas seulement son sujet.",
+        "Fournir un jeu de données valide : sinon le build échoue avec son code d’erreur."
+      ],
+      "keyboard": [
+        "Le SVG n’est pas interactif et ne reçoit pas le focus.",
+        "Le tableau lié se déplie au clavier (élément details natif) et défile au clavier."
+      ],
+      "screenReader": [
+        "Le SVG porte role=\"img\", nommé par un title et décrit par un desc.",
+        "Le desc résume : début, fin, tendance chiffrée, extrêmes, données manquantes, origine non nulle.",
+        "Le tableau de toutes les données est lié sous le graphique, dans un details fermé."
+      ]
+    },
+    "avoid": [
+      "Pour comparer des catégories sans ordre : utiliser BarChart.",
+      "Au-delà de six séries : le composant refuse le jeu de données, le build échoue.",
+      "Pour une interaction (survol, zoom, infobulle) : le rendu est statique, sans JavaScript.",
+      "Pour plus de 500 points par graphique : la courbe est sous-échantillonnée (LTTB) ; seul le tableau lié garde la donnée complète."
+    ],
+    "evidence": [
+      "[WCAG 1.1.1 Contenu non textuel](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html)",
+      "[WCAG 1.4.1 Utilisation de la couleur](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+      "ADR-0007 : visualisation de données",
+      "Tests : packages/astro/test/LineChart.test.ts"
+    ],
+    "group": "data",
+    "props": [
+      {
+        "description": "Préfixe unique des ids du titre et de la description : lettres, chiffres et tirets.",
+        "fallback": "—",
+        "name": "id (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Titre du graphique, premier élément de son nom accessible.",
+        "fallback": "—",
+        "name": "title (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Jeu de données (`schema: 1`) : validé, sinon le build échoue avec le code d'erreur.",
+        "fallback": "—",
+        "name": "dataset (obligatoire)",
+        "type": "Dataset"
+      },
+      {
+        "description": "Locale des nombres et des dates. Défaut : `fr`.",
+        "fallback": "'fr'",
+        "name": "locale",
+        "type": "string"
+      },
+      {
+        "description": "Libellé du tableau de données lié.",
+        "fallback": "—",
+        "name": "tableLabel",
+        "type": "string"
+      },
+      {
+        "description": "Message de l'état vide (aucune valeur présente).",
+        "fallback": "—",
+        "name": "emptyLabel",
+        "type": "string"
+      },
+      {
+        "description": "Début du message d'erreur de rendu ; le code d'erreur le suit.",
+        "fallback": "—",
+        "name": "errorLabel",
+        "type": "string"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "line-chart",
+    "snippet": "---\nimport LineChart from '@paulperigault/astro/LineChart.astro';\nimport type { Dataset } from '@paulperigault/dataviz';\n\nconst visites: Dataset = {\n  schema: 1,\n  x: { kind: 'time', label: 'Mois', values: ['2025-01-01', '2025-02-01', '2025-03-01'] },\n  series: [{ id: 'visites', label: 'Visites', unit: 'visites', values: [820, 790, null] }],\n};\n---\n\n<LineChart id=\"visites-mensuelles\" title=\"Visites mensuelles en 2025\" dataset={visites} />",
+    "summary": "LineChart trace une à six séries sous forme de courbe en SVG statique, avec résumé textuel et tableau des données.",
+    "title": "LineChart",
+    "tokens": [
+      "--pp-chart-1",
+      "--pp-chart-2",
+      "--pp-chart-3",
+      "--pp-chart-4",
+      "--pp-chart-5",
+      "--pp-chart-6",
+      "--pp-color-bg",
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-font-family-sans",
+      "--pp-font-size--1",
+      "--pp-font-size-0",
+      "--pp-font-weight-semibold",
+      "--pp-size-measure",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-s",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Montrer une évolution dans le temps ou sur une abscisse ordonnée : visites, durées, volumes.",
+      "Comparer jusqu’à six séries de même unité sur les mêmes abscisses.",
+      "Afficher des relevés incomplets : la courbe est rompue aux valeurs manquantes."
     ]
   },
   {

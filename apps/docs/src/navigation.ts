@@ -97,6 +97,11 @@ export const GROUPS: readonly DocGroup[] = [
       link('diagram', 'Diagram'),
     ],
   },
+  {
+    id: 'donnees',
+    title: 'Données',
+    links: [link('line-chart', 'LineChart'), link('bar-chart', 'BarChart')],
+  },
 ];
 
 export const hrefOf = ({ slug }: DocLink): string => `/components/${slug}/`;

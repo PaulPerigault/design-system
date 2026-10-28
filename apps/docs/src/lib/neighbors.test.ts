@@ -10,10 +10,10 @@ describe('neighborsOf', () => {
   });
 
   it('renvoie aucun suivant pour la dernière page de la navigation', () => {
-    const result = neighborsOf('diagram');
-    expect(result.previous?.slug).toBe('gallery');
+    const result = neighborsOf('bar-chart');
+    expect(result.previous?.slug).toBe('line-chart');
     expect(result.next).toBeUndefined();
-    expect(result.group.id).toBe('images');
+    expect(result.group.id).toBe('donnees');
   });
 
   it('renvoie le précédent et le suivant au milieu d’un groupe', () => {

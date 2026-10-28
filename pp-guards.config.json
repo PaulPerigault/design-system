@@ -44,6 +44,7 @@
   },
   "images": {
     "roots": ["packages", "apps"],
-    "allow": ["src/media", "packages/guards/README.md"]
+    "allow": ["src/media", "packages/guards/README.md"],
+    "budgets": [{ "path": "apps/docs/e2e/references", "maxKb": 600 }]
   }
 }

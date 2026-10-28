@@ -1,0 +1,54 @@
+---
+/**
+ * Démonstration de `--pp-accent-hue` : la dérivation de `@paulperigault/dataviz` est calculée au
+ * build pour deux teintes et écrite en texte. Les graphiques de la page n'en dépendent pas : les
+ * jetons `--pp-chart-1..6` restent figés sur l'accent par défaut tant que #121 n'est pas faite.
+ */
+import Table from '@paulperigault/astro/Table.astro';
+import { derivePalettes, paletteTokens, themeBaseFromTokens } from '@paulperigault/dataviz';
+import type { Theme } from '@paulperigault/dataviz';
+import tokens from '@paulperigault/tokens/tokens.json';
+
+const DEFAULT_HUE = 270.7;
+const OTHER_HUE = 150;
+const CATEGORICAL = /^--pp-chart-\d$/;
+
+function derived(hue: number, theme: Theme): Readonly<Record<string, string>> {
+  const base = themeBaseFromTokens(tokens, theme);
+  if (!base.ok) throw new Error(base.error.message);
+  const palettes = derivePalettes(hue, theme, base.value);
+  if (!palettes.ok) throw new Error(palettes.error.message);
+  return paletteTokens(palettes.value);
+}
+
+const fixed = derived(DEFAULT_HUE, 'light');
+const light = derived(OTHER_HUE, 'light');
+const dark = derived(OTHER_HUE, 'dark');
+const columns = [
+  { key: 'rank', label: 'Rang' },
+  { key: 'fixed', label: `Figé, teinte ${DEFAULT_HUE}, clair` },
+  { key: 'light', label: `Dérivé, teinte ${OTHER_HUE}, clair` },
+  { key: 'dark', label: `Dérivé, teinte ${OTHER_HUE}, sombre` },
+];
+const rows = Object.keys(fixed)
+  .filter((name) => CATEGORICAL.test(name))
+  .map((name) => ({
+    rank: name,
+    fixed: fixed[name] ?? '',
+    light: light[name] ?? '',
+    dark: dark[name] ?? '',
+  }));
+---
+
+<p>
+  <code>--pp-accent-hue</code> règle la teinte OKLCH en degrés ; clarté et chroma restent ceux du
+  système. Le branchement dans le build de <code>tokens</code> n’est pas fait (#121) : les
+  graphiques ci-dessus utilisent les jetons figés sur la teinte {DEFAULT_HUE}. Le tableau montre ce
+  que la dérivation donnerait pour la teinte {OTHER_HUE}, calculée à la construction de la page.
+</p>
+<Table
+  caption="Jetons catégoriels figés et dérivation à une autre teinte"
+  columns={columns}
+  rows={rows}
+  rowHeader="rank"
+/>
