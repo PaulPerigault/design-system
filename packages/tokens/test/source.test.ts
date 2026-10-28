@@ -35,7 +35,7 @@ describe('source DTCG', () => {
 
   it('les deux thèmes ont les mêmes chemins de couleur', () => {
     expect(dark.map((leaf) => leaf.path)).toEqual(light.map((leaf) => leaf.path));
-    expect(light).toHaveLength(14);
+    expect(light).toHaveLength(20);
   });
 
   it('chaque couleur est en OKLCH et dans le gamut sRGB', () => {

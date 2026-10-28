@@ -3,6 +3,12 @@
 :root {
   color-scheme: light dark;
 
+  --pp-chart-1: light-dark(oklch(47% 0.19 270.7), oklch(78% 0.1 270.7));
+  --pp-chart-2: light-dark(oklch(64% 0.149 60.7), oklch(52% 0.1093 75.7));
+  --pp-chart-3: light-dark(oklch(20% 0.0787 30.7), oklch(92% 0.067 75.7));
+  --pp-chart-4: light-dark(oklch(64% 0.109 195.7), oklch(52% 0.16 285.7));
+  --pp-chart-5: light-dark(oklch(44% 0.1781 0.7), oklch(72% 0.1514 75.7));
+  --pp-chart-6: light-dark(oklch(64% 0.2025 285.7), oklch(60% 0.1 165.7));
   --pp-color-accent: light-dark(oklch(47% 0.19 270.7), oklch(78% 0.1 270.7));
   --pp-color-bg: light-dark(oklch(98.5% 0.004 270.7), oklch(20.1% 0.0124 270.7));
   --pp-color-control: light-dark(oklch(60% 0.02 270.7), oklch(60% 0.02 270.7));

@@ -2,62 +2,150 @@
   "color": {
     "$type": "color",
     "bg": {
-      "$value": { "colorSpace": "oklch", "components": [0.201, 0.0124, 270.7] },
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.201, 0.0124, 270.7]
+      },
       "$description": "Fond de page ; l'encre du favicon (#14161c)."
     },
     "surface": {
-      "$value": { "colorSpace": "oklch", "components": [0.25, 0.014, 270.7] },
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.25, 0.014, 270.7]
+      },
       "$description": "Fond des surfaces surélevées (cartes, panneaux)."
     },
     "fg": {
-      "$value": { "colorSpace": "oklch", "components": [0.945, 0.008, 270.7] },
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.945, 0.008, 270.7]
+      },
       "$description": "Texte principal."
     },
     "muted": {
-      "$value": { "colorSpace": "oklch", "components": [0.79, 0.018, 270.7] },
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.79, 0.018, 270.7]
+      },
       "$description": "Texte atténué (légendes, métadonnées)."
     },
     "line": {
-      "$value": { "colorSpace": "oklch", "components": [0.34, 0.016, 270.7] },
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.34, 0.016, 270.7]
+      },
       "$description": "Filets et séparateurs."
     },
     "control": {
-      "$value": { "colorSpace": "oklch", "components": [0.6, 0.02, 270.7] },
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.6, 0.02, 270.7]
+      },
       "$description": "Bordure des contrôles de formulaire."
     },
     "accent": {
-      "$value": { "colorSpace": "oklch", "components": [0.78, 0.1, 270.7] },
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.78, 0.1, 270.7]
+      },
       "$description": "Accent unique : liens et actions principales."
     },
     "on-accent": {
-      "$value": { "colorSpace": "oklch", "components": [0.201, 0.0124, 270.7] },
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.201, 0.0124, 270.7]
+      },
       "$description": "Texte posé sur la couleur d'accent."
     },
     "focus": {
-      "$value": { "colorSpace": "oklch", "components": [0.78, 0.1, 270.7] },
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.78, 0.1, 270.7]
+      },
       "$description": "Anneau de focus clavier."
     },
     "status": {
       "passed": {
-        "$value": { "colorSpace": "oklch", "components": [0.8, 0.13, 155] },
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.8, 0.13, 155]
+        },
         "$description": "Statut réussi ; toujours avec icône et libellé."
       },
       "failed": {
-        "$value": { "colorSpace": "oklch", "components": [0.76, 0.13, 25] },
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.76, 0.13, 25]
+        },
         "$description": "Statut en échec ; toujours avec icône et libellé."
       },
       "degraded": {
-        "$value": { "colorSpace": "oklch", "components": [0.82, 0.11, 75] },
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.82, 0.11, 75]
+        },
         "$description": "Statut dégradé ; toujours avec icône et libellé."
       },
       "running": {
-        "$value": { "colorSpace": "oklch", "components": [0.78, 0.1, 270.7] },
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.78, 0.1, 270.7]
+        },
         "$description": "Statut en cours ; toujours avec icône et libellé."
       }
     },
     "media-placeholder": {
-      "$value": { "colorSpace": "oklch", "components": [0.3, 0.015, 270.7] },
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.3, 0.015, 270.7]
+      },
       "$description": "Fond d'un média avant chargement, quand la couleur dominante n'est pas calculée."
+    }
+  },
+  "chart": {
+    "$type": "color",
+    "$description": "Palette catégorielle des graphiques, l'accent en tête ; dérivée de la teinte d'accent par @paulperigault/dataviz (ΔE00 ≥ 10, daltonisme compris, contraste ≥ 3:1 contre le fond).",
+    "1": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.78, 0.1, 270.7]
+      },
+      "$description": "Série 1 d'un graphique."
+    },
+    "2": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.52, 0.1093, 75.7]
+      },
+      "$description": "Série 2 d'un graphique."
+    },
+    "3": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.92, 0.067, 75.7]
+      },
+      "$description": "Série 3 d'un graphique."
+    },
+    "4": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.52, 0.16, 285.7]
+      },
+      "$description": "Série 4 d'un graphique."
+    },
+    "5": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.72, 0.1514, 75.7]
+      },
+      "$description": "Série 5 d'un graphique."
+    },
+    "6": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.6, 0.1, 165.7]
+      },
+      "$description": "Série 6 d'un graphique."
     }
   }
 }

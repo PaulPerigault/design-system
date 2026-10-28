@@ -1,5 +1,11 @@
 // Fichier généré par scripts/build.ts depuis src/tokens/ : ne pas éditer.
 export type TokenName =
+  | '--pp-chart-1'
+  | '--pp-chart-2'
+  | '--pp-chart-3'
+  | '--pp-chart-4'
+  | '--pp-chart-5'
+  | '--pp-chart-6'
   | '--pp-color-accent'
   | '--pp-color-bg'
   | '--pp-color-control'
