@@ -103,6 +103,11 @@ Plafond global de sessions Kiro (`.agents/slots/`), une seule tâche lourde loca
 (`.agents/locks/heavy`), dépendances des worktrees clonées depuis une amorce (`.agents/seeds/`).
 ds-lead : `prompts/lead.md`, file `.agents/lead-queue.md`, moteur `tools/agents/lead.mjs`.
 
+## Fichiers générés
+
+Un fichier généré (`docs.json`, `components.json`, `adr.json`) se commite quand `check:data` ou `check:mcp-data` l'exige après un changement de source réel.
+Il se restaure quand il diffère sans cause (dérive Windows).
+
 ## Décisions et journal
 
 ADR dans `docs/adr/`, choix ouverts dans `docs/decisions-log.md`, journal daté dans `docs/journal/`, bilan dans `docs/run-report.md`.
