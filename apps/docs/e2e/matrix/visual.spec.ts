@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { VISUAL_PROJECTS } from '../devices';
 import { PAGES, THEMES, visit } from '../helpers';
 
@@ -16,6 +16,18 @@ function slugOf(path: string): string {
   return path.replace(/^\/|\/$/g, '').replaceAll('/', '-') || 'index';
 }
 
+/** Les images `loading="lazy"` hors fenêtre se chargent pendant la capture : on les décode d'abord. */
+async function settleImages(page: Page): Promise<void> {
+  await page.evaluate(() =>
+    Promise.all(
+      [...document.images].map((image) => {
+        image.loading = 'eager';
+        return image.decode().catch(() => undefined);
+      }),
+    ),
+  );
+}
+
 // Mêmes pages que axe.spec.ts × 2 thèmes, sur chaque projet de VISUAL_PROJECTS.
 for (const path of PAGES) {
   for (const theme of THEMES) {
@@ -25,6 +37,7 @@ for (const path of PAGES) {
         'Appareil hors matrice visuelle.',
       );
       await visit(page, path, theme);
+      await settleImages(page);
       await expect(page).toHaveScreenshot(`${slugOf(path)}-${theme}.png`, {
         animations: 'disabled',
         fullPage: true,
