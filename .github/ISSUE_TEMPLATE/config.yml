@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Signaler une vulnérabilité (privé)
+    url: https://github.com/PaulPerigault/design-system/security/policy
+    about: Ne publiez jamais une faille dans une issue. Suivez la politique de sécurité du dépôt.
+  - name: Documentation
+    url: https://design.paulperigault.dev
+    about: Principes, jetons, composants et procédures du design system.

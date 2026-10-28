@@ -115,3 +115,7 @@ ADR dans `docs/adr/`, choix ouverts dans `docs/decisions-log.md`, journal daté 
   agir) : ne jamais en créer à la main.
 - Claude Code ne poste aucun commentaire dans les issues ni les PR : les informations vont dans la
   description ou le journal.
+- Modèles : `.github/ISSUE_TEMPLATE/` (formulaires, issues vierges refusées) et
+  `PULL_REQUEST_TEMPLATE.md`, décrits dans `docs/process/templates.md`. Toute issue est créée par un
+  formulaire, complète : assignee, labels, projet, milestone, description. Une faille ne se signale
+  jamais dans une issue (`SECURITY.md`).

@@ -1,0 +1,120 @@
+name: Bogue
+description: Un comportement observé qui diffère du comportement attendu.
+title: 'bogue: '
+labels: ['type:bogue']
+assignees: [PaulPerigault]
+projects: ['PaulPerigault/13']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Une faille de sécurité ne se signale jamais ici : utilisez la politique de sécurité du dépôt.
+  - type: textarea
+    id: contexte
+    attributes:
+      label: Contexte
+      description: Où le défaut apparaît et qui il touche.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version ou SHA
+      description: Version du paquet ou SHA de `main`.
+    validations:
+      required: true
+  - type: textarea
+    id: environnement
+    attributes:
+      label: Environnement
+      description: Système, navigateur, Node, npm.
+    validations:
+      required: true
+  - type: textarea
+    id: etapes
+    attributes:
+      label: Étapes pour reproduire
+      value: |
+        1.
+        2.
+    validations:
+      required: true
+  - type: textarea
+    id: obtenu
+    attributes:
+      label: Comportement obtenu
+      description: Message d'erreur exact ou capture.
+    validations:
+      required: true
+  - type: textarea
+    id: attendu
+    attributes:
+      label: Comportement attendu
+    validations:
+      required: true
+  - type: textarea
+    id: criteres
+    attributes:
+      label: Critères d'acceptation
+      description: Le test de non-régression qui prouve la correction.
+      value: |
+        - [ ] Un test échoue avant la correction et passe après.
+        - [ ]
+    validations:
+      required: true
+  - type: dropdown
+    id: paquet
+    attributes:
+      label: Paquet concerné
+      options: [tokens, css, astro, guards, create, mcp, docs, agents, ci, processus]
+    validations:
+      required: true
+  - type: dropdown
+    id: taille
+    attributes:
+      label: Taille
+      description: trait = 30 minutes au plus ; page = une session ; cahier = à découper.
+      options: [trait, page, cahier]
+    validations:
+      required: true
+  - type: dropdown
+    id: jalon
+    attributes:
+      label: Jalon à rattacher
+      description: Le milestone ne se règle pas depuis le formulaire. Paul ou Claude Code le renseigne.
+      options:
+        - M0 fondations
+        - M1 TypeScript strict
+        - M2 publication npm 0.x
+        - M3 migration du portfolio (L9)
+        - M4 Rust pp-color (conditionnel)
+        - M5 1.0
+        - M-analyse
+    validations:
+      required: true
+  - type: input
+    id: regression
+    attributes:
+      label: Régression depuis
+      description: SHA ou PR qui a introduit le défaut, si connu.
+  - type: input
+    id: lot
+    attributes:
+      label: Lot
+      placeholder: L18
+  - type: input
+    id: parente
+    attributes:
+      label: Issue parente
+      placeholder: '#12'
+  - type: checkboxes
+    id: fini
+    attributes:
+      label: Définition de fini
+      options:
+        - label: Cause identifiée et écrite dans la PR.
+          required: true
+        - label: Test de non-régression ajouté, `npm run verify` vert.
+          required: true
+        - label: PR liée par `Closes #n`.
+          required: true

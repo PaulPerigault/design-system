@@ -1,0 +1,96 @@
+name: Fonctionnalité
+description: Une nouvelle capacité d'un paquet ou de la documentation.
+title: 'fonction: '
+labels: ['type:fonction']
+assignees: [PaulPerigault]
+projects: ['PaulPerigault/13']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Une fonctionnalité par issue. Si elle dépasse une session de travail, ouvrez une issue
+        parente « Épique » et découpez.
+  - type: textarea
+    id: contexte
+    attributes:
+      label: Contexte
+      description: Le besoin constaté, avec une source ou un exemple. Des faits, pas d'intention.
+    validations:
+      required: true
+  - type: textarea
+    id: objectif
+    attributes:
+      label: Objectif
+      description: Ce que l'utilisateur du design system pourra faire, en deux ou trois phrases.
+    validations:
+      required: true
+  - type: textarea
+    id: criteres
+    attributes:
+      label: Critères d'acceptation
+      description: Chaque case se vérifie par une commande, un test ou une capture.
+      value: |
+        - [ ]
+        - [ ]
+    validations:
+      required: true
+  - type: dropdown
+    id: paquet
+    attributes:
+      label: Paquet concerné
+      options: [tokens, css, astro, guards, create, mcp, docs, agents, ci, processus]
+    validations:
+      required: true
+  - type: dropdown
+    id: taille
+    attributes:
+      label: Taille
+      description: trait = 30 minutes au plus ; page = une session ; cahier = à découper.
+      options: [trait, page, cahier]
+    validations:
+      required: true
+  - type: dropdown
+    id: jalon
+    attributes:
+      label: Jalon à rattacher
+      description: Le milestone ne se règle pas depuis le formulaire. Paul ou Claude Code le renseigne.
+      options:
+        - M0 fondations
+        - M1 TypeScript strict
+        - M2 publication npm 0.x
+        - M3 migration du portfolio (L9)
+        - M4 Rust pp-color (conditionnel)
+        - M5 1.0
+        - M-analyse
+    validations:
+      required: true
+  - type: input
+    id: lot
+    attributes:
+      label: Lot
+      description: L0 à L20, T pour le chantier TypeScript, P pour le processus.
+      placeholder: L21
+  - type: input
+    id: parente
+    attributes:
+      label: Issue parente
+      description: Numéro de l'épique, si elle existe.
+      placeholder: '#12'
+  - type: textarea
+    id: hors-perimetre
+    attributes:
+      label: Hors périmètre
+      description: Ce que cette issue ne couvre pas.
+  - type: checkboxes
+    id: fini
+    attributes:
+      label: Définition de fini
+      options:
+        - label: Tests ajoutés, `npm run verify` vert.
+          required: true
+        - label: Accessibilité vérifiée (clavier, contraste, nom accessible).
+          required: true
+        - label: Documentation à jour (page, ADR ou journal).
+          required: true
+        - label: PR liée par `Closes #n`.
+          required: true

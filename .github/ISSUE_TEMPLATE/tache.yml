@@ -1,0 +1,97 @@
+name: Tâche
+description: Un travail délimité, avec ses fichiers autorisés et sa commande d'acceptation.
+title: 'tache: '
+labels: ['type:tache']
+assignees: [PaulPerigault]
+projects: ['PaulPerigault/13']
+body:
+  - type: textarea
+    id: contexte
+    attributes:
+      label: Contexte
+      description: Pourquoi cette tâche existe. Citer l'étape, l'ADR ou le lot.
+    validations:
+      required: true
+  - type: textarea
+    id: objectif
+    attributes:
+      label: Objectif
+      description: Un résultat vérifiable, en deux ou trois phrases.
+    validations:
+      required: true
+  - type: textarea
+    id: fichiers
+    attributes:
+      label: Fichiers autorisés
+      description: Un chemin par ligne. Tout autre fichier modifié est un échec.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: criteres
+    attributes:
+      label: Critères d'acceptation
+      description: La commande d'acceptation en premier.
+      value: |
+        - [ ] `npm run verify` vert
+        - [ ]
+    validations:
+      required: true
+  - type: input
+    id: depend
+    attributes:
+      label: Dépend de
+      description: Numéros d'issues qui doivent être fermées avant. Vide si aucune.
+      placeholder: '#14, #15'
+  - type: dropdown
+    id: paquet
+    attributes:
+      label: Paquet concerné
+      options: [tokens, css, astro, guards, create, mcp, docs, agents, ci, processus]
+    validations:
+      required: true
+  - type: dropdown
+    id: taille
+    attributes:
+      label: Taille
+      description: trait = 30 minutes au plus ; page = une session ; cahier = à découper.
+      options: [trait, page, cahier]
+    validations:
+      required: true
+  - type: dropdown
+    id: jalon
+    attributes:
+      label: Jalon à rattacher
+      description: Le milestone ne se règle pas depuis le formulaire. Paul ou Claude Code le renseigne.
+      options:
+        - M0 fondations
+        - M1 TypeScript strict
+        - M2 publication npm 0.x
+        - M3 migration du portfolio (L9)
+        - M4 Rust pp-color (conditionnel)
+        - M5 1.0
+        - M-analyse
+    validations:
+      required: true
+  - type: input
+    id: lot
+    attributes:
+      label: Lot
+      placeholder: T
+  - type: input
+    id: parente
+    attributes:
+      label: Issue parente
+      description: Une tâche qui fait partie d'une épique la cite ici.
+      placeholder: '#12'
+  - type: checkboxes
+    id: fini
+    attributes:
+      label: Définition de fini
+      options:
+        - label: Seuls les fichiers autorisés sont modifiés.
+          required: true
+        - label: Commande d'acceptation exécutée, sortie reportée dans la PR.
+          required: true
+        - label: PR liée par `Closes #n`.
+          required: true
