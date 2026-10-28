@@ -28,9 +28,30 @@ async function settleImages(page: Page): Promise<void> {
   );
 }
 
-// Mêmes pages que axe.spec.ts × 2 thèmes, sur chaque projet de VISUAL_PROJECTS.
+/** Gabarits de page : les deux thèmes. */
+const TEMPLATE_PAGES = [
+  '/',
+  '/composants/',
+  '/identite/',
+  '/utiliser/',
+  '/architecture/',
+  '/accessibilite/',
+  '/decisions/',
+];
+
+/** Un composant par famille : les deux thèmes ; les autres composants, thème clair seul. */
+const DARK_COMPONENTS = ['alert', 'button', 'card', 'dialog', 'photo', 'stack', 'tabs'].map(
+  (slug) => `/components/${slug}/`,
+);
+
+/** Poids des références (versionnées) : les pages de texte seul et le thème sombre sont échantillonnés. */
+function themesOf(path: string) {
+  if (TEMPLATE_PAGES.includes(path) || DARK_COMPONENTS.includes(path)) return THEMES;
+  return path.startsWith('/components/') ? THEMES.slice(0, 1) : [];
+}
+
 for (const path of PAGES) {
-  for (const theme of THEMES) {
+  for (const theme of themesOf(path)) {
     test(`visuel : ${path}, thème ${theme}`, async ({ page }) => {
       test.skip(
         !VISUAL_PROJECTS.includes(test.info().project.name),

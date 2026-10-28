@@ -47,15 +47,13 @@ export function contextOf(device: MatrixDevice) {
 }
 
 /**
- * Projets de la régression visuelle. Les requêtes de conteneur de la CSS basculent à 27 rem
- * (432 px) et 36 rem (576 px) : le téléphone étroit (360x800, mouvement réduit compris) est sous les
- * deux seuils, le paysage (800 de large) et la tablette sont au-dessus, le bureau 1440 plafonne la
- * page. Les autres téléphones (375, 393, 430) tombent dans le même cas que 360.
+ * Projets de la régression visuelle, un par largeur de conteneur distincte : 360 (sous le seuil de
+ * 27 rem des requêtes de conteneur), 820 (au-dessus de 36 rem, page plus étroite que son plafond),
+ * 1440 (page à son plafond). Les autres téléphones tombent dans le cas de 360 ; le paysage et le
+ * mouvement réduit ne changent ni la mise en page ni, animations coupées, la capture.
  */
 export const VISUAL_PROJECTS: readonly string[] = [
   'matrice-360x800',
-  'matrice-360x800-paysage',
   'matrice-tablette-820x1180',
   'matrice-bureau-1440x900',
-  'matrice-360x800-mouvement-reduit',
 ];
