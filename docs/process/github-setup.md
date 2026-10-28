@@ -4,14 +4,14 @@
 
 ## État
 
-| Élément         | État                                                                       |
-| --------------- | -------------------------------------------------------------------------- |
-| Labels          | 28, versionnés dans `.github/labels.json`, synchronisés par script         |
-| Project         | n° 13 « design system », public (dépôt public), lié au dépôt               |
-| Champs          | `Lot`, `Priorite`, `Taille`, `Paquet` créés ; options de `Status` : manuel |
-| Milestones      | décrits, à créer par Paul (`docs/manual-steps.md` §7.2)                    |
-| Vues, workflows | manuels (`docs/manual-steps.md` §7.3 et §7.4)                              |
-| Ruleset, `main` | `develop` renommée en `main` ; ruleset et options : voir ci-dessous        |
+| Élément         | État                                                                                                                            |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Labels          | 28, versionnés dans `.github/labels.json`, synchronisés par script                                                              |
+| Project         | n° 13 « design system », public (dépôt public), lié au dépôt                                                                    |
+| Champs          | `Lot`, `Priorite`, `Taille`, `Paquet` créés ; options de `Status` : manuel                                                      |
+| Milestones      | décrits, à créer par Paul (`docs/manual-steps.md` §7.2)                                                                         |
+| Vues, workflows | manuels (`docs/manual-steps.md` §7.3 et §7.4)                                                                                   |
+| Ruleset, `main` | `develop` renommée en `main` ; ruleset (`.github/rulesets/main.json`) et options : à poser par Paul (`docs/manual-steps.md` §8) |
 
 ## Relancer la synchronisation des labels
 

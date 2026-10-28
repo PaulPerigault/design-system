@@ -168,4 +168,24 @@ Apport : le tableau montre le travail en cours ; la feuille de route, l'avanceme
 
 ## 8. Bascule vers `main` (F2a-2)
 
-État : `develop` renommée en `main` par Paul (2026-10-28), branche par défaut `main`.
+État : `develop` renommée en `main` par Paul (2026-10-28), branche par défaut `main`, PR #37 fusionnée.
+
+Ruleset et options du dépôt : les appels `gh api` ont été refusés par les permissions de l'agent (une
+tentative chacun, sans contournement). Le ruleset est versionné dans `.github/rulesets/main.json` : PR
+obligatoire, 0 approbation, check `ci` requis, historique linéaire, squash seul, force-push et
+suppression interdits, aucune exemption (Paul passe par les PR comme tout le monde ; en cas de CI
+cassée, il édite le ruleset dans _Settings_ → _Rules_). À lancer en PowerShell, depuis la racine du
+dépôt :
+
+```powershell
+gh api repos/PaulPerigault/design-system/rulesets --method POST --input .github/rulesets/main.json
+gh api repos/PaulPerigault/design-system --method PATCH `
+  -F allow_squash_merge=true -F allow_merge_commit=false -F allow_rebase_merge=false `
+  -F delete_branch_on_merge=true -F allow_auto_merge=true
+git push --dry-run origin HEAD:main   # doit être refusé (PR obligatoire)
+```
+
+Autre réglage manquant : `release.yml` échoue sur `main` (« GitHub Actions is not permitted to create
+or approve pull requests »). _Settings_ → _Actions_ → _General_ → _Workflow permissions_ : cocher
+_Allow GitHub Actions to create and approve pull requests_ (ou le faire porter par l'`apply`
+OpenTofu, §2).
