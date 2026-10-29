@@ -26,6 +26,8 @@ tableau de bord, Workers & Pages, projet des docs, onglet Deployments.
 | Dossier racine        | `/` (monorepo : l'installation se fait à la racine) |
 | Variables             | `NODE_VERSION=24` (identique à `.nvmrc`)            |
 
+Cette commande suppose que la doc se construit seule : `prebuild` compile `dataviz` (exports vers `dist/`), et le job `docs` de la CI l'exécute telle quelle (D-048).
+
 Le projet est déclaré en OpenTofu (brique `infra/` du dépôt portfolio, voir `docs/manual-steps.md`
 §11). L'autorisation de l'application GitHub de Cloudflare sur le dépôt est manuelle : aucune API
 ne l'accorde.
