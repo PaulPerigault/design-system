@@ -1,16 +1,6 @@
 # Rapport d'exécution
 
-**ARRÊT FINAL** — raison : arrêt de session après la fusion de L18 et L19 (#22), pas un manque de
-crédits (≈ 250 tracés sur ≈ 870). Il reste du travail faisable sans Paul (images OG, ci-dessous) et
-des décisions qui lui reviennent (`docs/manual-steps.md` §6).
-
-**Défaut connu, non corrigé : les images Open Graph ne sont pas générées.** Les pages déclarent
-`og:image` vers `/og/<page>.png` (`lib/seo.ts`), mais aucun fichier n'est produit au build : ces URL
-répondent 404. Le brief demandait des images OG générées au build. Piste : `sharp` est déjà là ; le
-texte exige une police lisible par librsvg (pas de `woff2`), donc à traiter avec soin. Tant que ce
-n'est pas fait, retirer les balises `og:image` plutôt que de publier des liens morts.
-
-**Chantier « architecture, TypeScript strict et Rust » : étape 1 codée (2026-10-27), étape 2 faite (ADR-0006, D-037, #82), V1 faite (ADR-0007, D-038, #93), **V2-0 faite** (paquet `@paulperigault/dataviz`, D-039, #120), **V2a-1 faite** (géométrie pure : échelles, graduations, LTTB, chemins ; D-040), **V2a-2 faite** (`LineChart`, jetons `--pp-chart-*`, D-041 ; fusionnée), **V2a-3 faite** (`BarChart`, briques communes avec `LineChart`, erreur `bar.too-many-categories`, D-042), **V2a-4 faite** (registre, pages de documentation, D-043) : **V2a faite** (#94), **V2b faite** (`AreaChart` et `GaugeChart` : géométrie dans `dataviz` D-044, export, registre et pages D-045, PR #133, #95) ; **D1 faite** (skill de revue visuelle « Encre », D-046, #134 ; revue des quatre graphiques dans `docs/design/revue-graphiques-v2.md`) ; **C1 faite** (build Cloudflare de la doc réparé : `prebuild` compile `dataviz`, job CI `docs` identique à la commande de Cloudflare, D-048, #137) ; **D2 faite** (corrections de la revue des graphiques V2, D-049, #139 : texte d'axe à 12,4 px à 375 px, valeurs des barres à 4,78:1 au moins, contour d'aire limité à la courbe supérieure, budgets tenus ; reste M2, libellés de catégories tronqués plus tôt) ; étape suivante : V3a (#96, KPI et sparklines), puis V3b (#97) ; l'étape 3 (#83), le skill de voix (#135) et le branchement des variables `--pp-accent-hue` et `--pp-font-stack` (#121) peuvent avancer en parallèle.**
+**Chantier « architecture, TypeScript strict et Rust » : étape 1 codée (2026-10-27), étape 2 faite (ADR-0006, D-037, issue #82, PR #117), V1 faite (ADR-0007, D-038, issue #93, PR #119), **V2-0 faite** (paquet `@paulperigault/dataviz`, D-039, issue #120, PR #122), **V2a-1 faite** (géométrie pure : échelles, graduations, LTTB, chemins ; D-040), **V2a-2 faite** (`LineChart`, jetons `--pp-chart-*`, D-041 ; fusionnée), **V2a-3 faite** (`BarChart`, briques communes avec `LineChart`, erreur `bar.too-many-categories`, D-042), **V2a-4 faite** (registre, pages de documentation, D-043) : **V2a faite** (issue #94, PR #129 pour V2a-4), **V2b faite** (`AreaChart` et `GaugeChart` : géométrie dans `dataviz` D-044, export, registre et pages D-045, issue #95, PR #133) ; **D1 faite** (skill de revue visuelle « Encre », D-046, issue #134, PR #136 ; revue des quatre graphiques dans `docs/design/revue-graphiques-v2.md`) ; **C1 faite** (build Cloudflare de la doc réparé : `prebuild` compile `dataviz`, job CI `docs` identique à la commande de Cloudflare, D-048, issue #137, PR #138) ; **D2 faite** (corrections de la revue des graphiques V2, D-049, issue #139, PR #140 : texte d'axe à 12,4 px à 375 px, valeurs des barres à 4,78:1 au moins, contour d'aire limité à la courbe supérieure, budgets tenus ; reste M2, libellés de catégories tronqués plus tôt) ; étape suivante : V3a (#96, KPI et sparklines), puis V3b (#97) ; l'étape 3 (#83), le skill de voix (#135) et le branchement des variables `--pp-accent-hue` et `--pp-font-stack` (#121) peuvent avancer en parallèle.**
 Fusionnés dans `main` : #24 (images OG), #25 (ADR-0005), #26 (`packages/tokens` en TypeScript
 strict). Étape 1 : `packages/guards` en TypeScript strict, **PR #30 fusionnée** (la PR #29 avait été fermée : un sujet de commit de la branche d'origine est refusé par commitlint). `tsc -p packages/guards` : 0 erreur ;
 `packages/guards/**/*.ts` est dans `TS_STRICT_FILES` (ni `any`, ni `as`, ni `!`) ; options des
@@ -33,7 +23,7 @@ les PR de rendu (`docs/process/visual-references.md`).
 
 1. **1bis-a, 1bis-b1 : faites** (D-028, D-029, `docs/process/ci-audit.md`). **1bis-b2 : faite** (tests
    Windows, références Visuel Linux, Visuel dans `ci`, D-030). Reste 1bis-d (matrice « qui vérifie quoi », issue « [1bis-d] »).
-   **F2a-3 : faite côté dépôt** (D-036, #79 ; reste `tofu apply` et le secret par Paul, `docs/manual-steps.md` §11).
+   **F2a-3 : faite côté dépôt** (D-036, issue #79, PR #115 ; reste `tofu apply` et le secret par Paul, `docs/manual-steps.md` §11).
    **Étape 2 faite** (ADR-0006, #82). **Étape suivante : étape 3** (#83) et en parallèle V1 (#93), puis V2 et V3 en parallèle de la crate `pp-color`
    (V1, #93, ne dépend plus de l'étape 7b ; seule V4a, #98, la garde).
 2. **F2a-1 : faite** (Project n° 13, 28 labels versionnés et synchronisés, D-031,
@@ -42,7 +32,8 @@ les PR de rendu (`docs/process/visual-references.md`).
    Dependabot, garde de fusion, D-032, PR #37) ; reste à Paul le ruleset et les options du dépôt
    (`docs/manual-steps.md` §8). **F2a-3** : previews Cloudflare (`tofu apply` par Paul),
    puis F2b. Références Visuel :
-   48 Mo ; si elles grossissent avec les composants d'analyse, passer les PNG sous Git LFS.
+   mesurées après D2 : 210 PNG, 52 524 Ko sur disque (≈ 51 Mo) dans `apps/docs/e2e/references` ; seuil de
+   réexamen Git LFS à environ 100 Mo, d'ici là réduire la zone capturée plutôt que relever un budget.
 3. **F2b** : F2b-1 faite (modèles d'issue et de PR, D-033, `docs/process/templates.md`, issue
    « [F2b-1] »). F2b-2a faite (issues #42 à #66, D-034, `docs/history/catch-up.md`). **F2b-2b faite**
    (D-035) : une étape = une issue, `docs/history/roadmap-issues.md` donne étape, issue, milestone et
@@ -56,9 +47,6 @@ les PR de rendu (`docs/process/visual-references.md`).
 
 **Analyse de données (BI) :** V1 à V3 en parallèle de l'étape 7, V4a après l'étape 7b (V1 à V5) ; Rust sans preuve de gain de
 performance (D-030).
-
-**Reprise suggérée.** (1) images OG, (2) intégrer les quatre actions du propriétaire, (3) L9
-(migration du portfolio) une fois les paquets publiés.
 
 **État au 2026-10-24.** L10 à L17 fusionnés dans `develop` (#19 : L15 et L16 ; #21 : L17). #22 : lots L18 et L19, 14
 composants de niveau 2. Fait depuis la reprise sous Kiro : sécurité et
