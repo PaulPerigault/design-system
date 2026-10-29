@@ -3,6 +3,7 @@ import Table from '@paulperigault/astro/Table.astro';
 import ArchitectureDiagram from '../components/ArchitectureDiagram.astro';
 import DraftNotice from '../components/DraftNotice.astro';
 import DocsLayout from '../layouts/DocsLayout.astro';
+import { CHECKS, PACKAGES } from '../lib/architecture.ts';
 
 const col = (key: string, label: string) => ({ key, label });
 const PKG_COLS = [col('paquet', 'Paquet'), col('role', 'Rôle'), col('depend', 'Dépend de')];
@@ -12,29 +13,8 @@ const CHK_COLS = [
   col('fichier', 'Fichier'),
 ];
 
-// Source : AGENTS.md, tableau « Paquet / Rôle / Dépend de ».
-const PACKAGES: [string, string, string][] = [
-  ['@paulperigault/tokens', 'source DTCG, couleur et contraste', 'rien à l’exécution'],
-  ['@paulperigault/css', 'base, reset, polices, @theme Tailwind v4', 'tokens'],
-  ['@paulperigault/astro', 'composants .astro, behaviors, variants()', 'css, tokens'],
-  ['@paulperigault/guards', 'contrôles de taille, couleurs, couches, images', 'rien à l’exécution'],
-  ['@paulperigault/create', 'CLI create, add, eject, diff', 'rien à l’exécution'],
-  ['@paulperigault/mcp', 'serveur MCP stdio en lecture seule', 'tokens, guards'],
-  ['apps/docs', 'documentation vivante du design system', 'tous les paquets'],
-];
 const pkgRows = PACKAGES.map(([paquet, role, depend]) => ({ paquet, role, depend }));
 
-// Source : .github/workflows/*.yml. Chaque ligne renvoie au fichier qui l’établit.
-const CHECKS: [string, string, string][] = [
-  ['Commitlint', 'Commits de la PR, puis titre et corps : Conventional Commits', 'ci.yml'],
-  ['Verify', 'npm run verify : guards, lint, format, tests, build, pack', 'ci.yml'],
-  ['E2E', 'Build puis Chromium : axe WCAG 2.2 AA, 1.4.12, 2.5.8, mouvement réduit', 'ci.yml'],
-  ['Site', 'Site généré par la CLI, installé sur les tarballs, puis verify', 'ci.yml'],
-  ['Visuel', 'Captures sur 13 projets de matrice, références non versionnées', 'visual.yml'],
-  ['CodeQL', 'Analyse JavaScript et TypeScript, à chaque push, PR et lundi', 'codeql.yml'],
-  ['Supply chain', 'Signatures npm, scripts d’installation, audit haut, SBOM', 'supply-chain.yml'],
-  ['Scorecard', 'Note OpenSSF sur main, chaque mardi ; métadonnées publiées', 'scorecard.yml'],
-];
 const chkRows = CHECKS.map(([controle, verif, fichier]) => ({ controle, verif, fichier }));
 ---
 
@@ -46,13 +26,14 @@ const chkRows = CHECKS.map(([controle, verif, fichier]) => ({ controle, verif, f
     <DraftNotice />
     <h1>Architecture</h1>
     <p>
-      Cette page décrit les paquets, leurs dépendances, la chaîne de livraison et l’infrastructure.
-      Chaque fait renvoie au fichier qui l’établit.
+      {PACKAGES.length - 1} paquets npm, une application de documentation et {CHECKS.length}{' '}
+      contrôles de CI : chaque fait de cette page renvoie au fichier qui l’établit.
     </p>
     <h2>Paquets et sens des dépendances</h2>
     <p>
-      Le dépôt compte six paquets npm et une application de documentation. astro dépend de css, et
-      css dépend de tokens. Un import qui remonte ce sens est une erreur (AGENTS.md).
+      Le dépôt compte sept paquets npm et une application de documentation. astro dépend de css et
+      de dataviz, dataviz et css dépendent de tokens. Un import qui remonte ce sens est une erreur
+      (AGENTS.md).
     </p>
   </div>
   <Table caption="Paquets et dépendances" columns={PKG_COLS} rows={pkgRows} rowHeader="paquet" />
