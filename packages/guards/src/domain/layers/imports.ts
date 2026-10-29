@@ -33,16 +33,30 @@ function codeOfAstro(text: string): string {
   return result + blank(text.slice(cursor));
 }
 
-export function importsOf(text: string, file = ''): { specifier: string; line: number }[] {
+const TYPE_ONLY = /^(?:import|export)\s+type\b/;
+
+export interface ImportRef {
+  specifier: string;
+  line: number;
+  /** Vrai pour `import type … from` : aucun effet à l'exécution. */
+  typeOnly: boolean;
+}
+
+export function importsDetailed(text: string, file = ''): ImportRef[] {
   const code = file.toLowerCase().endsWith('.astro') ? codeOfAstro(text) : text;
   const found = PATTERNS.flatMap((pattern) =>
     [...code.matchAll(pattern)].map((match) => {
       const [index] = match.indices?.[2] ?? [0, 0];
-      return { specifier: match[2] ?? '', line: lineOf(code, index), index };
+      const typeOnly = TYPE_ONLY.test(match[0]);
+      return { specifier: match[2] ?? '', line: lineOf(code, index), index, typeOnly };
     }),
   );
   const unique = new Map(found.map((item) => [item.index, item]));
   return [...unique.values()]
     .sort((a, b) => a.index - b.index)
-    .map(({ specifier, line }) => ({ specifier, line }));
+    .map(({ specifier, line, typeOnly }) => ({ specifier, line, typeOnly }));
+}
+
+export function importsOf(text: string, file = ''): { specifier: string; line: number }[] {
+  return importsDetailed(text, file).map(({ specifier, line }) => ({ specifier, line }));
 }

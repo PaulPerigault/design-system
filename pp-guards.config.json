@@ -42,6 +42,9 @@
       }
     ]
   },
+  "architecture": {
+    "roots": ["packages/guards/src"]
+  },
   "images": {
     "roots": ["packages", "apps"],
     "allow": ["src/media", "packages/guards/README.md"],
