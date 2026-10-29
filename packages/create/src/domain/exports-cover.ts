@@ -1,7 +1,7 @@
 /**
  * Lecture du champ `exports` d'un paquet : clé exacte ou motif de sous-chemin.
  */
-import { isPlainObject } from '../lib/json.ts';
+import { isPlainObject } from './json.ts';
 
 const WILDCARD = '*';
 

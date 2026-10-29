@@ -1,11 +1,11 @@
 import { posix } from 'node:path';
-import type { CreateIo } from '../lib/io.ts';
-import { resolveIn } from '../lib/io.ts';
-import { applyPlan } from '../lib/plan.ts';
-import type { PlanEntry } from '../lib/plan.ts';
-import { sitePackageJson } from '../site/package-json.ts';
-import { outputPath } from '../site/template.ts';
-import type { SiteTemplate } from '../site/template.ts';
+import { resolveIn } from '../../domain/paths.ts';
+import type { PlanEntry } from '../../domain/plan.ts';
+import { sitePackageJson } from '../../domain/site-package-json.ts';
+import { outputPath } from '../../domain/template.ts';
+import type { SiteTemplate } from '../../domain/template.ts';
+import { applyPlan } from '../apply-plan.ts';
+import type { CreateIo } from '../ports.ts';
 
 const CODE_OK = 0;
 const CODE_REFUSED = 1;

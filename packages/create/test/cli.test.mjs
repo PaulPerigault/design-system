@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { main, USAGE } from '../src/cli.ts';
+import { main, USAGE } from '../src/application/cli.ts';
 import { fakeIo, fakePackage } from './fake-io.mjs';
 
 const TEMPLATES = '/pp/templates';

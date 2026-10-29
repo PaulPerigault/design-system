@@ -1,10 +1,11 @@
 import { fileURLToPath, URL } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { run } from '../src/commands/create.ts';
-import { sha256 } from '../src/lib/hash.ts';
-import { nodeIo } from '../src/lib/io.ts';
-import { npmName, sitePackageJson } from '../src/site/package-json.ts';
-import { loadTemplate, outputPath } from '../src/site/template.ts';
+import { run } from '../src/application/commands/create.ts';
+import { sha256 } from '../src/domain/hash.ts';
+import { nodeIo } from '../src/infrastructure/node-io.ts';
+import { npmName, sitePackageJson } from '../src/domain/site-package-json.ts';
+import { loadTemplate } from '../src/application/load-template.ts';
+import { outputPath } from '../src/domain/template.ts';
 import { fakeIo } from './fake-io.mjs';
 
 const TEMPLATES = fileURLToPath(new URL('../templates', import.meta.url));
@@ -17,7 +18,6 @@ function generate(options = {}, files = {}) {
   const code = run({ positionals: ['mon-site'], ...options }, { io: fake.io, template });
   return { code, ...fake };
 }
-
 const fileOf = (files, rel) => files[`/projet/mon-site/${rel}`];
 
 describe('create : arborescence', () => {

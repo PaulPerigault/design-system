@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import * as reg from '../src/lib/registry.ts';
+import * as reg0 from '../src/application/registry-io.ts';
+import * as reg1 from '../src/domain/registry.ts';
+const reg = { ...reg0, ...reg1 };
 import { fakeIo, fakePackage } from './fake-io.mjs';
 
 const stack = { name: 'stack', title: 'Stack', files: [{ path: 'packages/astro/src/S.astro' }] };

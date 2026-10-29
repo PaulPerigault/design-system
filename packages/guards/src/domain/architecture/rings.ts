@@ -22,6 +22,8 @@ export interface ImportRef {
 
 const RELATIVE = /^\.\.?(\/|$)/;
 const NODE_PREFIX = 'node:';
+/** Un vrai spécificateur : un extrait de commentaire ou de gabarit (`<x>`, `${x}`) n'en est pas un. */
+const SPECIFIER = /^[\w@./:~-]+$/;
 
 /** Indice de l'anneau d'un fichier, ou -1 hors des racines et hors des anneaux. */
 export function ringOf({ roots, rings }: Pick<RingConfig, 'roots' | 'rings'>, path: string) {
@@ -57,7 +59,7 @@ function externalViolation(config: RingConfig, file: string, ref: ImportRef): st
 
 /** Message de violation d'un import, ou `null` s'il respecte la règle. */
 export function ringViolation(config: RingConfig, file: string, ref: ImportRef): string | null {
-  if (ringOf(config, file) < 0) return null;
+  if (ringOf(config, file) < 0 || !SPECIFIER.test(ref.specifier)) return null;
   return RELATIVE.test(ref.specifier)
     ? relativeViolation(config, file, ref)
     : externalViolation(config, file, ref);

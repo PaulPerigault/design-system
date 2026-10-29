@@ -1,7 +1,8 @@
 import { parseArgs } from 'node:util';
 import { describe, expect, it } from 'vitest';
-import { parseErrorMessage, runCommand } from '../src/cli-errors.ts';
-import { main } from '../src/cli.ts';
+import { parseErrorMessage } from '../src/domain/parse-error.ts';
+import { runCommand } from '../src/application/run-command.ts';
+import { main } from '../src/application/cli.ts';
 import { fakeIo, fakePackage } from './fake-io.mjs';
 
 const stack = { name: 'stack', files: [{ path: 'packages/astro/src/layout/Stack.astro' }] };

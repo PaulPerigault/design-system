@@ -1,19 +1,13 @@
 import { posix } from 'node:path';
-import type { CreateIo } from '../lib/io.ts';
-import { resolveIn } from '../lib/io.ts';
-import { readLock } from '../lib/lock.ts';
-import type { LockEntry } from '../lib/lock.ts';
-import {
-  findItem,
-  itemFiles,
-  loadItems,
-  packageRoot,
-  packageVersion,
-  REPO_PREFIX,
-} from '../lib/registry.ts';
-import type { RegistryItem } from '../lib/registry.ts';
-import { differences } from './diff-sides.ts';
-import type { Side } from './diff-sides.ts';
+import { differences } from '../../domain/diff-sides.ts';
+import type { Side } from '../../domain/diff-sides.ts';
+import type { LockEntry } from '../../domain/lock.ts';
+import { resolveIn } from '../../domain/paths.ts';
+import { findItem, itemFiles, REPO_PREFIX } from '../../domain/registry.ts';
+import type { RegistryItem } from '../../domain/registry.ts';
+import type { CreateIo } from '../ports.ts';
+import { readLock } from '../read-lock.ts';
+import { loadItems, packageRoot, packageVersion } from '../registry-io.ts';
 
 const CODE_SAME = 0;
 const CODE_DIFF = 1;

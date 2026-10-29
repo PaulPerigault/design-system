@@ -43,7 +43,8 @@
     ]
   },
   "architecture": {
-    "roots": ["packages/guards/src"]
+    "roots": ["packages/guards/src", "packages/create/src"],
+    "pureNode": ["node:path", "node:buffer", "node:util", "node:crypto"]
   },
   "images": {
     "roots": ["packages", "apps"],

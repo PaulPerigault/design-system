@@ -1,10 +1,11 @@
 import { parseArgs } from 'node:util';
-import { parseErrorMessage, runCommand } from './cli-errors.ts';
+import { parseErrorMessage } from '../domain/parse-error.ts';
+import { loadTemplate } from './load-template.ts';
+import type { CreateIo } from './ports.ts';
 import { DEFAULT_OUT } from './commands/eject.ts';
 import { COMMANDS, invalidCall, resolveCommand } from './commands/table.ts';
 import type { CommandName } from './commands/table.ts';
-import type { CreateIo } from './lib/io.ts';
-import { loadTemplate } from './site/template.ts';
+import { runCommand } from './run-command.ts';
 
 const CODE_OK = 0;
 const CODE_USAGE = 2;

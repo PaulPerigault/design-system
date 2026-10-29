@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { run } from '../src/commands/eject.ts';
-import { sha256 } from '../src/lib/hash.ts';
+import { run } from '../src/application/commands/eject.ts';
+import { sha256 } from '../src/domain/hash.ts';
 import { fakeIo, fakePackage } from './fake-io.mjs';
 
 const LOCK = '/projet/pp-ds.lock.json';

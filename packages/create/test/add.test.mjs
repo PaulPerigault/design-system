@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { run } from '../src/commands/add.ts';
+import { run } from '../src/application/commands/add.ts';
 import { fakeIo, fakePackage } from './fake-io.mjs';
 
 const ROOT = '/projet/node_modules/@paulperigault/astro';

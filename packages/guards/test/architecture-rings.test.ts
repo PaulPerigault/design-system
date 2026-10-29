@@ -89,4 +89,10 @@ describe('ringViolation', () => {
     expect(ringViolation(config, I, ref('eslint'))).toBeNull();
     expect(ringViolation(config, 'pkg/src/index.ts', ref('node:fs'))).toBeNull();
   });
+
+  it('ignore ce qui n’est pas un spécificateur (extrait de commentaire ou de gabarit)', () => {
+    expect(ringViolation(config, D, ref('<specifier>'))).toBeNull();
+    expect(ringViolation(config, D, ref('${specifier}'))).toBeNull();
+    expect(ringViolation(config, D, ref('node:fs'))).not.toBeNull();
+  });
 });

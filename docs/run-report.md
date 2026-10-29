@@ -242,3 +242,8 @@ test -c apps/docs/playwright.config.ts`.
 
 - 16 sources en `.ts`, JSON validés à la frontière, `TS_STRICT_FILES` étendu (D-061). Tests et sorties identiques.
 - Reste : B (structure en anneaux, `errors.ts`, « Closes #84 »), puis #85, #86.
+
+## #84-B (2026-10-29) : `create` en anneaux, erreurs typées
+
+- Structure de l'ADR-0006 appliquée à `create` (D-062), contrôle `architecture` étendu à `create`. #84 fermée.
+- Reste : #85 (`mcp`, générateur de `tokens`), #86 (`tools/agents`, `dist/` pour chaque paquet publié).
