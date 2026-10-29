@@ -1,0 +1,61 @@
+---
+/** Début de la page « Utiliser » : état réel, parcours en quatre étapes, création, réglage du thème. */
+import Alert from '@paulperigault/astro/Alert.astro';
+
+const CREATE = `npm create @paulperigault mon-site
+cd mon-site
+git init
+npm install
+npm run dev`;
+const FROM_REPO = `node packages/create/src/infrastructure/bin.ts create mon-site`;
+const THEME = `npm create @paulperigault mon-site -- --accent-hue 150 --font-stack "Inter, system-ui, sans-serif"`;
+---
+
+<Alert tone="info" toneLabel="Information">
+  <p>
+    Les paquets ne sont pas encore publiés sur npmjs : le <code>README.md</code> du dépôt les
+    déclare « en construction » en version <code>0.x</code>. Les commandes <code>npm</code> et
+    <code>npx</code> de cette page fonctionneront après la première publication. Depuis le dépôt, la
+    commande ci-dessous marche aujourd’hui.
+  </p>
+</Alert>
+<pre tabindex="0"><code>{FROM_REPO}</code></pre>
+
+<h2>Démarrer en cinq minutes</h2>
+<ol>
+  <li>
+    <strong>Créer</strong> le site : <code>create mon-site</code>.
+  </li>
+  <li>
+    <strong>Régler</strong> la teinte d’accent et la police au besoin : <code>--accent-hue</code> et{' '}
+    <code>--font-stack</code>.
+  </li>
+  <li>
+    <strong>Lancer</strong> le site : <code>npm install</code> puis <code>npm run dev</code>.
+  </li>
+  <li>
+    <strong>Vérifier</strong> les règles : <code>npm run verify</code>.
+  </li>
+</ol>
+
+<h2>Créer un site</h2>
+<p>
+  La commande <code>create</code> génère un site Astro qui consomme le design system, avec les
+  gardes, un hook de commit et un workflow CI.
+</p>
+<pre tabindex="0"><code>{CREATE}</code></pre>
+
+<h2>Régler la teinte d’accent et la police</h2>
+<p>
+  <code>--accent-hue</code> prend une teinte en degrés OKLCH, de 0 à 360. <code>--font-stack</code>
+  prend la pile de familles du texte. Sans option, le site est celui du gabarit. Avec l’une des
+  deux, <code>create</code> écrit <code>src/styles/pp-theme.css</code> et l’importe dans
+  <code>Base.astro</code> : l’accent, son texte, le focus, le statut « en cours » et les six
+  couleurs de graphique sont dérivés de la teinte, contraste contrôlé ; la police est servie par le
+  projet.
+</p>
+<pre tabindex="0"><code>{THEME}</code></pre>
+<p>
+  Une teinte hors de 0 à 360 ou une pile qui contient <code>;</code>, des accolades ou
+  <code>url(</code> est refusée, et rien n’est écrit.
+</p>
