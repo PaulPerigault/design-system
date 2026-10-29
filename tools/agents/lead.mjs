@@ -6,7 +6,7 @@
 // S'arrête proprement quand la file est vide. Écrit son pid dans `.agents/lead.pid`.
 import { readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { realDeps } from './lib/cli.mjs';
+import { realDeps } from './lib/cli.ts';
 import {
   nextLot,
   parseQueue,
@@ -14,7 +14,7 @@ import {
   statusAfterSession,
   updateLot,
 } from './lib/lead-queue.ts';
-import { commitLeadFiles, prepareLeadWorktree, runLeadSession } from './lib/lead-session.mjs';
+import { commitLeadFiles, prepareLeadWorktree, runLeadSession } from './lib/lead-session.ts';
 
 const deps = await realDeps();
 if (deps.config.kiro?.available === false) {

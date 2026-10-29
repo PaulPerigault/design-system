@@ -3,21 +3,18 @@
 // puis Kiro (`ds-lead`, claude-opus-5.5, effort high) sous une place du sémaphore.
 import { join } from 'node:path';
 import { executorEnv } from './env.ts';
-import { kiroArgs, runAgent } from './transports.mjs';
+import { runAgent } from './transports.ts';
+import { kiroArgs } from './agent-args.ts';
+import type { Lot } from './lead-queue.ts';
+import type { LeadDeps } from './deps.ts';
+import { must } from './worktree.ts';
 
 export const LEAD_MODEL = 'claude-opus-5.5';
 export const LEAD_TIMEOUT_MS = 4 * 60 * 60 * 1000;
 const LEAD_TOOLS = ['read', 'write', 'shell'];
 
-const must = async (git, args, cwd) => {
-  const result = await git(args, { cwd });
-  if (result.code !== 0)
-    throw new Error(`git ${args.join(' ')} : ${result.stderr || result.stdout}`);
-  return result.stdout.trim();
-};
-
 /** Prépare le worktree de ds-lead sur `lot/<id>` ; renvoie son chemin. */
-export async function prepareLeadWorktree(deps, lot) {
+export async function prepareLeadWorktree(deps: LeadDeps, lot: Lot): Promise<string> {
   const path = join(deps.config.worktreeRoot, 'lead');
   const branch = `lot/${lot.id}`;
   const exists =
@@ -40,7 +37,7 @@ export async function prepareLeadWorktree(deps, lot) {
 }
 
 /** Prompt de la session : rôle (prompts/lead.md), lot, file, règles de fin. */
-export function leadPrompt(lot, queueFile) {
+export function leadPrompt(lot: Pick<Lot, 'id' | 'base' | 'body'>, queueFile: string): string {
   return [
     `# Lot ${lot.id} confié à ds-lead`,
     'Lis `prompts/lead.md` (ton rôle), `AGENTS.md`, `docs/kickoff.md` et les bilans `docs/lots/` avant de commencer.',
@@ -52,8 +49,11 @@ export function leadPrompt(lot, queueFile) {
 }
 
 /** Lance la session Kiro de ds-lead ; renvoie le résumé du flux. */
-export async function runLeadSession(deps, { lot, cwd, queueFile, attempt }) {
-  const file = (suffix) =>
+export async function runLeadSession(
+  deps: LeadDeps,
+  { lot, cwd, queueFile, attempt }: { lot: Lot; cwd: string; queueFile: string; attempt: number },
+) {
+  const file = (suffix: string): string =>
     join(deps.stateRoot, deps.config.runsDir, `lead-${lot.id}-a${attempt}${suffix}`);
   const args = kiroArgs({
     agent: 'ds-lead',
@@ -77,7 +77,10 @@ export async function runLeadSession(deps, { lot, cwd, queueFile, attempt }) {
 }
 
 /** Commite (hooks actifs) les seuls fichiers que ds-lead écrit lui-même : tâches et bilan. */
-export async function commitLeadFiles(deps, { cwd, lot }) {
+export async function commitLeadFiles(
+  deps: LeadDeps,
+  { cwd, lot }: { cwd: string; lot: Lot },
+): Promise<string[]> {
   await deps.git(['add', '--', 'tasks', 'docs/lots'], { cwd });
   const staged = await deps.git(['diff', '--cached', '--name-only'], { cwd });
   if (!staged.stdout.trim()) return [];

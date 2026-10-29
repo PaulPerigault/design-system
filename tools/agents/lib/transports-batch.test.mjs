@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { batchTable, mapLimit, readyTasks, tasksOfLot } from './batch.ts';
 import { executorEnv } from './env.ts';
-import { kiroArgs, transportFailure } from './transports.mjs';
+import { transportFailure } from './transports.ts';
+import { kiroArgs } from './agent-args.ts';
 
 describe('transports et environnement', () => {
   it('n’utilise jamais --trust-all-tools ni --sandbox', () => {

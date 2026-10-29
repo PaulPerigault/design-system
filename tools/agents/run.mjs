@@ -2,8 +2,8 @@
 //   [--base lot/L1] [--escalate] [--engine kiro|claude] [--tier std] [--feedback revue.md]
 // Écrit .agents/runs/<id>.result.json et <id>.summary.md ; code 0 si la tâche passe.
 import { readFile } from 'node:fs/promises';
-import { loadTask, parseOptions, realDeps } from './lib/cli.mjs';
-import { runTask } from './lib/run-task.mjs';
+import { loadTask, parseOptions, realDeps } from './lib/cli.ts';
+import { runTask } from './lib/run-task.ts';
 
 const options = parseOptions(process.argv.slice(2));
 const [file] = options._;

@@ -2,9 +2,10 @@
 // node tools/agents/review.mjs tasks/T2.02-color.md --model claude-opus-5.5
 // Échec si le relecteur a modifié un fichier ; verdict dans .agents/runs/<id>.review-<modèle>.md.
 import { executorEnv } from './lib/env.ts';
-import { loadTask, parseOptions, realDeps } from './lib/cli.mjs';
+import { loadTask, parseOptions, realDeps } from './lib/cli.ts';
 import { buildPrompt } from './lib/prompt.ts';
-import { kiroArgs, runAgent } from './lib/transports.mjs';
+import { runAgent } from './lib/transports.ts';
+import { kiroArgs } from './lib/agent-args.ts';
 import { verdictOf } from './lib/verdict.ts';
 import { runsPath, worktreeOf } from './lib/worktree.ts';
 

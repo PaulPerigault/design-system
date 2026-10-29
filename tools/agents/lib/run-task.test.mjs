@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { world } from './fake-world.mjs';
-import { runTask } from './run-task.mjs';
+import { world } from './fake-world.ts';
+import { runTask } from './run-task.ts';
 
 const TASK = {
   id: 'T1.01',
