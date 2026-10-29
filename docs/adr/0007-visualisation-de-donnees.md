@@ -84,7 +84,8 @@ non-scaling-stroke`. Étiquettes directes plutôt que légende.
   (`--pp-size-focus-*`), cibles ≥ `--pp-size-target-min` (WCAG 2.5.8) pour tout contrôle.
 - **Contraste** : tracés, barres et marques ≥ 3:1 contre le fond (1.4.11) ; texte ≥ 4,5:1 (1.4.3),
   en `--pp-color-fg` ou `--pp-color-muted`, jamais en couleur de série ; deux barres voisines sont
-  séparées par un espace.
+  séparées par un espace. Une valeur posée sur une barre prend `fg` ou `bg`, selon la série et le
+  thème, pour atteindre 4,5:1 contre la barre (D-049).
 - **Jamais la couleur seule** (1.4.1) : étiquette directe en bout de courbe ; chaque série d'indice
   `i` reçoit aussi un motif de trait (continu, tirets, points…) et un marqueur ; légende = marqueur
   plus libellé ; variation d'un KPI dite en mots (« hausse de 4,2 % ») avec signe, la couleur de
@@ -200,8 +201,13 @@ non-scaling-stroke`. Étiquettes directes plutôt que légende.
 2. Seuils ΔE00 (10 et 3) : conventions ; la calibration de V2a peut les ajuster, sans les affaiblir
    sans écrit. Risque : 6 couleurs tritan-sûres sur fond sombre et clair sont peut-être
    inatteignables ; repli : 5 séries au plus, motifs de trait plus visibles.
-3. Un gabarit SVG unique contre deux (compact et large) : le premier est plus léger, peut rendre
-   des étiquettes petites sur mobile ; à trancher à la maquette de V2a, avec l'impression du tableau
-   dans un `details` fermé.
+3. ~~Un gabarit SVG unique contre deux (compact et large)~~ : fermé le 2026-10-29 (D-049). Un seul
+   gabarit, de 360 unités de large (420 avant) : décision de Paul, plancher de 12 px à 375 px pour
+   le texte d'axe et de légende des graphiques ; 14 px reste le plancher du texte hors graphique.
+   Mesure à 375 px (tracé affiché à 309 px) : 10,6 px avant, 12,4 px après ; 19,7 puis 23,0 px à
+   800 px. Les graduations ne se chevauchent pas (écart minimal de 5,6 px). Contrepartie : les
+   libellés de catégories des barres se tronquent plus tôt (la zone de tracé passe de 328 à 268
+   unités), à traiter par des libellés sur deux lignes ou une aération (revue des graphiques V2, M2).
+   Reste ouvert : l'impression du tableau dans un `details` fermé.
 4. Risque de poids : un paquet de plus et des SVG verbeux ; parade : budgets bloquants en CI et
    arrêt du lot si un graphique dépasse sans justification écrite.

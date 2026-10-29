@@ -13,9 +13,10 @@ import { categoryLabels } from './bar-categories.ts';
 import { buildBarAxis } from './bar-axis.ts';
 import type { Plot } from './bar-layout.ts';
 import { BAR_PADDING, barPlot, groupPadding } from './bar-layout.ts';
-import type { ValueLabel } from './bar-values.ts';
+import type { ValueGroup } from './bar-values.ts';
 import { valueLabels } from './bar-values.ts';
 import { xLabel } from './found.ts';
+import { SERIES_INKS } from './ink.ts';
 import { presentValues } from './y-axis.ts';
 
 export interface BarOptions {
@@ -35,7 +36,7 @@ export interface BarModel {
   readonly axes: AxesModel;
   readonly categories: readonly CategoryLabel[];
   readonly series: readonly BarSeriesModel[];
-  readonly values: readonly ValueLabel[];
+  readonly values: readonly ValueGroup[];
 }
 
 const seriesModels = (dataset: Dataset, rects: readonly BarRect[]): BarSeriesModel[] =>
@@ -62,6 +63,7 @@ export function buildBarModel(
     return fail('dataset.empty', 'Aucune valeur à tracer.', 'series');
   }
   const { orientation, showValues } = options;
+  if (!SERIES_INKS.ok) return SERIES_INKS;
   const labels = dataset.x.values.map((_, index) => xLabel(dataset.x, index, fmt));
   const plot = barPlot(orientation, labels);
   const axis = buildBarAxis(dataset.series, orientation, plot, fmt);
@@ -80,6 +82,8 @@ export function buildBarModel(
     axes: axis.value.axes,
     categories: categoryLabels(labels, categories.value, orientation, plot),
     series: seriesModels(dataset, rects.value),
-    values: showValues ? valueLabels(rects.value, orientation, plot, fmt) : [],
+    values: showValues
+      ? valueLabels(rects.value, { orientation, plot, fmt, inks: SERIES_INKS.value })
+      : [],
   });
 }

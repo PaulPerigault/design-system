@@ -7,8 +7,10 @@ type Column = readonly (number | null)[];
 export interface AreaLayer {
   readonly index: number;
   readonly label: string;
-  /** Tracé fermé de la couche, du haut de la couche à la ligne de base : aire et contour. */
+  /** Tracé fermé de la couche, du haut de la couche à la ligne de base : le fond. */
   readonly d: string;
+  /** Contour : la seule courbe supérieure, ni la base ni les côtés. */
+  readonly top: string;
   /** Marqueurs des points isolés, qu'une aire sans voisin ne dessine pas. */
   readonly markers: string;
   readonly missing: number;
@@ -38,6 +40,7 @@ function buildLayer(series: Series, index: number, top: Column, scene: AreaScene
     index,
     label: series.label,
     d: area.value.d,
+    top: area.value.top,
     markers,
     missing,
   });

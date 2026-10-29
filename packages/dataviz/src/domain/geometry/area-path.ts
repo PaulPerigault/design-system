@@ -3,20 +3,22 @@ import { fail, ok } from '../result.ts';
 import { coord } from './format.ts';
 import type { PathPoint, Pixel } from './line-path.ts';
 import { segmentsOf } from './line-path.ts';
+import { relativeCurve, round1 } from './relative-curve.ts';
 
 export interface AreaGeometry {
   /** Attribut `d` : un sous-chemin fermé par segment continu d'au moins deux points. */
   readonly d: string;
+  /** Contour supérieur seul : la courbe de chaque segment, sans la verticale ni la base. */
+  readonly top: string;
   /** Points sans voisin : une aire d'un seul point n'a pas de surface, à marquer. */
   readonly isolated: readonly Pixel[];
 }
 
-/** Aire d'un segment : le contour de la courbe, puis la verticale et la base jusqu'au départ. */
+/** Aire d'un segment : la courbe (relative, 1 décimale), puis la verticale et la base jusqu'au départ. */
 function segmentArea(segment: readonly Pixel[], baseline: number): string {
   const first = segment[0];
   if (first === undefined) return '';
-  const curve = segment.map((p, i) => `${i === 0 ? 'M' : 'L'}${coord(p.x)} ${coord(p.y)}`);
-  return `${curve.join('')}V${coord(baseline)}H${coord(first.x)}z`;
+  return `${relativeCurve(segment)}V${coord(baseline)}H${round1(first.x)}z`;
 }
 
 /**
@@ -32,11 +34,10 @@ export function areaPath(points: readonly PathPoint[], baseline: number): Result
     return fail('geometry.bad-input', 'Coordonnée non finie.', 'points');
   }
   const segments = segmentsOf(points);
+  const drawn = segments.filter((s) => s.length > 1);
   return ok({
-    d: segments
-      .filter((s) => s.length > 1)
-      .map((s) => segmentArea(s, baseline))
-      .join(''),
+    d: drawn.map((s) => segmentArea(s, baseline)).join(''),
+    top: drawn.map(relativeCurve).join(''),
     isolated: segments.flatMap((s) => (s.length === 1 && s[0] ? [s[0]] : [])),
   });
 }

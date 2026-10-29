@@ -1,19 +1,14 @@
 /*
  * Aire (AreaChart) : fichier global, en plus de `chart-base.css`, `chart-series.css`,
  * `line-chart.css` (contour et marqueurs) et `line-chart-series.css` (motif de trait par rang). Le
- * tracé d'une couche (`__shape`, dans `defs`) est référencé par `__area` (fond) et `__line` (trait).
- * Les
- * couches se peignent de l'arrière vers l'avant et jusqu'à la base : chaque fond est donc opaque,
+ * fond d'une couche (`__area`) est fermé sur la base ; son contour (`__line`) est la seule courbe
+ * supérieure. Les couches se peignent de l'arrière vers l'avant et jusqu'à la base : chaque fond est donc opaque,
  * teinte de la série mêlée au fond de page (`--pp-area-tint`, 12 % au plus, ADR-0007), pour que
  * l'empilement ne s'assombrisse pas par superposition. Les motifs du rang, tracés dans la couleur
  * de la série, portent l'identité sans la couleur. Aucun dégradé, ombre ni flou, aucune animation.
  */
 .pp-area-chart {
   --pp-area-tint: 12%;
-}
-
-.pp-area-chart__shape {
-  vector-effect: non-scaling-stroke;
 }
 
 .pp-area-chart__area {

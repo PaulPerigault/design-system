@@ -63,7 +63,7 @@ describe('BarChart (libellés et valeurs)', () => {
     const anchors = [...document.querySelectorAll('.pp-bar-chart__value')].map((v) =>
       v.getAttribute('data-anchor'),
     );
-    expect(anchors).toEqual(['end', 'end', 'end', 'end', 'start']);
+    expect(anchors).toEqual(['end', 'end', 'end', 'start', 'start']);
   });
 });
 
