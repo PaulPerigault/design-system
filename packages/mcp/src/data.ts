@@ -1,4 +1,4 @@
-// Données embarquées : quatre fichiers JSON de `data/`, produits par `scripts/build-data.mjs`.
+// Données embarquées : quatre fichiers JSON de `data/`, produits par `scripts/build-data.ts`.
 // Lecture seule, relative au paquet ; validées au démarrage. Les erreurs ne citent aucun chemin.
 import { readFileSync } from 'node:fs';
 import { URL } from 'node:url';
@@ -42,16 +42,28 @@ const decisions = z.object({
 
 const docs = z.array(z.object({ path: text, title: text, url: text, body: text }));
 
-const FILES = Object.freeze({
-  components: { file: 'components.json', schema: z.array(component) },
-  tokens: { file: 'tokens.json', schema: tokens },
-  decisions: { file: 'adr.json', schema: decisions },
-  docs: { file: 'docs.json', schema: docs },
-});
+const SCHEMAS = {
+  components: z.array(component),
+  tokens,
+  decisions,
+  docs,
+};
+const FILE_NAMES = {
+  components: 'components.json',
+  tokens: 'tokens.json',
+  decisions: 'adr.json',
+  docs: 'docs.json',
+};
+
+export type Component = z.infer<typeof component>;
+export type Tokens = z.infer<typeof tokens>;
+export type Decisions = z.infer<typeof decisions>;
+export type Docs = z.infer<typeof docs>;
+export type Data = { [K in keyof typeof SCHEMAS]: z.output<(typeof SCHEMAS)[K]> };
 
 /** Valide un contenu déjà lu ; lève une erreur sans chemin si la forme est inattendue. */
-export function parseData(file, raw, schema) {
-  let json;
+export function parseData<S extends z.ZodType>(file: string, raw: string, schema: S): z.output<S> {
+  let json: unknown;
   try {
     json = JSON.parse(raw);
   } catch {
@@ -62,7 +74,7 @@ export function parseData(file, raw, schema) {
   return result.data;
 }
 
-function readOne(read, file) {
+function readOne(read: (url: URL) => string, file: string): string {
   try {
     return read(new URL(file, DATA_DIR));
   } catch {
@@ -70,26 +82,27 @@ function readOne(read, file) {
   }
 }
 
-/**
- * Charge et valide les données. `read` est injecté (tests) ; par défaut, lecture synchrone.
- * @param {{ read?: (url: URL) => string }} [io]
- * @returns {{ components: object[], tokens: object, decisions: object, docs: object[] }}
- */
-export function loadData({ read = (url) => readFileSync(url, 'utf8') } = {}) {
-  return Object.fromEntries(
-    Object.entries(FILES).map(([key, { file, schema }]) => [
-      key,
-      parseData(file, readOne(read, file), schema),
-    ]),
-  );
+const readFile = (url: URL): string => readFileSync(url, 'utf8');
+
+type Key = keyof typeof SCHEMAS;
+
+/** Valide chaque jeu ; `source` rend le texte JSON d'un jeu (fichier lu, ou données en mémoire). */
+function build(source: (key: Key, file: string) => string): Data {
+  const at = (key: Key): string => source(key, FILE_NAMES[key]);
+  return {
+    components: parseData(FILE_NAMES.components, at('components'), SCHEMAS.components),
+    tokens: parseData(FILE_NAMES.tokens, at('tokens'), SCHEMAS.tokens),
+    decisions: parseData(FILE_NAMES.decisions, at('decisions'), SCHEMAS.decisions),
+    docs: parseData(FILE_NAMES.docs, at('docs'), SCHEMAS.docs),
+  };
+}
+
+/** Charge et valide les données. `read` est injecté (tests) ; par défaut, lecture synchrone. */
+export function loadData({ read = readFile }: { read?: (url: URL) => string } = {}): Data {
+  return build((_key, file) => readOne(read, file));
 }
 
 /** Valide des données déjà en mémoire (tests, autres hôtes). */
-export function validateData(data) {
-  return Object.fromEntries(
-    Object.entries(FILES).map(([key, { file, schema }]) => [
-      key,
-      parseData(file, JSON.stringify(data[key]), schema),
-    ]),
-  );
+export function validateData(data: Record<Key, unknown>): Data {
+  return build((key) => JSON.stringify(data[key]));
 }

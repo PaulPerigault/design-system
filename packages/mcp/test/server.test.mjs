@@ -4,8 +4,8 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { analyze, RULE_IDS } from '@paulperigault/guards/design';
-import { createServer, DATA_NOTICE, toolCallback } from '../src/server.mjs';
-import { LIMITS, ToolError } from '../src/schemas.mjs';
+import { createServer, DATA_NOTICE, toolCallback } from '../src/server.ts';
+import { LIMITS, ToolError } from '../src/schemas.ts';
 
 const empty = { keyboard: [], screenReader: [], guaranteed: [], integrator: [] };
 const button = { slug: 'button', title: 'Button', group: 'forms', summary: 'Bouton.', snippet: '' };

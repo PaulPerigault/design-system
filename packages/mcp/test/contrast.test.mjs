@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { apcaLc as tokensApcaLc } from '@paulperigault/tokens/contrast';
-import { apcaContrast, apcaLc, hexToRgb, srgbToY } from '../src/apca.mjs';
-import { contrastReport, pairReport, resolveColor } from '../src/contrast-pair.mjs';
-import { ToolError } from '../src/schemas.mjs';
+import { apcaContrast, apcaLc, hexToRgb, srgbToY } from '../src/apca.ts';
+import { contrastReport, pairReport, resolveColor } from '../src/contrast-pair.ts';
+import { ToolError } from '../src/schemas.ts';
 
 // Valeurs de référence publiées avec apca-w3 0.1.9 (README de Myndex/apca-w3) : texte, fond, Lc.
 const REFERENCE = [

@@ -33,9 +33,9 @@
     "provenance": true
   },
   "scripts": {
-    "prepublishOnly": "node ../../tools/checks/check-publish-env.mjs && node scripts/build-data.mjs --check",
-    "build:data": "node scripts/build-data.mjs",
-    "check:data": "node scripts/build-data.mjs --check",
+    "prepublishOnly": "node ../../tools/checks/check-publish-env.mjs && node scripts/build-data.ts --check",
+    "build:data": "node scripts/build-data.ts",
+    "check:data": "node scripts/build-data.ts --check",
     "test": "vitest run"
   },
   "bin": {

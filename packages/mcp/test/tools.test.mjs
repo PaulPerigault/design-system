@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { loadData, validateData } from '../src/data.mjs';
-import { ToolError } from '../src/schemas.mjs';
-import { closest, distance, getComponent, listComponents } from '../src/tools-components.mjs';
-import { canonicalId, docsTools, normalize, termsOf } from '../src/tools-docs.mjs';
-import { checkContrast, getTokens, roleOf } from '../src/tools-tokens.mjs';
-
+import { loadData, validateData } from '../src/data.ts';
+import { canonicalId, ToolError } from '../src/schemas.ts';
+import { closest, distance, getComponent, listComponents } from '../src/tools-components.ts';
+import { docsTools } from '../src/tools-docs.ts';
+import { normalize, termsOf } from '../src/tools-components.ts';
+import { checkContrast, getTokens, roleOf } from '../src/tools-tokens.ts';
 const a11y = { keyboard: ['Tab'], screenReader: [], guaranteed: [], integrator: [] };
 const component = (slug, group) => ({
   ...{ slug, title: slug, group, summary: `${slug} sert à…`, use: [], avoid: [], snippet: '' },
