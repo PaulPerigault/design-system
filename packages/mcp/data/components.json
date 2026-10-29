@@ -171,6 +171,126 @@
   {
     "a11y": {
       "guaranteed": [
+        "Chaque couche a un contour de trait, un motif de remplissage et une légende, en plus de sa couleur (WCAG 1.4.1).",
+        "Jetons --pp-chart-1..6 en clair et en sombre ; aucun attribut style.",
+        "Une valeur manquante rompt la couche au lieu de la rabattre à zéro, et se dit dans le tableau lié.",
+        "Zéro JavaScript et aucune animation : rien à retirer sous prefers-reduced-motion: reduce.",
+        "Impression : motifs et tableau conservés, sans dépendre de la couleur."
+      ],
+      "integrator": [
+        "Donner un id unique par page (lettres, chiffres, tirets) : il relie titre, résumé et motifs.",
+        "Fournir un jeu de données valide, sans valeur négative : sinon le build échoue avec son code d’erreur.",
+        "Pour un empilement, ordonner les séries de la plus stable (en bas) à la plus variable (en haut)."
+      ],
+      "keyboard": [
+        "Le SVG n’est pas interactif et ne reçoit pas le focus.",
+        "Le tableau lié se déplie au clavier (élément details natif) et défile au clavier."
+      ],
+      "screenReader": [
+        "Le SVG porte role=\"img\", nommé par un title et décrit par un desc.",
+        "Le desc donne le total, les extrêmes et les données manquantes ; il dit si les couches sont empilées.",
+        "Le tableau de toutes les données est lié sous le graphique, dans un details fermé."
+      ]
+    },
+    "avoid": [
+      "Au-delà de trois ou quatre couches : l’empilement devient difficile à lire. À six couches de 500 points, mieux vaut des courbes séparées (LineChart) ou une petite série par graphique.",
+      "Pour comparer précisément des couches du milieu : seule la première repose sur la base zéro, les autres flottent. Utiliser BarChart ou LineChart.",
+      "Avec des valeurs négatives : l’empilement refuse le jeu et le build échoue avec le code stack.negative-value.",
+      "Pour une interaction (survol, infobulle) : le rendu est statique, sans JavaScript."
+    ],
+    "evidence": [
+      "[WCAG 1.1.1 Contenu non textuel](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html)",
+      "[WCAG 1.4.1 Utilisation de la couleur](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+      "ADR-0007 : visualisation de données",
+      "Tests : packages/astro/test/AreaChart.test.ts"
+    ],
+    "group": "data",
+    "props": [
+      {
+        "description": "Préfixe unique des ids du titre et de la description : lettres, chiffres et tirets.",
+        "fallback": "—",
+        "name": "id (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Titre du graphique, premier élément de son nom accessible.",
+        "fallback": "—",
+        "name": "title (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Jeu de données (`schema: 1`) : validé, sinon le build échoue avec le code d'erreur.",
+        "fallback": "—",
+        "name": "dataset (obligatoire)",
+        "type": "Dataset"
+      },
+      {
+        "description": "Locale des nombres et des dates. Défaut : `fr`.",
+        "fallback": "'fr'",
+        "name": "locale",
+        "type": "string"
+      },
+      {
+        "description": "Libellé du tableau de données lié.",
+        "fallback": "—",
+        "name": "tableLabel",
+        "type": "string"
+      },
+      {
+        "description": "Message de l'état vide (aucune valeur présente).",
+        "fallback": "—",
+        "name": "emptyLabel",
+        "type": "string"
+      },
+      {
+        "description": "Début du message d'erreur de rendu ; le code d'erreur le suit.",
+        "fallback": "—",
+        "name": "errorLabel",
+        "type": "string"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "area-chart",
+    "snippet": "---\nimport AreaChart from '@paulperigault/astro/AreaChart.astro';\nimport type { Dataset } from '@paulperigault/dataviz';\n\nconst sources: Dataset = {\n  schema: 1,\n  x: { kind: 'time', label: 'Mois', values: ['2025-01-01', '2025-02-01', '2025-03-01'] },\n  series: [\n    { id: 'recherche', label: 'Recherche', unit: 'visites', values: [410, 400, 450] },\n    { id: 'direct', label: 'Direct', unit: 'visites', values: [260, 250, 270] },\n  ],\n};\n---\n\n<AreaChart id=\"visites-source\" title=\"Visites par source\" dataset={sources} />",
+    "summary": "AreaChart montre l’évolution d’un total, ou sa décomposition en deux à six couches empilées, en SVG statique.",
+    "title": "AreaChart",
+    "tokens": [
+      "--pp-chart-1",
+      "--pp-chart-2",
+      "--pp-chart-3",
+      "--pp-chart-4",
+      "--pp-chart-5",
+      "--pp-chart-6",
+      "--pp-color-bg",
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-font-family-sans",
+      "--pp-font-size--1",
+      "--pp-font-size-0",
+      "--pp-font-weight-semibold",
+      "--pp-size-measure",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-s",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Montrer un volume qui évolue dans le temps : trafic, consommation, effectifs.",
+      "Décomposer un total en deux à quatre sources : l’empilement donne le total et la part de chaque couche.",
+      "Garder le zéro comme base : l’aire est proportionnelle à la valeur, ce que la courbe seule ne garantit pas."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
         "Chaque source porte width et height de son recadrage : la place est réservée.",
         "Sources ordonnées narrow, medium, puis image par défaut.",
         "alt obligatoire, ou decorative : sinon erreur au build.",
@@ -1929,6 +2049,172 @@
     "use": [
       "Présenter plusieurs images d’une même série, chacune avec son texte alternatif.",
       "Agrandir chaque vignette dans un dialogue natif avec enlarge et labels."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Le sens ne repose jamais sur la couleur seule : chaque zone a un libellé écrit, un motif et son rang (WCAG 1.4.1).",
+        "La valeur, l’unité et la zone sont écrites au centre en texte, pas seulement dessinées.",
+        "Une valeur hors intervalle est bornée et le dit dans le desc.",
+        "Zéro JavaScript et aucune animation ; aucun attribut style ; jetons --pp-chart-* en clair et en sombre."
+      ],
+      "integrator": [
+        "Donner un id unique par page (lettres, chiffres, tirets).",
+        "Nommer chaque zone par un libellé qui dit l’état (Critique, Nominal), pas seulement une couleur.",
+        "Toute zone sauf la dernière porte sa borne to ; la dernière s’arrête au maximum."
+      ],
+      "keyboard": [
+        "Le SVG n’est pas interactif et ne reçoit pas le focus.",
+        "Le tableau des zones se déplie au clavier (élément details natif)."
+      ],
+      "screenReader": [
+        "Le SVG porte role=\"img\", nommé par un title et décrit par un desc.",
+        "Le desc donne la valeur, l’intervalle, la zone atteinte et la liste des zones avec leurs bornes.",
+        "Le tableau des zones est lié sous le graphique ; la ligne de la zone actuelle porte la valeur."
+      ]
+    },
+    "avoid": [
+      "Pour comparer plusieurs valeurs ou suivre une évolution : utiliser BarChart ou LineChart.",
+      "Sans seuil ni zone : une valeur seule s’écrit plus clairement en Stat.",
+      "Avec une couleur pour seule information : le sens vient du libellé écrit de la zone et de son motif, la teinte (tone) n’est qu’un renfort.",
+      "Avec un intervalle nul ou des seuils non croissants : le build échoue avec gauge.bad-range ou gauge.bad-thresholds."
+    ],
+    "evidence": [
+      "[WCAG 1.4.1 Utilisation de la couleur](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+      "[WCAG 1.1.1 Contenu non textuel](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html)",
+      "ADR-0007 : visualisation de données",
+      "Tests : packages/astro/test/GaugeChart.test.ts"
+    ],
+    "group": "data",
+    "props": [
+      {
+        "description": "Valeur mesurée ; `null` : état vide. Hors intervalle, l'aiguille est bornée et le dit.",
+        "fallback": "—",
+        "name": "value (obligatoire)",
+        "type": "number | null"
+      },
+      {
+        "description": "Borne basse de l'intervalle (défaut 0).",
+        "fallback": "0",
+        "name": "min",
+        "type": "number"
+      },
+      {
+        "description": "Borne haute de l'intervalle ; strictement supérieure à min.",
+        "fallback": "DEFAULT_MAX",
+        "name": "max",
+        "type": "number"
+      },
+      {
+        "description": "Unité écrite avec la valeur et les bornes (`%`, `ms`…).",
+        "fallback": "''",
+        "name": "unit",
+        "type": "string"
+      },
+      {
+        "description": "Libellé central, tronqué à l'affichage ; le texte complet reste dans `<desc>`.",
+        "fallback": "''",
+        "name": "label",
+        "type": "string"
+      },
+      {
+        "description": "Zones dans l'ordre : `{ label, to, tone? }`, la dernière s'arrête au maximum (`to` omis).",
+        "fallback": "[]",
+        "name": "zones",
+        "type": "ZoneSpec[]"
+      },
+      {
+        "description": "`half` (défaut) : demi-cercle ; `full` : cercle complet depuis midi.",
+        "fallback": "'half'",
+        "name": "shape",
+        "type": "\"half\" | \"full\""
+      },
+      {
+        "description": "Textes de l'interface (défaut : français).",
+        "fallback": "{}",
+        "name": "labels",
+        "type": "Partial<GaugeLabels>"
+      },
+      {
+        "description": "Préfixe unique des ids du titre et de la description : lettres, chiffres et tirets.",
+        "fallback": "—",
+        "name": "id (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Titre du graphique, premier élément de son nom accessible.",
+        "fallback": "—",
+        "name": "title (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Locale des nombres et des dates. Défaut : `fr`.",
+        "fallback": "'fr'",
+        "name": "locale",
+        "type": "string"
+      },
+      {
+        "description": "Libellé du tableau de données lié.",
+        "fallback": "—",
+        "name": "tableLabel",
+        "type": "string"
+      },
+      {
+        "description": "Message de l'état vide (aucune valeur présente).",
+        "fallback": "—",
+        "name": "emptyLabel",
+        "type": "string"
+      },
+      {
+        "description": "Début du message d'erreur de rendu ; le code d'erreur le suit.",
+        "fallback": "—",
+        "name": "errorLabel",
+        "type": "string"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "gauge-chart",
+    "snippet": "---\nimport GaugeChart from '@paulperigault/astro/GaugeChart.astro';\n---\n\n<GaugeChart\n  id=\"remplissage\"\n  title=\"Taux de remplissage de la salle\"\n  value={72}\n  unit=\"%\"\n  label=\"Taux de remplissage\"\n  zones={[\n    { label: 'Critique', to: 40, tone: 'bad' },\n    { label: 'Vigilance', to: 80, tone: 'warning' },\n    { label: 'Nominal', tone: 'good' },\n  ]}\n/>",
+    "summary": "GaugeChart situe une valeur unique dans un intervalle et dans des zones nommées, en demi-cercle ou en cercle complet, en SVG statique.",
+    "title": "GaugeChart",
+    "tokens": [
+      "--pp-chart-1",
+      "--pp-chart-2",
+      "--pp-chart-3",
+      "--pp-chart-4",
+      "--pp-chart-5",
+      "--pp-chart-6",
+      "--pp-color-bg",
+      "--pp-color-fg",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-color-status-degraded",
+      "--pp-color-status-failed",
+      "--pp-color-status-passed",
+      "--pp-color-status-running",
+      "--pp-font-family-sans",
+      "--pp-font-size--1",
+      "--pp-font-size-0",
+      "--pp-font-size-3",
+      "--pp-font-weight-semibold",
+      "--pp-size-measure",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-s",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Situer une valeur unique par rapport à un seuil ou à des zones : taux de remplissage, charge, délai.",
+      "Afficher la valeur en grand, écrite au centre, avec son unité et le nom de la zone atteinte.",
+      "Dire explicitement une valeur hors intervalle : l’aiguille est bornée et le texte l’indique."
     ]
   },
   {

@@ -10,8 +10,8 @@ describe('neighborsOf', () => {
   });
 
   it('renvoie aucun suivant pour la dernière page de la navigation', () => {
-    const result = neighborsOf('bar-chart');
-    expect(result.previous?.slug).toBe('line-chart');
+    const result = neighborsOf('gauge-chart');
+    expect(result.previous?.slug).toBe('area-chart');
     expect(result.next).toBeUndefined();
     expect(result.group.id).toBe('donnees');
   });

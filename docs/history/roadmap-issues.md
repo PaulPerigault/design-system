@@ -80,4 +80,4 @@ Choix à valider par Paul :
 - **Options de champ à ajouter au Project** : `Lot` = R (Rust), V (visualisation), S (sobriété).
   Les labels `pkg:color` et `pkg:data` n'existent pas ; `pkg:tokens` et `pkg:astro` en tiennent lieu.
 
-Avancement (2026-10-29) : V2a (#94) faite (V2a-1 à V2a-4, D-040 à D-043). Suivantes, prêtes : V2b (#95, aire et jauge) et V3a (#96, KPI et sparklines).
+Avancement (2026-10-29) : V2a (#94) faite (V2a-1 à V2a-4, D-040 à D-043) ; V2b (#95) faite (V2b-1, V2b-2, D-044, D-045). Suivantes, prêtes : V3a (#96, KPI et sparklines), puis V3b (#97) ; #121 en parallèle.

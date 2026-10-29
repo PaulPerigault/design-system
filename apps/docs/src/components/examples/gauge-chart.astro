@@ -1,0 +1,17 @@
+---
+/** Exemples vivants de la page GaugeChart : demi-cercle, cercle complet, hors intervalle, zones nommées. */
+import GaugeChart from '@paulperigault/astro/GaugeChart.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+import { gauges } from './chart-data.ts';
+---
+
+<Stack space="l">
+  <GaugeChart id="demo-gauge-half" title="Taux de remplissage de la salle" {...gauges.fill} />
+  <GaugeChart id="demo-gauge-full" title="Stock de pièces en entrepôt" {...gauges.fullCircle} />
+  <GaugeChart
+    id="demo-gauge-over"
+    title="Charge du serveur, valeur hors intervalle"
+    {...gauges.outOfRange}
+  />
+  <GaugeChart id="demo-gauge-named" title="Temps de traitement d’une demande" {...gauges.named} />
+</Stack>

@@ -1,0 +1,104 @@
+---
+import ComponentPage from '../../components/ComponentPage.astro';
+import AccentHueDemo from '../../components/examples/accent-hue-demo.astro';
+import AreaChartExamples from '../../components/examples/area-chart.astro';
+
+const snippet = `---
+import AreaChart from '@paulperigault/astro/AreaChart.astro';
+import type { Dataset } from '@paulperigault/dataviz';
+
+const sources: Dataset = {
+  schema: 1,
+  x: { kind: 'time', label: 'Mois', values: ['2025-01-01', '2025-02-01', '2025-03-01'] },
+  series: [
+    { id: 'recherche', label: 'Recherche', unit: 'visites', values: [410, 400, 450] },
+    { id: 'direct', label: 'Direct', unit: 'visites', values: [260, 250, 270] },
+  ],
+};
+---
+
+<AreaChart id="visites-source" title="Visites par source" dataset={sources} />`;
+---
+
+<ComponentPage
+  slug="area-chart"
+  title="AreaChart"
+  summary="AreaChart montre l’évolution d’un total, ou sa décomposition en deux à six couches empilées, en SVG statique."
+  use={[
+    'Montrer un volume qui évolue dans le temps : trafic, consommation, effectifs.',
+    'Décomposer un total en deux à quatre sources : l’empilement donne le total et la part de chaque couche.',
+    'Garder le zéro comme base : l’aire est proportionnelle à la valeur, ce que la courbe seule ne garantit pas.',
+  ]}
+  avoid={[
+    'Au-delà de trois ou quatre couches : l’empilement devient difficile à lire. À six couches de 500 points, mieux vaut des courbes séparées (LineChart) ou une petite série par graphique.',
+    'Pour comparer précisément des couches du milieu : seule la première repose sur la base zéro, les autres flottent. Utiliser BarChart ou LineChart.',
+    'Avec des valeurs négatives : l’empilement refuse le jeu et le build échoue avec le code stack.negative-value.',
+    'Pour une interaction (survol, infobulle) : le rendu est statique, sans JavaScript.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Le SVG n’est pas interactif et ne reçoit pas le focus.',
+      'Le tableau lié se déplie au clavier (élément details natif) et défile au clavier.',
+    ],
+    screenReader: [
+      'Le SVG porte role="img", nommé par un title et décrit par un desc.',
+      'Le desc donne le total, les extrêmes et les données manquantes ; il dit si les couches sont empilées.',
+      'Le tableau de toutes les données est lié sous le graphique, dans un details fermé.',
+    ],
+    guaranteed: [
+      'Chaque couche a un contour de trait, un motif de remplissage et une légende, en plus de sa couleur (WCAG 1.4.1).',
+      'Jetons --pp-chart-1..6 en clair et en sombre ; aucun attribut style.',
+      'Une valeur manquante rompt la couche au lieu de la rabattre à zéro, et se dit dans le tableau lié.',
+      'Zéro JavaScript et aucune animation : rien à retirer sous prefers-reduced-motion: reduce.',
+      'Impression : motifs et tableau conservés, sans dépendre de la couleur.',
+    ],
+    integrator: [
+      'Donner un id unique par page (lettres, chiffres, tirets) : il relie titre, résumé et motifs.',
+      'Fournir un jeu de données valide, sans valeur négative : sinon le build échoue avec son code d’erreur.',
+      'Pour un empilement, ordonner les séries de la plus stable (en bas) à la plus variable (en haut).',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.1.1 Contenu non textuel',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html',
+    },
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html',
+    },
+    { label: 'ADR-0007 : visualisation de données' },
+    { label: 'Tests : packages/astro/test/AreaChart.test.ts' },
+  ]}
+>
+  <AreaChartExamples />
+  <Fragment slot="variants">
+    <h3>Budgets de poids</h3>
+    <ul>
+      <li>
+        De une à six séries de 500 points : sous 10 ko et 400 nœuds, valeurs demandées comprises.
+      </li>
+      <li>
+        Au-delà de 250 points au total pour les couches, un échantillonnage LTTB réduit le tracé au
+        build ; le tableau lié garde la donnée complète.
+      </li>
+      <li>
+        Le tracé de chaque couche est écrit une fois et référencé deux fois (aire et contour).
+      </li>
+    </ul>
+    <h3>Limites connues</h3>
+    <ul>
+      <li>
+        Les couleurs --pp-chart-1..6 restent figées sur l’accent par défaut tant que l’issue #121
+        n’est pas faite.
+      </li>
+      <li>
+        Une valeur manquante compte pour zéro dans le cumul des couches au-dessus, mais la couche
+        concernée est rompue.
+      </li>
+    </ul>
+    <h3>Teinte d’accent</h3>
+    <AccentHueDemo />
+  </Fragment>
+</ComponentPage>

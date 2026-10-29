@@ -28,6 +28,20 @@ async function settleImages(page: Page): Promise<void> {
   );
 }
 
+/** Pages dont les motifs de hachures alourdissent trop une capture pleine page (budget d'images). */
+const EXAMPLES_ONLY = ['/components/area-chart/', '/components/gauge-chart/'];
+
+/** Zone des exemples (de « Exemples » à « Variantes »), en coordonnées de page. */
+function examplesClip(page: Page) {
+  return page.evaluate(() => {
+    const start = document.querySelector('h2#exemples')?.getBoundingClientRect();
+    const end = document.querySelector('h2#variantes')?.getBoundingClientRect();
+    if (!start || !end) throw new Error('sections « Exemples » et « Variantes » introuvables');
+    const top = start.top + window.scrollY;
+    return { x: 0, y: top, width: window.innerWidth, height: end.top + window.scrollY - top };
+  });
+}
+
 /** Gabarits de page : les deux thèmes. */
 const TEMPLATE_PAGES = [
   '/',
@@ -59,9 +73,11 @@ for (const path of PAGES) {
       );
       await visit(page, path, theme);
       await settleImages(page);
+      const clip = EXAMPLES_ONLY.includes(path) ? await examplesClip(page) : undefined;
       await expect(page).toHaveScreenshot(`${slugOf(path)}-${theme}.png`, {
         animations: 'disabled',
         fullPage: true,
+        ...(clip ? { clip } : {}),
         maxDiffPixelRatio: MAX_DIFF_PIXEL_RATIO,
       });
     });
