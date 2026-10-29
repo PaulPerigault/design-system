@@ -1,12 +1,7 @@
 ---
-import Alert from '@paulperigault/astro/Alert.astro';
+import UsageStart from '../components/UsageStart.astro';
 import DocsLayout from '../layouts/DocsLayout.astro';
 
-const CREATE = `npm create @paulperigault mon-site
-cd mon-site
-git init
-npm install
-npm run dev`;
 const ADD = `npx @paulperigault/create add stack
 npx @paulperigault/create eject stack
 npx @paulperigault/create diff stack`;
@@ -31,20 +26,7 @@ const SELF_TEST = `npx -y @paulperigault/mcp --self-test`;
   <div class="docs-prose usage">
     <h1>Utiliser le design system</h1>
 
-    <Alert tone="info" toneLabel="Information">
-      <p>
-        Les paquets ne sont pas encore publiés sur npmjs. Le <code>README.md</code> du dépôt les
-        déclare « en construction » en version <code>0.x</code>. Les commandes ci-dessous
-        fonctionneront après la première publication.
-      </p>
-    </Alert>
-
-    <h2>Créer un site</h2>
-    <p>
-      La commande <code>create</code> génère un site Astro qui consomme le design system, avec les
-      gardes, un hook de commit et un workflow CI.
-    </p>
-    <pre tabindex="0"><code>{CREATE}</code></pre>
+    <UsageStart />
 
     <h2>Ajouter, éjecter, comparer un composant</h2>
     <p>
@@ -106,7 +88,7 @@ const SELF_TEST = `npx -y @paulperigault/mcp --self-test`;
 </DocsLayout>
 
 <style>
-  .usage pre {
+  .usage :global(pre) {
     padding: var(--pp-space-s);
     max-inline-size: 100%;
     overflow: auto;
@@ -114,7 +96,7 @@ const SELF_TEST = `npx -y @paulperigault/mcp --self-test`;
     border-radius: var(--pp-radius-control);
   }
 
-  .usage :where(p, li) {
+  .usage :global(:where(p, li)) {
     overflow-wrap: anywhere;
   }
 </style>
