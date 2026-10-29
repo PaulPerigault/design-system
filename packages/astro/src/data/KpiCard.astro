@@ -1,0 +1,63 @@
+---
+/**
+ * KpiCard : indicateur synthétique, valeur et unité en grand, variation dite en mots (« Hausse de
+ * 4,2 % ») avec son signe et sa référence, sparkline optionnelle. Zéro JavaScript, aucun attribut
+ * `style` (CSP stricte). Le sens ne repose jamais sur une flèche ou une teinte : le mot est écrit.
+ * Valeur non finie, référence non finie ou plus de 9 chiffres entiers : le build échoue avec le
+ * code (`kpi.*`) ; la sparkline échoue avec les siens (`dataset.*`, `sparkline.*`).
+ */
+import './chart-base.css';
+import './chart-series.css';
+import './kpi-card.css';
+import Sparkline from './Sparkline.astro';
+import type { KpiLabels } from './chart/prepare-kpi.ts';
+import { KPI_LABELS, prepareKpi } from './chart/prepare-kpi.ts';
+import { assertChartId } from './chart/props.ts';
+import type { ChartProps } from './chart/props.ts';
+
+interface Props extends Pick<ChartProps, 'id' | 'title' | 'locale' | 'class'> {
+  /** Valeur mesurée ; `null` : état vide. */
+  value: number | null;
+  /** Unité écrite avec la valeur (`€`, `%`, `ms`). */
+  unit?: string;
+  /** Valeur de comparaison (période précédente, objectif) ; absente : pas de variation. */
+  reference?: number | null;
+  /** Ce à quoi se compare la variation, écrit après elle (« par rapport à septembre »). */
+  referenceLabel?: string;
+  /** Tendance : un jeu à une série ; son titre nomme la période (« Visites par mois »). */
+  trend?: { title: string; dataset: unknown };
+  /** Textes de l'interface (défaut : français). */
+  labels?: Partial<KpiLabels>;
+}
+
+const BLOCK = 'pp-kpi-card';
+const { id, title, value, class: className, locale = 'fr', unit = '', trend } = Astro.props;
+const { reference = null, referenceLabel = '', labels = {} } = Astro.props;
+
+assertChartId(id, 'KpiCard');
+const { model, variation, empty } = prepareKpi(
+  { value, unit, reference, locale },
+  `KpiCard « ${title} »`,
+);
+const emptyLabel = labels.empty ?? KPI_LABELS.empty;
+---
+
+<div class:list={[BLOCK, className]} role="group" aria-labelledby={`${id}-t`}>
+  <p class={`${BLOCK}__title`} id={`${id}-t`}>
+    {title}
+  </p>
+  {empty && (
+    <p class={`${BLOCK}__state`} role="status">
+      {emptyLabel}
+    </p>
+  )}
+  {model && <p class={`${BLOCK}__value`}>{model.valueText}</p>}
+  {variation && (
+    <p class={`${BLOCK}__variation`} data-direction={variation.direction}>
+      <span class={`${BLOCK}__sentence`}>{variation.sentence}</span>
+      {variation.detail && <span> ({variation.detail})</span>}
+      {referenceLabel !== '' && <span class={`${BLOCK}__reference`}> {referenceLabel}</span>}
+    </p>
+  )}
+  {trend && <Sparkline id={`${id}-trend`} locale={locale} legend={false} {...trend} />}
+</div>

@@ -1,7 +1,7 @@
 import type { Dataset } from '@paulperigault/dataviz';
 import data from './chart-data.json';
 
-/** Jeux d'exemple des pages LineChart, BarChart, AreaChart et GaugeChart : valeurs fictives, sans nom propre. */
+/** Jeux d'exemple des pages LineChart, BarChart, AreaChart, GaugeChart, Sparkline et KpiCard : valeurs fictives, sans nom propre. */
 export const monthlyVisits = data.monthlyVisits as Dataset;
 export const visitsBySection = data.visitsBySection as Dataset;
 export const visitsWithGaps = data.visitsWithGaps as Dataset;
@@ -26,4 +26,16 @@ interface GaugeExample {
 export const gauges = data.gauges as Record<
   'fill' | 'fullCircle' | 'outOfRange' | 'named',
   GaugeExample
+>;
+export const sparklineFlat = data.sparklineFlat as Dataset;
+interface KpiExample {
+  title: string;
+  value: number | null;
+  unit: string;
+  reference?: number;
+  referenceLabel?: string;
+}
+export const kpis = data.kpis as Record<
+  'visits' | 'duration' | 'steady' | 'fromZero' | 'single' | 'empty',
+  KpiExample
 >;
