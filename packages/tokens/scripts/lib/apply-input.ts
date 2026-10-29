@@ -9,6 +9,7 @@ import { deriveOverrides, THEME_NAMES } from '../../src/customize/derive-overrid
 import type { Result } from '../../src/customize/result.ts';
 import { fail, ok } from '../../src/customize/result.ts';
 import type { TokenMap } from '../../src/palette/domain/tokens.ts';
+import type { RoleBase, ThemeSource } from '../../src/customize/derive-roles.ts';
 import type { ThemeBase } from '../../src/palette/domain/types.ts';
 import type { Model, ThemeEntry } from './types.ts';
 
@@ -21,12 +22,25 @@ const colorOf = (entries: ThemeEntry[], name: string): Oklch | undefined => {
   return entry === undefined ? undefined : parseOklch(entry.oklch);
 };
 
-function baseOf(entries: ThemeEntry[] | undefined): ThemeBase | undefined {
-  if (entries === undefined) return undefined;
+function paletteBase(entries: ThemeEntry[]): ThemeBase | undefined {
   const accent = colorOf(entries, '--pp-color-accent');
   const onAccent = colorOf(entries, '--pp-color-on-accent');
   const [bg, fg, line] = NEUTRALS.map((name) => colorOf(entries, name));
   return accent && onAccent && bg && fg && line ? { accent, onAccent, bg, fg, line } : undefined;
+}
+
+function roleBase(entries: ThemeEntry[]): RoleBase | undefined {
+  const focus = colorOf(entries, '--pp-color-focus');
+  const running = colorOf(entries, '--pp-color-status-running');
+  const surface = colorOf(entries, '--pp-color-surface');
+  return focus && running && surface ? { focus, running, surface } : undefined;
+}
+
+function baseOf(entries: ThemeEntry[] | undefined): ThemeSource | undefined {
+  if (entries === undefined) return undefined;
+  const palette = paletteBase(entries);
+  const roles = roleBase(entries);
+  return palette && roles ? { ...palette, ...roles } : undefined;
 }
 
 function replaceColors(entries: ThemeEntry[], tokens: TokenMap): ThemeEntry[] {
@@ -41,7 +55,10 @@ function replaceColors(entries: ThemeEntry[], tokens: TokenMap): ThemeEntry[] {
 function withHue(model: Model, hue: number): Result<Model> {
   const [light, dark] = THEME_NAMES.map((theme) => baseOf(model.themes[theme]));
   if (light === undefined || dark === undefined) {
-    return fail('build.derivation-failed', 'Sources : accent, texte sur accent et neutres requis.');
+    return fail(
+      'build.derivation-failed',
+      'Sources : accent, texte sur accent, neutres, focus et statut requis.',
+    );
   }
   const derived = deriveOverrides(hue, { light, dark });
   if (!derived.ok) return derived;

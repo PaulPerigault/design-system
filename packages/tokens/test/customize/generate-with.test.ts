@@ -18,7 +18,8 @@ function build(input: Parameters<typeof generateWith>[1]): Record<string, string
 }
 
 const isDerived = (name: string): boolean =>
-  name === '--pp-color-accent' || name.startsWith('--pp-chart-');
+  ['--pp-color-accent', '--pp-color-focus', '--pp-color-status-running'].includes(name) ||
+  name.startsWith('--pp-chart-');
 
 describe('generateWith : teinte d’accent', () => {
   const reference = colors(readGenerated('tokens.css'));

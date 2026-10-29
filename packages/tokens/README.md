@@ -26,12 +26,12 @@ En code : `parseBuildInput` et `deriveOverrides` (`@paulperigault/tokens/customi
 `Result` ; jamais de `throw`. Erreurs (`error.code`) :
 
 - teinte : `build.hue-missing`, `build.hue-not-finite`, `build.hue-out-of-range` ;
-- dérivation : `build.contrast-failed` (teinte, thème et rapport mesuré dans le message),
+- dérivation : `build.contrast-failed` (texte sur accent) et `build.role-contrast-failed` (focus
+  et statut « en cours » sous leur seuil), teinte, thème et rapport mesuré dans le message ;
   `build.derivation-failed` ;
 - pile : `build.stack-empty`, `build.stack-too-long`, `build.stack-unsafe` (`;`, accolades,
   `url(`, `@import`, retours à la ligne, commentaires, guillemets ou parenthèses non appariés) ;
 - ligne de commande : `build.bad-usage`.
 
 Limites : les rampes `--pp-chart-seq-*` et `--pp-chart-div-*` sont dérivées mais pas émises (le
-défaut ne les porte pas) ; `--pp-color-focus` et `--pp-color-status-running` gardent leur valeur
-d'origine. Décision : D-056.
+défaut ne les porte pas). Décisions : D-056, D-057.

@@ -5,6 +5,7 @@ export const CUSTOMIZE_ERROR_CODES = [
   'build.hue-out-of-range',
   'build.contrast-failed',
   'build.derivation-failed',
+  'build.role-contrast-failed',
   'build.stack-empty',
   'build.stack-too-long',
   'build.stack-unsafe',
