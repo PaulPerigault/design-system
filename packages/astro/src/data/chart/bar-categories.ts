@@ -6,8 +6,6 @@ import type { FittedLabel } from './labels.ts';
 import { fitLabel } from './labels.ts';
 
 const HALF = 0.5;
-/** Caractères laissés libres entre deux libellés voisins. */
-const SPACING_CHARS = 1;
 
 /** Libellé de catégorie positionné : `axis` choisit l'ancrage en CSS (x : centré, y : à droite). */
 export interface CategoryLabel extends FittedLabel {
@@ -34,7 +32,7 @@ export function categoryLabels(
   const stride = strideOf(scale.step, orientation);
   const slot = scale.step * stride;
   const chars = vertical
-    ? Math.floor(slot / CHAR_WIDTH) - SPACING_CHARS
+    ? Math.floor(slot / CHAR_WIDTH)
     : Math.floor((plot.left - LABEL_GAP) / CHAR_WIDTH);
   const lines = vertical
     ? MAX_LABEL_LINES

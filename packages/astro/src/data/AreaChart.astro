@@ -5,9 +5,9 @@
  * ce composant ne fait que poser des éléments. La base est toujours zéro ; plusieurs séries
  * s'empilent (des aires superposées cacheraient la donnée). Chaque couche porte un contour de trait
  * propre à son rang et un motif de remplissage, en plus de sa couleur (WCAG 1.4.1). Une valeur
- * manquante interrompt la couche, sans la rabattre à zéro. Le tracé d'une couche est écrit une
- * fois et référencé deux fois (`<use>`) : l'aire sous la grille, le contour au-dessus. Au-delà de
- * 250 points au total, LTTB au build ; le tableau lié garde la donnée complète.
+ * manquante interrompt la couche, sans la rabattre à zéro. Une couche a deux tracés : le fond, fermé
+ * sur la base, sous la grille ; le contour, la seule courbe supérieure, au-dessus. Au-delà de 250
+ * points au total, LTTB au build ; le tableau lié garde la donnée complète.
  */
 import './chart-base.css';
 import './chart-series.css';
@@ -40,7 +40,6 @@ const prepared = prepareArea(dataset, locale, `AreaChart « ${title} »`);
 const { model } = prepared;
 const description = describeArea(prepared.dataset, prepared.summary, model?.stacked ?? false);
 const swatches = (model?.layers ?? []).map((layer) => areaSwatch(id, layer.index, layer.label));
-const shapeId = (prefix: string, index: number): string => `${prefix}-a${index + 1}`;
 const behind = [...(model?.layers ?? [])].reverse();
 ---
 
@@ -54,24 +53,15 @@ const behind = [...(model?.layers ?? [])].reverse();
   class={className}
 >
   {model && <BarPatterns id={id} count={model.layers.length} block={BLOCK} />}
-  <defs>
-    {model?.layers.map((layer) => (
-      <path id={shapeId(id, layer.index)} class={`${BLOCK}__shape`} d={layer.d}></path>
-    ))}
-  </defs>
   {behind.map((layer) => (
     <g data-series={layer.index + 1}>
-      <use
-        class={`${BLOCK}__area`}
-        href={`#${shapeId(id, layer.index)}`}
-        fill={patternFill(id, layer.index)}
-      ></use>
+      <path class={`${BLOCK}__area`} d={layer.d} fill={patternFill(id, layer.index)}></path>
     </g>
   ))}
   {model && <ChartAxes block={BLOCK} axes={model.axes} />}
   {model?.layers.map((layer) => (
     <g data-series={layer.index + 1}>
-      <use class={`${BLOCK}__line`} href={`#${shapeId(id, layer.index)}`}></use>
+      <path class={`${BLOCK}__line`} d={layer.top}></path>
       {layer.markers !== '' && <path class={`${BLOCK}__marker`} d={layer.markers}></path>}
     </g>
   ))}

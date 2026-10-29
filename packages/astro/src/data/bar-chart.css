@@ -1,8 +1,11 @@
 /*
  * Barres (BarChart) : fichier global, en plus de `chart-base.css` et `chart-series.css`. Remplissage
  * par motifs `<pattern>` (tuile de la couleur de la série, traits de la couleur du fond), contour
- * de la couleur de la série ; aucun dégradé, ombre ni flou, aucune animation. Les valeurs écrites
- * dans les barres portent un liseré de la couleur du fond (`paint-order`), pas une ombre.
+ * de la couleur de la série ; aucun dégradé, ombre ni flou, aucune animation. Une valeur hors de la
+ * barre est en `--pp-color-fg` avec un liseré de la couleur du fond (`paint-order`). Posée sur une
+ * barre (`data-in`), elle prend le neutre de sa série, fixé au build pour chaque thème (`data-ink`
+ * du groupe : neutre clair puis sombre) à 4,5:1 au moins, et son liseré passe à la couleur de la
+ * série : il isole les chiffres des traits du motif, sans les épaissir.
  */
 .pp-bar-chart__bar {
   stroke: var(--pp-series);
@@ -53,6 +56,26 @@
   text-anchor: end;
 }
 
+.pp-bar-chart [data-ink] > [data-in] {
+  stroke: var(--pp-series);
+}
+
+.pp-bar-chart [data-ink='bg-bg'] > [data-in] {
+  fill: var(--pp-color-bg);
+}
+
+.pp-bar-chart [data-ink='fg-fg'] > [data-in] {
+  fill: var(--pp-color-fg);
+}
+
+.pp-bar-chart [data-ink='bg-fg'] > [data-in] {
+  fill: light-dark(var(--pp-color-bg), var(--pp-color-fg));
+}
+
+.pp-bar-chart [data-ink='fg-bg'] > [data-in] {
+  fill: light-dark(var(--pp-color-fg), var(--pp-color-bg));
+}
+
 @media (forced-colors: active) {
   .pp-bar-chart__bar {
     stroke: CanvasText;
@@ -69,5 +92,10 @@
 
   .pp-bar-chart__value {
     fill: CanvasText;
+  }
+
+  .pp-bar-chart [data-ink] > [data-in] {
+    fill: Canvas;
+    stroke: CanvasText;
   }
 }

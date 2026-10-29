@@ -24,6 +24,12 @@ function readColor(theme: unknown, name: string): Oklch | undefined {
   }
 }
 
+/** Couleur OKLCH d'un jeton (`--pp-*`) d'un thème de `tokens.json`, `undefined` si absente. */
+export function readThemeColor(tokens: unknown, theme: Theme, name: string): Oklch | undefined {
+  const themes = isRecord(tokens) ? tokens['themes'] : undefined;
+  return readColor(isRecord(themes) ? themes[theme] : undefined, name);
+}
+
 /** Lit accent, texte sur accent, fond, texte et trait d'un thème dans `tokens.json` (`themes.*`). */
 export function themeBaseFromTokens(tokens: unknown, theme: Theme): Result<ThemeBase> {
   const themes = isRecord(tokens) ? tokens['themes'] : undefined;

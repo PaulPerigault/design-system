@@ -306,7 +306,7 @@
       "type": "registry:ui",
       "title": "BarChart",
       "description": "Barres verticales ou horizontales, simples ou groupées, en SVG statique : motif par rang, base zéro, 40 catégories au plus.",
-      "dependencies": ["@paulperigault/dataviz"],
+      "dependencies": ["@paulperigault/dataviz", "@paulperigault/tokens"],
       "registryDependencies": ["table"],
       "files": [
         {
@@ -351,6 +351,10 @@
         },
         {
           "path": "packages/astro/src/data/chart/bar-values.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "packages/astro/src/data/chart/ink.ts",
           "type": "registry:lib"
         },
         {

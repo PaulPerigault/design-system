@@ -70,8 +70,11 @@ d'OKLCH.
 - Échelle 1,25 : `--pp-font-size--1` 0,9 rem, `-0` 1,125 rem (corps, 18 px), `-1` 1,406 rem, `-2`
   1,758 rem, `-3` 2,197 rem, `-4` 2,747 rem. Interligne `--pp-font-line-height-body` 1,55, titres 1,15.
 - Graisses : `--pp-font-weight-regular` 400, `-medium` 500, `-semibold` 600, `-bold` 700.
-- Plancher : le corps ne descend pas sous 18 px. Axes et libellés de graphique en
-  `--pp-font-size--1` (0,9 rem, 14,4 px). Au-dessous de 14 px rendus : à signaler (préférence à valider).
+- Planchers (décisions de Paul, 2026-10-29) : le corps ne descend pas sous 18 px ; le texte hors
+  graphique, sous 14 px. Texte d'axe et de légende des graphiques : **12 px au moins à 375 px de
+  largeur d'écran**, en `--pp-font-size--1` (0,9 rem, 14,4 unités) dans un viewBox de 360 unités
+  de large, soit 12,4 px (ADR-0007, point ouvert 3, D-049). Mesure : taille calculée × largeur
+  affichée / largeur du viewBox ; sous 12 px à 375 px, ou chevauchement des libellés : à signaler.
 - Chiffres de données : `font-variant-numeric: tabular-nums`. Pas de majuscules espacées.
 
 ## Forme
@@ -91,7 +94,11 @@ d'OKLCH.
 - Rapport données/encre (Tufte, 1983) : ce qui ne porte pas de donnée disparaît. Pas de cadre, de fond
   de tracé, de grille verticale. Grille horizontale 1 `--pp-size-rule` en `--pp-color-line`, ligne de
   base pleine, 5 graduations au plus, « rondes ».
-- Barres depuis zéro, séparées par un espace. Aire : fond à 12 % au plus de la série, trait dessus.
+- Barres depuis zéro, séparées par un espace. Aire : fond à 12 % au plus de la série, trait sur la
+  seule courbe supérieure (ni base ni côtés).
+- Valeur écrite sur une barre : neutre `--pp-color-fg` ou `--pp-color-bg` choisi par série et par
+  thème pour atteindre 4,5:1 contre la barre (`inkOn`, `@paulperigault/dataviz` : 4,78 à 17,66:1),
+  liseré de la couleur de la série ; hors de la barre : `--pp-color-fg`, liseré du fond.
 - Couleur jamais seule : chaque rang de série a un motif de trait (continu, tirets, points) et un
   marqueur ; barres et aires par motif de remplissage ; légende = marqueur + libellé.
 - Palettes dérivées de `--pp-accent-hue` : `--pp-chart-1..6` (catégorielle), 6 séries au plus ;
@@ -114,7 +121,7 @@ d'OKLCH.
 5. Cadre autour du tracé, grille dense, quadrillage vertical, légende séparée loin du tracé.
 6. Étiquette en majuscules espacées, numéro de section, pastille de tag, emoji.
 7. Titre creux (« Aperçu des performances ») au lieu d'un fait chiffré.
-8. Couleur seule pour distinguer deux séries ; texte d'axe plus petit que 14 px.
+8. Couleur seule pour distinguer deux séries ; texte d'axe sous 12 px à 375 px (hors graphique : 14 px).
 9. Espacements arbitraires, hors jetons `--pp-space-*`.
 10. Valeur d'accent employée partout : plus rien ne ressort.
 

@@ -39,7 +39,7 @@ for (const [name, figure] of Object.entries(FIGURES)) {
   }
 }
 
-test('AreaChart : le SVG est nommé, ses motifs et tracés résolvent, aucun script', async ({
+test('AreaChart : le SVG est nommé, ses motifs résolvent, chaque couche a un fond et un contour, aucun script', async ({
   page,
 }) => {
   const figure = Object.values(FIGURES)[0] ?? '';
@@ -54,6 +54,8 @@ test('AreaChart : le SVG est nommé, ses motifs et tracés résolvent, aucun scr
   await expect(page.locator('details.pp-area-chart__data')).not.toHaveAttribute('open', '');
   for (const rank of [1, 2, 3]) {
     await expect(page.locator(`#budget-p${rank}`)).toHaveCount(1);
-    await expect(page.locator(`#budget-a${rank}`)).toHaveCount(1);
+    const layer = page.locator(`figure > svg > g[data-series="${rank}"]`);
+    await expect(layer.locator('path.pp-area-chart__area')).toHaveCount(1);
+    await expect(layer.locator('path.pp-area-chart__line')).toHaveCount(1);
   }
 });
