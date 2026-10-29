@@ -1,0 +1,119 @@
+/*
+ * Jauge (GaugeChart) : fichier global, en plus de `chart-base.css` et `chart-series.css`. La bande
+ * est faite de zones contiguës, séparées par un liseré de la couleur du fond, remplies du motif de
+ * leur rang (tuile de la teinte, traits de la couleur du fond, comme BarChart) : la couleur ne porte
+ * jamais seule le sens. Teinte par rang (`--pp-chart-N`) ou imposée par `data-tone` (couleurs de
+ * statut). L'aiguille est de la couleur du texte, cernée du fond. Aucun dégradé, ombre ni flou,
+ * aucune animation.
+ */
+figure.pp-gauge-chart > svg.pp-gauge-chart__svg {
+  max-inline-size: calc(var(--pp-size-measure) * 2 / 3);
+}
+
+.pp-gauge-chart [data-series][data-tone='good'] {
+  --pp-series: var(--pp-color-status-passed);
+}
+
+.pp-gauge-chart [data-series][data-tone='warning'] {
+  --pp-series: var(--pp-color-status-degraded);
+}
+
+.pp-gauge-chart [data-series][data-tone='bad'] {
+  --pp-series: var(--pp-color-status-failed);
+}
+
+.pp-gauge-chart [data-series][data-tone='info'] {
+  --pp-series: var(--pp-color-status-running);
+}
+
+.pp-gauge-chart__tile {
+  fill: var(--pp-series);
+}
+
+.pp-gauge-chart__mark {
+  fill: none;
+  stroke: var(--pp-color-bg);
+  stroke-width: calc(var(--pp-size-rule) * 2);
+}
+
+.pp-gauge-chart [data-series='3'] > .pp-gauge-chart__mark {
+  stroke-width: calc(var(--pp-size-rule) * 3);
+  stroke-linecap: round;
+}
+
+.pp-gauge-chart__zone,
+.pp-gauge-chart__bar {
+  stroke: var(--pp-color-bg);
+  stroke-width: calc(var(--pp-size-rule) * 2);
+  vector-effect: non-scaling-stroke;
+}
+
+.pp-gauge-chart__halo,
+.pp-gauge-chart__needle {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.pp-gauge-chart__halo {
+  stroke: var(--pp-color-bg);
+  stroke-width: calc(var(--pp-size-rule) * 7);
+}
+
+.pp-gauge-chart__needle {
+  stroke: var(--pp-color-fg);
+  stroke-width: calc(var(--pp-size-rule) * 3);
+}
+
+text:is(
+  .pp-gauge-chart__value,
+  .pp-gauge-chart__current,
+  .pp-gauge-chart__note,
+  .pp-gauge-chart__label,
+  .pp-gauge-chart__min,
+  .pp-gauge-chart__max
+) {
+  fill: var(--pp-color-muted);
+  font-family: var(--pp-font-family-sans);
+  font-size: var(--pp-font-size--1);
+  font-variant-numeric: tabular-nums;
+  text-anchor: middle;
+}
+
+text.pp-gauge-chart__value {
+  fill: var(--pp-color-fg);
+  font-size: var(--pp-font-size-3);
+  font-weight: var(--pp-font-weight-semibold);
+}
+
+text.pp-gauge-chart__current {
+  fill: var(--pp-color-fg);
+  font-size: var(--pp-font-size-0);
+  font-weight: var(--pp-font-weight-semibold);
+}
+
+tspan.pp-gauge-chart__unit {
+  fill: var(--pp-color-muted);
+  font-size: var(--pp-font-size-0);
+  font-weight: normal;
+}
+
+@media (forced-colors: active) {
+  .pp-gauge-chart__tile {
+    fill: CanvasText;
+  }
+
+  .pp-gauge-chart__mark,
+  .pp-gauge-chart__zone,
+  .pp-gauge-chart__bar,
+  .pp-gauge-chart__halo {
+    stroke: Canvas;
+  }
+
+  .pp-gauge-chart__needle {
+    stroke: CanvasText;
+  }
+
+  .pp-gauge-chart text {
+    fill: CanvasText;
+  }
+}

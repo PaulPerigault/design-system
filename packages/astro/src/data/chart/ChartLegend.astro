@@ -23,6 +23,7 @@ const { block, series } = Astro.props;
           class={`${block}__swatch`}
           viewBox={`0 0 ${SWATCH.width} ${SWATCH.height}`}
           data-series={s.index + 1}
+          data-tone={s.tone}
           aria-hidden="true"
           focusable="false"
         >

@@ -36,9 +36,9 @@ export function summarize(dataset: Dataset, fmt: Formatter): string {
 }
 
 /** Alternative textuelle du SVG : résumé, axes, remarque sur l'origine, renvoi au tableau. */
-export function describe(dataset: Dataset, summary: string, offZero: boolean): string {
+export function describe(dataset: Dataset, summary: string, offZero: boolean, note = ''): string {
   const unit = dataset.series[0]?.unit ?? '';
   const axes = `Axe horizontal : ${dataset.x.label}${unit === '' ? '' : `, axe vertical : ${unit}`}.`;
   const origin = offZero ? " L'axe vertical ne part pas de zéro." : '';
-  return `${summary} ${axes}${origin} ${TABLE_POINTER}`;
+  return `${summary} ${axes}${origin}${note} ${TABLE_POINTER}`;
 }

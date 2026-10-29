@@ -31,3 +31,16 @@ export { niceTicks } from './domain/scale/ticks.ts';
 export type { TimeTicks, TimeUnit } from './domain/scale/time-ticks.ts';
 export { timeTicks } from './domain/scale/time-ticks.ts';
 export { timeDomain, timeScale } from './domain/scale/time.ts';
+export type { AreaGeometry } from './domain/geometry/area-path.ts';
+export { areaPath } from './domain/geometry/area-path.ts';
+export type { StackLayer } from './domain/geometry/stack.ts';
+export { stackSeries } from './domain/geometry/stack.ts';
+export type { AngleSpan, Point, Radii } from './domain/geometry/arc-path.ts';
+export { FULL_TURN, HALF_TURN, polar, radialLine, sectorPath } from './domain/geometry/arc-path.ts';
+export type {
+  GaugeRange,
+  GaugeReading,
+  GaugeShape,
+  GaugeZone,
+} from './domain/geometry/gauge-scale.ts';
+export { GAUGE_SPANS, gaugeReading, gaugeZones, zoneIndex } from './domain/geometry/gauge-scale.ts';

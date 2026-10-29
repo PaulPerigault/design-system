@@ -37,6 +37,16 @@ Aucune fonction publique ne lève d'exception : toute erreur est un `Result` typ
 - `linePath` (`d` interrompu aux `null`, points isolés signalés) et `barRects` / `rectsPath` (barres groupées).
 - Toutes renvoient un `Result` typé (`scale.*`, `geometry.bad-input`, `downsample.bad-target`).
 
+## Aires et jauges (V2b-1)
+
+- `areaPath(points, base)` : aire sous la courbe jusqu'à la base, un sous-chemin fermé par segment, rompue aux `null`.
+- `stackSeries(colonnes)` : couches empilées (`lower`, `upper`). **Valeur manquante** : elle compte pour zéro dans le
+  cumul, donc les couches du dessus reposent sur celles du dessous, mais sa propre couche est rompue (`null`) :
+  le vide se voit et n'est jamais dessiné comme un zéro. Valeur négative : `stack.negative-value`.
+- `sectorPath`, `radialLine`, `polar` : secteur d'anneau et aiguille (0° en haut, sens horaire) ; un tour entier devient un anneau.
+- `gaugeReading` : valeur bornée à l'intervalle avec `clamped` (`below` ou `above`), `gauge.bad-range` si l'intervalle est nul ou inversé.
+- `gaugeZones` et `zoneIndex` : n seuils strictement croissants donnent n + 1 zones ; `gauge.bad-thresholds` sinon.
+
 ## Changer l'accent en une variable
 
 `--pp-accent-hue` : un nombre, la teinte OKLCH en degrés (`270.7` par défaut). Elle ne règle que la

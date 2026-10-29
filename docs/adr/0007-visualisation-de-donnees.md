@@ -33,7 +33,7 @@ seulement pour le calcul (`pp-data`), sans que le rendu en dépende. Réutilisab
   donnée non validée (ADR-0006, décision 1).
 - **Erreurs typées** (`errors.ts`, union fermée à champ `code`) : `dataset.empty`,
   `dataset.length-mismatch`, `dataset.non-finite`, `dataset.duplicate-id`, `dataset.bad-date`,
-  `dataset.unit-mismatch`, `dataset.too-many-points`, `chart.too-many-series`, `bar.too-many-categories`. Type `Result` maison,
+  `dataset.unit-mismatch`, `dataset.too-many-points`, `chart.too-many-series`, `bar.too-many-categories`, `stack.negative-value`, `gauge.bad-range`, `gauge.bad-thresholds`. Type `Result` maison,
   TypeScript strict (ADR-0005), aucun `any`.
 - **Compatibilité Rust/WebAssembly** : `pp-data` consomme et produit le même `Dataset` (`f64` plus
   masque des manquants). Port `Aggregator` : `(Dataset, Spec) → Result<Dataset, ChartError>`,
@@ -55,8 +55,8 @@ seulement pour le calcul (`pp-data`), sans que le rendu en dépende. Réutilisab
   infobulle native `<title>` par point. Un îlot JS facultatif (`behaviors`) n'est admis que s'il est
   nécessaire (grands jeux de données) et laisse le repli CSS intact.
 - **Types du premier jalon** : courbe ; barres (simples et groupées, verticales ou horizontales) ;
-  aire (simple, empilée de 4 séries au plus) ; jauge ; sparkline ; KPI (valeur, unité, variation) ;
-  tableau. La jauge est une barre bornée avec repère de cible (bullet graph, Few, 2006), pas un arc.
+  aire (simple, empilée de 6 séries au plus, D-044) ; jauge (arc, D-044) ; sparkline ; KPI (valeur, unité, variation) ;
+  tableau. La jauge est un arc, demi-cercle ou cercle complet, à zones par seuils (D-044) ; le bullet graph (Few, 2006) reste une option pour V3.
 - **Hors périmètre du jalon** : camembert et anneau (angles et aires sont lus moins bien que des
   longueurs : Cleveland et McGill, 1984), 3D, radar, treemap, cartes, nuage de points, histogramme
   et boîte à moustaches (après `pp-data`), barres empilées, temps réel, zoom et défilement,
@@ -163,7 +163,7 @@ non-scaling-stroke`. Étiquettes directes plutôt que légende.
 | Issue   | Ce que l'ADR impose                                                                          |
 | ------- | -------------------------------------------------------------------------------------------- |
 | #94 V2a | `dataviz` (contrat, échelles, palettes) ; `LineChart`, `BarChart` ; budgets ; test daltonien |
-| #95 V2b | `AreaChart`, `Gauge` (bullet) sur le même contrat ; aire empilée ≤ 4 séries                  |
+| #95 V2b | `AreaChart`, `GaugeChart` (arc) sur le même contrat ; aire empilée ≤ 6 séries (D-044)        |
 | #96 V3a | `Kpi` (variation dite en mots), `Sparkline` ≤ 1,5 ko, tendance annoncée                      |
 | #97 V3b | `DataTable`, légende marqueur plus libellé, filtres `:has()` sans JS, cibles ≥ minimum       |
 | #98 V4a | `pp-data` : même `Dataset` en `f64`, quantiles de type 7, LTTB, aucun `panic`                |
@@ -178,7 +178,7 @@ non-scaling-stroke`. Étiquettes directes plutôt que légende.
   le SVG (test) » ; « test daltonien (3 types) sur l'accent par défaut et 12 teintes » ; « budget
   de 400 nœuds et 10 ko » ; « titre, description et tableau liés » ; « motifs de trait et marqueurs » ;
   « formats fr ».
-- #95 : « jauge en barre bornée avec cible » ; « aire empilée ≤ 4 séries » ; mêmes critères que #94.
+- #95 : « jauge en arc à zones par seuils » ; « aire empilée ≤ 6 séries » ; mêmes critères que #94.
 - #96 : « variation dite en mots » ; « sparkline ≤ 1,5 ko ». #97 : « `<th scope>` » ; « filtres sans
   JavaScript » ; « tableau complet affiché sans filtre ».
 - #98 : remplacer « `cargo clippy` sans avertissement » par les critères d'ADR-0006 ; ajouter

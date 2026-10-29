@@ -25,7 +25,7 @@ export const unitTick = (unit: string): readonly AxisTick[] =>
   unit === '' ? [] : [{ axis: 'unit', x: PLOT.left, y: PLOT.top - UNIT_RISE, label: unit }];
 
 /** Axes d'une courbe : axe en bas du tracé, graduations verticales puis horizontales. */
-export function lineAxes(model: LineModel): AxesModel {
+export function lineAxes(model: Pick<LineModel, 'grid' | 'yTicks' | 'xTicks' | 'unit'>): AxesModel {
   return {
     grid: model.grid,
     axis: `M${PLOT.left} ${PLOT.bottom}H${PLOT.right}`,

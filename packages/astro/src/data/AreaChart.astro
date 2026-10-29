@@ -1,0 +1,79 @@
+---
+/**
+ * AreaChart : aire simple, ou aires empilées de 2 à 6 séries, SVG statique généré au build. Zéro
+ * JavaScript, aucun attribut `style` (CSP stricte). La géométrie vient de `@paulperigault/dataviz` :
+ * ce composant ne fait que poser des éléments. La base est toujours zéro ; plusieurs séries
+ * s'empilent (des aires superposées cacheraient la donnée). Chaque couche porte un contour de trait
+ * propre à son rang et un motif de remplissage, en plus de sa couleur (WCAG 1.4.1). Une valeur
+ * manquante interrompt la couche, sans la rabattre à zéro. Le tracé d'une couche est écrit une
+ * fois et référencé deux fois (`<use>`) : l'aire sous la grille, le contour au-dessus. Au-delà de
+ * 250 points au total, LTTB au build ; le tableau lié garde la donnée complète.
+ */
+import './chart-base.css';
+import './chart-series.css';
+import './line-chart.css';
+import './line-chart-series.css';
+import './area-chart.css';
+import { areaSwatch } from './chart/area-swatch.ts';
+import { describeArea } from './chart/area-summary.ts';
+import BarPatterns from './chart/BarPatterns.astro';
+import { patternFill } from './chart/bar-patterns.ts';
+import ChartAxes from './chart/ChartAxes.astro';
+import ChartFrame from './chart/ChartFrame.astro';
+import ChartLegend from './chart/ChartLegend.astro';
+import { prepareArea } from './chart/prepare-area.ts';
+import type { ChartProps } from './chart/props.ts';
+import { DEFAULT_LABELS, assertChartId } from './chart/props.ts';
+
+type Props = ChartProps;
+
+const BLOCK = 'pp-area-chart';
+const { id, title, dataset, locale = 'fr', class: className, ...texts } = Astro.props;
+const labels = {
+  table: texts.tableLabel ?? DEFAULT_LABELS.table,
+  empty: texts.emptyLabel ?? DEFAULT_LABELS.empty,
+  error: texts.errorLabel ?? DEFAULT_LABELS.error,
+};
+
+assertChartId(id, 'AreaChart');
+const prepared = prepareArea(dataset, locale, `AreaChart « ${title} »`);
+const { model } = prepared;
+const description = describeArea(prepared.dataset, prepared.summary, model?.stacked ?? false);
+const swatches = (model?.layers ?? []).map((layer) => areaSwatch(id, layer.index, layer.label));
+const shapeId = (prefix: string, index: number): string => `${prefix}-a${index + 1}`;
+const behind = [...(model?.layers ?? [])].reverse();
+---
+
+<ChartFrame
+  block={BLOCK}
+  id={id}
+  title={title}
+  description={description}
+  prepared={prepared}
+  labels={labels}
+  class={className}
+>
+  {model && <BarPatterns id={id} count={model.layers.length} block={BLOCK} />}
+  <defs>
+    {model?.layers.map((layer) => (
+      <path id={shapeId(id, layer.index)} class={`${BLOCK}__shape`} d={layer.d}></path>
+    ))}
+  </defs>
+  {behind.map((layer) => (
+    <g data-series={layer.index + 1}>
+      <use
+        class={`${BLOCK}__area`}
+        href={`#${shapeId(id, layer.index)}`}
+        fill={patternFill(id, layer.index)}
+      ></use>
+    </g>
+  ))}
+  {model && <ChartAxes block={BLOCK} axes={model.axes} />}
+  {model?.layers.map((layer) => (
+    <g data-series={layer.index + 1}>
+      <use class={`${BLOCK}__line`} href={`#${shapeId(id, layer.index)}`}></use>
+      {layer.markers !== '' && <path class={`${BLOCK}__marker`} d={layer.markers}></path>}
+    </g>
+  ))}
+  <ChartLegend slot="legend" block={BLOCK} series={swatches} />
+</ChartFrame>
