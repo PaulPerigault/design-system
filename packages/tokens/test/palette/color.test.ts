@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { CVD_KINDS, CVD_MATRICES, simulateCvd } from '../src/domain/color/cvd.ts';
-import { deltaE2000 } from '../src/domain/color/delta-e.ts';
-import { fitToGamut, toLinear } from '../src/domain/color/gamut.ts';
-import { linearSrgbToLab } from '../src/domain/color/lab.ts';
+import { CVD_KINDS, CVD_MATRICES, simulateCvd } from '../../src/palette/domain/color/cvd.ts';
+import { deltaE2000 } from '../../src/palette/domain/color/delta-e.ts';
+import { fitToGamut, toLinear } from '../../src/palette/domain/color/gamut.ts';
+import { linearSrgbToLab } from '../../src/palette/domain/color/lab.ts';
 
 const lab = (l: number, a: number, b: number) => ({ l, a, b });
 

@@ -1,5 +1,5 @@
-import type { Oklch } from '@paulperigault/tokens/color';
-import { fitToGamut } from '../color/gamut.ts';
+import type { Oklch } from '../../lib/color.ts';
+import { fitToGamut } from './color/gamut.ts';
 import { DIVERGING_COUNT, SEQUENTIAL_COUNT } from './thresholds.ts';
 import type { Theme, ThemeBase } from './types.ts';
 

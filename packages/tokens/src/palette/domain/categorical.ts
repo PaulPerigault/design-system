@@ -1,8 +1,8 @@
-import type { Oklch } from '@paulperigault/tokens/color';
-import { contrastRatio } from '@paulperigault/tokens/contrast';
-import { fitToGamut } from '../color/gamut.ts';
-import type { VisionLabs } from '../color/vision.ts';
-import { visionDistance, visionLabs } from '../color/vision.ts';
+import type { Oklch } from '../../lib/color.ts';
+import { contrastRatio } from '../../lib/contrast.ts';
+import { fitToGamut } from './color/gamut.ts';
+import type { VisionLabs } from './color/vision.ts';
+import { visionDistance, visionLabs } from './color/vision.ts';
 import { CATEGORICAL_COUNT, MIN_GRAPHIC_CONTRAST } from './thresholds.ts';
 import type { ThemeBase } from './types.ts';
 

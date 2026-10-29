@@ -1,4 +1,4 @@
-import type { Oklch } from '@paulperigault/tokens/color';
+import type { Oklch } from '../../lib/color.ts';
 
 export type Theme = 'light' | 'dark';
 

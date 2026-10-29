@@ -207,3 +207,8 @@ test -c apps/docs/playwright.config.ts`.
 - `rel="author"`, `sameAs`, JSON-LD contrôlés sur 66 pages ; réciprocité du portfolio sous `PORTFOLIO_LINK_CHECK=1`.
 - Vérifié : `npm run verify`, Playwright chromium (664 réussis, 1 sauté). Non vérifié : rendu des images sous Linux, test réciproque réel.
 - À faire par le propriétaire : DNS et projet Pages pour `design.paulperigault.dev` ; lien retour sur paulperigault.fr. Décision D-026.
+
+## #121-B1 (2026-10-29) : palettes déplacées dans `tokens`
+
+- La dérivation (`derivePalettes`, `lightDarkTokens` et leurs briques) vit dans `@paulperigault/tokens/palette` ; `@paulperigault/dataviz` la réexporte, API inchangée. Tests déplacés, assertions inchangées. Décision D-055.
+- Reste (B2, PR suivante) : `--pp-accent-hue` et `--pp-font-stack`.

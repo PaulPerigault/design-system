@@ -1,7 +1,7 @@
-import tokens from '@paulperigault/tokens/tokens.json' with { type: 'json' };
-import { derivePalettes } from '../src/domain/palette/derive.ts';
-import type { Theme, ThemeBase } from '../src/domain/palette/types.ts';
-import { themeBaseFromTokens } from '../src/infrastructure/theme-base.ts';
+import tokens from '../../generated/tokens.json' with { type: 'json' };
+import { derivePalettes } from '../../src/palette/domain/derive.ts';
+import type { Theme, ThemeBase } from '../../src/palette/domain/types.ts';
+import { themeBaseFromTokens } from '../../src/palette/infrastructure/theme-base.ts';
 
 export const DEFAULT_HUE = 270.7;
 export const HUES = [DEFAULT_HUE, ...Array.from({ length: 12 }, (_, index) => index * 30)];

@@ -71,5 +71,5 @@ d'abord, puis la candidate la plus distincte des couleurs déjà prises.
 
 ## Structure
 
-`src/domain` (contrat, dates ISO, couleur, palettes, échelles, LTTB, géométrie : pur, sans E/S), `src/application` (ports),
+`src/domain` (contrat, dates ISO, échelles, LTTB, géométrie : pur, sans E/S ; la dérivation de palettes vit dans `@paulperigault/tokens/palette`, réexportée ici), `src/application` (ports),
 `src/infrastructure` (validation à la frontière, `Intl`, lecture de `tokens.json`), `src/errors.ts`.

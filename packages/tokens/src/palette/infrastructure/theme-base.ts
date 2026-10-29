@@ -1,6 +1,6 @@
-import { parseOklch } from '@paulperigault/tokens/color';
-import type { Oklch } from '@paulperigault/tokens/color';
-import type { Theme, ThemeBase } from '../domain/palette/types.ts';
+import { parseOklch } from '../../lib/color.ts';
+import type { Oklch } from '../../lib/color.ts';
+import type { Theme, ThemeBase } from '../domain/types.ts';
 import type { Result } from '../domain/result.ts';
 import { fail, ok } from '../domain/result.ts';
 import { isRecord } from './guards.ts';

@@ -1,6 +1,6 @@
-import type { Ink } from '../domain/palette/ink.ts';
-import { inkOn } from '../domain/palette/ink.ts';
-import type { Theme } from '../domain/palette/types.ts';
+import type { Ink } from '../domain/ink.ts';
+import { inkOn } from '../domain/ink.ts';
+import type { Theme } from '../domain/types.ts';
 import type { Result } from '../domain/result.ts';
 import { fail, ok } from '../domain/result.ts';
 import { readThemeColor, themeBaseFromTokens } from './theme-base.ts';

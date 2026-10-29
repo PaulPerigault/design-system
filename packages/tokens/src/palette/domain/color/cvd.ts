@@ -1,4 +1,4 @@
-import type { Rgb } from '@paulperigault/tokens/color';
+import type { Rgb } from '../../../lib/color.ts';
 
 /**
  * Simulation des dichromacies : Machado, Oliveira et Fernandes (2009), « A Physiologically-based

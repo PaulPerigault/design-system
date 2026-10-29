@@ -46,6 +46,10 @@
       "types": "./src/lib/contrast.ts",
       "default": "./src/lib/contrast.ts"
     },
+    "./palette": {
+      "types": "./src/palette/index.ts",
+      "default": "./src/palette/index.ts"
+    },
     "./tokens.css": "./generated/tokens.css",
     "./tokens.json": "./generated/tokens.json",
     "./types": "./generated/tokens.d.ts",

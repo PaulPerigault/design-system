@@ -1,4 +1,4 @@
-import { formatOklch } from '@paulperigault/tokens/color';
+import { formatOklch } from '../../lib/color.ts';
 import type { Palettes } from './types.ts';
 
 export type TokenMap = Readonly<Record<string, string>>;

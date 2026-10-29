@@ -1,5 +1,5 @@
-import type { Oklch, Rgb } from '@paulperigault/tokens/color';
-import { inSrgbGamut, oklchToLinearSrgb } from '@paulperigault/tokens/color';
+import type { Oklch, Rgb } from '../../../lib/color.ts';
+import { inSrgbGamut, oklchToLinearSrgb } from '../../../lib/color.ts';
 
 const BISECTION_STEPS = 24;
 const HALF = 0.5;

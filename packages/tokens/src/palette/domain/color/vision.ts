@@ -1,4 +1,4 @@
-import type { Oklch } from '@paulperigault/tokens/color';
+import type { Oklch } from '../../../lib/color.ts';
 import { CVD_KINDS, simulateCvd } from './cvd.ts';
 import { deltaE2000 } from './delta-e.ts';
 import { toLinear } from './gamut.ts';

@@ -8,19 +8,11 @@ export {
   checkSeriesCount,
   checkSharedUnit,
 } from './domain/limits.ts';
-export { derivePalettes } from './domain/palette/derive.ts';
-export { lightDarkTokens, paletteTokens } from './domain/palette/tokens.ts';
-export type { Palettes, Theme, ThemeBase } from './domain/palette/types.ts';
 export type { Result } from './domain/result.ts';
 export { fail, ok } from './domain/result.ts';
 export type { DatavizError, ErrorCode } from './errors.ts';
 export { createFormatter } from './infrastructure/intl-formatter.ts';
 export { parseDataset } from './infrastructure/parse-dataset.ts';
-export { readThemeColor, themeBaseFromTokens } from './infrastructure/theme-base.ts';
-export type { Ink, Inks } from './domain/palette/ink.ts';
-export { inkOn } from './domain/palette/ink.ts';
-export type { SeriesInk } from './infrastructure/series-ink.ts';
-export { seriesInksFromTokens } from './infrastructure/series-ink.ts';
 export type { BarRect, BarsInput, Orientation } from './domain/geometry/bars.ts';
 export { barRects, rectsPath } from './domain/geometry/bars.ts';
 export type { LineGeometry, PathPoint } from './domain/geometry/line-path.ts';
@@ -62,3 +54,20 @@ export type { Marker, SparklineGeometry } from './domain/sparkline/sparkline.ts'
 export { sparkline } from './domain/sparkline/sparkline.ts';
 export type { CheckedSparkline, SparklineInput } from './domain/sparkline/validate.ts';
 export { validateSparkline } from './domain/sparkline/validate.ts';
+export type {
+  Ink,
+  Inks,
+  Palettes,
+  SeriesInk,
+  Theme,
+  ThemeBase,
+} from '@paulperigault/tokens/palette';
+export {
+  derivePalettes,
+  inkOn,
+  lightDarkTokens,
+  paletteTokens,
+  readThemeColor,
+  seriesInksFromTokens,
+  themeBaseFromTokens,
+} from '@paulperigault/tokens/palette';

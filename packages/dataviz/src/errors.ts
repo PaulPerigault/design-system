@@ -1,3 +1,5 @@
+import { PALETTE_ERROR_CODES } from '@paulperigault/tokens/palette';
+
 /** Erreurs typées du paquet : union fermée à champ `code`, aucune erreur anonyme. */
 export const ERROR_CODES = [
   'dataset.empty',
@@ -24,12 +26,7 @@ export const ERROR_CODES = [
   'sparkline.no-data',
   'sparkline.bad-size',
   'sparkline.too-many-gaps',
-  'palette.bad-hue',
-  'palette.bad-base',
-  'palette.cvd-failed',
-  'palette.contrast-failed',
-  'palette.sequential-failed',
-  'palette.diverging-failed',
+  ...PALETTE_ERROR_CODES,
 ] as const;
 
 export type ErrorCode = (typeof ERROR_CODES)[number];

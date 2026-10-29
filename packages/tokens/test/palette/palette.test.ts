@@ -1,11 +1,11 @@
-import { contrastRatio } from '@paulperigault/tokens/contrast';
+import { contrastRatio } from '../../src/lib/contrast.ts';
 import { describe, expect, it } from 'vitest';
-import { minPairDistance, minStepDistance } from '../src/domain/color/vision.ts';
+import { minPairDistance, minStepDistance } from '../../src/palette/domain/color/vision.ts';
 import {
   MIN_CATEGORICAL_DELTA,
   MIN_GRAPHIC_CONTRAST,
   MIN_STEP_DELTA,
-} from '../src/domain/palette/thresholds.ts';
+} from '../../src/palette/domain/thresholds.ts';
 import { DEFAULT_HUE, HUES, THEMES, baseOf, palettesOf } from './palette-helpers.ts';
 
 describe.each(THEMES)('palettes dérivées, thème %s', (theme) => {
