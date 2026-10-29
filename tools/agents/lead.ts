@@ -1,11 +1,12 @@
 // Moteur de ds-lead, à lancer détaché :
-//   nohup node tools/agents/lead.mjs >> .agents/lead.log 2>&1 &
+//   nohup node tools/agents/lead.ts >> .agents/lead.log 2>&1 &
 // Prend le premier lot « à faire » ou « renvoyé » de `.agents/lead-queue.md`, le marque « en
 // cours », lance une session ds-lead, puis enchaîne. Après une session sans « prêt pour
 // validation », le lot est retenté une fois, puis « abandonné » (repris par l'orchestrateur).
 // S'arrête proprement quand la file est vide. Écrit son pid dans `.agents/lead.pid`.
 import { readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import process from 'node:process';
 import { realDeps } from './lib/cli.ts';
 import {
   nextLot,
@@ -14,6 +15,7 @@ import {
   statusAfterSession,
   updateLot,
 } from './lib/lead-queue.ts';
+import type { Lot, Queue } from './lib/lead-queue.ts';
 import { commitLeadFiles, prepareLeadWorktree, runLeadSession } from './lib/lead-session.ts';
 
 const deps = await realDeps();
@@ -24,17 +26,14 @@ if (deps.config.kiro?.available === false) {
 const shared = join(deps.stateRoot, '.agents');
 const queueFile = join(shared, 'lead-queue.md');
 const pidFile = join(shared, 'lead.pid');
-const log = (message) => console.log(`${new Date().toISOString()} ${message}`);
-const readQueue = () => parseQueue(readFileSync(queueFile, 'utf8'));
-const writeQueue = (queue) => writeFileSync(queueFile, serializeQueue(queue));
+const log = (message: string): void => console.log(`${new Date().toISOString()} ${message}`);
+const readQueue = (): Queue => parseQueue(readFileSync(queueFile, 'utf8'));
+const writeQueue = (queue: Queue): void => writeFileSync(queueFile, serializeQueue(queue));
 
-const setStatus = (id, changes) => {
-  const queue = updateLot(readQueue(), id, changes);
-  writeQueue(queue);
-  return queue.lots.find((lot) => lot.id === id);
-};
+const setStatus = (id: string, changes: Partial<Lot>): void =>
+  writeQueue(updateLot(readQueue(), id, changes));
 
-async function runLot(lot) {
+async function runLot(lot: Lot): Promise<void> {
   const attempts = lot.attempts + 1;
   setStatus(lot.id, { status: 'en cours', attempts });
   log(`${lot.id} : session ${attempts} (base ${lot.base})`);
@@ -47,10 +46,10 @@ async function runLot(lot) {
     const committed = await commitLeadFiles(deps, { cwd, lot });
     log(`${lot.id} : ${committed.length} fichier(s) de tâche ou de bilan commités`);
   } catch (error) {
-    log(`${lot.id} : erreur ${error.message}`);
+    log(`${lot.id} : erreur ${error instanceof Error ? error.message : String(error)}`);
   }
   const after = readQueue().lots.find((item) => item.id === lot.id);
-  const status = statusAfterSession({ ...after, attempts });
+  const status = statusAfterSession({ status: after?.status ?? lot.status, attempts });
   setStatus(lot.id, { status });
   log(`${lot.id} : ${status}`);
 }

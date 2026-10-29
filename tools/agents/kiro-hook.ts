@@ -1,7 +1,8 @@
 // Hook PreToolUse des agents Kiro (trigger PreToolUse, matcher shell) : lit l'événement sur
-// stdin et bloque (code non nul) toute commande interdite (lib/forbidden.mjs). Si DS_HOOK_LOG est
+// stdin et bloque (code non nul) toute commande interdite (lib/forbidden.ts). Si DS_HOOK_LOG est
 // défini (chemin hors du worktree, posé par le dispatcher), l'événement y est ajouté pour audit.
 import { appendFileSync, readFileSync } from 'node:fs';
+import process from 'node:process';
 import { commandText, forbiddenReason } from './lib/forbidden.ts';
 
 const BLOCK = 2;

@@ -152,7 +152,7 @@ Règles :
 
 ### 3.4 Dispatcher `tools/agents/` (Node 24, sans dépendance, testé avec FS et process injectés)
 
-`node tools/agents/run.mjs tasks/T5.04-select.md` :
+`node tools/agents/run.ts tasks/T5.04-select.md` :
 1. Vérifie que les tâches de `depends_on` sont fusionnées.
 2. `git worktree add ../ds-wt/T5.04 -b agent/T5.04` depuis `develop`.
 3. Lance Kiro selon le transport retenu au §2, sans jamais injecter de secret (la session `kiro-cli login` suffit) :
@@ -166,7 +166,7 @@ Règles :
 7. Écrit `.agents/runs/T5.04.result.json` : `{status, filesTouched, outOfScope, acceptance:[{cmd, code}], durationMs, engine, model}`.
 8. `--engine claude` : même tâche via `claude -p` avec un sous-agent Sonnet. C'est le repli si aucun transport Kiro ne fonctionne ou si les crédits sont épuisés.
 
-`node tools/agents/batch.mjs --lot L2 --parallel 3` : lance un lot en respectant `depends_on`, au plus N en parallèle, et rend un tableau récapitulatif. Commencer à `--parallel 3`, puis monter seulement si aucune erreur de quota n'apparaît.
+`node tools/agents/batch.ts --lot L2 --parallel 3` : lance un lot en respectant `depends_on`, au plus N en parallèle, et rend un tableau récapitulatif. Commencer à `--parallel 3`, puis monter seulement si aucune erreur de quota n'apparaît.
 
 ### 3.5 Boucle de l'orchestrateur
 

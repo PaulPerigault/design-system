@@ -137,7 +137,7 @@
       "matcher": "shell",
       "action": {
         "type": "command",
-        "command": "node tools/agents/kiro-hook.mjs"
+        "command": "node tools/agents/kiro-hook.ts"
       },
       "timeout": 10
     }

@@ -99,10 +99,10 @@
       {
         "capability": "shell",
         "match": [
-          "node tools/agents/run.mjs*",
-          "node tools/agents/batch.mjs*",
-          "node tools/agents/review.mjs*",
-          "node tools/agents/integrate.mjs*",
+          "node tools/agents/run.ts*",
+          "node tools/agents/batch.ts*",
+          "node tools/agents/review.ts*",
+          "node tools/agents/integrate.ts*",
           "npm run verify*",
           "npm run e2e*",
           "npm run build*",
@@ -155,7 +155,7 @@
       "matcher": "shell",
       "action": {
         "type": "command",
-        "command": "node tools/agents/kiro-hook.mjs"
+        "command": "node tools/agents/kiro-hook.ts"
       },
       "timeout": 10
     }

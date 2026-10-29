@@ -1,4 +1,4 @@
-// Commandes interdites aux exécutants Kiro, partagées par le hook PreToolUse (kiro-hook.mjs) et
+// Commandes interdites aux exécutants Kiro, partagées par le hook PreToolUse (kiro-hook.ts) et
 // les règles `permissions` des agents (.kiro/agents/*.json, vérifiées par test). Défense en
 // profondeur : le contrôle de propriété du dispatcher reste la garantie finale.
 

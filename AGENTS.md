@@ -102,7 +102,7 @@ et `--body-file`, GitHub reprend la liste des commits et `squash-message` échou
 
 Plafond global de sessions Kiro (`.agents/slots/`), une seule tâche lourde locale à la fois
 (`.agents/locks/heavy`), dépendances des worktrees clonées depuis une amorce (`.agents/seeds/`).
-ds-lead : `prompts/lead.md`, file `.agents/lead-queue.md`, moteur `tools/agents/lead.mjs`.
+ds-lead : `prompts/lead.md`, file `.agents/lead-queue.md`, moteur `tools/agents/lead.ts`.
 
 ## Fichiers générés
 

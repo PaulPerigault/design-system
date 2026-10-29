@@ -80,3 +80,9 @@ export function parseOptions(argv: string[]): Options {
   }
   return { ...named, _: positionals };
 }
+
+/** Valeur textuelle d'une option (`--clé valeur`), `undefined` pour un drapeau ou une absence. */
+export const stringOption = (options: Options, key: string): string | undefined => {
+  const value = options[key];
+  return typeof value === 'string' ? value : undefined;
+};

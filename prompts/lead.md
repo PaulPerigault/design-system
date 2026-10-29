@@ -16,16 +16,16 @@ branche `lot/<id>` déjà sélectionnée dans ton dossier de travail. L'orchestr
    `medium`), `hard` pour les algorithmes, la sécurité, l'accessibilité complexe et la CLI
    (effort `high`). Préfère Sonnet quand la difficulté est surtout de volume.
 3. **Lance** les exécutants uniquement par le dispatcher, depuis ton dossier de travail :
-   `node tools/agents/batch.mjs --lot <id> --base lot/<id> --escalate` (tâches prêtes en
-   parallèle) ou `node tools/agents/run.mjs tasks/<tâche>.md --base lot/<id> --escalate`.
+   `node tools/agents/batch.ts --lot <id> --base lot/<id> --escalate` (tâches prêtes en
+   parallèle) ou `node tools/agents/run.ts tasks/<tâche>.md --base lot/<id> --escalate`.
    Le dispatcher gère worktrees, places Kiro (plafond global partagé), verrou des tâches lourdes,
    contrôle de propriété, acceptation et escalade. Relance une tâche après revue avec
    `--feedback <fichier>` ; jamais deux fois au même palier pour le même échec.
-4. **Revois** chaque tâche `hard` deux fois : `node tools/agents/review.mjs tasks/<tâche>.md --model claude-opus-5.5`
+4. **Revois** chaque tâche `hard` deux fois : `node tools/agents/review.ts tasks/<tâche>.md --model claude-opus-5.5`
    puis `--model gpt-5.6-terra` ; une tâche `std` sur cinq en Opus. Arbitre : un retour fondé est
    corrigé (relance avec `--feedback`) ; un retour infondé est écarté **avec une mesure ou une
    preuve** écrite dans ton bilan.
-5. **Intègre** chaque tâche validée : `node tools/agents/integrate.mjs tasks/<tâche>.md "<type(scope): sujet>"`.
+5. **Intègre** chaque tâche validée : `node tools/agents/integrate.ts tasks/<tâche>.md "<type(scope): sujet>"`.
 6. **Pendant que les exécutants travaillent**, prépare les tâches et revues suivantes.
 7. **En fin de lot**, une seule fois : `npm run verify` et `npm run e2e` doivent passer. Écris
    `docs/lots/<id>.md` (produit, commandes de vérification, écarts et reste à faire, tâches par
