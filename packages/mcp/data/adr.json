@@ -347,6 +347,13 @@
       "decision": "AreaChart et GaugeChart enregistrés et documentés (V2b-2, #95) : exports `./AreaChart.astro` et `./GaugeChart.astro`, fragments `area-chart` et `gauge-chart` (fermeture transitive des imports, socle commun répété comme pour LineChart et BarChart ; dépendances `table` et `@paulperigault/dataviz`), pages dans le groupe « Données » sur le gabarit `ComponentPage`, jeux fictifs dans `chart-data.json` (trafic par source ; jauges de remplissage, de stock, de charge et de délai). Conseils écrits sur les pages : empilement lisible jusqu'à 3 ou 4 couches, courbes séparées au-delà ; jauge pour une valeur unique et des zones, sens jamais porté par la couleur seule ; `--pp-chart-1..6` figés sur l'accent par défaut tant que #121 n'est pas faite. Références Visuel : voir journal.",
       "id": "D-045",
       "rollback": "Retirer les deux exports, fragments, pages et liens de navigation."
+    },
+    {
+      "alternative": "Skill utilisateur seul ; copie d'un guide tiers ; revue sans document versionné.",
+      "date": "2026-10-29",
+      "decision": "Skill de revue visuelle « Encre » adopté, versionné dans le dépôt (D1, #134) : `.claude/skills/encre-design/SKILL.md`, rédigé à partir des jetons, d'ADR-0002 et d'ADR-0007 et des réponses de Paul (précis, posé, lisible ; trait d'encre et étiquette directe sans jamais remplacer la légende accessible ; accent rare, sauf les zones de seuils de la jauge ; refus de coins au-delà de 8 px, d'illustrations génériques, de crème + serif + terracotta et de l'arc-en-ciel). Aucune ressource tierce copiée ; aucune règle iOS ou macOS. Revue des quatre graphiques dans `docs/design/revue-graphiques-v2.md` : aucun défaut critique, deux High (texte des axes à 10,6 px à 375 px ; valeurs dans les barres sous 4,5:1) et un Medium (contour d'aire) qui touchent la géométrie ou le budget : listés, non corrigés ici, aucun jeton ni budget modifié.",
+      "id": "D-046",
+      "rollback": "Supprimer `.claude/skills/encre-design/` et `docs/design/revue-graphiques-v2.md`."
     }
   ]
 }
