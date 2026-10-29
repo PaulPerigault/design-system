@@ -6,7 +6,7 @@ import {
   inlineStyles,
   unknownTokens,
   validateSnippet,
-} from '../src/tools-snippet.mjs';
+} from '../src/tools-snippet.ts';
 
 const deps = {
   analyze,

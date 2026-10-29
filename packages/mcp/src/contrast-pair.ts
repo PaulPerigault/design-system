@@ -2,8 +2,21 @@
 // ratio WCAG 2 (normatif, @paulperigault/tokens/contrast) et Lc APCA (informatif).
 import { parseOklch, toHex } from '@paulperigault/tokens/color';
 import { contrastRatio } from '@paulperigault/tokens/contrast';
-import { APCA_VERSION, apcaLc } from './apca.mjs';
-import { ToolError } from './schemas.mjs';
+import { APCA_VERSION, apcaLc } from './apca.ts';
+import type { Tokens } from './data.ts';
+import { ToolError } from './schemas.ts';
+
+export type Theme = 'light' | 'dark';
+
+export interface ResolvedColor {
+  input: string;
+  value: string;
+  hex: string;
+  theme?: Theme;
+}
+
+type Pair = Tokens['pairs'][number];
+type ThemeTokens = Tokens['themes'][Theme];
 
 const TOKEN_PREFIX = '--pp-';
 const LONG_HEX = /^#[0-9a-f]{6}$/;
@@ -15,9 +28,10 @@ const LC_PRECISION = 10;
 const APCA_NOTE =
   'APCA est informatif : il n’est pas normatif en WCAG 2.2, seul le ratio WCAG 2 fait foi.';
 
-const round = (value, precision) => Math.round(value * precision) / precision;
+const round = (value: number, precision: number): number =>
+  Math.round(value * precision) / precision;
 
-function oklchToHex(text) {
+function oklchToHex(text: string): string {
   try {
     return toHex(parseOklch(text));
   } catch (error) {
@@ -26,7 +40,7 @@ function oklchToHex(text) {
   }
 }
 
-function resolveToken(name, tokens, theme) {
+function resolveToken(name: string, tokens: Tokens, theme: Theme): ResolvedColor {
   const themed = tokens.themes[theme][name];
   if (themed) return { input: name, theme, value: themed.oklch, hex: themed.hex };
   const base = tokens.base[name];
@@ -35,12 +49,11 @@ function resolveToken(name, tokens, theme) {
   return { input: name, value: base, hex: oklchToHex(base) };
 }
 
-/**
- * @param {string} input `#rgb`, `#rrggbb`, `oklch(…)` ou `--pp-…`
- * @param {{ tokens: object, theme: 'light' | 'dark' }} context
- * @returns {{ input: string, value: string, hex: string, theme?: string }}
- */
-export function resolveColor(input, { tokens, theme }) {
+/** `input` : `#rgb`, `#rrggbb`, `oklch(…)` ou `--pp-…`. */
+export function resolveColor(
+  input: string,
+  { tokens, theme }: { tokens: Tokens; theme: Theme },
+): ResolvedColor {
   const text = input.trim().toLowerCase();
   if (text.startsWith(TOKEN_PREFIX)) return resolveToken(text, tokens, theme);
   if (LONG_HEX.test(text)) return { input, value: text, hex: text };
@@ -55,12 +68,11 @@ export function resolveColor(input, { tokens, theme }) {
   return { input, value: text, hex: oklchToHex(text) };
 }
 
-/**
- * Rapport complet pour `check_contrast`. Les seuils se comparent au ratio brut, sans arrondi.
- * @param {{ value: string, hex: string }} foreground
- * @param {{ value: string, hex: string }} background
- */
-export function contrastReport(foreground, background) {
+/** Rapport complet pour `check_contrast`. Les seuils se comparent au ratio brut, sans arrondi. */
+export function contrastReport(
+  foreground: ResolvedColor,
+  background: ResolvedColor,
+): Record<string, unknown> {
   const ratio = contrastRatio(foreground.value, background.value);
   return {
     foreground,
@@ -79,12 +91,11 @@ export function contrastReport(foreground, background) {
   };
 }
 
-/**
- * Contraste d'une paire connue (`roles.json`) dans un thème ; `undefined` si un jeton manque.
- * @param {{ fg: string, bg: string, min: number, norm: string }} pair
- * @param {Record<string, { oklch: string, hex: string }>} themeTokens
- */
-export function pairReport(pair, themeTokens) {
+/** Contraste d'une paire connue (`roles.json`) dans un thème ; `undefined` si un jeton manque. */
+export function pairReport(
+  pair: Pair,
+  themeTokens: ThemeTokens,
+): Record<string, unknown> | undefined {
   const fg = themeTokens[pair.fg];
   const bg = themeTokens[pair.bg];
   if (!fg || !bg) return undefined;

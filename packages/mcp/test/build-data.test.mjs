@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { buildData, OUT, run, serialize, SOURCES } from '../scripts/build-data.mjs';
-import * as parse from '../scripts/parse-component.mjs';
+import { buildData, OUT, run, serialize, SOURCES } from '../scripts/build-data.ts';
+import * as parse from '../scripts/parse-component.ts';
 
 // Format de apps/docs/scripts/markdown.mjs ; « # Démo » et « ## Titre 2 » imitent un exemple.
 const BUTTON = [

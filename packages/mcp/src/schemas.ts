@@ -27,7 +27,7 @@ const query = () => z.string().trim().min(1).max(LIMITS.query);
 
 /** Erreur attendue (entrée inconnue, couleur hors gamut…) : message montré tel quel. */
 export class ToolError extends Error {
-  name = 'ToolError';
+  override name = 'ToolError';
 }
 
 export const schemas = Object.freeze({
@@ -56,3 +56,37 @@ export const schemas = Object.freeze({
       message: 'fournir soit « id », soit « query »',
     }),
 });
+
+const ID_DIGITS: Record<string, number> = { ADR: 4, D: 3 };
+
+/** `adr-3` → `ADR-0003` ; `d-21` → `D-021`. */
+export function canonicalId(id: string): string {
+  const [kind = '', number = ''] = id.toUpperCase().split('-');
+  return `${kind}-${number.padStart(ID_DIGITS[kind] ?? 0, '0')}`;
+}
+
+export type ToolName = keyof typeof schemas;
+
+// Définition d'un outil : nom, titre, description, schéma d'entrée et traitement.
+export interface ToolDefinition {
+  name: ToolName;
+  title: string;
+  description: string;
+  schema: z.ZodType;
+  /** Valide l'entrée avec `schema`, puis appelle le traitement typé. */
+  run: (input: unknown) => unknown;
+}
+
+export interface ToolSpec<S extends z.ZodType> {
+  name: ToolName;
+  title: string;
+  description: string;
+  schema: S;
+  run: (input: z.output<S>) => unknown;
+}
+
+/** Assemble un outil : l'entrée est validée par `schema` avant d'atteindre `run`. */
+export function defineTool<S extends z.ZodType>(spec: ToolSpec<S>): ToolDefinition {
+  const { name, title, description, schema } = spec;
+  return { name, title, description, schema, run: (input) => spec.run(schema.parse(input)) };
+}

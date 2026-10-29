@@ -29,36 +29,37 @@ const HEX = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i;
 
 export const APCA_VERSION = 'APCA-W3 0.1.9';
 
-/**
- * Luminance estimée Y d'une couleur sRGB 8 bits (`sRGBtoY` de apca-w3).
- * @param {[number, number, number]} rgb canaux de 0 à 255
- */
-export function srgbToY([r, g, b]) {
-  const channel = (value) => (value / BYTE_MAX) ** SA98G.mainTRC;
+/** Canaux 8 bits (0 à 255) d'une couleur sRGB. */
+export type Rgb = readonly [number, number, number];
+
+/** Luminance estimée Y d'une couleur sRGB 8 bits (`sRGBtoY` de apca-w3). */
+export function srgbToY([r, g, b]: Rgb): number {
+  const channel = (value: number): number => (value / BYTE_MAX) ** SA98G.mainTRC;
   return SA98G.sRco * channel(r) + SA98G.sGco * channel(g) + SA98G.sBco * channel(b);
 }
 
-const inRange = (y) => Number.isFinite(y) && y >= INPUT_RANGE.min && y <= INPUT_RANGE.max;
+const inRange = (y: number): boolean =>
+  Number.isFinite(y) && y >= INPUT_RANGE.min && y <= INPUT_RANGE.max;
 
 /** Rehaussement doux des noirs (« soft clamp ») sous le seuil `blkThrs`. */
-const softClamp = (y) => (y > SA98G.blkThrs ? y : y + (SA98G.blkThrs - y) ** SA98G.blkClmp);
+const softClamp = (y: number): number =>
+  y > SA98G.blkThrs ? y : y + (SA98G.blkThrs - y) ** SA98G.blkClmp;
 
-function normalPolarity(textY, backgroundY) {
+function normalPolarity(textY: number, backgroundY: number): number {
   const sapc = (backgroundY ** SA98G.normBG - textY ** SA98G.normTXT) * SA98G.scaleBoW;
   return sapc < SA98G.loClip ? 0 : sapc - SA98G.loBoWoffset;
 }
 
-function reversePolarity(textY, backgroundY) {
+function reversePolarity(textY: number, backgroundY: number): number {
   const sapc = (backgroundY ** SA98G.revBG - textY ** SA98G.revTXT) * SA98G.scaleWoB;
   return sapc > -SA98G.loClip ? 0 : sapc + SA98G.loWoBoffset;
 }
 
 /**
- * Lc signé (`APCAcontrast` de apca-w3) : positif = texte sombre sur fond clair.
- * @param {number} textY luminance du texte
- * @param {number} backgroundY luminance du fond
+ * Lc signé (`APCAcontrast` de apca-w3) : positif = texte sombre sur fond clair. `textY` et
+ * `backgroundY` : luminances du texte et du fond.
  */
-export function apcaContrast(textY, backgroundY) {
+export function apcaContrast(textY: number, backgroundY: number): number {
   if (!inRange(textY) || !inRange(backgroundY)) return 0;
   const text = softClamp(textY);
   const background = softClamp(backgroundY);
@@ -68,12 +69,15 @@ export function apcaContrast(textY, backgroundY) {
 }
 
 /** `#rrggbb` → canaux 8 bits ; lève une `TypeError` sinon. */
-export function hexToRgb(hex) {
-  const match = HEX.exec(hex);
-  if (!match) throw new TypeError(`APCA : « ${hex} » attendu #rrggbb.`);
-  return match.slice(1).map((pair) => Number.parseInt(pair, HEX_RADIX));
+export function hexToRgb(hex: string): Rgb {
+  const [, red, green, blue] = HEX.exec(hex) ?? [];
+  if (red === undefined || green === undefined || blue === undefined) {
+    throw new TypeError(`APCA : « ${hex} » attendu #rrggbb.`);
+  }
+  const byte = (pair: string): number => Number.parseInt(pair, HEX_RADIX);
+  return [byte(red), byte(green), byte(blue)];
 }
 
 /** Lc APCA de deux couleurs `#rrggbb` (texte, fond). */
-export const apcaLc = (textHex, backgroundHex) =>
+export const apcaLc = (textHex: string, backgroundHex: string): number =>
   apcaContrast(srgbToY(hexToRgb(textHex)), srgbToY(hexToRgb(backgroundHex)));

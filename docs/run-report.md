@@ -247,3 +247,8 @@ test -c apps/docs/playwright.config.ts`.
 
 - Structure de l'ADR-0006 appliquée à `create` (D-062), contrôle `architecture` étendu à `create`. #84 fermée.
 - Reste : #85 (`mcp`, générateur de `tokens`), #86 (`tools/agents`, `dist/` pour chaque paquet publié).
+
+## #85-A (2026-10-29) : `mcp` en TypeScript strict
+
+- `mcp` en TypeScript strict, sorties identiques (D-063). Anneaux : ⚖️ (garde statique à neuf modules). #85 reste ouverte.
+- Reste : #86 (`tools/agents`, `dist/` pour chaque paquet publié).
