@@ -1,9 +1,9 @@
-import type { Oklch } from '@paulperigault/tokens/color';
-import { contrastRatio } from '@paulperigault/tokens/contrast';
-import { fitToGamut } from '../color/gamut.ts';
-import { minPairDistance, minStepDistance } from '../color/vision.ts';
-import type { Result } from '../result.ts';
-import { fail, ok } from '../result.ts';
+import type { Oklch } from '../../lib/color.ts';
+import { contrastRatio } from '../../lib/contrast.ts';
+import { fitToGamut } from './color/gamut.ts';
+import { minPairDistance, minStepDistance } from './color/vision.ts';
+import type { Result } from './result.ts';
+import { fail, ok } from './result.ts';
 import { deriveCategorical } from './categorical.ts';
 import { deriveDiverging, deriveSequential } from './ramps.ts';
 import {

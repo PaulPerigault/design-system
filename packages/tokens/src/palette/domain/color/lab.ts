@@ -1,4 +1,4 @@
-import type { Rgb } from '@paulperigault/tokens/color';
+import type { Rgb } from '../../../lib/color.ts';
 
 /** CIE L*a*b* (illuminant D65) depuis du sRGB linéaire (IEC 61966-2-1, CIE 15). */
 export interface Lab {

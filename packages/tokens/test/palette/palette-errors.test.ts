@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { derivePalettes } from '../src/domain/palette/derive.ts';
-import { lightDarkTokens, paletteTokens } from '../src/domain/palette/tokens.ts';
-import { themeBaseFromTokens } from '../src/infrastructure/theme-base.ts';
+import { derivePalettes } from '../../src/palette/domain/derive.ts';
+import { lightDarkTokens, paletteTokens } from '../../src/palette/domain/tokens.ts';
+import { themeBaseFromTokens } from '../../src/palette/infrastructure/theme-base.ts';
 import { DEFAULT_HUE, baseOf, palettesOf } from './palette-helpers.ts';
 
 describe('dérivation : erreurs typées', () => {

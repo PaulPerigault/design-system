@@ -410,6 +410,11 @@
       "decision": "Références Visuel des pages à hauteur variable (#127) : `/decisions/` et `/composants/`, dont la hauteur grandit à chaque ADR ou composant (échec de `decisions-light` et `-dark` à chaque PR qui ajoute une décision : 2 403 px attendus, 3 101 reçus), sont capturées dans le viewport de l'appareil seul (`VIEWPORT_ONLY`). Les pages de composants restent en pleine page (signal de régression intact) ; le poids des références diminue (12 images recadrées). Procédure mise à jour dans `docs/process/visual-references.md`. Aucun budget ni garde-fou modifié.",
       "id": "D-054",
       "rollback": "Retirer `VIEWPORT_ONLY` et régénérer les références pleine page."
+    },
+    {
+      "date": "2026-10-29",
+      "decision": "Dérivation de palettes déplacée de `@paulperigault/dataviz` vers `@paulperigault/tokens` (#121, B1, « Refs #121 ») : option B de Paul (A écartée : `create` ne dépend pas de dataviz). Déplacés sans changement de comportement dans `packages/tokens/src/palette/` (miroir `domain/`, `infrastructure/`, `errors.ts`) : `domain/color/*` (CVD, ΔE00, gamut, Lab, vision), `derive`, `categorical`, `ramps`, `ink`, `thresholds`, `tokens` (`lightDarkTokens`, `paletteTokens`), `types`, le lecteur `themeBaseFromTokens`/`readThemeColor` et `seriesInksFromTokens` (entrée et sortie directes de la dérivation, et nécessaires aux tests déplacés). Nouveau point d'entrée `@paulperigault/tokens/palette`, `tokens` toujours publié en `.ts`, sans import de dataviz. Erreurs : `PaletteError` et ses six codes `palette.*` vivent dans `tokens` ; `ERROR_CODES` de dataviz les reprend (`...PALETTE_ERROR_CODES`), l'union `DatavizError` est inchangée et `Result<T>` de dataviz reste assignable. `dataviz` réexporte les mêmes noms : astro, docs et tests sans modification. Sens des dépendances respecté (`tokens ← dataviz ← astro`, ADR-0006). Tests déplacés (`packages/tokens/test/palette/`) : assertions inchangées, seuls les chemins d'import changent ; `guards.ts` (`isRecord`) dupliqué pour la lecture de `tokens.json`. Non fait (B2) : `--pp-accent-hue`, `--pp-font-stack`. Aucun budget ni garde-fou modifié.",
+      "id": "D-055"
     }
   ]
 }

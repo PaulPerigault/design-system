@@ -1,5 +1,5 @@
-import type { Oklch } from '@paulperigault/tokens/color';
-import { contrastRatio } from '@paulperigault/tokens/contrast';
+import type { Oklch } from '../../lib/color.ts';
+import { contrastRatio } from '../../lib/contrast.ts';
 import { MIN_TEXT_CONTRAST } from './thresholds.ts';
 
 /** Neutre de texte d'un thème : `fg` (texte) ou `bg` (fond de page). */

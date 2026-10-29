@@ -1,10 +1,10 @@
-import tokens from '@paulperigault/tokens/tokens.json' with { type: 'json' };
-import { contrastRatio } from '@paulperigault/tokens/contrast';
+import tokens from '../../generated/tokens.json' with { type: 'json' };
+import { contrastRatio } from '../../src/lib/contrast.ts';
 import { describe, expect, it } from 'vitest';
-import { inkOn } from '../src/domain/palette/ink.ts';
-import { CATEGORICAL_COUNT, MIN_TEXT_CONTRAST } from '../src/domain/palette/thresholds.ts';
-import { seriesInksFromTokens } from '../src/infrastructure/series-ink.ts';
-import { readThemeColor } from '../src/infrastructure/theme-base.ts';
+import { inkOn } from '../../src/palette/domain/ink.ts';
+import { CATEGORICAL_COUNT, MIN_TEXT_CONTRAST } from '../../src/palette/domain/thresholds.ts';
+import { seriesInksFromTokens } from '../../src/palette/infrastructure/series-ink.ts';
+import { readThemeColor } from '../../src/palette/infrastructure/theme-base.ts';
 import { baseOf, THEMES } from './palette-helpers.ts';
 
 const dark = { l: 0.2, c: 0, h: 0 };
