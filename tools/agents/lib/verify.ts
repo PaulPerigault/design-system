@@ -2,10 +2,17 @@
 // d’acceptation, contrôle de propriété. Dépendances injectées (`deps`).
 import { acceptancePassed, runAcceptance } from './acceptance.ts';
 import { checkOwnership, ownershipFailure } from './ownership.ts';
+import type { Task } from './types.ts';
+import type { Deps, VerifyResult, WorktreeInfo } from './deps.ts';
 
 // Formatage mécanique (D-006) : Prettier sur les seuls fichiers possédés et touchés, avant
 // l'acceptation, pour qu'une mise en forme oubliée ne coûte pas une escalade de palier.
-const formatOwned = async (deps, task, worktree, env) => {
+const formatOwned = async (
+  deps: Deps,
+  task: Task,
+  worktree: WorktreeInfo,
+  env: Record<string, string>,
+): Promise<void> => {
   const { filesTouched } = await checkOwnership({
     ...deps,
     cwd: worktree.path,
@@ -22,7 +29,12 @@ const formatOwned = async (deps, task, worktree, env) => {
   });
 };
 
-export const verify = async (deps, task, worktree, env) => {
+export const verify = async (
+  deps: Deps,
+  task: Task,
+  worktree: WorktreeInfo,
+  env: Record<string, string>,
+): Promise<VerifyResult> => {
   await formatOwned(deps, task, worktree, env);
   const acceptance = await runAcceptance({
     lock: deps.heavyLock,

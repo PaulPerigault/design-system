@@ -261,3 +261,7 @@ test -c apps/docs/playwright.config.ts`.
 ## #86-B1 (2026-10-29) : `tools/agents`, modules feuilles
 
 - 17 modules en TypeScript strict (D-065). Restent : modules à dépendances (B2), scripts et configuration (B3, « Closes #86 »).
+
+## #86-B2 (2026-10-29) : `tools/agents`, modules à dépendances
+
+- Huit modules en TypeScript strict (D-066). Reste : B3, les six lanceurs et la configuration (« Closes #86 »).

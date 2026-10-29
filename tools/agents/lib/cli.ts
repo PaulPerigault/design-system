@@ -3,25 +3,35 @@
 // GIT_DIR absolu qui ferait écrire les commandes dans le mauvais dépôt.
 import { appendFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
+import process from 'node:process';
 import { fileURLToPath } from 'node:url';
-import { coordination, mainRoot } from './coordination.mjs';
+import { toConfig, toModels } from './config.ts';
+import { coordination, mainRoot } from './coordination.ts';
 import { run, runShell } from './process.ts';
 import { parseTask } from './task.ts';
+import type { Git, Task } from './types.ts';
+import type { LeadDeps } from './deps.ts';
 
 export const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../../..');
 
-const cleanEnv = (env) =>
-  Object.fromEntries(Object.entries(env).filter(([key]) => !key.startsWith('GIT_')));
+const cleanEnv = (env: NodeJS.ProcessEnv): Record<string, string> => {
+  const kept: Record<string, string> = {};
+  for (const [key, value] of Object.entries(env)) {
+    if (value !== undefined && !key.startsWith('GIT_')) kept[key] = value;
+  }
+  return kept;
+};
 
-const git = (args, { cwd } = {}) =>
+const git: Git = (args, { cwd } = {}) =>
   run('git', args, { cwd: cwd ?? REPO_ROOT, env: cleanEnv(process.env) });
 
-const readJson = async (file) => JSON.parse(await readFile(join(REPO_ROOT, file), 'utf8'));
+const readJson = async (file: string): Promise<unknown> =>
+  JSON.parse(await readFile(join(REPO_ROOT, file), 'utf8'));
 
 /** Dépendances réelles du dispatcher. `base` = branche d'intégration du lot (sinon main). */
-export async function realDeps({ base } = {}) {
-  const config = await readJson('tools/agents/config.json');
-  const models = await readJson('tools/agents/models.json');
+export async function realDeps({ base }: { base?: string | undefined } = {}): Promise<LeadDeps> {
+  const config = toConfig(await readJson('tools/agents/config.json'));
+  const models = toModels(await readJson('tools/agents/models.json'));
   // État partagé (runs, routage, places, verrous, amorces) dans le dépôt principal, même quand le
   // dispatcher tourne depuis un worktree (ds-lead).
   const stateRoot = mainRoot(REPO_ROOT, cleanEnv(process.env));
@@ -32,7 +42,7 @@ export async function realDeps({ base } = {}) {
     git,
     launch: run,
     shell: runShell,
-    fs: { appendFile, mkdir, writeFile, readFile },
+    fs: { appendFile, mkdir, writeFile },
     now: Date.now,
     env: cleanEnv(process.env),
     models,
@@ -46,17 +56,27 @@ export async function realDeps({ base } = {}) {
 }
 
 /** Tâche lue depuis son fichier (chemin relatif à la racine du dépôt ou absolu). */
-export const loadTask = async (file) => parseTask(await readFile(resolve(REPO_ROOT, file), 'utf8'));
+export const loadTask = async (file: string): Promise<Task> =>
+  parseTask(await readFile(resolve(REPO_ROOT, file), 'utf8'));
+
+export interface Options {
+  _: string[];
+  [key: string]: string | boolean | string[] | undefined;
+}
 
 /** Options `--clé valeur` et drapeaux `--clé` ; le reste en positionnels. */
-export function parseOptions(argv) {
-  const options = { _: [] };
+export function parseOptions(argv: string[]): Options {
+  const positionals: string[] = [];
+  const named: Record<string, string | boolean> = {};
   for (let i = 0; i < argv.length; i += 1) {
-    const arg = argv[i];
-    if (!arg.startsWith('--')) options._.push(arg);
-    else if (argv[i + 1] === undefined || argv[i + 1].startsWith('--'))
-      options[arg.slice(2)] = true;
-    else options[arg.slice(2)] = argv[(i += 1)];
+    const arg = argv[i] ?? '';
+    const next = argv[i + 1];
+    if (!arg.startsWith('--')) positionals.push(arg);
+    else if (next === undefined || next.startsWith('--')) named[arg.slice(2)] = true;
+    else {
+      named[arg.slice(2)] = next;
+      i += 1;
+    }
   }
-  return options;
+  return { ...named, _: positionals };
 }

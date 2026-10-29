@@ -2,7 +2,7 @@
 // node tools/agents/integrate.mjs tasks/T1.01-stack.md "feat(astro): primitive stack"
 // Commit (par l'orchestrateur, hooks actifs) des seuls fichiers de `files:` dans le worktree,
 // cherry-pick dans la branche courante, puis suppression du worktree et de sa branche.
-import { loadTask, parseOptions, realDeps } from './lib/cli.mjs';
+import { loadTask, parseOptions, realDeps } from './lib/cli.ts';
 import { checkOwnership, ownershipFailure } from './lib/ownership.ts';
 import { removeWorktree, worktreeOf } from './lib/worktree.ts';
 

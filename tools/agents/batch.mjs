@@ -5,9 +5,9 @@
 import { existsSync } from 'node:fs';
 import { readdir } from 'node:fs/promises';
 import { batchTable, mapLimit, readyTasks, tasksOfLot } from './lib/batch.ts';
-import { loadTask, parseOptions, realDeps } from './lib/cli.mjs';
+import { loadTask, parseOptions, realDeps } from './lib/cli.ts';
 import { baselineCommands, failingBaseline } from './lib/preflight.ts';
-import { runTask } from './lib/run-task.mjs';
+import { runTask } from './lib/run-task.ts';
 
 const DEFAULT_PARALLEL = 3;
 const options = parseOptions(process.argv.slice(2));
