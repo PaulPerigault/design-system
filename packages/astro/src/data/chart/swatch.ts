@@ -13,6 +13,8 @@ export interface Swatch {
   readonly index: number;
   readonly label: string;
   readonly marks: readonly SwatchMark[];
+  /** Teinte imposée (zone d'une jauge) : attribut `data-tone`. */
+  readonly tone?: string;
 }
 
 /** Échantillon d'une courbe : un trait traversé de son marqueur. */

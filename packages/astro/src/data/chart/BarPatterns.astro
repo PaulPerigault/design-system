@@ -6,9 +6,13 @@ interface Props {
   id: string;
   /** Nombre de séries du graphique : seuls leurs motifs sont écrits. */
   count: number;
+  /** Bloc de classes du graphique (`pp-bar-chart` par défaut). */
+  block?: string;
+  /** Teinte imposée par rang (zones d'une jauge) ; sinon la couleur du rang. */
+  tones?: readonly (string | undefined)[];
 }
 
-const { id, count } = Astro.props;
+const { id, count, block = 'pp-bar-chart', tones = [] } = Astro.props;
 ---
 
 <defs>
@@ -16,12 +20,13 @@ const { id, count } = Astro.props;
     <pattern
       id={patternId(id, index)}
       data-series={index + 1}
+      data-tone={tones[index]}
       width={TILE}
       height={TILE}
       patternUnits="userSpaceOnUse"
     >
-      <rect class="pp-bar-chart__tile" width={TILE} height={TILE}></rect>
-      {mark !== '' && <path class="pp-bar-chart__mark" d={mark}></path>}
+      <rect class={`${block}__tile`} width={TILE} height={TILE}></rect>
+      {mark !== '' && <path class={`${block}__mark`} d={mark}></path>}
     </pattern>
   ))}
 </defs>

@@ -18,7 +18,7 @@ export interface LineModel {
   readonly series: readonly SeriesModel[];
 }
 
-const gridPath = (ticks: YAxis['ticks']): string =>
+export const gridPath = (ticks: YAxis['ticks']): string =>
   ticks.map(({ y }) => `M${PLOT.left} ${y}H${PLOT.right}`).join('');
 
 /** Géométrie complète d'une courbe multiséries ; `scale.*`, `geometry.*` ou `downsample.*` sinon. */

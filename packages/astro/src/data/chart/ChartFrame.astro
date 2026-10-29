@@ -17,10 +17,13 @@ interface Props {
   description: string;
   prepared: Pick<Prepared<unknown>, 'model' | 'empty' | 'renderError' | 'table'>;
   labels: { table: string; empty: string; error: string };
+  /** Cadre du SVG ; défaut : le gabarit commun des courbes et des barres. */
+  viewBox?: string;
   class?: string;
 }
 
 const { block, id, title, description, prepared, labels, class: className } = Astro.props;
+const { viewBox = `0 0 ${WIDTH} ${HEIGHT}` } = Astro.props;
 const { model, empty, renderError, table } = prepared;
 ---
 
@@ -39,7 +42,7 @@ const { model, empty, renderError, table } = prepared;
   {model && (
     <svg
       class={`${block}__svg`}
-      viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+      viewBox={viewBox}
       role="img"
       aria-labelledby={`${id}-t ${id}-d`}
       focusable="false"

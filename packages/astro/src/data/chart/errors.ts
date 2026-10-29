@@ -13,3 +13,12 @@ export class ChartError extends Error {
     this.path = source.path;
   }
 }
+
+type Outcome<T> =
+  { readonly ok: true; readonly value: T } | { readonly ok: false; readonly error: DatavizError };
+
+/** Valeur d'un `Result`, ou `ChartError` : le build échoue avec le code lisible. */
+export function unwrap<T>(chart: string, result: Outcome<T>): T {
+  if (!result.ok) throw new ChartError(chart, result.error);
+  return result.value;
+}

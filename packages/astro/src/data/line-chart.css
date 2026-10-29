@@ -3,7 +3,7 @@
  * par `--pp-chart-*`, traits en multiples de `--pp-size-rule`. Chaque rang de série porte aussi un
  * motif de trait (`line-chart-series.css`) ; la forme du marqueur est dans la géométrie.
  */
-.pp-line-chart__line {
+:is(.pp-line-chart__line, .pp-area-chart__line) {
   fill: none;
   vector-effect: non-scaling-stroke;
   stroke: var(--pp-series);
@@ -12,7 +12,7 @@
   stroke-linejoin: round;
 }
 
-.pp-line-chart__marker {
+:is(.pp-line-chart__marker, .pp-area-chart__marker) {
   fill: var(--pp-series);
   stroke: var(--pp-color-bg);
   stroke-width: var(--pp-size-rule);
@@ -20,11 +20,11 @@
 }
 
 @media (forced-colors: active) {
-  .pp-line-chart__line {
+  :is(.pp-line-chart__line, .pp-area-chart__line) {
     stroke: CanvasText;
   }
 
-  .pp-line-chart__marker {
+  :is(.pp-line-chart__marker, .pp-area-chart__marker) {
     fill: CanvasText;
     stroke: Canvas;
   }

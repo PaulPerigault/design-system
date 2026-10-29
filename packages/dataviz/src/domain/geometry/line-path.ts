@@ -15,9 +15,9 @@ export interface LineGeometry {
   readonly isolated: readonly { readonly x: number; readonly y: number }[];
 }
 
-type Pixel = { readonly x: number; readonly y: number };
+export type Pixel = { readonly x: number; readonly y: number };
 
-function segmentsOf(points: readonly PathPoint[]): Pixel[][] {
+export function segmentsOf(points: readonly PathPoint[]): Pixel[][] {
   const segments: Pixel[][] = [];
   let current: Pixel[] = [];
   for (const { x, y } of points) {

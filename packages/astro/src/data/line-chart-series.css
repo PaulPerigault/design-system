@@ -1,25 +1,25 @@
 /* Motif de trait par rang de série du LineChart : continu, tirets, points (WCAG 1.4.1). */
-.pp-line-chart [data-series='1'] {
+:is(.pp-line-chart, .pp-area-chart) [data-series='1'] {
   --pp-dash: none;
 }
 
-.pp-line-chart [data-series='2'] {
+:is(.pp-line-chart, .pp-area-chart) [data-series='2'] {
   --pp-dash: calc(var(--pp-size-rule) * 6) calc(var(--pp-size-rule) * 3);
 }
 
-.pp-line-chart [data-series='3'] {
+:is(.pp-line-chart, .pp-area-chart) [data-series='3'] {
   --pp-dash: calc(var(--pp-size-rule) * 2) calc(var(--pp-size-rule) * 3);
 }
 
-.pp-line-chart [data-series='4'] {
+:is(.pp-line-chart, .pp-area-chart) [data-series='4'] {
   --pp-dash: calc(var(--pp-size-rule) * 10) calc(var(--pp-size-rule) * 3)
     calc(var(--pp-size-rule) * 2) calc(var(--pp-size-rule) * 3);
 }
 
-.pp-line-chart [data-series='5'] {
+:is(.pp-line-chart, .pp-area-chart) [data-series='5'] {
   --pp-dash: calc(var(--pp-size-rule) * 14) calc(var(--pp-size-rule) * 4);
 }
 
-.pp-line-chart [data-series='6'] {
+:is(.pp-line-chart, .pp-area-chart) [data-series='6'] {
   --pp-dash: calc(var(--pp-size-rule) * 3) calc(var(--pp-size-rule) * 3);
 }

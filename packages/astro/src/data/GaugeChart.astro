@@ -1,0 +1,106 @@
+---
+/**
+ * GaugeChart : jauge d'une valeur dans un intervalle, en demi-cercle ou en cercle complet, SVG
+ * statique généré au build. Zéro JavaScript, aucun attribut `style` (CSP stricte). Des zones
+ * contiguës (seuils) partagent la bande ; l'aiguille désigne la valeur, bornée à l'intervalle avec
+ * l'indication écrite. Le sens ne repose jamais sur la couleur : chaque zone a un libellé écrit,
+ * un motif et son rang, la valeur et la zone actuelle sont écrites au centre, et un tableau lié
+ * liste les zones. Intervalle nul ou seuils non croissants : le build échoue (`gauge.*`).
+ */
+import './chart-base.css';
+import './chart-series.css';
+import './gauge-chart.css';
+import { barSwatch, patternFill } from './chart/bar-patterns.ts';
+import BarPatterns from './chart/BarPatterns.astro';
+import ChartFrame from './chart/ChartFrame.astro';
+import ChartLegend from './chart/ChartLegend.astro';
+import { DEFAULT_MAX } from './chart/gauge-layout.ts';
+import type { GaugeLabels } from './chart/gauge-text.ts';
+import { zoneText } from './chart/gauge-text.ts';
+import type { ZoneSpec } from './chart/gauge-zones.ts';
+import { prepareGauge } from './chart/prepare-gauge.ts';
+import type { ChartProps } from './chart/props.ts';
+import { DEFAULT_LABELS, assertChartId } from './chart/props.ts';
+
+interface Props extends Omit<ChartProps, 'dataset'> {
+  /** Valeur mesurée ; `null` : état vide. Hors intervalle, l'aiguille est bornée et le dit. */
+  value: number | null;
+  min?: number;
+  max?: number;
+  /** Unité écrite avec la valeur et les bornes (`%`, `ms`…). */
+  unit?: string;
+  /** Libellé central, tronqué à l'affichage ; le texte complet reste dans `<desc>`. */
+  label?: string;
+  /** Zones dans l'ordre : `{ label, to, tone? }`, la dernière s'arrête au maximum (`to` omis). */
+  zones?: ZoneSpec[];
+  /** `half` (défaut) : demi-cercle ; `full` : cercle complet depuis midi. */
+  shape?: 'half' | 'full';
+  /** Textes de l'interface (défaut : français). */
+  labels?: Partial<GaugeLabels>;
+}
+
+const BLOCK = 'pp-gauge-chart';
+const { id, title, value, class: className, locale = 'fr', unit = '', label = '' } = Astro.props;
+const { min = 0, max = DEFAULT_MAX, zones = [], shape = 'half', labels: custom = {} } = Astro.props;
+const texts = {
+  table: Astro.props.tableLabel ?? DEFAULT_LABELS.table,
+  empty: Astro.props.emptyLabel ?? DEFAULT_LABELS.empty,
+  error: Astro.props.errorLabel ?? DEFAULT_LABELS.error,
+};
+
+assertChartId(id, 'GaugeChart');
+const input = { value, range: [min, max] as const, label, shape, zones };
+const prepared = prepareGauge(input, { unit, locale, labels: custom }, `GaugeChart « ${title} »`);
+const { model, context } = prepared;
+const swatches = (model?.zones ?? []).map((zone) => ({
+  ...barSwatch(id, zone.index, zoneText(zone, context)),
+  tone: zone.tone,
+}));
+---
+
+<ChartFrame
+  block={BLOCK}
+  id={id}
+  title={title}
+  description={prepared.description}
+  prepared={prepared}
+  labels={texts}
+  viewBox={model?.viewBox}
+  class={className}
+>
+  {model && (
+    <BarPatterns
+      id={id}
+      count={model.zones.length}
+      block={BLOCK}
+      tones={model.zones.map((zone) => zone.tone)}
+    />
+  )}
+  {model?.zones.map((zone) => (
+    <path
+      class={`${BLOCK}__zone`}
+      data-series={zone.index + 1}
+      data-tone={zone.tone}
+      d={zone.d}
+      fill={patternFill(id, zone.index)}
+    ></path>
+  ))}
+  {model && <path class={`${BLOCK}__halo`} d={model.needle}></path>}
+  {model && <path class={`${BLOCK}__needle`} d={model.needle}></path>}
+  {model && (
+    <text class={`${BLOCK}__value`} x={model.value.x} y={model.value.y}>
+      {model.value.number}
+      {unit !== '' && (
+        <tspan class={`${BLOCK}__unit`} dx="0.25em">
+          {unit}
+        </tspan>
+      )}
+    </text>
+  )}
+  {model?.lines.map((line) => (
+    <text class={`${BLOCK}__${line.kind}`} x={line.x} y={line.y}>
+      {line.text}
+    </text>
+  ))}
+  <ChartLegend slot="legend" block={BLOCK} series={swatches} />
+</ChartFrame>
