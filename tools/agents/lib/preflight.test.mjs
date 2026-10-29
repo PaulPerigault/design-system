@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { baselineCommands, failingBaseline } from './preflight.mjs';
+import { baselineCommands, failingBaseline } from './preflight.ts';
 
 const task = (files, acceptance) => ({ files, acceptance });
 

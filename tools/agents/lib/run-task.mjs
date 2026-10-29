@@ -1,10 +1,10 @@
 // Exécution d'une tâche avec escalade : un palier par tentative (jamais deux fois le même), bascule
 // vers `engine: claude` sur quota ou crédits épuisés, journal de routage, result.json et résumé.
 import { runAttempt } from './attempt.mjs';
-import { executorEnv } from './env.mjs';
-import { resultOf, summaryMarkdown } from './result.mjs';
-import { modelFor, routingEntry, tierPlan, unavailableEngine } from './routing.mjs';
-import { missingDependencies, removeWorktree, runsPath } from './worktree.mjs';
+import { executorEnv } from './env.ts';
+import { resultOf, summaryMarkdown } from './result.ts';
+import { modelFor, routingEntry, tierPlan, unavailableEngine } from './routing.ts';
+import { missingDependencies, removeWorktree, runsPath } from './worktree.ts';
 
 const outcomeOf = (attempt) => (attempt.failure ? `échec : ${attempt.failure}` : 'réussite');
 

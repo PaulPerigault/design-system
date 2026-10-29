@@ -15,17 +15,28 @@ const HEADER = /^## (L[\w.-]+) · statut : ([^·]+?) · base : (\S+) · essais :
 const RUNNABLE = new Set(['à faire', 'renvoyé']);
 export const MAX_ATTEMPTS = 2;
 
-/** @returns {{ preamble: string, lots: { id: string, status: string, base: string, attempts: number, body: string }[] }} */
-export function parseQueue(text) {
-  const lines = text.replace(/\r\n/g, '\n').split('\n');
-  const lots = [];
-  const preamble = [];
-  for (const line of lines) {
-    const header = HEADER.exec(line);
-    if (header) {
-      const [, id, status, base, attempts] = header;
+export interface Lot {
+  id: string;
+  status: string;
+  base: string;
+  attempts: number;
+  body: string;
+}
+
+export interface Queue {
+  preamble: string;
+  lots: Lot[];
+}
+
+export function parseQueue(text: string): Queue {
+  const preamble: string[] = [];
+  const lots: (Omit<Lot, 'body'> & { body: string[] })[] = [];
+  for (const line of text.replace(/\r\n/g, '\n').split('\n')) {
+    const [, id, status, base, attempts] = HEADER.exec(line) ?? [];
+    const last = lots.at(-1);
+    if (id !== undefined && status !== undefined && base !== undefined) {
       lots.push({ id, status: status.trim(), base, attempts: Number(attempts), body: [] });
-    } else if (lots.length > 0) lots.at(-1).body.push(line);
+    } else if (last) last.body.push(line);
     else preamble.push(line);
   }
   return {
@@ -34,7 +45,7 @@ export function parseQueue(text) {
   };
 }
 
-export function serializeQueue({ preamble, lots }) {
+export function serializeQueue({ preamble, lots }: Queue): string {
   const sections = lots.map(
     (lot) =>
       `## ${lot.id} · statut : ${lot.status} · base : ${lot.base} · essais : ${lot.attempts}\n\n${lot.body}`,
@@ -43,17 +54,17 @@ export function serializeQueue({ preamble, lots }) {
 }
 
 /** Prochain lot à traiter (à faire ou renvoyé, essais restants), ou null si la file est vide. */
-export const nextLot = (queue) =>
+export const nextLot = (queue: Queue): Lot | null =>
   queue.lots.find((lot) => RUNNABLE.has(lot.status) && lot.attempts < MAX_ATTEMPTS) ?? null;
 
 /** Copie de la file avec le lot `id` modifié. */
-export const updateLot = (queue, id, changes) => ({
+export const updateLot = (queue: Queue, id: string, changes: Partial<Lot>): Queue => ({
   ...queue,
   lots: queue.lots.map((lot) => (lot.id === id ? { ...lot, ...changes } : lot)),
 });
 
 /** Statut après une session terminée : prêt si ds-lead l'a marqué, sinon nouvel essai ou abandon. */
-export function statusAfterSession(lot) {
+export function statusAfterSession(lot: Pick<Lot, 'status' | 'attempts'>): string {
   if (lot.status === 'prêt pour validation') return lot.status;
   return lot.attempts >= MAX_ATTEMPTS ? 'abandonné' : 'à faire';
 }

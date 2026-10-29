@@ -1,10 +1,10 @@
 // Une tentative d'exécution d'une tâche à un palier donné : worktree neuf, `npm ci`, agent,
 // acceptation, contrôle de propriété. Toutes les dépendances sont injectées (`deps`).
-import { buildPrompt } from './prompt.mjs';
+import { buildPrompt } from './prompt.ts';
 import { claudeArgs, kiroArgs, runAgent, transportFailure } from './transports.mjs';
-import { quotaExhausted } from './stream.mjs';
+import { quotaExhausted } from './stream.ts';
 import { verify } from './verify.mjs';
-import { createWorktree } from './worktree.mjs';
+import { createWorktree } from './worktree.ts';
 
 const SETUP = 'npm ci --prefer-offline --no-audit --no-fund --ignore-scripts';
 

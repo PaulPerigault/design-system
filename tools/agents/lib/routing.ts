@@ -1,19 +1,16 @@
 // Routage des modèles par palier (models.json) et escalade : un échec fait monter d'un palier,
 // jamais deux fois au même ; après `hard`, la tâche revient à l'orchestrateur (null).
+import type { Models, Task } from './types.ts';
 
-/**
- * @param {{ tiers: Record<string, { model: string }> }} models contenu de models.json
- * @param {string} tier palier demandé
- * @returns {string} identifiant de modèle Kiro
- */
-export function modelFor(models, tier) {
+/** `models` : contenu de models.json ; rend l'identifiant de modèle Kiro du palier. */
+export function modelFor(models: Pick<Models, 'tiers'>, tier: string): string {
   const entry = models.tiers[tier];
   if (!entry) throw new Error(`Palier inconnu : ${tier}`);
   return entry.model;
 }
 
 /** Palier suivant dans l'ordre d'escalade, ou null s'il n'y en a plus. */
-export function nextTier(models, tier) {
+export function nextTier(models: Pick<Models, 'escalation'>, tier: string): string | null {
   const order = models.escalation;
   const index = order.indexOf(tier);
   if (index === -1) return null;
@@ -21,7 +18,11 @@ export function nextTier(models, tier) {
 }
 
 /** Paliers essayés pour une tâche partant de `tier`, escalade comprise (au plus `max`). */
-export function tierPlan(models, tier, max = models.escalation.length) {
+export function tierPlan(
+  models: Pick<Models, 'escalation'>,
+  tier: string,
+  max = models.escalation.length,
+): string[] {
   const plan = [tier];
   for (
     let next = nextTier(models, tier);
@@ -33,8 +34,28 @@ export function tierPlan(models, tier, max = models.escalation.length) {
   return plan;
 }
 
+export interface RoutingInput {
+  task: Pick<Task, 'id' | 'title'>;
+  tier: string;
+  model?: string | undefined;
+  engine: string;
+  reason: string;
+  result: string;
+  credits?: number | undefined;
+  now: Date;
+}
+
 /** Entrée du journal de routage (une ligne JSON). */
-export function routingEntry({ task, tier, model, engine, reason, result, credits, now }) {
+export function routingEntry({
+  task,
+  tier,
+  model,
+  engine,
+  reason,
+  result,
+  credits,
+  now,
+}: RoutingInput) {
   return {
     at: now.toISOString(),
     task: task.id,
@@ -49,7 +70,10 @@ export function routingEntry({ task, tier, model, engine, reason, result, credit
 }
 
 /** Raison pour laquelle le moteur est indisponible (`config.kiro.available: false`), sinon null. */
-export const unavailableEngine = (deps, engine) =>
+export const unavailableEngine = (
+  deps: { config: { kiro?: { available?: boolean; reason?: string } } },
+  engine: string,
+): string | null =>
   engine === 'kiro' && deps.config.kiro?.available === false
     ? `Kiro ${deps.config.kiro.reason}`
     : null;

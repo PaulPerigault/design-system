@@ -4,7 +4,7 @@
 // `--sandbox` n'existe pas en kiro-cli 2.32 : jamais `--trust-all-tools`, seulement une liste
 // fermée (`--trust-tools`) et les règles `permissions` des agents (D-005).
 import { readFileSync } from 'node:fs';
-import { summarizeStream } from './stream.mjs';
+import { summarizeStream } from './stream.ts';
 
 export const KIRO_EXIT = { 3: 'serveur MCP en échec', 4: 'agent introuvable' };
 

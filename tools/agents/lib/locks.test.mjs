@@ -13,8 +13,8 @@ import {
   isHeavy,
   lowerMax,
   tryTake,
-} from './locks.mjs';
-import { installDependencies, lockHash } from './seed.mjs';
+} from './locks.ts';
+import { installDependencies, lockHash } from './seed.ts';
 
 const tmp = () => mkdtempSync(join(tmpdir(), 'ds-locks-'));
 const io = (over = {}) => ({

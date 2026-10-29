@@ -1,13 +1,19 @@
 // Commandes d'acceptation d'une tâche, lancées dans le worktree, l'une après l'autre (toutes, même
 // après un échec, pour un diagnostic complet). Shell injecté : `shell(cmd, opts) → { code, … }`.
+import type { AcceptanceResult, HeavyLock, Shell } from './types.ts';
 
 const TAIL_CHARS = 4_000;
 
-/**
- * @param {{ shell: Function, cwd: string, env: Record<string, string>, commands: string[],
- *   timeoutMs: number, now?: () => number, lock?: (cmd: string) => Promise<Function | null> }} input
- * @returns {Promise<{ cmd: string, code: number | null, durationMs: number, tail: string }[]>}
- */
+export interface AcceptanceInput {
+  shell: Shell;
+  cwd: string;
+  env: Record<string, string>;
+  commands: string[];
+  timeoutMs: number;
+  now?: () => number;
+  lock?: HeavyLock | undefined;
+}
+
 export async function runAcceptance({
   shell,
   cwd,
@@ -16,8 +22,8 @@ export async function runAcceptance({
   timeoutMs,
   now = Date.now,
   lock,
-}) {
-  const results = [];
+}: AcceptanceInput): Promise<AcceptanceResult[]> {
+  const results: AcceptanceResult[] = [];
   for (const cmd of commands) {
     const start = now();
     // Commande lourde (Playwright, build Astro) : une seule à la fois sur le poste (`lock`).
@@ -35,4 +41,5 @@ export async function runAcceptance({
   return results;
 }
 
-export const acceptancePassed = (results) => results.every(({ code }) => code === 0);
+export const acceptancePassed = (results: { code: number | null }[]): boolean =>
+  results.every(({ code }) => code === 0);

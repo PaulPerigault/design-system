@@ -5,7 +5,7 @@ import {
   serializeQueue,
   statusAfterSession,
   updateLot,
-} from './lead-queue.mjs';
+} from './lead-queue.ts';
 
 const QUEUE = `# File de ds-lead
 

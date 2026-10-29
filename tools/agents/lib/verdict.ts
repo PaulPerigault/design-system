@@ -5,11 +5,10 @@
 const CHANGES = /CHANGEMENTS\s+REQUIS/i;
 const APPROVED = /\bAPPROUV[ÉE](?!\p{L})/iu;
 
-/**
- * @param {string} text compte rendu final du relecteur
- * @returns {'approved' | 'changes' | 'unreadable'}
- */
-export function verdictOf(text) {
+export type Verdict = 'approved' | 'changes' | 'unreadable';
+
+/** `text` : compte rendu final du relecteur. */
+export function verdictOf(text: string): Verdict {
   if (CHANGES.test(text)) return 'changes';
   return APPROVED.test(text) ? 'approved' : 'unreadable';
 }

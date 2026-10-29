@@ -1,12 +1,12 @@
 // Revue d'une tâche par ds-reviewer, dans le worktree existant de la tâche (lecture seule) :
 // node tools/agents/review.mjs tasks/T2.02-color.md --model claude-opus-5.5
 // Échec si le relecteur a modifié un fichier ; verdict dans .agents/runs/<id>.review-<modèle>.md.
-import { executorEnv } from './lib/env.mjs';
+import { executorEnv } from './lib/env.ts';
 import { loadTask, parseOptions, realDeps } from './lib/cli.mjs';
-import { buildPrompt } from './lib/prompt.mjs';
+import { buildPrompt } from './lib/prompt.ts';
 import { kiroArgs, runAgent } from './lib/transports.mjs';
-import { verdictOf } from './lib/verdict.mjs';
-import { runsPath, worktreeOf } from './lib/worktree.mjs';
+import { verdictOf } from './lib/verdict.ts';
+import { runsPath, worktreeOf } from './lib/worktree.ts';
 
 const options = parseOptions(process.argv.slice(2));
 const task = await loadTask(options._[0]);

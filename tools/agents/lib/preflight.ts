@@ -2,8 +2,9 @@
 // sur la base, sauf celles qui visent un fichier qu'une tâche doit créer ou modifier (un test qui
 // n'existe pas encore échouerait forcément). Une base rouge ferait échouer, puis escalader, toutes
 // les tâches pour une raison qui n'est pas la leur : le lot ne part pas.
+import type { HeavyLock, Shell, Task } from './types.ts';
 
-const parents = (file) =>
+const parents = (file: string): string[] =>
   file
     .split('/')
     .slice(0, -1)
@@ -13,7 +14,10 @@ const parents = (file) =>
  * Commandes à vérifier sur la base, sans doublon, hors commandes qui citent un fichier de tâche
  * ou un dossier que les tâches vont créer (absent de la base : `exists` injecté).
  */
-export function baselineCommands(tasks, exists = () => true) {
+export function baselineCommands(
+  tasks: Pick<Task, 'files' | 'acceptance'>[],
+  exists: (path: string) => boolean = () => true,
+): string[] {
   const owned = tasks.flatMap((task) => task.files);
   const missingDirs = [...new Set(owned.flatMap(parents))].filter((dir) => !exists(dir));
   const skip = [...owned, ...missingDirs];
@@ -21,13 +25,30 @@ export function baselineCommands(tasks, exists = () => true) {
   return [...new Set(commands)].filter((cmd) => !skip.some((path) => cmd.includes(path)));
 }
 
-/**
- * @param {{ shell: Function, cwd: string, env: object, timeoutMs: number, lock?: Function }} deps
- * @param {string[]} commands
- * @returns {Promise<{ cmd: string, code: number | null, tail: string }[]>} commandes en échec
- */
-export async function failingBaseline({ shell, cwd, env, timeoutMs, lock }, commands) {
-  const failures = [];
+export interface BaselineFailure {
+  cmd: string;
+  code: number | null;
+  tail: string;
+}
+
+/** Commandes en échec sur la base. */
+export async function failingBaseline(
+  {
+    shell,
+    cwd,
+    env,
+    timeoutMs,
+    lock,
+  }: {
+    shell: Shell;
+    cwd: string;
+    env: Record<string, string>;
+    timeoutMs: number;
+    lock?: HeavyLock | undefined;
+  },
+  commands: string[],
+): Promise<BaselineFailure[]> {
+  const failures: BaselineFailure[] = [];
   for (const cmd of commands) {
     const release = lock ? await lock(cmd) : null;
     const result = await shell(cmd, { cwd, env, timeoutMs }).finally(() => release?.());

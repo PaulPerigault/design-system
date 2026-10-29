@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseTask } from './task.mjs';
+import { parseTask } from './task.ts';
 
 const TASK = `---
 id: T5.04

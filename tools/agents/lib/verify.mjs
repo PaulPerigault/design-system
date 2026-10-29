@@ -1,7 +1,7 @@
 // Vérification d’une tentative : formatage mécanique des fichiers possédés, commandes
 // d’acceptation, contrôle de propriété. Dépendances injectées (`deps`).
-import { acceptancePassed, runAcceptance } from './acceptance.mjs';
-import { checkOwnership, ownershipFailure } from './ownership.mjs';
+import { acceptancePassed, runAcceptance } from './acceptance.ts';
+import { checkOwnership, ownershipFailure } from './ownership.ts';
 
 // Formatage mécanique (D-006) : Prettier sur les seuls fichiers possédés et touchés, avant
 // l'acceptation, pour qu'une mise en forme oubliée ne coûte pas une escalade de palier.

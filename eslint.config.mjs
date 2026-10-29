@@ -11,6 +11,7 @@ const TS_STRICT_FILES = [
   'packages/dataviz/**/*.ts',
   'packages/create/**/*.ts',
   'packages/mcp/**/*.ts',
+  'tools/agents/**/*.ts',
 ];
 
 export default tseslint.config(

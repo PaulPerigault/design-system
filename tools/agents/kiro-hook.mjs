@@ -2,7 +2,7 @@
 // stdin et bloque (code non nul) toute commande interdite (lib/forbidden.mjs). Si DS_HOOK_LOG est
 // défini (chemin hors du worktree, posé par le dispatcher), l'événement y est ajouté pour audit.
 import { appendFileSync, readFileSync } from 'node:fs';
-import { commandText, forbiddenReason } from './lib/forbidden.mjs';
+import { commandText, forbiddenReason } from './lib/forbidden.ts';
 
 const BLOCK = 2;
 
