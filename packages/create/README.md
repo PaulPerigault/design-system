@@ -23,6 +23,8 @@ de `@paulperigault/astro` ou son titre, sans tenir compte de la casse.
   (`add`, `eject`, `diff`)
 - `--out <dossier>` : dossier cible des copies (`eject`, défaut : `src/components/pp`)
 - `--force` : écrase les copies existantes et l'entrée du verrou (`eject`)
+- `--accent-hue <degrés>` : teinte d'accent du site, en degrés OKLCH de 0 à 360 (`create`)
+- `--font-stack <pile>` : pile de familles de la police de texte du site (`create`)
 - `-h`, `--help` : affiche l'aide
 - `-v`, `--version` : affiche la version
 
@@ -52,6 +54,24 @@ Les fichiers du gabarit préfixés par `_` perdent ce préfixe à l'écriture (`
 
 Après l'écriture, la commande affiche les étapes suivantes : `cd`, `git init`, `npm install`,
 `npm run dev`, `npm run verify`. Il faut commiter `package-lock.json` avant la première CI.
+
+#### Teinte d'accent et pile de police
+
+`--accent-hue <degrés>` et `--font-stack <pile>` personnalisent le site. Sans option, le site
+généré est identique octet pour octet à celui du gabarit. Avec l'une des deux, la commande écrit
+`src/styles/pp-theme.css` et ajoute son import à `src/layouts/Base.astro`, après celui de
+`@paulperigault/css`. La feuille surcharge les variables du thème, sans dépendance ajoutée :
+
+- teinte : `--pp-color-accent`, `--pp-color-on-accent`, `--pp-color-focus`,
+  `--pp-color-status-running` et `--pp-chart-1` à `--pp-chart-6`, en `light-dark(clair, sombre)`,
+  dérivés par le code de `@paulperigault/tokens` (embarqué, compilé, dans `dist/vendor/tokens/`) ;
+  les contrastes sont contrôlés à la dérivation ;
+- pile : `--pp-font-family-sans`. La police est servie par le projet, hors du paquet.
+
+Les valeurs sont validées par les règles du build de `tokens` : une teinte hors de 0 à 360 ou non
+numérique, une pile vide, trop longue ou qui contient `;`, des accolades, `url(`, `@import` ou un
+retour à la ligne est refusée avec un message, et la commande n'écrit rien (code `2`). Ces options
+ne s'appliquent qu'à `create`.
 
 Codes : `0` écrit (ou plan affiché avec `--dry-run`), `1` dossier non vide ou conflit, `2` usage.
 

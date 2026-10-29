@@ -16,3 +16,14 @@ export interface CreateIo {
   out: (message: string) => void;
   err: (message: string) => void;
 }
+
+/** Teinte d'accent (degrés OKLCH, texte) et pile de police demandées pour le site généré. */
+export interface ThemeRequest {
+  accentHue?: string | undefined;
+  fontStack?: string | undefined;
+}
+
+export type ThemeResult = { ok: true; css: string } | { ok: false; code: string; message: string };
+
+/** Dérivation du thème (adaptateur sur le code compilé de `tokens`, embarqué dans `dist/`). */
+export type ThemeBuilder = (request: ThemeRequest) => ThemeResult;

@@ -1,7 +1,7 @@
 import { parseArgs } from 'node:util';
 import { parseErrorMessage } from '../domain/parse-error.ts';
 import { loadTemplate } from './load-template.ts';
-import type { CreateIo } from './ports.ts';
+import type { CreateIo, ThemeBuilder } from './ports.ts';
 import { DEFAULT_OUT } from './commands/eject.ts';
 import { COMMANDS, invalidCall, resolveCommand } from './commands/table.ts';
 import type { CommandName } from './commands/table.ts';
@@ -15,6 +15,8 @@ const OPTIONS = {
   force: { type: 'boolean' },
   from: { type: 'string' },
   out: { type: 'string' },
+  'accent-hue': { type: 'string' },
+  'font-stack': { type: 'string' },
   help: { type: 'boolean', short: 'h' },
   version: { type: 'boolean', short: 'v' },
 } as const;
@@ -31,6 +33,8 @@ export const USAGE = [
   '  --from <dossier>   paquet astro hors node_modules (add, eject, diff)',
   `  --out <dossier>    dossier cible d’eject (défaut : ${DEFAULT_OUT})`,
   '  --force            eject : écrase les copies et l’entrée du verrou',
+  '  --accent-hue <deg> create : teinte d’accent du site (OKLCH, 0 à 360)',
+  '  --font-stack <pile> create : pile de la police de texte du site',
   '  -h, --help         affiche cette aide',
   '  -v, --version      affiche la version',
   'exemple : npx @paulperigault/create eject stack',
@@ -49,23 +53,38 @@ function dispatch(
   values: { 'dry-run'?: boolean | undefined; force?: boolean | undefined } & {
     from?: string | undefined;
     out?: string | undefined;
+    'accent-hue'?: string | undefined;
+    'font-stack'?: string | undefined;
   },
-  { io, templatesRoot }: { io: CreateIo; templatesRoot: string },
+  {
+    io,
+    templatesRoot,
+    theme,
+  }: { io: CreateIo; templatesRoot: string; theme: ThemeBuilder | undefined },
 ): number {
   const template = name === 'create' ? loadTemplate(io, templatesRoot) : undefined;
   const { force, from, out } = values;
-  const options = { positionals: rest, dryRun: values['dry-run'] === true, force, from, out };
-  return runCommand(io, () => COMMANDS[name].run(options, { io, template }));
+  const options = {
+    positionals: rest,
+    dryRun: values['dry-run'] === true,
+    force,
+    from,
+    out,
+    accentHue: values['accent-hue'],
+    fontStack: values['font-stack'],
+  };
+  return runCommand(io, () => COMMANDS[name].run(options, { io, template, theme }));
 }
 
 export interface MainContext {
   io: CreateIo;
   templatesRoot: string;
   version: string;
+  theme?: ThemeBuilder | undefined;
 }
 
 /** Point d'entrée de `pp-create` ; `argv` sans `node` ni le script. Rend le code de sortie. */
-export function main(argv: string[], { io, templatesRoot, version }: MainContext): number {
+export function main(argv: string[], { io, templatesRoot, version, theme }: MainContext): number {
   let parsed;
   try {
     parsed = parseArgs({ args: argv, options: OPTIONS, strict: true, allowPositionals: true });
@@ -81,5 +100,5 @@ export function main(argv: string[], { io, templatesRoot, version }: MainContext
   if ('error' in command) return usageError(io, command.error);
   const invalid = invalidCall(command.name, command.rest, values);
   if (invalid) return usageError(io, invalid);
-  return dispatch(command, values, { io, templatesRoot });
+  return dispatch(command, values, { io, templatesRoot, theme });
 }

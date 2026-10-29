@@ -5,6 +5,7 @@ import { fileURLToPath, URL } from 'node:url';
 import { main } from '../application/cli.ts';
 import { messageOf } from '../domain/snippet.ts';
 import { nodeIo } from './node-io.ts';
+import { buildTheme } from './theme.ts';
 
 const CODE_CRASH = 1;
 const ARGV_START = 2;
@@ -23,6 +24,7 @@ try {
   process.exitCode = main(process.argv.slice(ARGV_START), {
     io,
     templatesRoot,
+    theme: buildTheme,
     version: typeof version === 'string' ? version : '0.0.0',
   });
 } catch (error) {
