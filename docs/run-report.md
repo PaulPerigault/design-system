@@ -216,4 +216,9 @@ test -c apps/docs/playwright.config.ts`.
 ## #121-B2 (2026-10-29) : entrées du build de `tokens`
 
 - `--pp-accent-hue` et `--pp-font-stack` branchés dans le build (`parseBuildInput`, `deriveOverrides`, export `./customize`, CLI avec `--out-dir`). Défaut identique octet pour octet. Neuf codes d'erreur `build.*`. Décision D-056.
-- Reste : `create` (bloqué par le `.ts` publié, voir D-056), émission des rampes et suivi de `focus` et `status-running` (hors étape).
+- Reste : `create` (bloqué par le `.ts` publié, voir D-056), émission des rampes ; suivi de `focus` et `status-running` fait en B3 (D-057).
+
+## #121-B3 (2026-10-29) : focus et statut « en cours » suivent la teinte
+
+- `--pp-color-focus` et `--pp-color-status-running` dérivés de la teinte (`deriveRoles`), contrôle bloquant sur la valeur émise (focus 3:1, statut 4,5:1, fond et surface), code `build.role-contrast-failed`. Défaut identique octet pour octet. Décision D-057 ; dernière PR de #121.
+- Reste : rampes `seq`/`div` non émises ; `create` (issue séparée, bloquée par #86).

@@ -1,18 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import tokens from '../../generated/tokens.json' with { type: 'json' };
 import { deriveOverrides } from '../../src/customize/derive-overrides.ts';
 import { parseOklch } from '../../src/lib/color.ts';
 import { contrastRatio } from '../../src/lib/contrast.ts';
-import type { Theme, ThemeBase } from '../../src/palette/domain/types.ts';
-import { themeBaseFromTokens } from '../../src/palette/infrastructure/theme-base.ts';
-import { DEFAULT_HUE, TWELVE_HUES } from './helpers.ts';
+import { DEFAULT_HUE, sourceOf, TWELVE_HUES } from './helpers.ts';
 
-function baseOf(theme: Theme): ThemeBase {
-  const result = themeBaseFromTokens(tokens, theme);
-  if (!result.ok) throw new Error(result.error.message);
-  return result.value;
-}
-const bases = { light: baseOf('light'), dark: baseOf('dark') };
+const bases = { light: sourceOf('light'), dark: sourceOf('dark') };
 const SERIES = [1, 2, 3, 4, 5, 6];
 
 describe('deriveOverrides', () => {
