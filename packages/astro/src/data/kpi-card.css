@@ -1,8 +1,9 @@
 /*
  * KpiCard : fichier global, en plus de `chart-base.css`, `chart-series.css` et `sparkline.css`.
- * Valeur en grand, chiffres tabulaires ; la variation est écrite en mots, la couleur n'y est pour
- * rien (le bon ou le mauvais sens dépend de la mesure : une hausse d'erreurs n'est pas un succès).
- * Aucun dégradé, ombre ni flou, aucune animation.
+ * Valeur en grand, chiffres tabulaires ; les paragraphes gardent le corps courant (la mise en
+ * page exige 16 px au moins). La variation est écrite en mots, la couleur n'y est pour rien (le
+ * bon ou le mauvais sens dépend de la mesure : une hausse d'erreurs n'est pas un succès). Aucun
+ * dégradé, ombre ni flou, aucune animation.
  */
 .pp-kpi-card {
   display: grid;
@@ -24,7 +25,6 @@
 
 .pp-kpi-card__title {
   color: var(--pp-color-muted);
-  font-size: var(--pp-font-size--1);
 }
 
 .pp-kpi-card__value {
@@ -35,7 +35,6 @@
 }
 
 .pp-kpi-card__variation {
-  font-size: var(--pp-font-size--1);
   font-variant-numeric: tabular-nums;
 }
 
