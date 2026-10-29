@@ -1,12 +1,12 @@
 import type { SiteTemplate } from '../../domain/template.ts';
-import type { CreateIo } from '../ports.ts';
+import type { CreateIo, ThemeBuilder } from '../ports.ts';
 import * as add from './add.ts';
 import * as create from './create.ts';
 import * as diff from './diff.ts';
 import * as eject from './eject.ts';
 
 /** Options propres à certaines commandes : ailleurs, elles sont refusées. */
-export const SCOPED = ['force', 'from', 'out'] as const;
+export const SCOPED = ['force', 'from', 'out', 'accent-hue', 'font-stack'] as const;
 
 export interface CommandOptions {
   positionals: string[];
@@ -14,11 +14,14 @@ export interface CommandOptions {
   force: boolean | undefined;
   from: string | undefined;
   out: string | undefined;
+  accentHue: string | undefined;
+  fontStack: string | undefined;
 }
 
 export interface Context {
   io: CreateIo;
   template: SiteTemplate | undefined;
+  theme?: ThemeBuilder | undefined;
 }
 
 interface Command {
@@ -28,7 +31,7 @@ interface Command {
 }
 
 export const COMMANDS = {
-  create: { run: create.run, arg: '<dossier>', allowed: [] },
+  create: { run: create.run, arg: '<dossier>', allowed: ['accent-hue', 'font-stack'] },
   add: { run: add.run, arg: '<élément>', allowed: ['from'] },
   eject: { run: eject.run, arg: '<élément>', allowed: ['force', 'from', 'out'] },
   diff: { run: diff.run, arg: '<élément>', allowed: ['from'] },

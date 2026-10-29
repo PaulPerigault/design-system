@@ -17,7 +17,9 @@ export type CreateErrorCode =
   | 'package.version-missing'
   | 'package.version-empty'
   | 'template.versions-invalid'
-  | 'site.version-invalid';
+  | 'site.version-invalid'
+  | 'theme.invalid'
+  | 'theme.template';
 
 export type ErrorContext = Readonly<Record<string, string>>;
 

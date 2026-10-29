@@ -270,3 +270,8 @@ test -c apps/docs/playwright.config.ts`.
 
 - Les lanceurs passent en TypeScript strict, commandes mises à jour (D-067). #86 fermée.
 - Reste : issue `[Tokens] create`, #123, #131, Rust, #102, #103, #130, #118.
+
+## #151 (2026-10-29) : `create`, teinte d'accent et pile de police
+
+- `--accent-hue` et `--font-stack` dans `create`, dérivation embarquée sans dépendance (D-068). #151 fermée.
+- Reste : #123 (refonte du site), #131, Rust, #102, #103, #130, #118.
