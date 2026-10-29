@@ -14,7 +14,7 @@ npm i -D @paulperigault/guards
 pp-guards <contrôle> [options] [racines…]
 ```
 
-Contrôles : `tokens`, `design`, `size`, `layers`, `images`, et `all`.
+Contrôles : `tokens`, `design`, `size`, `layers`, `architecture`, `images`, et `all`.
 
 Codes de sortie : `0` (succès), `1` (problèmes détectés), `2` (usage ou configuration).
 
@@ -132,6 +132,27 @@ pp-guards layers [racines…]
 Pas de drapeau propre : la liste `layers` se règle dans la configuration. Les clés `roots`
 (défaut : `.`) et `extensions` (défaut : `.ts`, `.mjs`, `.js`, `.astro`, `.css`) sont facultatives.
 
+### `architecture`
+
+Vérifie la règle de dépendance vers l'intérieur d'un paquet (ADR-0006, décision 1). Sous chaque
+racine de `roots` (par exemple `packages/guards/src`), les dossiers directs sont des anneaux, listés
+**du plus interne au plus externe** (défaut : `domain`, `application`, `infrastructure`).
+
+- Un import relatif ne va jamais vers un anneau plus externe, même pour un type.
+- Seul l'anneau le plus externe importe `node:*` et des paquets. Les anneaux internes permettent
+  `pureNode` (défaut : `node:path`, `node:buffer`, `node:util`, sans entrée-sortie),
+  `allowPackages` (défaut : aucun) et tout `import type`.
+- Un fichier hors anneau (`index.ts`, `errors.ts`) n'est pas contrôlé et reste importable partout.
+- Si aucun fichier scanné n'appartient à un anneau, le contrôle échoue : `roots` ou `rings` est
+  probablement faux.
+
+```bash
+pp-guards architecture [racines…]
+```
+
+Pas de drapeau propre : `roots`, `rings`, `pureNode`, `allowPackages` et `extensions` (défaut :
+`.ts`) se règlent dans la configuration.
+
 ### `images`
 
 ```bash
@@ -159,7 +180,7 @@ Racines par défaut : `src` et `public`. Trois vérifications :
 pp-guards all [--config <fichier>]
 ```
 
-Exécute dans l'ordre `tokens`, `design`, `size`, `layers`, `images`, mais seulement ceux dont la
+Exécute dans l'ordre `tokens`, `design`, `size`, `layers`, `architecture`, `images`, mais seulement ceux dont la
 section existe dans la configuration. Le code de sortie est le plus élevé des codes obtenus. Aucune
 section : code `2`. Les positionnels et les autres drapeaux ne sont pas acceptés.
 
@@ -182,6 +203,7 @@ mêmes noms que les drapeaux (`maxKb`, `budgets`, `allow`…) et `roots` pour le
       { "name": "css", "paths": ["packages/css/src"], "packages": ["@paulperigault/css"] }
     ]
   },
+  "architecture": { "roots": ["packages/guards/src"] },
   "images": { "roots": ["packages", "apps"], "allow": ["src/media"], "maxKb": 500 }
 }
 ```

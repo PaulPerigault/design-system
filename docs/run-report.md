@@ -232,3 +232,8 @@ test -c apps/docs/playwright.config.ts`.
 
 - Structure de l'ADR-0006 appliquée à `guards` (D-059), déplacement seul, tests et sorties identiques.
 - Reste : B, le contrôle d'architecture (« Closes #83 »), puis #84, #85, #86.
+
+## #83-B (2026-10-29) : contrôle `architecture`
+
+- Règle de dépendance vers l'intérieur en contrôle testé, branché sur `guards` (D-060). #83 fermée.
+- Reste : #84 (`create`), #85 (`mcp`, générateur de `tokens`), #86 (`tools/agents`, `dist/`).
