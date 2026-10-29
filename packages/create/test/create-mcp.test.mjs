@@ -1,8 +1,8 @@
 import { fileURLToPath, URL } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { run } from '../src/commands/create.mjs';
-import { nodeIo } from '../src/lib/io.mjs';
-import { loadTemplate } from '../src/site/template.mjs';
+import { run } from '../src/commands/create.ts';
+import { nodeIo } from '../src/lib/io.ts';
+import { loadTemplate } from '../src/site/template.ts';
 import { fakeIo } from './fake-io.mjs';
 
 const TEMPLATES = fileURLToPath(new URL('../templates', import.meta.url));

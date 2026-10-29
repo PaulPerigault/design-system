@@ -1,8 +1,11 @@
 import { posix } from 'node:path';
-import { resolveIn } from '../lib/io.mjs';
-import { applyPlan } from '../lib/plan.mjs';
-import { sitePackageJson } from '../site/package-json.mjs';
-import { outputPath } from '../site/template.mjs';
+import type { CreateIo } from '../lib/io.ts';
+import { resolveIn } from '../lib/io.ts';
+import { applyPlan } from '../lib/plan.ts';
+import type { PlanEntry } from '../lib/plan.ts';
+import { sitePackageJson } from '../site/package-json.ts';
+import { outputPath } from '../site/template.ts';
+import type { SiteTemplate } from '../site/template.ts';
 
 const CODE_OK = 0;
 const CODE_REFUSED = 1;
@@ -10,13 +13,8 @@ const CODE_USAGE = 2;
 const SAFE_PATH = /^[\w./-]+$/;
 const USAGE = 'usage : create <dossier> [--dry-run]';
 
-/**
- * Vrai si `abs` existe et n'est pas un dossier vide (un fichier compte comme occupé).
- * @param {import('../lib/io.mjs').CreateIo} io
- * @param {string} abs
- * @returns {boolean}
- */
-function isOccupied(io, abs) {
+/** Vrai si `abs` existe et n'est pas un dossier vide (un fichier compte comme occupé). */
+function isOccupied(io: CreateIo, abs: string): boolean {
   if (!io.exists(abs)) return false;
   try {
     return io.readdir(abs).length > 0;
@@ -27,12 +25,9 @@ function isOccupied(io, abs) {
 
 /**
  * Plan d'écriture : `package.json` généré puis fichiers du gabarit, `_` → `.`.
- * @param {string} dir dossier cible, tel que saisi
- * @param {import('../site/template.mjs').SiteTemplate} template
- * @param {string} name dernier segment du dossier résolu
- * @returns {import('../lib/plan.mjs').PlanEntry[]}
+ * `dir` : dossier cible tel que saisi ; `name` : dernier segment du dossier résolu.
  */
-function sitePlan(dir, template, name) {
+function sitePlan(dir: string, template: SiteTemplate, name: string): PlanEntry[] {
   const files = [
     { path: 'package.json', content: sitePackageJson(name, template.versions) },
     ...template.files.map(({ path, content }) => ({ path: outputPath(path), content })),
@@ -42,20 +37,12 @@ function sitePlan(dir, template, name) {
     .map(({ path, content }) => ({ path: posix.join(dir, path), content }));
 }
 
-/**
- * Dossier prêt pour un shell : entre guillemets simples dès qu'un caractère sort de `[\w./-]`.
- * @param {string} dir
- * @returns {string}
- */
-function shellQuote(dir) {
+/** Dossier prêt pour un shell : entre guillemets simples dès qu'un caractère sort de `[\w./-]`. */
+function shellQuote(dir: string): string {
   return SAFE_PATH.test(dir) ? dir : `'${dir.replaceAll("'", "'\\''")}'`;
 }
 
-/**
- * @param {import('../lib/io.mjs').CreateIo} io
- * @param {string} dir
- */
-function nextSteps(io, dir) {
+function nextSteps(io: CreateIo, dir: string): void {
   io.out('');
   io.out('Prochaines étapes :');
   for (const step of [
@@ -70,20 +57,24 @@ function nextSteps(io, dir) {
   io.out('Commitez package-lock.json avant la première CI (npm ci l’exige).');
 }
 
+export interface CreateArgs {
+  positionals?: string[] | undefined;
+  dryRun?: boolean | undefined;
+}
+
 /**
  * `create <dossier>` : site Astro minimal consommateur du design system.
- * Ne génère jamais dans un dossier non vide, même avec `--force`.
- * @param {{ positionals?: string[], dryRun?: boolean }} options
- * @param {{ io: import('../lib/io.mjs').CreateIo,
- *   template: import('../site/template.mjs').SiteTemplate }} ctx
- * @returns {number} code de sortie
+ * Ne génère jamais dans un dossier non vide, même avec `--force`. Rend le code de sortie.
  */
-export function run({ positionals = [], dryRun = false }, { io, template }) {
-  if (positionals.length !== 1) {
+export function run(
+  { positionals = [], dryRun = false }: CreateArgs,
+  { io, template }: { io: CreateIo; template: SiteTemplate | undefined },
+): number {
+  const [dir] = positionals;
+  if (positionals.length !== 1 || dir === undefined || template === undefined) {
     io.err(USAGE);
     return CODE_USAGE;
   }
-  const [dir] = positionals;
   const target = resolveIn(io, dir);
   if (isOccupied(io, target)) {
     io.err(`refus : ${dir} existe et n'est pas vide ; create n'écrit jamais par-dessus un projet`);

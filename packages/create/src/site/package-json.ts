@@ -25,21 +25,14 @@ const INDENT = 2;
 
 /**
  * Nom npm dérivé d'un nom de dossier : minuscules, caractères hors `[a-z0-9-._]` → `-`,
- * sans `.` ni `_` en tête (refusés par npm).
- * @param {string} dir nom du dossier (dernier segment)
- * @returns {string}
+ * sans `.` ni `_` en tête (refusés par npm). `dir` : dernier segment du dossier.
  */
-export function npmName(dir) {
+export function npmName(dir: string): string {
   const name = dir.toLowerCase().replace(INVALID_CHARS, '-').replace(LEADING_DOTS, '');
   return name === '' ? FALLBACK_NAME : name;
 }
 
-/**
- * @param {Record<string, string>} versions
- * @param {string[]} names
- * @returns {Record<string, string>}
- */
-function exactVersions(versions, names) {
+function exactVersions(versions: Record<string, string>, names: string[]): Record<string, string> {
   return Object.fromEntries(
     names.map((name) => {
       const version = versions[name];
@@ -52,12 +45,10 @@ function exactVersions(versions, names) {
 }
 
 /**
- * `package.json` du site généré (texte JSON, 2 espaces, saut de ligne final).
- * @param {string} name nom du dossier ou nom npm
- * @param {Record<string, string>} versions versions exactes (`templates/versions.json`)
- * @returns {string}
+ * `package.json` du site généré (texte JSON, 2 espaces, saut de ligne final). `name` : nom du
+ * dossier ou nom npm ; `versions` : versions exactes (`templates/versions.json`).
  */
-export function sitePackageJson(name, versions) {
+export function sitePackageJson(name: string, versions: Record<string, string>): string {
   const manifest = {
     name: npmName(name),
     private: true,

@@ -1,18 +1,26 @@
-import { resolveIn } from './io.mjs';
+import type { CreateIo } from './io.ts';
+import { resolveIn } from './io.ts';
 
-/** @typedef {{ path: string, content: string, overwrite?: boolean }} PlanEntry */
+export interface PlanEntry {
+  path: string;
+  content: string;
+  overwrite?: boolean;
+}
+
+export interface PlanOptions {
+  dryRun?: boolean | undefined;
+  force?: boolean | undefined;
+}
 
 const CODE_OK = 0;
 const CODE_CONFLICT = 1;
 
-/**
- * Applique un plan d'écriture.
- * @param {import('./io.mjs').CreateIo} io
- * @param {PlanEntry[]} plan
- * @param {{ dryRun?: boolean, force?: boolean }} [options]
- * @returns {number} code de sortie
- */
-export function applyPlan(io, plan, { dryRun = false, force = false } = {}) {
+/** Applique un plan d'écriture ; rend le code de sortie. */
+export function applyPlan(
+  io: CreateIo,
+  plan: PlanEntry[],
+  { dryRun = false, force = false }: PlanOptions = {},
+): number {
   const existing = new Set(
     plan.filter((entry) => io.exists(resolveIn(io, entry.path))).map((entry) => entry.path),
   );

@@ -237,3 +237,8 @@ test -c apps/docs/playwright.config.ts`.
 
 - Règle de dépendance vers l'intérieur en contrôle testé, branché sur `guards` (D-060). #83 fermée.
 - Reste : #84 (`create`), #85 (`mcp`, générateur de `tokens`), #86 (`tools/agents`, `dist/`).
+
+## #84-A (2026-10-29) : `create` en TypeScript strict
+
+- 16 sources en `.ts`, JSON validés à la frontière, `TS_STRICT_FILES` étendu (D-061). Tests et sorties identiques.
+- Reste : B (structure en anneaux, `errors.ts`, « Closes #84 »), puis #85, #86.

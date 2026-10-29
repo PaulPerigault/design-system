@@ -1,27 +1,25 @@
 import { posix } from 'node:path';
-import { sha256 } from '../lib/hash.mjs';
-import { resolveIn } from '../lib/io.mjs';
-import { LOCK_FILE, readLock, serializeLock, withItem } from '../lib/lock.mjs';
-import { applyPlan } from '../lib/plan.mjs';
-import { PACKAGE_NAME } from '../lib/registry.mjs';
-import * as shared from './snippet.mjs';
+import { sha256 } from '../lib/hash.ts';
+import type { CreateIo } from '../lib/io.ts';
+import { resolveIn } from '../lib/io.ts';
+import { LOCK_FILE, readLock, serializeLock, withItem } from '../lib/lock.ts';
+import { applyPlan } from '../lib/plan.ts';
+import type { PlanOptions } from '../lib/plan.ts';
+import { PACKAGE_NAME } from '../lib/registry.ts';
+import * as shared from './snippet.ts';
 
 export const DEFAULT_OUT = 'src/components/pp';
 const SRC_DIR = 'src';
 const SRC_PREFIX = `${SRC_DIR}/`;
 
-/**
- * @typedef {import('../lib/io.mjs').CreateIo} CreateIo
- * @typedef {{ source: string, path: string, content: string }} Copy
- */
+interface Copy {
+  source: string;
+  path: string;
+  content: string;
+}
 
-/**
- * @template T
- * @param {CreateIo} io
- * @param {() => T} task
- * @returns {T | null} `null` (message sur `io.err`) si `task` lève
- */
-function attempt(io, task) {
+/** `null` (message sur `io.err`) si `task` lève. */
+function attempt<T>(io: CreateIo, task: () => T): T | null {
   try {
     return task();
   } catch (error) {
@@ -30,14 +28,8 @@ function attempt(io, task) {
   }
 }
 
-/**
- * Copies prévues : `src/layout/Stack.astro` → `<out>/layout/Stack.astro`.
- * @param {CreateIo} io
- * @param {shared.Located} located
- * @param {string} out
- * @returns {Copy[]}
- */
-function plannedCopies(io, { root, files }, out) {
+/** Copies prévues : `src/layout/Stack.astro` → `<out>/layout/Stack.astro`. */
+function plannedCopies(io: CreateIo, { root, files }: shared.Located, out: string): Copy[] {
   return files.map((source) => {
     const rel = source.startsWith(SRC_PREFIX) ? source.slice(SRC_PREFIX.length) : source;
     const content = io.readText(posix.join(root, source));
@@ -47,11 +39,12 @@ function plannedCopies(io, { root, files }, out) {
 
 /**
  * Sans `--force` : élément déjà au verrou ou fichier cible existant. Liste tous les conflits.
- * @param {CreateIo} io
- * @param {{ name: string, locked: boolean, copies: Copy[] }} state
- * @returns {boolean} vrai s'il y a conflit
+ * Vrai s'il y a conflit.
  */
-function reportConflicts(io, { name, locked, copies }) {
+function reportConflicts(
+  io: CreateIo,
+  { name, locked, copies }: { name: string; locked: boolean; copies: Copy[] },
+): boolean {
   if (!locked) return false;
   io.err(`conflit : « ${name} » figure déjà dans ${LOCK_FILE}`);
   copies
@@ -60,13 +53,8 @@ function reportConflicts(io, { name, locked, copies }) {
   return true;
 }
 
-/**
- * Import de la copie, relatif à `src/`.
- * @param {CreateIo} io
- * @param {string} name
- * @param {Copy[]} copies
- */
-function report(io, name, copies) {
+/** Import de la copie, relatif à `src/`. */
+function report(io: CreateIo, name: string, copies: Copy[]): void {
   for (const path of shared.astroFiles(copies.map((copy) => copy.path))) {
     const rel = posix.relative(resolveIn(io, SRC_DIR), resolveIn(io, path));
     io.out(shared.importLine(path, rel.startsWith('../') ? rel : `./${rel}`));
@@ -74,14 +62,17 @@ function report(io, name, copies) {
   io.out(`diff ${name} compare cette copie au paquet installé`);
 }
 
-/**
- * `eject <élément>` : copie les sources dans le projet et les inscrit au verrou.
- * @param {{ positionals?: string[], dryRun?: boolean, force?: boolean, from?: string,
- *   out?: string }} args
- * @param {{ io: CreateIo }} ctx
- * @returns {number} code de sortie
- */
-export function run({ positionals, dryRun, force, from, out = DEFAULT_OUT }, { io }) {
+export interface EjectArgs extends PlanOptions {
+  positionals?: string[] | undefined;
+  from?: string | undefined;
+  out?: string | undefined;
+}
+
+/** `eject <élément>` : copie les sources dans le projet et les inscrit au verrou. */
+export function run(
+  { positionals, dryRun, force, from, out = DEFAULT_OUT }: EjectArgs,
+  { io }: { io: CreateIo },
+): number {
   const located = shared.locate(io, { command: 'eject', positionals, from });
   if (!located) return shared.CODE_USAGE;
   const copies = attempt(io, () => plannedCopies(io, located, out));

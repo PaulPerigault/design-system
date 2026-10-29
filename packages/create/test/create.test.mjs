@@ -1,10 +1,10 @@
 import { fileURLToPath, URL } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { run } from '../src/commands/create.mjs';
-import { sha256 } from '../src/lib/hash.mjs';
-import { nodeIo } from '../src/lib/io.mjs';
-import { npmName, sitePackageJson } from '../src/site/package-json.mjs';
-import { loadTemplate, outputPath } from '../src/site/template.mjs';
+import { run } from '../src/commands/create.ts';
+import { sha256 } from '../src/lib/hash.ts';
+import { nodeIo } from '../src/lib/io.ts';
+import { npmName, sitePackageJson } from '../src/site/package-json.ts';
+import { loadTemplate, outputPath } from '../src/site/template.ts';
 import { fakeIo } from './fake-io.mjs';
 
 const TEMPLATES = fileURLToPath(new URL('../templates', import.meta.url));

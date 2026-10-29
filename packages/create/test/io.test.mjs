@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { sha256 } from '../src/lib/hash.mjs';
-import { nodeIo, resolveIn } from '../src/lib/io.mjs';
+import { sha256 } from '../src/lib/hash.ts';
+import { nodeIo, resolveIn } from '../src/lib/io.ts';
 import { fakeIo } from './fake-io.mjs';
 
 describe('io et hash', () => {
