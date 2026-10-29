@@ -22,9 +22,8 @@
   },
   "sideEffects": false,
   "files": [
-    "src",
+    "dist",
     "generated",
-    "scripts",
     "README.md"
   ],
   "publishConfig": {
@@ -34,25 +33,30 @@
   },
   "scripts": {
     "prepublishOnly": "node ../../tools/checks/check-publish-env.mjs",
-    "build": "node scripts/build.ts",
-    "check": "node scripts/build.ts --check"
+    "build": "node scripts/build.ts && node --eval \"fs.rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.build.json",
+    "check": "node scripts/build.ts --check",
+    "prepack": "npm run build"
   },
   "exports": {
     "./color": {
-      "types": "./src/lib/color.ts",
-      "default": "./src/lib/color.ts"
+      "development": "./src/lib/color.ts",
+      "types": "./dist/lib/color.d.ts",
+      "default": "./dist/lib/color.js"
     },
     "./contrast": {
-      "types": "./src/lib/contrast.ts",
-      "default": "./src/lib/contrast.ts"
+      "development": "./src/lib/contrast.ts",
+      "types": "./dist/lib/contrast.d.ts",
+      "default": "./dist/lib/contrast.js"
     },
     "./customize": {
-      "types": "./src/customize/index.ts",
-      "default": "./src/customize/index.ts"
+      "development": "./src/customize/index.ts",
+      "types": "./dist/customize/index.d.ts",
+      "default": "./dist/customize/index.js"
     },
     "./palette": {
-      "types": "./src/palette/index.ts",
-      "default": "./src/palette/index.ts"
+      "development": "./src/palette/index.ts",
+      "types": "./dist/palette/index.d.ts",
+      "default": "./dist/palette/index.js"
     },
     "./tokens.css": "./generated/tokens.css",
     "./tokens.json": "./generated/tokens.json",

@@ -252,3 +252,8 @@ test -c apps/docs/playwright.config.ts`.
 
 - `mcp` en TypeScript strict, sorties identiques (D-063). Anneaux : ⚖️ (garde statique à neuf modules). #85 reste ouverte.
 - Reste : #86 (`tools/agents`, `dist/` pour chaque paquet publié).
+
+## #86-A (2026-10-29) : `dist/` pour `tokens`, `create` et `mcp`
+
+- Les trois paquets sont compilés vers `dist/` comme `guards` et `dataviz` (D-064). Lockfile non resynchronisé (refus d'écriture, commande dans les questions).
+- Reste : B (`tools/agents` en TypeScript strict), puis l'issue `[Tokens] create`.
