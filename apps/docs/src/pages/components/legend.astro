@@ -1,0 +1,65 @@
+---
+import ComponentPage from '../../components/ComponentPage.astro';
+import AccentHueDemo from '../../components/examples/accent-hue-demo.astro';
+import LegendExamples from '../../components/examples/legend.astro';
+
+const snippet = `---
+import Legend from '@paulperigault/astro/Legend.astro';
+---
+
+<Legend id="sources" items={['Recherche', 'Direct', 'Référents']} />`;
+---
+
+<ComponentPage
+  slug="legend"
+  title="Legend"
+  summary="Legend associe à chaque série un échantillon à forme propre et son libellé : la couleur ne porte jamais seule le sens."
+  use={[
+    'Nommer les séries d’un graphique dessiné ailleurs : un échantillon par rang, un libellé écrit.',
+    'Reprendre le langage des graphiques : trait à motif et marqueur de forme pour une courbe, motif de remplissage pour une barre.',
+    'Donner une légende à une page de tableau de bord qui assemble plusieurs graphiques de mêmes séries.',
+  ]}
+  avoid={[
+    'À l’intérieur d’un LineChart, BarChart ou AreaChart : leur légende est déjà incluse.',
+    'Avec plus de six entrées : le build échoue avec chart.too-many-series ; regrouper en amont.',
+    'Avec un libellé vide : le build échoue avec dataset.bad-shape.',
+    'Pour filtrer des séries : voir DataTable.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: ['La légende n’est pas interactive et ne reçoit pas le focus.'],
+    screenReader: [
+      'Une liste nommée (aria-label) ; chaque entrée est son libellé, l’échantillon est masqué (aria-hidden).',
+      'Le sens est dans le libellé écrit, pas dans l’échantillon.',
+    ],
+    guaranteed: [
+      'Trois indices par rang, jamais la couleur seule (WCAG 1.4.1) : couleur --pp-chart-N, motif (trait ou remplissage) et forme du marqueur.',
+      'Zéro JavaScript, aucune animation, aucun attribut style ; en contraste forcé, tracés en CanvasText.',
+    ],
+    integrator: [
+      'Donner un id unique par page (lettres, chiffres, tirets) : il nomme les motifs de remplissage.',
+      'Ordonner les libellés comme les séries du graphique : le rang fixe couleur, motif et marqueur.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html',
+    },
+    { label: 'ADR-0007 : visualisation de données, décision 7 (V3b)' },
+    { label: 'Tests : packages/astro/test/Legend.test.ts' },
+  ]}
+>
+  <LegendExamples />
+  <Fragment slot="variants">
+    <h3>Limites connues</h3>
+    <ul>
+      <li>
+        Les couleurs --pp-chart-1..6 restent figées sur l’accent par défaut tant que l’issue #121
+        n’est pas faite.
+      </li>
+    </ul>
+    <h3>Teinte d’accent</h3>
+    <AccentHueDemo />
+  </Fragment>
+</ComponentPage>

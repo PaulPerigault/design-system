@@ -1,0 +1,76 @@
+---
+import ComponentPage from '../../components/ComponentPage.astro';
+import DataTableExamples from '../../components/examples/data-table.astro';
+
+const snippet = `---
+import DataTable from '@paulperigault/astro/DataTable.astro';
+---
+
+<DataTable id="trafic" title="Visites par source en 2025" dataset={trafic} />`;
+---
+
+<ComponentPage
+  slug="data-table"
+  title="DataTable"
+  summary="DataTable écrit un jeu de données en tableau : en-têtes associés, valeurs manquantes dites, filtres de séries sans JavaScript."
+  use={[
+    'Donner l’équivalent texte exact d’un graphique : toutes les valeurs, au même format que les étiquettes.',
+    'Laisser le lecteur masquer des séries (cases à cocher) pour comparer deux colonnes.',
+    'Afficher un tableau complet par défaut : sans filtre, ou si le navigateur ignore :has(), rien n’est masqué.',
+  ]}
+  avoid={[
+    'Pour montrer une tendance : utiliser LineChart ou Sparkline, le tableau en est le complément.',
+    'Avec plus de six séries : le build échoue avec chart.too-many-series ; regrouper en amont.',
+    'Pour filtrer les lignes ou trier : ce composant ne masque que des colonnes, sans JavaScript.',
+    'Avec un jeu invalide : le build échoue avec le code dataset.* correspondant.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Chaque filtre est une case à cocher native : Tab pour l’atteindre, Espace pour la basculer.',
+      'La région du tableau est focalisable et défile au clavier.',
+      'Cibles des cases : 24 px de haut au moins (WCAG 2.5.8).',
+    ],
+    screenReader: [
+      'Le tableau porte une légende (caption) et la région a le même nom accessible.',
+      'Les colonnes de séries sont des th scope="col", l’abscisse des th scope="row".',
+      'Une colonne masquée par un filtre est retirée de l’arbre d’accessibilité : le groupe de filtres, nommé par sa légende, dit lesquelles sont affichées.',
+    ],
+    guaranteed: [
+      'Une valeur manquante est écrite (« donnée manquante »), jamais omise ni mise à zéro.',
+      'Tableau complet sans action : toutes les cases sont cochées au chargement.',
+      'Zéro JavaScript, aucune animation, aucun attribut style ; colonnes de 120 px au moins, la région défile au lieu de couper les mots.',
+    ],
+    integrator: [
+      'Donner un id unique par page (lettres, chiffres, tirets) : il relie chaque case à son libellé.',
+      'Nommer les séries par ce qu’elles mesurent : ce libellé est celui du filtre et de l’en-tête.',
+      'Le masquage repose sur :has() ; les navigateurs sans :has() affichent le tableau complet.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.3.1 Informations et relations',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html',
+    },
+    {
+      label: 'WCAG 2.5.8 Taille de la cible (minimum)',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html',
+    },
+    { label: 'ADR-0007 : visualisation de données, décision 7 (V3b)' },
+    { label: 'Tests : packages/astro/test/DataTable.test.ts' },
+  ]}
+>
+  <DataTableExamples />
+  <Fragment slot="variants">
+    <h3>Recommandation d’usage</h3>
+    <p>
+      Placer le tableau sous le graphique qu’il double. Les filtres n’agissent que sur lui : ils ne
+      redessinent pas le graphique.
+    </p>
+    <h3>Limites connues</h3>
+    <ul>
+      <li>Les filtres masquent des colonnes, pas des lignes ; au plus six séries.</li>
+      <li>Un navigateur sans :has() ignore les cases : le tableau reste complet.</li>
+    </ul>
+  </Fragment>
+</ComponentPage>

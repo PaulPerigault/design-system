@@ -1,0 +1,21 @@
+---
+/** Exemples vivants de la page DataTable : trois séries filtrables, une série avec trous, sans filtre. */
+import DataTable from '@paulperigault/astro/DataTable.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+import { trafficBySource, visitsWithGaps } from './chart-data.ts';
+---
+
+<Stack space="l">
+  <DataTable id="demo-table-filters" title="Visites par source en 2025" dataset={trafficBySource} />
+  <DataTable
+    id="demo-table-gaps"
+    title="Visites mensuelles avec quatre mois manquants"
+    dataset={visitsWithGaps}
+  />
+  <DataTable
+    id="demo-table-plain"
+    title="Visites par source, sans filtre"
+    dataset={trafficBySource}
+    filters={false}
+  />
+</Stack>

@@ -389,6 +389,13 @@
       "decision": "Composants de V3a-2 (#96, « Closes #96 ») : `Sparkline` et `KpiCard` dans `packages/astro` (briques `chart/sparkline-*.ts`, `prepare-kpi.ts`, cadre `ChartFrame` réutilisé tel quel, `chart-base.css` et `chart-series.css` étendus au bloc `pp-sparkline`). Sparkline : une série (`dataset`, sinon `chart.too-many-series`), un chemin, texte absent du SVG ; point final (cercle plein), plus haut (triangle haut creux) et plus bas (triangle bas creux) toujours dessinés, superposés s'ils coïncident, écrits dans la légende avec leur valeur ; abscisses placées à l'écart réel (dates, nombres) ou à rang égal (catégories). KpiCard : valeur et unité, variation dite en mots (« Hausse de 4,18 % (+495 €) par rapport à… »), jamais de flèche ni de couleur de sens (une hausse d'erreurs n'est pas un succès ; le jugement va dans le titre ou la référence), sparkline optionnelle sans légende, état vide écrit. Aucun jeton ajouté (`--pp-chart-1`), aucun budget modifié : 500 points = moins de 10 ko et 400 nœuds, mesurés dans un test (tableau lié exclu). Vérifié : axe vert (2 thèmes, 2 fenêtres), aucun débordement à 375 et 800 px. Le plafond de 1,5 ko d'ADR-0007 concerne le seul chemin (D-050).",
       "id": "D-051",
       "rollback": "Retirer les deux composants, leurs briques, tests, fragments, pages et exports ; revenir sur le bloc `pp-sparkline` de `chart-base.css` et `chart-series.css`."
+    },
+    {
+      "alternative": "Filtres en JavaScript (écarté par l'ADR-0007 : « filtres `:has()` sans JS ») ; filtrer des lignes (pas de structure CSS fiable sans JS) ; réutiliser `ChartLegend` tel quel (réservée à 2 séries au moins et liée aux classes d'un graphique).",
+      "date": "2026-10-29",
+      "decision": "V3b (#97, « Closes #97 », une seule PR : aucune brique pure à ajouter dans `dataviz`) : `DataTable`, `Legend` et filtres dans `packages/astro`. `DataTable` : `tableOf` et `Table` réutilisés (en-têtes `th scope`, valeur manquante dite), une case à cocher native (`Choice`) par série, tous cochés au chargement ; décocher masque la colonne par `:has()` en CSS, sans JavaScript ; sans `:has()` ou sans filtre, tableau complet. Colonnes de 120 px au moins, la région défile au lieu de couper les mots. `Legend` : légende autonome (6 entrées au plus, libellés non vides, sinon `chart.too-many-series` ou `dataset.bad-shape`), trait à motif et marqueur de forme propre, ou motif de remplissage pour des barres. Fragments `data-table` et `legend` autonomes, pages dans « Données », e2e axe (2 thèmes, 2 fenêtres) et clavier. Aucun jeton, budget ni garde-fou modifié.",
+      "id": "D-052",
+      "rollback": "Retirer les deux composants, leurs briques, tests, fragments, pages et exports."
     }
   ]
 }

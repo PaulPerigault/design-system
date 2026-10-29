@@ -1,0 +1,57 @@
+---
+/**
+ * Legend : légende autonome, un échantillon et un libellé par entrée. Le rang porte l'identité,
+ * jamais la couleur seule (WCAG 1.4.1) : trait à motif propre et marqueur de forme propre pour une
+ * courbe, motif de remplissage pour une barre. Zéro JavaScript, aucun attribut `style`. Entrées
+ * vides ou plus de 6 : le build échoue avec le code (`dataset.bad-shape`, `chart.too-many-series`).
+ */
+import './legend.css';
+import BarPatterns from './chart/BarPatterns.astro';
+import { SWATCH } from './chart/frame.ts';
+import type { LegendKind } from './chart/legend-model.ts';
+import { legendSwatches } from './chart/legend-model.ts';
+import { assertChartId } from './chart/props.ts';
+
+interface Props {
+  /** Préfixe unique des ids des motifs : lettres, chiffres et tirets. */
+  id: string;
+  /** Libellés dans l'ordre des séries (6 au plus) ; le rang fixe couleur, motif et marqueur. */
+  items: string[];
+  /** `line` (trait et marqueur, défaut) ou `bar` (carré de motif). */
+  kind?: LegendKind;
+  /** Nom accessible de la liste. */
+  label?: string;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const BLOCK = 'pp-legend';
+const { id, items, kind = 'line', label = 'Légende', class: className } = Astro.props;
+
+assertChartId(id, 'Legend');
+const swatches = legendSwatches(id, items, kind, 'Legend');
+---
+
+{kind === 'bar' && (
+  <svg class={`${BLOCK}__defs`} width="0" height="0" aria-hidden="true" focusable="false">
+    <BarPatterns id={id} count={items.length} block={BLOCK} />
+  </svg>
+)}
+<ul class:list={[BLOCK, className]} role="list" aria-label={label}>
+  {swatches.map((swatch) => (
+    <li>
+      <svg
+        class={`${BLOCK}__swatch`}
+        viewBox={`0 0 ${SWATCH.width} ${SWATCH.height}`}
+        data-series={swatch.index + 1}
+        aria-hidden="true"
+        focusable="false"
+      >
+        {swatch.marks.map((mark) => (
+          <path class={`${BLOCK}__${mark.kind}`} d={mark.d} fill={mark.fill}></path>
+        ))}
+      </svg>
+      <span>{swatch.label}</span>
+    </li>
+  ))}
+</ul>

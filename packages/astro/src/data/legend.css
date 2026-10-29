@@ -1,0 +1,103 @@
+/*
+ * Légende autonome (Legend) : fichier global. Même langage que les graphiques : couleur
+ * `--pp-chart-N` par rang, plus un motif de trait (continu, tirets, points) et un marqueur de
+ * forme propre, ou un motif de remplissage pour les barres : la couleur ne porte jamais seule le
+ * sens. Aucun dégradé, ombre ni flou, aucune animation.
+ */
+.pp-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pp-space-3xs) var(--pp-space-s);
+  margin-block: 0;
+  padding-inline: 0;
+  list-style: none;
+  color: var(--pp-color-fg);
+}
+
+.pp-legend li {
+  display: flex;
+  align-items: center;
+  gap: var(--pp-space-2xs);
+}
+
+.pp-legend__defs {
+  position: absolute;
+}
+
+.pp-legend__swatch {
+  flex: none;
+  inline-size: calc(var(--pp-font-size-0) * 2);
+  block-size: var(--pp-font-size-0);
+}
+
+.pp-legend__line {
+  fill: none;
+  stroke: var(--pp-series);
+  stroke-width: calc(var(--pp-size-rule) * 2);
+  stroke-dasharray: var(--pp-dash);
+  vector-effect: non-scaling-stroke;
+}
+
+.pp-legend__marker,
+.pp-legend__bar {
+  fill: var(--pp-series);
+  stroke: var(--pp-color-bg);
+  stroke-width: var(--pp-size-rule);
+  vector-effect: non-scaling-stroke;
+}
+
+.pp-legend__bar {
+  stroke: var(--pp-series);
+}
+
+.pp-legend__tile {
+  fill: var(--pp-series);
+}
+
+.pp-legend__mark {
+  fill: none;
+  stroke: var(--pp-color-bg);
+  stroke-width: calc(var(--pp-size-rule) * 2);
+}
+
+:is(.pp-legend, .pp-legend__defs) [data-series='1'] {
+  --pp-series: var(--pp-chart-1);
+  --pp-dash: none;
+}
+
+:is(.pp-legend, .pp-legend__defs) [data-series='2'] {
+  --pp-series: var(--pp-chart-2);
+  --pp-dash: calc(var(--pp-size-rule) * 6) calc(var(--pp-size-rule) * 3);
+}
+
+:is(.pp-legend, .pp-legend__defs) [data-series='3'] {
+  --pp-series: var(--pp-chart-3);
+  --pp-dash: calc(var(--pp-size-rule) * 2) calc(var(--pp-size-rule) * 3);
+}
+
+:is(.pp-legend, .pp-legend__defs) [data-series='4'] {
+  --pp-series: var(--pp-chart-4);
+  --pp-dash: calc(var(--pp-size-rule) * 10) calc(var(--pp-size-rule) * 3)
+    calc(var(--pp-size-rule) * 2) calc(var(--pp-size-rule) * 3);
+}
+
+:is(.pp-legend, .pp-legend__defs) [data-series='5'] {
+  --pp-series: var(--pp-chart-5);
+  --pp-dash: calc(var(--pp-size-rule) * 14) calc(var(--pp-size-rule) * 4);
+}
+
+:is(.pp-legend, .pp-legend__defs) [data-series='6'] {
+  --pp-series: var(--pp-chart-6);
+  --pp-dash: calc(var(--pp-size-rule) * 3) calc(var(--pp-size-rule) * 3);
+}
+
+@media (forced-colors: active) {
+  .pp-legend__line {
+    stroke: CanvasText;
+  }
+
+  .pp-legend :is(.pp-legend__marker, .pp-legend__bar) {
+    fill: CanvasText;
+    stroke: Canvas;
+  }
+}

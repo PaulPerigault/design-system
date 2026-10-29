@@ -1,0 +1,61 @@
+---
+/**
+ * DataTable : le jeu de données en tableau, une ligne par abscisse et une colonne par série, en-têtes
+ * associés (`th scope`), valeur manquante dite. Filtres de séries en cases à cocher natives, sans
+ * JavaScript : décocher une série masque sa colonne par `:has()`. Sans filtre, ou si le navigateur
+ * ignore `:has()`, le tableau complet reste affiché. Aucun attribut `style` (CSP stricte). Jeu
+ * invalide : le build échoue avec le code (`dataset.*`, `chart.too-many-series`).
+ */
+import './data-table.css';
+import Choice from '../forms/Choice.astro';
+import Table from '../content/Table.astro';
+import { tableOf } from './chart/table.ts';
+import { assertChartId } from './chart/props.ts';
+import { prepareTable } from './chart/prepare-table.ts';
+
+interface Props {
+  /** Préfixe unique des ids des cases à cocher : lettres, chiffres et tirets. */
+  id: string;
+  /** Légende du tableau, nom accessible de sa région défilante. */
+  title: string;
+  /** Jeu de données (`schema: 1`) : validé, sinon le build échoue avec le code d'erreur. */
+  dataset: unknown;
+  /** Locale des nombres et des dates. Défaut : `fr`. */
+  locale?: string;
+  /** Filtres de séries (défaut : oui s'il y a deux séries ou plus). */
+  filters?: boolean;
+  /** Légende du groupe de filtres. */
+  filtersLabel?: string;
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const BLOCK = 'pp-data-table';
+const { id, title, dataset, class: className, locale = 'fr', filters = true } = Astro.props;
+const { filtersLabel = 'Séries affichées' } = Astro.props;
+
+assertChartId(id, 'DataTable');
+const prepared = prepareTable(dataset, locale, `DataTable « ${title} »`);
+const table = tableOf(prepared.dataset, prepared.formatter);
+const series = prepared.dataset.series;
+const filterable = filters && series.length > 1;
+---
+
+<div class:list={[BLOCK, className]}>
+  {filterable && (
+    <fieldset class={`${BLOCK}__filters`}>
+      <legend>{filtersLabel}</legend>
+      {series.map((item, index) => (
+        <Choice
+          type="checkbox"
+          id={`${id}-f${index + 1}`}
+          name={`${id}-series`}
+          value={`col-${index + 1}`}
+          label={item.label}
+          checked
+        />
+      ))}
+    </fieldset>
+  )}
+  <Table caption={title} columns={table.columns} rows={table.rows} rowHeader="x" />
+</div>
