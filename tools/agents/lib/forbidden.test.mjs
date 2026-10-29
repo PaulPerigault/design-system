@@ -38,7 +38,7 @@ describe('forbiddenReason', () => {
 
 describe('hook lancé par Node', () => {
   const run = (event) =>
-    spawnSync('node', ['tools/agents/kiro-hook.mjs'], {
+    spawnSync('node', ['tools/agents/kiro-hook.ts'], {
       input: JSON.stringify(event),
       encoding: 'utf8',
     });

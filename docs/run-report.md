@@ -265,3 +265,8 @@ test -c apps/docs/playwright.config.ts`.
 ## #86-B2 (2026-10-29) : `tools/agents`, modules à dépendances
 
 - Huit modules en TypeScript strict (D-066). Reste : B3, les six lanceurs et la configuration (« Closes #86 »).
+
+## #86-B3 (2026-10-29) : `tools/agents`, lanceurs
+
+- Les lanceurs passent en TypeScript strict, commandes mises à jour (D-067). #86 fermée.
+- Reste : issue `[Tokens] create`, #123, #131, Rust, #102, #103, #130, #118.

@@ -492,6 +492,13 @@
       "decision": "`tools/agents` en TypeScript strict, deuxième série (#86, B2, « Refs #86 », la troisième portera « Closes #86 »). Modules à dépendances en `.ts` : `transports`, `verify`, `attempt`, `run-task`, `coordination`, `lead-session`, `cli`, `fake-world`. Nouveaux modules pour tenir 120 lignes : `deps.ts` (`Deps`, `LeadDeps`, `DispatchConfig`, `DispatchFs`, `InstallOptions`, `WorktreeInfo`, `VerifyResult`, séparés de `types.ts`), `agent-args.ts` (`kiroArgs`, `claudeArgs`, sortis de `transports`), `run-support.ts` (journal de routage, résultat, sortis de `run-task`), `attempt-support.ts` (sortis d'`attempt`), `config.ts` (validation de `config.json` et `models.json` à la lecture, `toConfig`, `toModels`). Options de ligne de commande : `parseOptions` rend `{ _: string[] }` plus les clés nommées. `Deps` : dépendances requises par ds-lead dans `LeadDeps`. Restent en `.mjs` : les six lanceurs de `tools/agents/` (`run`, `batch`, `review`, `integrate`, `lead`, `kiro-hook`) et les tests, dont seuls les imports changent. Non-régression : 187 tests `tools` verts, `tsc`, ESLint strict, `check:size` ; `run.mjs` et `batch.mjs` affichent leur usage. Budgets et garde-fous inchangés.",
       "id": "D-066",
       "rollback": "Annuler le commit (`git mv` inverse) ; retirer `deps.ts`, `config.ts` et les modules d'appui."
+    },
+    {
+      "alternative": "Garder des lanceurs `.mjs` minces (aucune commande à changer) ; convertir les tests en TypeScript.",
+      "date": "2026-10-29",
+      "decision": "`tools/agents` en TypeScript strict, dernière série (#86, B3, « Closes #86 »). Les six lanceurs passent en `.ts` : `run`, `batch`, `review`, `integrate`, `lead`, `kiro-hook` ; `parseOptions` gagne `stringOption` (option textuelle, jamais un drapeau). Commandes mises à jour partout : `node tools/agents/run.ts`, `batch.ts`, `review.ts`, `integrate.ts`, `lead.ts`, `kiro-hook.ts` (`package.json` `agents:run` et `agents:batch`, `CLAUDE.md`, `AGENTS.md`, `prompts/lead.md`, `docs/kickoff.md`, permissions et hooks des trois `.kiro/agents/*.json`, test du hook). `config.json` et `models.json` n'ont aucun chemin de lanceur : inchangés. Node 24 exécute ces `.ts` depuis le dépôt (types retirés, hors `node_modules`). #86 : `dist/` pour `tokens`, `create`, `mcp` (D-064), `tools/agents` en `.ts` (D-065 à D-067). Non-régression : 187 tests `tools`, `tsc`, ESLint strict, `check:size`, `check:guards` verts ; `run.ts` et `review.ts` affichent leur usage. Budgets et garde-fous inchangés.",
+      "id": "D-067",
+      "rollback": "Annuler le commit : `git mv` inverse et restaurer les commandes `.mjs` dans les fichiers cités."
     }
   ]
 }

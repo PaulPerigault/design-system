@@ -1,29 +1,29 @@
 // Lance les tâches prêtes d'un lot, au plus N en parallèle :
-// node tools/agents/batch.mjs --lot L3 --base lot/L3 [--parallel 3] [--escalate]
+// node tools/agents/batch.ts --lot L3 --base lot/L3 [--parallel 3] [--escalate]
 // Une tâche est prête quand toutes ses dépendances sont intégrées (citées dans l'historique de la
 // branche du lot). Commencer à --parallel 3 ; ne monter que sans erreur de quota.
 import { existsSync } from 'node:fs';
 import { readdir } from 'node:fs/promises';
+import process from 'node:process';
 import { batchTable, mapLimit, readyTasks, tasksOfLot } from './lib/batch.ts';
-import { loadTask, parseOptions, realDeps } from './lib/cli.ts';
+import { loadTask, parseOptions, realDeps, stringOption } from './lib/cli.ts';
 import { baselineCommands, failingBaseline } from './lib/preflight.ts';
 import { runTask } from './lib/run-task.ts';
 
+const ARGV_START = 2;
 const DEFAULT_PARALLEL = 3;
-const options = parseOptions(process.argv.slice(2));
-if (!options.lot) {
-  console.error('Usage : node tools/agents/batch.mjs --lot L3 [--base lot/L3] [--parallel 3]');
+const options = parseOptions(process.argv.slice(ARGV_START));
+const lot = stringOption(options, 'lot');
+if (!lot) {
+  console.error('Usage : node tools/agents/batch.ts --lot L3 [--base lot/L3] [--parallel 3]');
   process.exit(2);
 }
 
-const deps = await realDeps({ base: options.base });
+const deps = await realDeps({ base: stringOption(options, 'base') });
 const files = (await readdir(`${deps.repoRoot}/tasks`)).filter((name) =>
   /^T\d+\.\d+.*\.md$/.test(name),
 );
-const tasks = tasksOfLot(
-  await Promise.all(files.map((name) => loadTask(`tasks/${name}`))),
-  options.lot,
-);
+const tasks = tasksOfLot(await Promise.all(files.map((name) => loadTask(`tasks/${name}`))), lot);
 const log = (await deps.git(['log', deps.base, '--format=%B'])).stdout;
 const integrated = tasks
   .filter((task) => new RegExp(`\\b${task.id.replace('.', '\\.')}\\b`).test(log))
@@ -37,7 +37,7 @@ if (ready.length > 0 && options['skip-preflight'] !== true) {
     {
       shell: deps.shell,
       cwd: deps.repoRoot,
-      env: deps['env'],
+      env: deps.env,
       timeoutMs: deps.config.acceptanceTimeoutMs,
       lock: deps.heavyLock,
     },
@@ -51,7 +51,7 @@ if (ready.length > 0 && options['skip-preflight'] !== true) {
   }
 }
 
-const parallel = Number(options.parallel ?? DEFAULT_PARALLEL);
+const parallel = Number(stringOption(options, 'parallel') ?? DEFAULT_PARALLEL);
 const results = await mapLimit(ready, parallel, (task) =>
   runTask(deps, task, { escalate: options.escalate === true }),
 );
