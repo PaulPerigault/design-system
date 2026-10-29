@@ -222,3 +222,8 @@ test -c apps/docs/playwright.config.ts`.
 
 - `--pp-color-focus` et `--pp-color-status-running` dérivés de la teinte (`deriveRoles`), contrôle bloquant sur la valeur émise (focus 3:1, statut 4,5:1, fond et surface), code `build.role-contrast-failed`. Défaut identique octet pour octet. Décision D-057 ; dernière PR de #121.
 - Reste : rampes `seq`/`div` non émises ; `create` (issue séparée, bloquée par #86).
+
+## #135 (2026-10-29) : skill de voix Encre
+
+- `.claude/skills/encre-voix/SKILL.md`, `.agents/product-marketing.md`, essais dans `docs/design/voix-essais.md` (accueil, README ; non appliqués). Choix de Paul dans D-058.
+- Reste : #123 applique la voix aux pages et traite les écarts relevés (paquets, Visuel, `proofs.json`).
