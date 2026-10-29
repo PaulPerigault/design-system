@@ -1,6 +1,6 @@
 // Lecture typée des options d'un contrôle : la forme est vérifiée ici, à la frontière
 // (configuration JSON, drapeaux de ligne de commande), avant d'entrer dans la logique pure.
-import { GuardUsageError } from './report.ts';
+import { GuardUsageError } from '../errors.ts';
 
 export type Options = Record<string, unknown>;
 

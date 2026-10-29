@@ -82,7 +82,7 @@ Tailwind physiques de l'axe en ligne (`ml-*`, `pr-*`, `left-*`, `text-left`, `ro
 l'ADR-0002 la permet pour le code, les identifiants, les empreintes et les journaux.
 
 Les listes exactes (phrases génériques, couleurs nommées, motifs de classes) sont dans
-`src/design/*.mjs`.
+`src/domain/design/*.ts`.
 
 Dans le fichier de configuration, `allow` accepte aussi des objets, que la ligne de commande ne
 sait pas exprimer :

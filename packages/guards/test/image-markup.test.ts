@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { neutralizeComments, rawImages } from '../src/images/markup.ts';
+import { neutralizeComments, rawImages } from '../src/application/images/markup.ts';
 
 const labels = (text: string, ext: string) =>
   rawImages(neutralizeComments(text, ext), ext).map((f) => f.label);

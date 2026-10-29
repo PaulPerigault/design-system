@@ -1,5 +1,5 @@
 // Extraction des imports d'un fichier source (JS/TS, CSS, `.astro`), avec numéro de ligne.
-import { lineOf } from '../lib/files.ts';
+import { lineOf } from '../text.ts';
 
 /** Chaque motif capture le spécificateur dans le groupe 2 (le groupe 1 est le guillemet). */
 const PATTERNS = [

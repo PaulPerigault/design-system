@@ -1,10 +1,10 @@
 // Balisage d'image brut : `<img` et `background(-image): … url(` hors des chemins permis.
 // `<Image`, `<Picture` et le `src: url()` d'une police ne sont pas visés. Les commentaires
 // sont remplacés par des espaces, sauts de ligne conservés, avant la recherche.
-import { lineOf } from '../lib/files.ts';
-import type { GuardIo } from '../lib/io.ts';
-import { matchesAny } from '../lib/paths.ts';
-import type { Problem } from '../lib/report.ts';
+import { lineOf } from '../../domain/text.ts';
+import type { GuardIo } from '../ports.ts';
+import { matchesAny } from '../../domain/paths.ts';
+import type { Problem } from '../../domain/problem.ts';
 
 const IMG_EXTENSIONS = ['.astro', '.html', '.md', '.mdx', '.jsx', '.tsx'];
 const BACKGROUND_EXTENSIONS = ['.css', '.astro'];

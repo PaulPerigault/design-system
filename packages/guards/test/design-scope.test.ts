@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { analyze, RULE_IDS } from '../src/design/rules.ts';
+import { analyze, RULE_IDS } from '../src/domain/design/rules.ts';
 
 const ALL = new Set(RULE_IDS);
 const rulesOf = (file: string, text: string) => analyze(file, text, ALL).map((p) => p.rule);

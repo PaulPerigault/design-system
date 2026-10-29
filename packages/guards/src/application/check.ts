@@ -1,6 +1,6 @@
 // Contrat commun des contrôles de pp-guards (table `CHECKS`, dispatch de `cli.ts`).
-import type { GuardIo } from './io.ts';
-import type { Options } from './options.ts';
+import type { GuardIo } from './ports.ts';
+import type { Options } from '../domain/options.ts';
 
 export interface CliOption {
   type: 'string' | 'boolean';

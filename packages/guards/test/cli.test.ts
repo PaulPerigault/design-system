@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { main } from '../src/cli.ts';
+import { main } from '../src/infrastructure/cli.ts';
 import { fakeIo } from './fake-io.ts';
 
 const TOKENS = JSON.stringify({ themes: { light: { '--pp-a': '1' } }, base: {} });

@@ -1,6 +1,6 @@
 // Orchestration : neutralise les commentaires, choisit la portée par extension, assemble les
 // résultats des règles CSS, classes et texte en problèmes `fichier:ligne`.
-import { lineOf } from '../lib/files.ts';
+import { lineOf } from '../text.ts';
 import { classHits } from './class-rules.ts';
 import { cssHits } from './css-rules.ts';
 import { logicalHits } from './logical-rules.ts';

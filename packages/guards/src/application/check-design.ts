@@ -1,13 +1,14 @@
 // Contrôle « design » : interdits anti-IA d'AGENTS.md (dégradés, ombres, flou, emoji, palette
 // Tailwind, valeurs arbitraires, couleurs brutes, effets rétro, phrases génériques).
-import type { CliOptions } from './lib/check.ts';
-import type { GuardIo } from './lib/io.ts';
-import { listFiles } from './lib/files.ts';
-import { isRecord, isStrings, listOption } from './lib/options.ts';
-import type { Options } from './lib/options.ts';
-import { matchesPath } from './lib/paths.ts';
-import { GuardUsageError, report } from './lib/report.ts';
-import { analyze, RULE_IDS } from './design/rules.ts';
+import type { CliOptions } from './check.ts';
+import type { GuardIo } from './ports.ts';
+import { listFiles } from './files.ts';
+import { isRecord, isStrings, listOption } from '../domain/options.ts';
+import type { Options } from '../domain/options.ts';
+import { matchesPath } from '../domain/paths.ts';
+import { GuardUsageError } from '../errors.ts';
+import { report } from './report.ts';
+import { analyze, RULE_IDS } from '../domain/design/rules.ts';
 
 export const name = 'design';
 

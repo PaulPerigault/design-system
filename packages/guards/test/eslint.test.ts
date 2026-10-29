@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { designRules, testRelaxations, designConfig } from '../src/eslint.ts';
+import { designRules, testRelaxations, designConfig } from '../src/infrastructure/eslint.ts';
 import {
   designRules as rootDesignRules,
   testRelaxations as rootTestRelaxations,

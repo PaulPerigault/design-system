@@ -1,5 +1,5 @@
 import { TextDecoder, TextEncoder } from 'node:util';
-import type { DirEntry, GuardIo } from '../src/lib/io.ts';
+import type { DirEntry, GuardIo } from '../src/application/ports.ts';
 
 type Content = string | Uint8Array;
 

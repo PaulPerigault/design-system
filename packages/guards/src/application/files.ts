@@ -1,5 +1,5 @@
-import type { DirEntry, GuardIo } from './io.ts';
-import { normalizePath } from './paths.ts';
+import type { DirEntry, GuardIo } from './ports.ts';
+import { normalizePath } from '../domain/paths.ts';
 
 export const SKIPPED_DIRS = [
   'node_modules',
@@ -61,12 +61,4 @@ function tryReaddir(io: GuardIo, path: string): DirEntry[] | null {
   } catch {
     return null;
   }
-}
-
-export function lineOf(text: string, index: number): number {
-  let line = 1;
-  for (let i = 0; i < index && i < text.length; i += 1) {
-    if (text[i] === '\n') line += 1;
-  }
-  return line;
 }

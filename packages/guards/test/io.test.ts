@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { Writable } from 'node:stream';
-import { nodeIo } from '../src/lib/io.ts';
+import { nodeIo } from '../src/infrastructure/node-io.ts';
 import { fakeIo } from './fake-io.ts';
 
 describe('fakeIo', () => {

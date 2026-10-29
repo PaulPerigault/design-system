@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { validateLayers } from '../src/layers/layers.ts';
-import { GuardUsageError } from '../src/lib/report.ts';
+import { validateLayers } from '../src/domain/layers/layers.ts';
+import { GuardUsageError } from '../src/errors.ts';
 
 const one = (extra: Record<string, unknown> = {}) => [{ name: 'a', paths: ['x'], ...extra }];
 

@@ -1,10 +1,11 @@
 // Contrôle : aucun fichier source ne dépasse `max` lignes (on découpe, on ne relève pas).
-import type { GuardIo } from './lib/io.ts';
-import type { CliOptions } from './lib/check.ts';
-import { listFiles } from './lib/files.ts';
-import { nonEmptyListOption } from './lib/options.ts';
-import type { Options } from './lib/options.ts';
-import { GuardUsageError, report } from './lib/report.ts';
+import type { GuardIo } from './ports.ts';
+import type { CliOptions } from './check.ts';
+import { listFiles } from './files.ts';
+import { nonEmptyListOption } from '../domain/options.ts';
+import type { Options } from '../domain/options.ts';
+import { GuardUsageError } from '../errors.ts';
+import { report } from './report.ts';
 
 export const name = 'size';
 

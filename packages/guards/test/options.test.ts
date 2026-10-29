@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { isRecord, isStrings, listOption, nonEmptyListOption } from '../src/lib/options.ts';
-import { GuardUsageError } from '../src/lib/report.ts';
-import { validateOptions } from '../src/check-design.ts';
+import { isRecord, isStrings, listOption, nonEmptyListOption } from '../src/domain/options.ts';
+import { GuardUsageError } from '../src/errors.ts';
+import { validateOptions } from '../src/application/check-design.ts';
 
 describe('gardes de type', () => {
   it('isRecord : objet simple seulement', () => {

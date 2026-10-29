@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { checkText, cliOptions, defaults, name, run } from '../src/check-design.ts';
-import { GuardUsageError } from '../src/lib/report.ts';
+import { checkText, cliOptions, defaults, name, run } from '../src/application/check-design.ts';
+import { GuardUsageError } from '../src/errors.ts';
 import { fakeIo } from './fake-io.ts';
 
 const BAD = 'a {\n  color: #fff;\n  box-shadow: 0 0 4px var(--x);\n}\n';

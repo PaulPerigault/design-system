@@ -1,12 +1,12 @@
 // Garde-fou images : balisage brut hors `allow`, métadonnées EXIF/GPS/XMP (vie privée),
 // budget de poids par fichier. Aucune dépendance : les binaires sont lus à la main.
-import type { CliOptions } from './lib/check.ts';
-import type { GuardIo } from './lib/io.ts';
-import { listFiles } from './lib/files.ts';
-import { listOption, nonEmptyListOption } from './lib/options.ts';
-import type { Options } from './lib/options.ts';
-import { normalizePath } from './lib/paths.ts';
-import { report } from './lib/report.ts';
+import type { CliOptions } from './check.ts';
+import type { GuardIo } from './ports.ts';
+import { listFiles } from './files.ts';
+import { listOption, nonEmptyListOption } from '../domain/options.ts';
+import type { Options } from '../domain/options.ts';
+import { normalizePath } from '../domain/paths.ts';
+import { report } from './report.ts';
 import { BUDGET_EXTENSIONS, budgetProblems, budgetSettings } from './images/budget.ts';
 import { MARKUP_EXTENSIONS, markupProblems } from './images/markup.ts';
 import { METADATA_EXTENSIONS, metadataProblems } from './images/metadata.ts';

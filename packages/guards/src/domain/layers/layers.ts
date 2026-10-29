@@ -1,8 +1,8 @@
 // Configuration des couches et résolution d'un import vers sa couche.
 import { posix } from 'node:path';
-import { isRecord, isStrings } from '../lib/options.ts';
-import { normalizePath } from '../lib/paths.ts';
-import { GuardUsageError } from '../lib/report.ts';
+import { isRecord, isStrings } from '../options.ts';
+import { normalizePath } from '../paths.ts';
+import { GuardUsageError } from '../../errors.ts';
 
 const RELATIVE = /^\.\.?(\/|$)/;
 const SCOPED_SEGMENTS = 2;

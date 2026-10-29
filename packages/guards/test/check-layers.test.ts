@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { cliOptions, defaults, name, run } from '../src/check-layers.ts';
-import { importsOf } from '../src/layers/imports.ts';
-import { layerOfImport, layerOfPath, validateLayers } from '../src/layers/layers.ts';
+import { cliOptions, defaults, name, run } from '../src/application/check-layers.ts';
+import { importsOf } from '../src/domain/layers/imports.ts';
+import { layerOfImport, layerOfPath, validateLayers } from '../src/domain/layers/layers.ts';
 import { fakeIo } from './fake-io.ts';
 
 const layers = ['tokens', 'css', 'astro'].map((layer) => ({
