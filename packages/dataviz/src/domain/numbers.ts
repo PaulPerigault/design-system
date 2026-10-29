@@ -2,3 +2,4 @@
 export const PAIR = 2;
 export const HALF = 0.5;
 export const DECADE = 10;
+export const PERCENT = 100;
