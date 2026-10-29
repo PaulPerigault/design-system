@@ -21,8 +21,14 @@ function unitTick(unit: string, orientation: Orientation, plot: Plot): readonly 
   if (unit === '') return [];
   const y = plot.top - UNIT_RISE;
   return orientation === 'vertical'
-    ? [{ axis: 'unit', x: plot.left - LABEL_GAP, y, label: unit, align: 'end' }]
+    ? [{ axis: 'unit', x: 0, y, label: unit }]
     : [{ axis: 'unit', x: plot.left, y, label: unit }];
+}
+
+/** Libellés des graduations de l'axe des valeurs, pour réserver leur colonne avant le tracé. */
+export function valueTickLabels(series: readonly Series[], fmt: Formatter): string[] {
+  const nice = niceTicks(...valueExtent(series), Y_TICKS);
+  return nice.ok ? nice.value.values.map((value) => fmt.number(value)) : [];
 }
 
 /** Axe des valeurs (vertical pour des barres verticales), grille, base zéro et unité. */
