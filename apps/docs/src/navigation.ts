@@ -105,6 +105,8 @@ export const GROUPS: readonly DocGroup[] = [
       link('bar-chart', 'BarChart'),
       link('area-chart', 'AreaChart'),
       link('gauge-chart', 'GaugeChart'),
+      link('sparkline', 'Sparkline'),
+      link('kpi-card', 'KpiCard'),
     ],
   },
 ];

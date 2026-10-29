@@ -470,5 +470,61 @@
         }
       ]
     }
+  },
+  "sparklineFlat": {
+    "schema": 1,
+    "x": {
+      "kind": "time",
+      "label": "Mois",
+      "values": ["2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06"]
+    },
+    "series": [
+      {
+        "id": "consigne",
+        "label": "Température de consigne",
+        "unit": "°C",
+        "values": [19, 19, 19, 19, 19, 19]
+      }
+    ]
+  },
+  "kpis": {
+    "visits": {
+      "title": "Visites du mois",
+      "value": 1190,
+      "unit": "visites",
+      "reference": 1240,
+      "referenceLabel": "par rapport au mois précédent"
+    },
+    "duration": {
+      "title": "Durée médiane d’une visite",
+      "value": 94,
+      "unit": "s",
+      "reference": 108,
+      "referenceLabel": "par rapport au mois précédent"
+    },
+    "steady": {
+      "title": "Taux de rebond",
+      "value": 41,
+      "unit": "%",
+      "reference": 41,
+      "referenceLabel": "par rapport au mois précédent"
+    },
+    "fromZero": {
+      "title": "Téléchargements de la brochure",
+      "value": 36,
+      "unit": "",
+      "reference": 0,
+      "referenceLabel": "par rapport au mois précédent"
+    },
+    "single": {
+      "title": "Abonnés à l’infolettre",
+      "value": 1280,
+      "unit": ""
+    },
+    "empty": {
+      "title": "Visites du mois",
+      "value": null,
+      "unit": "visites"
+    }
   }
 }

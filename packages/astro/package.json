@@ -105,6 +105,8 @@
     "./LineChart.astro": "./src/data/LineChart.astro",
     "./BarChart.astro": "./src/data/BarChart.astro",
     "./AreaChart.astro": "./src/data/AreaChart.astro",
-    "./GaugeChart.astro": "./src/data/GaugeChart.astro"
+    "./GaugeChart.astro": "./src/data/GaugeChart.astro",
+    "./Sparkline.astro": "./src/data/Sparkline.astro",
+    "./KpiCard.astro": "./src/data/KpiCard.astro"
   }
 }

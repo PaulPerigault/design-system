@@ -1,0 +1,93 @@
+---
+import ComponentPage from '../../components/ComponentPage.astro';
+import AccentHueDemo from '../../components/examples/accent-hue-demo.astro';
+import SparklineExamples from '../../components/examples/sparkline.astro';
+
+const snippet = `---
+import Sparkline from '@paulperigault/astro/Sparkline.astro';
+---
+
+<Sparkline id="visites" title="Visites mensuelles en 2025" dataset={visites} />`;
+---
+
+<ComponentPage
+  slug="sparkline"
+  title="Sparkline"
+  summary="Sparkline montre la tendance d’une série en un trait, sans axes, avec le point final, le plus haut et le plus bas écrits, en SVG statique."
+  use={[
+    'Donner la forme d’une série (hausse, creux, pic) à côté d’une valeur déjà écrite : indicateur, ligne de tableau.',
+    'Montrer que des mesures manquent : le trait se rompt, rien n’est inventé et le tableau lié le dit.',
+    'Garder un poids minime : un seul chemin, au plus 120 points tracés, sous 10 ko et 400 nœuds.',
+  ]}
+  avoid={[
+    'Pour lire des valeurs sur une échelle : pas d’axes, utiliser LineChart.',
+    'Pour comparer plusieurs séries : une série par sparkline, au-delà le build échoue avec chart.too-many-series.',
+    'Avec des abscisses qui ne croissent pas : le build échoue avec geometry.bad-input.',
+    'Avec une série entièrement manquante : état vide, sans tracé.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Le SVG n’est pas interactif et ne reçoit pas le focus.',
+      'Le tableau lié se déplie au clavier (élément details natif).',
+    ],
+    screenReader: [
+      'Le SVG porte role="img", nommé par un title et décrit par un desc.',
+      'Le desc donne le début, la fin, la tendance chiffrée, les extrêmes et les données manquantes.',
+      'Le tableau de toutes les valeurs est lié sous le graphique, dans un details fermé.',
+    ],
+    guaranteed: [
+      'Le point final, le plus haut et le plus bas ont une forme distincte (cercle, triangle haut, triangle bas) et sont écrits dans la légende avec leur valeur : la couleur ne porte jamais seule le sens (WCAG 1.4.1).',
+      'La valeur finale est écrite en texte, de la taille du texte courant.',
+      'Une série qui finit sur un trou le dit : le dernier point marqué est le dernier présent.',
+      'Zéro JavaScript, aucune animation, aucun attribut style ; jeton --pp-chart-1 en clair et en sombre.',
+    ],
+    integrator: [
+      'Donner un id unique par page (lettres, chiffres, tirets).',
+      'Titrer par un fait (« Visites mensuelles en 2025 »), pas par « Aperçu ».',
+      'Des dates irrégulières sont placées à leur écart réel ; des catégories, à intervalles égaux.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html',
+    },
+    {
+      label: 'WCAG 1.1.1 Contenu non textuel',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html',
+    },
+    { label: 'Tufte, Beautiful Evidence, Graphics Press, 2006 : origine du nom « sparkline »' },
+    { label: 'ADR-0007 : visualisation de données' },
+    { label: 'Tests : packages/astro/test/Sparkline.test.ts' },
+  ]}
+>
+  <SparklineExamples />
+  <Fragment slot="variants">
+    <h3>Recommandation d’usage</h3>
+    <p>
+      Une sparkline accompagne une valeur écrite : sans elle, le lecteur ne sait pas à quelle
+      échelle lire la forme. Pour une valeur et sa variation, voir KpiCard.
+    </p>
+    <h3>Budgets de poids</h3>
+    <ul>
+      <li>
+        500 points : au plus 120 points tracés (réduction LTTB, plus les deux extrêmes), sous 10 ko
+        et 400 nœuds, tableau lié exclu.
+      </li>
+    </ul>
+    <h3>Limites connues</h3>
+    <ul>
+      <li>
+        Les couleurs --pp-chart-1..6 restent figées sur l’accent par défaut tant que l’issue #121
+        n’est pas faite.
+      </li>
+      <li>
+        L’échelle verticale va du plus bas au plus haut de la série : deux sparklines côte à côte ne
+        se comparent pas entre elles.
+      </li>
+    </ul>
+    <h3>Teinte d’accent</h3>
+    <AccentHueDemo />
+  </Fragment>
+</ComponentPage>

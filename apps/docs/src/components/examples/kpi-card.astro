@@ -1,0 +1,24 @@
+---
+/** Exemples vivants de la page KpiCard : hausse, baisse, stable, référence nulle, sans référence, vide. */
+import Grid from '@paulperigault/astro/Grid.astro';
+import KpiCard from '@paulperigault/astro/KpiCard.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+import { kpis, monthlyVisits } from './chart-data.ts';
+---
+
+<Stack space="l">
+  <Grid min="narrow" space="m">
+    <KpiCard
+      id="demo-kpi-visits"
+      {...kpis.visits}
+      trend={{ title: 'Visites par mois en 2025', dataset: monthlyVisits }}
+    />
+    <KpiCard id="demo-kpi-duration" {...kpis.duration} />
+    <KpiCard id="demo-kpi-steady" {...kpis.steady} />
+  </Grid>
+  <Grid min="narrow" space="m">
+    <KpiCard id="demo-kpi-zero" {...kpis.fromZero} />
+    <KpiCard id="demo-kpi-single" {...kpis.single} />
+    <KpiCard id="demo-kpi-empty" {...kpis.empty} />
+  </Grid>
+</Stack>

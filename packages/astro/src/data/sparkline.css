@@ -1,0 +1,52 @@
+/*
+ * Sparkline : fichier global, en plus de `chart-base.css` et `chart-series.css`. Un trait plein
+ * de 2 `--pp-size-rule` en `--pp-chart-1` (accent), sans axe ni grille. Le point final est plein,
+ * le plus haut et le plus bas sont creux (forme du marqueur dans la géométrie), les points
+ * isolés pleins et carrés : la couleur ne porte jamais seule le sens. Aucun dégradé, ombre ni
+ * flou, aucune animation.
+ */
+figure.pp-sparkline > svg.pp-sparkline__svg {
+  max-inline-size: calc(var(--pp-size-measure) * 5 / 9);
+}
+
+.pp-sparkline {
+  --pp-series: var(--pp-chart-1);
+}
+
+.pp-sparkline__line {
+  fill: none;
+  stroke: var(--pp-series);
+  stroke-width: calc(var(--pp-size-rule) * 2);
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.pp-sparkline :is(.pp-sparkline__end, .pp-sparkline__point) {
+  fill: var(--pp-series);
+  stroke: var(--pp-color-bg);
+  stroke-width: var(--pp-size-rule);
+  vector-effect: non-scaling-stroke;
+}
+
+.pp-sparkline :is(.pp-sparkline__max, .pp-sparkline__min) {
+  fill: var(--pp-color-bg);
+  stroke: var(--pp-series);
+  stroke-width: calc(var(--pp-size-rule) * 2);
+  vector-effect: non-scaling-stroke;
+}
+
+@media (forced-colors: active) {
+  .pp-sparkline__line,
+  .pp-sparkline :is(.pp-sparkline__max, .pp-sparkline__min) {
+    stroke: CanvasText;
+  }
+
+  .pp-sparkline :is(.pp-sparkline__end, .pp-sparkline__point) {
+    fill: CanvasText;
+    stroke: Canvas;
+  }
+
+  .pp-sparkline :is(.pp-sparkline__max, .pp-sparkline__min) {
+    fill: Canvas;
+  }
+}

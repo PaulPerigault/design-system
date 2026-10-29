@@ -1,0 +1,91 @@
+---
+import ComponentPage from '../../components/ComponentPage.astro';
+import AccentHueDemo from '../../components/examples/accent-hue-demo.astro';
+import KpiCardExamples from '../../components/examples/kpi-card.astro';
+
+const snippet = `---
+import KpiCard from '@paulperigault/astro/KpiCard.astro';
+---
+
+<KpiCard
+  id="visites-mois"
+  title="Visites du mois"
+  value={1190}
+  unit="visites"
+  reference={1240}
+  referenceLabel="par rapport au mois précédent"
+  trend={{ title: 'Visites par mois en 2025', dataset: visites }}
+/>`;
+---
+
+<ComponentPage
+  slug="kpi-card"
+  title="KpiCard"
+  summary="KpiCard écrit un indicateur : sa valeur et son unité en grand, sa variation dite en mots, une sparkline en option."
+  use={[
+    'Résumer une mesure clé d’un tableau de bord : visites, durée, taux.',
+    'Dire la variation par un mot (hausse, baisse, stable), son pourcentage signé et sa référence.',
+    'Ajouter la tendance par une sparkline, avec son tableau de données lié.',
+  ]}
+  avoid={[
+    'Avec plus de 9 chiffres entiers : le build échoue avec kpi.unreadable ; changer d’échelle et d’unité (k€, M€).',
+    'Pour dire si une variation est bonne ou mauvaise : la carte ne colore pas le sens, une hausse d’erreurs n’est pas un succès. Écrire le jugement dans le titre ou la référence.',
+    'Avec une valeur ou une référence non finie : le build échoue avec kpi.bad-value ou kpi.bad-reference.',
+    'Pour situer une valeur dans des seuils : utiliser GaugeChart.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'La carte n’est pas interactive et ne reçoit pas le focus.',
+      'Le tableau de la sparkline se déplie au clavier (élément details natif).',
+    ],
+    screenReader: [
+      'La carte est un groupe nommé par son titre ; la valeur et la variation suivent en texte.',
+      'La variation est dite en mots : « Baisse de 4,03 % (−50 visites) par rapport au mois précédent ».',
+      'La sparkline porte son title et son desc, et son tableau est lié.',
+    ],
+    guaranteed: [
+      'Le sens de la variation est écrit (mot et signe) : ni flèche ni couleur ne le portent seules (WCAG 1.4.1).',
+      'Une variation que l’arrondi écrase est dite « quasi stable », pas « stable » ; une référence nulle ne produit aucun pourcentage.',
+      'Texte de la carte à 14 px au moins, chiffres tabulaires ; aucun attribut style.',
+      'Sans valeur, état vide écrit ; une valeur invalide fait échouer le build avec son code.',
+    ],
+    integrator: [
+      'Donner un id unique par page (lettres, chiffres, tirets).',
+      'Nommer la référence (« par rapport au mois précédent ») : un pourcentage sans point de comparaison ne dit rien.',
+      'La locale vient de la propriété locale (défaut fr), jamais de celle du build.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html',
+    },
+    { label: 'ADR-0007 : visualisation de données, décision 3 (variation dite en mots)' },
+    { label: 'Convention : 9 chiffres entiers au plus par tuile, non une preuve' },
+    { label: 'Tests : packages/astro/test/KpiCard.test.ts' },
+  ]}
+>
+  <KpiCardExamples />
+  <Fragment slot="variants">
+    <h3>Recommandation d’usage</h3>
+    <p>
+      Une carte porte une mesure, sa variation et au plus une tendance. Les cartes se rangent en
+      grille et s’empilent sur un écran étroit.
+    </p>
+    <h3>Budgets de poids</h3>
+    <ul>
+      <li>Carte avec sparkline de 500 points : sous 10 ko et 400 nœuds, tableau lié exclu.</li>
+    </ul>
+    <h3>Limites connues</h3>
+    <ul>
+      <li>La couleur ne distingue pas hausse et baisse : choix assumé, voir D-051.</li>
+      <li>
+        Les couleurs --pp-chart-1..6 restent figées sur l’accent par défaut tant que l’issue #121
+        n’est pas faite.
+      </li>
+    </ul>
+    <h3>Teinte d’accent</h3>
+    <AccentHueDemo />
+  </Fragment>
+</ComponentPage>

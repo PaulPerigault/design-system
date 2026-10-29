@@ -1,0 +1,22 @@
+---
+/** Exemples vivants de la page Sparkline : série simple, valeurs manquantes, série constante, sans légende. */
+import Sparkline from '@paulperigault/astro/Sparkline.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+import { monthlyVisits, sparklineFlat, visitsWithGaps } from './chart-data.ts';
+---
+
+<Stack space="l">
+  <Sparkline id="demo-spark-simple" title="Visites mensuelles en 2025" dataset={monthlyVisits} />
+  <Sparkline
+    id="demo-spark-gaps"
+    title="Visites mensuelles avec quatre mois manquants"
+    dataset={visitsWithGaps}
+  />
+  <Sparkline id="demo-spark-flat" title="Température de consigne" dataset={sparklineFlat} />
+  <Sparkline
+    id="demo-spark-plain"
+    title="Visites mensuelles, sans légende"
+    dataset={monthlyVisits}
+    legend={false}
+  />
+</Stack>

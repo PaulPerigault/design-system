@@ -1,0 +1,59 @@
+---
+/**
+ * Sparkline : tendance d'une série en un trait, SVG statique généré au build, sans axes ni script,
+ * aucun attribut `style` (CSP stricte). Une série par sparkline ; une valeur manquante rompt le
+ * tracé, rien n'est inventé. Le point final, le plus haut et le plus bas sont marqués par une
+ * forme (cercle, triangle haut, triangle bas), écrits dans la légende avec leur valeur, et le
+ * tableau des données est lié : la couleur ne porte jamais seule le sens. Un jeu invalide ou
+ * plusieurs séries : le build échoue avec le code (`dataset.*`, `chart.*`, `sparkline.*`).
+ */
+import './chart-base.css';
+import './chart-series.css';
+import './sparkline.css';
+import ChartFrame from './chart/ChartFrame.astro';
+import ChartLegend from './chart/ChartLegend.astro';
+import type { ChartProps } from './chart/props.ts';
+import { DEFAULT_LABELS, assertChartId } from './chart/props.ts';
+import { prepareSparkline } from './chart/prepare-sparkline.ts';
+import type { SparkLabels } from './chart/sparkline-text.ts';
+
+interface Props extends ChartProps {
+  /** Légende écrite des repères (défaut : oui) ; `false` quand la valeur est écrite à côté. */
+  legend?: boolean;
+  /** Textes de l'interface (défaut : français). */
+  labels?: Partial<SparkLabels>;
+}
+
+const BLOCK = 'pp-sparkline';
+const { id, title, dataset, class: className, locale = 'fr', legend = true } = Astro.props;
+const texts = {
+  table: Astro.props.tableLabel ?? DEFAULT_LABELS.table,
+  empty: Astro.props.emptyLabel ?? DEFAULT_LABELS.empty,
+  error: Astro.props.errorLabel ?? DEFAULT_LABELS.error,
+};
+
+assertChartId(id, 'Sparkline');
+const prepared = prepareSparkline(
+  dataset,
+  { locale, title, labels: Astro.props.labels ?? {} },
+  `Sparkline « ${title} »`,
+);
+const { model } = prepared;
+---
+
+<ChartFrame
+  block={BLOCK}
+  id={id}
+  title={title}
+  description={prepared.description}
+  prepared={prepared}
+  labels={texts}
+  viewBox={model?.viewBox}
+  class={className}
+>
+  {model && <path class={`${BLOCK}__line`} d={model.d}></path>}
+  {model?.marks.map((mark) => (
+    <path class={`${BLOCK}__${mark.kind}`} d={mark.d}></path>
+  ))}
+  {legend && <ChartLegend slot="legend" block={BLOCK} series={prepared.swatches} />}
+</ChartFrame>
