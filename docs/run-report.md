@@ -287,3 +287,7 @@ test -c apps/docs/playwright.config.ts`.
 ## #168 (2026-10-29) : page « Utiliser »
 
 - Démarrage en cinq minutes et réglage de l'accent (D-071). Reste de #123 : textes, navigation, données, tests visiteurs (Paul).
+
+## #170 (2026-10-29) : textes d'architecture et d'auteur
+
+- Écarts de l'audit corrigés, page auteur au « je » (D-072). Reste de #123 : données, navigation (⚖️), tests visiteurs (Paul).

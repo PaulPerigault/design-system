@@ -532,6 +532,13 @@
       "decision": "Page « Utiliser » : démarrage et réglage de l'accent (#168, « Closes #168 », sous-issue de #123, ADR-0008 décision 3). Parcours « Démarrer en cinq minutes » en quatre étapes (créer, régler, lancer, vérifier) ; section « Régler la teinte d'accent et la police » (`--accent-hue`, `--font-stack` de `create`, #151/D-068) : ce que la commande écrit (`pp-theme.css`, import dans `Base.astro`), valeurs refusées ; encart d'état réel : rien n'est publié, commandes `npm`/`npx` valables après la première publication, commande qui marche depuis le dépôt (`node packages/create/src/infrastructure/bin.ts create mon-site`, celle de la CI). Texte technique, impératif et neutre (pas de `DraftNotice`). Vérifié en local sur Chromium (axe, SEO, reflow, mise en page : 318 verts). La page n'est pas capturée par la régression Visuel. Budgets et garde-fous inchangés.",
       "id": "D-071",
       "rollback": "Restaurer `utiliser.astro`."
+    },
+    {
+      "alternative": "Réécrire aussi les pages juridiques ; laisser le nombre de paquets écrit en toutes lettres.",
+      "date": "2026-10-29",
+      "decision": "Textes d'architecture et d'auteur (#170, « Closes #170 », sous-issue de #123, ADR-0008 décision 5). Architecture : `dataviz` ajouté au tableau des paquets (sept paquets et l'application, d'après le tableau d'`AGENTS.md`), « six » devient sept, la régression Visuel compte 3 projets (`VISUAL_PROJECTS`) et non 13, accroche chiffrée par le tableau et la liste des contrôles (nombres calculés dans la page, plus de chiffre écrit à la main). Auteur : texte au « je », apostrophes typographiques, `DraftNotice` conservé ; contact toujours à compléter par Paul. Écarts de l'audit corrigés : paquets, projets Visuel, apostrophes ; restent « design système » (déjà retiré de l'accueil) et les preuves périmées (régénération de `proofs.json`, hors périmètre). Références Visuel régénérées pour les pages modifiées. Budgets et garde-fous inchangés.",
+      "id": "D-072",
+      "rollback": "Restaurer `architecture.astro` et `auteur.astro`."
     }
   ]
 }
