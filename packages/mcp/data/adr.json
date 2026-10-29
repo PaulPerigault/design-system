@@ -525,6 +525,13 @@
       "decision": "Accueil du site refait (#166, « Closes #166 », sous-issue de #123, ADR-0008 décision 1). Accroche au « je » (« Je développe seul… »), `DraftNotice` conservé ; démonstration vivante `HomeDemo.astro` : `KpiCard` et `LineChart` sur le journal des décisions du dépôt (`docs/decisions-log.md`, lu au build, cumul par jour, tableau lié), logique pure et testée dans `lib/home-demo.ts` (4 tests) ; deux entrées (« Juger le travail » : Preuves, Décisions, Architecture ; « Utiliser le système » : Démarrer, Composants) ; sept paquets (tableau d'`AGENTS.md`), état `0.x` dit ; faits sourcés conservés (composants, 13 appareils, CSP, zéro JS). Écarts de l'audit corrigés sur cette page : « six » devient sept paquets, « design système » retiré. Mesures : HTML 20,8 ko (15,2 avant), CSS 30,3 ko (21,1 avant) : dépassement du budget provisoire de l'ADR-0008, justifié par le CSS des deux composants de visualisation (la page `line-chart` en charge 29,1 ko) ; le budget bloquant vient de #102. Vérifié en local sur Chromium : axe, mise en page, reflow, navigation (242 tests e2e). Références Visuel de l'accueil régénérées par le workflow (changement voulu, `docs/process/visual-references.md`). Budgets et garde-fous inchangés.",
       "id": "D-070",
       "rollback": "Restaurer `index.astro`, supprimer `HomeDemo.astro` et `lib/home-demo.ts`, régénérer les références Visuel."
+    },
+    {
+      "alternative": "Présenter les commandes `npx` comme exécutables ; décrire le réglage sans dire ce qui est écrit.",
+      "date": "2026-10-29",
+      "decision": "Page « Utiliser » : démarrage et réglage de l'accent (#168, « Closes #168 », sous-issue de #123, ADR-0008 décision 3). Parcours « Démarrer en cinq minutes » en quatre étapes (créer, régler, lancer, vérifier) ; section « Régler la teinte d'accent et la police » (`--accent-hue`, `--font-stack` de `create`, #151/D-068) : ce que la commande écrit (`pp-theme.css`, import dans `Base.astro`), valeurs refusées ; encart d'état réel : rien n'est publié, commandes `npm`/`npx` valables après la première publication, commande qui marche depuis le dépôt (`node packages/create/src/infrastructure/bin.ts create mon-site`, celle de la CI). Texte technique, impératif et neutre (pas de `DraftNotice`). Vérifié en local sur Chromium (axe, SEO, reflow, mise en page : 318 verts). La page n'est pas capturée par la régression Visuel. Budgets et garde-fous inchangés.",
+      "id": "D-071",
+      "rollback": "Restaurer `utiliser.astro`."
     }
   ]
 }

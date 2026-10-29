@@ -283,3 +283,7 @@ test -c apps/docs/playwright.config.ts`.
 ## #166 (2026-10-29) : accueil du site
 
 - Accueil avec démonstration vivante sur le journal des décisions (D-070). Reste : démarrer (#167 à créer), textes, navigation, données, tests visiteurs (Paul).
+
+## #168 (2026-10-29) : page « Utiliser »
+
+- Démarrage en cinq minutes et réglage de l'accent (D-071). Reste de #123 : textes, navigation, données, tests visiteurs (Paul).
