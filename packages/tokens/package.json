@@ -46,6 +46,10 @@
       "types": "./src/lib/contrast.ts",
       "default": "./src/lib/contrast.ts"
     },
+    "./customize": {
+      "types": "./src/customize/index.ts",
+      "default": "./src/customize/index.ts"
+    },
     "./palette": {
       "types": "./src/palette/index.ts",
       "default": "./src/palette/index.ts"

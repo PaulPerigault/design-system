@@ -212,3 +212,8 @@ test -c apps/docs/playwright.config.ts`.
 
 - La dérivation (`derivePalettes`, `lightDarkTokens` et leurs briques) vit dans `@paulperigault/tokens/palette` ; `@paulperigault/dataviz` la réexporte, API inchangée. Tests déplacés, assertions inchangées. Décision D-055.
 - Reste (B2, PR suivante) : `--pp-accent-hue` et `--pp-font-stack`.
+
+## #121-B2 (2026-10-29) : entrées du build de `tokens`
+
+- `--pp-accent-hue` et `--pp-font-stack` branchés dans le build (`parseBuildInput`, `deriveOverrides`, export `./customize`, CLI avec `--out-dir`). Défaut identique octet pour octet. Neuf codes d'erreur `build.*`. Décision D-056.
+- Reste : `create` (bloqué par le `.ts` publié, voir D-056), émission des rampes et suivi de `focus` et `status-running` (hors étape).
