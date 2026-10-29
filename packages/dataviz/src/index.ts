@@ -48,3 +48,17 @@ export type {
   GaugeZone,
 } from './domain/geometry/gauge-scale.ts';
 export { GAUGE_SPANS, gaugeReading, gaugeZones, zoneIndex } from './domain/geometry/gauge-scale.ts';
+export type { KpiInput, KpiModel } from './application/build-kpi.ts';
+export { buildKpi } from './application/build-kpi.ts';
+export type { Direction, Variation } from './domain/kpi/variation.ts';
+export { directionOf, variation } from './domain/kpi/variation.ts';
+export { MAX_INTEGER_DIGITS, checkReadable } from './domain/kpi/readable.ts';
+export type { VariationText } from './domain/kpi/words.ts';
+export { variationText } from './domain/kpi/words.ts';
+export type { Extremes, Extremum } from './domain/sparkline/extremes.ts';
+export { extremesOf } from './domain/sparkline/extremes.ts';
+export { MAX_SPARKLINE_POINTS, keptIndices } from './domain/sparkline/reduce.ts';
+export type { Marker, SparklineGeometry } from './domain/sparkline/sparkline.ts';
+export { sparkline } from './domain/sparkline/sparkline.ts';
+export type { CheckedSparkline, SparklineInput } from './domain/sparkline/validate.ts';
+export { validateSparkline } from './domain/sparkline/validate.ts';
