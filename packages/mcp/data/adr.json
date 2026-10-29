@@ -356,6 +356,13 @@
       "rollback": "Supprimer `.claude/skills/encre-design/` et `docs/design/revue-graphiques-v2.md`."
     },
     {
+      "alternative": "—",
+      "date": "2026-10-29",
+      "decision": "Numéro non attribué.",
+      "id": "D-047",
+      "rollback": "—"
+    },
+    {
       "alternative": "Compiler `dataviz` dans la commande Cloudflare (hors dépôt, dans l'IaC du portfolio) ; export de `dataviz` vers `src/` (publication en `.ts`, écartée par ADR-0006).",
       "date": "2026-10-29",
       "decision": "La commande `build` de la documentation est autosuffisante : le script `prebuild` d'`apps/docs` compile `@paulperigault/dataviz` (seul paquet importé par la doc dont les exports pointent vers `dist/` ; `tokens`, `css` et `astro` s'exportent en source), et la CI a un job `docs` qui exécute la même commande que Cloudflare Pages (`npm ci && npm -w @paulperigault/docs run build`) depuis un dépôt vierge (#137). Cause du build Cloudflare rouge depuis 80e32f7 : `verify` et `e2e` compilaient tout avant la doc et masquaient le défaut.",
