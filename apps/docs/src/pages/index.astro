@@ -1,5 +1,6 @@
 ---
 import DraftNotice from '../components/DraftNotice.astro';
+import HomeDemo from '../components/HomeDemo.astro';
 import DocsLayout from '../layouts/DocsLayout.astro';
 import { graph, personLd, websiteLd } from '../lib/seo.ts';
 import { GROUPS } from '../navigation';
@@ -9,82 +10,88 @@ const count = GROUPS.reduce((total, group) => total + group.links.length, 0);
 
 <DocsLayout
   title="Design system · Paul Perigault"
-  description="Design system de paulperigault.fr : décisions écrites, preuves sourcées et statuts. Tokens, CSS, composants Astro, garde-fous, CLI et serveur MCP."
+  description="Design system de paulperigault.fr, développé par un seul auteur : règles vérifiées en CI, décisions datées, preuves sourcées. Tokens, CSS, composants Astro, visualisation de données, garde-fous, CLI et serveur MCP."
   jsonLd={graph(personLd(), websiteLd())}
 >
   <DraftNotice />
   <div class="docs-prose">
     <h1>Design system</h1>
     <p>
-      Cette page résume le système, ses décisions et ses preuves. Chaque affirmation renvoie à une
-      source du dépôt.
+      Je développe seul le design system de paulperigault.fr. Ses règles de taille, de couleur et de
+      style sont écrites une fois et vérifiées en CI ; chaque décision est datée dans le dépôt.
     </p>
 
-    <h2 id="ce-que-c-est">Ce que c’est</h2>
+    <h2 id="demonstration">Ce que le dépôt montre</h2>
     <p>
-      C’est le design system de paulperigault.fr, conçu pour des sites d’un seul auteur et écrit en
-      Astro. Il comprend six paquets : tokens, css, astro, guards, create et mcp. Le README et
-      AGENTS.md à la racine du dépôt les décrivent.
+      Cet indicateur et cette courbe sont rendus par <code>KpiCard</code> et <code>LineChart</code>,
+      à partir du journal des décisions (<code>docs/decisions-log.md</code>, lu au build). Le
+      tableau sous la courbe donne toutes les valeurs.
     </p>
+    <HomeDemo />
 
-    <h2 id="comment-il-travaille">Comment il travaille</h2>
-    <p>
-      L’infrastructure est décrite en code et la sécurité s’applique par défaut. Les choix sont
-      écrits : ADR dans docs/adr, choix ouverts dans docs/decisions-log.md, journal daté dans
-      docs/journal.
-    </p>
-    <p>
-      L’accessibilité vise WCAG 2.2 AA et se mesure. Le mot « prouvé » exige une source : norme,
-      auteur, année. Sans source, le texte dit « convention » ou « préférence » (règle éditoriale
-      d’AGENTS.md).
-    </p>
-    <p>
-      Pour le détail : <a href="/decisions/">décisions</a>, <a href="/preuves/">preuves</a> et
-      <a href="/architecture/">architecture</a>.
-    </p>
+    <h2 id="juger">Juger le travail</h2>
+    <ul role="list" class="docs-start">
+      <li>
+        <a href="/preuves/">Preuves</a> : tests, accessibilité, performance et sécurité, chaque
+        ligne avec son statut et son fichier source.
+      </li>
+      <li>
+        <a href="/decisions/">Décisions</a> : ADR et journal, avec l’alternative écartée et le
+        retour arrière de chaque choix.
+      </li>
+      <li>
+        <a href="/architecture/">Architecture</a> : paquets, sens des dépendances et contrôles de la
+        CI.
+      </li>
+    </ul>
 
-    <h2 id="ce-que-le-design-systeme-prouve">Ce que le design système prouve</h2>
+    <h2 id="utiliser">Utiliser le système</h2>
+    <p>
+      Sept paquets npm pour des sites d’un seul auteur, écrits en Astro : tokens, css, dataviz,
+      astro, guards, create et mcp (tableau d’<code>AGENTS.md</code>). Rien n’est publié : les
+      versions sont en <code>0.x</code> (<code>README.md</code>).
+    </p>
+    <ul role="list" class="docs-start">
+      <li>
+        <a href="/utiliser/">Démarrer</a> : installer, importer, régler l’accent.
+      </li>
+      <li>
+        <a href="/composants/">Composants</a> : {count} entrées au sommaire.
+      </li>
+    </ul>
+
+    <h2 id="etabli">Ce que le dépôt établit</h2>
     <ul>
-      <li>{count} composants, comptés dans la liste GROUPS de apps/docs/src/navigation.ts.</li>
       <li>
-        Des tests e2e sur 13 appareils, définis dans apps/docs/e2e/devices.ts (téléphones, tablette,
-        ordinateurs).
+        {count} entrées au sommaire des composants (<code>apps/docs/src/navigation.ts</code>).
       </li>
       <li>
-        Une CSP sans unsafe-inline, construite dans apps/docs/scripts/headers/policy.mjs et vérifiée
-        par policy.test.mjs.
+        Des tests e2e sur 13 appareils, définis dans <code>apps/docs/e2e/devices.ts</code>
+        (téléphones, tablette, ordinateurs).
       </li>
-      <li>Zéro JavaScript par défaut dans les composants, règle d’AGENTS.md.</li>
+      <li>
+        Une CSP sans <code>unsafe-inline</code>, construite dans
+        <code>apps/docs/scripts/headers/policy.mjs</code> et vérifiée par
+        <code>policy.test.mjs</code>.
+      </li>
+      <li>
+        Zéro JavaScript par défaut dans les composants, règle d’<code>AGENTS.md</code>.
+      </li>
     </ul>
     <p>
-      Les mesures complètes sont sur la page <a href="/preuves/">preuves</a>.
+      L’accessibilité cible WCAG 2.2 AA et se mesure ; le mot « prouvé » exige une source : norme,
+      auteur, année. Sans source, le texte dit « convention » ou « préférence », selon la règle
+      éditoriale d’<code>AGENTS.md</code>.
     </p>
 
     <h2 id="qui">Qui</h2>
     <p>
-      Paul Perigault travaille en DevOps et DevSecOps.
+      Je travaille en DevOps et DevSecOps.{' '}
       <a href="https://paulperigault.fr" rel="author">
-        Son site
-      </a>{' '}
-      et la page
-      <a href="/auteur/">auteur</a> donnent le détail.
+        Mon site
+      </a>
+      et la page <a href="/auteur/">auteur</a> donnent le détail.
     </p>
-
-    <h2 id="par-ou-commencer">Par où commencer</h2>
-    <ul role="list" class="docs-start">
-      <li>
-        <a href="/composants/">Composants</a>
-      </li>
-      <li>
-        <a href="/utiliser/">Utiliser le design system</a>
-      </li>
-      <li>
-        <a href="/glossaire/">Glossaire</a>
-      </li>
-      <li>
-        <a href="/recherche/">Recherche</a>
-      </li>
-    </ul>
   </div>
 </DocsLayout>
 
@@ -95,9 +102,7 @@ const count = GROUPS.reduce((total, group) => total + group.links.length, 0);
     list-style: none;
   }
 
-  .docs-start a {
-    display: inline-flex;
-    align-items: center;
-    min-block-size: var(--pp-size-target-min);
+  .docs-start li + li {
+    margin-block-start: var(--pp-space-xs);
   }
 </style>

@@ -1,0 +1,36 @@
+---
+/** Démonstration de l'accueil : indicateur et courbe rendus sur le journal des décisions du dépôt. */
+import Grid from '@paulperigault/astro/Grid.astro';
+import KpiCard from '@paulperigault/astro/KpiCard.astro';
+import LineChart from '@paulperigault/astro/LineChart.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { decisionDataset, decisionKpi, decisionTotals } from '../lib/home-demo.ts';
+
+const root = resolve(process.cwd(), '../..');
+const totals = decisionTotals(readFileSync(resolve(root, 'docs/decisions-log.md'), 'utf8'));
+const dataset = decisionDataset(totals);
+const kpi = decisionKpi(totals);
+---
+
+{kpi && (
+  <Stack space="l">
+    <Grid min="narrow" space="m">
+      <KpiCard
+        id="accueil-decisions"
+        title="Décisions enregistrées"
+        value={kpi.value}
+        unit="décisions"
+        {...(kpi.reference === null
+          ? {}
+          : { reference: kpi.reference, referenceLabel: 'par rapport à la veille' })}
+      />
+    </Grid>
+    <LineChart
+      id="accueil-decisions-cumul"
+      title="Décisions enregistrées dans le journal, cumul par jour"
+      dataset={dataset}
+    />
+  </Stack>
+)}

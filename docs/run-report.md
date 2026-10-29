@@ -279,3 +279,7 @@ test -c apps/docs/playwright.config.ts`.
 ## #164 (2026-10-29) : audit du site et ADR-0008
 
 - Audit chiffré et décision de refonte (D-069). Sous-issues suivantes : accueil, démarrer, textes, navigation, données. Tests avec visiteurs : manuel (Paul).
+
+## #166 (2026-10-29) : accueil du site
+
+- Accueil avec démonstration vivante sur le journal des décisions (D-070). Reste : démarrer (#167 à créer), textes, navigation, données, tests visiteurs (Paul).
