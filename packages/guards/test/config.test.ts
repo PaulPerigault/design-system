@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { loadConfig, mergeOptions } from '../src/config.ts';
-import { GuardUsageError } from '../src/lib/report.ts';
+import { loadConfig, mergeOptions } from '../src/application/config.ts';
+import { GuardUsageError } from '../src/errors.ts';
 import { fakeIo } from './fake-io.ts';
 
 describe('loadConfig', () => {

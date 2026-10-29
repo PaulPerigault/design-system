@@ -6,7 +6,7 @@ import {
   tokenNames,
   unknownReferences,
   unusedTokens,
-} from '../src/check-tokens.ts';
+} from '../src/infrastructure/check-tokens.ts';
 
 const names = ['--pp-color-fg', '--pp-space-2'];
 

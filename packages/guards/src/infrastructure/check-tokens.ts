@@ -1,7 +1,7 @@
 // Garde-fou : chaque `var(--pp-…)` pointe vers un token défini ; les tokens jamais utilisés
 // sont signalés. Aucune dépendance d'exécution : la liste des noms vient de `tokens.json`.
 import { readdirSync, readFileSync } from 'node:fs';
-import type { DirEntry } from './lib/io.ts';
+import type { DirEntry } from '../application/ports.ts';
 import { posix } from 'node:path';
 import process from 'node:process';
 

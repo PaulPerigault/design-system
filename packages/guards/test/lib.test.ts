@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { SKIPPED_DIRS, lineOf, listFiles } from '../src/lib/files.ts';
-import { matchesAny, matchesPath, normalizePath } from '../src/lib/paths.ts';
-import { GuardUsageError, report } from '../src/lib/report.ts';
+import { SKIPPED_DIRS, listFiles } from '../src/application/files.ts';
+import { lineOf } from '../src/domain/text.ts';
+import { matchesAny, matchesPath, normalizePath } from '../src/domain/paths.ts';
+import { GuardUsageError } from '../src/errors.ts';
+import { report } from '../src/application/report.ts';
 import { fakeIo } from './fake-io.ts';
 
 describe('listFiles', () => {

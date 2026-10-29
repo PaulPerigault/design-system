@@ -1,8 +1,8 @@
 // Configuration de pp-guards : lecture de pp-guards.config.json et fusion des options.
-import type { GuardIo } from './lib/io.ts';
-import { isRecord } from './lib/options.ts';
-import type { Options } from './lib/options.ts';
-import { GuardUsageError } from './lib/report.ts';
+import type { GuardIo } from './ports.ts';
+import { isRecord } from '../domain/options.ts';
+import type { Options } from '../domain/options.ts';
+import { GuardUsageError } from '../errors.ts';
 
 export const CONFIG_FILE = 'pp-guards.config.json';
 

@@ -227,3 +227,8 @@ test -c apps/docs/playwright.config.ts`.
 
 - `.claude/skills/encre-voix/SKILL.md`, `.agents/product-marketing.md`, essais dans `docs/design/voix-essais.md` (accueil, README ; non appliqués). Choix de Paul dans D-058.
 - Reste : #123 applique la voix aux pages et traite les écarts relevés (paquets, Visuel, `proofs.json`).
+
+## #83-A (2026-10-29) : `guards` en domain, application, infrastructure
+
+- Structure de l'ADR-0006 appliquée à `guards` (D-059), déplacement seul, tests et sorties identiques.
+- Reste : B, le contrôle d'architecture (« Closes #83 »), puis #84, #85, #86.

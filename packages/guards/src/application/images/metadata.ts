@@ -2,10 +2,10 @@
 // Limite : seuls JPEG et PNG sont analysés (fichiers `.jpg`, `.jpeg`, `.png`). WebP, AVIF,
 // GIF, HEIC et SVG ne le sont pas : leurs métadonnées éventuelles passent ce contrôle.
 import { Buffer } from 'node:buffer';
-import type { GuardIo } from '../lib/io.ts';
-import type { Problem } from '../lib/report.ts';
-import { SOI, jpegMetadata } from './jpeg.ts';
-import { PNG_SIGNATURE, pngMetadata } from './png.ts';
+import type { GuardIo } from '../ports.ts';
+import type { Problem } from '../../domain/problem.ts';
+import { SOI, jpegMetadata } from '../../domain/images/jpeg.ts';
+import { PNG_SIGNATURE, pngMetadata } from '../../domain/images/png.ts';
 
 export const METADATA_EXTENSIONS = ['.jpg', '.jpeg', '.png'];
 const FINDINGS = ['exif', 'gps', 'xmp'];

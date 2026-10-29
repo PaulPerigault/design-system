@@ -37,18 +37,18 @@
     "test": "vitest run"
   },
   "bin": {
-    "pp-guards": "./dist/bin.js"
+    "pp-guards": "./dist/infrastructure/bin.js"
   },
   "exports": {
     "./design": {
-      "types": "./dist/design/rules.d.ts",
-      "development": "./src/design/rules.ts",
-      "default": "./dist/design/rules.js"
+      "types": "./dist/domain/design/rules.d.ts",
+      "development": "./src/domain/design/rules.ts",
+      "default": "./dist/domain/design/rules.js"
     },
     "./eslint": {
-      "types": "./dist/eslint.d.ts",
-      "development": "./src/eslint.ts",
-      "default": "./dist/eslint.js"
+      "types": "./dist/infrastructure/eslint.d.ts",
+      "development": "./src/infrastructure/eslint.ts",
+      "default": "./dist/infrastructure/eslint.js"
     },
     "./package.json": "./package.json"
   },

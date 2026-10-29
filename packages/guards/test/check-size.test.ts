@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { GuardUsageError } from '../src/lib/report.ts';
-import { cliOptions, countLines, defaults, name, run } from '../src/check-size.ts';
+import { GuardUsageError } from '../src/errors.ts';
+import { cliOptions, countLines, defaults, name, run } from '../src/application/check-size.ts';
 import { fakeIo } from './fake-io.ts';
 
 const lines = (count: number) => `${'a\n'.repeat(count)}`;

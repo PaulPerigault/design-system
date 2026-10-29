@@ -1,9 +1,9 @@
 // Budget de poids par fichier image : l'entrée `budgets` au chemin le plus long l'emporte.
-import type { GuardIo } from '../lib/io.ts';
-import { isRecord } from '../lib/options.ts';
-import type { Problem } from '../lib/report.ts';
-import { matchesPath, normalizePath } from '../lib/paths.ts';
-import { GuardUsageError } from '../lib/report.ts';
+import type { GuardIo } from '../ports.ts';
+import { isRecord } from '../../domain/options.ts';
+import type { Problem } from '../../domain/problem.ts';
+import { matchesPath, normalizePath } from '../../domain/paths.ts';
+import { GuardUsageError } from '../../errors.ts';
 
 export const BUDGET_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.avif', '.gif', '.svg'];
 export const BYTES_PER_KB = 1024;

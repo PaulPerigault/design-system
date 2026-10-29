@@ -1,14 +1,14 @@
 // Table des contrôles de pp-guards : nom -> { name, defaults, cliOptions, run(options, io) }.
-import * as design from './check-design.ts';
-import * as images from './check-images.ts';
-import * as layers from './check-layers.ts';
-import * as size from './check-size.ts';
+import * as design from '../application/check-design.ts';
+import * as images from '../application/check-images.ts';
+import * as layers from '../application/check-layers.ts';
+import * as size from '../application/check-size.ts';
 import { run as runTokens } from './check-tokens.ts';
-import type { Check } from './lib/check.ts';
-import type { GuardIo } from './lib/io.ts';
-import { isStrings } from './lib/options.ts';
-import type { Options } from './lib/options.ts';
-import { GuardUsageError } from './lib/report.ts';
+import type { Check } from '../application/check.ts';
+import type { GuardIo } from '../application/ports.ts';
+import { isStrings } from '../domain/options.ts';
+import type { Options } from '../domain/options.ts';
+import { GuardUsageError } from '../errors.ts';
 
 /** Ordre d'exécution de `pp-guards all`. */
 export const ORDER = ['tokens', 'design', 'size', 'layers', 'images'];

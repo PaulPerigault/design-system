@@ -1,6 +1,6 @@
 import { Buffer } from 'node:buffer';
 import { describe, expect, it } from 'vitest';
-import { metadataOf } from '../src/images/metadata.ts';
+import { metadataOf } from '../src/application/images/metadata.ts';
 import {
   app0,
   chunk,

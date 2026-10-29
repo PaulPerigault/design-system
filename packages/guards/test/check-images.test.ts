@@ -1,9 +1,9 @@
 import { Buffer } from 'node:buffer';
 import { parseArgs } from 'node:util';
 import { describe, expect, it } from 'vitest';
-import * as images from '../src/check-images.ts';
-import { budgetFor, budgetSettings, BYTES_PER_KB } from '../src/images/budget.ts';
-import { GuardUsageError } from '../src/lib/report.ts';
+import * as images from '../src/application/check-images.ts';
+import { budgetFor, budgetSettings, BYTES_PER_KB } from '../src/application/images/budget.ts';
+import { GuardUsageError } from '../src/errors.ts';
 import { fakeIo } from './fake-io.ts';
 
 const kb = (n: number) => new Uint8Array(n * BYTES_PER_KB);

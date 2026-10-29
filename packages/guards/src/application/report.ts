@@ -1,18 +1,5 @@
-import type { GuardIo } from './io.ts';
-export interface Problem {
-  file: string;
-  line?: number;
-  message: string;
-}
-
-/** Erreur d'usage ou de configuration (code de sortie 2). */
-export class GuardUsageError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = 'GuardUsageError';
-  }
-}
-
+import type { Problem } from '../domain/problem.ts';
+import type { GuardIo } from './ports.ts';
 function formatProblem({ file, line, message }: Problem): string {
   return line === undefined ? `${file}: ${message}` : `${file}:${line}: ${message}`;
 }

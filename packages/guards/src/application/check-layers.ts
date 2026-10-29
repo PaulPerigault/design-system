@@ -1,12 +1,12 @@
 // Contrôle : une couche n'importe jamais une couche plus haute (tokens ← css ← astro).
-import type { GuardIo } from './lib/io.ts';
-import type { Layer } from './layers/layers.ts';
-import { importsOf } from './layers/imports.ts';
-import { layerOfImport, layerOfPath, validateLayers } from './layers/layers.ts';
-import { listFiles } from './lib/files.ts';
-import { nonEmptyListOption } from './lib/options.ts';
-import type { Options } from './lib/options.ts';
-import { report } from './lib/report.ts';
+import type { GuardIo } from './ports.ts';
+import type { Layer } from '../domain/layers/layers.ts';
+import { importsOf } from '../domain/layers/imports.ts';
+import { layerOfImport, layerOfPath, validateLayers } from '../domain/layers/layers.ts';
+import { listFiles } from './files.ts';
+import { nonEmptyListOption } from '../domain/options.ts';
+import type { Options } from '../domain/options.ts';
+import { report } from './report.ts';
 
 export const name = 'layers';
 

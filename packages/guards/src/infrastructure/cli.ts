@@ -1,11 +1,11 @@
 // pp-guards <contrôle> [options] [racines…] : dispatch, configuration, codes de sortie.
 import { parseArgs } from 'node:util';
-import type { Check, CliOptions } from './lib/check.ts';
-import type { GuardIo } from './lib/io.ts';
+import type { Check, CliOptions } from '../application/check.ts';
+import type { GuardIo } from '../application/ports.ts';
 import { CHECKS, ORDER } from './checks.ts';
-import { loadConfig, mergeOptions } from './config.ts';
-import type { Options } from './lib/options.ts';
-import { GuardUsageError } from './lib/report.ts';
+import { loadConfig, mergeOptions } from '../application/config.ts';
+import type { Options } from '../domain/options.ts';
+import { GuardUsageError } from '../errors.ts';
 
 const EXIT_OK = 0;
 const EXIT_USAGE = 2;
