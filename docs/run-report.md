@@ -275,3 +275,7 @@ test -c apps/docs/playwright.config.ts`.
 
 - `--accent-hue` et `--font-stack` dans `create`, dérivation embarquée sans dépendance (D-068). #151 fermée.
 - Reste : #123 (refonte du site), #131, Rust, #102, #103, #130, #118.
+
+## #164 (2026-10-29) : audit du site et ADR-0008
+
+- Audit chiffré et décision de refonte (D-069). Sous-issues suivantes : accueil, démarrer, textes, navigation, données. Tests avec visiteurs : manuel (Paul).
