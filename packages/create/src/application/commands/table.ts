@@ -1,5 +1,5 @@
-import type { CreateIo } from '../lib/io.ts';
-import type { SiteTemplate } from '../site/template.ts';
+import type { SiteTemplate } from '../../domain/template.ts';
+import type { CreateIo } from '../ports.ts';
 import * as add from './add.ts';
 import * as create from './create.ts';
 import * as diff from './diff.ts';

@@ -1,16 +1,6 @@
-import type { CreateIo } from './io.ts';
-import { resolveIn } from './io.ts';
-
-export interface PlanEntry {
-  path: string;
-  content: string;
-  overwrite?: boolean;
-}
-
-export interface PlanOptions {
-  dryRun?: boolean | undefined;
-  force?: boolean | undefined;
-}
+import type { PlanEntry, PlanOptions } from '../domain/plan.ts';
+import { resolveIn } from '../domain/paths.ts';
+import type { CreateIo } from './ports.ts';
 
 const CODE_OK = 0;
 const CODE_CONFLICT = 1;

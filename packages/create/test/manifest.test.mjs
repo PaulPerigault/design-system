@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { run } from '../src/commands/add.ts';
-import { run as runEject } from '../src/commands/eject.ts';
-import { exportsCover } from '../src/commands/exports.ts';
+import { run } from '../src/application/commands/add.ts';
+import { run as runEject } from '../src/application/commands/eject.ts';
+import { exportsCover } from '../src/domain/exports-cover.ts';
 import { fakeIo, fakePackage } from './fake-io.mjs';
 
 const ROOT = '/projet/node_modules/@paulperigault/astro';

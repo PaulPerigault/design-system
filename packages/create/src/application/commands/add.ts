@@ -1,12 +1,15 @@
 import { posix } from 'node:path';
-import type { CreateIo } from '../lib/io.ts';
-import { isPlainObject } from '../lib/json.ts';
-import { applyPlan } from '../lib/plan.ts';
-import type { PlanOptions } from '../lib/plan.ts';
-import { PACKAGE_NAME } from '../lib/registry.ts';
-import { exportsCover } from './exports.ts';
-import { dependencyPlan, MANIFEST, readManifest } from './manifest.ts';
-import * as shared from './snippet.ts';
+import { isPlainObject } from '../../domain/json.ts';
+import { exportsCover } from '../../domain/exports-cover.ts';
+import { dependencyPlan, MANIFEST } from '../../domain/manifest.ts';
+import type { PlanOptions } from '../../domain/plan.ts';
+import { PACKAGE_NAME } from '../../domain/registry.ts';
+import { astroFiles, CODE_OK, CODE_REFUSED, CODE_USAGE, importLine } from '../../domain/snippet.ts';
+import { applyPlan } from '../apply-plan.ts';
+import { locate } from '../locate.ts';
+import type { Located } from '../locate.ts';
+import type { CreateIo } from '../ports.ts';
+import { readManifest } from '../read-manifest.ts';
 
 export interface AddArgs extends PlanOptions {
   positionals?: string[] | undefined;
@@ -20,12 +23,12 @@ function exportsOf(io: CreateIo, root: string): unknown {
 }
 
 /** Extraits d'import, avertissement si l'export manque, éléments requis. */
-function report(io: CreateIo, { root, item, files }: shared.Located): void {
+function report(io: CreateIo, { root, item, files }: Located): void {
   const exported = exportsOf(io, root);
-  for (const file of shared.astroFiles(files)) {
+  for (const file of astroFiles(files)) {
     const base = posix.basename(file);
     const key = `./${base}`;
-    io.out(shared.importLine(file, `${PACKAGE_NAME}/${base}`));
+    io.out(importLine(file, `${PACKAGE_NAME}/${base}`));
     if (!exportsCover(exported, key)) {
       io.err(`avertissement : ${PACKAGE_NAME} n'exporte pas « ${key} », cet import échouera`);
     }
@@ -39,12 +42,12 @@ export function run(
   { positionals, dryRun, force, from }: AddArgs,
   { io }: { io: CreateIo },
 ): number {
-  const located = shared.locate(io, { command: 'add', positionals, from });
-  if (!located) return shared.CODE_USAGE;
+  const located = locate(io, { command: 'add', positionals, from });
+  if (!located) return CODE_USAGE;
   const manifest = readManifest(io);
-  if (!manifest) return shared.CODE_REFUSED;
+  if (!manifest) return CODE_REFUSED;
   const code = applyPlan(io, dependencyPlan(manifest, located.version), { dryRun, force });
-  if (code !== shared.CODE_OK) return code;
+  if (code !== CODE_OK) return code;
   report(io, located);
-  return shared.CODE_OK;
+  return CODE_OK;
 }

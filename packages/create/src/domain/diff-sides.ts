@@ -1,5 +1,5 @@
-import { sha256 } from '../lib/hash.ts';
-import type { LockFile } from '../lib/lock.ts';
+import type { LockFile } from './lock.ts';
+import { sha256 } from './hash.ts';
 
 export interface Side {
   lock?: LockFile;

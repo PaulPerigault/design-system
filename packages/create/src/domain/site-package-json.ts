@@ -1,3 +1,5 @@
+import { CreateError } from '../errors.ts';
+
 // `tokens` : lu par pp-guards.config.json, donc direct (le hissage d'une dépendance transitive
 // n'est pas garanti).
 const DEPENDENCIES = ['@paulperigault/css', '@paulperigault/tokens', 'astro'];
@@ -37,7 +39,11 @@ function exactVersions(versions: Record<string, string>, names: string[]): Recor
     names.map((name) => {
       const version = versions[name];
       if (typeof version !== 'string' || !EXACT_VERSION.test(version)) {
-        throw new Error(`versions.json : version exacte attendue pour ${name} (reçu ${version})`);
+        throw new CreateError(
+          'site.version-invalid',
+          `versions.json : version exacte attendue pour ${name} (reçu ${version})`,
+          { name },
+        );
       }
       return [name, version];
     }),

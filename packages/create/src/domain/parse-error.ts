@@ -1,5 +1,4 @@
-import { CODE_USAGE, messageOf } from './commands/snippet.ts';
-import type { CreateIo } from './lib/io.ts';
+import { messageOf } from './snippet.ts';
 
 /**
  * Traduction des erreurs de `parseArgs` (`node:util`), dont les messages sont en anglais.
@@ -33,17 +32,4 @@ export function parseErrorMessage(error: unknown): string {
   const translate = Object.hasOwn(TRANSLATIONS, code) ? TRANSLATIONS[code] : undefined;
   const quoted = QUOTED.exec(message)?.[1];
   return translate && quoted ? translate(quoted) : message;
-}
-
-/**
- * Lance une commande ; une erreur qu'elle lève (paquet introuvable avec `--from`, verrou illisible)
- * devient un message sur `io.err` et le code d'usage, comme les échecs qu'elle signale elle-même.
- */
-export function runCommand(io: CreateIo, task: () => number): number {
-  try {
-    return task();
-  } catch (error) {
-    io.err(messageOf(error));
-    return CODE_USAGE;
-  }
 }

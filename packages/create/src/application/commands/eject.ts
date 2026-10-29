@@ -1,12 +1,22 @@
 import { posix } from 'node:path';
-import { sha256 } from '../lib/hash.ts';
-import type { CreateIo } from '../lib/io.ts';
-import { resolveIn } from '../lib/io.ts';
-import { LOCK_FILE, readLock, serializeLock, withItem } from '../lib/lock.ts';
-import { applyPlan } from '../lib/plan.ts';
-import type { PlanOptions } from '../lib/plan.ts';
-import { PACKAGE_NAME } from '../lib/registry.ts';
-import * as shared from './snippet.ts';
+import { sha256 } from '../../domain/hash.ts';
+import { LOCK_FILE, serializeLock, withItem } from '../../domain/lock.ts';
+import { resolveIn } from '../../domain/paths.ts';
+import type { PlanOptions } from '../../domain/plan.ts';
+import { PACKAGE_NAME } from '../../domain/registry.ts';
+import {
+  astroFiles,
+  CODE_OK,
+  CODE_REFUSED,
+  CODE_USAGE,
+  importLine,
+  messageOf,
+} from '../../domain/snippet.ts';
+import { applyPlan } from '../apply-plan.ts';
+import { locate } from '../locate.ts';
+import type { Located } from '../locate.ts';
+import type { CreateIo } from '../ports.ts';
+import { readLock } from '../read-lock.ts';
 
 export const DEFAULT_OUT = 'src/components/pp';
 const SRC_DIR = 'src';
@@ -23,13 +33,13 @@ function attempt<T>(io: CreateIo, task: () => T): T | null {
   try {
     return task();
   } catch (error) {
-    io.err(shared.messageOf(error));
+    io.err(messageOf(error));
     return null;
   }
 }
 
 /** Copies prévues : `src/layout/Stack.astro` → `<out>/layout/Stack.astro`. */
-function plannedCopies(io: CreateIo, { root, files }: shared.Located, out: string): Copy[] {
+function plannedCopies(io: CreateIo, { root, files }: Located, out: string): Copy[] {
   return files.map((source) => {
     const rel = source.startsWith(SRC_PREFIX) ? source.slice(SRC_PREFIX.length) : source;
     const content = io.readText(posix.join(root, source));
@@ -55,9 +65,9 @@ function reportConflicts(
 
 /** Import de la copie, relatif à `src/`. */
 function report(io: CreateIo, name: string, copies: Copy[]): void {
-  for (const path of shared.astroFiles(copies.map((copy) => copy.path))) {
+  for (const path of astroFiles(copies.map((copy) => copy.path))) {
     const rel = posix.relative(resolveIn(io, SRC_DIR), resolveIn(io, path));
-    io.out(shared.importLine(path, rel.startsWith('../') ? rel : `./${rel}`));
+    io.out(importLine(path, rel.startsWith('../') ? rel : `./${rel}`));
   }
   io.out(`diff ${name} compare cette copie au paquet installé`);
 }
@@ -73,15 +83,15 @@ export function run(
   { positionals, dryRun, force, from, out = DEFAULT_OUT }: EjectArgs,
   { io }: { io: CreateIo },
 ): number {
-  const located = shared.locate(io, { command: 'eject', positionals, from });
-  if (!located) return shared.CODE_USAGE;
+  const located = locate(io, { command: 'eject', positionals, from });
+  if (!located) return CODE_USAGE;
   const copies = attempt(io, () => plannedCopies(io, located, out));
-  if (!copies) return shared.CODE_USAGE;
+  if (!copies) return CODE_USAGE;
   const lock = attempt(io, () => readLock(io));
-  if (!lock) return shared.CODE_REFUSED;
+  if (!lock) return CODE_REFUSED;
   const { name } = located.item;
   const locked = Object.hasOwn(lock.items, name) && !force;
-  if (reportConflicts(io, { name, locked, copies })) return shared.CODE_REFUSED;
+  if (reportConflicts(io, { name, locked, copies })) return CODE_REFUSED;
   const files = copies.map(({ source, path, content }) => ({
     source,
     path,
@@ -93,7 +103,7 @@ export function run(
     { path: LOCK_FILE, content: serializeLock(withItem(lock, name, entry)), overwrite: true },
   ];
   const code = applyPlan(io, plan, { dryRun, force });
-  if (code !== shared.CODE_OK) return code;
+  if (code !== CODE_OK) return code;
   report(io, name, copies);
-  return shared.CODE_OK;
+  return CODE_OK;
 }

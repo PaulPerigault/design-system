@@ -1,9 +1,8 @@
-import type { CreateIo } from './io.ts';
-import { resolveIn } from './io.ts';
+import { CreateError } from '../errors.ts';
 import { isPlainObject } from './json.ts';
 
 export const LOCK_FILE = 'pp-ds.lock.json';
-const LOCK_VERSION = 1;
+export const LOCK_VERSION = 1;
 const INDENT = 2;
 
 export interface LockFile {
@@ -23,7 +22,7 @@ export interface Lock {
   items: Record<string, LockEntry>;
 }
 
-const emptyLock = (): Lock => ({ lockfileVersion: LOCK_VERSION, items: {} });
+export const emptyLock = (): Lock => ({ lockfileVersion: LOCK_VERSION, items: {} });
 
 const isLockFile = (value: unknown): value is LockFile =>
   isPlainObject(value) &&
@@ -41,32 +40,28 @@ const isLockEntry = (value: unknown): value is LockEntry =>
 /** Valide `items` à la frontière : un objet dont chaque entrée a la forme d'un `LockEntry`. */
 function checkItems(items: unknown): Record<string, LockEntry> {
   if (!isPlainObject(items)) {
-    throw new Error(`${LOCK_FILE} : items doit être un objet`);
+    throw new CreateError('lock.items', `${LOCK_FILE} : items doit être un objet`);
   }
   const checked: Record<string, LockEntry> = {};
   for (const [name, entry] of Object.entries(items)) {
-    if (!isLockEntry(entry)) throw new Error(`${LOCK_FILE} : l'entrée « ${name} » est invalide`);
+    if (!isLockEntry(entry)) {
+      throw new CreateError('lock.entry', `${LOCK_FILE} : l'entrée « ${name} » est invalide`, {
+        name,
+      });
+    }
     checked[name] = entry;
   }
   return checked;
 }
 
-function parseLock(text: string): unknown {
-  try {
-    return JSON.parse(text);
-  } catch (cause) {
-    throw new Error(`${LOCK_FILE} illisible (JSON invalide)`, { cause });
-  }
-}
-
-/** Lit le verrou ; absent → verrou vide. */
-export function readLock(io: CreateIo): Lock {
-  const path = resolveIn(io, LOCK_FILE);
-  if (!io.exists(path)) return emptyLock();
-  const data = parseLock(io.readText(path));
+/** Valide le contenu JSON déjà lu du verrou et rend un `Lock` typé. */
+export function toLock(data: unknown): Lock {
   const version = isPlainObject(data) ? data.lockfileVersion : undefined;
   if (!isPlainObject(data) || version !== LOCK_VERSION) {
-    throw new Error(`${LOCK_FILE} : lockfileVersion ${String(version)} non pris en charge`);
+    throw new CreateError(
+      'lock.version',
+      `${LOCK_FILE} : lockfileVersion ${String(version)} non pris en charge`,
+    );
   }
   return { lockfileVersion: LOCK_VERSION, items: checkItems(data.items ?? {}) };
 }
