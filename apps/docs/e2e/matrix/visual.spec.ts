@@ -77,7 +77,7 @@ for (const path of PAGES) {
       await expect(page).toHaveScreenshot(`${slugOf(path)}-${theme}.png`, {
         animations: 'disabled',
         fullPage: true,
-        clip,
+        ...(clip ? { clip } : {}),
         maxDiffPixelRatio: MAX_DIFF_PIXEL_RATIO,
       });
     });
