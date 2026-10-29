@@ -1,0 +1,45 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "data-table",
+  "type": "registry:ui",
+  "title": "DataTable",
+  "description": "Jeu de données en tableau : en-têtes associés, valeur manquante dite, filtres de séries en cases natives sans JavaScript (:has()), tableau complet sans filtre.",
+  "dependencies": ["@paulperigault/dataviz"],
+  "registryDependencies": ["table", "choice"],
+  "files": [
+    {
+      "path": "packages/astro/src/data/DataTable.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/data/data-table.css",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/data/chart/table.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/prepare-table.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/errors.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/found.ts",
+      "type": "registry:lib"
+    }
+  ],
+  "meta": {
+    "version": "0.0.0",
+    "tokens": [
+      "--pp-color-muted",
+      "--pp-size-target-min",
+      "--pp-space-3xs",
+      "--pp-space-s",
+      "--pp-space-xs"
+    ]
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "legend",
+  "type": "registry:ui",
+  "title": "Legend",
+  "description": "Légende autonome : trait à motif et marqueur de forme propre, ou motif de remplissage, plus le libellé ; la couleur ne porte jamais seule le sens.",
+  "dependencies": ["@paulperigault/dataviz"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "packages/astro/src/data/Legend.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/data/legend.css",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/data/chart/BarPatterns.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/data/chart/bar-patterns.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/frame.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/swatch.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/markers.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/legend-model.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/errors.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/data/chart/props.ts",
+      "type": "registry:lib"
+    }
+  ],
+  "meta": {
+    "version": "0.0.0",
+    "tokens": [
+      "--pp-chart-1",
+      "--pp-chart-2",
+      "--pp-chart-3",
+      "--pp-chart-4",
+      "--pp-chart-5",
+      "--pp-chart-6",
+      "--pp-color-bg",
+      "--pp-color-fg",
+      "--pp-font-size-0",
+      "--pp-size-rule",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-s"
+    ]
+  }
+}

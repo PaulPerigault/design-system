@@ -10,8 +10,8 @@ describe('neighborsOf', () => {
   });
 
   it('renvoie aucun suivant pour la dernière page de la navigation', () => {
-    const result = neighborsOf('kpi-card');
-    expect(result.previous?.slug).toBe('sparkline');
+    const result = neighborsOf('legend');
+    expect(result.previous?.slug).toBe('data-table');
     expect(result.next).toBeUndefined();
     expect(result.group.id).toBe('donnees');
   });

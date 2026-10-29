@@ -1,0 +1,16 @@
+---
+/** Exemples vivants de la page Legend : légende de courbes, de barres, d'une entrée. */
+import Legend from '@paulperigault/astro/Legend.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+---
+
+<Stack space="l">
+  <Legend id="demo-legend-line" items={['Recherche', 'Direct', 'Référents']} />
+  <Legend
+    id="demo-legend-bar"
+    kind="bar"
+    label="Légende des barres"
+    items={['Guides', 'Références', 'Journal']}
+  />
+  <Legend id="demo-legend-one" label="Série unique" items={['Visites mensuelles']} />
+</Stack>

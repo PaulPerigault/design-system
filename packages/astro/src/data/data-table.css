@@ -1,0 +1,38 @@
+/*
+ * DataTable : fichier global. Les filtres sont des cases à cocher natives ; `:has()` masque la
+ * colonne d'une série décochée (colonne 1 = abscisse, série N = colonne N + 1). Sans `:has()`,
+ * toutes les colonnes restent visibles. Cibles des cases : `Choice` (24 px au moins). Chaque
+ * colonne garde 120 px au moins : la région défile plutôt que de couper les mots. Aucun
+ * dégradé, ombre ni flou, aucune animation.
+ */
+.pp-data-table {
+  display: grid;
+  gap: var(--pp-space-xs);
+}
+
+.pp-data-table__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pp-space-3xs) var(--pp-space-s);
+  margin-inline: 0;
+  padding: 0;
+  border: 0;
+}
+
+.pp-data-table__filters legend {
+  padding-inline: 0;
+  color: var(--pp-color-muted);
+}
+
+.pp-data-table:has([value='col-1']:not(:checked)) :is(th, td):nth-child(2),
+.pp-data-table:has([value='col-2']:not(:checked)) :is(th, td):nth-child(3),
+.pp-data-table:has([value='col-3']:not(:checked)) :is(th, td):nth-child(4),
+.pp-data-table:has([value='col-4']:not(:checked)) :is(th, td):nth-child(5),
+.pp-data-table:has([value='col-5']:not(:checked)) :is(th, td):nth-child(6),
+.pp-data-table:has([value='col-6']:not(:checked)) :is(th, td):nth-child(7) {
+  display: none;
+}
+
+.pp-data-table :is(th, td) {
+  min-inline-size: calc(var(--pp-size-target-min) * 5);
+}

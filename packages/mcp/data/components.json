@@ -1439,6 +1439,103 @@
   {
     "a11y": {
       "guaranteed": [
+        "Une valeur manquante est écrite (« donnée manquante »), jamais omise ni mise à zéro.",
+        "Tableau complet sans action : toutes les cases sont cochées au chargement.",
+        "Zéro JavaScript, aucune animation, aucun attribut style ; colonnes de 120 px au moins, la région défile au lieu de couper les mots."
+      ],
+      "integrator": [
+        "Donner un id unique par page (lettres, chiffres, tirets) : il relie chaque case à son libellé.",
+        "Nommer les séries par ce qu’elles mesurent : ce libellé est celui du filtre et de l’en-tête.",
+        "Le masquage repose sur :has() ; les navigateurs sans :has() affichent le tableau complet."
+      ],
+      "keyboard": [
+        "Chaque filtre est une case à cocher native : Tab pour l’atteindre, Espace pour la basculer.",
+        "La région du tableau est focalisable et défile au clavier.",
+        "Cibles des cases : 24 px de haut au moins (WCAG 2.5.8)."
+      ],
+      "screenReader": [
+        "Le tableau porte une légende (caption) et la région a le même nom accessible.",
+        "Les colonnes de séries sont des th scope=\"col\", l’abscisse des th scope=\"row\".",
+        "Une colonne masquée par un filtre est retirée de l’arbre d’accessibilité : le groupe de filtres, nommé par sa légende, dit lesquelles sont affichées."
+      ]
+    },
+    "avoid": [
+      "Pour montrer une tendance : utiliser LineChart ou Sparkline, le tableau en est le complément.",
+      "Avec plus de six séries : le build échoue avec chart.too-many-series ; regrouper en amont.",
+      "Pour filtrer les lignes ou trier : ce composant ne masque que des colonnes, sans JavaScript.",
+      "Avec un jeu invalide : le build échoue avec le code dataset.* correspondant."
+    ],
+    "evidence": [
+      "[WCAG 1.3.1 Informations et relations](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html)",
+      "[WCAG 2.5.8 Taille de la cible (minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)",
+      "ADR-0007 : visualisation de données, décision 7 (V3b)",
+      "Tests : packages/astro/test/DataTable.test.ts"
+    ],
+    "group": "data",
+    "props": [
+      {
+        "description": "Préfixe unique des ids des cases à cocher : lettres, chiffres et tirets.",
+        "fallback": "—",
+        "name": "id (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Légende du tableau, nom accessible de sa région défilante.",
+        "fallback": "—",
+        "name": "title (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Jeu de données (`schema: 1`) : validé, sinon le build échoue avec le code d'erreur.",
+        "fallback": "—",
+        "name": "dataset (obligatoire)",
+        "type": "unknown"
+      },
+      {
+        "description": "Locale des nombres et des dates. Défaut : `fr`.",
+        "fallback": "'fr'",
+        "name": "locale",
+        "type": "string"
+      },
+      {
+        "description": "Filtres de séries (défaut : oui s'il y a deux séries ou plus).",
+        "fallback": "true",
+        "name": "filters",
+        "type": "boolean"
+      },
+      {
+        "description": "Légende du groupe de filtres.",
+        "fallback": "'Séries affichées'",
+        "name": "filtersLabel",
+        "type": "string"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "data-table",
+    "snippet": "---\nimport DataTable from '@paulperigault/astro/DataTable.astro';\n---\n\n<DataTable id=\"trafic\" title=\"Visites par source en 2025\" dataset={trafic} />",
+    "summary": "DataTable écrit un jeu de données en tableau : en-têtes associés, valeurs manquantes dites, filtres de séries sans JavaScript.",
+    "title": "DataTable",
+    "tokens": [
+      "--pp-color-muted",
+      "--pp-size-target-min",
+      "--pp-space-3xs",
+      "--pp-space-s",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Donner l’équivalent texte exact d’un graphique : toutes les valeurs, au même format que les étiquettes.",
+      "Laisser le lecteur masquer des séries (cases à cocher) pour comparer deux colonnes.",
+      "Afficher un tableau complet par défaut : sans filtre, ou si le navigateur ignore :has(), rien n’est masqué."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
         "Le SVG expose un titre et une description (WCAG 1.1.1).",
         "Traits, boîtes et étiquettes viennent de jetons ; aucun dégradé, ombre ni flou.",
         "En forced-colors: active, traits et textes passent en CanvasText, les boîtes en Canvas.",
@@ -2565,6 +2662,91 @@
       "Résumer une mesure clé d’un tableau de bord : visites, durée, taux.",
       "Dire la variation par un mot (hausse, baisse, stable), son pourcentage signé et sa référence.",
       "Ajouter la tendance par une sparkline, avec son tableau de données lié."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Trois indices par rang, jamais la couleur seule (WCAG 1.4.1) : couleur --pp-chart-N, motif (trait ou remplissage) et forme du marqueur.",
+        "Zéro JavaScript, aucune animation, aucun attribut style ; en contraste forcé, tracés en CanvasText."
+      ],
+      "integrator": [
+        "Donner un id unique par page (lettres, chiffres, tirets) : il nomme les motifs de remplissage.",
+        "Ordonner les libellés comme les séries du graphique : le rang fixe couleur, motif et marqueur."
+      ],
+      "keyboard": ["La légende n’est pas interactive et ne reçoit pas le focus."],
+      "screenReader": [
+        "Une liste nommée (aria-label) ; chaque entrée est son libellé, l’échantillon est masqué (aria-hidden).",
+        "Le sens est dans le libellé écrit, pas dans l’échantillon."
+      ]
+    },
+    "avoid": [
+      "À l’intérieur d’un LineChart, BarChart ou AreaChart : leur légende est déjà incluse.",
+      "Avec plus de six entrées : le build échoue avec chart.too-many-series ; regrouper en amont.",
+      "Avec un libellé vide : le build échoue avec dataset.bad-shape.",
+      "Pour filtrer des séries : voir DataTable."
+    ],
+    "evidence": [
+      "[WCAG 1.4.1 Utilisation de la couleur](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+      "ADR-0007 : visualisation de données, décision 7 (V3b)",
+      "Tests : packages/astro/test/Legend.test.ts"
+    ],
+    "group": "data",
+    "props": [
+      {
+        "description": "Préfixe unique des ids des motifs : lettres, chiffres et tirets.",
+        "fallback": "—",
+        "name": "id (obligatoire)",
+        "type": "string"
+      },
+      {
+        "description": "Libellés dans l'ordre des séries (6 au plus) ; le rang fixe couleur, motif et marqueur.",
+        "fallback": "—",
+        "name": "items (obligatoire)",
+        "type": "string[]"
+      },
+      {
+        "description": "`line` (trait et marqueur, défaut) ou `bar` (carré de motif).",
+        "fallback": "'line'",
+        "name": "kind",
+        "type": "\"line\" | \"bar\""
+      },
+      {
+        "description": "Nom accessible de la liste.",
+        "fallback": "'Légende'",
+        "name": "label",
+        "type": "string"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "class",
+        "type": "string"
+      }
+    ],
+    "slug": "legend",
+    "snippet": "---\nimport Legend from '@paulperigault/astro/Legend.astro';\n---\n\n<Legend id=\"sources\" items={['Recherche', 'Direct', 'Référents']} />",
+    "summary": "Legend associe à chaque série un échantillon à forme propre et son libellé : la couleur ne porte jamais seule le sens.",
+    "title": "Legend",
+    "tokens": [
+      "--pp-chart-1",
+      "--pp-chart-2",
+      "--pp-chart-3",
+      "--pp-chart-4",
+      "--pp-chart-5",
+      "--pp-chart-6",
+      "--pp-color-bg",
+      "--pp-color-fg",
+      "--pp-font-size-0",
+      "--pp-size-rule",
+      "--pp-space-2xs",
+      "--pp-space-3xs",
+      "--pp-space-s"
+    ],
+    "use": [
+      "Nommer les séries d’un graphique dessiné ailleurs : un échantillon par rang, un libellé écrit.",
+      "Reprendre le langage des graphiques : trait à motif et marqueur de forme pour une courbe, motif de remplissage pour une barre.",
+      "Donner une légende à une page de tableau de bord qui assemble plusieurs graphiques de mêmes séries."
     ]
   },
   {
