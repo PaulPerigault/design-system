@@ -208,6 +208,10 @@ non-scaling-stroke`. Étiquettes directes plutôt que légende.
    800 px. Les graduations ne se chevauchent pas (écart minimal de 5,6 px). Contrepartie : les
    libellés de catégories des barres se tronquent plus tôt (la zone de tracé passe de 328 à 268
    unités), à traiter par des libellés sur deux lignes ou une aération (revue des graphiques V2, M2).
+   Traité le 2026-10-29 (D-053, #143) : la colonne des graduations des barres verticales ne garde
+   que la place de ses chiffres (72 → 48 unités pour « 3 000 »), l'unité passe en haut à gauche ;
+   la zone de tracé passe de 268 à 292 unités, cinq libellés de sept caractères tiennent. Limite :
+   un libellé plus long que sa bande reste tronqué, texte complet dans `<title>` et le tableau.
    Reste ouvert : l'impression du tableau dans un `details` fermé.
 4. Risque de poids : un paquet de plus et des SVG verbeux ; parade : budgets bloquants en CI et
    arrêt du lot si un graphique dépasse sans justification écrite.

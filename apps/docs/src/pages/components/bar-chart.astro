@@ -76,6 +76,19 @@ const visites: Dataset = {
       <li>Jusqu’à 120 barres (40 catégories × 3 séries, 20 × 6) sous 10 ko et 400 nœuds.</li>
       <li>Cas extrême 40 × 6 : 11,9 ko, moins de 400 nœuds ; hors budget réaliste.</li>
     </ul>
+    <h3>Libellés de catégories</h3>
+    <ul>
+      <li>
+        Barres verticales : la colonne des graduations ne garde que la place de ses chiffres, le
+        reste va aux catégories. À cinq catégories, des libellés de sept caractères (« Accueil », «
+        Journal », « Contact ») tiennent sans troncature à 375 et à 800 px.
+      </li>
+      <li>
+        Limite : un libellé plus long que sa bande (environ sept caractères à cinq catégories, six à
+        six catégories) est tronqué (« Référe… ») ; le texte complet reste dans le title et dans le
+        tableau lié. Au-delà, préférer des barres horizontales.
+      </li>
+    </ul>
     <h3>Teinte d’accent</h3>
     <AccentHueDemo />
   </Fragment>

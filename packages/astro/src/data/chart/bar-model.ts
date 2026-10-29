@@ -10,7 +10,7 @@ import { bandScale, barRects, fail, ok, rectsPath } from '@paulperigault/dataviz
 import type { AxesModel } from './axes.ts';
 import type { CategoryLabel } from './bar-categories.ts';
 import { categoryLabels } from './bar-categories.ts';
-import { buildBarAxis } from './bar-axis.ts';
+import { buildBarAxis, valueTickLabels } from './bar-axis.ts';
 import type { Plot } from './bar-layout.ts';
 import { BAR_PADDING, barPlot, groupPadding } from './bar-layout.ts';
 import type { ValueGroup } from './bar-values.ts';
@@ -65,7 +65,7 @@ export function buildBarModel(
   const { orientation, showValues } = options;
   if (!SERIES_INKS.ok) return SERIES_INKS;
   const labels = dataset.x.values.map((_, index) => xLabel(dataset.x, index, fmt));
-  const plot = barPlot(orientation, labels);
+  const plot = barPlot(orientation, labels, valueTickLabels(dataset.series, fmt));
   const axis = buildBarAxis(dataset.series, orientation, plot, fmt);
   if (!axis.ok) return axis;
   const categories = categoryScale(labels.length, orientation, plot);

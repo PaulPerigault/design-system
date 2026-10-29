@@ -96,7 +96,7 @@ Aucun point. Aucun contraste de tracé sous 3:1, aucun texte sous 4,5:1, aucune 
   trait sur la base (ne retire pas les côtés) ; (c) un chemin ouvert seulement au-delà d'un nombre
   de points à mesurer. Décision de Paul avant tout changement de budget (⚖️).
 
-### M2 (Medium) : libellé de catégorie tronqué à 800 px (BarChart) : ouvert, aggravé par H1
+### M2 (Medium) : libellé de catégorie tronqué à 800 px (BarChart) : traité (D-053, #143), limite documentée
 
 - Après H1 : à cinq catégories, « Accueil », « Journal » et « Contact » (7 caractères) se tronquent
   (« Accue… ») ; la marge d'un caractère entre libellés voisins a été retirée pour que « France » tienne
