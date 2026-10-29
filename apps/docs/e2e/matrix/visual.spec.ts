@@ -31,6 +31,12 @@ async function settleImages(page: Page): Promise<void> {
 /** Pages dont les motifs de hachures alourdissent trop une capture pleine page (budget d'images). */
 const EXAMPLES_ONLY = ['/components/area-chart/', '/components/gauge-chart/'];
 
+/**
+ * Pages dont la hauteur suit le contenu (liste qui grandit à chaque ADR ou composant) : capture du
+ * viewport seul, donc stable quand on ajoute une ligne en fin de liste (#127).
+ */
+const VIEWPORT_ONLY = ['/decisions/', '/composants/'];
+
 /** Zone des exemples (de « Exemples » à « Variantes »), en coordonnées de page. */
 function examplesClip(page: Page) {
   return page.evaluate(() => {
@@ -76,7 +82,7 @@ for (const path of PAGES) {
       const clip = EXAMPLES_ONLY.includes(path) ? await examplesClip(page) : undefined;
       await expect(page).toHaveScreenshot(`${slugOf(path)}-${theme}.png`, {
         animations: 'disabled',
-        fullPage: true,
+        fullPage: !VIEWPORT_ONLY.includes(path),
         ...(clip ? { clip } : {}),
         maxDiffPixelRatio: MAX_DIFF_PIXEL_RATIO,
       });

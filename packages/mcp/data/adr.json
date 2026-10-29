@@ -403,6 +403,13 @@
       "decision": "Libellés de catégories des barres verticales (#143, M2) : solutions comparées sur quatre jeux (cinq libellés courants de sept caractères, jeu « Références », six et huit catégories), mesure par le nombre de libellés tronqués. Avant : 4 sur 5 tronqués à cinq catégories (« Accue… »). Retenue : la colonne de gauche ne réserve que la largeur des graduations (`barPlot`, 72 → 48 unités pour « 3 000 », plancher 32), l'unité passe en haut à gauche (`x: 0`) ; zone de tracé 268 → 292 unités. Après : 0 sur 5 tronqué ; « Références » (10 caractères) reste tronqué, six catégories de sept caractères aussi (limite documentée sur la page BarChart). Mesuré dans Chromium à 375 et 800 px : libellés sans chevauchement (écart de 5 px au moins), texte d'axe inchangé (12,4 px à 375 px). Aucun budget ni jeton modifié ; poids inchangé (mêmes éléments).",
       "id": "D-053",
       "rollback": "Rétablir `barPlot` sans graduations en argument, l'unité à `plot.left - LABEL_GAP` en `align: 'end'`."
+    },
+    {
+      "alternative": "Masquer la zone variable (le masque change la hauteur sans la fixer) ; seuil de tolérance relevé (affaiblit toutes les pages).",
+      "date": "2026-10-29",
+      "decision": "Références Visuel des pages à hauteur variable (#127) : `/decisions/` et `/composants/`, dont la hauteur grandit à chaque ADR ou composant (échec de `decisions-light` et `-dark` à chaque PR qui ajoute une décision : 2 403 px attendus, 3 101 reçus), sont capturées dans le viewport de l'appareil seul (`VIEWPORT_ONLY`). Les pages de composants restent en pleine page (signal de régression intact) ; le poids des références diminue (12 images recadrées). Procédure mise à jour dans `docs/process/visual-references.md`. Aucun budget ni garde-fou modifié.",
+      "id": "D-054",
+      "rollback": "Retirer `VIEWPORT_ONLY` et régénérer les références pleine page."
     }
   ]
 }
