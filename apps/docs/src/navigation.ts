@@ -100,7 +100,12 @@ export const GROUPS: readonly DocGroup[] = [
   {
     id: 'donnees',
     title: 'Données',
-    links: [link('line-chart', 'LineChart'), link('bar-chart', 'BarChart')],
+    links: [
+      link('line-chart', 'LineChart'),
+      link('bar-chart', 'BarChart'),
+      link('area-chart', 'AreaChart'),
+      link('gauge-chart', 'GaugeChart'),
+    ],
   },
 ];
 

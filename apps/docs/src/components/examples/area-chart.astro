@@ -1,0 +1,32 @@
+---
+/** Exemples vivants de la page AreaChart : aire simple, empilée, valeurs manquantes, six couches. */
+import AreaChart from '@paulperigault/astro/AreaChart.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+import {
+  trafficBySource,
+  trafficSixSources,
+  trafficTotalArea,
+  trafficTwoSources,
+  trafficWithGaps,
+} from './chart-data.ts';
+---
+
+<Stack space="l">
+  <AreaChart id="demo-area-simple" title="Visites mensuelles en 2025" dataset={trafficTotalArea} />
+  <AreaChart
+    id="demo-area-two"
+    title="Visites par source, deux couches"
+    dataset={trafficTwoSources}
+  />
+  <AreaChart id="demo-area-stacked" title="Visites par source en 2025" dataset={trafficBySource} />
+  <AreaChart
+    id="demo-area-gaps"
+    title="Visites par source, relevés manquants"
+    dataset={trafficWithGaps}
+  />
+  <AreaChart
+    id="demo-area-six"
+    title="Visites par source, six couches"
+    dataset={trafficSixSources}
+  />
+</Stack>

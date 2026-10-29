@@ -171,5 +171,304 @@
         "values": [940, 610, 280]
       }
     ]
+  },
+  "trafficBySource": {
+    "schema": 1,
+    "x": {
+      "kind": "time",
+      "label": "Mois",
+      "values": [
+        "2025-01-01",
+        "2025-02-01",
+        "2025-03-01",
+        "2025-04-01",
+        "2025-05-01",
+        "2025-06-01",
+        "2025-07-01",
+        "2025-08-01",
+        "2025-09-01",
+        "2025-10-01",
+        "2025-11-01",
+        "2025-12-01"
+      ]
+    },
+    "series": [
+      {
+        "id": "recherche",
+        "label": "Recherche",
+        "unit": "visites",
+        "values": [410, 400, 450, 480, 520, 500, 430, 400, 540, 600, 640, 610]
+      },
+      {
+        "id": "direct",
+        "label": "Direct",
+        "unit": "visites",
+        "values": [260, 250, 270, 290, 310, 300, 270, 250, 320, 350, 380, 360]
+      },
+      {
+        "id": "referents",
+        "label": "Référents",
+        "unit": "visites",
+        "values": [150, 140, 160, 170, 180, 180, 170, 160, 190, 230, 220, 220]
+      }
+    ]
+  },
+  "trafficTwoSources": {
+    "schema": 1,
+    "x": {
+      "kind": "time",
+      "label": "Mois",
+      "values": [
+        "2025-01-01",
+        "2025-02-01",
+        "2025-03-01",
+        "2025-04-01",
+        "2025-05-01",
+        "2025-06-01",
+        "2025-07-01",
+        "2025-08-01",
+        "2025-09-01",
+        "2025-10-01",
+        "2025-11-01",
+        "2025-12-01"
+      ]
+    },
+    "series": [
+      {
+        "id": "recherche",
+        "label": "Recherche",
+        "unit": "visites",
+        "values": [410, 400, 450, 480, 520, 500, 430, 400, 540, 600, 640, 610]
+      },
+      {
+        "id": "direct",
+        "label": "Direct",
+        "unit": "visites",
+        "values": [260, 250, 270, 290, 310, 300, 270, 250, 320, 350, 380, 360]
+      }
+    ]
+  },
+  "trafficWithGaps": {
+    "schema": 1,
+    "x": {
+      "kind": "time",
+      "label": "Mois",
+      "values": [
+        "2025-01-01",
+        "2025-02-01",
+        "2025-03-01",
+        "2025-04-01",
+        "2025-05-01",
+        "2025-06-01",
+        "2025-07-01",
+        "2025-08-01",
+        "2025-09-01",
+        "2025-10-01",
+        "2025-11-01",
+        "2025-12-01"
+      ]
+    },
+    "series": [
+      {
+        "id": "recherche",
+        "label": "Recherche",
+        "unit": "visites",
+        "values": [410, 400, 450, 480, null, null, 430, 400, 540, 600, 640, 610]
+      },
+      {
+        "id": "direct",
+        "label": "Direct",
+        "unit": "visites",
+        "values": [260, 250, 270, 290, 310, 300, 270, 250, 320, 350, 380, 360]
+      },
+      {
+        "id": "referents",
+        "label": "Référents",
+        "unit": "visites",
+        "values": [150, 140, 160, 170, 180, 180, 170, 160, null, 230, 220, 220]
+      }
+    ]
+  },
+  "trafficSixSources": {
+    "schema": 1,
+    "x": {
+      "kind": "time",
+      "label": "Mois",
+      "values": [
+        "2025-01-01",
+        "2025-02-01",
+        "2025-03-01",
+        "2025-04-01",
+        "2025-05-01",
+        "2025-06-01",
+        "2025-07-01",
+        "2025-08-01",
+        "2025-09-01",
+        "2025-10-01",
+        "2025-11-01",
+        "2025-12-01"
+      ]
+    },
+    "series": [
+      {
+        "id": "recherche",
+        "label": "Recherche",
+        "unit": "visites",
+        "values": [410, 400, 450, 480, 520, 500, 430, 400, 540, 600, 640, 610]
+      },
+      {
+        "id": "direct",
+        "label": "Direct",
+        "unit": "visites",
+        "values": [260, 250, 270, 290, 310, 300, 270, 250, 320, 350, 380, 360]
+      },
+      {
+        "id": "referents",
+        "label": "Référents",
+        "unit": "visites",
+        "values": [150, 140, 160, 170, 180, 180, 170, 160, 190, 230, 220, 220]
+      },
+      {
+        "id": "reseaux",
+        "label": "Réseaux sociaux",
+        "unit": "visites",
+        "values": [90, 80, 95, 110, 120, 105, 85, 70, 130, 160, 170, 150]
+      },
+      {
+        "id": "infolettre",
+        "label": "Infolettre",
+        "unit": "visites",
+        "values": [60, 60, 65, 70, 75, 80, 70, 55, 85, 95, 100, 105]
+      },
+      {
+        "id": "annuaires",
+        "label": "Annuaires",
+        "unit": "visites",
+        "values": [30, 35, 32, 38, 40, 36, 30, 28, 42, 48, 52, 50]
+      }
+    ]
+  },
+  "trafficTotalArea": {
+    "schema": 1,
+    "x": {
+      "kind": "time",
+      "label": "Mois",
+      "values": [
+        "2025-01-01",
+        "2025-02-01",
+        "2025-03-01",
+        "2025-04-01",
+        "2025-05-01",
+        "2025-06-01",
+        "2025-07-01",
+        "2025-08-01",
+        "2025-09-01",
+        "2025-10-01",
+        "2025-11-01",
+        "2025-12-01"
+      ]
+    },
+    "series": [
+      {
+        "id": "visites",
+        "label": "Visites",
+        "unit": "visites",
+        "values": [820, 790, 880, 940, 1010, 980, 870, 810, 1050, 1180, 1240, 1190]
+      }
+    ]
+  },
+  "gauges": {
+    "fill": {
+      "value": 72,
+      "unit": "%",
+      "label": "Taux de remplissage",
+      "zones": [
+        {
+          "label": "Critique",
+          "to": 40,
+          "tone": "bad"
+        },
+        {
+          "label": "Vigilance",
+          "to": 80,
+          "tone": "warning"
+        },
+        {
+          "label": "Nominal",
+          "tone": "good"
+        }
+      ]
+    },
+    "fullCircle": {
+      "value": 58,
+      "unit": "%",
+      "label": "Stock de pièces",
+      "shape": "full",
+      "zones": [
+        {
+          "label": "Critique",
+          "to": 40,
+          "tone": "bad"
+        },
+        {
+          "label": "Vigilance",
+          "to": 80,
+          "tone": "warning"
+        },
+        {
+          "label": "Nominal",
+          "tone": "good"
+        }
+      ]
+    },
+    "outOfRange": {
+      "value": 112,
+      "unit": "%",
+      "label": "Charge du serveur",
+      "zones": [
+        {
+          "label": "Normale",
+          "to": 70,
+          "tone": "good"
+        },
+        {
+          "label": "Élevée",
+          "to": 90,
+          "tone": "warning"
+        },
+        {
+          "label": "Saturée",
+          "tone": "bad"
+        }
+      ]
+    },
+    "named": {
+      "value": 34,
+      "min": 0,
+      "max": 60,
+      "unit": "min",
+      "label": "Temps de traitement",
+      "zones": [
+        {
+          "label": "Rapide",
+          "to": 15,
+          "tone": "good"
+        },
+        {
+          "label": "Acceptable",
+          "to": 30,
+          "tone": "info"
+        },
+        {
+          "label": "Lent",
+          "to": 45,
+          "tone": "warning"
+        },
+        {
+          "label": "Trop lent",
+          "tone": "bad"
+        }
+      ]
+    }
   }
 }

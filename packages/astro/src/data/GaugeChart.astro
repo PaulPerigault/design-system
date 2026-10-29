@@ -25,7 +25,9 @@ import { DEFAULT_LABELS, assertChartId } from './chart/props.ts';
 interface Props extends Omit<ChartProps, 'dataset'> {
   /** Valeur mesurée ; `null` : état vide. Hors intervalle, l'aiguille est bornée et le dit. */
   value: number | null;
+  /** Borne basse de l'intervalle (défaut 0). */
   min?: number;
+  /** Borne haute de l'intervalle ; strictement supérieure à min. */
   max?: number;
   /** Unité écrite avec la valeur et les bornes (`%`, `ms`…). */
   unit?: string;

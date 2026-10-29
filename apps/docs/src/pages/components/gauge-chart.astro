@@ -1,0 +1,97 @@
+---
+import ComponentPage from '../../components/ComponentPage.astro';
+import AccentHueDemo from '../../components/examples/accent-hue-demo.astro';
+import GaugeChartExamples from '../../components/examples/gauge-chart.astro';
+
+const snippet = `---
+import GaugeChart from '@paulperigault/astro/GaugeChart.astro';
+---
+
+<GaugeChart
+  id="remplissage"
+  title="Taux de remplissage de la salle"
+  value={72}
+  unit="%"
+  label="Taux de remplissage"
+  zones={[
+    { label: 'Critique', to: 40, tone: 'bad' },
+    { label: 'Vigilance', to: 80, tone: 'warning' },
+    { label: 'Nominal', tone: 'good' },
+  ]}
+/>`;
+---
+
+<ComponentPage
+  slug="gauge-chart"
+  title="GaugeChart"
+  summary="GaugeChart situe une valeur unique dans un intervalle et dans des zones nommées, en demi-cercle ou en cercle complet, en SVG statique."
+  use={[
+    'Situer une valeur unique par rapport à un seuil ou à des zones : taux de remplissage, charge, délai.',
+    'Afficher la valeur en grand, écrite au centre, avec son unité et le nom de la zone atteinte.',
+    'Dire explicitement une valeur hors intervalle : l’aiguille est bornée et le texte l’indique.',
+  ]}
+  avoid={[
+    'Pour comparer plusieurs valeurs ou suivre une évolution : utiliser BarChart ou LineChart.',
+    'Sans seuil ni zone : une valeur seule s’écrit plus clairement en Stat.',
+    'Avec une couleur pour seule information : le sens vient du libellé écrit de la zone et de son motif, la teinte (tone) n’est qu’un renfort.',
+    'Avec un intervalle nul ou des seuils non croissants : le build échoue avec gauge.bad-range ou gauge.bad-thresholds.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Le SVG n’est pas interactif et ne reçoit pas le focus.',
+      'Le tableau des zones se déplie au clavier (élément details natif).',
+    ],
+    screenReader: [
+      'Le SVG porte role="img", nommé par un title et décrit par un desc.',
+      'Le desc donne la valeur, l’intervalle, la zone atteinte et la liste des zones avec leurs bornes.',
+      'Le tableau des zones est lié sous le graphique ; la ligne de la zone actuelle porte la valeur.',
+    ],
+    guaranteed: [
+      'Le sens ne repose jamais sur la couleur seule : chaque zone a un libellé écrit, un motif et son rang (WCAG 1.4.1).',
+      'La valeur, l’unité et la zone sont écrites au centre en texte, pas seulement dessinées.',
+      'Une valeur hors intervalle est bornée et le dit dans le desc.',
+      'Zéro JavaScript et aucune animation ; aucun attribut style ; jetons --pp-chart-* en clair et en sombre.',
+    ],
+    integrator: [
+      'Donner un id unique par page (lettres, chiffres, tirets).',
+      'Nommer chaque zone par un libellé qui dit l’état (Critique, Nominal), pas seulement une couleur.',
+      'Toute zone sauf la dernière porte sa borne to ; la dernière s’arrête au maximum.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html',
+    },
+    {
+      label: 'WCAG 1.1.1 Contenu non textuel',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html',
+    },
+    { label: 'ADR-0007 : visualisation de données' },
+    { label: 'Tests : packages/astro/test/GaugeChart.test.ts' },
+  ]}
+>
+  <GaugeChartExamples />
+  <Fragment slot="variants">
+    <h3>Recommandation d’usage</h3>
+    <p>
+      Une jauge porte une valeur unique et un seuil ou des zones. Ne l’employer que si la position
+      dans l’intervalle compte autant que la valeur ; sinon, écrire la valeur.
+    </p>
+    <h3>Budgets de poids</h3>
+    <ul>
+      <li>Demi-cercle et cercle complet : sous 10 ko et 400 nœuds, zones et textes compris.</li>
+    </ul>
+    <h3>Limites connues</h3>
+    <ul>
+      <li>
+        Les couleurs --pp-chart-1..6 restent figées sur l’accent par défaut tant que l’issue #121
+        n’est pas faite.
+      </li>
+      <li>Le libellé central est tronqué à l’affichage ; le texte complet reste dans le desc.</li>
+    </ul>
+    <h3>Teinte d’accent</h3>
+    <AccentHueDemo />
+  </Fragment>
+</ComponentPage>

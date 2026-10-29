@@ -103,6 +103,8 @@
     "./Diagram.astro": "./src/media/Diagram.astro",
     "./Combobox.astro": "./src/forms/Combobox.astro",
     "./LineChart.astro": "./src/data/LineChart.astro",
-    "./BarChart.astro": "./src/data/BarChart.astro"
+    "./BarChart.astro": "./src/data/BarChart.astro",
+    "./AreaChart.astro": "./src/data/AreaChart.astro",
+    "./GaugeChart.astro": "./src/data/GaugeChart.astro"
   }
 }
