@@ -354,6 +354,13 @@
       "decision": "Skill de revue visuelle « Encre » adopté, versionné dans le dépôt (D1, #134) : `.claude/skills/encre-design/SKILL.md`, rédigé à partir des jetons, d'ADR-0002 et d'ADR-0007 et des réponses de Paul (précis, posé, lisible ; trait d'encre et étiquette directe sans jamais remplacer la légende accessible ; accent rare, sauf les zones de seuils de la jauge ; refus de coins au-delà de 8 px, d'illustrations génériques, de crème + serif + terracotta et de l'arc-en-ciel). Aucune ressource tierce copiée ; aucune règle iOS ou macOS. Revue des quatre graphiques dans `docs/design/revue-graphiques-v2.md` : aucun défaut critique, deux High (texte des axes à 10,6 px à 375 px ; valeurs dans les barres sous 4,5:1) et un Medium (contour d'aire) qui touchent la géométrie ou le budget : listés, non corrigés ici, aucun jeton ni budget modifié.",
       "id": "D-046",
       "rollback": "Supprimer `.claude/skills/encre-design/` et `docs/design/revue-graphiques-v2.md`."
+    },
+    {
+      "alternative": "Compiler `dataviz` dans la commande Cloudflare (hors dépôt, dans l'IaC du portfolio) ; export de `dataviz` vers `src/` (publication en `.ts`, écartée par ADR-0006).",
+      "date": "2026-10-29",
+      "decision": "La commande `build` de la documentation est autosuffisante : le script `prebuild` d'`apps/docs` compile `@paulperigault/dataviz` (seul paquet importé par la doc dont les exports pointent vers `dist/` ; `tokens`, `css` et `astro` s'exportent en source), et la CI a un job `docs` qui exécute la même commande que Cloudflare Pages (`npm ci && npm -w @paulperigault/docs run build`) depuis un dépôt vierge (#137). Cause du build Cloudflare rouge depuis 80e32f7 : `verify` et `e2e` compilaient tout avant la doc et masquaient le défaut.",
+      "id": "D-048",
+      "rollback": "Retirer `prebuild` et le job `docs`."
     }
   ]
 }

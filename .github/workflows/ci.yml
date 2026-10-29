@@ -68,6 +68,22 @@ jobs:
       - uses: ./.github/actions/setup
       - run: npm run verify
 
+  docs:
+    # Même commande que Cloudflare Pages (docs/process/previews.md) : sans `dist/` préalable, elle
+    # doit se suffire à elle-même. `verify` et `e2e` compilent tout avant la doc et masqueraient
+    # un `prebuild` manquant (D-048).
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci && npm -w @paulperigault/docs run build
+
   changes:
     # Décide si e2e tourne et sur quel périmètre. `render` : la PR touche le rendu (css, tokens,
     # astro, apps, dépendance de rendu pour Dependabot). `full` : toute la matrice d'appareils
@@ -182,7 +198,7 @@ jobs:
     # bon droit comptant comme réussis. `!cancelled()` plutôt que `always()` : quand la concurrence
     # annule tout le run, `ci` est annulé lui aussi (pas rouge) ; le run suivant porte le verdict.
     if: ${{ !cancelled() }}
-    needs: [commitlint, squash-message, changes, verify, e2e, visuel, site, zizmor]
+    needs: [commitlint, squash-message, changes, verify, docs, e2e, visuel, site, zizmor]
     runs-on: ubuntu-latest
     timeout-minutes: 50
     permissions:
