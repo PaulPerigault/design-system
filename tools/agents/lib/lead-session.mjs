@@ -2,7 +2,7 @@
 // (créée depuis sa base si elle n'existe pas, empilable : base `lot/L8`), dépendances par amorce,
 // puis Kiro (`ds-lead`, claude-opus-5.5, effort high) sous une place du sémaphore.
 import { join } from 'node:path';
-import { executorEnv } from './env.mjs';
+import { executorEnv } from './env.ts';
 import { kiroArgs, runAgent } from './transports.mjs';
 
 export const LEAD_MODEL = 'claude-opus-5.5';

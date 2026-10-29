@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { modelFor, nextTier, tierPlan } from './routing.mjs';
-import { quotaExhausted, summarizeStream } from './stream.mjs';
+import { modelFor, nextTier, tierPlan } from './routing.ts';
+import { quotaExhausted, summarizeStream } from './stream.ts';
 import models from '../models.json' with { type: 'json' };
 
 describe('routing', () => {

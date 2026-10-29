@@ -13,7 +13,7 @@ import {
   serializeQueue,
   statusAfterSession,
   updateLot,
-} from './lib/lead-queue.mjs';
+} from './lib/lead-queue.ts';
 import { commitLeadFiles, prepareLeadWorktree, runLeadSession } from './lib/lead-session.mjs';
 
 const deps = await realDeps();

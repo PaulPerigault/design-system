@@ -1,6 +1,6 @@
 import { spawnSync } from 'node:child_process';
 import { describe, expect, it } from 'vitest';
-import { forbiddenReason } from './forbidden.mjs';
+import { forbiddenReason } from './forbidden.ts';
 
 describe('forbiddenReason', () => {
   it.each([

@@ -3,8 +3,8 @@
 // Commit (par l'orchestrateur, hooks actifs) des seuls fichiers de `files:` dans le worktree,
 // cherry-pick dans la branche courante, puis suppression du worktree et de sa branche.
 import { loadTask, parseOptions, realDeps } from './lib/cli.mjs';
-import { checkOwnership, ownershipFailure } from './lib/ownership.mjs';
-import { removeWorktree, worktreeOf } from './lib/worktree.mjs';
+import { checkOwnership, ownershipFailure } from './lib/ownership.ts';
+import { removeWorktree, worktreeOf } from './lib/worktree.ts';
 
 const options = parseOptions(process.argv.slice(2));
 const [file, subject] = options._;

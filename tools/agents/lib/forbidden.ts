@@ -32,10 +32,13 @@ export const FORBIDDEN_COMMANDS = [
 // Clés de contexte de l'événement (répertoire, session…) : jamais examinées comme commande.
 const CONTEXT_KEY = /cwd|dir|session|transcript|hook|event|id$/i;
 
-const stringsOf = (value) => {
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null && !Array.isArray(value);
+
+const stringsOf = (value: unknown): string[] => {
   if (typeof value === 'string') return [value];
   if (Array.isArray(value)) return value.flatMap(stringsOf);
-  if (value && typeof value === 'object') {
+  if (isRecord(value)) {
     return Object.entries(value)
       .filter(([key]) => !CONTEXT_KEY.test(key))
       .flatMap(([, item]) => stringsOf(item));
@@ -48,23 +51,20 @@ const INPUT_KEYS = ['tool_input', 'toolInput', 'input', 'arguments'];
 /**
  * Texte de la commande d'un événement de hook Kiro (format non documenté en 2.32 : on prend
  * l'entrée de l'outil si elle existe, sinon tout l'événement, sans les clés de contexte).
- * @param {string} raw événement JSON brut
+ * `raw` : événement JSON brut.
  */
-export function commandText(raw) {
-  let event;
+export function commandText(raw: string): string {
+  let event: unknown;
   try {
     event = JSON.parse(raw);
   } catch {
     return raw;
   }
-  const key = INPUT_KEYS.find((name) => event && typeof event === 'object' && name in event);
-  return stringsOf(key ? event[key] : event).join('\n');
+  const key = isRecord(event) ? INPUT_KEYS.find((name) => name in event) : undefined;
+  return stringsOf(key !== undefined && isRecord(event) ? event[key] : event).join('\n');
 }
 
-/**
- * @param {string} text commande à examiner
- * @returns {string | null} raison du refus, ou null si rien d'interdit n'apparaît
- */
-export function forbiddenReason(text) {
+/** Raison du refus de la commande `text`, ou `null` si rien d'interdit n'apparaît. */
+export function forbiddenReason(text: string): string | null {
   return FORBIDDEN_COMMANDS.find(({ pattern }) => pattern.test(text))?.reason ?? null;
 }

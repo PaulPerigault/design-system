@@ -1,14 +1,17 @@
 // Prompt envoyé à l'exécutant : énoncé de la tâche, fichiers autorisés, commandes d'acceptation,
 // et, en cas de relance, l'erreur de la tentative précédente. Jamais d'historique de conversation.
 
-const bullets = (items) => items.map((item) => `- ${item}`).join('\n');
+import type { Task } from './types.ts';
 
-/**
- * @param {{ id: string, title: string, body: string, files: string[], acceptance: string[] }} task
- * @param {{ previousFailure?: string | null, role?: 'worker' | 'reviewer' }} [options]
- * @returns {string}
- */
-export function buildPrompt(task, { previousFailure = null, role = 'worker' } = {}) {
+const bullets = (items: string[]): string => items.map((item) => `- ${item}`).join('\n');
+
+export function buildPrompt(
+  task: Pick<Task, 'id' | 'title' | 'body' | 'files' | 'acceptance'>,
+  {
+    previousFailure = null,
+    role = 'worker',
+  }: { previousFailure?: string | null | undefined; role?: 'worker' | 'reviewer' } = {},
+): string {
   const sections = [
     `# Tâche ${task.id} — ${task.title}`,
     role === 'reviewer'

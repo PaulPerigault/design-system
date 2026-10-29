@@ -257,3 +257,7 @@ test -c apps/docs/playwright.config.ts`.
 
 - Les trois paquets sont compilés vers `dist/` comme `guards` et `dataviz` (D-064). Lockfile non resynchronisé (refus d'écriture, commande dans les questions).
 - Reste : B (`tools/agents` en TypeScript strict), puis l'issue `[Tokens] create`.
+
+## #86-B1 (2026-10-29) : `tools/agents`, modules feuilles
+
+- 17 modules en TypeScript strict (D-065). Restent : modules à dépendances (B2), scripts et configuration (B3, « Closes #86 »).

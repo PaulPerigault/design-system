@@ -5,8 +5,8 @@ import { appendFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { coordination, mainRoot } from './coordination.mjs';
-import { run, runShell } from './process.mjs';
-import { parseTask } from './task.mjs';
+import { run, runShell } from './process.ts';
+import { parseTask } from './task.ts';
 
 export const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../../..');
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { verdictOf } from './verdict.mjs';
+import { verdictOf } from './verdict.ts';
 
 describe('verdictOf', () => {
   it.each([

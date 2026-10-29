@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { batchTable, mapLimit, readyTasks, tasksOfLot } from './batch.mjs';
-import { executorEnv } from './env.mjs';
+import { batchTable, mapLimit, readyTasks, tasksOfLot } from './batch.ts';
+import { executorEnv } from './env.ts';
 import { kiroArgs, transportFailure } from './transports.mjs';
 
 describe('transports et environnement', () => {

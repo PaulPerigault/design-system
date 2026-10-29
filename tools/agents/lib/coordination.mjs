@@ -4,8 +4,8 @@ import * as fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
 import { setTimeout as sleep } from 'node:timers/promises';
-import { acquireLock, acquireSlot, isHeavy, lowerMax } from './locks.mjs';
-import { installDependencies } from './seed.mjs';
+import { acquireLock, acquireSlot, isHeavy, lowerMax } from './locks.ts';
+import { installDependencies } from './seed.ts';
 
 const isAlive = (pid) => {
   try {
