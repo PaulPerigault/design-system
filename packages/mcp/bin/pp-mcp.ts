@@ -2,7 +2,9 @@
 import process from 'node:process';
 import { log, main } from './cli.ts';
 
-main(process.argv.slice(2)).catch((error) => {
+const ARGV_START = 2;
+
+main(process.argv.slice(ARGV_START)).catch((error: unknown) => {
   log(error instanceof Error ? error.message : String(error));
   process.exitCode = 1;
 });

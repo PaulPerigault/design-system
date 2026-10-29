@@ -22,9 +22,7 @@
   },
   "sideEffects": false,
   "files": [
-    "bin",
-    "src",
-    "data",
+    "dist",
     "README.md"
   ],
   "publishConfig": {
@@ -36,10 +34,12 @@
     "prepublishOnly": "node ../../tools/checks/check-publish-env.mjs && node scripts/build-data.ts --check",
     "build:data": "node scripts/build-data.ts",
     "check:data": "node scripts/build-data.ts --check",
-    "test": "vitest run"
+    "test": "vitest run",
+    "build": "node --eval \"fs.rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.build.json && node --eval \"fs.cpSync('data','dist/data',{recursive:true});fs.copyFileSync('package.json','dist/package.json')\"",
+    "prepack": "npm run build"
   },
   "bin": {
-    "pp-mcp": "./bin/pp-mcp.mjs"
+    "pp-mcp": "./dist/bin/pp-mcp.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.32.1",
