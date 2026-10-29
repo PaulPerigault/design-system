@@ -1,5 +1,5 @@
 import { posix } from 'node:path';
-import { PACKAGE_NAME, REPO_PREFIX } from '../src/lib/registry.mjs';
+import { PACKAGE_NAME, REPO_PREFIX } from '../src/lib/registry.ts';
 
 /**
  * FS en mémoire. `files` : chemins absolus → contenu, reflète les écritures.

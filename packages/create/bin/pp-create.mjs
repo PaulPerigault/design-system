@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { main } from '../src/cli.mjs';
-import { messageOf } from '../src/commands/snippet.mjs';
-import { nodeIo } from '../src/lib/io.mjs';
+import { main } from '../src/cli.ts';
+import { messageOf } from '../src/commands/snippet.ts';
+import { nodeIo } from '../src/lib/io.ts';
 
 const CODE_CRASH = 1;
 

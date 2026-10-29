@@ -9,6 +9,7 @@ const TS_STRICT_FILES = [
   'packages/tokens/**/*.ts',
   'packages/guards/**/*.ts',
   'packages/dataviz/**/*.ts',
+  'packages/create/**/*.ts',
 ];
 
 export default tseslint.config(

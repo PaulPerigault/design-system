@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { LOCK_FILE, readLock, serializeLock, withItem } from '../src/lib/lock.mjs';
-import { applyPlan } from '../src/lib/plan.mjs';
+import { LOCK_FILE, readLock, serializeLock, withItem } from '../src/lib/lock.ts';
+import { applyPlan } from '../src/lib/plan.ts';
 import { fakeIo } from './fake-io.mjs';
 
 describe('lock', () => {

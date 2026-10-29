@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { run } from '../src/commands/diff.mjs';
-import { sha256 } from '../src/lib/hash.mjs';
-import { LOCK_FILE } from '../src/lib/lock.mjs';
+import { run } from '../src/commands/diff.ts';
+import { sha256 } from '../src/lib/hash.ts';
+import { LOCK_FILE } from '../src/lib/lock.ts';
 import { fakeIo, fakePackage } from './fake-io.mjs';
 
 const FILE_A = 'packages/astro/src/A.astro';

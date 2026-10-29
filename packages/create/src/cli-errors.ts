@@ -1,4 +1,5 @@
-import { CODE_USAGE, messageOf } from './commands/snippet.mjs';
+import { CODE_USAGE, messageOf } from './commands/snippet.ts';
+import type { CreateIo } from './lib/io.ts';
 
 /**
  * Traduction des erreurs de `parseArgs` (`node:util`), dont les messages sont en anglais.
@@ -9,18 +10,13 @@ import { CODE_USAGE, messageOf } from './commands/snippet.mjs';
 const QUOTED = /'([^']+)'/;
 const MISSING_VALUE = '<value>';
 
-/**
- * `--out` pour « -o, --out <value> » : forme longue de préférence, sans la valeur.
- * @param {string} quoted
- * @returns {string}
- */
-function optionName(quoted) {
+/** `--out` pour « -o, --out <value> » : forme longue de préférence, sans la valeur. */
+function optionName(quoted: string): string {
   const names = quoted.split(/[\s,]+/).filter((part) => part.startsWith('-'));
   return names.find((part) => part.startsWith('--')) ?? names[0] ?? quoted;
 }
 
-/** @type {Record<string, (quoted: string) => string>} */
-const TRANSLATIONS = {
+const TRANSLATIONS: Record<string, (quoted: string) => string> = {
   ERR_PARSE_ARGS_UNKNOWN_OPTION: (quoted) =>
     `option inconnue : ${quoted} (un positionnel commençant par « - » se place après « -- »)`,
   ERR_PARSE_ARGS_INVALID_OPTION_VALUE: (quoted) =>
@@ -30,12 +26,8 @@ const TRANSLATIONS = {
   ERR_PARSE_ARGS_UNEXPECTED_POSITIONAL: (quoted) => `argument inattendu : ${quoted}`,
 };
 
-/**
- * Message français d'une erreur levée par `parseArgs`.
- * @param {unknown} error
- * @returns {string}
- */
-export function parseErrorMessage(error) {
+/** Message français d'une erreur levée par `parseArgs`. */
+export function parseErrorMessage(error: unknown): string {
   const message = messageOf(error);
   const code = error instanceof Error && 'code' in error ? String(error.code) : '';
   const translate = Object.hasOwn(TRANSLATIONS, code) ? TRANSLATIONS[code] : undefined;
@@ -46,11 +38,8 @@ export function parseErrorMessage(error) {
 /**
  * Lance une commande ; une erreur qu'elle lève (paquet introuvable avec `--from`, verrou illisible)
  * devient un message sur `io.err` et le code d'usage, comme les échecs qu'elle signale elle-même.
- * @param {import('./lib/io.mjs').CreateIo} io
- * @param {() => number} task
- * @returns {number} code de sortie
  */
-export function runCommand(io, task) {
+export function runCommand(io: CreateIo, task: () => number): number {
   try {
     return task();
   } catch (error) {

@@ -1,41 +1,50 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { posix } from 'node:path';
 
-/**
- * @typedef {object} CreateIo
- * @property {string} cwd absolu, séparateurs `/`, lettre de lecteur admise
- * @property {(path: string) => string} readText
- * @property {(path: string, text: string) => void} writeText crée les dossiers parents
- * @property {(path: string) => boolean} exists
- * @property {(dir: string) => { name: string, isDirectory: () => boolean }[]} readdir
- * @property {(message: string) => void} out
- * @property {(message: string) => void} err
- */
+export interface DirEntry {
+  name: string;
+  isDirectory: () => boolean;
+}
+
+export interface CreateIo {
+  /** Absolu, séparateurs `/`, lettre de lecteur admise. */
+  cwd: string;
+  readText: (path: string) => string;
+  /** Crée les dossiers parents. */
+  writeText: (path: string, text: string) => void;
+  exists: (path: string) => boolean;
+  readdir: (dir: string) => DirEntry[];
+  out: (message: string) => void;
+  err: (message: string) => void;
+}
+
+interface Sink {
+  write: (text: string) => unknown;
+}
 
 const DRIVE = /^[A-Za-z]:(?=\/)/u;
 
 /** Vrai pour `/x` et pour `C:/x` (séparateurs déjà normalisés en `/`). */
-const isAbsolutePath = (path) => posix.isAbsolute(path) || DRIVE.test(path);
+const isAbsolutePath = (path: string): boolean => posix.isAbsolute(path) || DRIVE.test(path);
 
-/**
- * Chemin absolu POSIX d'un chemin relatif à `io.cwd` (un chemin absolu est conservé).
- * @param {{ cwd: string }} io
- * @param {string} rel
- * @returns {string}
- */
-export function resolveIn(io, rel) {
+/** Chemin absolu POSIX d'un chemin relatif à `io.cwd` (un chemin absolu est conservé). */
+export function resolveIn(io: Pick<CreateIo, 'cwd'>, rel: string): string {
   const path = rel.replaceAll('\\', '/');
   if (DRIVE.test(path)) return posix.normalize(path);
   const drive = DRIVE.exec(io.cwd)?.[0] ?? '';
   return drive + posix.resolve(io.cwd.slice(drive.length), path);
 }
 
-/**
- * Implémentation `node:fs`.
- * @param {{ cwd: string, stdout: { write: (s: string) => unknown }, stderr: { write: (s: string) => unknown } }} streams
- * @returns {CreateIo}
- */
-export function nodeIo({ cwd, stdout, stderr }) {
+/** Implémentation `node:fs`. */
+export function nodeIo({
+  cwd,
+  stdout,
+  stderr,
+}: {
+  cwd: string;
+  stdout: Sink;
+  stderr: Sink;
+}): CreateIo {
   const posixCwd = cwd.split('\\').join('/');
   if (!isAbsolutePath(posixCwd)) {
     throw new Error(`chemin de travail non absolu (${cwd})`);
