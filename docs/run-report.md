@@ -303,3 +303,7 @@ test -c apps/docs/playwright.config.ts`.
 ## #87, condition d'export à nom propre (2026-10-30)
 
 - `development` remplacée par `@paulperigault/source` dans `tokens`, `dataviz`, `guards`, activée pour TypeScript, Vitest et Astro (D-075). Tests inchangés, tous verts. Reste : trois issues (agents, CI, Design).
+
+## #178, skill encre-processus (2026-10-30)
+
+- Règles de livraison réunies avec leurs sources (D-076, « Refs #178 »). Reste : `encre-securite`, puis mobile, greenops, rust et l'index d'`AGENTS.md`.

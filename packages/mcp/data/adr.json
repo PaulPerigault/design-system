@@ -560,6 +560,13 @@
       "decision": "Condition d'export à nom propre (« Refs #87 »). La condition `development` des exports de `tokens`, `dataviz` et `guards` (vers `src/`, absente du paquet publié) devient `@paulperigault/source`. Activée par `customConditions` (`tsconfig.base.json`, `packages/mcp/tsconfig.json`) et par `resolve.conditions` de Vitest (`vitest.source.ts`, un `vitest.config.ts` par paquet) et d'Astro (`apps/docs/astro.config.mjs`). Aucun outil n'exige `development`.",
       "id": "D-075",
       "rollback": "Rétablir le nom `development` dans les exports et les configurations listées."
+    },
+    {
+      "alternative": "Copier les règles dans `AGENTS.md` (le fichier dépasserait la limite de lecture, et #178 demande un index vers des skills).",
+      "date": "2026-10-30",
+      "decision": "Skill `encre-processus` (#178, « Refs #178 »). `.claude/skills/encre-processus/SKILL.md` (136 lignes) rassemble les règles de livraison déjà écrites dans `AGENTS.md`, `commitlint.config.mjs`, `ci.yml`, le gabarit de PR et `tmp/etat-autonome.md`, chacune avec sa source. Écarts relevés en la vérifiant : `tmp/` est exclu par `.git/info/exclude` et non par `.gitignore` ; il n'y a plus de hook `pre-push` ; `--auto` n'est écrit dans aucun fichier du dépôt (la règle « fusionner avant la suivante » l'exclut), le skill le dit comme consigne du run.",
+      "id": "D-076",
+      "rollback": "Supprimer le dossier `.claude/skills/encre-processus/`."
     }
   ]
 }
