@@ -112,11 +112,13 @@ release-please, et les issues exclues par l'état courant.
 1. `docs/journal/AAAA-MM-JJ.md` : une entrée (branche, ce qui change, non-régression, suite).
 2. `docs/decisions-log.md` : une ligne D-xxx (date, décision, alternative écartée, retour arrière),
    numéro suivant le dernier ; régénérer `adr.json` (voir « Fichiers générés »).
-3. `docs/run-report.md` : une ligne sous un titre `## #n, sujet (date)`.
-4. `tmp/etat-autonome.md` : dernière tâche finie, dernier D-xxx, PR fusionnées, suite.
-5. Revenir sur `main`, `git pull`, supprimer la branche locale, `git status` propre.
+3. `tmp/etat-autonome.md` : dernière tâche finie, dernier D-xxx, PR fusionnées, suite.
+4. Revenir sur `main`, `git pull`, supprimer la branche locale, `git status` propre.
 
-Le journal du jour non commité part avec la première PR suivante.
+Le journal du jour non commité part avec la première PR suivante. `docs/run-report.md` n'est mis à
+jour qu'en fin de jalon (D-080) ; l'historique par PR est dans `docs/history/`.
+
+Lecture initiale d'une session : `tmp/etat-autonome.md`, `AGENTS.md`, les skills de l'index, l'issue.
 
 ## Vérifier avant d'envoyer
 

@@ -1,7 +1,7 @@
 # Issues du chantier : étape, issue, milestone, dépendances
 
 Décision D-035 : une étape = une issue, une PR avec `Closes #n`, des épiques et des sous-issues. Source :
-`docs/process/proposal-foundations.md` §6 et `docs/run-report.md`. Les issues du rattrapage des lots
+`docs/process/proposal-foundations.md` §6 et `docs/history/chantier-pr.md`. Les issues du rattrapage des lots
 (L0 à L20) sont dans `docs/history/catch-up.md`.
 
 Les numéros d'issue sont attribués à la création : Paul lance
