@@ -1,0 +1,58 @@
+---
+/** Accessibilité et réglage de l'accent de la page Données : ADR-0007, décisions 3 et 4. */
+const THEME = `npm create @paulperigault mon-site -- --accent-hue 150`;
+---
+
+<h2 id="accessibilite">Accessibilité</h2>
+<p>
+  La cible est WCAG 2.2 AA. Les garanties ci-dessous viennent de l’ADR-0007 (décision 3) et sont
+  testées dans <code>packages/astro/test/</code>.
+</p>
+<ul>
+  <li>
+    <strong>Alternative textuelle</strong> : chaque graphique est une <code>figure</code> avec un
+    <code>figcaption</code>. Le SVG porte <code>role="img"</code>, un <code>title</code> et un
+    <code>desc</code> qui résume la donnée : début, fin, tendance chiffrée, extrêmes, valeurs
+    manquantes.
+  </li>
+  <li>
+    <strong>Tableau lié</strong> : toutes les valeurs sont dans un tableau sous le graphique, avec
+    des
+    <code>th scope</code>, dans un <code>details</code> fermé que le clavier déplie.
+  </li>
+  <li>
+    <strong>Pas de couleur seule</strong> (WCAG 1.4.1) : chaque rang de série a un motif de trait ou
+    de remplissage et un marqueur de forme propre, repris par <code>Legend</code>. Une variation de
+    <code>KpiCard</code> s’écrit en mots avec son signe.
+  </li>
+  <li>
+    <strong>Contraste</strong> : tracés et barres à 3:1 au moins contre le fond (WCAG 1.4.11), texte
+    à 4,5:1 au moins (1.4.3), jamais en couleur de série. Les six jetons
+    <code>--pp-chart-1..6</code> ont été mesurés le 2026-10-29 à 3,07:1 au minimum, en clair et en
+    sombre (<code>.claude/skills/encre-design/SKILL.md</code>).
+  </li>
+  <li>
+    <strong>Mouvement, contraste forcé, impression</strong> : aucune animation, tracés en
+    <code>CanvasText</code> sous <code>forced-colors</code>, motifs et tableau conservés à
+    l’impression.
+  </li>
+  <li>
+    <strong>Mesure</strong> : axe sans violation sur <code>LineChart</code> (2 thèmes, 2 fenêtres,
+    <code>apps/docs/e2e/line-chart.spec.ts</code>) et sur cette page :
+    <code>apps/docs/e2e/donnees.spec.ts</code>.
+  </li>
+</ul>
+
+<h2 id="accent">Teinte d’accent</h2>
+<p>
+  Un projet fournit une teinte OKLCH en degrés ; le système fixe la clarté et le chroma. Les six
+  couleurs de graphique sont dérivées de cette teinte et contrôlées en daltonisme : écart CIEDE2000
+  d’au moins 10 entre deux couleurs de la catégorielle (seuil de convention, ADR-0007, décision 4).
+  Les motifs et les marqueurs restent exigés en plus.
+</p>
+<pre tabindex="0"><code>{THEME}</code></pre>
+<p>
+  Ce site garde la teinte par défaut (270,7). Le tableau des jetons pour une autre teinte est dans
+  la section « Teinte d’accent » de la <a href="/components/line-chart/">fiche LineChart</a>. La
+  commande complète et ses refus sont décrits sur la page <a href="/utiliser/">Utiliser</a>.
+</p>

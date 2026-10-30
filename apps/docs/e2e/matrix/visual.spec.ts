@@ -35,7 +35,7 @@ const EXAMPLES_ONLY = ['/components/area-chart/', '/components/gauge-chart/'];
  * Pages dont la hauteur suit le contenu (liste qui grandit à chaque ADR ou composant) : capture du
  * viewport seul, donc stable quand on ajoute une ligne en fin de liste (#127).
  */
-const VIEWPORT_ONLY = ['/decisions/', '/composants/'];
+const VIEWPORT_ONLY = ['/decisions/', '/composants/', '/donnees/'];
 
 /** Zone des exemples (de « Exemples » à « Variantes »), en coordonnées de page. */
 function examplesClip(page: Page) {
@@ -54,6 +54,7 @@ const TEMPLATE_PAGES = [
   '/composants/',
   '/identite/',
   '/utiliser/',
+  '/donnees/',
   '/architecture/',
   '/accessibilite/',
   '/decisions/',
