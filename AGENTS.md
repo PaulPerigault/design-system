@@ -43,6 +43,20 @@ Sens unique : `tokens ← css ← astro` et `tokens ← dataviz ← astro`. Un i
 
 Dégradés décoratifs, ombres décoratives, flou (`backdrop-filter`), emoji, étiquettes en majuscules espacées, palette Tailwind par défaut, valeurs arbitraires (`p-[13px]`), effets terminal vert sur noir, scanlines, glitch, machine à écrire, phrases génériques (« passionné par », « solutions innovantes »…).
 
+## Skills à lire selon la tâche
+
+Au début de chaque tâche, lire uniquement les skills de ce tableau qui la concernent
+(`.claude/skills/<nom>/SKILL.md`). Un skill est de la méthode : en cas d'écart, ce fichier gagne.
+
+| Tâche                       | Skills                                           |
+| --------------------------- | ------------------------------------------------ |
+| composants et CSS           | `encre-design`, `encre-mobile`                   |
+| textes et pages             | `encre-voix`                                     |
+| sécurité, CI, agents, hooks | `encre-securite`                                 |
+| crates et WebAssembly       | `encre-rust`, `encre-securite`, `encre-greenops` |
+| budgets et mesures          | `encre-greenops`                                 |
+| toute PR                    | `encre-processus`                                |
+
 ## Commandes de vérification
 
 ```
