@@ -1,0 +1,33 @@
+---
+/** Une démonstration de la page Données : titre, phrase, rendu vivant, code à copier, renvoi à la fiche. */
+import Stack from '@paulperigault/astro/Stack.astro';
+
+interface Props {
+  name: string;
+  slug: string;
+  summary: string;
+  code: string;
+}
+
+const { name, slug, summary, code } = Astro.props;
+const headingId = `donnees-${slug}`;
+---
+
+<section aria-labelledby={headingId}>
+  <Stack space="m">
+    <h3 id={headingId}>{name}</h3>
+    <p>{summary}</p>
+    <slot />
+    <pre tabindex="0"><code>{code}</code></pre>
+    <p>
+      <a href={`/components/${slug}/`}>Fiche {name}</a> : propriétés, limites et contrôles
+      d’accessibilité.
+    </p>
+  </Stack>
+</section>
+
+<style>
+  section :global(:where(p, h3)) {
+    margin: 0;
+  }
+</style>

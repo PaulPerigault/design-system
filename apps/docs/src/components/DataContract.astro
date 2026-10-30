@@ -1,0 +1,40 @@
+---
+/** Contrat de données de la page Données : ADR-0007, décision 1. */
+import { DATASET } from '../lib/data-page-snippets.ts';
+---
+
+<h2 id="contrat">Contrat de données</h2>
+<p>
+  Tous les composants lisent le même <code>Dataset</code>, défini par l’ADR-0007 (décision 1). Il
+  est validé à la frontière : un jeu invalide fait échouer le build avec un code d’erreur, il n’est
+  jamais dessiné de travers.
+</p>
+<pre tabindex="0"><code>{DATASET}</code></pre>
+<ul>
+  <li>
+    <strong>Format</strong> : colonnaire et versionné (<code>schema: 1</code>). Un axe
+    <code>x</code> de genre <code>category</code>, <code>time</code> ou <code>number</code>, et des
+    séries avec <code>id</code>, <code>label</code>, <code>unit</code> et <code>values</code>.
+  </li>
+  <li>
+    <strong>Valeur manquante</strong> : <code>null</code>, jamais <code>0</code> ni
+    <code>NaN</code>. La courbe se rompt, les barres laissent un vide, le tableau écrit « donnée
+    manquante ».
+  </li>
+  <li>
+    <strong>Unité</strong> : une par série, séparée de la valeur. Deux unités différentes sur un
+    même axe sont refusées (<code>dataset.unit-mismatch</code>).
+  </li>
+  <li>
+    <strong>Dates</strong> : ISO 8601, lues en UTC, sans fuseau implicite.
+  </li>
+  <li>
+    <strong>Locale</strong> : <code>fr</code> par défaut, par <code>Intl</code> : virgule décimale,
+    espace fine insécable entre les milliers (convention typographique).
+  </li>
+  <li>
+    <strong>Plafonds</strong> : six séries au plus, 40 catégories de barres, 500 points par courbe
+    (sous-échantillonnage LTTB au build), 400 nœuds SVG et 10&nbsp;ko par graphique. Ce sont des
+    conventions de l’ADR-0007, mesurées par les tests du dépôt.
+  </li>
+</ul>

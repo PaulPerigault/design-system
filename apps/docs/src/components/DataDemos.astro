@@ -1,0 +1,88 @@
+---
+/** Les huit composants de visualisation, rendus sur les jeux fictifs de `chart-data.json`. */
+import AreaChart from '@paulperigault/astro/AreaChart.astro';
+import BarChart from '@paulperigault/astro/BarChart.astro';
+import GaugeChart from '@paulperigault/astro/GaugeChart.astro';
+import KpiCard from '@paulperigault/astro/KpiCard.astro';
+import Legend from '@paulperigault/astro/Legend.astro';
+import LineChart from '@paulperigault/astro/LineChart.astro';
+import Sparkline from '@paulperigault/astro/Sparkline.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+import DataTable from '@paulperigault/astro/DataTable.astro';
+import { SNIPPETS } from '../lib/data-page-snippets.ts';
+import { bySection, gauges, kpis, monthlyVisits, trafficBySource } from './examples/chart-data.ts';
+import DataDemoBlock from './DataDemoBlock.astro';
+
+const LEGEND_ITEMS = ['Recherche', 'Direct', 'Référents'];
+---
+
+<Stack space="xl">
+  <DataDemoBlock
+    name="LineChart"
+    slug="line-chart"
+    code={SNIPPETS.line}
+    summary="Courbe de une à six séries. Une valeur manquante rompt le trait, elle n’est jamais ramenée à zéro."
+  >
+    <LineChart id="donnees-line" title="Visites mensuelles en 2025" dataset={monthlyVisits} />
+  </DataDemoBlock>
+  <DataDemoBlock
+    name="BarChart"
+    slug="bar-chart"
+    code={SNIPPETS.bar}
+    summary="Barres verticales ou horizontales, simples ou groupées, toujours depuis zéro. Quarante catégories au plus."
+  >
+    <BarChart id="donnees-bar" title="Visites par rubrique" dataset={bySection} showValues />
+  </DataDemoBlock>
+  <DataDemoBlock
+    name="AreaChart"
+    slug="area-chart"
+    code={SNIPPETS.area}
+    summary="Aire d’un total, ou de deux à six couches empilées. L’empilement refuse les valeurs négatives."
+  >
+    <AreaChart id="donnees-area" title="Visites par source en 2025" dataset={trafficBySource} />
+  </DataDemoBlock>
+  <DataDemoBlock
+    name="GaugeChart"
+    slug="gauge-chart"
+    code={SNIPPETS.gauge}
+    summary="Une valeur dans un intervalle et des zones nommées, en demi-cercle ou en cercle complet. La valeur et la zone atteinte sont écrites au centre."
+  >
+    <GaugeChart id="donnees-gauge" title="Taux de remplissage de la salle" {...gauges.fill} />
+  </DataDemoBlock>
+  <DataDemoBlock
+    name="KpiCard"
+    slug="kpi-card"
+    code={SNIPPETS.kpi}
+    summary="Valeur et unité en grand, variation dite en mots avec son signe, tendance en option."
+  >
+    <KpiCard
+      id="donnees-kpi"
+      {...kpis.visits}
+      trend={{ title: 'Visites par mois en 2025', dataset: monthlyVisits }}
+    />
+  </DataDemoBlock>
+  <DataDemoBlock
+    name="Sparkline"
+    slug="sparkline"
+    code={SNIPPETS.sparkline}
+    summary="Tendance d’une série en un trait, sans axes. Le point final, le plus haut et le plus bas sont écrits."
+  >
+    <Sparkline id="donnees-spark" title="Visites mensuelles en 2025" dataset={monthlyVisits} />
+  </DataDemoBlock>
+  <DataDemoBlock
+    name="DataTable"
+    slug="data-table"
+    code={SNIPPETS.table}
+    summary="Toutes les valeurs en tableau, en-têtes associés. Des cases à cocher masquent des colonnes sans JavaScript."
+  >
+    <DataTable id="donnees-table" title="Visites par source en 2025" dataset={trafficBySource} />
+  </DataDemoBlock>
+  <DataDemoBlock
+    name="Legend"
+    slug="legend"
+    code={SNIPPETS.legend}
+    summary="Un échantillon à forme propre et un libellé par série, pour un graphique dessiné ailleurs."
+  >
+    <Legend id="donnees-legend" items={LEGEND_ITEMS} />
+  </DataDemoBlock>
+</Stack>

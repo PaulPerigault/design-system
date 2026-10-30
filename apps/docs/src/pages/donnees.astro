@@ -1,0 +1,45 @@
+---
+import DataAccess from '../components/DataAccess.astro';
+import DataContract from '../components/DataContract.astro';
+import DataDemos from '../components/DataDemos.astro';
+import DocsLayout from '../layouts/DocsLayout.astro';
+---
+
+<DocsLayout
+  title="Données · Design system · Paul Perigault"
+  description="Huit composants de visualisation de données en SVG statique, sans JavaScript : démonstrations, contrat de données, accessibilité et teinte d’accent."
+>
+  <div class="docs-prose data-page">
+    <h1>Visualisation de données</h1>
+    <p>
+      Huit composants Astro dessinent des graphiques en SVG statique, au build, sans JavaScript.
+      Chacun écrit son résumé, lie son tableau de valeurs et ne s’appuie jamais sur la couleur
+      seule.
+    </p>
+    <p>
+      Les exemples utilisent des jeux fictifs, lus dans
+      <code>apps/docs/src/components/examples/chart-data.json</code>. Le cadre de décision est l’
+      <a href="/decisions/0007/">ADR-0007</a>.
+    </p>
+
+    <h2 id="composants-de-donnees">Les huit composants</h2>
+    <DataDemos />
+    <DataContract />
+    <DataAccess />
+  </div>
+</DocsLayout>
+
+<style>
+  .data-page :global(pre) {
+    margin: 0;
+    padding: var(--pp-space-s);
+    max-inline-size: 100%;
+    overflow: auto;
+    border: var(--pp-size-rule) solid var(--pp-color-line);
+    border-radius: var(--pp-radius-control);
+  }
+
+  .data-page :global(:where(p, li, h3)) {
+    overflow-wrap: anywhere;
+  }
+</style>

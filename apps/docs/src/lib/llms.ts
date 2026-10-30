@@ -1,5 +1,6 @@
 /** Texte de /llms.txt (llmstxt.org), logique pure ; cite les `.md` et `llms-full.txt` (T14.03). */
 import type { DocGroup } from '../navigation';
+import { DOC_PAGES } from './llms-pages.ts';
 
 export interface RegistryItem {
   name: string;
@@ -13,41 +14,12 @@ export interface LlmsInput {
   site: string;
 }
 
-interface DocPage {
-  path: string;
-  title: string;
-  description: string;
-}
-
 const TITLE = '# Design system @paulperigault';
 
 const SUMMARY = [
   'Design system de paulperigault.fr : composants Astro, jetons de couleur, d’espacement et de ' +
     'typographie (`--pp-*`), accessibilité WCAG 2.2 AA.',
   'Il est destiné aux sites d’un seul auteur construits avec Astro.',
-];
-
-const DOC_PAGES: readonly DocPage[] = [
-  {
-    path: '/identite/',
-    title: 'Identité',
-    description: 'Quatre directions de couleur comparées, avec contrastes WCAG 2 calculés.',
-  },
-  {
-    path: '/accessibilite/',
-    title: 'Accessibilité',
-    description: 'Choix d’accessibilité, preuves de test et état de conformité.',
-  },
-  {
-    path: '/glossaire/',
-    title: 'Glossaire',
-    description: 'Définitions des termes techniques utilisés dans la documentation.',
-  },
-  {
-    path: '/recherche/',
-    title: 'Recherche',
-    description: 'Recherche dans la documentation, qui demande JavaScript.',
-  },
 ];
 
 const AI_RULES = [
