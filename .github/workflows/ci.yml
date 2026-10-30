@@ -93,6 +93,7 @@ jobs:
     outputs:
       render: ${{ steps.diff.outputs.render }}
       full: ${{ steps.diff.outputs.full }}
+      rust: ${{ steps.diff.outputs.rust }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -106,8 +107,9 @@ jobs:
         run: |
           render=false
           full=false
+          rust=false
           if [ "$EVENT" = workflow_dispatch ] || [ "$EVENT" = schedule ]; then
-            render=true; full=true
+            render=true; full=true; rust=true
           elif [ "$EVENT" = pull_request ]; then
             if [[ "$HEAD_REF" == release-please--* ]]; then
               render=true; full=true
@@ -116,9 +118,16 @@ jobs:
             elif [[ "$HEAD_REF" =~ ^dependabot/.*(astro|tailwind|vite|playwright|axe-core|pagefind|fontkit) ]]; then
               render=true
             fi
+            # Rust : seulement les PR qui touchent un crate, sa chaîne ou ce workflow. Les autres
+            # PR ne paient ni l'installation de cargo-audit et cargo-deny ni la compilation.
+            rust_paths='^(crates/|Cargo\.(toml|lock)$|rust-toolchain\.toml$|deny\.toml$|\.github/workflows/ci\.yml$)'
+            if git diff --name-only "$BASE_SHA" HEAD | grep -Eq "$rust_paths"; then
+              rust=true
+            fi
           fi
           echo "render=$render" >> "$GITHUB_OUTPUT"
           echo "full=$full" >> "$GITHUB_OUTPUT"
+          echo "rust=$rust" >> "$GITHUB_OUTPUT"
 
   e2e:
     # Documentation construite puis testée dans Chromium : axe (WCAG 2.2 AA), 1.4.12, 2.5.8,
@@ -144,6 +153,27 @@ jobs:
           else
             npm run e2e -- --project=chromium --project=matrice-375x667 --project=matrice-bureau-1280x800
           fi
+
+  rust:
+    # Crates Rust (ADR-0006, décision 4) : format, clippy pedantic en refus, tests, puis RustSec et
+    # cargo-deny. Seulement si `changes` voit un chemin Rust (et chaque lundi : nouvelles failles
+    # RustSec) ; sauté, il compte comme réussi dans l'agrégat `ci`. Le build Cloudflare n'en dépend
+    # pas : il ne lance ni cargo ni rustup. La chaîne vient de rust-toolchain.toml (rustup de l'image).
+    needs: changes
+    if: needs.changes.outputs.rust == 'true' && github.event.action != 'edited'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - run: cargo fmt --all --check
+      - run: cargo clippy --workspace --all-targets --locked -- -D warnings -W clippy::pedantic
+      - run: cargo test --workspace --locked
+      - name: cargo-audit et cargo-deny (versions épinglées, Cargo.lock respecté)
+        run: cargo install --locked cargo-audit@0.22.2 cargo-deny@0.20.2
+      - run: cargo audit
+      - run: cargo deny check
 
   visuel:
     # Régression visuelle : captures comparées aux références Linux versionnées (workflow Visuel).
@@ -198,7 +228,7 @@ jobs:
     # bon droit comptant comme réussis. `!cancelled()` plutôt que `always()` : quand la concurrence
     # annule tout le run, `ci` est annulé lui aussi (pas rouge) ; le run suivant porte le verdict.
     if: ${{ !cancelled() }}
-    needs: [commitlint, squash-message, changes, verify, docs, e2e, visuel, site, zizmor]
+    needs: [commitlint, squash-message, changes, verify, docs, e2e, rust, visuel, site, zizmor]
     runs-on: ubuntu-latest
     timeout-minutes: 50
     permissions:

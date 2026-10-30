@@ -612,6 +612,27 @@
       "date": "2026-10-30",
       "decision": "Règles de fusion des dépendances (#131, « Closes #131 »). `docs/process/dependabot.md` : correctifs et mineures fusionnés automatiquement quand `ci` est vert, majeures relues à la main, sécurité d'abord. Configuration vérifiée et laissée telle quelle : elle applique déjà la règle (groupes mineures et correctifs par thème, majeures hors groupes, cooldown 3 et 7 jours, workflow `--auto` sous ruleset sans contournement). Aucune PR Dependabot ouverte, donc aucune fusion. Écart constaté : alertes et mises à jour de sécurité Dependabot désactivées sur le dépôt, réglage laissé à Paul. Alternative écartée : une seule PR hebdomadaire de toutes les mineures, qui mêlerait dépendances de rendu (e2e, Visuel) et outils.",
       "id": "D-084"
+    },
+    {
+      "alternative": "Un type `Rgb` unique comme en TypeScript, `f64` nus en paramètres (aucune garantie de validité, panics ou `NaN` silencieux) ; `thiserror` (dépendance de plus pour un enum de deux variantes) ; reporter le contrôle de finitude à l'appelant.",
+      "date": "2026-10-30",
+      "decision": "Crate `pp-color` (#88, étape 7a, « Closes #88 »). Espace de travail Cargo à la racine (`Cargo.toml`, `crates/pp-color`, `rust-toolchain.toml` épinglé à 1.99.1, `Cargo.lock` commité), Rust pur, `#![forbid(unsafe_code)]`, aucun `wasm-bindgen`, une seule dépendance de test (`proptest`). Mêmes définitions que la référence TypeScript : matrices d'Ottosson (mêmes dix chiffres), transfert sRGB (IEC 61966-2-1, CSS Color 4 § 10.2), `inSrgbGamut` à 1e-4, `fitToGamut` par dichotomie en 24 pas. Écarts de forme, sans écart de calcul : types `Oklch`, `Srgb` et `LinearSrgb` à champs privés, validés à la construction (finis ; clarté dans [0, 1], chroma ≥ 0, mêmes bornes que `parseOklch`) ; enum `ColorError` (`NonFinite`, `OutOfRange`) sans `thiserror` ; toute conversion rend un `Result` (un chroma fini mais démesuré déborde en infini : erreur, jamais de `NaN` ni d'infini en sortie) ; ni `unwrap`, `expect`, `panic!` ni indexation hors tests (lints `deny` au niveau du crate). Hors périmètre : hexadécimal (côté frontière TypeScript), contraste WCAG 2 et APCA, parité formelle (7b, #89). Tests : 11 unitaires de référence (valeurs calculées avec `color.ts`) et 4 propriétés `proptest` (aller-retour OKLCH, gamut atteint, teinte et clarté conservées, idempotence, réduction minimale). La tolérance de teinte de l'aller-retour suit 1/chroma : les matrices arrondies à 10 chiffres déplacent la teinte d'environ 4e-8/chroma radians près des gris (premier échec trouvé par `proptest` à chroma 0,003).",
+      "id": "D-085",
+      "rollback": "Supprimer `crates/`, `Cargo.*`, `rust-toolchain.toml` et `deny.toml` ; le TypeScript n'a pas changé et reste la référence."
+    },
+    {
+      "alternative": "Un workflow séparé (un second agrégat à requérir) ; un job toujours exécuté (installation de `cargo-audit` et `cargo-deny` compilés à chaque PR, même hors Rust) ; une action tierce d'installation de Rust ou de `cargo-deny`.",
+      "date": "2026-10-30",
+      "decision": "Outillage Rust en CI (#88). Job `rust` dans `ci.yml`, requis par l'agrégat `ci` (un job sauté compte comme réussi) mais exécuté seulement si `changes` voit un chemin `crates/`, `Cargo.toml`, `Cargo.lock`, `rust-toolchain.toml`, `deny.toml` ou `ci.yml`, et le lundi (nouvelles failles RustSec) : une PR sans Rust ne paie rien. Étapes : `cargo fmt --all --check`, `cargo clippy --workspace --all-targets --locked -- -D warnings -W clippy::pedantic`, `cargo test --workspace --locked`, `cargo audit`, `cargo deny check`. Chaîne tirée de `rust-toolchain.toml` par le rustup de l'image ; `cargo-audit` 0.22.2 et `cargo-deny` 0.20.2 installés par `cargo install --locked` (versions épinglées, aucune action tierce de plus : les actions du dépôt restent épinglées par SHA). `deny.toml` minimal : avis et crates retirés ou non maintenus refusés, licence MIT seule (toutes les dépendances du verrou y sont disponibles ; une autre licence exige une décision écrite), registre crates.io seul, aucune dépendance git, versions `*` refusées sauf chemins du dépôt, doublons signalés sans bloquer. Le build Cloudflare n'appelle ni `cargo` ni `rustup` : `build` et `prebuild` de la doc ne lancent que npm, Astro et Node (relu). Vérifié en local : `cargo fmt --check`, `clippy` pedantic, `test`, `audit` (0 faille, 17 dépendances) et `deny` verts sous windows-gnu ; la CI Linux reste juge.",
+      "id": "D-086",
+      "rollback": "Retirer le job `rust` et `rust` de `needs` de `ci`, la sortie `rust` de `changes` et `deny.toml`."
+    },
+    {
+      "alternative": "Laisser `pkg:tokens` par défaut (la note de l'issue #88) ; ne pas toucher aux formulaires (l'option manquerait aux futures issues).",
+      "date": "2026-10-30",
+      "decision": "Labels `pkg:color` et `pkg:data` (#88). Ajoutés à `.github/labels.json` (couleur et forme des autres `pkg:`), options `color` et `data` ajoutées aux listes « Paquet concerné » des cinq formulaires d'issue (`check:issue-templates` vert). `node tools/github/sync-labels.mjs` : dry-run (deux créations, aucune suppression) puis `--apply` autorisé par les permissions, deux labels créés. Les issues #88 et suivantes de ces crates peuvent porter leur label propre au lieu de `pkg:tokens`.",
+      "id": "D-087",
+      "rollback": "Retirer les deux entrées de `labels.json` et des formulaires, puis `node tools/github/sync-labels.mjs --apply` supprime les labels."
     }
   ]
 }
