@@ -36,7 +36,14 @@ const tokens = z.object({
 const decisions = z.object({
   adrs: z.array(z.object({ id: text, title: text, text })),
   decisions: z.array(
-    z.object({ id: text, date: text, decision: text, alternative: text, rollback: text }),
+    // Les lignes du journal à trois colonnes (D-040, D-041, D-055) n'ont ni alternative ni retour.
+    z.object({
+      id: text,
+      date: text,
+      decision: text,
+      alternative: text.optional(),
+      rollback: text.optional(),
+    }),
   ),
 });
 

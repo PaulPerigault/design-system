@@ -68,7 +68,7 @@ const decisionEntry = (d: Decision) => ({
   id: d.id,
   kind: 'decision',
   title: `${d.id} (${d.date})`,
-  body: `${d.decision}\n${d.alternative}\n${d.rollback}`,
+  body: [d.decision, d.alternative, d.rollback].filter(Boolean).join('\n'),
 });
 const adrEntry = (adr: Adr) => ({ id: adr.id, kind: 'adr', title: adr.title, body: adr.text });
 
