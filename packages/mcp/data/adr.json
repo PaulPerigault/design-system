@@ -574,6 +574,11 @@
       "decision": "Skill `encre-securite` (#178, « Refs #178 »). `.claude/skills/encre-securite/SKILL.md` (128 lignes) : CSP sans `unsafe-inline`, chaîne d'approvisionnement, validation aux frontières, injection CSS, secrets, hooks et agents, WebAssembly, Rust, avec une section Sources (quatorze URL lues le 2026-10-30, niveau de preuve par source). Source non lue : le guide ANSSI (l'adresse trouvée par recherche renvoie 404), marqué [À VÉRIFIER]. Écarts relevés : « versions exactes » n'est pas une règle du dépôt (`package.json` en plages `^`, versions fixées par le lockfile, actions épinglées par SHA), donc écrit comme proposition ; `unsafe` interdit sauf ⚖️ n'est pas écrit dans une ADR, donc écrit comme préférence ; `forbidden.ts` est encore une liste de refus (#176).",
       "id": "D-077",
       "rollback": "Supprimer le dossier `.claude/skills/encre-securite/`."
+    },
+    {
+      "date": "2026-10-30",
+      "decision": "Skill `encre-mobile` (#178, « Refs #178 »). `.claude/skills/encre-mobile/SKILL.md` (122 lignes) : principe « tout se juge d'abord à 375 px », cibles tactiles (WCAG 2.5.8 AA, 2.5.5 AAA), texte ≥ 12 px à 375 px (D-049), reflow à 320 px, viewport sans blocage du zoom, les 13 configurations de `devices.ts`, bridage réseau et processeur en mesure seulement (jamais bloquant), mouvement réduit, contraste forcé, impression, avec une section Sources (dix URL lues le 2026-10-30, niveau de preuve par source). Règles de dépôt vérifiées dans leur source : `devices.ts` (13 entrées), `ci.yml` (PR de rendu : `chromium` + deux appareils ; matrice entière le lundi et à la demande), `base.css`, `DocsLayout.astro`. Le seuil de 44 px et la mesure sans seuil sont des choix du dépôt (convention, préférence), pas des preuves ; l'affirmation « majorité du trafic mobile » est celle de Paul, non chiffrée.",
+      "id": "D-078"
     }
   ]
 }
