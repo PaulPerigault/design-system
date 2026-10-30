@@ -579,6 +579,11 @@
       "date": "2026-10-30",
       "decision": "Skill `encre-mobile` (#178, « Refs #178 »). `.claude/skills/encre-mobile/SKILL.md` (122 lignes) : principe « tout se juge d'abord à 375 px », cibles tactiles (WCAG 2.5.8 AA, 2.5.5 AAA), texte ≥ 12 px à 375 px (D-049), reflow à 320 px, viewport sans blocage du zoom, les 13 configurations de `devices.ts`, bridage réseau et processeur en mesure seulement (jamais bloquant), mouvement réduit, contraste forcé, impression, avec une section Sources (dix URL lues le 2026-10-30, niveau de preuve par source). Règles de dépôt vérifiées dans leur source : `devices.ts` (13 entrées), `ci.yml` (PR de rendu : `chromium` + deux appareils ; matrice entière le lundi et à la demande), `base.css`, `DocsLayout.astro`. Le seuil de 44 px et la mesure sans seuil sont des choix du dépôt (convention, préférence), pas des preuves ; l'affirmation « majorité du trafic mobile » est celle de Paul, non chiffrée.",
       "id": "D-078"
+    },
+    {
+      "date": "2026-10-30",
+      "decision": "Skill `encre-greenops` (#178, « Refs #178 »). `.claude/skills/encre-greenops/SKILL.md` (132 lignes) : principe de Paul (le poids se mesure, s'affiche et se signale, jamais bloquant par défaut, aucune fonctionnalité retirée), poids par page et par ressource, zéro JS par défaut, polices, images, estimation carbone (SWD v4 et CO2.js, OneByte, SCI : méthodes candidates, aucune retenue ni « prouvée »), offre gratuite Cloudflare Pages, dépendances d'exécution, avec une section Sources (huit entrées lues le 2026-10-30). Non vérifié : statut ISO du SCI (page ISO en 403, marqué [À VÉRIFIER]) et bande passante de l'offre gratuite (page lue muette). Écart relevé : ADR-0006 décision 5 et `perf.spec.ts` posent des budgets bloquants (LCP, INP, CLS, JS gzip 1 024 octets, deux polices), contraires à la consigne de Paul ; le skill suit la consigne et renvoie leur réexamen à #102. Correction du skill `encre-mobile` (D-078), qui disait ces seuils absents de la CI.",
+      "id": "D-079"
     }
   ]
 }
