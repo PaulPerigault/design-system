@@ -584,6 +584,13 @@
       "date": "2026-10-30",
       "decision": "Skill `encre-greenops` (#178, « Refs #178 »). `.claude/skills/encre-greenops/SKILL.md` (132 lignes) : principe de Paul (le poids se mesure, s'affiche et se signale, jamais bloquant par défaut, aucune fonctionnalité retirée), poids par page et par ressource, zéro JS par défaut, polices, images, estimation carbone (SWD v4 et CO2.js, OneByte, SCI : méthodes candidates, aucune retenue ni « prouvée »), offre gratuite Cloudflare Pages, dépendances d'exécution, avec une section Sources (huit entrées lues le 2026-10-30). Non vérifié : statut ISO du SCI (page ISO en 403, marqué [À VÉRIFIER]) et bande passante de l'offre gratuite (page lue muette). Écart relevé : ADR-0006 décision 5 et `perf.spec.ts` posent des budgets bloquants (LCP, INP, CLS, JS gzip 1 024 octets, deux polices), contraires à la consigne de Paul ; le skill suit la consigne et renvoie leur réexamen à #102. Correction du skill `encre-mobile` (D-078), qui disait ces seuils absents de la CI.",
       "id": "D-079"
+    },
+    {
+      "alternative": "Supprimer l'historique : écartée, elle perd l'information (coûts Kiro, leçons de routage, état des lots).",
+      "date": "2026-10-30",
+      "decision": "Run-report allégé (#183, « Closes #183 »). `docs/run-report.md` passe de 321 à 60 lignes de repères ; l'historique (lots L0 à L20, bilan Kiro, phase 2, entrées par PR, tableaux de PR) est déplacé tel quel dans `docs/history/`. Le run-report n'est plus mis à jour après chaque PR mais en fin de jalon ; le journal du jour reste mis à jour après chaque PR.",
+      "id": "D-080",
+      "rollback": "Remettre les fichiers de `docs/history/` dans `docs/run-report.md` (`git revert`)."
     }
   ]
 }

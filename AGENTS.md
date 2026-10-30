@@ -111,7 +111,11 @@ Il se restaure quand il diffère sans cause (dérive Windows).
 
 ## Décisions et journal
 
-ADR dans `docs/adr/`, choix ouverts dans `docs/decisions-log.md`, journal daté dans `docs/journal/`, bilan dans `docs/run-report.md`.
+ADR dans `docs/adr/`, choix ouverts dans `docs/decisions-log.md`, journal daté dans `docs/journal/`
+(mis à jour après chaque PR), repères dans `docs/run-report.md` (mis à jour en fin de jalon seulement), historique archivé dans `docs/history/`.
+
+Lecture initiale d'une session : `tmp/etat-autonome.md` (local), ce fichier, les skills de l'index,
+l'issue de la tâche.
 
 ## GitHub (règle opérationnelle)
 
