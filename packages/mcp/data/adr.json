@@ -591,6 +591,11 @@
       "decision": "Run-report allégé (#183, « Closes #183 »). `docs/run-report.md` passe de 321 à 60 lignes de repères ; l'historique (lots L0 à L20, bilan Kiro, phase 2, entrées par PR, tableaux de PR) est déplacé tel quel dans `docs/history/`. Le run-report n'est plus mis à jour après chaque PR mais en fin de jalon ; le journal du jour reste mis à jour après chaque PR.",
       "id": "D-080",
       "rollback": "Remettre les fichiers de `docs/history/` dans `docs/run-report.md` (`git revert`)."
+    },
+    {
+      "date": "2026-10-30",
+      "decision": "Skill `encre-rust` (#178, « Refs #178 »). `.claude/skills/encre-rust/SKILL.md` (143 lignes) : ADR-0006 décision 4 (crates en Rust pur sans `wasm-bindgen`, crates `-wasm` minces, clippy pedantic en refus, `cargo fmt --check`, aucun panic, `unwrap`, `expect` ni indexation non vérifiée hors tests, erreurs typées, `proptest`, parité TypeScript à 1e-6 pour `pp-color` et 1e-9 en relatif pour `pp-data` (ADR-0007, à confirmer en V4a), poids et provenance du `.wasm`, build Cloudflare sans Rust, `cargo audit` et `cargo deny` bloquants dès le premier crate). Règle validée par Paul : `unsafe` interdit sauf ⚖️, `#![forbid(unsafe_code)]` dans chaque crate. Sources externes lues le 2026-10-30 et paraphrasées (huit entrées). Non vérifié : classement des quatre lints en `restriction` (page Clippy muette, [À VÉRIFIER]) ; guide wasm-bindgen déménagé, glue JavaScript non confirmé. Alternative écartée : aucune règle sur `unsafe` (la déclarer seulement en préférence). Retour arrière : supprimer le fichier.",
+      "id": "D-081"
     }
   ]
 }
