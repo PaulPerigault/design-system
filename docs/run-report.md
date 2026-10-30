@@ -295,3 +295,7 @@ test -c apps/docs/playwright.config.ts`.
 ## #85, self-test de `mcp` (2026-10-30)
 
 - `alternative` et `rollback` optionnels, `pp-mcp --self-test` dans `npm run verify` (D-073). Reste : anneaux de `mcp` (#85).
+
+## #85, mcp en anneaux (2026-10-30)
+
+- `domain`, `application`, `infrastructure` et erreurs typées, `architecture` sur `packages/mcp/src` (D-074). #85 fermée. Reste : issue `[Tokens] create`, #123, #131, Rust, #102, #103, #130, #118.

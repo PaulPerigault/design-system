@@ -1,6 +1,7 @@
-// Schémas d'entrée des outils (zod, `.strict()` : toute clé inconnue est refusée) et erreur
-// d'outil. Les longueurs maximales bornent le travail fait par appel.
+// Schémas d'entrée des outils (zod, `.strict()` : toute clé inconnue est refusée), vérifiés contre
+// les types du domaine. Les longueurs maximales bornent le travail fait par appel.
 import { z } from 'zod';
+import type { ToolInputs, ToolName } from '../domain/tool-inputs.ts';
 
 export const LIMITS = Object.freeze({
   text: 20_000,
@@ -25,12 +26,7 @@ const color = () =>
     .regex(COLOR, 'attendu : #rgb, #rrggbb, oklch(…) ou un jeton --pp-…');
 const query = () => z.string().trim().min(1).max(LIMITS.query);
 
-/** Erreur attendue (entrée inconnue, couleur hors gamut…) : message montré tel quel. */
-export class ToolError extends Error {
-  override name = 'ToolError';
-}
-
-export const schemas = Object.freeze({
+export const schemas: { [N in ToolName]: z.ZodType<ToolInputs[N]> } = Object.freeze({
   list_components: z.object({ group: slug().optional() }).strict(),
   get_component: z.object({ slug: slug() }).strict(),
   get_tokens: z.object({ role: slug().optional(), theme: theme().optional() }).strict(),
@@ -56,37 +52,3 @@ export const schemas = Object.freeze({
       message: 'fournir soit « id », soit « query »',
     }),
 });
-
-const ID_DIGITS: Record<string, number> = { ADR: 4, D: 3 };
-
-/** `adr-3` → `ADR-0003` ; `d-21` → `D-021`. */
-export function canonicalId(id: string): string {
-  const [kind = '', number = ''] = id.toUpperCase().split('-');
-  return `${kind}-${number.padStart(ID_DIGITS[kind] ?? 0, '0')}`;
-}
-
-export type ToolName = keyof typeof schemas;
-
-// Définition d'un outil : nom, titre, description, schéma d'entrée et traitement.
-export interface ToolDefinition {
-  name: ToolName;
-  title: string;
-  description: string;
-  schema: z.ZodType;
-  /** Valide l'entrée avec `schema`, puis appelle le traitement typé. */
-  run: (input: unknown) => unknown;
-}
-
-export interface ToolSpec<S extends z.ZodType> {
-  name: ToolName;
-  title: string;
-  description: string;
-  schema: S;
-  run: (input: z.output<S>) => unknown;
-}
-
-/** Assemble un outil : l'entrée est validée par `schema` avant d'atteindre `run`. */
-export function defineTool<S extends z.ZodType>(spec: ToolSpec<S>): ToolDefinition {
-  const { name, title, description, schema } = spec;
-  return { name, title, description, schema, run: (input) => spec.run(schema.parse(input)) };
-}

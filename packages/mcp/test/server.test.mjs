@@ -1,11 +1,11 @@
-import { readdirSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { analyze, RULE_IDS } from '@paulperigault/guards/design';
-import { createServer, DATA_NOTICE, toolCallback } from '../src/server.ts';
-import { LIMITS, ToolError } from '../src/schemas.ts';
+import { DATA_NOTICE, toolCallback } from '../src/application/tool-callback.ts';
+import { ToolError } from '../src/errors.ts';
+import { createServer } from '../src/infrastructure/server.ts';
+import { LIMITS } from '../src/infrastructure/tool-schemas.ts';
 
 const empty = { keyboard: [], screenReader: [], guaranteed: [], integrator: [] };
 const button = { slug: 'button', title: 'Button', group: 'forms', summary: 'Bouton.', snippet: '' };
@@ -98,23 +98,5 @@ describe('toolCallback', () => {
     expect(text(result)).not.toMatch(/Users|ENOENT|JSON/);
     const refuse = () => Promise.reject(new ToolError('entrée refusée.'));
     expect(text(await toolCallback(refuse)({}))).toBe('entrée refusée.');
-  });
-});
-
-describe('analyse statique de src/ : ni réseau, ni exécution, ni écriture', () => {
-  const dir = join(import.meta.dirname, '..', 'src');
-  const sources = readdirSync(dir).map((name) => readFileSync(join(dir, name), 'utf8'));
-  const FORBIDDEN = [
-    /from\s+['"](?:node:)?(?:http|https|http2|net|dns|tls|dgram)['"]/,
-    /\bfetch\s*\(|\bWebSocket\b|\bXMLHttpRequest\b|\bEventSource\b/,
-    /child_process|(?<![.\w])(?:spawn|exec|execSync|execFile)\s*\(/,
-    /\beval\s*\(|\bFunction\s*\(|\bimport\s*\(/,
-    /\b(?:writeFile|appendFile|mkdir|rm|rmdir|unlink|rename|copyFile)(?:Sync)?\s*\(/,
-    /\bconsole\./,
-  ];
-
-  it.each(FORBIDDEN)('aucune occurrence de %s dans les neuf modules', (pattern) => {
-    expect(sources).toHaveLength(9);
-    expect(sources.filter((source) => pattern.test(source))).toEqual([]);
   });
 });

@@ -1,9 +1,7 @@
-// Outil validate_snippet : analyse de texte en mémoire, jamais d'exécution ni de fichier.
+// Validation d'un extrait : analyse de texte en mémoire, jamais d'exécution ni de fichier.
 // Règles de @paulperigault/guards (`analyze`, injecté) + jetons inconnus, `style` en ligne et
 // `<img>` sans dimensions.
-import { defineTool, schemas } from './schemas.ts';
-import type { ToolDefinition } from './schemas.ts';
-import { closest } from './tools-components.ts';
+import { closest } from './text.ts';
 
 export interface Hit {
   rule: string;
@@ -20,7 +18,7 @@ export interface SnippetDeps {
   tokenNames: string[];
 }
 
-type Language = 'astro' | 'html' | 'css' | 'md';
+export type Language = 'astro' | 'html' | 'css' | 'md';
 
 const MARKUP = new Set<Language>(['astro', 'html', 'md']);
 const REFERENCE = /var\(\s*(--pp-[\w-]+)/g;
@@ -101,20 +99,4 @@ export function validateSnippet(
     (a, b) => a.line - b.line || a.rule.localeCompare(b.rule, 'en'),
   );
   return { language, valid: violations.length === 0, count: violations.length, violations };
-}
-
-export function snippetTools(deps: SnippetDeps): ToolDefinition[] {
-  return [
-    defineTool({
-      name: 'validate_snippet',
-      title: 'Valider un extrait',
-      description:
-        'Analyse statique d’un extrait astro, html, css ou md (jamais exécuté) avec les ' +
-        'garde-fous du design system : interdits de conception, jetons --pp-* inconnus, ' +
-        'style en ligne, images sans dimensions. Chaque violation porte la règle, la ligne, ' +
-        'un message et une correction proposée.',
-      schema: schemas.validate_snippet,
-      run: (input) => validateSnippet(input, deps),
-    }),
-  ];
 }

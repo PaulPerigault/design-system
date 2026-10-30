@@ -4,7 +4,7 @@
 import { join } from 'node:path';
 import process from 'node:process';
 import type { z } from 'zod';
-import type { Component, Data } from '../src/data.ts';
+import type { Component, Data } from '../src/domain/types.ts';
 import { nodeIo } from './node-io.ts';
 import type { BuildIo } from './node-io.ts';
 import { pageMeta, parseAdr, parseComponent, parseDecisionLog } from './parse-component.ts';

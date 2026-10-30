@@ -1,7 +1,7 @@
 // Lecture pure des pages Markdown produites par apps/docs/scripts/markdown.mjs (en-tête
 // `# Titre · …` et `Source :`, sections `##` et `###`, listes, tableaux, blocs de code), des
 // ADR (`docs/adr/0003-mcp.md`) et des lignes `| D-… |` du journal des décisions.
-import type { Component, Decisions } from '../src/data.ts';
+import type { Component, Decisions } from '../src/domain/types.ts';
 import { A11Y, SECTIONS } from './sections.ts';
 
 const SOURCE = /^Source : (\S+)$/m;

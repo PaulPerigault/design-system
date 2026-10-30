@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { loadData, validateData } from '../src/data.ts';
-import { canonicalId, ToolError } from '../src/schemas.ts';
-import { closest, distance, getComponent, listComponents } from '../src/tools-components.ts';
-import { docsTools } from '../src/tools-docs.ts';
-import { normalize, termsOf } from '../src/tools-components.ts';
-import { checkContrast, getTokens, roleOf } from '../src/tools-tokens.ts';
+import { getComponent, listComponents } from '../src/application/tools-components.ts';
+import { docsTools } from '../src/application/tools-docs.ts';
+import { checkContrast, getTokens, roleOf } from '../src/application/tools-tokens.ts';
+import { canonicalId } from '../src/domain/decision-id.ts';
+import { closest, distance, normalize, termsOf } from '../src/domain/text.ts';
+import { ToolError } from '../src/errors.ts';
+import { loadData, validateData } from '../src/infrastructure/data.ts';
 const a11y = { keyboard: ['Tab'], screenReader: [], guaranteed: [], integrator: [] };
 const component = (slug, group) => ({
   ...{ slug, title: slug, group, summary: `${slug} sert à…`, use: [], avoid: [], snippet: '' },
@@ -27,7 +28,6 @@ const adr = { id: 'ADR-0003', title: 'Serveur MCP', text: '# ADR-0003 — Serveu
 const d021 = { id: 'D-021', date: 'd', decision: 'Budget INP', alternative: 'a', rollback: 'r' };
 const decisions = { adrs: [adr], decisions: [d021] };
 const tool = (name) => docsTools({ docs, decisions }).find((t) => t.name === name).run;
-
 describe('list_components et get_component', () => {
   it('liste tout, filtre par groupe, refuse un groupe inconnu', () => {
     expect(listComponents(components).count).toBe(2);

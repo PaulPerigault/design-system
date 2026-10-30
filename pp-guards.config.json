@@ -43,8 +43,9 @@
     ]
   },
   "architecture": {
-    "roots": ["packages/guards/src", "packages/create/src"],
-    "pureNode": ["node:path", "node:buffer", "node:util", "node:crypto"]
+    "roots": ["packages/guards/src", "packages/create/src", "packages/mcp/src"],
+    "pureNode": ["node:path", "node:buffer", "node:util", "node:crypto"],
+    "allowPackages": ["@paulperigault/tokens"]
   },
   "images": {
     "roots": ["packages", "apps"],

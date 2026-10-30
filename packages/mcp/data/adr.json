@@ -546,6 +546,13 @@
       "decision": "Self-test de `mcp` (#85, « Refs #85 », option A de Paul). `alternative` et `rollback` deviennent optionnels dans `packages/mcp/src/data.ts` : trois lignes du journal (D-040, D-041, D-055) n'ont que trois colonnes, ce qui faisait échouer `pp-mcp --self-test` (« données embarquées invalides (adr.json) ») sur `main`. `adr.json` ne change pas de forme ; l'entrée de recherche joint les seuls champs présents. `pp-mcp --self-test` rejoint `npm run verify` (script `check:mcp-self-test`, après `check:mcp-data`), donc le job `verify` de la CI. Test : décision à trois colonnes.",
       "id": "D-073",
       "rollback": "Remettre `alternative` et `rollback` obligatoires, retirer `check:mcp-self-test` de `verify`."
+    },
+    {
+      "alternative": "Un seul anneau « outils » mêlant zod et cas d'usage (le domaine importerait zod, refusé par `architecture`).",
+      "date": "2026-10-30",
+      "decision": "`mcp` en anneaux (#85, « Closes #85 », ADR-0006 décision 1). `src/` devient `domain/` (types, contraste et APCA, texte, recherche, validation d'extrait, identifiants), `application/` (les sept outils, `tool-callback`, `tools`) et `infrastructure/` (zod : schémas des données et des outils, lecture de `data/`, `createServer`), plus `errors.ts` (`ToolError` et `DataError` à code littéral, messages inchangés) ; `bin/` reste l'enveloppe du binaire. Les types du domaine sont des interfaces ; les schémas zod sont typés `ZodType<Type>` : un écart casse `tsc`. `@paulperigault/tokens` est autorisé dans les anneaux internes (`allowPackages`) : couleurs et contraste du domaine. Le contrôle `architecture` couvre `packages/mcp/src`. La garde statique (`static.test.mjs`) lit `src/` récursivement, vérifie que tous les fichiers sont lus (plus de compte de neuf) et garde les mêmes interdits : ni réseau, ni exécution, ni écriture (adaptation validée par Paul). `data/*.json` identiques, 77 tests existants inchangés hors imports.",
+      "id": "D-074",
+      "rollback": "Revenir au commit précédent : `src/` à plat, `architecture` sur `guards` et `create` seulement."
     }
   ]
 }
