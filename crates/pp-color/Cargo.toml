@@ -1,0 +1,12 @@
+[package]
+name = "pp-color"
+description = "Couleur OKLCH, sRGB et gamut sRGB, en Rust pur."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[dev-dependencies]
+proptest = { version = "1", default-features = false, features = ["std"] }

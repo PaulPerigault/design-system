@@ -1,0 +1,33 @@
+# cargo-deny : contrôles bloquants dès le premier crate (ADR-0006, décision 4). Minimal : chaque
+# clause a une raison ; une licence ou une source ajoutée demande une décision écrite (D-xxx).
+
+[graph]
+# Dépendances de test comprises : proptest entre dans Cargo.lock.
+all-features = true
+
+[advisories]
+# Failles RustSec : refus. Crates non maintenus ou retirés : refus, workspace compris.
+yanked = "deny"
+unmaintained = "all"
+ignore = []
+
+[licenses]
+# Le dépôt est MIT. Au 2026-10-30, toutes les dépendances (proptest et ses dépendances) sont
+# disponibles sous MIT : seule cette licence est admise. Une dépendance sous Apache-2.0 seule,
+# ou autre, échoue ici : on l'admet par une décision écrite (D-xxx), pas par défaut.
+allow = ["MIT"]
+confidence-threshold = 0.93
+
+[bans]
+# Doublons de versions signalés, pas bloquants : un build WebAssembly en paie le poids (étape 8),
+# on les regarde à ce moment-là. Jamais de version en `*`, sauf dépendance par chemin du dépôt.
+multiple-versions = "warn"
+wildcards = "deny"
+allow-wildcard-paths = true
+
+[sources]
+# Un seul registre : crates.io. Aucune dépendance git (même principe que `check:lockfile` côté npm).
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+allow-git = []

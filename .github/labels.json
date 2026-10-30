@@ -46,6 +46,16 @@
     "color": "3d4f63",
     "description": "Paquet @paulperigault/dataviz : contrat de données et palettes"
   },
+  {
+    "name": "pkg:color",
+    "color": "3d4f63",
+    "description": "Crate Rust pp-color : OKLCH, sRGB, gamut, contraste"
+  },
+  {
+    "name": "pkg:data",
+    "color": "3d4f63",
+    "description": "Crate Rust pp-data : agrégation, quantiles, sous-échantillonnage"
+  },
   { "name": "pkg:astro", "color": "3d4f63", "description": "Paquet @paulperigault/astro" },
   { "name": "pkg:guards", "color": "3d4f63", "description": "Paquet @paulperigault/guards" },
   { "name": "pkg:create", "color": "3d4f63", "description": "Paquet @paulperigault/create (CLI)" },

@@ -1,0 +1,13 @@
+# Espace de travail Cargo (ADR-0006, décision 4). Les crates métier sont du Rust pur : aucune
+# dépendance à wasm-bindgen, la liaison WebAssembly vivra dans des crates `-wasm` minces.
+[workspace]
+resolver = "3"
+members = ["crates/pp-color"]
+
+[workspace.package]
+version = "0.0.0"
+edition = "2024"
+rust-version = "1.99"
+license = "MIT"
+repository = "https://github.com/PaulPerigault/design-system"
+publish = false

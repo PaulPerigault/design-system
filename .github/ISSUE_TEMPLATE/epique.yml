@@ -43,7 +43,7 @@ body:
     id: paquet
     attributes:
       label: Paquet principal
-      options: [tokens, css, astro, guards, create, mcp, docs, agents, ci, processus]
+      options: [tokens, color, data, css, astro, guards, create, mcp, docs, agents, ci, processus]
     validations:
       required: true
   - type: dropdown

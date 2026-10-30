@@ -29,3 +29,6 @@ apps/docs/.visual/
 .agents/lead-queue.md
 .agents/routing-log.jsonl
 apps/docs/deploy/
+
+# Rust : cible de compilation locale (Cargo.lock, lui, se commite).
+target/

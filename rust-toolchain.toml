@@ -1,0 +1,5 @@
+# Chaîne épinglée (ADR-0006, décision 4) : même version en local et en CI.
+[toolchain]
+channel = "1.99.1"
+components = ["rustfmt", "clippy"]
+profile = "minimal"
