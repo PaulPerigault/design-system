@@ -567,6 +567,13 @@
       "decision": "Skill `encre-processus` (#178, « Refs #178 »). `.claude/skills/encre-processus/SKILL.md` (136 lignes) rassemble les règles de livraison déjà écrites dans `AGENTS.md`, `commitlint.config.mjs`, `ci.yml`, le gabarit de PR et `tmp/etat-autonome.md`, chacune avec sa source. Écarts relevés en la vérifiant : `tmp/` est exclu par `.git/info/exclude` et non par `.gitignore` ; il n'y a plus de hook `pre-push` ; `--auto` n'est écrit dans aucun fichier du dépôt (la règle « fusionner avant la suivante » l'exclut), le skill le dit comme consigne du run.",
       "id": "D-076",
       "rollback": "Supprimer le dossier `.claude/skills/encre-processus/`."
+    },
+    {
+      "alternative": "Copier les textes des guides (interdit : paraphrase seulement) ; citer l'ANSSI sans l'avoir lue.",
+      "date": "2026-10-30",
+      "decision": "Skill `encre-securite` (#178, « Refs #178 »). `.claude/skills/encre-securite/SKILL.md` (128 lignes) : CSP sans `unsafe-inline`, chaîne d'approvisionnement, validation aux frontières, injection CSS, secrets, hooks et agents, WebAssembly, Rust, avec une section Sources (quatorze URL lues le 2026-10-30, niveau de preuve par source). Source non lue : le guide ANSSI (l'adresse trouvée par recherche renvoie 404), marqué [À VÉRIFIER]. Écarts relevés : « versions exactes » n'est pas une règle du dépôt (`package.json` en plages `^`, versions fixées par le lockfile, actions épinglées par SHA), donc écrit comme proposition ; `unsafe` interdit sauf ⚖️ n'est pas écrit dans une ADR, donc écrit comme préférence ; `forbidden.ts` est encore une liste de refus (#176).",
+      "id": "D-077",
+      "rollback": "Supprimer le dossier `.claude/skills/encre-securite/`."
     }
   ]
 }
