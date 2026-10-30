@@ -7,10 +7,10 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { analyze, RULE_IDS } from '@paulperigault/guards/design';
-import { loadData } from '../src/data.ts';
-import type { Data } from '../src/data.ts';
-import { createServer } from '../src/server.ts';
-import type { ServerDeps } from '../src/server.ts';
+import { loadData } from '../src/infrastructure/data.ts';
+import type { Data } from '../src/domain/types.ts';
+import { createServer } from '../src/infrastructure/server.ts';
+import type { ServerDeps } from '../src/infrastructure/server.ts';
 
 export const log = (message: string): void => void process.stderr.write(`pp-mcp : ${message}\n`);
 

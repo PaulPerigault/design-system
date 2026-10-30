@@ -3,10 +3,8 @@
 import { parseOklch, toHex } from '@paulperigault/tokens/color';
 import { contrastRatio } from '@paulperigault/tokens/contrast';
 import { APCA_VERSION, apcaLc } from './apca.ts';
-import type { Tokens } from './data.ts';
-import { ToolError } from './schemas.ts';
-
-export type Theme = 'light' | 'dark';
+import { ToolError } from '../errors.ts';
+import type { Theme, Tokens } from './types.ts';
 
 export interface ResolvedColor {
   input: string;
@@ -35,8 +33,9 @@ function oklchToHex(text: string): string {
   try {
     return toHex(parseOklch(text));
   } catch (error) {
-    if (error instanceof RangeError) throw new ToolError(`« ${text} » est hors du gamut sRGB.`);
-    throw new ToolError(`« ${text} » n’est pas une couleur oklch() lisible.`);
+    if (error instanceof RangeError)
+      throw new ToolError(`« ${text} » est hors du gamut sRGB.`, 'color.gamut');
+    throw new ToolError(`« ${text} » n’est pas une couleur oklch() lisible.`, 'color.unreadable');
   }
 }
 
@@ -44,8 +43,10 @@ function resolveToken(name: string, tokens: Tokens, theme: Theme): ResolvedColor
   const themed = tokens.themes[theme][name];
   if (themed) return { input: name, theme, value: themed.oklch, hex: themed.hex };
   const base = tokens.base[name];
-  if (base === undefined) throw new ToolError(`jeton inconnu ${name} (voir get_tokens).`);
-  if (!base.startsWith('oklch(')) throw new ToolError(`le jeton ${name} n’est pas une couleur.`);
+  if (base === undefined)
+    throw new ToolError(`jeton inconnu ${name} (voir get_tokens).`, 'token.unknown');
+  if (!base.startsWith('oklch('))
+    throw new ToolError(`le jeton ${name} n’est pas une couleur.`, 'token.not-color');
   return { input: name, value: base, hex: oklchToHex(base) };
 }
 

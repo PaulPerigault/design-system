@@ -1,10 +1,10 @@
 // Outils « jetons » : get_tokens (valeurs par rôle et par thème, contraste des paires connues)
 // et check_contrast (WCAG 2 normatif, APCA informatif).
-import { contrastReport, pairReport, resolveColor } from './contrast-pair.ts';
-import type { Theme } from './contrast-pair.ts';
-import type { Data, Tokens } from './data.ts';
-import { defineTool, schemas, ToolError } from './schemas.ts';
-import type { ToolDefinition } from './schemas.ts';
+import { contrastReport, pairReport, resolveColor } from '../domain/contrast-pair.ts';
+import type { Data, Theme, Tokens } from '../domain/types.ts';
+import { ToolError } from '../errors.ts';
+import { defineTool } from './tool.ts';
+import type { Tool } from './tool.ts';
 
 const PREFIX = '--pp-';
 const THEMES: Theme[] = ['light', 'dark'];
@@ -41,7 +41,10 @@ export function getTokens(
 ) {
   const roles = rolesOf(tokens);
   if (role !== undefined && !roles.includes(role)) {
-    throw new ToolError(`rôle inconnu « ${role} » ; rôles : ${roles.join(', ')}.`);
+    throw new ToolError(
+      `rôle inconnu « ${role} » ; rôles : ${roles.join(', ')}.`,
+      'token.role-unknown',
+    );
   }
   const keep = (name: string): boolean => role === undefined || roleOf(name) === role;
   const themes = theme === undefined ? THEMES : [theme];
@@ -66,7 +69,7 @@ export function checkContrast(
   return contrastReport(resolveColor(foreground, context), resolveColor(background, context));
 }
 
-export function tokenTools({ tokens }: Pick<Data, 'tokens'>): ToolDefinition[] {
+export function tokenTools({ tokens }: Pick<Data, 'tokens'>): Tool[] {
   return [
     defineTool({
       name: 'get_tokens',
@@ -75,7 +78,6 @@ export function tokenTools({ tokens }: Pick<Data, 'tokens'>): ToolDefinition[] {
         'Jetons --pp-* par rôle (color, space, font, size…) et par thème (light, dark) : ' +
         'valeur OKLCH et hexadécimal sRGB rendu, jetons de base, et contraste WCAG 2 calculé ' +
         'pour les paires avant-plan/arrière-plan connues.',
-      schema: schemas.get_tokens,
       run: (input) => getTokens(tokens, input),
     }),
     defineTool({
@@ -85,7 +87,6 @@ export function tokenTools({ tokens }: Pick<Data, 'tokens'>): ToolDefinition[] {
         'Contraste entre deux couleurs (#rgb, #rrggbb, oklch(…) ou jeton --pp-… résolu dans ' +
         'le thème, light par défaut) : ratio WCAG 2, niveaux AA/AAA en texte normal et grand ' +
         'texte, et Lc APCA à titre informatif.',
-      schema: schemas.check_contrast,
       run: (input) => checkContrast(tokens, input),
     }),
   ];
