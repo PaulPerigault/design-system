@@ -291,3 +291,7 @@ test -c apps/docs/playwright.config.ts`.
 ## #170 (2026-10-29) : textes d'architecture et d'auteur
 
 - Écarts de l'audit corrigés, page auteur au « je » (D-072). Reste de #123 : données, navigation (⚖️), tests visiteurs (Paul).
+
+## #85, self-test de `mcp` (2026-10-30)
+
+- `alternative` et `rollback` optionnels, `pp-mcp --self-test` dans `npm run verify` (D-073). Reste : anneaux de `mcp` (#85).

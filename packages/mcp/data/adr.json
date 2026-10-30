@@ -539,6 +539,13 @@
       "decision": "Textes d'architecture et d'auteur (#170, « Closes #170 », sous-issue de #123, ADR-0008 décision 5). Architecture : `dataviz` ajouté au tableau des paquets (sept paquets et l'application, d'après le tableau d'`AGENTS.md`), « six » devient sept, la régression Visuel compte 3 projets (`VISUAL_PROJECTS`) et non 13, accroche chiffrée par le tableau et la liste des contrôles (nombres calculés dans la page, plus de chiffre écrit à la main). Auteur : texte au « je », apostrophes typographiques, `DraftNotice` conservé ; contact toujours à compléter par Paul. Écarts de l'audit corrigés : paquets, projets Visuel, apostrophes ; restent « design système » (déjà retiré de l'accueil) et les preuves périmées (régénération de `proofs.json`, hors périmètre). Références Visuel régénérées pour les pages modifiées. Budgets et garde-fous inchangés.",
       "id": "D-072",
       "rollback": "Restaurer `architecture.astro` et `auteur.astro`."
+    },
+    {
+      "alternative": "Rendre les trois lignes complètes dans le journal (réécrit de l'histoire) ou rendre le self-test tolérant seulement (masque une vraie donnée invalide).",
+      "date": "2026-10-30",
+      "decision": "Self-test de `mcp` (#85, « Refs #85 », option A de Paul). `alternative` et `rollback` deviennent optionnels dans `packages/mcp/src/data.ts` : trois lignes du journal (D-040, D-041, D-055) n'ont que trois colonnes, ce qui faisait échouer `pp-mcp --self-test` (« données embarquées invalides (adr.json) ») sur `main`. `adr.json` ne change pas de forme ; l'entrée de recherche joint les seuls champs présents. `pp-mcp --self-test` rejoint `npm run verify` (script `check:mcp-self-test`, après `check:mcp-data`), donc le job `verify` de la CI. Test : décision à trois colonnes.",
+      "id": "D-073",
+      "rollback": "Remettre `alternative` et `rollback` obligatoires, retirer `check:mcp-self-test` de `verify`."
     }
   ]
 }
