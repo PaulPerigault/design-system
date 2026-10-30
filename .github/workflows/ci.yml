@@ -118,9 +118,10 @@ jobs:
             elif [[ "$HEAD_REF" =~ ^dependabot/.*(astro|tailwind|vite|playwright|axe-core|pagefind|fontkit) ]]; then
               render=true
             fi
-            # Rust : seulement les PR qui touchent un crate, sa chaîne ou ce workflow. Les autres
+            # Rust : seulement les PR qui touchent un crate, sa chaîne, ce workflow, la référence
+            # TypeScript de la parité (packages/tokens/src) ou ses vecteurs (tools/color). Les autres
             # PR ne paient ni l'installation de cargo-audit et cargo-deny ni la compilation.
-            rust_paths='^(crates/|Cargo\.(toml|lock)$|rust-toolchain\.toml$|deny\.toml$|\.github/workflows/ci\.yml$)'
+            rust_paths='^(crates/|packages/tokens/src/|tools/color/|Cargo\.(toml|lock)$|rust-toolchain\.toml$|deny\.toml$|\.github/workflows/ci\.yml$)'
             if git diff --name-only "$BASE_SHA" HEAD | grep -Eq "$rust_paths"; then
               rust=true
             fi

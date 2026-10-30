@@ -20,6 +20,10 @@ pub enum ColorError {
     NonFinite(Component),
     /// La valeur est finie mais hors de sa plage (clarté hors [0, 1], chroma ou epsilon < 0).
     OutOfRange(Component),
+    /// Le texte n'est pas de la forme `#rrggbb`.
+    InvalidHex,
+    /// La couleur sort du gamut sRGB : la palette n'est jamais rognée (comme `toHex` en TypeScript).
+    OutOfGamut,
 }
 
 impl fmt::Display for ColorError {
@@ -27,6 +31,8 @@ impl fmt::Display for ColorError {
         match self {
             Self::NonFinite(component) => write!(f, "{component:?} : valeur non finie"),
             Self::OutOfRange(component) => write!(f, "{component:?} : valeur hors plage"),
+            Self::InvalidHex => write!(f, "hexadécimal : attendu #rrggbb"),
+            Self::OutOfGamut => write!(f, "couleur hors gamut sRGB"),
         }
     }
 }

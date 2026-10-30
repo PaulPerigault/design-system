@@ -633,6 +633,27 @@
       "decision": "Labels `pkg:color` et `pkg:data` (#88). Ajoutés à `.github/labels.json` (couleur et forme des autres `pkg:`), options `color` et `data` ajoutées aux listes « Paquet concerné » des cinq formulaires d'issue (`check:issue-templates` vert). `node tools/github/sync-labels.mjs` : dry-run (deux créations, aucune suppression) puis `--apply` autorisé par les permissions, deux labels créés. Les issues #88 et suivantes de ces crates peuvent porter leur label propre au lieu de `pkg:tokens`.",
       "id": "D-087",
       "rollback": "Retirer les deux entrées de `labels.json` et des formulaires, puis `node tools/github/sync-labels.mjs --apply` supprime les labels."
+    },
+    {
+      "alternative": "Un seul module de contraste (fichier de plus de 120 lignes) ; des vecteurs écrits à la main (aucune garantie qu'ils suivent le TypeScript) ; relâcher le seuil à 1e-4 (inutile : l'écart mesuré est de 1e-13).",
+      "date": "2026-10-30",
+      "decision": "Contraste et hexadécimal dans `pp-color`, parité avec `tokens` (#89, étape 7b, « Closes #89 »). Modules `hex` (`parse_hex`, `to_hex`, `hex_to_oklch`), `contrast` (`relative_luminance`, `contrast_ratio`, `rendered_srgb`) et `apca` (`apca_lc`), un par fichier, mêmes définitions et mêmes constantes que `color.ts` et `contrast.ts` (lues : WCAG 2.2, seuil 0,04045, APCA 0.0.98G-4g). APCA existe côté TypeScript, donc il est porté : aucun écart à noter, rien ajouté à `tmp/questions-paul.md`. Écarts de forme : `ColorError` gagne `InvalidHex` et `OutOfGamut` (la `RangeError` de `toHex` et de `contrastRatio`) ; un canal sRGB hors [0, 1] est refusé par `OutOfRange` (la référence rend `NaN` pour une puissance négative) ; le texte hexadécimal n'est pas rogné d'espaces (comme `hexToOklch`, contrairement à `contrastRatio`, dont la frontière TypeScript garde son `trim`). Parité : `tools/color/build.mjs` calcule depuis la référence 94 couleurs (jetons Encre clair et sombre, teintes de 30° en clair et en sombre, bords du gamut, noir, blanc, chroma nul, hors gamut) et 68 contrastes (paires de `roles.json` dans les deux thèmes, balayage de teintes, hexadécimal) dans `crates/pp-color/tests/vectors/parity.json` (formé par Prettier, déterministe). `parity.rs` et `parity_contrast.rs` comparent aux seuils de l'ADR-0006 : écart ≤ 1e-6 sur les composantes, le rapport brut et Lc, rapport arrondi à deux décimales identique, refus hors gamut identiques. Écart mesuré : inférieur à 1e-13 (échec à 1e-14 sur `hex_to_oklch` de `#0000ff`), soit sept ordres de grandeur sous le seuil ; aucun seuil relâché.",
+      "id": "D-088",
+      "rollback": "Retirer `hex.rs`, `contrast.rs`, `apca.rs`, leurs tests et `tools/color/` ; les deux variantes de `ColorError` ; le TypeScript n'a pas changé."
+    },
+    {
+      "alternative": "Un analyseur JSON écrit à la main dans les tests (70 lignes de code à maintenir, sans la revue de tous) ; un format de vecteurs propre à Rust (la référence TypeScript n'y écrirait plus un JSON versionné lisible des deux côtés).",
+      "date": "2026-10-30",
+      "decision": "Dépendance de test `serde_json` (#89). Le test de parité lit un JSON : `serde_json` 1.0.154 en `dev-dependency` de `pp-color` (jamais dans le `.wasm` ni dans le crate publié), `Cargo.lock` passe de 17 à 28 dépendances (`serde`, `serde_core`, `itoa`, `memchr`, `zmij` et les crates de dérive du verrou). `cargo deny check` (avis, bans, licences, sources) et `cargo audit` verts : toutes sous MIT, `deny.toml` inchangé.",
+      "id": "D-089",
+      "rollback": "Retirer la ligne de `Cargo.toml`, relire les vecteurs avec un analyseur maison."
+    },
+    {
+      "alternative": "Comparaison textuelle exacte (risque de faux échec en CI) ; arrondir les vecteurs à 15 chiffres (perd de la précision sans supprimer le risque) ; déclencher `rust` sur tout `packages/` (paie le Rust pour les composants).",
+      "date": "2026-10-30",
+      "decision": "Contrôle de fraîcheur des vecteurs et déclenchement du job `rust` (#89). `npm run check:color-vectors` (`tools/color/build.mjs --check`, dans `verify` et testé dans le projet `tools`) échoue si `parity.json` diffère du calcul TypeScript courant ; les nombres sont comparés à 1e-12 près en relatif, parce que `pow`, `cos` et `atan2` peuvent différer au dernier bit d'une machine à l'autre (écriture sous Windows, contrôle sous Linux). Le job `rust` se déclenche aussi sur `packages/tokens/src/` et `tools/color/` (la référence change : la parité se revérifie). Le build Cloudflare reste sans Rust (relu : rien dans `build` ni `prebuild` n'appelle `cargo`). Aucun budget ni garde-fou modifié.",
+      "id": "D-090",
+      "rollback": "Retirer le script, le test et les deux chemins de `rust_paths`."
     }
   ]
 }
