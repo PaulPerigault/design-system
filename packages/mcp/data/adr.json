@@ -606,6 +606,12 @@
       "date": "2026-10-30",
       "decision": "Page `/donnees/` (#187, sous-issue de #123, ADR-0008 décision 4, « Closes #187 »). `apps/docs/src/pages/donnees.astro` : huit démonstrations vivantes (LineChart, BarChart, AreaChart, GaugeChart, KpiCard, Sparkline, DataTable, Legend) sur les jeux fictifs de `chart-data.json`, avec code à copier et renvoi à la fiche ; contrat de données (ADR-0007 décision 1) ; accessibilité (décision 3) ; réglage de la teinte d'accent. Texte neutre, aucune mesure nouvelle (contrastes du 2026-10-29 cités avec leur source). Découverte par l'accueil (liste « Utiliser le système »), `llms.txt` et le sitemap ; en-tête et navigation à six entrées inchangés. Référence Visuel : deux thèmes, viewport seul (`VIEWPORT_ONLY`), pour tenir le budget d'images. Alternative écartée : ajouter la page au groupe `donnees` de `navigation.ts`, qui ne liste que des pages de composants (test `navigation.spec.ts`). Retour arrière : supprimer la page, ses composants `Data*`, `data-page-snippets.ts`, `llms-pages.ts` et la ligne de l'accueil.",
       "id": "D-083"
+    },
+    {
+      "alternative": "Supprimer `docs/process/dependabot.md` ; aucun changement de configuration à défaire.",
+      "date": "2026-10-30",
+      "decision": "Règles de fusion des dépendances (#131, « Closes #131 »). `docs/process/dependabot.md` : correctifs et mineures fusionnés automatiquement quand `ci` est vert, majeures relues à la main, sécurité d'abord. Configuration vérifiée et laissée telle quelle : elle applique déjà la règle (groupes mineures et correctifs par thème, majeures hors groupes, cooldown 3 et 7 jours, workflow `--auto` sous ruleset sans contournement). Aucune PR Dependabot ouverte, donc aucune fusion. Écart constaté : alertes et mises à jour de sécurité Dependabot désactivées sur le dépôt, réglage laissé à Paul. Alternative écartée : une seule PR hebdomadaire de toutes les mineures, qui mêlerait dépendances de rendu (e2e, Visuel) et outils.",
+      "id": "D-084"
     }
   ]
 }
