@@ -307,3 +307,7 @@ test -c apps/docs/playwright.config.ts`.
 ## #178, skill encre-processus (2026-10-30)
 
 - Règles de livraison réunies avec leurs sources (D-076, « Refs #178 »). Reste : `encre-securite`, puis mobile, greenops, rust et l'index d'`AGENTS.md`.
+
+## #178, skill encre-securite (2026-10-30)
+
+- Revue de sécurité avec sources et niveaux de preuve (D-077, « Refs #178 »). ANSSI à vérifier. Reste : mobile, greenops, rust et l'index d'`AGENTS.md`.
