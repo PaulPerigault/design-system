@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitest/config';
+import { sourceResolve } from './vitest.source.ts';
 
 // Un projet par brique : chaque paquet garde sa propre config (Astro, environnement), la racine
 // teste l'outillage (tools/).
@@ -9,6 +10,7 @@ export default defineConfig({
       { test: { name: 'tools', include: ['tools/**/*.test.mjs'] } },
       // Logique pure de la documentation (aucun composant Astro) : apps/docs/src/**.
       {
+        ...sourceResolve,
         test: {
           name: 'docs',
           root: 'apps/docs',

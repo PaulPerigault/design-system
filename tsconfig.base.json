@@ -10,7 +10,7 @@
     "erasableSyntaxOnly": true,
     "allowImportingTsExtensions": true,
     "noEmit": true,
-    "customConditions": ["development"],
+    "customConditions": ["@paulperigault/source"],
     "skipLibCheck": true
   }
 }
