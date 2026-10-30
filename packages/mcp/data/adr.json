@@ -596,6 +596,11 @@
       "date": "2026-10-30",
       "decision": "Skill `encre-rust` (#178, « Refs #178 »). `.claude/skills/encre-rust/SKILL.md` (143 lignes) : ADR-0006 décision 4 (crates en Rust pur sans `wasm-bindgen`, crates `-wasm` minces, clippy pedantic en refus, `cargo fmt --check`, aucun panic, `unwrap`, `expect` ni indexation non vérifiée hors tests, erreurs typées, `proptest`, parité TypeScript à 1e-6 pour `pp-color` et 1e-9 en relatif pour `pp-data` (ADR-0007, à confirmer en V4a), poids et provenance du `.wasm`, build Cloudflare sans Rust, `cargo audit` et `cargo deny` bloquants dès le premier crate). Règle validée par Paul : `unsafe` interdit sauf ⚖️, `#![forbid(unsafe_code)]` dans chaque crate. Sources externes lues le 2026-10-30 et paraphrasées (huit entrées). Non vérifié : classement des quatre lints en `restriction` (page Clippy muette, [À VÉRIFIER]) ; guide wasm-bindgen déménagé, glue JavaScript non confirmé. Alternative écartée : aucune règle sur `unsafe` (la déclarer seulement en préférence). Retour arrière : supprimer le fichier.",
       "id": "D-081"
+    },
+    {
+      "date": "2026-10-30",
+      "decision": "Index « tâche → skills à lire » dans `AGENTS.md` (#178, « Closes #178 »). Section courte, six lignes : composants et CSS (`encre-design`, `encre-mobile`), textes et pages (`encre-voix`), sécurité, CI, agents, hooks (`encre-securite`), crates et WebAssembly (`encre-rust`, `encre-securite`, `encre-greenops`), budgets et mesures (`encre-greenops`), toute PR (`encre-processus`). Règle d'usage : lire au début de chaque tâche seulement les skills de l'index qui la concernent. Les sept skills cités existent (vérifié). `AGENTS.md` reste la source unique : un skill ne crée aucune règle. Dernière PR de #178. Alternative écartée : copier les règles dans l'index (doublon, dérive). Retour arrière : supprimer la section.",
+      "id": "D-082"
     }
   ]
 }
