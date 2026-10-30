@@ -315,3 +315,7 @@ test -c apps/docs/playwright.config.ts`.
 ## #178, skill encre-mobile (2026-10-30)
 
 - Revue mobile à 375 px avec sources et niveaux de preuve (D-078, « Refs #178 »). Reste : greenops, rust et l'index d'`AGENTS.md`.
+
+## #178, skill encre-greenops (2026-10-30)
+
+- Sobriété numérique mesurée, jamais bloquante, méthodes carbone sourcées sans en retenir (D-079, « Refs #178 »). Reste : rust et l'index d'`AGENTS.md`.

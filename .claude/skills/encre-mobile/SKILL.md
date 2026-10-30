@@ -15,7 +15,7 @@ méthode, pas une preuve : « prouvé » seulement si une source l'établit ; si
 
 La majorité du trafic web est mobile (affirmation de Paul, sans source citée ici : ne pas la
 chiffrer). Tout se juge donc d'abord à 375 px, sur réseau lent et processeur modeste ; le bureau
-vient ensuite. Le réseau et le processeur se **mesurent** : aucun seuil n'est bloquant.
+vient ensuite. Le réseau et le processeur se **mesurent** : ce skill ne pose aucun seuil bloquant.
 
 ## Comment l'utiliser
 
@@ -71,7 +71,8 @@ vient ensuite. Le réseau et le processeur se **mesurent** : aucun seuil n'est b
 - DevTools, panneau Performance : réglages de capture, réseau et CPU ; le ralentissement est relatif
   à la machine, une calibration donne un préréglage de téléphone modeste (doc Chrome).
 - Core Web Vitals au 75e centile, mobile et bureau séparés : LCP ≤ 2,5 s, INP ≤ 200 ms, CLS ≤ 0,1
-  (web.dev). Ces seuils sont des **cibles de terrain**, pas des contrôles de CI ici.
+  (web.dev). Ce sont des **cibles de terrain**. Écart : `perf.spec.ts` les assertit déjà en e2e
+  (360 × 800, CPU ×4, Slow 4G) ; en revue, les lire comme une mesure, pas un motif de refus.
 - Un chiffre labo n'est pas un chiffre terrain : le site statique n'a pas de mesure de terrain ;
   écrire « mesuré en labo, bridé, le <date> » et jamais « rapide ».
 - Rapport : valeur, outil, réglage de bridage, date. Aucun échec de CI, aucune fonctionnalité retirée
