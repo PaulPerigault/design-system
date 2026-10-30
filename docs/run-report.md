@@ -299,3 +299,7 @@ test -c apps/docs/playwright.config.ts`.
 ## #85, mcp en anneaux (2026-10-30)
 
 - `domain`, `application`, `infrastructure` et erreurs typées, `architecture` sur `packages/mcp/src` (D-074). #85 fermée. Reste : issue `[Tokens] create`, #123, #131, Rust, #102, #103, #130, #118.
+
+## #87, condition d'export à nom propre (2026-10-30)
+
+- `development` remplacée par `@paulperigault/source` dans `tokens`, `dataviz`, `guards`, activée pour TypeScript, Vitest et Astro (D-075). Tests inchangés, tous verts. Reste : trois issues (agents, CI, Design).

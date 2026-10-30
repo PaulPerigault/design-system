@@ -39,22 +39,22 @@
   },
   "exports": {
     "./color": {
-      "development": "./src/lib/color.ts",
+      "@paulperigault/source": "./src/lib/color.ts",
       "types": "./dist/lib/color.d.ts",
       "default": "./dist/lib/color.js"
     },
     "./contrast": {
-      "development": "./src/lib/contrast.ts",
+      "@paulperigault/source": "./src/lib/contrast.ts",
       "types": "./dist/lib/contrast.d.ts",
       "default": "./dist/lib/contrast.js"
     },
     "./customize": {
-      "development": "./src/customize/index.ts",
+      "@paulperigault/source": "./src/customize/index.ts",
       "types": "./dist/customize/index.d.ts",
       "default": "./dist/customize/index.js"
     },
     "./palette": {
-      "development": "./src/palette/index.ts",
+      "@paulperigault/source": "./src/palette/index.ts",
       "types": "./dist/palette/index.d.ts",
       "default": "./dist/palette/index.js"
     },

@@ -39,7 +39,7 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "development": "./src/index.ts",
+      "@paulperigault/source": "./src/index.ts",
       "default": "./dist/index.js"
     },
     "./package.json": "./package.json"

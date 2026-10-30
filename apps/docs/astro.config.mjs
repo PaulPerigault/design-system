@@ -8,6 +8,9 @@ export default defineConfig({
   build: { inlineStylesheets: 'never' },
   vite: {
     plugins: [tailwindcss()],
+    // Les paquets du dépôt sont lus en source ; la condition est absente des paquets publiés.
+    resolve: { conditions: ['@paulperigault/source'] },
+    ssr: { resolve: { conditions: ['@paulperigault/source'] } },
     build: { assetsInlineLimit: 0 },
   },
 });
