@@ -12,10 +12,12 @@ unmaintained = "all"
 ignore = []
 
 [licenses]
-# Le dépôt est MIT. Au 2026-10-30, toutes les dépendances (proptest et ses dépendances) sont
-# disponibles sous MIT : seule cette licence est admise. Une dépendance sous Apache-2.0 seule,
-# ou autre, échoue ici : on l'admet par une décision écrite (D-xxx), pas par défaut.
-allow = ["MIT"]
+# Le dépôt est MIT. Au 2026-10-30, toutes les dépendances (proptest, wasm-bindgen et leurs
+# dépendances) sont disponibles sous MIT : cette licence est admise. Une dépendance sous Apache-2.0
+# seule, ou autre, échoue ici : on l'admet par une décision écrite (D-xxx), pas par défaut.
+# Unicode-3.0 (D-091) : `unicode-ident`, sous « (MIT OR Apache-2.0) AND Unicode-3.0 », tables
+# d'identifiants, tirée par `syn` (macro de wasm-bindgen) et par `wasm-bindgen-shared`.
+allow = ["MIT", "Unicode-3.0"]
 confidence-threshold = 0.93
 
 [bans]

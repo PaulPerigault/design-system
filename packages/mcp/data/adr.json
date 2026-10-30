@@ -654,6 +654,13 @@
       "decision": "Contrôle de fraîcheur des vecteurs et déclenchement du job `rust` (#89). `npm run check:color-vectors` (`tools/color/build.mjs --check`, dans `verify` et testé dans le projet `tools`) échoue si `parity.json` diffère du calcul TypeScript courant ; les nombres sont comparés à 1e-12 près en relatif, parce que `pow`, `cos` et `atan2` peuvent différer au dernier bit d'une machine à l'autre (écriture sous Windows, contrôle sous Linux). Le job `rust` se déclenche aussi sur `packages/tokens/src/` et `tools/color/` (la référence change : la parité se revérifie). Le build Cloudflare reste sans Rust (relu : rien dans `build` ni `prebuild` n'appelle `cargo`). Aucun budget ni garde-fou modifié.",
       "id": "D-090",
       "rollback": "Retirer le script, le test et les deux chemins de `rust_paths`."
+    },
+    {
+      "alternative": "`wasm-bindgen` dans `pp-color` (ferme la porte à un back Rust ou Go) ; `deny` au lieu de `forbid` (inutile : `forbid` tient) ; erreurs en `JsError` (message libre, sans code littéral).",
+      "date": "2026-10-30",
+      "decision": "Crate `pp-color-wasm` (#90, étape 8, « Refs #90 »). Crate mince : conversion des types, aucune logique ; seule dépendance de liaison `wasm-bindgen` `=0.2.130` (épinglée : le CLI qui produit le glue doit avoir la même version), `pp-color` reste sans `wasm-bindgen`. `#![forbid(unsafe_code)]` tient avec les macros de wasm-bindgen (compilé sur l'hôte et sur `wasm32-unknown-unknown`) : aucun ⚖️ nécessaire. Une erreur de `pp-color` devient la chaîne littérale `code:grandeur` (`non-finite`, `out-of-range`, `invalid-hex`, `out-of-gamut`, `invalid-length`), jamais un panic. Écart de contrat mesuré : un canal sRGB fini hors [0, 1] donne `OutOfRange` en Rust, un nombre fini côté TypeScript (`relativeLuminance` de r = -0,1 rend 0,166 ; `NaN` seulement pour une entrée `NaN`). `deny.toml` : licence `Unicode-3.0` admise, exigée par `unicode-ident` (« (MIT OR Apache-2.0) AND Unicode-3.0 », tirée par `syn` et `wasm-bindgen-shared`) ; `cargo audit` et `cargo deny` verts. Profil `release` : `opt-level = \"s\"`, `lto`, `codegen-units = 1`, `panic = \"abort\"`, `strip` ; `rust-toolchain.toml` déclare la cible `wasm32-unknown-unknown`. Aucun budget ni garde-fou modifié.",
+      "id": "D-091",
+      "rollback": "Retirer `crates/pp-color-wasm`, sa ligne de `members`, `Unicode-3.0` de `deny.toml`, le profil `release` et la cible de `rust-toolchain.toml`."
     }
   ]
 }
