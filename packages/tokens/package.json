@@ -1,6 +1,6 @@
 {
   "name": "@paulperigault/tokens",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Design tokens DTCG 2025.10 de paulperigault.fr : CSS, JSON et types générés ; couleur et contraste.",
   "type": "module",
   "license": "MIT",

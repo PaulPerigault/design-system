@@ -1,6 +1,6 @@
 {
   "name": "@paulperigault/astro",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Composants Astro accessibles, publiés en source, bâtis sur @paulperigault/css.",
   "type": "module",
   "license": "MIT",
@@ -37,9 +37,9 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@paulperigault/css": "0.0.0",
-    "@paulperigault/dataviz": "0.0.0",
-    "@paulperigault/tokens": "0.0.0",
+    "@paulperigault/css": "1.0.0",
+    "@paulperigault/dataviz": "1.0.0",
+    "@paulperigault/tokens": "1.0.0",
     "shiki": "4.5.0"
   },
   "peerDependencies": {

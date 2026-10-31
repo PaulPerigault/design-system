@@ -1,6 +1,6 @@
 {
   "name": "@paulperigault/create",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "CLI : create, add, eject, diff des éléments du design system.",
   "type": "module",
   "license": "MIT",
