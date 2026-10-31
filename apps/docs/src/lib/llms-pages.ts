@@ -28,6 +28,12 @@ export const DOC_PAGES: readonly DocPage[] = [
       'Huit composants de visualisation : démonstrations, contrat de données, accessibilité.',
   },
   {
+    path: '/tableau-de-bord/',
+    title: 'Tableau de bord',
+    description:
+      'Démonstration d’un tableau de bord : indicateurs, graphiques et tableau filtrable sur des données fictives.',
+  },
+  {
     path: '/recherche/',
     title: 'Recherche',
     description: 'Recherche dans la documentation, qui demande JavaScript.',

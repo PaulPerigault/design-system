@@ -1,0 +1,71 @@
+---
+/** Tableau de bord de démonstration : cinq composants de données assemblés sur les jeux fictifs. */
+import AreaChart from '@paulperigault/astro/AreaChart.astro';
+import BarChart from '@paulperigault/astro/BarChart.astro';
+import DataTable from '@paulperigault/astro/DataTable.astro';
+import GaugeChart from '@paulperigault/astro/GaugeChart.astro';
+import Grid from '@paulperigault/astro/Grid.astro';
+import KpiCard from '@paulperigault/astro/KpiCard.astro';
+import LineChart from '@paulperigault/astro/LineChart.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+import { bySection, gauges, kpis, monthlyVisits, trafficBySource } from './examples/chart-data.ts';
+---
+
+<Stack space="xl">
+  <section aria-labelledby="tdb-indicateurs" class="dashboard-block">
+    <Stack space="m">
+      <h2 id="tdb-indicateurs">Indicateurs du mois</h2>
+      <Grid min="narrow" space="m">
+        <KpiCard
+          id="tdb-visites"
+          {...kpis.visits}
+          trend={{ title: 'Visites par mois en 2025', dataset: monthlyVisits }}
+        />
+        <KpiCard id="tdb-duree" {...kpis.duration} />
+        <KpiCard id="tdb-stable" {...kpis.steady} />
+      </Grid>
+    </Stack>
+  </section>
+
+  <section aria-labelledby="tdb-evolution" class="dashboard-block">
+    <Stack space="m">
+      <h2 id="tdb-evolution">Évolution sur l’année</h2>
+      <LineChart id="tdb-courbe" title="Visites mensuelles en 2025" dataset={monthlyVisits} />
+      <AreaChart id="tdb-aire" title="Visites par source en 2025" dataset={trafficBySource} />
+    </Stack>
+  </section>
+
+  <section aria-labelledby="tdb-repartition" class="dashboard-block">
+    <Stack space="m">
+      <h2 id="tdb-repartition">Répartition et capacité</h2>
+      <Grid min="wide" space="l">
+        <BarChart id="tdb-barres" title="Visites par rubrique" dataset={bySection} showValues />
+        <GaugeChart id="tdb-jauge" title="Taux de remplissage de la salle" {...gauges.fill} />
+      </Grid>
+    </Stack>
+  </section>
+
+  <section aria-labelledby="tdb-detail" class="dashboard-block">
+    <Stack space="m">
+      <h2 id="tdb-detail">Détail des valeurs</h2>
+      <p>
+        Les cases à cocher du tableau masquent des colonnes. Le filtre agit par CSS (
+        <code>:has()</code>) : aucun script, et le tableau complet reste affiché tant qu’aucune case
+        n’est modifiée.
+      </p>
+      <DataTable id="tdb-tableau" title="Visites par source en 2025" dataset={trafficBySource} />
+    </Stack>
+  </section>
+</Stack>
+
+<style>
+  .dashboard-block :global(:where(h2, p)) {
+    margin: 0;
+  }
+
+  @media print {
+    .dashboard-block {
+      break-inside: avoid;
+    }
+  }
+</style>
