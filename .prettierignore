@@ -8,3 +8,4 @@ docs/research-report.md
 docs/kickoff.md
 packages/*/generated
 packages/astro/test/fixtures/*.html
+packages/color/wasm

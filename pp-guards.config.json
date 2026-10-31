@@ -31,6 +31,11 @@
         "packages": ["@paulperigault/css"]
       },
       {
+        "name": "color",
+        "paths": ["packages/color/src"],
+        "packages": ["@paulperigault/color"]
+      },
+      {
         "name": "dataviz",
         "paths": ["packages/dataviz/src"],
         "packages": ["@paulperigault/dataviz"]

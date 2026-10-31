@@ -38,6 +38,10 @@
       "component": "css",
       "package-name": "@paulperigault/css"
     },
+    "packages/color": {
+      "component": "color",
+      "package-name": "@paulperigault/color"
+    },
     "packages/dataviz": {
       "component": "dataviz",
       "package-name": "@paulperigault/dataviz"

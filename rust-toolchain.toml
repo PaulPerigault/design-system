@@ -3,3 +3,5 @@
 channel = "1.99.1"
 components = ["rustfmt", "clippy"]
 profile = "minimal"
+# Cible du `.wasm` de `pp-color-wasm` (étape 8) : même déclaration en local et en CI.
+targets = ["wasm32-unknown-unknown"]

@@ -94,6 +94,7 @@ jobs:
       render: ${{ steps.diff.outputs.render }}
       full: ${{ steps.diff.outputs.full }}
       rust: ${{ steps.diff.outputs.rust }}
+      wasm: ${{ steps.diff.outputs.wasm }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -108,8 +109,9 @@ jobs:
           render=false
           full=false
           rust=false
+          wasm=false
           if [ "$EVENT" = workflow_dispatch ] || [ "$EVENT" = schedule ]; then
-            render=true; full=true; rust=true
+            render=true; full=true; rust=true; wasm=true
           elif [ "$EVENT" = pull_request ]; then
             if [[ "$HEAD_REF" == release-please--* ]]; then
               render=true; full=true
@@ -125,10 +127,17 @@ jobs:
             if git diff --name-only "$BASE_SHA" HEAD | grep -Eq "$rust_paths"; then
               rust=true
             fi
+            # Paquet WebAssembly : les crates, la référence de la parité, le paquet, ses vecteurs, le
+            # SBOM et ce workflow ou la publication (qui construit aussi le .wasm).
+            wasm_paths='^(crates/|packages/(color|tokens/src)/|tools/(color|release)/|Cargo\.(toml|lock)$|rust-toolchain\.toml$|\.github/workflows/(ci|release)\.yml$)'
+            if git diff --name-only "$BASE_SHA" HEAD | grep -Eq "$wasm_paths"; then
+              wasm=true
+            fi
           fi
           echo "render=$render" >> "$GITHUB_OUTPUT"
           echo "full=$full" >> "$GITHUB_OUTPUT"
           echo "rust=$rust" >> "$GITHUB_OUTPUT"
+          echo "wasm=$wasm" >> "$GITHUB_OUTPUT"
 
   e2e:
     # Documentation construite puis testée dans Chromium : axe (WCAG 2.2 AA), 1.4.12, 2.5.8,
@@ -175,6 +184,40 @@ jobs:
         run: cargo install --locked cargo-audit@0.22.2 cargo-deny@0.20.2
       - run: cargo audit
       - run: cargo deny check
+
+  wasm:
+    # Paquet @paulperigault/color (étape 8, D-091 à D-094) : le .wasm est compilé ici, jamais
+    # commité. Construit, puis parité et contrat rejoués contre le paquet construit (PP_COLOR_WASM
+    # impose le .wasm : absent, le test échoue au lieu de sauter), empreinte SHA-256, poids et
+    # temps de chargement affichés (jamais bloquants), SBOM avec le .wasm. Mêmes conditions que
+    # `rust` ; sauté, il compte comme réussi dans l'agrégat `ci`. Le build Cloudflare n'en dépend pas.
+    needs: changes
+    if: needs.changes.outputs.wasm == 'true' && github.event.action != 'edited'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+      # Même version que la dépendance `wasm-bindgen` de Cargo.toml (l'outil refuse tout écart).
+      - run: cargo install --locked wasm-bindgen-cli@0.2.130
+      - run: npm -w @paulperigault/tokens run build && npm -w @paulperigault/color run build
+      - run: npm -w @paulperigault/color run build:wasm
+      - run: npm -w @paulperigault/color run check:wasm
+      - name: parité et contrat du paquet construit
+        env:
+          PP_COLOR_WASM: required
+        run: npx vitest run --project color
+      - run: npm -w @paulperigault/color run measure
+      - run: node tools/release/sbom.mjs sbom
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: color-wasm
+          path: |
+            packages/color/wasm/
+            sbom/paulperigault-color.cdx.json
+          retention-days: 30
 
   visuel:
     # Régression visuelle : captures comparées aux références Linux versionnées (workflow Visuel).
@@ -229,7 +272,8 @@ jobs:
     # bon droit comptant comme réussis. `!cancelled()` plutôt que `always()` : quand la concurrence
     # annule tout le run, `ci` est annulé lui aussi (pas rouge) ; le run suivant porte le verdict.
     if: ${{ !cancelled() }}
-    needs: [commitlint, squash-message, changes, verify, docs, e2e, rust, visuel, site, zizmor]
+    needs:
+      [commitlint, squash-message, changes, verify, docs, e2e, rust, wasm, visuel, site, zizmor]
     runs-on: ubuntu-latest
     timeout-minutes: 50
     permissions:
