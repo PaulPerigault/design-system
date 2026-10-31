@@ -21,7 +21,7 @@ const TEST_TIMEOUT_MS = 90_000;
 /** Corps + chasse fixe des blocs de code (ADR-0002). */
 const MAX_FONT_FILES = 2;
 
-const PAGES = ['/', '/components/button/'];
+const PAGES = ['/', '/components/button/', '/tableau-de-bord/'];
 const BODY_FONT = 'Atkinson Hyperlegible Next Variable';
 
 test.use({ viewport: VIEWPORT, hasTouch: true, isMobile: true });
