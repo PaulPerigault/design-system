@@ -7,7 +7,8 @@ export default defineConfig({
   test: {
     projects: [
       'packages/*',
-      { test: { name: 'tools', include: ['tools/**/*.test.mjs'] } },
+      // Les vecteurs de parité importent les sources TypeScript des paquets (condition « source »).
+      { ...sourceResolve, test: { name: 'tools', include: ['tools/**/*.test.mjs'] } },
       // Logique pure de la documentation (aucun composant Astro) : apps/docs/src/**.
       {
         ...sourceResolve,
