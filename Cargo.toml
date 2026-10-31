@@ -2,7 +2,7 @@
 # dépendance à wasm-bindgen, la liaison WebAssembly vivra dans des crates `-wasm` minces.
 [workspace]
 resolver = "3"
-members = ["crates/pp-color", "crates/pp-color-wasm"]
+members = ["crates/pp-color", "crates/pp-color-wasm", "crates/pp-data"]
 
 [workspace.package]
 version = "0.0.0"

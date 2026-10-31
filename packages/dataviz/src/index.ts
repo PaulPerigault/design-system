@@ -18,6 +18,7 @@ export { barRects, rectsPath } from './domain/geometry/bars.ts';
 export type { LineGeometry, PathPoint } from './domain/geometry/line-path.ts';
 export { linePath } from './domain/geometry/line-path.ts';
 export { lttb } from './domain/downsample/lttb.ts';
+export { quantile, quantiles } from './domain/stats/quantile.ts';
 export type { BandScale } from './domain/scale/band.ts';
 export { bandScale } from './domain/scale/band.ts';
 export type { Extent, LinearScale } from './domain/scale/linear.ts';
