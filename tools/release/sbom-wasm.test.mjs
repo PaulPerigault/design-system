@@ -26,7 +26,7 @@ describe('addWasm', () => {
   it('ajoute le fichier avec son SHA-256 et ses crates, sans toucher au reste', () => {
     const sbom = addWasm(
       { bomFormat: 'CycloneDX', components: [{ name: 'x' }] },
-      { sha256: SHA, crates: parseCargoTree(TREE) },
+      { file: 'pp_color_wasm_bg.wasm', sha256: SHA, crates: parseCargoTree(TREE) },
     );
     expect(sbom.bomFormat).toBe('CycloneDX');
     expect(sbom.components[0]).toEqual({ name: 'x' });
@@ -42,8 +42,12 @@ describe('addWasm', () => {
 
 describe('addWasmToSbom', () => {
   const files = {
-    'packages/color/wasm/pp_color_wasm_bg.wasm.sha256': `${SHA}  pp_color_wasm_bg.wasm\n`,
+    'packages/color/wasm/pp_color_wasm_bg.wasm.sha256': `${SHA}  pp_color_wasm_bg.wasm
+`,
+    'packages/data/wasm/pp_data_wasm_bg.wasm.sha256': `${SHA}  pp_data_wasm_bg.wasm
+`,
     'sbom/paulperigault-color.cdx.json': '{"components":[]}',
+    'sbom/paulperigault-data.cdx.json': '{"components":[]}',
   };
   const io = (present) => {
     const written = {};
@@ -67,5 +71,16 @@ describe('addWasmToSbom', () => {
     const context = io(Object.keys(files));
     expect(addWasmToSbom(context)).toBe(true);
     expect(context.written['sbom/paulperigault-color.cdx.json']).toContain(SHA);
+    expect(context.written['sbom/paulperigault-data.cdx.json']).toContain('pp_data_wasm_bg.wasm');
+  });
+
+  it('n’ajoute que le .wasm construit', () => {
+    const context = io([
+      'packages/data/wasm/pp_data_wasm_bg.wasm.sha256',
+      'sbom/paulperigault-data.cdx.json',
+      'sbom/paulperigault-color.cdx.json',
+    ]);
+    expect(addWasmToSbom(context)).toBe(true);
+    expect(Object.keys(context.written)).toEqual(['sbom/paulperigault-data.cdx.json']);
   });
 });

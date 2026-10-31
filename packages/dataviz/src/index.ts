@@ -1,3 +1,8 @@
+export {
+  checkAxis as checkAggregateAxis,
+  checkShape as checkAggregateShape,
+} from './domain/aggregate/aggregate.ts';
+export { checkSpec as checkAggregateSpec } from './domain/aggregate/spec.ts';
 export { createAggregator } from './application/aggregator.ts';
 export type { Aggregator, Formatter } from './application/ports.ts';
 export type { AggregateSpec, Grouping, Operation } from './domain/aggregate/spec.ts';

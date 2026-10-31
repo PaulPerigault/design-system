@@ -33,5 +33,6 @@ apps/docs/deploy/
 # Rust : cible de compilation locale (Cargo.lock, lui, se commite).
 target/
 
-# Le `.wasm` de @paulperigault/color et son glue sont produits par la CI : jamais commités (D-091).
+# Les `.wasm` de @paulperigault/color et @paulperigault/data et leur glue sont produits par la CI : jamais commités (D-091).
 packages/color/wasm/
+packages/data/wasm/

@@ -42,6 +42,10 @@
       "component": "color",
       "package-name": "@paulperigault/color"
     },
+    "packages/data": {
+      "component": "data",
+      "package-name": "@paulperigault/data"
+    },
     "packages/dataviz": {
       "component": "dataviz",
       "package-name": "@paulperigault/dataviz"

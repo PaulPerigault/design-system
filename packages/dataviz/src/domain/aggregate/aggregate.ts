@@ -10,7 +10,7 @@ import { checkSpec } from './spec.ts';
 import type { AggregateSpec } from './spec.ts';
 
 /** Forme du jeu : non vide, au plus `MAX_POINTS` points, une valeur par point et par série. */
-function checkShape(dataset: Dataset): Result<Dataset> {
+export function checkShape(dataset: Dataset): Result<Dataset> {
   const count = dataset.x.values.length;
   if (count === 0 || dataset.series.length === 0) {
     return fail('dataset.empty', 'Au moins un point et une série sont requis.', 'x.values');
@@ -40,7 +40,7 @@ function checkFinite(dataset: Dataset): Result<Dataset> {
 }
 
 /** L'axe doit être `category` pour `category`, `time` pour un pas de temps. */
-function checkAxis(dataset: Dataset, spec: AggregateSpec): Result<Dataset> {
+export function checkAxis(dataset: Dataset, spec: AggregateSpec): Result<Dataset> {
   const wanted = spec.by === 'category' ? 'category' : 'time';
   return dataset.x.kind === wanted ? ok(dataset) : axisError(wanted, dataset.x.kind);
 }

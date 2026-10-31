@@ -1,0 +1,55 @@
+{
+  "name": "@paulperigault/data",
+  "version": "0.0.0",
+  "description": "Agrégation, quantiles de type 7 et sous-échantillonnage LTTB : pp-data compilé en WebAssembly.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Paul Perigault",
+  "keywords": [
+    "dataviz",
+    "wasm",
+    "lttb",
+    "quantile"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PaulPerigault/design-system.git",
+    "directory": "packages/data"
+  },
+  "homepage": "https://design.paulperigault.dev",
+  "bugs": "https://github.com/PaulPerigault/design-system/issues",
+  "engines": {
+    "node": ">=24"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "wasm",
+    "README.md"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "node --eval \"fs.rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.build.json",
+    "build:wasm": "node scripts/build-wasm.ts",
+    "measure": "node scripts/measure.ts",
+    "check:wasm": "node scripts/check-wasm.ts",
+    "prepack": "npm run build",
+    "prepublishOnly": "node ../../tools/checks/check-publish-env.mjs && node scripts/check-wasm.ts",
+    "test": "vitest run"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "@paulperigault/source": "./src/index.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@paulperigault/dataviz": "0.0.0"
+  }
+}
