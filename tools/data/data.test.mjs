@@ -6,13 +6,19 @@ describe('vecteurs de parité de pp-data', () => {
   const vectors = buildVectors();
 
   it('couvrent les erreurs de chaque contrat et les trous', () => {
-    const errors = [...vectors.quantiles, ...vectors.lttb].map(({ error }) => error);
+    const errors = [...vectors.quantiles, ...vectors.lttb, ...vectors.aggregates].map(
+      ({ error }) => error,
+    );
     for (const code of [
       'stats.empty',
       'stats.non-finite',
       'stats.bad-probability',
       'geometry.bad-input',
       'downsample.bad-target',
+      'dataset.bad-date',
+      'dataset.non-finite',
+      'dataset.length-mismatch',
+      'dataset.empty',
     ]) {
       expect(errors, code).toContain(code);
     }

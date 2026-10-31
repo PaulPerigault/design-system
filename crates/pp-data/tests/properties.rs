@@ -1,5 +1,5 @@
 //! Propriétés : bornes et monotonie des quantiles, forme des indices LTTB (ADR-0006, décision 4).
-use pp_data::{lttb, quantile, quantiles};
+use pp_data::{GroupBy, Operation, aggregate, lttb, quantile, quantiles};
 use proptest::prelude::*;
 use proptest::test_runner::FileFailurePersistence;
 
@@ -60,5 +60,37 @@ proptest! {
         prop_assert!(kept.len() <= target && kept.len() <= values.len());
         prop_assert_eq!(kept.first(), Some(&0));
         prop_assert_eq!(kept.last(), Some(&(values.len() - 1)));
+    }
+
+    #[test]
+    fn aggregate_counts_every_present_value_once(
+        points in prop::collection::vec((0_u8..6, prop::option::of(-1000_i32..1000)), 1..MAX_LENGTH),
+    ) {
+        let labels: Vec<String> = points.iter().map(|(group, _)| format!("g{group}")).collect();
+        let values: Vec<Option<f64>> = points.iter().map(|(_, v)| v.map(f64::from)).collect();
+        let counts = aggregate(&labels, std::slice::from_ref(&values), GroupBy::Category, Operation::Count).unwrap();
+        let sums = aggregate(&labels, std::slice::from_ref(&values), GroupBy::Category, Operation::Sum).unwrap();
+        let present = values.iter().flatten().count();
+        let counted: f64 = counts.series[0].iter().flatten().sum();
+        prop_assert!((counted - f64::from(u32::try_from(present).unwrap())).abs() < 0.5);
+        let total: f64 = values.iter().flatten().sum();
+        prop_assert!((sums.series[0].iter().flatten().sum::<f64>() - total).abs() < 0.5);
+        prop_assert_eq!(counts.labels.len(), counts.series[0].len());
+        let mut unique = counts.labels.clone();
+        unique.sort();
+        unique.dedup();
+        prop_assert_eq!(unique.len(), counts.labels.len());
+    }
+
+    #[test]
+    fn aggregate_min_and_mean_stay_within_the_group_range(
+        values in prop::collection::vec(-RANGE..RANGE, 1..MAX_LENGTH),
+    ) {
+        let labels = vec!["g".to_owned(); values.len()];
+        let series = vec![values.iter().copied().map(Some).collect::<Vec<_>>()];
+        let at = |operation| aggregate(&labels, &series, GroupBy::Category, operation).unwrap().series[0][0].unwrap();
+        let (min, max, mean) = (at(Operation::Min), at(Operation::Max), at(Operation::Mean));
+        prop_assert!(min <= mean + RANGE * 1e-9 && mean <= max + RANGE * 1e-9);
+        prop_assert!(min <= max);
     }
 }
