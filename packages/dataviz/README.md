@@ -35,7 +35,7 @@ Aucune fonction publique ne lève d'exception : toute erreur est un `Result` typ
 - `niceTicks` (pas 1, 2, 5 × 10^n, domaine élargi) et `timeTicks` (jour, semaine, mois, année, alignés UTC).
 - `lttb(xs, values, cible)` : indices retenus ; premier et dernier points gardés, `null` jamais inventés.
 - `linePath` (`d` interrompu aux `null`, points isolés signalés) et `barRects` / `rectsPath` (barres groupées).
-- Toutes renvoient un `Result` typé (`scale.*`, `geometry.bad-input`, `downsample.bad-target`).
+- Toutes renvoient un `Result` typé (`scale.*`, `geometry.bad-input`, `downsample.bad-target`, `stats.*`).
 
 ## Aires et jauges (V2b-1)
 

@@ -682,6 +682,27 @@
       "decision": "Job CI `wasm` et mesures (#90). Job Linux conditionnel par chemins (`crates/`, `packages/color`, `packages/tokens/src`, `tools/color`, `tools/release`, `Cargo.*`, `rust-toolchain.toml`, `ci.yml`, `release.yml`), compté réussi dans l'agrégat `ci` quand il est sauté. Il construit, rejoue parité et contrat sur le paquet construit (`PP_COLOR_WASM=required` : un `.wasm` absent fait échouer au lieu de sauter), vérifie l'empreinte, affiche le poids (brut, gzip, brotli) et le temps de chargement (médiane de 15 processus Node, import + premier appel) dans le résumé du job, sans seuil bloquant ; poids mesuré le 2026-10-31 : 52,9 Kio brut, 22,5 Kio en gzip ; chargement local 7,3 ms contre 2,7 ms pour la référence TypeScript (le chargement du `.wasm` n'est pas gratuit, aucun gain n'est revendiqué). Le build Cloudflare reste sans Rust (relu).",
       "id": "D-094",
       "rollback": "Retirer le job `wasm`, sa sortie de `changes` et son entrée dans `needs` de `ci`."
+    },
+    {
+      "alternative": "`Option<f64>` remplacé par un masque booléen (ADR-0007 dit « masque des manquants » : `Option` en est la forme sûre) ; inventer une `Spec` d'agrégation (contrat public décidé sans Paul).",
+      "date": "2026-10-31",
+      "decision": "Crate `pp-data` (#98, étape V4a, « Refs #98 »). Rust pur, sans `wasm-bindgen`, `#![forbid(unsafe_code)]`, aucun `panic`, `unwrap`, `expect` ni indexation hors tests. API : `quantile`, `quantiles`, `lttb`, erreurs en enum `DataError` (7 variantes, chacune correspond à un code TypeScript). Quatre écarts de contrat avec la référence, tous plus stricts et documentés : une série de plus de `MAX_POINTS` (100 000) est refusée (`TooManyPoints`), une ordonnée non finie est refusée (`NonFiniteValue`), la cible est un `usize` (une cible non entière n'existe pas), les deux causes de `geometry.bad-input` ont chacune leur variante. L'agrégation n'est pas faite : aucune spécification n'existe (le port `Aggregator` prend un `Record<string, unknown>`), voir ⚖️ dans `tmp/questions-paul.md`.",
+      "id": "D-095",
+      "rollback": "Retirer `crates/pp-data`, sa ligne de `members`, `tools/data`, `data:vectors` et `check:data-vectors`."
+    },
+    {
+      "alternative": "Quantiles dans `tokens` (hors du périmètre de `dataviz`) ; Rust sans référence TypeScript (parité impossible).",
+      "date": "2026-10-31",
+      "decision": "Référence TypeScript des quantiles (#98). ADR-0007 pose « implémenté d'abord en TypeScript (référence) », mais `packages/dataviz` n'avait que LTTB : `quantile` et `quantiles` sont ajoutés (`domain/stats/quantile.ts`, exportés), type 7 de Hyndman et Fan (1996) : Q(p) = (1 - γ) x[j] + γ x[j + 1], h = (n - 1) p. Trois codes d'erreur : `stats.empty`, `stats.non-finite`, `stats.bad-probability` ; les valeurs sont contrôlées avant les probabilités. Valeurs de R vérifiées dans les tests (`quantile(1:10, c(.25, .5, .9))` : 3,25, 5,5, 9,1).",
+      "id": "D-096",
+      "rollback": "Retirer `domain/stats`, ses deux exports, les trois codes et `quantile.test.ts`."
+    },
+    {
+      "alternative": "Seuil absolu (faux pour des valeurs de 1e15) ; vecteurs avec `Math.sin` (dépend du moteur).",
+      "date": "2026-10-31",
+      "decision": "Parité de `pp-data` et seuil (#98). `tools/data/build.mjs` écrit `crates/pp-data/tests/vectors/parity.json` depuis le TypeScript (15 cas de quantiles, 19 de LTTB, erreurs comprises) ; entrées par congruence entière, aucune fonction transcendante : mêmes octets sur toute machine. `check:data-vectors` entre dans `verify`, testé dans le projet `tools`. Le job `rust` se déclenche aussi sur `packages/dataviz/src/` et `tools/data/`. Seuil de l'ADR-0007 confirmé : 1e-9 en relatif tient, écart maximal mesuré 1,7e-16 sur les quantiles ; les indices LTTB sont identiques sur les 19 cas. Aucun seuil relâché, aucun budget modifié.",
+      "id": "D-097",
+      "rollback": "Retirer le script, le test, `check:data-vectors` et les deux chemins de `rust_paths`."
     }
   ]
 }
