@@ -32,6 +32,16 @@ Sources : `AGENTS.md` (Git, GitHub, Fichiers générés, Décisions), `commitlin
 - `main` seule. Le ruleset exige une PR, la fusion en squash, un historique linéaire et le contrôle
   `ci` vert (`.github/rulesets/`). Aucun push direct, aucun push forcé.
 
+## Design avant code (D-101)
+
+- Une tâche qui crée ou déplace des modules commence par l'arborescence cible, écrite dans le
+  journal du jour : chaque fichier, sa responsabilité en une phrase, ses dépendances autorisées
+  (ADR-0006 : `infrastructure → application → domain` ; un crate `-wasm` dépend du crate métier,
+  jamais l'inverse). Ensuite seulement, le code.
+- Chercher une brique existante avant d'écrire (le paquet, puis les paquets en amont).
+- Extraire seulement quand une deuxième occurrence existe, jamais par anticipation.
+- Jamais de module « utils » ou « helpers » fourre-tout : un module porte le nom de sa responsabilité.
+
 ## Mots-clés de fermeture
 
 - Une issue qui demande plusieurs PR : « Closes #n » seulement dans la **dernière**, une seule
