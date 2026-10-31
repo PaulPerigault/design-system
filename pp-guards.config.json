@@ -41,6 +41,11 @@
         "packages": ["@paulperigault/dataviz"]
       },
       {
+        "name": "data",
+        "paths": ["packages/data/src"],
+        "packages": ["@paulperigault/data"]
+      },
+      {
         "name": "astro",
         "paths": ["packages/astro/src"],
         "packages": ["@paulperigault/astro"]
