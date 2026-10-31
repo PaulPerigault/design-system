@@ -710,6 +710,13 @@
       "decision": "Agrégation de `pp-data` (#98, « Closes #98 », option A de Paul). Spécification : `{ by: 'category'",
       "id": "D-098",
       "rollback": "'month'"
+    },
+    {
+      "alternative": "`NaN` comme marqueur de manquant en entrée ; renvoi JSON (une dépendance de plus dans le `.wasm`) ; `aggregate` en deux appels, libellés puis valeurs (double calcul).",
+      "date": "2026-10-31",
+      "decision": "Crate `pp-data-wasm` (#99, étape V4b, « Refs #99 »). Liaison mince, aucune logique, seule dépendance de liaison `wasm-bindgen` `=0.2.130` (même version que `pp-color-wasm`, le CLI doit y correspondre), `pp-data` reste sans `wasm-bindgen`. `#![forbid(unsafe_code)]` tient avec les macros (hôte et `wasm32-unknown-unknown`) : aucun ⚖️. Surface : `quantiles(values, probabilities)`, `lttb(xs, values, missing, target)`, `aggregate(labels, values, missing, by, operation)`. Conversions : les valeurs manquantes passent par un masque `Uint8Array` (non nul = manquant), jamais par `NaN`, qui resterait indiscernable d'une entrée non finie à refuser ; les séries d'une agrégation sont à plat, série après série ; le résultat est un objet `Aggregation` (`labels`, `values`) où un groupe sans valeur est `NaN`, que l'enveloppe TypeScript rendra `null` (`pp-data` ne produit jamais `NaN` autrement). Une erreur est une chaîne littérale (un code par variante de `DataError`, plus `bad-argument` pour un nom inconnu, un masque de mauvaise longueur ou une cible hors d'un `u32`), jamais un panic ; le type `Fault` permet de tester la conversion sur l'hôte, où `JsValue` ne se construit pas. `#[allow(clippy::needless_pass_by_value)]` sur `aggregate`, avec sa raison : wasm-bindgen reçoit des textes en `Vec<String>`. Profil `release` de D-091 inchangé ; `.wasm` brut de 58,5 Kio avant le paquet (mesure de poids dans la PR suivante). `cargo audit` et `cargo deny` verts.",
+      "id": "D-099",
+      "rollback": "Retirer `crates/pp-data-wasm` et sa ligne de `members`."
     }
   ]
 }
