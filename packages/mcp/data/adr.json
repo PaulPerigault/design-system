@@ -661,6 +661,27 @@
       "decision": "Crate `pp-color-wasm` (#90, étape 8, « Refs #90 »). Crate mince : conversion des types, aucune logique ; seule dépendance de liaison `wasm-bindgen` `=0.2.130` (épinglée : le CLI qui produit le glue doit avoir la même version), `pp-color` reste sans `wasm-bindgen`. `#![forbid(unsafe_code)]` tient avec les macros de wasm-bindgen (compilé sur l'hôte et sur `wasm32-unknown-unknown`) : aucun ⚖️ nécessaire. Une erreur de `pp-color` devient la chaîne littérale `code:grandeur` (`non-finite`, `out-of-range`, `invalid-hex`, `out-of-gamut`, `invalid-length`), jamais un panic. Écart de contrat mesuré : un canal sRGB fini hors [0, 1] donne `OutOfRange` en Rust, un nombre fini côté TypeScript (`relativeLuminance` de r = -0,1 rend 0,166 ; `NaN` seulement pour une entrée `NaN`). `deny.toml` : licence `Unicode-3.0` admise, exigée par `unicode-ident` (« (MIT OR Apache-2.0) AND Unicode-3.0 », tirée par `syn` et `wasm-bindgen-shared`) ; `cargo audit` et `cargo deny` verts. Profil `release` : `opt-level = \"s\"`, `lto`, `codegen-units = 1`, `panic = \"abort\"`, `strip` ; `rust-toolchain.toml` déclare la cible `wasm32-unknown-unknown`. Aucun budget ni garde-fou modifié.",
       "id": "D-091",
       "rollback": "Retirer `crates/pp-color-wasm`, sa ligne de `members`, `Unicode-3.0` de `deny.toml`, le profil `release` et la cible de `rust-toolchain.toml`."
+    },
+    {
+      "alternative": "Le `.wasm` commité (binaire dans l'historique) ; init implicite au premier appel (appels asynchrones partout, contrat incompatible avec `tokens`).",
+      "date": "2026-10-31",
+      "decision": "Paquet `@paulperigault/color` (#90). Enveloppe TypeScript sur `pp-color-wasm` : mêmes noms et signatures que `tokens` (plus `srgbToOklch`, `init`, `isReady`), `init()` à attendre avant tout appel (`not-ready` sinon), toute erreur du `.wasm` devient une `ColorError` à code littéral. Sous Node, lecture et instanciation synchrones (l'instanciation asynchrone coûte environ 20 ms de plus, mesuré). Le TypeScript de `tokens` reste la référence et aucun appel n'est remplacé (D-030). Le `.wasm` et son glue ne sont jamais commités (`packages/color/wasm/` ignoré) : `build:wasm` les produit en CI avec `wasm-bindgen-cli` `0.2.130`, même version que la dépendance.",
+      "id": "D-092",
+      "rollback": "Retirer `packages/color`, ses entrées de `release-please`, `eslint`, `pp-guards` et `.prettierignore`."
+    },
+    {
+      "alternative": "Empreinte dans `package.json` (réécrite par le build, bruit de diff) ; SBOM sans les crates (provenance incomplète).",
+      "date": "2026-10-31",
+      "decision": "Provenance du `.wasm` (#90). `build:wasm` écrit `pp_color_wasm_bg.wasm.sha256` (format `sha256sum`) ; `check:wasm` recalcule l'empreinte et échoue sur tout écart ou fichier absent ; `prepublishOnly` l'exécute, donc une publication sans `.wasm` valide est refusée. `tools/release/sbom-wasm.mjs` ajoute au SBOM CycloneDX `paulperigault-color.cdx.json` le `.wasm` (SHA-256) et les crates de `Cargo.lock` (via `cargo tree`, cible wasm32). Le job `release` compile le `.wasm` avant la publication. Aucune publication lancée.",
+      "id": "D-093",
+      "rollback": "Retirer `sbom-wasm.mjs`, l'appel dans `sbom.mjs` et les trois étapes de `release.yml`."
+    },
+    {
+      "alternative": "Seuil de poids bloquant (aucun budget posé par Paul) ; job `wasm` dans `rust` (paie wasm-bindgen-cli à chaque PR Rust).",
+      "date": "2026-10-31",
+      "decision": "Job CI `wasm` et mesures (#90). Job Linux conditionnel par chemins (`crates/`, `packages/color`, `packages/tokens/src`, `tools/color`, `tools/release`, `Cargo.*`, `rust-toolchain.toml`, `ci.yml`, `release.yml`), compté réussi dans l'agrégat `ci` quand il est sauté. Il construit, rejoue parité et contrat sur le paquet construit (`PP_COLOR_WASM=required` : un `.wasm` absent fait échouer au lieu de sauter), vérifie l'empreinte, affiche le poids (brut, gzip, brotli) et le temps de chargement (médiane de 15 processus Node, import + premier appel) dans le résumé du job, sans seuil bloquant ; poids mesuré le 2026-10-31 : 52,9 Kio brut, 22,5 Kio en gzip ; chargement local 7,3 ms contre 2,7 ms pour la référence TypeScript (le chargement du `.wasm` n'est pas gratuit, aucun gain n'est revendiqué). Le build Cloudflare reste sans Rust (relu).",
+      "id": "D-094",
+      "rollback": "Retirer le job `wasm`, sa sortie de `changes` et son entrée dans `needs` de `ci`."
     }
   ]
 }

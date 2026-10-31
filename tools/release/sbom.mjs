@@ -2,7 +2,8 @@
 // paquet dans le dossier donné. Utilisé par le workflow `supply-chain` (artefact) et par la
 // publication (SBOM de la version publiée).
 import { execFileSync } from 'node:child_process';
-import { globSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, globSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { addWasmToSbom } from './sbom-wasm.mjs';
 
 const SBOM_BUFFER = 64 * 1024 * 1024;
 
@@ -49,5 +50,13 @@ if (import.meta.main) {
     npm: (args) => execFileSync('npm', args, { encoding: 'utf8', maxBuffer: SBOM_BUFFER }),
     write: writeFileSync,
   });
-  process.stdout.write(`sbom : ${written.length} fichier(s) dans ${outDir}\n`);
+  const wasm = addWasmToSbom({
+    outDir,
+    read: (path) => readFileSync(path, 'utf8'),
+    exists: existsSync,
+    cargo: (args) => execFileSync('cargo', args, { encoding: 'utf8' }),
+    write: writeFileSync,
+  });
+  const note = wasm ? ' (.wasm inclus)' : '';
+  process.stdout.write(`sbom : ${written.length} fichier(s) dans ${outDir}${note}\n`);
 }
