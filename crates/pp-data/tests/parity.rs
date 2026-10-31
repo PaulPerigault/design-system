@@ -3,8 +3,11 @@
 //! `tools/data/build.mjs` ; la CI vérifie qu'ils sont à jour (`check:data-vectors`).
 mod vectors;
 
-use pp_data::{lttb, quantile, quantiles};
-use vectors::{TOLERANCE, cases, code, indices, numbers, optional_numbers, relative_gap, vectors};
+use pp_data::{GroupBy, Operation, aggregate, lttb, quantile, quantiles};
+use vectors::{
+    TOLERANCE, aggregate_code, cases, code, indices, numbers, optional_numbers, relative_gap,
+    series_value, vectors,
+};
 
 #[test]
 fn quantiles_match_reference() {
@@ -53,4 +56,89 @@ fn lttb_matches_reference() {
             None => assert_eq!(actual, Ok(indices(&case["expected"])), "{name} : indices"),
         }
     }
+}
+
+fn operation_of(name: &str) -> Operation {
+    match name {
+        "sum" => Operation::Sum,
+        "mean" => Operation::Mean,
+        "min" => Operation::Min,
+        "max" => Operation::Max,
+        "count" => Operation::Count,
+        "first" => Operation::First,
+        "last" => Operation::Last,
+        other => panic!("opération inconnue : {other}"),
+    }
+}
+
+fn grouping_of(name: &str) -> GroupBy {
+    match name {
+        "category" => GroupBy::Category,
+        "day" => GroupBy::Day,
+        "month" => GroupBy::Month,
+        "year" => GroupBy::Year,
+        other => panic!("regroupement inconnu : {other}"),
+    }
+}
+
+fn strings(value: &serde_json::Value) -> Vec<String> {
+    let list = value.as_array().expect("liste attendue");
+    list.iter()
+        .map(|text| text.as_str().expect("texte").to_owned())
+        .collect()
+}
+
+fn rows(value: &serde_json::Value) -> Vec<Vec<Option<f64>>> {
+    let list = value.as_array().expect("liste attendue");
+    list.iter()
+        .map(|row| {
+            row.as_array()
+                .expect("série")
+                .iter()
+                .map(series_value)
+                .collect()
+        })
+        .collect()
+}
+
+#[test]
+fn aggregates_match_reference() {
+    let vectors = vectors();
+    let list = cases(&vectors, "aggregates");
+    assert!(list.len() >= 50, "jeu de cas trop court : {}", list.len());
+    let mut worst = 0.0_f64;
+    for case in list {
+        let name = &case["name"];
+        let (by, operation) = (
+            grouping_of(case["by"].as_str().expect("by")),
+            operation_of(case["operation"].as_str().expect("operation")),
+        );
+        let actual = aggregate(&strings(&case["x"]), &rows(&case["series"]), by, operation);
+        if let Some(error) = case["error"].as_str() {
+            assert_eq!(
+                actual.map_err(aggregate_code),
+                Err(error),
+                "{name} : erreur"
+            );
+            continue;
+        }
+        let actual = actual.expect("agrégation valide");
+        let expected = &case["expected"];
+        assert_eq!(
+            actual.labels,
+            strings(&expected["labels"]),
+            "{name} : groupes"
+        );
+        let want = rows(&expected["series"]);
+        assert_eq!(actual.series.len(), want.len(), "{name} : séries");
+        for (got, want) in actual.series.iter().flatten().zip(want.iter().flatten()) {
+            match (got, want) {
+                (Some(got), Some(want)) => worst = worst.max(relative_gap(*got, *want)),
+                (None, None) => {}
+                _ => panic!("{name} : manquant contre valeur ({got:?} contre {want:?})"),
+            }
+        }
+    }
+    eprintln!("écart relatif maximal des agrégations : {worst:e}");
+    assert!(worst <= TOLERANCE, "écart {worst:e} > {TOLERANCE:e}");
 }

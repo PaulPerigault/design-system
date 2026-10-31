@@ -28,7 +28,9 @@ export async function run(root = process.cwd(), { check = false } = {}) {
     return stale ? 1 : 0;
   }
   await write(path, vectors);
-  console.error(`${OUT} : ${vectors.quantiles.length} quantiles, ${vectors.lttb.length} LTTB`);
+  console.error(
+    `${OUT} : ${vectors.quantiles.length} quantiles, ${vectors.lttb.length} LTTB, ${vectors.aggregates.length} agrégations`,
+  );
   return 0;
 }
 

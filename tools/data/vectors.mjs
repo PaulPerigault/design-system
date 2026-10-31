@@ -2,6 +2,7 @@
 // relus par les tests Rust `crates/pp-data/tests/parity_*.rs`. Les entrées viennent d'un
 // générateur congruentiel entier : aucune fonction transcendante, donc les mêmes octets partout.
 import { lttb } from '../../packages/dataviz/src/domain/downsample/lttb.ts';
+import { aggregateCases } from './aggregate-vectors.mjs';
 import { quantiles } from '../../packages/dataviz/src/domain/stats/quantile.ts';
 
 const MODULUS = 2 ** 31;
@@ -107,5 +108,5 @@ function lttbs() {
 }
 
 export function buildVectors() {
-  return { quantiles: quantileCases(), lttb: lttbs() };
+  return { quantiles: quantileCases(), lttb: lttbs(), aggregates: aggregateCases() };
 }

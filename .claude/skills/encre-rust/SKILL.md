@@ -85,7 +85,7 @@ allow(...))]`. Ces lints sont du groupe `restriction` : on les cite un par un, j
   - `pp-color` : écart ≤ **1e-6** sur les composantes, ratio de contraste arrondi identique
     (ADR-0006).
   - `pp-data` : écart ≤ **1e-9 en relatif** (ADR-0007), confirmé en V4a (D-097) : écart mesuré
-    1,7e-16 sur les quantiles, indices LTTB identiques.
+    nul sur les quantiles et l'agrégation (D-098), indices LTTB identiques.
 - Aucun gain de performance n'est exigé, aucune régression n'est tolérée (D-030) : temps de
   chargement mesuré avant et après, non dégradé.
 

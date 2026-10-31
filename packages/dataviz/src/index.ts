@@ -1,4 +1,7 @@
+export { createAggregator } from './application/aggregator.ts';
 export type { Aggregator, Formatter } from './application/ports.ts';
+export type { AggregateSpec, Grouping, Operation } from './domain/aggregate/spec.ts';
+export { GROUPINGS, OPERATIONS } from './domain/aggregate/spec.ts';
 export type { Axis, Dataset, Series } from './domain/dataset.ts';
 export { DATASET_SCHEMA, MAX_POINTS, MAX_SERIES } from './domain/dataset.ts';
 export { parseIsoDate } from './domain/iso-date.ts';

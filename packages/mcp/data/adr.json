@@ -703,6 +703,13 @@
       "decision": "Parité de `pp-data` et seuil (#98). `tools/data/build.mjs` écrit `crates/pp-data/tests/vectors/parity.json` depuis le TypeScript (15 cas de quantiles, 19 de LTTB, erreurs comprises) ; entrées par congruence entière, aucune fonction transcendante : mêmes octets sur toute machine. `check:data-vectors` entre dans `verify`, testé dans le projet `tools`. Le job `rust` se déclenche aussi sur `packages/dataviz/src/` et `tools/data/`. Seuil de l'ADR-0007 confirmé : 1e-9 en relatif tient, écart maximal mesuré 1,7e-16 sur les quantiles ; les indices LTTB sont identiques sur les 19 cas. Aucun seuil relâché, aucun budget modifié.",
       "id": "D-097",
       "rollback": "Retirer le script, le test, `check:data-vectors` et les deux chemins de `rust_paths`."
+    },
+    {
+      "alternative": "'day'",
+      "date": "2026-10-31",
+      "decision": "Agrégation de `pp-data` (#98, « Closes #98 », option A de Paul). Spécification : `{ by: 'category'",
+      "id": "D-098",
+      "rollback": "'month'"
     }
   ]
 }

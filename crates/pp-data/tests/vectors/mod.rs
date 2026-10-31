@@ -55,7 +55,26 @@ pub fn code(error: DataError) -> &'static str {
         DataError::BadProbability => "stats.bad-probability",
         DataError::LengthMismatch | DataError::NonFiniteAbscissa => "geometry.bad-input",
         DataError::BadTarget => "downsample.bad-target",
+        DataError::BadDate => "dataset.bad-date",
         DataError::TooManyPoints => "dataset.too-many-points",
+    }
+}
+
+/// Code d'erreur TypeScript de `aggregate` : ses causes portent des codes `dataset.*`.
+pub fn aggregate_code(error: DataError) -> &'static str {
+    match error {
+        DataError::EmptyInput => "dataset.empty",
+        DataError::NonFiniteValue => "dataset.non-finite",
+        DataError::LengthMismatch => "dataset.length-mismatch",
+        other => code(other),
+    }
+}
+
+/// Valeur d'une série d'agrégation : « NaN » et « Infinity » sont écrits en texte.
+pub fn series_value(value: &Value) -> Option<f64> {
+    match value {
+        Value::String(text) => text.parse().ok(),
+        other => other.as_f64(),
     }
 }
 

@@ -1,3 +1,4 @@
+import type { AggregateSpec } from '../domain/aggregate/spec.ts';
 import type { Dataset } from '../domain/dataset.ts';
 import type { Result } from '../domain/result.ts';
 
@@ -12,7 +13,10 @@ export interface Formatter {
   dateLabel(iso: string): string;
 }
 
-/** Réduction ou agrégation d'un jeu de données (implémentation Rust plus tard, ADR-0007). */
+/**
+ * Agrégation d'un jeu de données par catégorie ou par pas de temps (D-098). Implémentée d'abord en
+ * TypeScript (`createAggregator`, la référence), plus tard par l'adaptateur WebAssembly (ADR-0007).
+ */
 export interface Aggregator {
-  aggregate(dataset: Dataset, spec: Readonly<Record<string, unknown>>): Result<Dataset>;
+  aggregate(dataset: Dataset, spec: AggregateSpec): Result<Dataset>;
 }

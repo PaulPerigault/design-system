@@ -22,6 +22,8 @@ export const ERROR_CODES = [
   'stats.empty',
   'stats.non-finite',
   'stats.bad-probability',
+  'aggregate.bad-spec',
+  'aggregate.bad-axis',
   'format.bad-locale',
   'kpi.bad-value',
   'kpi.bad-reference',
