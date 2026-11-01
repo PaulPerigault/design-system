@@ -1,0 +1,57 @@
+---
+import Table from '@paulperigault/astro/Table.astro';
+import measure from '../data/sobriete.json';
+
+// Mesures écrites par `npm run benchmark:weight -- --write apps/docs/src/data/sobriete.json`.
+const KIB = 1024;
+const MILLIGRAMS = 1000;
+const TYPES = ['html', 'css', 'js', 'font', 'image', 'wasm'] as const;
+const kib = (bytes: number) => `${(bytes / KIB).toFixed(1).replace('.', ',')} Kio`;
+const mg = (grams: number) => `${(grams * MILLIGRAMS).toFixed(1).replace('.', ',')} mg`;
+
+const total = (weight: Record<string, { brotli: number }>) =>
+  Object.values(weight).reduce((all, entry) => all + entry.brotli, 0);
+
+const pageColumns = [
+  { key: 'page', label: 'Page' },
+  ...TYPES.map((type) => ({ key: type, label: type })),
+  { key: 'total', label: 'Total' },
+  { key: 'nouveau', label: 'CO2e, nouveau visiteur' },
+  { key: 'retour', label: 'CO2e, visiteur de retour' },
+];
+const pageRows = measure.pages.map(({ path, weight, grams }) => ({
+  page: path,
+  ...Object.fromEntries(TYPES.map((type) => [type, kib(weight[type].brotli)])),
+  total: kib(total(weight)),
+  nouveau: mg(grams.newVisitor),
+  retour: mg(grams.returnVisitor),
+}));
+
+const packageColumns = [
+  { key: 'paquet', label: 'Paquet' },
+  { key: 'archive', label: 'Archive npm' },
+  { key: 'contenu', label: 'Contenu décompressé' },
+];
+const packageRows = measure.packages.map(({ name, archive, unpacked }) => ({
+  paquet: name,
+  archive: kib(archive),
+  contenu: kib(unpacked),
+}));
+---
+
+<Table
+  caption={`Poids transféré par page, brotli, mesuré le ${measure.date}`}
+  columns={pageColumns}
+  rows={pageRows}
+  rowHeader="page"
+/>
+<p>
+  Site : {measure.files} fichiers publiés. Le plus gros fichier est
+  <code>{measure.largest.path}</code>, de {kib(measure.largest.bytes)}.
+</p>
+<Table
+  caption={`Poids des paquets publiés, mesuré le ${measure.date}`}
+  columns={packageColumns}
+  rows={packageRows}
+  rowHeader="paquet"
+/>

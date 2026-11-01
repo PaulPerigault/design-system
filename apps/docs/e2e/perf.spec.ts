@@ -4,11 +4,11 @@ import type { CDPSession, Page } from '@playwright/test';
 import { readInp } from './inp';
 import { injectVitals, readCls } from './web-vitals';
 
-/** Budgets de L12 (docs/benchmark/gap.md), mesurés sur un téléphone d'entrée de gamme. */
-const LCP_BUDGET_MS = 2500;
-const CLS_BUDGET = 0.1;
-const INP_BUDGET_MS = 200;
-const JS_BUDGET_BYTES = 1024;
+/**
+ * Repères de L12 (docs/benchmark/gap.md), mesurés sur un téléphone d'entrée de gamme. Ce sont des
+ * mesures affichées, jamais des seuils qui font échouer le test (D-106, ADR-0006 décision 5).
+ */
+const REFERENCES = 'LCP 2500 ms, CLS 0,1, INP 200 ms, JavaScript 1 Kio gzip, 2 fichiers de police';
 
 /** Appareil : 360 × 800, tactile ; CPU ×4 plus lent ; « Slow 4G » (latence 150 ms, 1,6 Mbit/s). */
 const VIEWPORT = { width: 360, height: 800 };
@@ -18,10 +18,8 @@ const BITS_PER_BYTE = 8;
 const DOWNLOAD_BITS_PER_S = 1_600_000;
 const UPLOAD_BITS_PER_S = 750_000;
 const TEST_TIMEOUT_MS = 90_000;
-/** Corps + chasse fixe des blocs de code (ADR-0002). */
-const MAX_FONT_FILES = 2;
 
-const PAGES = ['/', '/components/button/', '/tableau-de-bord/'];
+const PAGES = ['/', '/components/button/', '/tableau-de-bord/', '/sobriete/'];
 const BODY_FONT = 'Atkinson Hyperlegible Next Variable';
 
 test.use({ viewport: VIEWPORT, hasTouch: true, isMobile: true });
@@ -67,7 +65,7 @@ const readLcp = (page: Page): Promise<number> =>
   );
 
 for (const path of PAGES) {
-  test(`budgets mobile (360 × 800, CPU ×4, Slow 4G) : ${path}`, async ({ page }) => {
+  test(`mesure mobile (360 × 800, CPU ×4, Slow 4G) : ${path}`, async ({ page }) => {
     test.setTimeout(TEST_TIMEOUT_MS);
     const responses = trackResponses(page);
     await throttle(page);
@@ -75,24 +73,27 @@ for (const path of PAGES) {
     await page.goto(path, { waitUntil: 'load' });
     await page.evaluate(() => document.fonts.ready);
 
-    expect(await readLcp(page), 'LCP').toBeLessThanOrEqual(LCP_BUDGET_MS);
     const inp = await readInp(page);
-    const detail = `INP (attente, traitement, rendu) ${inp.parts.map(Math.round)}`;
-    // Les runners GitHub (2 vCPU, rendu logiciel) ajoutent ~200 ms d'attente avant tout
-    // traitement, quelle que soit la page (D-021) : mesuré et rapporté en CI, bloquant en local.
-    if (process.env.CI) test.info().annotations.push({ type: 'inp', description: detail });
-    else expect(inp.duration, detail).toBeLessThanOrEqual(INP_BUDGET_MS);
-    expect(await readCls(page), 'CLS').toBeLessThanOrEqual(CLS_BUDGET);
-    expect(await responses.scriptBytes(), 'JavaScript gzip').toBeLessThanOrEqual(JS_BUDGET_BYTES);
+    const measures = {
+      LCP: `${Math.round(await readLcp(page))} ms`,
+      INP: `${Math.round(inp.duration)} ms (attente, traitement, rendu ${inp.parts.map(Math.round)})`,
+      CLS: (await readCls(page)).toFixed(3),
+      'JavaScript gzip': `${await responses.scriptBytes()} o`,
+      'fichiers de police': String(responses.fonts.length),
+    };
+    // Affichée dans le rapport Playwright ; aucun seuil. Les runners GitHub (2 vCPU, rendu
+    // logiciel) ajoutent ~200 ms d'attente à l'INP (D-021) : une valeur, pas un verdict.
+    for (const [type, value] of Object.entries(measures)) {
+      test.info().annotations.push({ type, description: `${value} (repère : ${REFERENCES})` });
+    }
 
     const preloads = page.locator('link[rel=preload][as=font]');
     await expect(preloads).toHaveCount(1);
     const href = await preloads.getAttribute('href');
-    // Le corps est préchargé ; la police à chasse fixe des blocs de code vient en plus, sans préchargement.
+    // Fonctionnement, pas budget : le corps est préchargé et sa police est chargée.
     expect(responses.fonts, 'la police du corps est préchargée').toContain(
       new URL(href ?? '', page.url()).href,
     );
-    expect(responses.fonts.length, 'fichiers de police').toBeLessThanOrEqual(MAX_FONT_FILES);
     const body = await page.evaluate((family) => {
       const loaded = [...document.fonts].some((f) => f.family === family && f.status === 'loaded');
       return { loaded, stack: getComputedStyle(document.body).fontFamily };

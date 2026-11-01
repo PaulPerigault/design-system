@@ -19,6 +19,7 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "benchmark:images": "node tools/benchmark/images.mjs",
+    "benchmark:weight": "node tools/benchmark/weight.mjs",
     "check:size": "node tools/checks/check-size.mjs",
     "check:duplication": "node tools/checks/check-duplication.mjs",
     "check:readability": "node tools/checks/check-readability.mjs",

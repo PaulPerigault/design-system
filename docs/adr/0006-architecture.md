@@ -121,8 +121,8 @@ se branche aux ports sans toucher au cœur.
 
 ## Décision 5 : Green IT et FinOps (détail à l'étape 10, #102)
 
-- Un budget de poids par page et par ressource (HTML, CSS, JS, police, image, `.wasm`), bloquant en CI.
-- Une estimation carbone par page, méthode à choisir et à sourcer à l'étape 10.
+- Le poids est mesuré par page et par ressource (HTML, CSS, JS, police, image, `.wasm`) et par paquet, et affiché ; il ne bloque jamais la CI sauf seuil posé par Paul (amendement D-106 : la version initiale disait « budget bloquant »).
+- Une estimation carbone par page : Sustainable Web Design v4, méthode et limites sur la page « Sobriété » (D-106).
 - Rester dans l'offre gratuite de Cloudflare Pages (builds, bande passante, requêtes) ; surveiller.
 - Aucune dépendance d'exécution inutile : chaque ajout est justifié par écrit (ex. Effect-TS, hors cœur).
 - Zéro JS par défaut, images au plus juste, polices limitées : la sobriété est une contrainte de conception.

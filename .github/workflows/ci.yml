@@ -83,8 +83,9 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci && npm -w @paulperigault/docs run build
-      # Mesure affichée dans le résumé, jamais bloquante (D-104).
+      # Mesures affichées dans le résumé, jamais bloquantes (D-104, D-106).
       - run: npm run benchmark:images
+      - run: npm run benchmark:weight
 
   changes:
     # Décide si e2e tourne et sur quel périmètre. `render` : la PR touche le rendu (css, tokens,
