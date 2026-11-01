@@ -29,7 +29,11 @@ async function settleImages(page: Page): Promise<void> {
 }
 
 /** Pages dont les motifs de hachures alourdissent trop une capture pleine page (budget d'images). */
-const EXAMPLES_ONLY = ['/components/area-chart/', '/components/gauge-chart/'];
+const EXAMPLES_ONLY = [
+  '/components/area-chart/',
+  '/components/bar-chart/',
+  '/components/gauge-chart/',
+];
 
 /**
  * Pages dont la hauteur suit le contenu (liste qui grandit à chaque ADR ou composant) : capture du
