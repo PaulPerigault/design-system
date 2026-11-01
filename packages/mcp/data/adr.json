@@ -745,6 +745,13 @@
       "decision": "Mesure de duplication par un script maison (#197, « Closes #197 »). `npm run check:duplication` compare des fenêtres de 6 lignes significatives (sans blancs ni commentaires) dans `packages/` et `crates/`, hors tests, fichiers générés, `wasm/` et `target/`, affiche le taux et les blocs, et sort toujours 0 : mesurer, pas bloquer. Décision de Paul : option B, aucune dépendance ajoutée. Mesure à la livraison : 2,18 % avant, 1,65 % après avoir mis l'empreinte, le poids et la garde de publication `.wasm` de `color` et `data` dans `tools/wasm/`.",
       "id": "D-103",
       "rollback": "Supprimer `tools/checks/*duplication*` et le script npm ; remettre les deux `wasm-files.ts` et `check-wasm.ts` d'origine"
+    },
+    {
+      "alternative": "Aucune mesure ; un seuil bloquant (contraire au principe GreenOps)",
+      "date": "2026-11-01",
+      "decision": "Mesure du pipeline d'images (#91, « Closes #91 »). `npm run benchmark:images` lit `apps/docs/dist/_astro` et affiche, par source, le poids de l'original et des variantes AVIF, WebP et repli, les rapports à même largeur et, avec `--build`, la durée du build à froid et à chaud. Résumé dans la CI après le build de la doc, sans seuil : le script sort toujours 0. Résultat : 31 variantes par format ; AVIF 55,3 Kio, WebP 74,2 Kio, repli 236,7 Kio ; build 24,4 s à froid. Le pipeline n'est pas modifié (critère de l'issue).",
+      "id": "D-104",
+      "rollback": "Supprimer `tools/benchmark/images*`, le script npm et l'étape CI"
     }
   ]
 }
