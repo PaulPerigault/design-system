@@ -752,6 +752,13 @@
       "decision": "Mesure du pipeline d'images (#91, « Closes #91 »). `npm run benchmark:images` lit `apps/docs/dist/_astro` et affiche, par source, le poids de l'original et des variantes AVIF, WebP et repli, les rapports à même largeur et, avec `--build`, la durée du build à froid et à chaud. Résumé dans la CI après le build de la doc, sans seuil : le script sort toujours 0. Résultat : 31 variantes par format ; AVIF 55,3 Kio, WebP 74,2 Kio, repli 236,7 Kio ; build 24,4 s à froid. Le pipeline n'est pas modifié (critère de l'issue).",
       "id": "D-104",
       "rollback": "Supprimer `tools/benchmark/images*`, le script npm et l'étape CI"
+    },
+    {
+      "alternative": "Laisser les déclencheurs documentés dans les seuls commentaires des workflows",
+      "date": "2026-11-01",
+      "decision": "Matrice « qui vérifie quoi » (#80, 1bis-d, « Closes #80 »). `docs/process/matrice-controles.md` liste les hooks, chaque étape de `npm run verify`, chaque job des sept workflows avec son déclencheur et ce qu'il bloque, et justifie chaque doublon (verify sur PR et main, ESLint au hook, commitlint à trois endroits, builds isolés, audit des signatures, SBOM, tests wasm, Visuel). Aucun doublon n'a été trouvé à supprimer en plus de ceux de l'audit 1bis-a.",
+      "id": "D-105",
+      "rollback": "Supprimer le fichier"
     }
   ]
 }
