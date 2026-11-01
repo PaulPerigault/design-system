@@ -1,0 +1,99 @@
+---
+import SobrieteTables from '../components/SobrieteTables.astro';
+import DocsLayout from '../layouts/DocsLayout.astro';
+---
+
+<DocsLayout
+  title="Sobriété · Design system · Paul Perigault"
+  description="Poids des pages et des paquets mesurés, estimation du carbone avec sa méthode et ses limites, test mobile en réseau lent : des mesures affichées, sans seuil bloquant."
+>
+  <div class="docs-prose sobriety-page">
+    <h1>Sobriété</h1>
+    <p>
+      Le poids se mesure, s’affiche et se signale. Aucun seuil ne fait échouer la CI : un seuil ne
+      bloquerait que si je le posais moi-même. Cette règle remplace le « budget bloquant » de l’
+      <a href="/decisions/0006/">ADR-0006</a> (décision 5, D-106). C’est une préférence, pas une
+      preuve.
+    </p>
+
+    <h2 id="poids">Poids des pages et des paquets</h2>
+    <p>
+      Octets transférés après compression brotli, par type de ressource. Une page compte son HTML,
+      ses feuilles de style, ses scripts, ses polices préchargées et ses images <code>img</code> ;
+      les polices chargées à la demande ne sont pas comptées. Les chiffres se reproduisent :
+    </p>
+    <pre tabindex="0"><code>npm -w @paulperigault/docs run build
+npm run benchmark:weight</code></pre>
+    <SobrieteTables />
+
+    <h2 id="mobile">Mobile, réseau lent, processeur bridé</h2>
+    <p>
+      Le test <code>apps/docs/e2e/perf.spec.ts</code> charge quatre pages sur un écran de 360 × 800,
+      processeur ralenti ×4, « Slow 4G » (latence 150 ms, 1,6 Mbit/s). Il relève LCP, INP, CLS, le
+      JavaScript en gzip et le nombre de fichiers de police, et les affiche dans le rapport
+      Playwright. Les repères viennent de <code>docs/benchmark/gap.md</code> (LCP 2 500 ms, INP 200
+      ms, CLS 0,1) ; ils ne font échouer aucun test. Seul le fonctionnement est vérifié : la police
+      du corps est préchargée et chargée.
+    </p>
+    <p>
+      Mesure du 2026-11-01, sur mon poste Windows avec Chromium, pour <code>/</code>, la page du
+      bouton, le tableau de bord et cette page : LCP de 0,98 à 1,26 s, INP de 56 à 96 ms, CLS de 0,
+      JavaScript de 1 005 octets en gzip, deux fichiers de police. Sur les runners de GitHub, l’INP
+      est plus haut (D-021). Une seule série, un seul poste : ce n’est pas une distribution.
+    </p>
+    <pre tabindex="0"><code>npm run e2e -- --project=chromium perf.spec.ts</code></pre>
+
+    <h2 id="carbone">Estimation du carbone</h2>
+    <p>
+      Le modèle est Sustainable Web Design, version 4 (
+      <a href="https://sustainablewebdesign.org/estimating-digital-emissions/">
+        sustainablewebdesign.org
+      </a>
+      , page lue le 2026-11-01). C’est un modèle descendant : il applique au volume transféré une
+      énergie par gigaoctet pour trois segments (centres de données, réseaux, appareils), en partie
+      opérationnelle et en partie incorporée, avec une intensité électrique de 494 gCO2e par kWh. La
+      somme est de 0,300 kWh par gigaoctet, soit 148,2 gCO2e par gigaoctet pour un nouveau visiteur
+      et un hébergement non déclaré vert.
+    </p>
+    <ul>
+      <li>
+        <strong>Nouveau visiteur</strong> : aucune ressource en cache. C’est la borne haute.
+      </li>
+      <li>
+        <strong>Visiteur de retour</strong> : la moitié des octets en cache. Cette part est une
+        hypothèse d’illustration, non mesurée ; le modèle ne donne aucune valeur par défaut.
+      </li>
+    </ul>
+    <p>
+      Limites : c’est une estimation, pas une mesure ; elle ne dit pas quoi optimiser. Les sources
+      du modèle divergent, et la page du modèle donne 430 TWh d’énergie incorporée pour les
+      appareils contre 421 TWh d’énergie totale. Une estimation d’un autre modèle (OneByte, SCI) ne
+      se compare pas à celle-ci. Le calcul est dans <code>tools/benchmark/carbon.mjs</code>, testé
+      contre le gigaoctet de référence.
+    </p>
+
+    <h2 id="gratuit">Offre gratuite de Cloudflare Pages</h2>
+    <p>
+      Les limites lues dans la
+      <a href="https://developers.cloudflare.com/pages/platform/limits/">documentation</a> : 500
+      builds par mois, 20 000 fichiers par site, 25 MiB par fichier. Le nombre de fichiers et le
+      plus gros fichier sont dans le tableau ci-dessus. Le nombre de builds du mois se lit dans le
+      compte Cloudflare : je ne l’ai pas mesuré ici.
+    </p>
+  </div>
+</DocsLayout>
+
+<style>
+  .sobriety-page :global(pre) {
+    margin: 0;
+    padding: var(--pp-space-s);
+    max-inline-size: 100%;
+    overflow: auto;
+    border: var(--pp-size-rule) solid var(--pp-color-line);
+    border-radius: var(--pp-radius-control);
+  }
+
+  .sobriety-page :global(:where(p, li, h2)) {
+    overflow-wrap: anywhere;
+  }
+</style>

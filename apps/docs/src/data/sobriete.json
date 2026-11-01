@@ -1,0 +1,213 @@
+{
+  "date": "2026-11-01",
+  "pages": [
+    {
+      "path": "/",
+      "weight": {
+        "html": {
+          "raw": 21543,
+          "gzip": 4920,
+          "brotli": 4311
+        },
+        "css": {
+          "raw": 31040,
+          "gzip": 7809,
+          "brotli": 6792
+        },
+        "js": {
+          "raw": 1833,
+          "gzip": 1005,
+          "brotli": 862
+        },
+        "font": {
+          "raw": 33996,
+          "gzip": 34029,
+          "brotli": 34000
+        },
+        "image": {
+          "raw": 0,
+          "gzip": 0,
+          "brotli": 0
+        },
+        "wasm": {
+          "raw": 0,
+          "gzip": 0,
+          "brotli": 0
+        }
+      },
+      "grams": {
+        "newVisitor": 0.006812013,
+        "returnVisitor": 0.0034060065
+      }
+    },
+    {
+      "path": "/components/button/",
+      "weight": {
+        "html": {
+          "raw": 20864,
+          "gzip": 4790,
+          "brotli": 4208
+        },
+        "css": {
+          "raw": 25787,
+          "gzip": 6380,
+          "brotli": 5572
+        },
+        "js": {
+          "raw": 1833,
+          "gzip": 1005,
+          "brotli": 862
+        },
+        "font": {
+          "raw": 33996,
+          "gzip": 34029,
+          "brotli": 34000
+        },
+        "image": {
+          "raw": 0,
+          "gzip": 0,
+          "brotli": 0
+        },
+        "wasm": {
+          "raw": 0,
+          "gzip": 0,
+          "brotli": 0
+        }
+      },
+      "grams": {
+        "newVisitor": 0.006615944399999999,
+        "returnVisitor": 0.0033079721999999994
+      }
+    },
+    {
+      "path": "/tableau-de-bord/",
+      "weight": {
+        "html": {
+          "raw": 45053,
+          "gzip": 6913,
+          "brotli": 5802
+        },
+        "css": {
+          "raw": 35599,
+          "gzip": 9275,
+          "brotli": 8103
+        },
+        "js": {
+          "raw": 1833,
+          "gzip": 1005,
+          "brotli": 862
+        },
+        "font": {
+          "raw": 33996,
+          "gzip": 34029,
+          "brotli": 34000
+        },
+        "image": {
+          "raw": 0,
+          "gzip": 0,
+          "brotli": 0
+        },
+        "wasm": {
+          "raw": 0,
+          "gzip": 0,
+          "brotli": 0
+        }
+      },
+      "grams": {
+        "newVisitor": 0.0072272694,
+        "returnVisitor": 0.0036136347
+      }
+    },
+    {
+      "path": "/sobriete/",
+      "weight": {
+        "html": {
+          "raw": 20684,
+          "gzip": 4606,
+          "brotli": 4004
+        },
+        "css": {
+          "raw": 21309,
+          "gzip": 5360,
+          "brotli": 4728
+        },
+        "js": {
+          "raw": 1833,
+          "gzip": 1005,
+          "brotli": 862
+        },
+        "font": {
+          "raw": 33996,
+          "gzip": 34029,
+          "brotli": 34000
+        },
+        "image": {
+          "raw": 0,
+          "gzip": 0,
+          "brotli": 0
+        },
+        "wasm": {
+          "raw": 0,
+          "gzip": 0,
+          "brotli": 0
+        }
+      },
+      "grams": {
+        "newVisitor": 0.0064606308000000005,
+        "returnVisitor": 0.0032303154000000002
+      }
+    }
+  ],
+  "files": 592,
+  "largest": {
+    "path": "/llms-full.txt",
+    "bytes": 331575
+  },
+  "packages": [
+    {
+      "name": "@paulperigault/astro",
+      "archive": 105976,
+      "unpacked": 449984
+    },
+    {
+      "name": "@paulperigault/color",
+      "archive": 33935,
+      "unpacked": 94319
+    },
+    {
+      "name": "@paulperigault/create",
+      "archive": 48080,
+      "unpacked": 137171
+    },
+    {
+      "name": "@paulperigault/css",
+      "archive": 4558,
+      "unpacked": 11372
+    },
+    {
+      "name": "@paulperigault/data",
+      "archive": 37572,
+      "unpacked": 98691
+    },
+    {
+      "name": "@paulperigault/dataviz",
+      "archive": 33845,
+      "unpacked": 102223
+    },
+    {
+      "name": "@paulperigault/guards",
+      "archive": 29886,
+      "unpacked": 90841
+    },
+    {
+      "name": "@paulperigault/mcp",
+      "archive": 219043,
+      "unpacked": 801528
+    },
+    {
+      "name": "@paulperigault/tokens",
+      "archive": 23884,
+      "unpacked": 71660
+    }
+  ]
+}

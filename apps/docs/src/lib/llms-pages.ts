@@ -28,6 +28,12 @@ export const DOC_PAGES: readonly DocPage[] = [
       'Huit composants de visualisation : démonstrations, contrat de données, accessibilité.',
   },
   {
+    path: '/sobriete/',
+    title: 'Sobriété',
+    description:
+      'Poids des pages et des paquets, estimation du carbone avec sa méthode, test mobile en réseau lent.',
+  },
+  {
     path: '/tableau-de-bord/',
     title: 'Tableau de bord',
     description:

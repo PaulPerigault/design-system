@@ -3,8 +3,6 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import { FIGURE_COUNT, PATH, WCAG_TAGS } from './tableau-de-bord';
 
-/** Budget de poids du HTML (gzip), mesuré à 7 ko le 2026-10-31 : marge d'un peu plus de moitié. */
-const HTML_GZIP_BUDGET = 12 * 1024;
 /** Couleurs système (CSS Color 4) que le contraste forcé impose aux tracés. */
 const SYSTEM_COLORS = [
   'CanvasText',
@@ -41,9 +39,11 @@ test('la page ne charge ni script dans le contenu ni WebAssembly', async ({ page
   expect(wasm).toEqual([]);
 });
 
-test('budget de poids : le HTML tient dans 12 ko en gzip', async ({ request }) => {
+test('poids du HTML (gzip) : mesure affichée, sans seuil (D-106)', async ({ request }) => {
   const body = await (await request.get(PATH)).body();
-  expect(gzipSync(body).length).toBeLessThanOrEqual(HTML_GZIP_BUDGET);
+  const size = gzipSync(body).length;
+  test.info().annotations.push({ type: 'HTML gzip', description: `${size} o` });
+  expect(size).toBeGreaterThan(0);
 });
 
 test.describe('sans JavaScript', () => {

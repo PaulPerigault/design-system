@@ -18,10 +18,10 @@ il ne fait jamais échouer la CI par défaut. Un seuil ne bloque que si Paul le 
 Aucune fonctionnalité n'est retirée pour gagner des octets : on réduit ce qui est inutile, pas ce
 qui sert.
 
-**Écart à connaître** (écrit, non tranché ici) : ADR-0006 décision 5 dit « budget de poids…
-bloquant en CI » et `perf.spec.ts` assertit aujourd'hui LCP, INP, CLS, JavaScript gzip (1 024 octets)
-et deux fichiers de police au plus. La consigne de Paul prime : ces budgets sont à réexaminer à
-l'étape #102 ; en revue, les signaler comme « mesure », pas comme motif de refus. Noté dans D-079.
+**Décision prise (D-106)** : les budgets bloquants de `perf.spec.ts` sont devenus des mesures
+affichées, et ADR-0006 décision 5 est amendée. Rien ne bloque la CI sur le poids ; en revue,
+signaler une hausse sans la qualifier de motif de refus. Outils : `npm run benchmark:weight` (poids
+des pages et des paquets, carbone), page « Sobriété ».
 
 ## Comment l'utiliser
 
@@ -36,7 +36,7 @@ l'étape #102 ; en revue, les signaler comme « mesure », pas comme motif de re
   (compressés) et en octets décodés ; dire lequel.
 - Outils existants : `perf.spec.ts` (JS gzip, fichiers de police, sous bridage mobile) et
   `tools/benchmark/measure.mjs` (`resources()`, `transferSize` ; 0 sans `Timing-Allow-Origin` :
-  « inconnu », pas « nul »). Un rapport de poids par page est prévu par #102 : il n'existe pas encore.
+  « inconnu », pas « nul »). Le rapport de poids par page et par paquet est `tools/benchmark/weight.mjs` (#102).
 - Afficher : un tableau page, ressource, octets, date, dans la PR ou le bilan. Signaler : une
   hausse notable entre deux mesures, sans échec de CI.
 - Le chiffre de poids est un fait ; sa lecture (« lourd ») est une préférence tant qu'aucun seuil
@@ -69,7 +69,7 @@ l'étape #102 ; en revue, les signaler comme « mesure », pas comme motif de re
 
 - Aucune méthode n'est « prouvée » par défaut. Une estimation porte son nom de modèle, sa version,
   ses paramètres et sa date ; sans cela, ne pas publier le chiffre.
-- Candidates, à choisir à l'étape #102 (aucune retenue : ADR-0006) :
+- Retenu à l'étape #102 : SWD v4 (`tools/benchmark/carbon.mjs`, D-106). Autres modèles, pour mémoire :
   - SWD v4 (Sustainable Web Design) via CO2.js : modèle descendant, trois segments (centres de
     données 22 %, réseaux 24 %, appareils 54 %), intensité mondiale 494 gCO2e/kWh, ajustable ;
     CO2.js l'utilise par défaut (documentation) ; ses auteurs disent qu'il ne sert pas à trouver
