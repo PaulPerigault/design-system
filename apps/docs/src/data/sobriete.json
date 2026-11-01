@@ -5,9 +5,9 @@
       "path": "/",
       "weight": {
         "html": {
-          "raw": 21508,
-          "gzip": 4908,
-          "brotli": 4262
+          "raw": 21778,
+          "gzip": 4974,
+          "brotli": 4301
         },
         "css": {
           "raw": 31040,
@@ -36,22 +36,22 @@
         }
       },
       "grams": {
-        "newVisitor": 0.0068047512000000004,
-        "returnVisitor": 0.0034023756000000002
+        "newVisitor": 0.006810531,
+        "returnVisitor": 0.0034052655
       }
     },
     {
       "path": "/components/button/",
       "weight": {
         "html": {
-          "raw": 20829,
-          "gzip": 4776,
-          "brotli": 4195
+          "raw": 21099,
+          "gzip": 4869,
+          "brotli": 4273
         },
         "css": {
-          "raw": 25787,
-          "gzip": 6380,
-          "brotli": 5572
+          "raw": 25817,
+          "gzip": 6390,
+          "brotli": 5581
         },
         "js": {
           "raw": 1833,
@@ -75,17 +75,17 @@
         }
       },
       "grams": {
-        "newVisitor": 0.0066140178,
-        "returnVisitor": 0.0033070089
+        "newVisitor": 0.0066269112,
+        "returnVisitor": 0.0033134556
       }
     },
     {
       "path": "/tableau-de-bord/",
       "weight": {
         "html": {
-          "raw": 45018,
-          "gzip": 6903,
-          "brotli": 5786
+          "raw": 45288,
+          "gzip": 6992,
+          "brotli": 5858
         },
         "css": {
           "raw": 35599,
@@ -114,17 +114,17 @@
         }
       },
       "grams": {
-        "newVisitor": 0.0072248982000000005,
-        "returnVisitor": 0.0036124491000000002
+        "newVisitor": 0.007235568600000001,
+        "returnVisitor": 0.0036177843000000003
       }
     },
     {
       "path": "/sobriete/",
       "weight": {
         "html": {
-          "raw": 20649,
-          "gzip": 4598,
-          "brotli": 3996
+          "raw": 20919,
+          "gzip": 4683,
+          "brotli": 4065
         },
         "css": {
           "raw": 21309,
@@ -153,21 +153,21 @@
         }
       },
       "grams": {
-        "newVisitor": 0.0064594452,
-        "returnVisitor": 0.0032297226
+        "newVisitor": 0.006469671,
+        "returnVisitor": 0.0032348355
       }
     }
   ],
   "files": 592,
   "largest": {
     "path": "/llms-full.txt",
-    "bytes": 331754
+    "bytes": 332162
   },
   "packages": [
     {
       "name": "@paulperigault/astro",
       "archive": 105976,
-      "unpacked": 449984
+      "unpacked": 450081
     },
     {
       "name": "@paulperigault/color",
@@ -201,8 +201,8 @@
     },
     {
       "name": "@paulperigault/mcp",
-      "archive": 219042,
-      "unpacked": 801528
+      "archive": 219451,
+      "unpacked": 803080
     },
     {
       "name": "@paulperigault/tokens",

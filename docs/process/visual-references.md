@@ -23,7 +23,7 @@ test. Les références sont maintenant produites une fois par le runner Linux et
   tout en double thème) = 157 Mo, trop lourd pour l'historique git ; le périmètre ci-dessus donne
   198 captures, 48 Mo.
 
-Exception : les pages components/area-chart et components/gauge-chart ne sont capturées que de « Exemples » à « Variantes » (EXAMPLES_ONLY, pps/docs/e2e/matrix/visual.spec.ts) : leurs hachures dépassaient le budget de 600 Ko en pleine page.
+Exception : les pages components/area-chart, components/bar-chart et components/gauge-chart ne sont capturées que de « Exemples » à « Variantes » (EXAMPLES_ONLY, pps/docs/e2e/matrix/visual.spec.ts) : leurs hachures dépassaient le budget de 600 Ko en pleine page.
 
 Exception : les pages dont la hauteur suit le contenu, `/decisions/` (une ADR de plus à chaque
 décision) et `/composants/` (un composant de plus à chaque ajout), ne sont capturées que dans le

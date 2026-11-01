@@ -12,7 +12,7 @@
   "performance": {
     "budgets": { "lcpMs": 2500, "inpMs": 200, "cls": 0.1, "scriptGzipBytes": 1024 },
     "profile": "360 × 800, CPU ralenti ×4, réseau Slow 4G",
-    "note": "L'INP est mesuré et rapporté en CI, bloquant en local (D-021)."
+    "note": "Les valeurs sont affichées dans le rapport du test, sans seuil bloquant (D-106) ; l'INP des runners GitHub est plus haut (D-021)."
   },
   "security": {
     "csp": "default-src 'none', sans unsafe-inline ni unsafe-eval",

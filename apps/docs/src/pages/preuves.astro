@@ -51,10 +51,10 @@ const SECTIONS = [
   {
     title: 'Performance',
     rows: [
-      row('LCP, au plus', `${n(perf.budgets.lcpMs)} ms`, MEASURED, PERF),
-      row('INP, au plus', `${n(perf.budgets.inpMs)} ms. ${perf.note}`, MEASURED, PERF),
-      row('CLS, au plus', n(perf.budgets.cls), MEASURED, PERF),
-      row('JavaScript gzip, au plus', `${n(perf.budgets.scriptGzipBytes)} octets`, MEASURED, PERF),
+      row('LCP, repère', `${n(perf.budgets.lcpMs)} ms`, CONVENTION, PERF),
+      row('INP, repère', `${n(perf.budgets.inpMs)} ms. ${perf.note}`, CONVENTION, PERF),
+      row('CLS, repère', n(perf.budgets.cls), CONVENTION, PERF),
+      row('JavaScript gzip, repère', `${n(perf.budgets.scriptGzipBytes)} octets`, CONVENTION, PERF),
       row('Profil de mesure', perf.profile, CONVENTION, PERF),
     ],
   },
@@ -86,7 +86,14 @@ const SECTIONS = [
     </p>
     <p>
       Ce sont des contrôles de ce dépôt, pas un audit externe. Une ligne « mesuré » a un test qui
-      échoue si la valeur est dépassée. Une ligne « convention » est un choix, sans seuil testé.
+      échoue si la valeur est dépassée. Une ligne « convention » est un choix, sans seuil testé :
+      les repères de performance en font partie (mesures sur la page{' '}
+      <a href="/sobriete/">Sobriété</a>).
+    </p>
+    <p>
+      Le fond : l’<a href="/architecture/">architecture</a> et les{' '}
+      <a href="/decisions/">décisions</a>
+      dont ces chiffres découlent.
     </p>
   </div>
 

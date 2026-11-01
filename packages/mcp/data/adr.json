@@ -773,6 +773,13 @@
       "decision": "Dependabot pour Cargo et bilan du chantier (#103, « Closes #103 »). `.github/dependabot.yml` gagne l'écosystème `cargo` à la racine (workspace et `Cargo.lock`) : hebdomadaire, délai de 3 jours (7 pour une majeure), un groupe `rust` pour les mineures et correctifs, 4 PR ouvertes au plus. Dependabot reste l'outil (déjà en place pour npm et Actions, fusion automatique existante) ; Renovate n'est pas retenu. Une PR Cargo déclenche les jobs `rust` et `wasm` par leurs chemins (`Cargo.*`). README et AGENTS.md listent `color` et `data`. Le bilan est dans `docs/lots/chantier-adr-0006.md` : `docs/run-report.md` reste inchangé jusqu'à la fin du jalon (D-080).",
       "id": "D-107",
       "rollback": "Retirer le bloc `cargo` de `dependabot.yml`"
+    },
+    {
+      "alternative": "B : liens dans le pied de page seulement ; C : ne rien changer",
+      "date": "2026-11-01",
+      "decision": "Navigation à six entrées (#123, ADR-0008 décision 2, option A de Paul, « Refs #123 »). En-tête : Démarrer, Composants, Données, Preuves, Auteur, Recherche ; l'accueil est la marque. Pied de page : colonne « Le fond » (Architecture, Décisions, Identité, Sobriété, PWA) en plus des pages d'information ; `Preuves` renvoie vers Architecture, Décisions et Sobriété. Aucune page ne disparaît. Les références Visuel sont régénérées pour tout le site (en-tête commun), volume accepté par Paul. Le changement a aussi fait apparaître une faille que le test de focus masquait : il s'arrêtait au premier identifiant de lien déjà vu (« Accueil » de l'en-tête) et ne parcourait jamais le contenu. Corrigés : contour de 1 px (au lieu de 2 px) sur le fil d'Ariane et la navigation de page ; le test lit désormais le contour du `::after` (lien étendu de `Card`). Les lignes de performance de `Preuves` passent de « mesuré » à « convention » (D-106).",
+      "id": "D-108",
+      "rollback": "Rétablir l'ancien en-tête et les anciennes références"
     }
   ]
 }

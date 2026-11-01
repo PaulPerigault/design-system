@@ -658,7 +658,8 @@
       "--pp-color-muted",
       "--pp-font-size-0",
       "--pp-font-weight-medium",
-      "--pp-size-rule",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
       "--pp-size-target-min",
       "--pp-space-xs"
     ],
