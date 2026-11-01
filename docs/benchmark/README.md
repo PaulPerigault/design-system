@@ -11,6 +11,7 @@ publiés et les grands sites, et l'écart avec le design system. Établi le 2026
 | [panel.md](panel.md)           | Panel de 32 acteurs à fort trafic : publié **et** observé, jamais mélangés            |
 | [observations/](observations/) | Mesures Playwright brutes (`observations.json`) et leur méthode                       |
 | [gap.md](gap.md)               | Pratique → source → convergence → notre état → écart → décision : définit L12 à L14   |
+| [images.md](images.md)         | Pipeline d'images : poids par format et durée de build (#91)                          |
 
 ## Règles de lecture
 
