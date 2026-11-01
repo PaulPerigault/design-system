@@ -45,6 +45,22 @@ updates:
           - 'playwright*'
           - '@axe-core/*'
         update-types: ['minor', 'patch']
+  - package-ecosystem: cargo
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 3
+      semver-major-days: 7
+    open-pull-requests-limit: 4
+    target-branch: main
+    commit-message:
+      prefix: 'chore(deps)'
+    labels: ['dependencies']
+    groups:
+      rust:
+        patterns: ['*']
+        update-types: ['minor', 'patch']
   - package-ecosystem: github-actions
     directory: /
     schedule:

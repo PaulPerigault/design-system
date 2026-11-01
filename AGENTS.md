@@ -11,6 +11,8 @@ Design system de paulperigault.fr, monorepo npm workspaces, Node 24, npm 11, lic
 | `@paulperigault/tokens`  | source DTCG 2025.10 → `tokens.css`, `tokens.json`, `tokens.d.ts` ; `color` (OKLCH ↔ sRGB, gamut) et `contrast` (WCAG 2)                       | rien à l'exécution |
 | `@paulperigault/css`     | base, reset, impression, polices, `@theme` Tailwind v4, primitives de layout CSS                                                              | `tokens`           |
 | `@paulperigault/dataviz` | contrat `Dataset` validé à la frontière, formatage fr (`Intl`), palettes dérivées de l'accent (ΔE00, daltonisme) ; TypeScript pur, sans rendu | `tokens`           |
+| `@paulperigault/color`   | `.wasm` issu de `crates/pp-color` : couleur OKLCH, contraste WCAG 2 et APCA, parité avec `tokens`                                             | rien à l'exécution |
+| `@paulperigault/data`    | `.wasm` issu de `crates/pp-data` : quantiles, agrégation, LTTB, parité avec `dataviz`                                                         | `dataviz`          |
 | `@paulperigault/astro`   | composants `.astro` publiés en source, behaviors, `variants()`                                                                                | `css`, `tokens`    |
 | `@paulperigault/guards`  | contrôles (taille, couleurs, couches, tokens, images), config ESLint                                                                          | rien à l'exécution |
 | `@paulperigault/create`  | CLI `create`, `add`, `eject`, `diff` (`node:util` parseArgs, FS injecté)                                                                      | rien à l'exécution |

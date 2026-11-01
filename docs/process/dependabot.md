@@ -22,13 +22,15 @@ Sources : `.github/dependabot.yml`, `.github/workflows/dependabot-automerge.yml`
 
 ## Configuration (`dependabot.yml`)
 
-- Écosystèmes : `npm` (racine, qui couvre les workspaces) et `github-actions`. Cargo s'ajoutera
-  avec le premier crate Rust, pas avant.
+- Écosystèmes : `npm` (racine, qui couvre les workspaces), `cargo` (racine, qui couvre le workspace
+  `Cargo.toml` et `Cargo.lock`) et `github-actions`. Dependabot reste le choix, Renovate n'est pas
+  retenu (D-107). Une PR Cargo lance les jobs `rust` et `wasm` (chemins `Cargo.*`), qui rejouent
+  `cargo clippy`, `cargo test`, `cargo audit`, `cargo deny` et la parité.
 - Cadence : hebdomadaire. Délai de réaction : 3 jours (7 pour une majeure), pour laisser le temps
   de retirer un paquet compromis. C'est une convention, pas une garantie.
 - Groupes npm (mineures et correctifs seulement) : `astro`, `tailwind`, `mcp`, `tests`, `tooling`.
-  Groupe `actions` pour GitHub Actions. Une majeure n'entre dans aucun groupe : une PR par paquet.
-- `open-pull-requests-limit: 8` pour npm. Aucun `ignore` : toute majeure est proposée.
+  Groupe `rust` pour Cargo, groupe `actions` pour GitHub Actions. Une majeure n'entre dans aucun groupe : une PR par paquet.
+- `open-pull-requests-limit: 8` pour npm, 4 pour Cargo. Aucun `ignore` : toute majeure est proposée.
 - Les groupes séparent les dépendances de rendu (Astro, Tailwind) des outils : une PR de rendu
   lance e2e et Visuel, les autres non. Une seule PR par semaine n'est donc pas visée (écart
   assumé avec l'intitulé de #131).

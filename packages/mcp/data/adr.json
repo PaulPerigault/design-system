@@ -766,6 +766,13 @@
       "decision": "Sobriété : mesure affichée, estimation carbone sourcée, page « Sobriété » (#102, « Closes #102 »). Décision de Paul : le poids ne bloque jamais la CI. Les budgets de `perf.spec.ts` (LCP, INP, CLS, JavaScript, fichiers de police) et le budget de poids HTML du tableau de bord deviennent des annotations du rapport Playwright ; seul le fonctionnement reste vérifié (police du corps préchargée et chargée). ADR-0006 décision 5 amendée en conséquence. `npm run benchmark:weight` (étape du job `docs`, sortie 0) relève le poids brotli par page et par type, le poids des paquets, le nombre de fichiers et le plus gros fichier. Carbone : Sustainable Web Design v4, formule complète, deux scénarios (nouveau visiteur ; visiteur de retour, cache à 50 % en hypothèse d'illustration), hébergement non déclaré vert ; limites écrites sur la page. Page `/sobriete/` lue dans `apps/docs/src/data/sobriete.json`, écrit par le script.",
       "id": "D-106",
       "rollback": "Remettre les assertions de `perf.spec.ts` ; supprimer la page, le script et l'étape CI"
+    },
+    {
+      "alternative": "Renovate (second outil à configurer et à relire) ; attendre un deuxième crate",
+      "date": "2026-11-01",
+      "decision": "Dependabot pour Cargo et bilan du chantier (#103, « Closes #103 »). `.github/dependabot.yml` gagne l'écosystème `cargo` à la racine (workspace et `Cargo.lock`) : hebdomadaire, délai de 3 jours (7 pour une majeure), un groupe `rust` pour les mineures et correctifs, 4 PR ouvertes au plus. Dependabot reste l'outil (déjà en place pour npm et Actions, fusion automatique existante) ; Renovate n'est pas retenu. Une PR Cargo déclenche les jobs `rust` et `wasm` par leurs chemins (`Cargo.*`). README et AGENTS.md listent `color` et `data`. Le bilan est dans `docs/lots/chantier-adr-0006.md` : `docs/run-report.md` reste inchangé jusqu'à la fin du jalon (D-080).",
+      "id": "D-107",
+      "rollback": "Retirer le bloc `cargo` de `dependabot.yml`"
     }
   ]
 }
