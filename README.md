@@ -10,6 +10,8 @@ Design system de [paulperigault.fr](https://paulperigault.fr) : tokens, CSS, com
 | `@paulperigault/tokens`  | design tokens au format DTCG 2025.10, générés en CSS, JSON et types ; couleur et contraste |
 | `@paulperigault/css`     | base, reset, impression, polices et thème Tailwind v4                                      |
 | `@paulperigault/dataviz` | contrat de données, formatage fr et palettes accessibles dérivées de l'accent              |
+| `@paulperigault/color`   | couleur OKLCH, contraste WCAG 2 et APCA en WebAssembly (Rust), parité avec `tokens`        |
+| `@paulperigault/data`    | quantiles, agrégation et échantillonnage LTTB en WebAssembly (Rust), parité avec `dataviz` |
 | `@paulperigault/astro`   | composants `.astro` publiés en source                                                      |
 | `@paulperigault/guards`  | contrôles de conception et config ESLint                                                   |
 | `@paulperigault/create`  | CLI `create`, `add`, `eject`, `diff`                                                       |
