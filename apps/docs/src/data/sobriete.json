@@ -5,9 +5,9 @@
       "path": "/",
       "weight": {
         "html": {
-          "raw": 21543,
-          "gzip": 4920,
-          "brotli": 4311
+          "raw": 21508,
+          "gzip": 4908,
+          "brotli": 4262
         },
         "css": {
           "raw": 31040,
@@ -36,17 +36,17 @@
         }
       },
       "grams": {
-        "newVisitor": 0.006812013,
-        "returnVisitor": 0.0034060065
+        "newVisitor": 0.0068047512000000004,
+        "returnVisitor": 0.0034023756000000002
       }
     },
     {
       "path": "/components/button/",
       "weight": {
         "html": {
-          "raw": 20864,
-          "gzip": 4790,
-          "brotli": 4208
+          "raw": 20829,
+          "gzip": 4776,
+          "brotli": 4195
         },
         "css": {
           "raw": 25787,
@@ -75,17 +75,17 @@
         }
       },
       "grams": {
-        "newVisitor": 0.006615944399999999,
-        "returnVisitor": 0.0033079721999999994
+        "newVisitor": 0.0066140178,
+        "returnVisitor": 0.0033070089
       }
     },
     {
       "path": "/tableau-de-bord/",
       "weight": {
         "html": {
-          "raw": 45053,
-          "gzip": 6913,
-          "brotli": 5802
+          "raw": 45018,
+          "gzip": 6903,
+          "brotli": 5786
         },
         "css": {
           "raw": 35599,
@@ -114,17 +114,17 @@
         }
       },
       "grams": {
-        "newVisitor": 0.0072272694,
-        "returnVisitor": 0.0036136347
+        "newVisitor": 0.0072248982000000005,
+        "returnVisitor": 0.0036124491000000002
       }
     },
     {
       "path": "/sobriete/",
       "weight": {
         "html": {
-          "raw": 20684,
-          "gzip": 4606,
-          "brotli": 4004
+          "raw": 20649,
+          "gzip": 4598,
+          "brotli": 3996
         },
         "css": {
           "raw": 21309,
@@ -153,15 +153,15 @@
         }
       },
       "grams": {
-        "newVisitor": 0.0064606308000000005,
-        "returnVisitor": 0.0032303154000000002
+        "newVisitor": 0.0064594452,
+        "returnVisitor": 0.0032297226
       }
     }
   ],
   "files": 592,
   "largest": {
     "path": "/llms-full.txt",
-    "bytes": 331575
+    "bytes": 331754
   },
   "packages": [
     {
@@ -201,7 +201,7 @@
     },
     {
       "name": "@paulperigault/mcp",
-      "archive": 219043,
+      "archive": 219042,
       "unpacked": 801528
     },
     {
