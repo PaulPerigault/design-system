@@ -38,6 +38,8 @@ function inspect(): Focused | null {
     const top = document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2);
     return top !== null && top !== el && !el.contains(top) && !top.contains(el);
   };
+  const outlineWidthOf = (css: CSSStyleDeclaration) =>
+    css.outlineStyle === 'none' ? 0 : parseFloat(css.outlineWidth);
   const el = document.activeElement;
   if (!(el instanceof HTMLElement) || el === document.body) return null;
   const style = getComputedStyle(el);
@@ -48,7 +50,8 @@ function inspect(): Focused | null {
   const name = el.textContent?.trim() || el.getAttribute('aria-label') || '';
   return {
     id: `${el.tagName} « ${name.slice(0, 25)} »`,
-    width: style.outlineStyle === 'none' ? 0 : parseFloat(style.outlineWidth),
+    // Le contour peut être porté par le pseudo-élément `::after` (lien étendu de Card).
+    width: Math.max(outlineWidthOf(style), outlineWidthOf(getComputedStyle(el, '::after'))),
     contrast: (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05),
     covered: coveredAt(el),
   };
