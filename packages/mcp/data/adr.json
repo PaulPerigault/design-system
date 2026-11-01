@@ -738,6 +738,13 @@
       "decision": "Page `/tableau-de-bord/` (#100, étape V5, « Closes #100 »). Une page qui assemble quatre blocs sur les jeux fictifs de `chart-data.json` : trois indicateurs (dont une tendance), courbe et aire, barres et jauge, tableau dont les cases masquent des colonnes par `:has()`. Zéro JavaScript et aucun WebAssembly pour l'afficher ; la page l'annonce (« Données d'exemple », `role=\"note\"`). Mobile d'abord : `Grid` intrinsèque, une colonne à 320 px sans défilement horizontal. Impression : blocs sans coupure interne. Contraste forcé : seuls des tracés en couleurs système (mesuré). e2e `tableau-de-bord.spec.ts` et `tableau-de-bord-modes.spec.ts` (19 tests) : axe WCAG 2.2 AA sur deux thèmes et deux fenêtres puis en contraste forcé, reflow 320 px, clavier (focus et bascule d'une colonne à la barre d'espace), mouvement réduit (aucune animation), impression, sans JavaScript, aucune requête `.wasm`, 400 nœuds SVG au plus par graphique, HTML 12 ko gzip au plus (mesuré 7 ko). La page rejoint `perf.spec.ts` (LCP, CLS, INP, JS, polices, sous CPU ×4 et Slow 4G) : budgets tenus. Les tests de la matrice (axe, mise en page, cibles, espacement, focus) la prennent seuls dans `dist`. Hors régression visuelle : la page n'entre pas dans `TEMPLATE_PAGES` (les hachures de l'aire et de la jauge dépassent le budget de 600 Ko d'une capture pleine page, cf. `EXAMPLES_ONLY`) ; lien depuis `/donnees/` en bas de page (hors de la fenêtre capturée) et `llms.txt`, donc aucune référence visuelle ne change.",
       "id": "D-102",
       "rollback": "Retirer la page, `DashboardDemo.astro`, l'e2e, l'entrée de `llms-pages.ts`, le lien de `/donnees/` et la page de `perf.spec.ts`."
+    },
+    {
+      "alternative": "jscpd 5.4.2 en devDependency (binaire de 43 Mo par plateforme, plus précis) ; aucune mesure",
+      "date": "2026-11-01",
+      "decision": "Mesure de duplication par un script maison (#197, « Closes #197 »). `npm run check:duplication` compare des fenêtres de 6 lignes significatives (sans blancs ni commentaires) dans `packages/` et `crates/`, hors tests, fichiers générés, `wasm/` et `target/`, affiche le taux et les blocs, et sort toujours 0 : mesurer, pas bloquer. Décision de Paul : option B, aucune dépendance ajoutée. Mesure à la livraison : 2,18 % avant, 1,65 % après avoir mis l'empreinte, le poids et la garde de publication `.wasm` de `color` et `data` dans `tools/wasm/`.",
+      "id": "D-103",
+      "rollback": "Supprimer `tools/checks/*duplication*` et le script npm ; remettre les deux `wasm-files.ts` et `check-wasm.ts` d'origine"
     }
   ]
 }
