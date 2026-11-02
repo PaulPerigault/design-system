@@ -50,7 +50,7 @@ Le trusted publisher se déclare sur la page de réglages de chaque paquet sur n
 (paquet jamais publié), publier d'abord une `0.0.0` vide, **depuis un dossier hors du dépôt** :
 
 ```shell
-for name in tokens css astro guards create; do
+for name in tokens css astro dataviz guards create mcp color data; do
   dir="$(mktemp -d)" && cd "$dir"
   printf '{"name":"@paulperigault/%s","version":"0.0.0","license":"MIT","description":"Réservé : publié par le workflow release de PaulPerigault/design-system."}\n' "$name" > package.json
   npm publish --access public
@@ -58,7 +58,7 @@ for name in tokens css astro guards create; do
 done
 ```
 
-Puis, pour chacun des 5 paquets, _Settings_ → _Trusted publishing_ → _GitHub Actions_ :
+Puis, pour chacun des 9 paquets, _Settings_ → _Trusted publishing_ → _GitHub Actions_ :
 
 | Champ                | Valeur          |
 | -------------------- | --------------- |
