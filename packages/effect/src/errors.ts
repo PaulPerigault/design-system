@@ -14,3 +14,9 @@ export class ValidationError extends Schema.TaggedError<ValidationError>()('Vali
   field: Schema.String,
   message: Schema.String,
 }) {}
+
+/** Une requête réseau a échoué : réseau, ou statut hors 2xx. */
+export class FetchError extends Schema.TaggedError<FetchError>()('FetchError', {
+  url: Schema.String,
+  reason: Schema.String,
+}) {}
