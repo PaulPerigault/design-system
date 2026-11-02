@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "astro dev",
     "prebuild": "npm -w @paulperigault/tokens run build && npm -w @paulperigault/dataviz run build",
-    "build": "astro build && node scripts/markdown.mjs && node scripts/og.mjs && pagefind --site dist && node scripts/sw.mjs && node scripts/headers.mjs",
+    "build": "astro build && node scripts/markdown.mjs && node scripts/og.mjs && node scripts/typography.mjs && pagefind --site dist && node scripts/sw.mjs && node scripts/headers.mjs",
     "check": "astro check",
     "e2e": "playwright test"
   },
