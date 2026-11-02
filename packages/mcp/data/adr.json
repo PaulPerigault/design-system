@@ -785,6 +785,11 @@
       "date": "2026-11-02",
       "decision": "Audit du site de documentation, en lecture seule (#206, « Closes #206 »). Rapport `docs/design/audit-site-2026-11.md` : 1 constat Critique (titres sans hiérarchie visuelle), 6 Élevés dont 11 liens W3C en 404, 8 Moyens, 6 Faibles ; 0 violation axe sur 320 passes. Sept issues créées (#207 à #213) : liens, orthotypographie, contenu et voix, UX/UI, accessibilité cognitive, contrôle CI des liens (internes bloquant, externes en mesure), contrôle CI d'orthotypographie (mesure d'abord). Aucune page ni aucun texte modifié. La règle de l'Imprimerie nationale reste `[À VÉRIFIER]` (URL redirigée puis 404) ; les règles FALC aussi (PDF non lu). Alternative écartée : corriger les défauts dans la même PR (mélangerait mesure et correction). Retour arrière : supprimer le rapport.",
       "id": "D-109"
+    },
+    {
+      "date": "2026-11-02",
+      "decision": "Hiérarchie des titres de la doc (audit C-1, #210, « Refs #210 »). `apps/docs/src/styles/headings.css` : h1 `--pp-font-size-3`, h2 `-2`, h3 `-1`, graisse `--pp-font-weight-semibold`, spécificité nulle (`:where`) sous `.docs-main` ; aucun jeton créé. Mesure : 35,2 / 28,1 / 22,5 px, 600, contre 18 px / 400 avant ; 0 violation axe, 0 débordement à 375 et 1280 px, clair et sombre. Le job `visuel` étant requis sur toute PR de rendu, les références sont régénérées dans la PR qui change le rendu (et non une fois à la fin) : seules les captures modifiées sont commitées. Écartée : un style global dans `DocsLayout.astro` (CSP, 120 lignes). Retour arrière : supprimer le fichier et son import.",
+      "id": "D-110"
     }
   ]
 }

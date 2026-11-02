@@ -1,0 +1,19 @@
+/* Hiérarchie des titres de la documentation (audit 2026-11, C-1) : le reset de Tailwind rend h1 à
+   h3 comme le corps (18 px, 400). Échelle de jetons existante, mobile d'abord : h1 `-3` (35 px),
+   h2 `-2` (28 px), h3 `-1` (22 px), graisse semibold. Spécificité nulle : un composant peut
+   redéfinir ses propres titres (exemples, boîtes de dialogue). */
+.docs-main :where(h1, h2, h3) {
+  font-weight: var(--pp-font-weight-semibold);
+}
+
+.docs-main :where(h1) {
+  font-size: var(--pp-font-size-3);
+}
+
+.docs-main :where(h2) {
+  font-size: var(--pp-font-size-2);
+}
+
+.docs-main :where(h3) {
+  font-size: var(--pp-font-size-1);
+}
