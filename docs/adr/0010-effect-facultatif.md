@@ -30,6 +30,12 @@ Le paquet `effect` embarque des fichiers `AGENTS.md` et `CLAUDE.md` (documentati
 
 2. adaptateurs des autres ports (`Process`, `Fetcher`) et erreurs complémentaires ; 3. validation des frontières du cœur par `Schema` ; 4. option « effect » de `create`, documentation, mesure du poids installé avec et sans l'option (critères de #118). Évaluation du serveur MCP `effect-mcp` demandée par l'issue : non faite ici, `[À VÉRIFIER]`.
 
+## Poids installé (mesure du 2026-11-02, critère de #118)
+
+- Avec l'option : `effect` 4.1.2 pèse 56 590 403 octets décompressés pour 3 013 fichiers (métadonnées npm) ; une installation vierge de ce seul paquet occupe environ 62 Mo sur disque (`du`), sans autre dépendance. Le paquet de l'option lui-même : environ 10 Ko de sources.
+- Sans l'option : 0 octet, le cœur n'a aucune dépendance à Effect (test d'isolation).
+- Ce poids est celui du poste de développement et de la CI (`node_modules`), pas celui des pages servies : Effect n'est pas envoyé au navigateur par ce paquet. Il reste lourd pour un outil de sobriété (GreenOps) : l'option doit rester désactivée par défaut et son poids annoncé à qui l'active.
+
 ## Conséquences
 
 - Aucun changement pour qui n'utilise pas l'option : zéro octet de plus dans le cœur.
