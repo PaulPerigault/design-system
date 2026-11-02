@@ -1,0 +1,11 @@
+{
+  "origins": ["https://design.paulperigault.dev"],
+  "ignoredHosts": [],
+  "exceptions": [
+    {
+      "url": "https://design.paulperigault.dev/404/",
+      "reason": "URL canonique de la page 404 : l'hébergeur sert 404.html à tout chemin inconnu, la page n'a pas d'URL propre et n'est pas indexée",
+      "date": "2026-11-02"
+    }
+  ]
+}
