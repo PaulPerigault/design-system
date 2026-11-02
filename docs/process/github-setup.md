@@ -44,6 +44,25 @@ Avant F2b, aucune issue n'existe : la PR cite l'étape (`F2a-1`) dans sa descrip
 n'est posté dans les issues ni les PR : les informations vont dans la description ou le journal
 (`docs/journal/`).
 
+## Dates et vue Roadmap
+
+Les dates du Project 13 viennent de `.github/roadmap-dates.json` : début et échéance de chaque issue, avec une nature `fact` (création et fermeture lues avec `gh`) ou `estimate` (note obligatoire : rythme observé de 10 à 15 PR par jour de travail, publication npm 0.x environ une semaine après les actions de Paul, version 1.0 dans deux à trois semaines). Les estimations se réécrivent à la main dans le fichier ; une issue fermée prend ses dates factuelles.
+
+```shell
+node tools/github/sync-project-dates.mjs            # dry-run : plan seulement
+node tools/github/sync-project-dates.mjs --apply    # crée les champs « Début » et « Échéance », écrit les dates
+```
+
+Le script est idempotent (une valeur déjà posée n'est pas réécrite) et exige le scope `project` de `gh` (`gh auth refresh -s project`).
+
+Étapes manuelles de la vue Roadmap, dans l'interface (l'API ne crée pas de vue) :
+
+1. Project 13, `+ New view`, type **Roadmap**, nom « Roadmap ».
+2. Réglages de la vue, `Date fields` : début = **Début**, fin = **Échéance**.
+3. Regrouper par **Milestone** (`Group by`), niveau de zoom « Month ».
+4. Marqueurs : ajouter `Milestone` et `Status` dans `Fields` de la vue ; masquer les cartes de pull request (filtre `-is:pr`).
+5. Enregistrer la vue (`Save changes`).
+
 ## Suite
 
 F2a-3 : previews Cloudflare (`tofu apply` par Paul), puis F2b (modèles, contrôle « PR liée à une issue », issues de rattrapage).
