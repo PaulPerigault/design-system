@@ -1,6 +1,7 @@
 // Contrôle mensuel des skills tiers (D-116, #222) : lecture seule. Compare le SHA relu de chaque
 // dépôt source (tableau « Suivi amont » du registre) au SHA courant de son amont, via l'API
-// publique de GitHub, sans jeton. Affiche les dépôts changés ; ne modifie rien, n'échoue jamais.
+// publique de GitHub, sans jeton. Affiche les dépôts changés ou indisponibles ; ne modifie rien,
+// n'échoue jamais (consigne de Paul : information, non verrou). Un amont injoignable se voit au compte.
 import { appendFileSync, readFileSync } from 'node:fs';
 
 const REGISTRY = 'docs/design/skills-registre.md';
@@ -41,8 +42,9 @@ export async function compareAll(entries, fetchHead) {
 /** @returns {string[]} tableau Markdown du résultat, pour le terminal et le résumé du job */
 export function report(results) {
   const changed = results.filter((result) => result.status === 'changé');
+  const unavailable = results.filter((result) => result.status === 'indisponible').length;
   const lines = [
-    `Skills suivis : ${results.length}, SHA changés : ${changed.length}.`,
+    `Skills suivis : ${results.length}, SHA changés : ${changed.length}, indisponibles : ${unavailable}.`,
     '',
     '| Skill | Dépôt | Relu | Courant | État |',
     '| --- | --- | --- | --- | --- |',

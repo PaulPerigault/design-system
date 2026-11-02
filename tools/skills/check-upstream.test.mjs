@@ -71,4 +71,10 @@ describe('report', () => {
     const results = await compareAll(parseTracking(registry).slice(0, 1), async () => OLD);
     expect(report(results).join('\n')).not.toContain('À relire');
   });
+  it('compte les amonts indisponibles dans la synthèse', async () => {
+    const results = await compareAll(parseTracking(registry).slice(0, 1), async () => {
+      throw new Error('HTTP 403');
+    });
+    expect(report(results).join('\n')).toContain('indisponibles : 1');
+  });
 });
