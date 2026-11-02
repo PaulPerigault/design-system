@@ -64,6 +64,9 @@ Au début de chaque tâche, lire uniquement les skills de ce tableau qui la conc
 | toute PR                              | `encre-processus`                                |
 | chercher ou installer un skill tiers  | `encre-veille`, `encre-securite`                 |
 
+Deux corrections identiques de Paul, ou une tâche sans skill adapté : `encre-veille` (recherche
+ciblée, propositions dans `tmp/questions-paul.md`, installation seulement après la grille).
+
 ## Commandes de vérification
 
 ```

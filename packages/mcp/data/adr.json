@@ -855,6 +855,11 @@
       "date": "2026-11-02",
       "decision": "Skill `encre-veille` (#222, « Refs #222 »), douzième et dernier emplacement de skills de projet. Quand chercher (manque constaté, deux corrections identiques, nouvelle technologie, revue mensuelle du résumé « Skills amont »), comment (registre d'abord, sources officielles ou dépôts actifs à licence claire, critères d'écart avant lecture, étoiles = mesure sans valeur d'acceptation), rappel de la grille et de la règle D-116, plafond de 12 avec règle de remplacement (quatre critères : manque couvert, fréquence, coût de contexte, non-redondance ; Paul tranche), format de rapport. Méthode de suivi des corrections adaptée de « Task Observer » (Eoghan Henn, CC BY 4.0, SHA `ba696b2c`) : signaux (nouveau skill, amélioration, simplification), test de généralité, barrière à la deuxième violation ; sans journal d'observations, scripts ni hook ; les propositions vont dans `tmp/questions-paul.md`. Attribution (auteur, lien, licence, modifications) dans le skill et `PROVENANCE.md`. 101 lignes, description de 233 caractères. Ligne ajoutée au « Suivi amont » du registre : le contrôle mensuel suit six lignes. Index d'`AGENTS.md`. Écartée : copier le skill d'origine (682 lignes, scripts et dossier d'observations). Retour arrière : revert de la PR.",
       "id": "D-123"
+    },
+    {
+      "date": "2026-11-02",
+      "decision": "Règle « corrections répétées, skill manquant » (#222, « Closes #222 »), dans `encre-processus` et dans une phrase sous le tableau de l'index d'`AGENTS.md` : quand Paul corrige deux fois la même chose, ou qu'une tâche n'a aucun skill adapté, une recherche ciblée (recherche web, puis lecture des fichiers) propose ses candidats et un verdict recommandé dans `tmp/questions-paul.md`, et rien n'est installé avant la grille de `encre-securite` ; une nouvelle liste de Paul entre au registre puis est évaluée de même. Le skill `encre-processus` tenait 148 lignes : la section « Hors périmètre » (4 lignes) est remplacée par la nouvelle règle (150 lignes, plafond atteint). Dernière PR de #222 : critères remplis (skill D-123, registre D-121, contrôle mensuel D-122, règle D-124). Écartée : une règle dans `CLAUDE.md` (l'index d'`AGENTS.md` reste la source unique). Retour arrière : revert de la PR.",
+      "id": "D-124"
     }
   ]
 }
