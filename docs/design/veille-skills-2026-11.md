@@ -75,7 +75,7 @@ Verdict : méthode retenue modifiée, sous CC BY 4.0 (Eoghan Henn, https://rebel
 ## Les autres
 
 - **nathankim0/clean-architecture-skills** : MIT, mais le texte de licence porte « Copyright (c) 2026 » sans titulaire : la copie du copyright demandée par la règle est impossible. Refusé. Le `CLAUDE.md` du dépôt (maintenance) contient des `curl` de purge de cache, hors skill. Les idées (règle de dépendance, composition root, doublures comme adaptateurs) sont déjà dans ADR-0006.
-- **softaworks/agent-toolkit** : MIT (Leonardo Flores). une quarantaine de skills ; examinés : `c4-architecture` (295 lignes, aucun script, aucune commande), `mermaid-diagrams`, `skill-judge`, `humanizer`, `qa-test-planner` (deux scripts shell : refusé). Retenu modifié : la grille des niveaux C4 (contexte et conteneurs suffisent à la plupart des équipes) et les erreurs fréquentes, pour `encre-architecture`. Le reste ne comble aucun manque ou double `encre-voix`.
+- **softaworks/agent-toolkit** : MIT (Leonardo Flores). une quarantaine de skills ; examinés : `c4-architecture` (295 lignes, aucun script, aucune commande), `mermaid-diagrams`, `skill-judge`, `humanizer`, `qa-test-planner` (deux scripts shell : refusé). Retenu modifié : la grille des niveaux C4 (contexte et conteneurs suffisent à la plupart des équipes) et les erreurs fréquentes, pour `encre-architecture` (retiré le 2026-11-02, D-125 : doublon d'ADR-0006). Le reste ne comble aucun manque ou double `encre-voix`.
 - **travisvn/awesome-claude-skills** : annuaire sans fichier de licence (champ `license` nul) : refusé, aucune ligne copiée. Sert de piste pour la veille permanente.
 
 ## Sources
