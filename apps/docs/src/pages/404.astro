@@ -1,0 +1,38 @@
+---
+import SearchBox from '../components/SearchBox.astro';
+import DocsLayout from '../layouts/DocsLayout.astro';
+
+const sections = [
+  { href: '/utiliser/', label: 'Démarrer', note: 'installer et régler le système' },
+  { href: '/composants/', label: 'Composants', note: 'toutes les fiches' },
+  { href: '/donnees/', label: 'Données', note: 'graphiques, indicateurs, tableaux' },
+  { href: '/preuves/', label: 'Preuves', note: 'tests, accessibilité, performance' },
+  { href: '/auteur/', label: 'Auteur', note: 'qui écrit et maintient le projet' },
+];
+---
+
+<DocsLayout
+  title="Page introuvable · Design system · Paul Perigault"
+  description="L’adresse demandée n’existe pas. Retour à l’accueil, recherche plein texte et sommaire des pages de la documentation."
+>
+  <div class="docs-prose">
+    <h1>Page introuvable</h1>
+    <p>L’adresse demandée n’existe pas dans cette documentation.</p>
+    <p>
+      <a href="/">Retourner à l’accueil</a>
+    </p>
+    <SearchBox />
+    <nav aria-label="Sommaire">
+      <dl>
+        {sections.map((section) => (
+          <>
+            <dt>
+              <a href={section.href}>{section.label}</a>
+            </dt>
+            <dd>{section.note}</dd>
+          </>
+        ))}
+      </dl>
+    </nav>
+  </div>
+</DocsLayout>

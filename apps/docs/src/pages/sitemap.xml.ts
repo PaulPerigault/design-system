@@ -16,7 +16,7 @@ const adrIds = Object.keys(import.meta.glob('../../../../docs/adr/*.md')).map((f
 );
 const urls = [
   ...Object.keys(import.meta.glob('./**/*.astro'))
-    .filter((file) => !file.includes('['))
+    .filter((file) => !file.includes('[') && file !== './404.astro')
     .map(pathOf),
   ...adrIds.map((id) => canonicalOf(`/decisions/${id}/`)),
 ].sort();
