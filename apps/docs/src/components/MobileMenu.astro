@@ -3,10 +3,12 @@
  * Menu mobile de la documentation : bouton « Menu » (sous 48 rem) qui ouvre un `Dialog` modal
  * natif avec tous les composants. Piège de focus, Échap et geste retour (demande de fermeture)
  * fournis par le navigateur ; ouverture par Invoker Commands, `InvokerFallback` ailleurs. Sans
- * ces API ni JavaScript, le lien « Composants » de l'en-tête reste le chemin vers chaque page.
+ * ces API ni JavaScript, les liens de l'en-tête restent visibles (`styles/header.css`). Les intitulés
+ * du panneau sont des `p`, pas des titres : ils ne s'ajoutent pas aux niveaux de la page (audit M-1).
  */
 import Dialog from '@paulperigault/astro/Dialog.astro';
 import InvokerFallback from '@paulperigault/astro/InvokerFallback.astro';
+import { MAIN_LINKS, MORE_LINKS } from '../main-links';
 import { GROUPS, hrefOf } from '../navigation';
 
 const MENU_ID = 'docs-menu';
@@ -17,10 +19,12 @@ const current = Astro.url.pathname;
   Menu
 </button>
 <InvokerFallback />
-<Dialog id={MENU_ID} title="Composants" closeLabel="Fermer">
+<Dialog id={MENU_ID} title="Menu" closeLabel="Fermer">
   {GROUPS.map((group) => (
     <section aria-labelledby={`menu-${group.id}`}>
-      <h3 id={`menu-${group.id}`}>{group.title}</h3>
+      <p class="docs-menu-title" id={`menu-${group.id}`}>
+        {group.title}
+      </p>
       <ul role="list" class="docs-menu-list">
         {group.links.map((link) => (
           <li>
@@ -33,17 +37,15 @@ const current = Astro.url.pathname;
     </section>
   ))}
   <section aria-labelledby="menu-site">
-    <h3 id="menu-site">Site</h3>
+    <p class="docs-menu-title" id="menu-site">
+      Site
+    </p>
     <ul role="list" class="docs-menu-list">
-      <li>
-        <a href="/recherche/">Recherche</a>
-      </li>
-      <li>
-        <a href="/glossaire/">Glossaire</a>
-      </li>
-      <li>
-        <a href="/accessibilite/">Accessibilité</a>
-      </li>
+      {[...MAIN_LINKS, ...MORE_LINKS].map((link) => (
+        <li>
+          <a href={link.href}>{link.title}</a>
+        </li>
+      ))}
     </ul>
   </section>
 </Dialog>
@@ -66,6 +68,11 @@ const current = Astro.url.pathname;
     .docs-menu-button {
       display: none;
     }
+  }
+
+  .docs-menu-title {
+    margin: 0;
+    font-weight: var(--pp-font-weight-semibold);
   }
 
   .docs-menu-list {

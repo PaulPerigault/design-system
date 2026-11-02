@@ -69,9 +69,12 @@ const props = propsOf(resolve(root, file.path));
     outline-offset: var(--pp-size-focus-offset);
   }
 
+  /* À 375 px, quatre colonnes ne tiennent pas : le tableau garde une largeur lisible (la mesure) et
+     défile dans sa région, la colonne des noms reste visible (audit E-4). */
   table {
     border-collapse: collapse;
     inline-size: 100%;
+    min-inline-size: var(--pp-size-measure);
   }
 
   caption {
@@ -90,12 +93,21 @@ const props = propsOf(resolve(root, file.path));
     border-block-end: var(--pp-size-rule) solid var(--pp-color-line);
   }
 
+  /* Un identifiant ne se coupe pas au milieu : le tableau défile plutôt (audit E-4). */
+  code {
+    overflow-wrap: normal;
+  }
+
   thead th {
+    white-space: nowrap;
     font-weight: var(--pp-font-weight-bold);
     border-block-end-width: var(--pp-size-focus-width);
   }
 
   tbody th {
+    position: sticky;
+    inset-inline-start: 0;
+    background-color: var(--pp-color-bg);
     font-weight: var(--pp-font-weight-semibold);
   }
 </style>

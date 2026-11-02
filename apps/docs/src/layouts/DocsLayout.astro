@@ -5,8 +5,10 @@ import MobileMenu from '../components/MobileMenu.astro';
 import SeoHead from '../components/SeoHead.astro';
 import type { JsonLd } from '../lib/seo.ts';
 import { AUTHOR } from '../lib/site.ts';
+import { MAIN_LINKS } from '../main-links.ts';
 import '../styles/docs.css';
 import '../styles/footer.css';
+import '../styles/header.css';
 import '../styles/headings.css';
 import '../styles/wrap.css';
 
@@ -52,12 +54,9 @@ const { themeColor } = tokens;
         Design system @paulperigault
       </a>
       <nav class="docs-nav" aria-label="Principale">
-        <a href="/utiliser/">Démarrer</a>
-        <a href="/composants/#composants">Composants</a>
-        <a href="/donnees/">Données</a>
-        <a href="/preuves/">Preuves</a>
-        <a href="/auteur/">Auteur</a>
-        <a href="/recherche/">Recherche</a>
+        {MAIN_LINKS.map((link) => (
+          <a href={link.href}>{link.title}</a>
+        ))}
       </nav>
       <MobileMenu />
     </header>
