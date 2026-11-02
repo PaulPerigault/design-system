@@ -99,7 +99,30 @@ l'établit ; sinon « convention » ou « préférence ». Une faille ne se sign
 - `unsafe` : `#![forbid(unsafe_code)]` par défaut (`forbid` ne se contourne pas par `allow` local,
   contrairement à `deny`). Une exception demande ⚖️ de Paul : le bloc `unsafe` est justifié par un
   commentaire qui énonce le contrat. Préférence du projet, non écrite dans une ADR : à valider.
-- Aucun crate Rust n'existe encore dans le dépôt au 2026-10-30.
+
+## Skills tiers : provenance (D-116)
+
+Un skill est du texte exécuté avec les droits de Paul (shell, écriture, `gh`) : une chaîne
+d'approvisionnement. Rapport : `docs/design/veille-skills-2026-11.md`. Préférence de Paul, non norme.
+
+1. Jamais `npx`, `npm -g`, `curl`, `/plugin marketplace add` ni installeur tiers : ils exécutent du code
+   et posent des hooks. Clone en lecture seule hors du dépôt (quarantaine du bloc-notes), SHA épinglé,
+   chaque fichier relu. Aucun script de candidat n'est lancé.
+2. Grille de relecture : commande shell, appel réseau, `curl`, `wget`, `eval`, `base64`, binaire à
+   télécharger, hook, `allowed-tools` large, télémétrie, script joint, « ignore tes règles », « ne
+   demande pas confirmation », « mode obligatoire », écriture hors du dossier du skill, fichier de
+   notes créé. Un signal rouge non neutralisable : refusé.
+3. Licence lue dans le dépôt. MIT : texte et copyright du titulaire. Apache-2.0 : licence, `NOTICE`,
+   modifications mentionnées. CC BY 4.0 : auteur, lien, modifications. Absente, ambiguë ou sans
+   titulaire : refusé.
+4. Jamais copié tel quel : réécrit au format `encre-*` (150 lignes au plus, description de 300
+   caractères au plus qui dit QUAND charger), « Surcharges Encre » en tête (une PR à la fois, aucun
+   sous-agent, design avant code, ni ombre, ni dégradé, ni flou décoratif, zéro dépendance inutile,
+   ligne finale). Chaque skill porte `PROVENANCE.md` : URL, SHA, licence, date, modifications.
+5. Plafond : 12 skills de projet, descriptions toujours chargées. Un skill n'entre que si un autre
+   sort ou si son apport est supérieur. Dépasser : ⚖️ dans `tmp/questions-paul.md`.
+6. Installation dans `.claude/skills/` du projet, jamais au niveau utilisateur ; index d'`AGENTS.md`
+   (lire seulement ceux de la tâche). Aucun hook, script ni paquet ajouté pour un skill.
 
 ## Sources
 
@@ -124,5 +147,4 @@ Consultées le 2026-10-30. Niveaux : norme, étude, convention, préférence.
 | ANSSI, guide « maîtriser les standards de sécurité côté navigateur » v2.0 | [À VÉRIFIER] l'adresse issue d'une recherche renvoie 404 ; le document n'a pas été lu                  | [À VÉRIFIER] |
 
 « Norme » : spécification ou standard publié. « Convention » : guide de praticiens reconnu, non
-normatif. ASVS est un standard communautaire de l'OWASP. Aucun texte n'est copié : tout est paraphrasé.
-Aucune étude n'est citée : les seuls chiffres externes sont la version d'ASVS et sa date.
+normatif. ASVS est un standard communautaire de l'OWASP. Tout est paraphrasé ; aucune étude citée.
