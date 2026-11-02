@@ -840,6 +840,11 @@
       "date": "2026-11-02",
       "decision": "Skill `encre-architecture` (#221, « Refs #221 »), quatrième skill tiers retenu après modification : revue d'architecture des paquets d'outillage, code smells et schémas C4 en Mermaid. Fond : ADR-0006 et `AGENTS.md`, sans règle nouvelle. Du texte tiers, seule la grille des niveaux C4 est reprise (`c4-architecture`, softaworks/agent-toolkit, MIT, SHA `3027f20f`), réécrite, sans exemple Mermaid copié. `clean-architecture-skills` reste refusé (licence MIT sans titulaire, D-116) : ses idées propres (doublures comme adaptateurs, propriétaire unique de l'état) ne sont pas reprises. 87 lignes, description de 289 caractères ; 11 skills de projet sur 12, un seul emplacement reste pour `encre-veille` (#222). Écartée : copier `mermaid-diagrams` et `qa-test-planner` (scripts shell). Retour arrière : revert de la PR.",
       "id": "D-120"
+    },
+    {
+      "date": "2026-11-02",
+      "decision": "Registre des skills tiers et première veille par thème (#222, « Refs #222 »), `docs/design/skills-registre.md`. Un tableau « Suivi amont » (skill, dépôt, SHA complet relu) que lira le contrôle mensuel ; un tableau de tous les candidats vus (SHA, licence, étoiles, dernier push, verdict, raison), huit de #221 et huit de la veille thématique ; un tableau par thème. Nouveaux candidats lus : `addyosmani/web-quality-skills` (MIT, `accessibility` et `seo` lus, proposés), `Community-Access/accessibility-agents` (hooks, refusé), `cloudflare/skills` (Workers, scripts, refusé). Non lus, verdict présumé et `[À VÉRIFIER]` : `trailofbits/skills` (CC BY-SA), `anthropics/skills`, `vercel-labs/agent-skills` et `openai/skills` (licence nulle au niveau du dépôt), `microsoft/playwright-cli`. Thèmes sans candidat lu (tests, Rust, Astro, rédaction française, UX writing) : non évalués, la recherche par sujet ayant été refusée. ⚖️ plafond de 12 : accessibilité et SEO exigent un remplacement, recommandation et options dans `tmp/questions-paul.md`. Ordre des PR de #222 : registre, contrôle mensuel, `encre-veille`, règle de processus (le skill vient après les fichiers qu'il cite). Écartée : réévaluer un candidat refusé à chaque veille. Retour arrière : revert de la PR.",
+      "id": "D-121"
     }
   ]
 }
