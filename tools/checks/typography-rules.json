@@ -1,0 +1,64 @@
+{
+  "_doc": "Une règle : name, description, pattern (RegExp, drapeaux gu), except (contextes exclus, ±20 caractères), blocking. Convention usuelle du français, source de l'Imprimerie nationale non lue [À VÉRIFIER]. Une règle devient bloquante (blocking: true) quand son compte est nul.",
+  "rules": [
+    {
+      "name": "espace-avant-deux-points",
+      "description": "espace sécable avant « : » (U+00A0 attendu)",
+      "pattern": " :(?=\\s|$)",
+      "blocking": false
+    },
+    {
+      "name": "espace-avant-ponctuation-double",
+      "description": "espace sécable avant « ; », « ? » ou « ! » (U+202F attendu)",
+      "pattern": " [;?!](?![\\p{L}\\p{N}=?.])",
+      "blocking": false
+    },
+    {
+      "name": "espace-avant-pourcentage",
+      "description": "espace sécable avant « % » (U+202F attendu)",
+      "pattern": "(?<=\\d) %",
+      "blocking": false
+    },
+    {
+      "name": "espace-avant-unite",
+      "description": "espace sécable entre un nombre et son unité",
+      "pattern": "(?<=\\d) (?=(?:px|rem|ms|s|Hz|kHz|pt|Kio|Mio|Gio|Ko|Mo|Go|ko|kB|MB|GB|°C)(?![\\p{L}\\p{N}'’]))",
+      "blocking": false
+    },
+    {
+      "name": "espace-dans-millier",
+      "description": "espace sécable dans un millier (U+202F attendu)",
+      "pattern": "(?<![\\d,.])(?<!\\d )[1-9]\\d{0,2}(?: \\d{3})+(?!\\d)",
+      "blocking": false
+    },
+    {
+      "name": "guillemets-espace-secable",
+      "description": "guillemets « » avec espace sécable (une occurrence par paire)",
+      "pattern": "« ",
+      "blocking": false
+    },
+    {
+      "name": "apostrophe-droite",
+      "description": "apostrophe droite entre deux lettres (’ attendu)",
+      "pattern": "(?<=[\\p{L}\\p{N}])(?:'|&#39;)(?=[\\p{L}\\p{N}])",
+      "blocking": false
+    },
+    {
+      "name": "deux-points-colle",
+      "description": "mot collé à « : » en prose (espace insécable attendue avant)",
+      "pattern": "\\p{L}:(?= )",
+      "except": [
+        "[a-z]+-[a-z-]+: ",
+        "\\b(?:label|title|href|type|role|id|name|value|tone|key|display|duration|hover|output)\\w*: "
+      ],
+      "blocking": false
+    },
+    {
+      "name": "pourcentage-colle",
+      "description": "« % » collé au nombre en prose (hors fonction CSS comme oklch(47% …))",
+      "pattern": "(?<=\\d)%",
+      "except": ["\\w\\([^)]*\\d%", "\\d%\\)"],
+      "blocking": false
+    }
+  ]
+}

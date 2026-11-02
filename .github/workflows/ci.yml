@@ -86,6 +86,8 @@ jobs:
       # Mesures affichées dans le résumé, jamais bloquantes (D-104, D-106).
       - run: npm run benchmark:images
       - run: npm run benchmark:weight
+      # Orthotypographie du texte rendu : mesure dans le résumé, bloquante règle par règle (D-114).
+      - run: npm run check:typography
 
   changes:
     # Décide si e2e tourne et sur quel périmètre. `render` : la PR touche le rendu (css, tokens,
