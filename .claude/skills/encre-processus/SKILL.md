@@ -142,7 +142,9 @@ npm run check:size                      # fichier ≤ 120 lignes
 - Un fichier de plus de 120 lignes se découpe ; la limite ne se relève jamais. Ce skill respecte
   la sienne : 150 lignes au plus, fixées par #178.
 
-## Hors périmètre
+## Corrections répétées, skill manquant (D-124)
 
-Aucun texte tiers n'est copié ici. Le contenu des skills `encre-design` (visuel) et `encre-voix`
-(texte) reste dans leurs fichiers.
+Paul corrige deux fois la même chose, ou une tâche n'a aucun skill adapté : recherche ciblée (recherche
+web, puis lecture des fichiers), candidats et verdict recommandé dans `tmp/questions-paul.md`,
+installation seulement après la grille de `encre-securite` (méthode : `encre-veille`). Une nouvelle
+liste de Paul entre au registre, puis est évaluée de même. Aucun texte tiers n'est copié ici.
