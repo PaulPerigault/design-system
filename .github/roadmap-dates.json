@@ -1,0 +1,803 @@
+{
+  "owner": "PaulPerigault",
+  "project": 13,
+  "fields": {
+    "start": "Début",
+    "due": "Échéance"
+  },
+  "generated": "2026-11-02",
+  "items": [
+    {
+      "issue": 42,
+      "title": "[L0] vérifications, squelette, CI, agents, dispatcher",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 43,
+      "title": "[L1] pilote Stack via Kiro",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 44,
+      "title": "[L2] identité « Encre » et fondations",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 45,
+      "title": "[L3] primitives de layout",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 46,
+      "title": "[L4] formulaires",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 47,
+      "title": "[L5] retour et structure",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 48,
+      "title": "[L6] images",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 49,
+      "title": "[L7] documentation, accessibilité sur toutes les pages, registre",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 50,
+      "title": "[L8] garde-fous empaquetés et CLI",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 51,
+      "title": "[L9] migration du portfolio",
+      "start": "2026-10-28",
+      "due": "2026-11-30",
+      "kind": "estimate",
+      "note": "Début = création (fait). Échéance estimée : après la publication npm 0.x."
+    },
+    {
+      "issue": 52,
+      "title": "[L10] corrections et hygiène",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 53,
+      "title": "[L11] référentiel",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 54,
+      "title": "[L12] mobile d'abord, ordinateur excellent",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 55,
+      "title": "[L13] documentation lisible et accessible",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 56,
+      "title": "[L14] lisible par les IA",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 57,
+      "title": "[L15] sécurité et chaîne d'approvisionnement",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 58,
+      "title": "[L16] site vitrine",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 59,
+      "title": "[L17] déclaration d'accessibilité et PWA",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 60,
+      "title": "[L18] composants de niveau 2 (1/2)",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 61,
+      "title": "[L19] composants de niveau 2 (2/2)",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 62,
+      "title": "[L20] images Open Graph, police Atkinson, domaine design",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 63,
+      "title": "[Divers 2026-10-20/21] amorce, coordination ds-lead, rapport final",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 64,
+      "title": "[Divers 2026-10-24] arrêt final, ADR-0005, tokens en TypeScript strict",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 65,
+      "title": "[Divers 2026-10-27] dépendances et guards en TypeScript strict",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 66,
+      "title": "[Historique] Lots L0 à L20",
+      "start": "2026-10-28",
+      "due": "2026-11-09",
+      "kind": "estimate",
+      "note": "Début = création (fait). Échéance estimée : issue de suivi historique : fermeture avec la dernière tâche."
+    },
+    {
+      "issue": 68,
+      "title": "[Étape 1] guards en TypeScript strict",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 69,
+      "title": "[F1 et F1b] proposition des fondations du processus",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 70,
+      "title": "[1bis-a] audit de la CI : installation unique et hooks minimaux",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 71,
+      "title": "[1bis-b1] CI : tests par pertinence",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 72,
+      "title": "[1bis-b2] tests portables sous Windows, références Visuel Linux",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 73,
+      "title": "[F2a-1] Project GitHub, labels et synchronisation",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 74,
+      "title": "[F2a-2] bascule vers main seule et ruleset",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 75,
+      "title": "[F2b-1] modèles d'issue et de PR",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 76,
+      "title": "[F2b-2a] issues de rattrapage des lots L0 à L20",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 77,
+      "title": "[Processus] Fondations du chantier (étapes déjà livrées)",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 78,
+      "title": "[F2b-2b] issues du chantier en cours et à venir",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 79,
+      "title": "[F2a-3] previews Cloudflare par PR et jeton pour release-please",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 80,
+      "title": "[1bis-d] matrice « qui vérifie quoi »",
+      "start": "2026-10-28",
+      "due": "2026-11-01",
+      "kind": "fact"
+    },
+    {
+      "issue": 81,
+      "title": "[Processus] Fondations : étapes restantes",
+      "start": "2026-10-28",
+      "due": "2026-11-09",
+      "kind": "estimate",
+      "note": "Début = création (fait). Échéance estimée : étapes restantes et tâches manuelles de Paul : environ une semaine."
+    },
+    {
+      "issue": 82,
+      "title": "[Étape 2] ADR Architecture et politique Rust",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 83,
+      "title": "[Étape 3] guards : architecture",
+      "start": "2026-10-28",
+      "due": "2026-10-29",
+      "kind": "fact"
+    },
+    {
+      "issue": 84,
+      "title": "[Étape 4] @paulperigault/create en TypeScript strict",
+      "start": "2026-10-28",
+      "due": "2026-10-29",
+      "kind": "fact"
+    },
+    {
+      "issue": 85,
+      "title": "[Étape 5] mcp et générateur de tokens en TypeScript strict",
+      "start": "2026-10-28",
+      "due": "2026-10-30",
+      "kind": "fact"
+    },
+    {
+      "issue": 86,
+      "title": "[Étape 6] tools/agents et tsc vers dist/ pour chaque paquet publié",
+      "start": "2026-10-28",
+      "due": "2026-10-29",
+      "kind": "fact"
+    },
+    {
+      "issue": 87,
+      "title": "[TypeScript strict] Migration des paquets et outils",
+      "start": "2026-10-28",
+      "due": "2026-11-16",
+      "kind": "estimate",
+      "note": "Début = création (fait). Échéance estimée : deux semaines (migration des paquets et liste blanche des agents)."
+    },
+    {
+      "issue": 88,
+      "title": "[Étape 7a] crate pp-color : OKLCH, sRGB, gamut",
+      "start": "2026-10-28",
+      "due": "2026-10-30",
+      "kind": "fact"
+    },
+    {
+      "issue": 89,
+      "title": "[Étape 7b] pp-color : contraste WCAG 2 et parité avec tokens",
+      "start": "2026-10-28",
+      "due": "2026-10-30",
+      "kind": "fact"
+    },
+    {
+      "issue": 90,
+      "title": "[Étape 8] paquet @paulperigault/color en WebAssembly",
+      "start": "2026-10-28",
+      "due": "2026-10-31",
+      "kind": "fact"
+    },
+    {
+      "issue": 91,
+      "title": "[Étape 9] mesure du pipeline d'images",
+      "start": "2026-10-28",
+      "due": "2026-11-01",
+      "kind": "fact"
+    },
+    {
+      "issue": 92,
+      "title": "[Rust] Crate pp-color et paquet WebAssembly",
+      "start": "2026-10-28",
+      "due": "2026-11-16",
+      "kind": "estimate",
+      "note": "Début = création (fait). Échéance estimée : bilan de la fin du lot Rust."
+    },
+    {
+      "issue": 93,
+      "title": "[V1] ADR visualisation de données",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 94,
+      "title": "[V2a] graphiques SVG statiques : courbe et barres",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 95,
+      "title": "[V2b] graphiques SVG statiques : aire et jauge",
+      "start": "2026-10-28",
+      "due": "2026-10-29",
+      "kind": "fact"
+    },
+    {
+      "issue": 96,
+      "title": "[V3a] KPI et sparklines",
+      "start": "2026-10-28",
+      "due": "2026-10-29",
+      "kind": "fact"
+    },
+    {
+      "issue": 97,
+      "title": "[V3b] tableaux, légendes et filtres",
+      "start": "2026-10-28",
+      "due": "2026-10-29",
+      "kind": "fact"
+    },
+    {
+      "issue": 98,
+      "title": "[V4a] crate pp-data : agrégation, quantiles, sous-échantillonnage",
+      "start": "2026-10-28",
+      "due": "2026-10-31",
+      "kind": "fact"
+    },
+    {
+      "issue": 99,
+      "title": "[V4b] pp-data en WebAssembly : paquet, parité, budget de poids",
+      "start": "2026-10-28",
+      "due": "2026-10-31",
+      "kind": "fact"
+    },
+    {
+      "issue": 100,
+      "title": "[V5] page de démonstration d'un tableau de bord BI",
+      "start": "2026-10-28",
+      "due": "2026-10-31",
+      "kind": "fact"
+    },
+    {
+      "issue": 101,
+      "title": "[Analyse] Visualisation de données BI",
+      "start": "2026-10-28",
+      "due": "2026-11-09",
+      "kind": "estimate",
+      "note": "Début = création (fait). Échéance estimée : issue de suivi du lot analyse : fermeture avec la dernière tâche."
+    },
+    {
+      "issue": 102,
+      "title": "[Étape 10] Green IT : budgets de poids, carbone, page Sobriété",
+      "start": "2026-10-28",
+      "due": "2026-11-01",
+      "kind": "fact"
+    },
+    {
+      "issue": 103,
+      "title": "[Étape 11] Dependabot pour Cargo, documentation, bilan",
+      "start": "2026-10-28",
+      "due": "2026-11-01",
+      "kind": "fact"
+    },
+    {
+      "issue": 104,
+      "title": "[1.0] Sobriété, dépendances Cargo et bilan",
+      "start": "2026-10-28",
+      "due": "2026-11-23",
+      "kind": "estimate",
+      "note": "Début = création (fait). Échéance estimée : version 1.0 dans 2 à 3 semaines (rythme observé : 10 à 15 PR par jour de travail)."
+    },
+    {
+      "issue": 105,
+      "title": "[Paul] étendre les jetons GitHub IaC au dépôt design-system",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 106,
+      "title": "[Paul] apply OpenTofu, brique par brique",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 107,
+      "title": "[Paul] déclarer le site à Search Console et Bing Webmaster",
+      "start": "2026-10-28",
+      "due": "2026-10-30",
+      "kind": "fact"
+    },
+    {
+      "issue": 108,
+      "title": "[Paul] trusted publisher npm sur les cinq paquets",
+      "start": "2026-10-28",
+      "due": "2026-11-16",
+      "kind": "estimate",
+      "note": "Début = création (fait). Échéance estimée : environ une semaine après les actions manuelles de Paul (docs/process/publication.md)."
+    },
+    {
+      "issue": 109,
+      "title": "[Paul] fusionner les PR de release-please vers main",
+      "start": "2026-10-28",
+      "due": "2026-11-16",
+      "kind": "estimate",
+      "note": "Début = création (fait). Échéance estimée : environ une semaine après les actions manuelles de Paul (docs/process/publication.md)."
+    },
+    {
+      "issue": 110,
+      "title": "[Paul] tests de lecteurs d'écran : NVDA et VoiceOver",
+      "start": "2026-10-28",
+      "due": "2026-11-23",
+      "kind": "estimate",
+      "note": "Début = création (fait). Échéance estimée : version 1.0 dans 2 à 3 semaines (rythme observé : 10 à 15 PR par jour de travail)."
+    },
+    {
+      "issue": 111,
+      "title": "[Paul] installer la PWA sur un appareil réel",
+      "start": "2026-10-28",
+      "due": "2026-11-23",
+      "kind": "estimate",
+      "note": "Début = création (fait). Échéance estimée : version 1.0 dans 2 à 3 semaines (rythme observé : 10 à 15 PR par jour de travail)."
+    },
+    {
+      "issue": 112,
+      "title": "[Paul] relire les textes « à relire par Paul »",
+      "start": "2026-10-28",
+      "due": "2026-11-23",
+      "kind": "estimate",
+      "note": "Début = création (fait). Échéance estimée : version 1.0 dans 2 à 3 semaines (rythme observé : 10 à 15 PR par jour de travail)."
+    },
+    {
+      "issue": 113,
+      "title": "[Paul] choisir la licence des contenus",
+      "start": "2026-10-28",
+      "due": "2026-11-16",
+      "kind": "estimate",
+      "note": "Début = création (fait). Échéance estimée : environ une semaine après les actions manuelles de Paul (docs/process/publication.md)."
+    },
+    {
+      "issue": 114,
+      "title": "[Paul] Tâches manuelles du propriétaire",
+      "start": "2026-10-28",
+      "due": "2026-11-09",
+      "kind": "estimate",
+      "note": "Début = création (fait). Échéance estimée : étapes restantes et tâches manuelles de Paul : environ une semaine."
+    },
+    {
+      "issue": 118,
+      "title": "[Option] Effect-TS facultatif : paquet @paulperigault/effect et option create",
+      "start": "2026-10-28",
+      "due": "2026-11-23",
+      "kind": "estimate",
+      "note": "Début = création (fait). Échéance estimée : version 1.0 dans 2 à 3 semaines (rythme observé : 10 à 15 PR par jour de travail)."
+    },
+    {
+      "issue": 120,
+      "title": "[V2-0] paquet @paulperigault/dataviz : contrat de données et palettes",
+      "start": "2026-10-28",
+      "due": "2026-10-28",
+      "kind": "fact"
+    },
+    {
+      "issue": 121,
+      "title": "[Tokens] variables d'entrée --pp-accent-hue et --pp-font-stack : branchement dans le build et dans create",
+      "start": "2026-10-28",
+      "due": "2026-10-29",
+      "kind": "fact"
+    },
+    {
+      "issue": 123,
+      "title": "[Site] refonte complete du site de documentation",
+      "start": "2026-10-28",
+      "due": "2026-11-23",
+      "kind": "estimate",
+      "note": "Début = création (fait). Échéance estimée : version 1.0 dans 2 à 3 semaines (rythme observé : 10 à 15 PR par jour de travail)."
+    },
+    {
+      "issue": 127,
+      "title": "[CI] références Visuel : pages à hauteur variable",
+      "start": "2026-10-28",
+      "due": "2026-10-29",
+      "kind": "fact"
+    },
+    {
+      "issue": 130,
+      "title": "[Publication] miroir GitHub Packages facultatif pour les paquets @paulperigault",
+      "start": "2026-10-28",
+      "due": "2026-11-16",
+      "kind": "estimate",
+      "note": "Début = création (fait). Échéance estimée : environ une semaine après les actions manuelles de Paul (docs/process/publication.md)."
+    },
+    {
+      "issue": 131,
+      "title": "[Dependabot] triage des PR de dépendances et règles de fusion",
+      "start": "2026-10-28",
+      "due": "2026-10-30",
+      "kind": "fact"
+    },
+    {
+      "issue": 134,
+      "title": "[Design] skill de revue visuelle « Encre » : direction artistique et règles anti-gabarit",
+      "start": "2026-10-29",
+      "due": "2026-10-29",
+      "kind": "fact"
+    },
+    {
+      "issue": 135,
+      "title": "[Design] skill de voix Encre : textes qui donnent envie, en français",
+      "start": "2026-10-29",
+      "due": "2026-10-29",
+      "kind": "fact"
+    },
+    {
+      "issue": 137,
+      "title": "[CI] build de la documentation : compiler les dépendances de dataviz avant astro build (échec Cloudflare Pages)",
+      "start": "2026-10-29",
+      "due": "2026-10-29",
+      "kind": "fact"
+    },
+    {
+      "issue": 139,
+      "title": "[Design] corrections de la revue des graphiques V2 : texte d'axe, valeurs des barres, contour de l'aire",
+      "start": "2026-10-29",
+      "due": "2026-10-29",
+      "kind": "fact"
+    },
+    {
+      "issue": 141,
+      "title": "[Processus] R1 nettoyage du run-report",
+      "start": "2026-10-29",
+      "due": "2026-10-29",
+      "kind": "fact"
+    },
+    {
+      "issue": 143,
+      "title": "[Graphiques] libellés de catégories tronqués dès cinq catégories",
+      "start": "2026-10-29",
+      "due": "2026-10-29",
+      "kind": "fact"
+    },
+    {
+      "issue": 151,
+      "title": "[Tokens] create : teinte d'accent et pile de police",
+      "start": "2026-10-29",
+      "due": "2026-10-29",
+      "kind": "fact"
+    },
+    {
+      "issue": 164,
+      "title": "[Site] audit de l'existant et ADR de refonte",
+      "start": "2026-10-29",
+      "due": "2026-10-29",
+      "kind": "fact"
+    },
+    {
+      "issue": 166,
+      "title": "[Site] page d'accueil : promesse, démonstration, entrées",
+      "start": "2026-10-29",
+      "due": "2026-10-29",
+      "kind": "fact"
+    },
+    {
+      "issue": 168,
+      "title": "[Site] démarrage en cinq minutes et réglage de l'accent",
+      "start": "2026-10-29",
+      "due": "2026-10-29",
+      "kind": "fact"
+    },
+    {
+      "issue": 170,
+      "title": "[Site] textes d'architecture et d'auteur : écarts et voix",
+      "start": "2026-10-29",
+      "due": "2026-10-29",
+      "kind": "fact"
+    },
+    {
+      "issue": 176,
+      "title": "[Agents] ds-lead : liste blanche d'outils shell au lieu d'une liste de refus",
+      "start": "2026-10-30",
+      "due": "2026-11-16",
+      "kind": "estimate",
+      "note": "Début = création (fait). Échéance estimée : deux semaines (migration des paquets et liste blanche des agents)."
+    },
+    {
+      "issue": 177,
+      "title": "[CI] aucun hook local ne lance check:size",
+      "start": "2026-10-30",
+      "due": "2026-11-09",
+      "kind": "estimate",
+      "note": "Début = création (fait). Échéance estimée : étapes restantes et tâches manuelles de Paul : environ une semaine."
+    },
+    {
+      "issue": 178,
+      "title": "[Design] skills encre-securite, mobile, greenops, rust, processus et index",
+      "start": "2026-10-30",
+      "due": "2026-10-30",
+      "kind": "fact"
+    },
+    {
+      "issue": 183,
+      "title": "[Processus] run-report allégé et historique archivé",
+      "start": "2026-10-30",
+      "due": "2026-10-30",
+      "kind": "fact"
+    },
+    {
+      "issue": 187,
+      "title": "[Site] page Données : visualisation de données",
+      "start": "2026-10-30",
+      "due": "2026-10-30",
+      "kind": "fact"
+    },
+    {
+      "issue": 197,
+      "title": "[Processus] phase de design avant code et mesure de duplication",
+      "start": "2026-10-31",
+      "due": "2026-11-01",
+      "kind": "fact"
+    },
+    {
+      "issue": 206,
+      "title": "[Processus] audit du site de documentation (novembre 2026)",
+      "start": "2026-11-01",
+      "due": "2026-11-02",
+      "kind": "fact"
+    },
+    {
+      "issue": 207,
+      "title": "[Site] liens cassés : 11 liens W3C en 404, liens de démonstration, page 404",
+      "start": "2026-11-02",
+      "due": "2026-11-02",
+      "kind": "fact"
+    },
+    {
+      "issue": 208,
+      "title": "[Site] orthotypographie française : espaces insécables, guillemets, apostrophes",
+      "start": "2026-11-02",
+      "due": "2026-11-02",
+      "kind": "fact"
+    },
+    {
+      "issue": 209,
+      "title": "[Site] contenu et voix : backticks visibles, mots collés, brouillons, termes",
+      "start": "2026-11-02",
+      "due": "2026-11-02",
+      "kind": "fact"
+    },
+    {
+      "issue": 210,
+      "title": "[Site] UX/UI : hiérarchie des titres, tableaux à 375 px, en-tête mobile, 404",
+      "start": "2026-11-02",
+      "due": "2026-11-23",
+      "kind": "estimate",
+      "note": "Début = création (fait). Échéance estimée : version 1.0 dans 2 à 3 semaines (rythme observé : 10 à 15 PR par jour de travail)."
+    },
+    {
+      "issue": 211,
+      "title": "[Site] accessibilité cognitive : langage simple, termes, résumés",
+      "start": "2026-11-02",
+      "due": "2026-11-23",
+      "kind": "estimate",
+      "note": "Début = création (fait). Échéance estimée : version 1.0 dans 2 à 3 semaines (rythme observé : 10 à 15 PR par jour de travail)."
+    },
+    {
+      "issue": 212,
+      "title": "[CI] contrôle des liens (internes bloquant, externes en mesure)",
+      "start": "2026-11-02",
+      "due": "2026-11-02",
+      "kind": "fact"
+    },
+    {
+      "issue": 213,
+      "title": "[CI] contrôle d'orthotypographie française",
+      "start": "2026-11-02",
+      "due": "2026-11-02",
+      "kind": "fact"
+    },
+    {
+      "issue": 221,
+      "title": "[Design] veille et assemblage de skills tiers",
+      "start": "2026-11-02",
+      "due": "2026-11-02",
+      "kind": "fact"
+    },
+    {
+      "issue": 222,
+      "title": "[Design] veille permanente des skills",
+      "start": "2026-11-02",
+      "due": "2026-11-02",
+      "kind": "fact"
+    },
+    {
+      "issue": 232,
+      "title": "[Design] skill accessibilité, retrait d'encre-architecture, descriptions courtes",
+      "start": "2026-11-02",
+      "due": "2026-11-02",
+      "kind": "fact"
+    },
+    {
+      "issue": 236,
+      "title": "[CI] pré-publication à blanc des neuf paquets",
+      "start": "2026-11-02",
+      "due": "2026-11-02",
+      "kind": "fact"
+    },
+    {
+      "issue": 239,
+      "title": "[CI] LTS, calendrier de montées et majeures en attente",
+      "start": "2026-11-02",
+      "due": "2026-11-02",
+      "kind": "fact"
+    },
+    {
+      "issue": 243,
+      "title": "[CI] dates du Project et vue Roadmap",
+      "start": "2026-11-02",
+      "due": "2026-11-23",
+      "kind": "estimate",
+      "note": "Début = création (fait). Échéance estimée : version 1.0 dans 2 à 3 semaines (rythme observé : 10 à 15 PR par jour de travail)."
+    }
+  ]
+}
