@@ -14,7 +14,7 @@ const snippet = `<Button type="submit">Envoyer</Button>
   use={[
     'Déclencher une action de la page, comme envoyer un formulaire.',
     'Naviguer vers une adresse avec href : le composant rend alors un lien a.',
-    'Poser une seule action principale par vue, avec tone="primary" (règle de la doc du composant).',
+    'Poser une seule action principale par vue, avec `tone="primary"` (règle de la doc du composant).',
   ]}
   avoid={[
     'Pour une simple navigation sans style de bouton : un lien natif suffit.',
@@ -30,7 +30,7 @@ const snippet = `<Button type="submit">Envoyer</Button>
     screenReader: [
       'Le nom accessible vient du contenu du slot : aucun libellé n’est écrit en dur.',
       'Un bouton désactivé porte l’état natif disabled, exposé aux technologies d’assistance.',
-      'Un lien désactivé porte role="link" et aria-disabled="true".',
+      'Un lien désactivé porte `role="link"` et `aria-disabled="true"`.',
     ],
     guaranteed: [
       'type vaut button par défaut, sans soumission de formulaire involontaire (Button.test.ts).',

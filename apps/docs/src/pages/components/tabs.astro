@@ -28,7 +28,7 @@ const snippet = `<Tabs label="Langages" tabs={[{ id: 'a', label: 'Astro' }, { id
       'Un seul onglet est dans l’ordre de tabulation (tabindex itinérant) ; Tab mène ensuite au panneau.',
     ],
     screenReader: [
-      'Le script pose role="tablist", role="tab" et role="tabpanel", avec aria-selected et aria-controls.',
+      'Le script pose `role="tablist"`, `role="tab"` et `role="tabpanel"`, avec aria-selected et aria-controls.',
       'La liste porte le nom donné par label ; chaque panneau est nommé par son onglet.',
       'Non vérifié avec VoiceOver, NVDA ou JAWS : seul le DOM produit est testé.',
     ],
@@ -36,7 +36,7 @@ const snippet = `<Tabs label="Langages" tabs={[{ id: 'a', label: 'Astro' }, { id
       'Sans script, les liens d’ancre et les sections titrées gardent tout le contenu lisible (WCAG 1.3.1).',
       'L’onglet actif se distingue par un trait et une graisse, pas par la couleur seule (WCAG 1.4.1).',
       'Les onglets font au moins la taille minimale de cible (WCAG 2.5.8).',
-      'Le panneau actif reçoit tabindex="0" s’il ne contient rien de focalisable (motif APG Tabs).',
+      'Le panneau actif reçoit `tabindex="0"` s’il ne contient rien de focalisable (motif APG Tabs).',
     ],
     integrator: [
       'Fournir des id uniques dans la page, et un slot du même nom pour chaque onglet.',

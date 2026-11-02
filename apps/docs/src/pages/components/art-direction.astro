@@ -14,7 +14,7 @@ const snippet = [
   '<ArtDirection',
   '  src={large}',
   "  sources={[{ at: 'narrow', src: largeEtroit }]}",
-  '  alt="Disque bleu et colonne grise"',
+  '  `alt="Disque bleu et colonne grise"`',
   '/>',
 ].join('\n');
 ---
@@ -42,7 +42,7 @@ const snippet = [
       'Chaque source porte width et height de son recadrage : la place est réservée.',
       'Sources ordonnées narrow, medium, puis image par défaut.',
       'alt obligatoire, ou decorative : sinon erreur au build.',
-      'priority : loading="eager" et fetchpriority="high" sur le img de repli.',
+      'priority : `loading="eager"` et `fetchpriority="high"` sur le img de repli.',
     ],
     integrator: [
       'Décrire dans alt le sujet commun aux recadrages, pas le détail d’un seul.',

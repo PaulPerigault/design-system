@@ -28,12 +28,12 @@ const snippet = `<CodeBlock
   snippet={snippet}
   a11y={{
     keyboard: [
-      'Le bloc de code reçoit le focus (tabindex="0") : les flèches le font défiler (WCAG 2.1.1).',
+      'Le bloc de code reçoit le focus (`tabindex="0"`) : les flèches le font défiler (WCAG 2.1.1).',
       'Le bouton de copie s’active avec Entrée ou Espace, comme tout bouton natif.',
     ],
     screenReader: [
-      'Avec label ou filename, le bloc est une région nommée (role="region", aria-label).',
-      'Le message de copie est écrit dans un role="status" vide au départ, annoncé sans déplacer le focus (WCAG 4.1.3).',
+      'Avec label ou filename, le bloc est une région nommée (`role="region"`, aria-label).',
+      'Le message de copie est écrit dans un `role="status"` vide au départ, annoncé sans déplacer le focus (WCAG 4.1.3).',
     ],
     guaranteed: [
       'Les couleurs de jetons ont un contraste d’au moins 4,5:1 sur le fond, dans les deux thèmes (WCAG 1.4.3, test automatisé).',

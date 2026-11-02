@@ -12,14 +12,13 @@ import { DATASET } from '../lib/data-page-snippets.ts';
 <pre tabindex="0"><code>{DATASET}</code></pre>
 <ul>
   <li>
-    <strong>Format</strong> : colonnaire et versionné (<code>schema: 1</code>). Un axe
+    <strong>Format</strong> : colonnaire et versionné (<code>schema: 1</code>). Un axe{' '}
     <code>x</code> de genre <code>category</code>, <code>time</code> ou <code>number</code>, et des
     séries avec <code>id</code>, <code>label</code>, <code>unit</code> et <code>values</code>.
   </li>
   <li>
-    <strong>Valeur manquante</strong> : <code>null</code>, jamais <code>0</code> ni
-    <code>NaN</code>. La courbe se rompt, les barres laissent un vide, le tableau écrit « donnée
-    manquante ».
+    <strong>Valeur manquante</strong> : <code>null</code>, jamais <code>0</code> ni <code>NaN</code>
+    . La courbe se rompt, les barres laissent un vide, le tableau écrit « donnée manquante ».
   </li>
   <li>
     <strong>Unité</strong> : une par série, séparée de la valeur. Deux unités différentes sur un

@@ -8,7 +8,7 @@ const snippet = [
   "import portrait from './portrait.jpg';",
   '---',
   '',
-  '<Photo src={portrait} alt="Portrait recadré, visage au centre" ratio="portrait" focal="top" />',
+  '<Photo src={portrait} `alt="Portrait recadré, visage au centre"` `ratio="portrait"` `focal="top"` />',
 ].join('\n');
 ---
 
@@ -29,18 +29,18 @@ const snippet = [
   a11y={{
     keyboard: [
       'Photo ne rend aucun élément interactif : rien à atteindre au clavier.',
-      'Le fond d’attente est masqué (aria-hidden="true", focusable="false") : il n’est pas focalisable.',
+      'Le fond d’attente est masqué (`aria-hidden="true"`, `focusable="false"`) : il n’est pas focalisable.',
     ],
     screenReader: [
       'Le texte de l’attribut alt est lu comme nom de l’image.',
-      'Avec decorative, alt="" : l’image est ignorée par les lecteurs d’écran.',
+      'Avec decorative, `alt=""` : l’image est ignorée par les lecteurs d’écran.',
       'Le fond d’attente à la couleur dominante est masqué aux technologies d’assistance.',
     ],
     guaranteed: [
       'alt est obligatoire : une chaîne vide ou blanche lève une erreur au build.',
-      'alt="" n’est posé qu’avec decorative, jamais par défaut.',
+      '`alt=""` n’est posé qu’avec decorative, jamais par défaut.',
       'width et height sont toujours rendus.',
-      'priority : loading="eager" et fetchpriority="high" ; sinon loading="lazy" et decoding="async".',
+      'priority : `loading="eager"` et `fetchpriority="high"` ; sinon `loading="lazy"` et `decoding="async"`.',
       'Aucun attribut style.',
     ],
     integrator: [

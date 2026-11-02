@@ -795,6 +795,11 @@
       "date": "2026-11-02",
       "decision": "Liens cassés de la doc (audit E-1, E-6, M-3, #207, « Closes #207 »). 11 URL W3C : `/WAI/` ajouté dans `button`, `center`, `field`, `input`, `switcher` (HEAD 200 sur les 39 URL W3C sans ancre). `404.astro` : accueil, recherche, sommaire de 5 sections ; exclue de `sitemap.xml.ts` (le sitemap reste égal aux pages). Liens de démonstration : pages existantes (`/utiliser/`, `/preuves/`, `/composants/`), `#contenu` pour la pagination, `#proprietes` et `#variantes` pour `Cluster` ; 0 lien interne cassé sur 81 pages. Sort de `/components/` : aucune redirection, l'URL n'a jamais été une page (la liste est `/composants/`, 301 inutile) ; la 404 propose le sommaire. Une redirection passerait par `scripts/headers/policy.mjs` (zone sécurité). Écartée : redirection `/components/` vers `/composants/`. F-4 (URL finales `cnil.fr`) reste à faire, hors de cette étape. Retour arrière : revert de la PR.",
       "id": "D-111"
+    },
+    {
+      "date": "2026-11-02",
+      "decision": "Espaces perdues, backticks et identifiants de la doc (audit E-2, E-3, M-6, #209, « Refs #209 »). Cause de E-2 : après un mot, une ligne qui commence par `<a>` ou `<code>` (ou l'inverse) perd son espace dans Astro ; Prettier produit ce motif. Correctif : `{' '}` en fin de ligne, 29 endroits dans 14 fichiers en plus des 5 sources visées (composants de la doc), 0 mot collé sur 80 pages. E-3 : `PropsTable` rend son propre tableau (`Table` n'accepte que du texte) avec type, défaut et nom en `<code>` et la description découpée aux backticks par `lib/inline-code.ts` (testé) ; 0 backtick visible (322 avant). M-6 : `InlineCode.astro` et `ItemList.astro` rendent les listes de `ComponentPage` ; 74 attributs (`role=\"list\"`, `aria-hidden=\"true\"`) entre backticks dans 42 fiches ; guillemets droits hors code : 1 (une citation). Écartée : étendre `Table` du paquet astro (API publique). Hors étape : glossaire (M-8), voix F-1. Retour arrière : revert de la PR.",
+      "id": "D-112"
     }
   ]
 }

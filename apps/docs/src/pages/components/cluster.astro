@@ -14,7 +14,7 @@ const snippet = `<Cluster as="nav" label="Liens de l’exemple Cluster" justify=
   summary="Cluster aligne ses enfants sur une ligne, les fait passer à la suivante au besoin et garde le même écart entre eux."
   use={[
     'Grouper des étiquettes, des boutons ou des liens courts qui doivent rester côte à côte.',
-    'Donner une navigation secondaire courte, avec as="nav" et un label.',
+    'Donner une navigation secondaire courte, avec `as="nav"` et un label.',
   ]}
   avoid={[
     'Pour des blocs longs ou des paragraphes lus dans l’ordre : utiliser Stack.',
@@ -24,11 +24,11 @@ const snippet = `<Cluster as="nav" label="Liens de l’exemple Cluster" justify=
   a11y={{
     keyboard: ['Le composant ne prend pas le focus et ne change pas l’ordre de tabulation.'],
     screenReader: [
-      'Avec as="ul" ou as="ol", role="list" est posé : VoiceOver garde la sémantique de liste.',
-      'Avec as="nav" et label, le repère est nommé ; sans label, il est anonyme.',
+      'Avec `as="ul"` ou `as="ol"`, `role="list"` est posé : VoiceOver garde la sémantique de liste.',
+      'Avec `as="nav"` et label, le repère est nommé ; sans label, il est anonyme.',
     ],
     guaranteed: [
-      'list-style: none sur ul et ol, avec role="list" explicite.',
+      'list-style: none sur ul et ol, avec `role="list"` explicite.',
       'Espacement par gap ; les enfants n’ont pas de marge.',
     ],
     integrator: [

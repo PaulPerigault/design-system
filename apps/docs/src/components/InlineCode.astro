@@ -1,0 +1,12 @@
+---
+/** Texte courant avec ses segments entre backticks rendus en `<code>` (voir `lib/inline-code.ts`). */
+import { splitInlineCode } from '../lib/inline-code.ts';
+
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+{splitInlineCode(text).map((part) => (part.code ? <code>{part.text}</code> : part.text))}
