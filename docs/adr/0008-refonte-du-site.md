@@ -5,6 +5,8 @@
 - Lié : ADR-0002 (identité Encre), ADR-0007 (données), issue #123 (cahier), #164 (audit et ADR),
   `docs/design/audit-site.md`, `.claude/skills/encre-voix/SKILL.md`, `.agents/product-marketing.md`.
 
+**En trois phrases.** L'accueil prouve avant d'expliquer, la navigation tient en six entrées et la page « Démarrer » dit l'état réel du projet. Une section « Données » regroupe les graphiques, et tous les textes suivent la voix Encre. Les tests avec trois visiteurs extérieurs restent une étape manuelle.
+
 ## Contexte
 
 L'audit du 2026-10-29 (`docs/design/audit-site.md`) relève : un accueil sans démonstration, qui

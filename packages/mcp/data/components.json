@@ -1894,7 +1894,7 @@
     ],
     "use": [
       "Une liste, un résultat de recherche ou un tableau de bord n’a aucune donnée à montrer.",
-      "Une action permet de sortir de l’état vide : créer un élément, modifier les filtres."
+      "Une action fait sortir de l’état vide : créer un élément, modifier les filtres."
     ]
   },
   {

@@ -76,6 +76,10 @@
   margin-block-start: var(--pp-space-s);
 }
 
+/* Conteneur de page à la largeur de page ; `p.docs-prose` reste à la mesure (F-3, D-132). */
+div.docs-prose {
+  max-inline-size: var(--pp-size-page);
+}
 .docs-prose {
   max-inline-size: var(--pp-size-measure);
 }
