@@ -780,6 +780,11 @@
       "decision": "Navigation à six entrées (#123, ADR-0008 décision 2, option A de Paul, « Refs #123 »). En-tête : Démarrer, Composants, Données, Preuves, Auteur, Recherche ; l'accueil est la marque. Pied de page : colonne « Le fond » (Architecture, Décisions, Identité, Sobriété, PWA) en plus des pages d'information ; `Preuves` renvoie vers Architecture, Décisions et Sobriété. Aucune page ne disparaît. Les références Visuel sont régénérées pour tout le site (en-tête commun), volume accepté par Paul. Le changement a aussi fait apparaître une faille que le test de focus masquait : il s'arrêtait au premier identifiant de lien déjà vu (« Accueil » de l'en-tête) et ne parcourait jamais le contenu. Corrigés : contour de 1 px (au lieu de 2 px) sur le fil d'Ariane et la navigation de page ; le test lit désormais le contour du `::after` (lien étendu de `Card`). Les lignes de performance de `Preuves` passent de « mesuré » à « convention » (D-106).",
       "id": "D-108",
       "rollback": "Rétablir l'ancien en-tête et les anciennes références"
+    },
+    {
+      "date": "2026-11-02",
+      "decision": "Audit du site de documentation, en lecture seule (#206, « Closes #206 »). Rapport `docs/design/audit-site-2026-11.md` : 1 constat Critique (titres sans hiérarchie visuelle), 6 Élevés dont 11 liens W3C en 404, 8 Moyens, 6 Faibles ; 0 violation axe sur 320 passes. Sept issues créées (#207 à #213) : liens, orthotypographie, contenu et voix, UX/UI, accessibilité cognitive, contrôle CI des liens (internes bloquant, externes en mesure), contrôle CI d'orthotypographie (mesure d'abord). Aucune page ni aucun texte modifié. La règle de l'Imprimerie nationale reste `[À VÉRIFIER]` (URL redirigée puis 404) ; les règles FALC aussi (PDF non lu). Alternative écartée : corriger les défauts dans la même PR (mélangerait mesure et correction). Retour arrière : supprimer le rapport.",
+      "id": "D-109"
     }
   ]
 }
