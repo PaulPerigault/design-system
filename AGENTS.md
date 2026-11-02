@@ -50,15 +50,16 @@ Dégradés décoratifs, ombres décoratives, flou (`backdrop-filter`), emoji, é
 Au début de chaque tâche, lire uniquement les skills de ce tableau qui la concernent
 (`.claude/skills/<nom>/SKILL.md`). Un skill est de la méthode : en cas d'écart, ce fichier gagne.
 
-| Tâche                        | Skills                                           |
-| ---------------------------- | ------------------------------------------------ |
-| composants et CSS            | `encre-design`, `encre-mobile`                   |
-| textes et pages              | `encre-voix`                                     |
-| cas limites, avant livraison | `encre-cas-limites`                              |
-| sécurité, CI, agents, hooks  | `encre-securite`                                 |
-| crates et WebAssembly        | `encre-rust`, `encre-securite`, `encre-greenops` |
-| budgets et mesures           | `encre-greenops`                                 |
-| toute PR                     | `encre-processus`                                |
+| Tâche                                 | Skills                                           |
+| ------------------------------------- | ------------------------------------------------ |
+| composants et CSS                     | `encre-design`, `encre-mobile`                   |
+| viewport, plein écran, champs, gestes | `encre-mobile-natif`                             |
+| textes et pages                       | `encre-voix`                                     |
+| cas limites, avant livraison          | `encre-cas-limites`                              |
+| sécurité, CI, agents, hooks           | `encre-securite`                                 |
+| crates et WebAssembly                 | `encre-rust`, `encre-securite`, `encre-greenops` |
+| budgets et mesures                    | `encre-greenops`                                 |
+| toute PR                              | `encre-processus`                                |
 
 ## Commandes de vérification
 

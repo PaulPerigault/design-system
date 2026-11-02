@@ -825,6 +825,11 @@
       "date": "2026-11-02",
       "decision": "Skill `encre-cas-limites` (#221, « Refs #221 »), premier skill tiers retenu après modification : cas limites et liste avant livraison. Sources lues : `break-ui` et son catalogue (emilkowalski/skills, MIT, SHA `f1090bec`), règles UX et liste de contrôle (ui-ux-pro-max-skill, MIT, SHA `3a13158f`). Réécrit en français (115 lignes, description de 267 caractères), « Surcharges Encre » en tête : pas de bascule interactive (fixture de test à la place, zéro JS), pas de masque dégradé, pas de virtualisation (zéro dépendance), propriétés logiques, jetons `--pp-*`. `PROVENANCE.md` : URL, SHA, licences MIT copiées, modifications. Entrée dans l'index d'`AGENTS.md`. Skills de projet : 8 sur 12. Aucun test de format de skill n'existe dans le dépôt : aucun ajouté. Écartée : copie telle quelle avec sa phrase d'accueil imposée. Retour arrière : revert de la PR.",
       "id": "D-117"
+    },
+    {
+      "date": "2026-11-02",
+      "decision": "Skill `encre-mobile-natif` (#221, « Refs #221 »), deuxième skill tiers retenu après modification : correctifs de plateforme mobile (survol collant, `dvh` et `svh`, zoom des champs, `touch-action`, `overscroll-behavior`, zones sûres, `theme-color`). Source : `mobile-native` (emilkowalski/skills, MIT, SHA `f1090bec`). 113 lignes, description de 288 caractères ; 9 skills de projet sur 12. Surcharges : `viewport-fit=cover` et `env(safe-area-inset-*)` seulement après décision écrite, car `encre-mobile` fixe le viewport du dépôt à `width=device-width, initial-scale=1` « rien d'autre » ; halo de toucher retiré seulement avec un `:active` ; pas de `transform: scale()` d'appui ; zéro JS. `animation-performance` et `review-animations` lus et refusés (React, `motion`, flou, ressorts) ; trois règles gardées. Complète `encre-mobile` (cibles, reflow, matrice) sans la doubler. Écartée : fusion dans `encre-mobile` (123 lignes, plafond de 150). Retour arrière : revert de la PR.",
+      "id": "D-118"
     }
   ]
 }
