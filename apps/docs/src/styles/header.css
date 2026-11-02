@@ -1,0 +1,15 @@
+/* En-tête à une rangée sous 48 rem : la marque et le bouton « Menu », les liens dans le panneau
+   (audit M-5). Sans JavaScript le bouton est inerte : les liens restent dans l'en-tête. */
+@media (width < 48rem) and (scripting: enabled) {
+  .docs-header {
+    flex-wrap: nowrap;
+  }
+
+  .docs-brand {
+    min-inline-size: 0;
+  }
+
+  .docs-nav {
+    display: none;
+  }
+}
