@@ -1,8 +1,10 @@
 # Procédure manuelle : VoiceOver et TalkBack
 
-Cette procédure remplace l'automatisation Guidepup (gap.md n° 27). Guidepup exige des réglages
-système et ne tourne pas en CI. Le propriétaire la suit à la main avant chaque lot qui touche un
-composant interactif ou une page de navigation.
+Cette procédure remplace l'automatisation Guidepup en CI (gap.md n° 27) : Guidepup exige des
+réglages système et ne tourne pas en CI. Il reste utilisable à la main sur macOS (ADR-0009) :
+`npm run a11y:voiceover` prépare le rapport de la section 5 ; l'écoute reste celle du propriétaire.
+Le propriétaire suit la procédure avant chaque lot qui touche un composant interactif ou une page
+de navigation.
 
 Les résultats se consignent dans `docs/a11y/results-AAAA-MM-JJ.md` (voir l'étape 5).
 
