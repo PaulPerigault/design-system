@@ -20,28 +20,29 @@ Il n'y a plus de `pre-push` (audit 1bis-a) : `npm run verify` se lance à la mai
 
 Exécuté par le job `verify` sur PR, sur `main` et au cron. `guard` regroupe les contrôles de dépôt.
 
-| Étape    | Commande                                    | Ce qu'elle vérifie                                          |
-| -------- | ------------------------------------------- | ----------------------------------------------------------- |
-| guard    | `check:secrets`                             | aucun secret (secretlint)                                   |
-| guard    | `check:size`                                | fichier ≤ 120 lignes                                        |
-| guard    | `check:lockfile`                            | npmjs uniquement, aucune dépendance `file:` ou `link:`      |
-| guard    | `check:guards`                              | couleurs, couches, tokens, images (`pp-guards.config.json`) |
-| guard    | `check:tokens`                              | tokens à jour, aucune valeur brute                          |
-| guard    | `check:registry`                            | `registry.json` et fragments à jour                         |
-| guard    | `check:install-scripts`                     | scripts d'installation en liste blanche                     |
-| guard    | `check:security-txt`                        | `security.txt` valide                                       |
-| guard    | `check:issue-templates`                     | modèles d'issue complets                                    |
-| guard    | `check:readability`                         | lisibilité des textes (avertit, ne bloque pas)              |
-| lint     | `eslint .`                                  | règles de code                                              |
-| format   | `prettier --check .`                        | mise en forme                                               |
-| tests    | `vitest run`                                | tous les projets                                            |
-| build    | `build --workspaces`                        | compilation de chaque paquet                                |
-| données  | `check:mcp-data`                            | `docs.json`, `adr.json`, `components.json` à jour           |
-| vecteurs | `check:color-vectors`, `check:data-vectors` | vecteurs de parité Rust et TypeScript à jour                |
-| mcp      | `check:mcp-self-test`                       | `pp-mcp --self-test`                                        |
-| docs     | `check:typography`                          | orthotypographie du texte rendu (mesure, job `docs`)        |
-| docs     | `docs run check`                            | `astro check`                                               |
-| paquets  | `check:pack`                                | `npm pack --dry-run` de chaque paquet                       |
+| Étape    | Commande                                    | Ce qu'elle vérifie                                                 |
+| -------- | ------------------------------------------- | ------------------------------------------------------------------ |
+| guard    | `check:secrets`                             | aucun secret (secretlint)                                          |
+| guard    | `check:size`                                | fichier ≤ 120 lignes                                               |
+| guard    | `check:lockfile`                            | npmjs uniquement, aucune dépendance `file:` ou `link:`             |
+| guard    | `check:guards`                              | couleurs, couches, tokens, images (`pp-guards.config.json`)        |
+| guard    | `check:tokens`                              | tokens à jour, aucune valeur brute                                 |
+| guard    | `check:registry`                            | `registry.json` et fragments à jour                                |
+| guard    | `check:install-scripts`                     | scripts d'installation en liste blanche                            |
+| guard    | `check:security-txt`                        | `security.txt` valide                                              |
+| guard    | `check:issue-templates`                     | modèles d'issue complets                                           |
+| guard    | `check:readability`                         | lisibilité des textes (avertit, ne bloque pas)                     |
+| lint     | `eslint .`                                  | règles de code                                                     |
+| format   | `prettier --check .`                        | mise en forme                                                      |
+| tests    | `vitest run`                                | tous les projets                                                   |
+| build    | `build --workspaces`                        | compilation de chaque paquet                                       |
+| données  | `check:mcp-data`                            | `docs.json`, `adr.json`, `components.json` à jour                  |
+| vecteurs | `check:color-vectors`, `check:data-vectors` | vecteurs de parité Rust et TypeScript à jour                       |
+| mcp      | `check:mcp-self-test`                       | `pp-mcp --self-test`                                               |
+| docs     | `check:typography`                          | orthotypographie du texte rendu (mesure, job `docs`)               |
+| docs     | `check:links`                               | liens internes et ancres de `dist` (bloquant) ; externes en mesure |
+| docs     | `docs run check`                            | `astro check`                                                      |
+| paquets  | `check:pack`                                | `npm pack --dry-run` de chaque paquet                              |
 
 ## Workflows
 

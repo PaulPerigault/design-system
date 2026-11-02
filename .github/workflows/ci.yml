@@ -88,6 +88,8 @@ jobs:
       - run: npm run benchmark:weight
       # Orthotypographie du texte rendu : mesure dans le résumé, bloquante règle par règle (D-114).
       - run: npm run check:typography
+      # Liens internes et ancres : bloquant, 0 attendu. Liens externes : mesure, jamais bloquante (D-127).
+      - run: npm run check:links -- --external
 
   changes:
     # Décide si e2e tourne et sur quel périmètre. `render` : la PR touche le rendu (css, tokens,
