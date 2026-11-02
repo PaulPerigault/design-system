@@ -1,6 +1,6 @@
 ---
 name: encre-processus
-description: Règles de processus du dépôt design-system de Paul Perigault : issue, branche, commit, PR, fusion en squash, journal, décisions, fichiers générés, règles de saut du run autonome. À charger avant d'ouvrir une branche, d'écrire un message de commit, un titre ou un corps de PR, de fusionner, de régénérer `docs.json`, `adr.json` ou `components.json`, ou de mettre à jour le journal et le bilan ; à la demande « processus Encre », « comment je livre ». Propre au projet.
+description: Processus de livraison (issue, branche, commit, PR, fusion en squash, journal, décisions, fichiers générés, règles de saut). À charger avant une branche, un commit, un titre ou corps de PR, une fusion, `docs.json` ou `adr.json` ; « comment je livre ».
 ---
 
 # Encre : processus de livraison

@@ -1,6 +1,6 @@
 ---
 name: encre-securite
-description: Revue de sécurité du design system de Paul Perigault. À charger pour relire ou écrire une politique CSP ou des en-têtes (`apps/docs/scripts/headers/`), un attribut `style`, une dépendance, un workflow GitHub, une publication npm, une entrée utilisateur ou de build (CLI, JSON, jetons), un hook ou un agent (`tools/agents/`), du WebAssembly ou du Rust ; à la demande « revue sécurité », « sécurité Encre », « audit chaîne d'approvisionnement ». Propre au projet, web statique.
+description: Revue de sécurité (CSP, en-têtes, attribut `style`, dépendance, workflow GitHub, publication npm, entrée utilisateur, hook, agent, WebAssembly, skill tiers). À charger pour relire ou écrire ces sujets ; « revue sécurité », « chaîne d'approvisionnement ».
 ---
 
 # Encre : revue de sécurité

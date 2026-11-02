@@ -1,6 +1,6 @@
 ---
 name: encre-mobile-natif
-description: Correctifs de plateforme mobile en CSS et en balises meta : survol collant, hauteur 100vh, zoom des champs, délai de toucher, rebond de défilement, zones sûres, theme-color. À charger pour un viewport, un plein écran, un champ, un geste ; « ça marche dans Chrome, pas sur mon téléphone ».
+description: Correctifs de plateforme mobile en CSS et en balises meta ; survol collant, hauteur 100vh, zoom des champs, délai de toucher, rebond de défilement, zones sûres, theme-color. À charger pour un viewport, un plein écran, un champ, un geste ; « ça marche dans Chrome, pas sur mon téléphone ».
 ---
 
 # Encre : mobile, correctifs de plateforme

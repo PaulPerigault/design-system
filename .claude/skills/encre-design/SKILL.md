@@ -1,6 +1,6 @@
 ---
 name: encre-design
-description: Revue visuelle selon la direction « Encre » du design system de Paul Perigault. À déclencher pour relire ou critiquer un composant, une page ou un graphique SVG (LineChart, BarChart, AreaChart, GaugeChart, KPI, tableau), pour vérifier contraste, typographie et rendu « générique », ou à la demande « revue Encre », « fais-le moins générique », « audit visuel ». Propre au projet, web statique uniquement.
+description: Revue visuelle « Encre » d'un composant, d'une page ou d'un graphique SVG (LineChart, KPI, tableau), contraste, typographie, rendu « générique ». À charger pour relire ou critiquer du visuel ; « revue Encre », « audit visuel ». Web statique.
 ---
 
 # Encre : revue visuelle
