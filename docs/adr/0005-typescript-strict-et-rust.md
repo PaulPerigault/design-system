@@ -3,6 +3,8 @@
 - Statut : proposé (2026-10-24). Rien de Rust n'est implémenté par cet ADR.
 - Lié : AGENTS.md (limites de code), ADR-0003 (MCP), D-025.
 
+**En trois phrases.** Tout le code exécutable du dépôt passe en TypeScript strict : c'est la priorité, avec un gain certain. Rust en WebAssembly n'entre que par étapes, chacune conditionnée à des seuils mesurés, car son gain reste incertain tant qu'aucune mesure ne l'établit. Chaque étape est une PR distincte et le TypeScript reste la référence jusqu'à la parité.
+
 ## Contexte
 
 Les paquets d'outillage sont en `.mjs` (mesuré le 2026-10-24) : `tokens` 15 fichiers / 1 113 lignes,

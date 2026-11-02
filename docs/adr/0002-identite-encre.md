@@ -5,6 +5,8 @@
 - Remplace, pour les sites consommateurs, la charte « CV d'abord » (portfolio, ADR-0006) sur les
   couleurs, la typographie, les formes, les filets et le mouvement. Seul le favicon est conservé.
 
+**En trois phrases.** L'identité visuelle du design system, nommée « Encre », part du favicon du portfolio : une encre quasi noire de teinte 270,7, du blanc, aucun dégradé ni ombre. Quatre directions ont été mesurées avant de retenir la quatrième, avec un seul accent de même teinte. Les interdits anti-IA restent en vigueur ; les écarts levés sont listés plus bas.
+
 ## Contexte et ancre
 
 Le favicon du portfolio est conservé à l'identique (empreintes sha256 vérifiées par test côté

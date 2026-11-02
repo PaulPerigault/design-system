@@ -4,6 +4,8 @@
 - Lié : ADR-0005 (TypeScript strict, Rust), D-030, D-035, D-037, AGENTS.md (limites de code),
   issue #82. Cadre les étapes 3 à 11 et le lot analyse V1 à V5.
 
+**En trois phrases.** Les paquets d'outillage suivent des couches (infrastructure, application, domaine), des ports injectés, des erreurs typées et des données validées à chaque frontière. Les composants Astro restent sans couches, avec leur logique non triviale dans un module pur testé. La même ADR fixe la politique Rust et WebAssembly, les principes GreenOps et l'ordre d'application par étapes.
+
 ## Contexte
 
 Le dépôt est un projet personnel qui peut devenir open source. Exigences de Paul : standards

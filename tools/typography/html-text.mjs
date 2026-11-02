@@ -21,8 +21,8 @@ const foreignLang = (attrs) => {
 };
 
 /** `hard` : jamais touché ; `svg` : seulement `title` et `desc` ; `text` : prose. */
-function childMode(parent, name, attrs) {
-  if (parent === 'hard' || HARD.has(name) || foreignLang(attrs)) return 'hard';
+function childMode(parent, name, attrs, skip) {
+  if (parent === 'hard' || HARD.has(name) || skip.has(name) || foreignLang(attrs)) return 'hard';
   if (name === 'svg') return 'svg';
   if (parent === 'svg') return SVG_PROSE.has(name) ? 'text' : 'svg';
   return 'text';
@@ -46,12 +46,12 @@ const closeFrame = (stack, name) => {
   if (index > 0) stack.length = index;
 };
 
-function openTag(stack, fn, rawName, attrs) {
+function openTag({ stack, fn, skip }, rawName, attrs) {
   const name = rawName.toLowerCase();
   const parent = stack.at(-1).mode;
   const fixed = parent === 'hard' ? attrs : rewriteAttrs(name, attrs, fn);
   const opens = !VOID.has(name) && !RAW.has(name) && !attrs.endsWith('/');
-  if (opens) stack.push({ name, mode: childMode(parent, name, attrs) });
+  if (opens) stack.push({ name, mode: childMode(parent, name, attrs, skip) });
   return `<${rawName}${fixed}>`;
 }
 
@@ -63,9 +63,10 @@ const rawEnd = (lower, from, name) => {
 /**
  * @param {string} html page construite
  * @param {(text: string, kind: 'text' | 'attr') => string} fn transformation d'un texte
+ * @param {Set<string>} [skip] balises dont le contenu n'est jamais touché (en plus des balises de code)
  * @returns {string}
  */
-export function mapText(html, fn) {
+export function mapText(html, fn, skip = new Set()) {
   const re = new RegExp(TOKEN, 'g');
   const lower = html.toLowerCase();
   const stack = [{ name: '', mode: 'text' }];
@@ -81,7 +82,7 @@ export function mapText(html, fn) {
       closeFrame(stack, rawName.toLowerCase());
       out += tag;
     } else {
-      out += openTag(stack, fn, rawName, attrs);
+      out += openTag({ stack, fn, skip }, rawName, attrs);
       const name = rawName.toLowerCase();
       const stop = RAW.has(name) ? rawEnd(lower, pos, name) : pos;
       out += html.slice(pos, stop);

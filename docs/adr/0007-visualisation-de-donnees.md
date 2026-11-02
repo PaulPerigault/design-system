@@ -3,6 +3,8 @@
 - Statut : proposé (2026-10-28). Documentation seulement : aucun composant n'est codé par cet ADR.
 - Lié : ADR-0002, ADR-0006, D-030, D-038, issue #93. Cadre le lot analyse V2a à V5 (#94 à #100).
 
+**En trois phrases.** Les graphiques sont des SVG statiques produits au build par des composants Astro, à partir d'un contrat de données colonnaire validé. L'accessibilité suit WCAG 2.2 AA : résumé factuel, tableau de données lié, palettes dérivées de l'accent et vérifiées pour le daltonisme. Un paquet `dataviz` en TypeScript pur porte la logique, et le travail se découpe en lots, de V2a à V5.
+
 ## Contexte
 
 Paul veut afficher de la BI sur ses sites : des visuels de données propres, une direction
