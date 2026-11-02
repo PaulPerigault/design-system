@@ -56,6 +56,7 @@ Au début de chaque tâche, lire uniquement les skills de ce tableau qui la conc
 | viewport, plein écran, champs, gestes | `encre-mobile-natif`                             |
 | textes et pages                       | `encre-voix`                                     |
 | cas limites, avant livraison          | `encre-cas-limites`                              |
+| passe finale, rendu « fait par IA »   | `encre-rendu-ia`                                 |
 | sécurité, CI, agents, hooks           | `encre-securite`                                 |
 | crates et WebAssembly                 | `encre-rust`, `encre-securite`, `encre-greenops` |
 | budgets et mesures                    | `encre-greenops`                                 |
