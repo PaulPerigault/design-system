@@ -39,6 +39,27 @@ Bon : `permissions: {}` au niveau du workflow, `id-token: write` et `contents: r
 3. **Jeton de release-please.** `release.yml` lit le secret `RELEASE_PLEASE_TOKEN` : [À VÉRIFIER] qu'il existe (lecture des secrets non faite ici).
 4. **npm ≥ 11.5.1** requis pour la publication de confiance : npm 11.16.0 ici ; [À VÉRIFIER] la version fournie par l'image du workflow.
 
+## Miroir GitHub Packages (facultatif, #130)
+
+npmjs reste la source publique ; GitHub Packages est un miroir ajouté juste après la publication npm, pour que Paul consomme les paquets dans ses autres projets. Rien n'est publié par cette préparation.
+
+- Déclenchement : le job `mirror` de `release.yml`, `needs: publish`, seulement si une release est créée, jamais pour une PR. Permissions du job : `contents: read` et `packages: write` ; `GITHUB_TOKEN` du workflow, aucun secret ajouté.
+- Méthode : `tools/release/mirror-github-packages.mjs` télécharge le tarball déjà publié sur npmjs, réécrit son `publishConfig` (registre GitHub, accès public) et le republie sur `https://npm.pkg.github.com`. Plan pur testé (`mirror-plan.test.mjs`) ; le script refuse de tourner hors de GitHub Actions. L'échec du miroir ne touche pas la publication npm.
+- Provenance : **non demandée** sur le miroir. La page de GitHub Packages lue le 2026-11-02 n'en parle pas : `[À VÉRIFIER]` avant d'ajouter `--provenance`. La provenance npm reste celle de npmjs.
+- Scope : GitHub exige que le scope du paquet soit celui du propriétaire en minuscules (`@paulperigault`) : tenu, et contrôlé par le script.
+
+Côté consommateur (documentation de GitHub, lue le 2026-11-02 : un jeton est nécessaire pour installer, même un paquet public ; seul un jeton personnel « classic » est pris en charge) :
+
+```shell
+# .npmrc du projet consommateur (ne jamais committer le jeton)
+@paulperigault:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+```
+
+Créer le jeton sur GitHub (Settings, Developer settings, Personal access tokens (classic)) avec la seule portée `read:packages`, puis `export GITHUB_TOKEN=…` avant d'installer un paquet.
+
+**Limite connue :** comme l'installation exige un jeton, `npx @paulperigault/create` et tout usage public passent par npmjs ; le miroir ne sert qu'aux projets de Paul. Action manuelle de Paul : aucune avant la première release (le job se déclenche seul) ; après elle, vérifier la page Packages du dépôt.
+
 ## Actions manuelles de Paul, dans l'ordre
 
 1. Compte npm avec double authentification (`npm profile enable-2fa auth-and-writes`), sur l'organisation ou le compte qui possède le scope `@paulperigault`.
