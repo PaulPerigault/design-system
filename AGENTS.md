@@ -62,6 +62,7 @@ Au début de chaque tâche, lire uniquement les skills de ce tableau qui la conc
 | crates et WebAssembly                 | `encre-rust`, `encre-securite`, `encre-greenops` |
 | budgets et mesures                    | `encre-greenops`                                 |
 | toute PR                              | `encre-processus`                                |
+| chercher ou installer un skill tiers  | `encre-veille`, `encre-securite`                 |
 
 ## Commandes de vérification
 

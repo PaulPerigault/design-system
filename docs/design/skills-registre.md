@@ -8,13 +8,14 @@ Issue : [#222](https://github.com/PaulPerigault/design-system/issues/222). Règl
 
 Une ligne par couple (skill installé, dépôt source) : SHA complet lu à la réécriture. Le contrôle mensuel compare ce SHA à celui du dépôt amont et affiche les écarts, sans rien modifier. Ne pas changer le format des colonnes.
 
-| Skill              | Dépôt                                | SHA relu                                   |
-| ------------------ | ------------------------------------ | ------------------------------------------ |
-| encre-cas-limites  | emilkowalski/skills                  | `f1090bec277140d02ed202440185ad9d02ac1490` |
-| encre-cas-limites  | nextlevelbuilder/ui-ux-pro-max-skill | `3a13158ff1f32156cbe144108de48eda2ecaed9a` |
-| encre-mobile-natif | emilkowalski/skills                  | `f1090bec277140d02ed202440185ad9d02ac1490` |
-| encre-rendu-ia     | pbakaus/impeccable                   | `e89e3ada3e875a89ac2c5d33d11e65ebef6fe285` |
-| encre-architecture | softaworks/agent-toolkit             | `3027f20f3181758385a1bb8c022d4041dfb4de84` |
+| Skill              | Dépôt                                 | SHA relu                                   |
+| ------------------ | ------------------------------------- | ------------------------------------------ |
+| encre-cas-limites  | emilkowalski/skills                   | `f1090bec277140d02ed202440185ad9d02ac1490` |
+| encre-cas-limites  | nextlevelbuilder/ui-ux-pro-max-skill  | `3a13158ff1f32156cbe144108de48eda2ecaed9a` |
+| encre-mobile-natif | emilkowalski/skills                   | `f1090bec277140d02ed202440185ad9d02ac1490` |
+| encre-rendu-ia     | pbakaus/impeccable                    | `e89e3ada3e875a89ac2c5d33d11e65ebef6fe285` |
+| encre-architecture | softaworks/agent-toolkit              | `3027f20f3181758385a1bb8c022d4041dfb4de84` |
+| encre-veille       | rebelytics/one-skill-to-rule-them-all | `ba696b2c2673be959dcd4a1dbdbc92085df8b41a` |
 
 ## Candidats vus
 
