@@ -45,28 +45,29 @@ Exécuté par le job `verify` sur PR, sur `main` et au cron. `guard` regroupe le
 
 ## Workflows
 
-| Workflow / job             | Déclencheur                    | Contrôle                                                       | Bloque la fusion      |
-| -------------------------- | ------------------------------ | -------------------------------------------------------------- | --------------------- |
-| CI / `commitlint`          | PR                             | titre et corps de la PR (futur message de squash)              | oui, via `ci`         |
-| CI / `squash-message`      | main                           | message du commit de squash créé par GitHub                    | sans objet (après)    |
-| CI / `verify`              | PR, main, cron                 | `npm run verify` (tableau ci-dessus)                           | oui, via `ci`         |
-| CI / `docs`                | PR, main, cron                 | build de la doc sans `dist/` préalable ; résumé images (D-104) | oui, via `ci`         |
-| CI / `changes`             | PR, main, cron                 | calcule `render`, `full`, `rust`, `wasm` d'après les chemins   | non (aiguillage)      |
-| CI / `e2e`                 | PR de rendu, cron              | Playwright : 3 projets sur PR, matrice complète au cron        | oui, via `ci`         |
-| CI / `visuel`              | PR de rendu                    | appelle `visual.yml` : captures contre références              | oui, via `ci`         |
-| CI / `rust`                | PR (chemins Rust), cron        | `cargo fmt`, `clippy`, `test`, `audit`, `deny`                 | oui, via `ci`         |
-| CI / `wasm`                | PR (chemins wasm), cron        | build `.wasm`, empreinte, parité, poids, SBOM                  | oui, via `ci`         |
-| CI / `site`                | PR, main, cron                 | site généré par `create`, installé sur les tarballs, `verify`  | oui, via `ci`         |
-| CI / `zizmor`              | PR, main, cron                 | audit statique des workflows                                   | oui, via `ci`         |
-| CI / `ci`                  | PR, main, cron                 | agrégat des jobs ; **seul check requis**                       | oui                   |
-| CodeQL / `analyze`         | PR, main, cron (lundi)         | analyse statique JavaScript et TypeScript                      | non requis            |
-| Supply chain / `audit`     | PR, main, cron (quotidien)     | `npm audit signatures` et `npm audit --audit-level=high`       | non requis            |
-| Supply chain / `sbom`      | PR, main, cron                 | SBOM CycloneDX en artefact                                     | non requis            |
-| Scorecard / `analysis`     | main, cron (mardi), manuel     | note OpenSSF publiée pour le badge                             | non requis            |
-| Visuel                     | manuel, cron (lundi), appel    | captures ; `update` régénère les références                    | via `ci` quand appelé |
-| Dependabot auto-merge      | PR de Dependabot               | active la fusion automatique des correctifs et mineures        | sans objet            |
-| Release / `release-please` | main                           | PR de release et tags                                          | sans objet            |
-| Release / `publish`        | main, si une release est créée | build, `.wasm`, empreinte, `audit signatures`, SBOM, OIDC      | sans objet            |
+| Workflow / job                    | Déclencheur                    | Contrôle                                                         | Bloque la fusion      |
+| --------------------------------- | ------------------------------ | ---------------------------------------------------------------- | --------------------- |
+| CI / `commitlint`                 | PR                             | titre et corps de la PR (futur message de squash)                | oui, via `ci`         |
+| CI / `squash-message`             | main                           | message du commit de squash créé par GitHub                      | sans objet (après)    |
+| CI / `verify`                     | PR, main, cron                 | `npm run verify` (tableau ci-dessus)                             | oui, via `ci`         |
+| CI / `docs`                       | PR, main, cron                 | build de la doc sans `dist/` préalable ; résumé images (D-104)   | oui, via `ci`         |
+| CI / `changes`                    | PR, main, cron                 | calcule `render`, `full`, `rust`, `wasm` d'après les chemins     | non (aiguillage)      |
+| CI / `e2e`                        | PR de rendu, cron              | Playwright : 3 projets sur PR, matrice complète au cron          | oui, via `ci`         |
+| CI / `visuel`                     | PR de rendu                    | appelle `visual.yml` : captures contre références                | oui, via `ci`         |
+| CI / `rust`                       | PR (chemins Rust), cron        | `cargo fmt`, `clippy`, `test`, `audit`, `deny`                   | oui, via `ci`         |
+| CI / `wasm`                       | PR (chemins wasm), cron        | build `.wasm`, empreinte, parité, poids, SBOM                    | oui, via `ci`         |
+| CI / `site`                       | PR, main, cron                 | site généré par `create`, installé sur les tarballs, `verify`    | oui, via `ci`         |
+| CI / `zizmor`                     | PR, main, cron                 | audit statique des workflows                                     | oui, via `ci`         |
+| Skills amont (`skills-amont.yml`) | mensuel, manuel                | SHA amont des skills tiers (D-116), lecture seule, résumé du job | non (information)     |
+| CI / `ci`                         | PR, main, cron                 | agrégat des jobs ; **seul check requis**                         | oui                   |
+| CodeQL / `analyze`                | PR, main, cron (lundi)         | analyse statique JavaScript et TypeScript                        | non requis            |
+| Supply chain / `audit`            | PR, main, cron (quotidien)     | `npm audit signatures` et `npm audit --audit-level=high`         | non requis            |
+| Supply chain / `sbom`             | PR, main, cron                 | SBOM CycloneDX en artefact                                       | non requis            |
+| Scorecard / `analysis`            | main, cron (mardi), manuel     | note OpenSSF publiée pour le badge                               | non requis            |
+| Visuel                            | manuel, cron (lundi), appel    | captures ; `update` régénère les références                      | via `ci` quand appelé |
+| Dependabot auto-merge             | PR de Dependabot               | active la fusion automatique des correctifs et mineures          | sans objet            |
+| Release / `release-please`        | main                           | PR de release et tags                                            | sans objet            |
+| Release / `publish`               | main, si une release est créée | build, `.wasm`, empreinte, `audit signatures`, SBOM, OIDC        | sans objet            |
 
 ## Doublons : justifiés ou supprimés
 
@@ -88,5 +89,5 @@ Exécuté par le job `verify` sur PR, sur `main` et au cron. `guard` regroupe le
 ## Workflows cités
 
 Présents dans `.github/workflows/` au 2026-11-01 : `ci.yml`, `codeql.yml`,
-`dependabot-automerge.yml`, `release.yml`, `scorecard.yml`, `supply-chain.yml`, `visual.yml`.
+`dependabot-automerge.yml`, `release.yml`, `scorecard.yml`, `skills-amont.yml`, `supply-chain.yml`, `visual.yml`.
 Ruleset : `.github/rulesets/main.json` (PR obligatoire, squash seul, historique linéaire, check `ci`).

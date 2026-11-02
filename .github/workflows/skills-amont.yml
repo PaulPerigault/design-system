@@ -1,0 +1,33 @@
+name: Skills amont
+
+# Contrôle mensuel, en lecture seule (D-116, #222) : compare le SHA relu de chaque skill tiers
+# (tableau « Suivi amont » de docs/design/skills-registre.md) au SHA courant de son dépôt amont,
+# par l'API publique de GitHub, sans jeton. Le résultat va dans le résumé du job. Aucune issue,
+# aucune PR, aucune écriture : relire un amont qui a changé reste une décision de Paul.
+on:
+  schedule:
+    - cron: '17 5 1 * *'
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  amont:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            /.nvmrc
+            /docs/design/skills-registre.md
+            /tools/skills/
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .nvmrc
+      - name: comparer les SHA amont
+        run: node tools/skills/check-upstream.mjs
