@@ -1,0 +1,43 @@
+{
+  "name": "@paulperigault/effect",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Option Effect-TS : adaptateurs des ports en Layer, erreurs typées, validation Schema. Hors du cœur.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Paul Perigault",
+  "keywords": [
+    "effect",
+    "design-system"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PaulPerigault/design-system.git",
+    "directory": "packages/effect"
+  },
+  "homepage": "https://design.paulperigault.dev",
+  "bugs": "https://github.com/PaulPerigault/design-system/issues",
+  "engines": {
+    "node": ">=24"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "node --eval \"fs.rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.build.json",
+    "test": "vitest run"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "@paulperigault/source": "./src/index.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "effect": "4.1.2"
+  }
+}
