@@ -76,10 +76,12 @@
   margin-block-start: var(--pp-space-s);
 }
 
-/* Conteneur à la largeur de page : le texte courant garde la mesure (règle ci-dessus), les blocs de
-   code et les tableaux disposent de la largeur utile au lieu d'être coupés (audit F-3, D-132). */
-.docs-prose {
+/* Conteneur de page à la largeur de page ; `p.docs-prose` reste à la mesure (F-3, D-132). */
+div.docs-prose {
   max-inline-size: var(--pp-size-page);
+}
+.docs-prose {
+  max-inline-size: var(--pp-size-measure);
 }
 
 .docs-direction {

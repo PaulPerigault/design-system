@@ -1,3 +1,4 @@
+import { GLOSSARY_DEV } from './glossary-dev';
 import { GLOSSARY_PROJECT } from './glossary-project';
 import { GLOSSARY_WEB } from './glossary-web';
 
@@ -10,4 +11,8 @@ export interface Entry {
 
 const byTerm = (a: Entry, b: Entry): number => a.term.localeCompare(b.term, 'fr');
 
-export const GLOSSARY: readonly Entry[] = [...GLOSSARY_WEB, ...GLOSSARY_PROJECT].sort(byTerm);
+export const GLOSSARY: readonly Entry[] = [
+  ...GLOSSARY_WEB,
+  ...GLOSSARY_PROJECT,
+  ...GLOSSARY_DEV,
+].sort(byTerm);
