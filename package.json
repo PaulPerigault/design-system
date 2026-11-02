@@ -23,6 +23,7 @@
     "check:size": "node tools/checks/check-size.mjs",
     "check:duplication": "node tools/checks/check-duplication.mjs",
     "check:readability": "node tools/checks/check-readability.mjs",
+    "check:typography": "node tools/checks/check-typography.mjs",
     "check:install-scripts": "node tools/checks/check-install-scripts.mjs",
     "check:security-txt": "node tools/checks/check-security-txt.mjs",
     "check:issue-templates": "node tools/checks/check-issue-templates.mjs",

@@ -39,6 +39,7 @@ Exécuté par le job `verify` sur PR, sur `main` et au cron. `guard` regroupe le
 | données  | `check:mcp-data`                            | `docs.json`, `adr.json`, `components.json` à jour           |
 | vecteurs | `check:color-vectors`, `check:data-vectors` | vecteurs de parité Rust et TypeScript à jour                |
 | mcp      | `check:mcp-self-test`                       | `pp-mcp --self-test`                                        |
+| docs     | `check:typography`                          | orthotypographie du texte rendu (mesure, job `docs`)        |
 | docs     | `docs run check`                            | `astro check`                                               |
 | paquets  | `check:pack`                                | `npm pack --dry-run` de chaque paquet                       |
 
