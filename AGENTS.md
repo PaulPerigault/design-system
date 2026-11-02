@@ -50,19 +50,19 @@ Dégradés décoratifs, ombres décoratives, flou (`backdrop-filter`), emoji, é
 Au début de chaque tâche, lire uniquement les skills de ce tableau qui la concernent
 (`.claude/skills/<nom>/SKILL.md`). Un skill est de la méthode : en cas d'écart, ce fichier gagne.
 
-| Tâche                                 | Skills                                           |
-| ------------------------------------- | ------------------------------------------------ |
-| composants et CSS                     | `encre-design`, `encre-mobile`                   |
-| viewport, plein écran, champs, gestes | `encre-mobile-natif`                             |
-| textes et pages                       | `encre-voix`                                     |
-| cas limites, avant livraison          | `encre-cas-limites`                              |
-| module nouveau, dépendances, schéma   | `encre-architecture`                             |
-| passe finale, rendu « fait par IA »   | `encre-rendu-ia`                                 |
-| sécurité, CI, agents, hooks           | `encre-securite`                                 |
-| crates et WebAssembly                 | `encre-rust`, `encre-securite`, `encre-greenops` |
-| budgets et mesures                    | `encre-greenops`                                 |
-| toute PR                              | `encre-processus`                                |
-| chercher ou installer un skill tiers  | `encre-veille`, `encre-securite`                 |
+| Tâche                                         | Skills                                           |
+| --------------------------------------------- | ------------------------------------------------ |
+| composants et CSS                             | `encre-design`, `encre-mobile`                   |
+| viewport, plein écran, champs, gestes         | `encre-mobile-natif`                             |
+| textes et pages                               | `encre-voix`                                     |
+| cas limites, avant livraison                  | `encre-cas-limites`                              |
+| accessibilité, balisage, clavier, formulaires | `encre-accessibilite`                            |
+| passe finale, rendu « fait par IA »           | `encre-rendu-ia`                                 |
+| sécurité, CI, agents, hooks                   | `encre-securite`                                 |
+| crates et WebAssembly                         | `encre-rust`, `encre-securite`, `encre-greenops` |
+| budgets et mesures                            | `encre-greenops`                                 |
+| toute PR                                      | `encre-processus`                                |
+| chercher ou installer un skill tiers          | `encre-veille`, `encre-securite`                 |
 
 Deux corrections identiques de Paul, ou une tâche sans skill adapté : `encre-veille` (recherche
 ciblée, propositions dans `tmp/questions-paul.md`, installation seulement après la grille).

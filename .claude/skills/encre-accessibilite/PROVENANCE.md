@@ -1,30 +1,31 @@
-# Provenance : encre-architecture
+# Provenance : encre-accessibilite
 
 Skill réécrit, jamais copié tel quel. Règle : `encre-securite`, « Skills tiers : provenance » (D-116).
 Issue : [#221](https://github.com/PaulPerigault/design-system/issues/221). Consulté le 2026-11-02.
 
-| Source                               | URL                                         | SHA lu                                     | Licence                     |
-| ------------------------------------ | ------------------------------------------- | ------------------------------------------ | --------------------------- |
-| c4-architecture (grille des niveaux) | https://github.com/softaworks/agent-toolkit | `3027f20f3181758385a1bb8c022d4041dfb4de84` | MIT, © 2026 Leonardo Flores |
+| Source                                 | URL                                              | SHA lu                                     | Licence                 |
+| -------------------------------------- | ------------------------------------------------ | ------------------------------------------ | ----------------------- |
+| accessibility (ordre de gravité, plan) | https://github.com/addyosmani/web-quality-skills | `afa8da942115f2961fdbfa80807ea0b232ff6c00` | MIT, © 2026 Addy Osmani |
 
 ## Modifications
 
-- Fond : ADR-0006 et `AGENTS.md` du dépôt. Du texte tiers, seule la grille des niveaux C4 et sa règle
-  « contexte et conteneurs suffisent » (`c4-architecture`, softaworks/agent-toolkit) sont reprises,
-  en français et réécrites ; aucun exemple Mermaid de la source n'est copié.
-- Non repris : `clean-architecture-skills` (licence sans titulaire), les skills `mermaid-diagrams`,
-  `qa-test-planner` (scripts shell), tout autre skill du dépôt.
-- Ajoutés : « Surcharges Encre », vérifications adaptées aux couches d'ADR-0006, tableau de code
-  smells relié aux contrôles du dépôt.
+- Texte original écrit à partir des critères de succès WCAG 2.2 (W3C) et des règles du dépôt ; aucune
+  phrase de la source n'est copiée.
+- Repris comme idée : l'ordre de gravité (critique, sérieux, modéré) et le plan par principes
+  (perceptible, utilisable, compréhensible, robuste) de `accessibility` (web-quality-skills).
+- Non repris : l'exécution de `npx lighthouse` et l'installation globale d'`axe`, le script
+  `web-quality-audit/scripts/analyze.sh`, les fichiers de références, les métadonnées de plugin.
+- Ajoutés : « Surcharges Encre », les règles du dépôt (`role="list"`, noms de `nav`, CSP sans `style`),
+  le renvoi à la procédure VoiceOver manuelle.
 
 ## Licences (copiées telles quelles)
 
-### https://github.com/softaworks/agent-toolkit : LICENSE
+### https://github.com/addyosmani/web-quality-skills : LICENSE
 
 ```text
 MIT License
 
-Copyright (c) 2026 Leonardo Flores
+Copyright (c) 2026 Addy Osmani
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
