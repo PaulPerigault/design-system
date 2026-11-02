@@ -10,6 +10,7 @@ import type { ComponentPageData } from '../lib/component-page.ts';
 import { breadcrumbLd, canonicalOf, graph, techArticleLd, titleOf } from '../lib/seo.ts';
 import { GROUPS } from '../navigation';
 import '../styles/component-page.css';
+import ItemList from './ItemList.astro';
 import PageNav from './PageNav.astro';
 import PropsTable from './PropsTable.astro';
 
@@ -50,18 +51,10 @@ const notes = [
     <p>{summary}</p>
 
     <h2 id="quand">{heading('quand')}</h2>
-    <ul>
-      {use.map((item) => (
-        <li>{item}</li>
-      ))}
-    </ul>
+    <ItemList items={use} />
 
     <h2 id="eviter">{heading('eviter')}</h2>
-    <ul>
-      {avoid.map((item) => (
-        <li>{item}</li>
-      ))}
-    </ul>
+    <ItemList items={avoid} />
 
     <h2 id="exemples">{heading('exemples')}</h2>
     <div class="pp-component-page__examples">
@@ -82,11 +75,7 @@ const notes = [
     {notes.map((note) => (
       <>
         <h3>{note.title}</h3>
-        <ul>
-          {note.items.map((item) => (
-            <li>{item}</li>
-          ))}
-        </ul>
+        <ItemList items={note.items} />
       </>
     ))}
 

@@ -14,7 +14,7 @@ const THEME = `npm create @paulperigault mon-site -- --accent-hue 150 --font-sta
 <Alert tone="info" toneLabel="Information">
   <p>
     Les paquets ne sont pas encore publiés sur npmjs : le <code>README.md</code> du dépôt les
-    déclare « en construction » en version <code>0.x</code>. Les commandes <code>npm</code> et
+    déclare « en construction » en version <code>0.x</code>. Les commandes <code>npm</code> et{' '}
     <code>npx</code> de cette page fonctionneront après la première publication. Depuis le dépôt, la
     commande ci-dessous marche aujourd’hui.
   </p>
@@ -47,15 +47,15 @@ const THEME = `npm create @paulperigault mon-site -- --accent-hue 150 --font-sta
 
 <h2>Régler la teinte d’accent et la police</h2>
 <p>
-  <code>--accent-hue</code> prend une teinte en degrés OKLCH, de 0 à 360. <code>--font-stack</code>
+  <code>--accent-hue</code> prend une teinte en degrés OKLCH, de 0 à 360. <code>--font-stack</code>{' '}
   prend la pile de familles du texte. Sans option, le site est celui du gabarit. Avec l’une des
-  deux, <code>create</code> écrit <code>src/styles/pp-theme.css</code> et l’importe dans
+  deux, <code>create</code> écrit <code>src/styles/pp-theme.css</code> et l’importe dans{' '}
   <code>Base.astro</code> : l’accent, son texte, le focus, le statut « en cours » et les six
   couleurs de graphique sont dérivés de la teinte, contraste contrôlé ; la police est servie par le
   projet.
 </p>
 <pre tabindex="0"><code>{THEME}</code></pre>
 <p>
-  Une teinte hors de 0 à 360 ou une pile qui contient <code>;</code>, des accolades ou
+  Une teinte hors de 0 à 360 ou une pile qui contient <code>;</code>, des accolades ou{' '}
   <code>url(</code> est refusée, et rien n’est écrit.
 </p>

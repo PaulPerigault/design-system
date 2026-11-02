@@ -17,7 +17,7 @@
       ],
       "screenReader": [
         "L’état replié ou déplié vient de details, sans attribut ajouté.",
-        "Le chevron est masqué (aria-hidden=\"true\") : le titre seul porte le nom."
+        "Le chevron est masqué (`aria-hidden=\"true\"`) : le titre seul porte le nom."
       ]
     },
     "avoid": [
@@ -34,20 +34,20 @@
       {
         "description": "Sections : `{ id, title, body }` ; le titre ouvre et ferme la section.",
         "fallback": "—",
-        "name": "items (obligatoire)",
-        "type": "Item[]"
+        "name": "`items` (obligatoire)",
+        "type": "`Item[]`"
       },
       {
         "description": "Une seule section ouverte à la fois (`<details name>`).",
-        "fallback": "false",
-        "name": "exclusive",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`exclusive`",
+        "type": "`boolean`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "accordion",
@@ -78,7 +78,7 @@
   {
     "a11y": {
       "guaranteed": [
-        "L’icône est décorative : aria-hidden=\"true\" et focusable=\"false\".",
+        "L’icône est décorative : `aria-hidden=\"true\"` et `focusable=\"false\"`.",
         "Le ton est écrit en clair : la couleur ne porte jamais seule l’information.",
         "En forced-colors, le filet et l’icône passent en CanvasText."
       ],
@@ -93,7 +93,7 @@
       ],
       "screenReader": [
         "Sans live, aucun rôle : le message est lu dans le flux de la page.",
-        "live=\"polite\" donne role=\"status\" ; live=\"assertive\" donne role=\"alert\", qui interrompt.",
+        "`live=\"polite\"` donne `role=\"status\"` ; `live=\"assertive\"` donne `role=\"alert\"`, qui interrompt.",
         "L’icône est masquée (aria-hidden) : le ton est lu par toneLabel."
       ]
     },
@@ -112,33 +112,33 @@
     "props": [
       {
         "description": "Nature du message, écrite en clair dans le texte (la couleur n'est jamais seule).",
-        "fallback": "'info'",
-        "name": "tone",
-        "type": "\"info\" | \"passed\" | \"degraded\" | \"failed\""
+        "fallback": "`'info'`",
+        "name": "`tone`",
+        "type": "`\"info\" | \"passed\" | \"degraded\" | \"failed\"`"
       },
       {
         "description": "Libellé visible du ton (par exemple « Information »).",
         "fallback": "—",
-        "name": "toneLabel (obligatoire)",
-        "type": "string"
+        "name": "`toneLabel` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Titre court du message.",
         "fallback": "—",
-        "name": "title",
-        "type": "string"
+        "name": "`title`",
+        "type": "`string`"
       },
       {
         "description": "Annonce par les lecteurs d'écran : `polite` attend la fin de la lecture, `assertive` interrompt. Absent : aucune annonce.",
         "fallback": "—",
-        "name": "live",
-        "type": "\"polite\" | \"assertive\""
+        "name": "`live`",
+        "type": "`\"polite\" | \"assertive\"`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "alert",
@@ -165,7 +165,7 @@
     ],
     "use": [
       "Signaler un résultat, un avertissement ou une information qui doit être lu avec la page.",
-      "Annoncer un message inséré après le chargement, avec live=\"polite\" ou live=\"assertive\"."
+      "Annoncer un message inséré après le chargement, avec `live=\"polite\"` ou `live=\"assertive\"`."
     ]
   },
   {
@@ -187,7 +187,7 @@
         "Le tableau lié se déplie au clavier (élément details natif) et défile au clavier."
       ],
       "screenReader": [
-        "Le SVG porte role=\"img\", nommé par un title et décrit par un desc.",
+        "Le SVG porte `role=\"img\"`, nommé par un title et décrit par un desc.",
         "Le desc donne le total, les extrêmes et les données manquantes ; il dit si les couches sont empilées.",
         "Le tableau de toutes les données est lié sous le graphique, dans un details fermé."
       ]
@@ -209,50 +209,50 @@
       {
         "description": "Préfixe unique des ids du titre et de la description : lettres, chiffres et tirets.",
         "fallback": "—",
-        "name": "id (obligatoire)",
-        "type": "string"
+        "name": "`id` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Titre du graphique, premier élément de son nom accessible.",
         "fallback": "—",
-        "name": "title (obligatoire)",
-        "type": "string"
+        "name": "`title` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Jeu de données (`schema: 1`) : validé, sinon le build échoue avec le code d'erreur.",
         "fallback": "—",
-        "name": "dataset (obligatoire)",
-        "type": "Dataset"
+        "name": "`dataset` (obligatoire)",
+        "type": "`Dataset`"
       },
       {
         "description": "Locale des nombres et des dates. Défaut : `fr`.",
-        "fallback": "'fr'",
-        "name": "locale",
-        "type": "string"
+        "fallback": "`'fr'`",
+        "name": "`locale`",
+        "type": "`string`"
       },
       {
         "description": "Libellé du tableau de données lié.",
         "fallback": "—",
-        "name": "tableLabel",
-        "type": "string"
+        "name": "`tableLabel`",
+        "type": "`string`"
       },
       {
         "description": "Message de l'état vide (aucune valeur présente).",
         "fallback": "—",
-        "name": "emptyLabel",
-        "type": "string"
+        "name": "`emptyLabel`",
+        "type": "`string`"
       },
       {
         "description": "Début du message d'erreur de rendu ; le code d'erreur le suit.",
         "fallback": "—",
-        "name": "errorLabel",
-        "type": "string"
+        "name": "`errorLabel`",
+        "type": "`string`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "area-chart",
@@ -294,7 +294,7 @@
         "Chaque source porte width et height de son recadrage : la place est réservée.",
         "Sources ordonnées narrow, medium, puis image par défaut.",
         "alt obligatoire, ou decorative : sinon erreur au build.",
-        "priority : loading=\"eager\" et fetchpriority=\"high\" sur le img de repli."
+        "priority : `loading=\"eager\"` et `fetchpriority=\"high\"` sur le img de repli."
       ],
       "integrator": [
         "Décrire dans alt le sujet commun aux recadrages, pas le détail d’un seul.",
@@ -321,54 +321,54 @@
       {
         "description": "Texte alternatif : ce que l'image apporte au contenu. Vide : erreur au build.",
         "fallback": "—",
-        "name": "alt",
-        "type": "string"
+        "name": "`alt`",
+        "type": "`string`"
       },
       {
         "description": "Image purement décorative, rendue avec `alt=\"\"`. Exclusif de `alt`.",
         "fallback": "—",
-        "name": "decorative",
-        "type": "true"
+        "name": "`decorative`",
+        "type": "`true`"
       },
       {
         "description": "Image par défaut, importée localement.",
         "fallback": "—",
-        "name": "src (obligatoire)",
-        "type": "ImageMetadata"
+        "name": "`src` (obligatoire)",
+        "type": "`ImageMetadata`"
       },
       {
         "description": "Recadrages : un par point de rupture (`narrow`, `medium`).",
         "fallback": "—",
-        "name": "sources (obligatoire)",
-        "type": "ArtSource[]"
+        "name": "`sources` (obligatoire)",
+        "type": "`ArtSource[]`"
       },
       {
         "description": "Image principale de la page (LCP) : chargée tout de suite, en priorité.",
-        "fallback": "false",
-        "name": "priority",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`priority`",
+        "type": "`boolean`"
       },
       {
         "description": "Emplacement dans la page ; règle `sizes` et les largeurs générées.",
-        "fallback": "'page'",
-        "name": "layout",
-        "type": "\"page\" | \"measure\" | \"half\" | \"third\" | \"avatar\""
+        "fallback": "`'page'`",
+        "name": "`layout`",
+        "type": "`\"page\" | \"measure\" | \"half\" | \"third\" | \"avatar\"`"
       },
       {
         "description": "Nature de l'image ; règle la qualité et le format de repli.",
-        "fallback": "'photo'",
-        "name": "kind",
-        "type": "\"photo\" | \"capture\" | \"illustration\""
+        "fallback": "`'photo'`",
+        "name": "`kind`",
+        "type": "`\"photo\" | \"capture\" | \"illustration\"`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "art-direction",
-    "snippet": "---\nimport ArtDirection from '@paulperigault/astro/ArtDirection.astro';\nimport large from './large.jpg';\nimport largeEtroit from './large-etroit.jpg';\n---\n\n<ArtDirection\n  src={large}\n  sources={[{ at: 'narrow', src: largeEtroit }]}\n  alt=\"Disque bleu et colonne grise\"\n/>",
+    "snippet": "---\nimport ArtDirection from '@paulperigault/astro/ArtDirection.astro';\nimport large from './large.jpg';\nimport largeEtroit from './large-etroit.jpg';\n---\n\n<ArtDirection\n  src={large}\n  sources={[{ at: 'narrow', src: largeEtroit }]}\n  `alt=\"Disque bleu et colonne grise\"`\n/>",
     "summary": "ArtDirection sert un recadrage resserré aux écrans étroits, au lieu de réduire l’image large.",
     "title": "ArtDirection",
     "tokens": [
@@ -402,7 +402,7 @@
       ],
       "keyboard": ["Avatar n’est pas interactif : il ne prend pas le focus."],
       "screenReader": [
-        "Avec decorative, l’image a alt=\"\" et est ignorée des lecteurs d’écran.",
+        "Avec decorative, l’image a `alt=\"\"` et est ignorée des lecteurs d’écran.",
         "Le nom affiché à côté est lu seul, sans doublon."
       ]
     },
@@ -420,32 +420,32 @@
       {
         "description": "Texte alternatif : ce que l'image apporte au contenu. Vide : erreur au build.",
         "fallback": "—",
-        "name": "alt",
-        "type": "string"
+        "name": "`alt`",
+        "type": "`string`"
       },
       {
         "description": "Image purement décorative, rendue avec `alt=\"\"`. Exclusif de `alt`.",
         "fallback": "—",
-        "name": "decorative",
-        "type": "true"
+        "name": "`decorative`",
+        "type": "`true`"
       },
       {
         "description": "Image carrée, importée localement (aucun visage dans la doc).",
         "fallback": "—",
-        "name": "src (obligatoire)",
-        "type": "ImageMetadata"
+        "name": "`src` (obligatoire)",
+        "type": "`ImageMetadata`"
       },
       {
         "description": "Taille : `s`, `m` ou `l` (tokens `--pp-space-xl`, `-2xl`, `-3xl`).",
-        "fallback": "'m'",
-        "name": "size",
-        "type": "\"s\" | \"m\" | \"l\""
+        "fallback": "`'m'`",
+        "name": "`size`",
+        "type": "`\"s\" | \"m\" | \"l\"`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "avatar",
@@ -477,7 +477,7 @@
         "Le tableau lié se déplie au clavier (élément details natif) et défile au clavier."
       ],
       "screenReader": [
-        "Le SVG porte role=\"img\", nommé par un title et décrit par un desc.",
+        "Le SVG porte `role=\"img\"`, nommé par un title et décrit par un desc.",
         "Le desc résume la plus grande et la plus petite barre et signale les données manquantes.",
         "Le tableau de toutes les données est lié sous le graphique, dans un details fermé."
       ]
@@ -499,62 +499,62 @@
       {
         "description": "`vertical` (défaut) : catégories en abscisse ; `horizontal` : catégories en ordonnée.",
         "fallback": "—",
-        "name": "orientation",
-        "type": "\"vertical\" | \"horizontal\""
+        "name": "`orientation`",
+        "type": "`\"vertical\" | \"horizontal\"`"
       },
       {
         "description": "Écrit la valeur dans chaque barre, seulement si toutes y tiennent.",
         "fallback": "—",
-        "name": "showValues",
-        "type": "boolean"
+        "name": "`showValues`",
+        "type": "`boolean`"
       },
       {
         "description": "Préfixe unique des ids du titre et de la description : lettres, chiffres et tirets.",
         "fallback": "—",
-        "name": "id (obligatoire)",
-        "type": "string"
+        "name": "`id` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Titre du graphique, premier élément de son nom accessible.",
         "fallback": "—",
-        "name": "title (obligatoire)",
-        "type": "string"
+        "name": "`title` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Jeu de données (`schema: 1`) : validé, sinon le build échoue avec le code d'erreur.",
         "fallback": "—",
-        "name": "dataset (obligatoire)",
-        "type": "Dataset"
+        "name": "`dataset` (obligatoire)",
+        "type": "`Dataset`"
       },
       {
         "description": "Locale des nombres et des dates. Défaut : `fr`.",
-        "fallback": "'fr'",
-        "name": "locale",
-        "type": "string"
+        "fallback": "`'fr'`",
+        "name": "`locale`",
+        "type": "`string`"
       },
       {
         "description": "Libellé du tableau de données lié.",
         "fallback": "—",
-        "name": "tableLabel",
-        "type": "string"
+        "name": "`tableLabel`",
+        "type": "`string`"
       },
       {
         "description": "Message de l'état vide (aucune valeur présente).",
         "fallback": "—",
-        "name": "emptyLabel",
-        "type": "string"
+        "name": "`emptyLabel`",
+        "type": "`string`"
       },
       {
         "description": "Début du message d'erreur de rendu ; le code d'erreur le suit.",
         "fallback": "—",
-        "name": "errorLabel",
-        "type": "string"
+        "name": "`errorLabel`",
+        "type": "`string`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "bar-chart",
@@ -593,8 +593,8 @@
   {
     "a11y": {
       "guaranteed": [
-        "Repère nav nommé par label, liste ol avec role=\"list\".",
-        "Le dernier élément est rendu sans lien, avec aria-current=\"page\".",
+        "Repère nav nommé par label, liste ol avec `role=\"list\"`.",
+        "Le dernier élément est rendu sans lien, avec `aria-current=\"page\"`.",
         "Liens soulignés, page courante en graisse : l’information ne repose pas sur la couleur.",
         "Aucun JavaScript."
       ],
@@ -610,8 +610,8 @@
       ],
       "screenReader": [
         "Le repère est annoncé par son nom, la valeur de label.",
-        "La liste est annoncée comme liste : role=\"list\" est posé explicitement.",
-        "La page courante porte aria-current=\"page\", que les lecteurs d’écran annoncent.",
+        "La liste est annoncée comme liste : `role=\"list\"` est posé explicitement.",
+        "La page courante porte `aria-current=\"page\"`, que les lecteurs d’écran annoncent.",
         "Les séparateurs sont générés en CSS avec un texte vide : ils ne sont pas lus."
       ]
     },
@@ -631,20 +631,20 @@
       {
         "description": "Nom accessible du repère de navigation (`aria-label`).",
         "fallback": "—",
-        "name": "label (obligatoire)",
-        "type": "string"
+        "name": "`label` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Étapes de la racine à la page courante : `{ label, href? }` ; la dernière est la page courante.",
         "fallback": "—",
-        "name": "items (obligatoire)",
-        "type": "Item[]"
+        "name": "`items` (obligatoire)",
+        "type": "`Item[]`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "breadcrumb",
@@ -688,7 +688,7 @@
       "screenReader": [
         "Le nom accessible vient du contenu du slot : aucun libellé n’est écrit en dur.",
         "Un bouton désactivé porte l’état natif disabled, exposé aux technologies d’assistance.",
-        "Un lien désactivé porte role=\"link\" et aria-disabled=\"true\"."
+        "Un lien désactivé porte `role=\"link\"` et `aria-disabled=\"true\"`."
       ]
     },
     "avoid": [
@@ -707,38 +707,38 @@
       {
         "description": "Importance de l'action (défaut `primary`, l'action principale, une par vue).",
         "fallback": "—",
-        "name": "tone",
-        "type": "\"primary\" | \"secondary\" | \"quiet\""
+        "name": "`tone`",
+        "type": "`\"primary\" | \"secondary\" | \"quiet\"`"
       },
       {
         "description": "Taille (défaut `m`) ; les deux respectent la cible de 44 px.",
         "fallback": "—",
-        "name": "size",
-        "type": "\"m\" | \"l\""
+        "name": "`size`",
+        "type": "`\"m\" | \"l\"`"
       },
       {
         "description": "Type du bouton ; `submit` seulement dans un formulaire.",
-        "fallback": "'button'",
-        "name": "type",
-        "type": "\"button\" | \"submit\" | \"reset\""
+        "fallback": "`'button'`",
+        "name": "`type`",
+        "type": "`\"button\" | \"submit\" | \"reset\"`"
       },
       {
         "description": "Désactive le bouton (ou le lien, rendu `aria-disabled`).",
-        "fallback": "false",
-        "name": "disabled",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`disabled`",
+        "type": "`boolean`"
       },
       {
         "description": "Rend un lien `<a>` stylé en bouton au lieu d'un `<button>` : pour naviguer, pas pour agir.",
         "fallback": "—",
-        "name": "href",
-        "type": "string"
+        "name": "`href`",
+        "type": "`string`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "button",
@@ -767,7 +767,7 @@
     "use": [
       "Déclencher une action de la page, comme envoyer un formulaire.",
       "Naviguer vers une adresse avec href : le composant rend alors un lien a.",
-      "Poser une seule action principale par vue, avec tone=\"primary\" (règle de la doc du composant)."
+      "Poser une seule action principale par vue, avec `tone=\"primary\"` (règle de la doc du composant)."
     ]
   },
   {
@@ -809,26 +809,26 @@
       {
         "description": "Titre de la carte, rendu dans un titre de section et nom accessible du lien.",
         "fallback": "—",
-        "name": "title (obligatoire)",
-        "type": "string"
+        "name": "`title` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Adresse du lien unique. Sans elle, la carte n'est pas cliquable.",
         "fallback": "—",
-        "name": "href",
-        "type": "string"
+        "name": "`href`",
+        "type": "`string`"
       },
       {
         "description": "Niveau du titre (2, 3 ou 4), à choisir selon la hiérarchie de la page.",
         "fallback": "—",
-        "name": "headingLevel",
-        "type": "2 | 3 | 4"
+        "name": "`headingLevel`",
+        "type": "`2 | 3 | 4`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "card",
@@ -896,33 +896,33 @@
     "props": [
       {
         "description": "Centre aussi le texte.",
-        "fallback": "false",
-        "name": "text",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`text`",
+        "type": "`boolean`"
       },
       {
         "description": "Centre les enfants selon leur largeur propre.",
-        "fallback": "false",
-        "name": "intrinsic",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`intrinsic`",
+        "type": "`boolean`"
       },
       {
         "description": "Marge intérieure en ligne, pour que le contenu ne touche pas les bords sur mobile.",
         "fallback": "—",
-        "name": "gutter",
-        "type": "\"s\" | \"m\""
+        "name": "`gutter`",
+        "type": "`\"s\" | \"m\"`"
       },
       {
         "description": "Élément HTML rendu (sémantique de la page).",
-        "fallback": "'div'",
-        "name": "as",
-        "type": "\"div\" | \"section\" | \"article\" | \"main\" | \"header\" | \"footer\""
+        "fallback": "`'div'`",
+        "name": "`as`",
+        "type": "`\"div\" | \"section\" | \"article\" | \"main\" | \"header\" | \"footer\"`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "center",
@@ -973,50 +973,50 @@
       {
         "description": "Case à cocher (choix multiples) ou bouton radio (un seul choix par `name`).",
         "fallback": "—",
-        "name": "type (obligatoire)",
-        "type": "\"checkbox\" | \"radio\""
+        "name": "`type` (obligatoire)",
+        "type": "`\"checkbox\" | \"radio\"`"
       },
       {
         "description": "Identifiant du contrôle, relié à son libellé.",
         "fallback": "—",
-        "name": "id (obligatoire)",
-        "type": "string"
+        "name": "`id` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Nom envoyé avec le formulaire.",
         "fallback": "—",
-        "name": "name (obligatoire)",
-        "type": "string"
+        "name": "`name` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Valeur envoyée quand le choix est coché.",
         "fallback": "—",
-        "name": "value (obligatoire)",
-        "type": "string"
+        "name": "`value` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Libellé visible, cliquable, nom accessible du contrôle.",
         "fallback": "—",
-        "name": "label (obligatoire)",
-        "type": "string"
+        "name": "`label` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Coché au chargement.",
-        "fallback": "false",
-        "name": "checked",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`checked`",
+        "type": "`boolean`"
       },
       {
         "description": "Désactive le contrôle.",
-        "fallback": "false",
-        "name": "disabled",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`disabled`",
+        "type": "`boolean`"
       },
       {
         "description": "Identifiant(s) de l'aide ou du message d'erreur associé (`aria-describedby`).",
         "fallback": "—",
-        "name": "describedBy",
-        "type": "string"
+        "name": "`describedBy`",
+        "type": "`string`"
       }
     ],
     "slug": "choice",
@@ -1032,14 +1032,14 @@
       "--pp-space-xs"
     ],
     "use": [
-      "Cocher un réglage indépendant, ou plusieurs options à la fois, avec type=\"checkbox\".",
-      "Choisir une seule valeur dans un groupe fermé, avec type=\"radio\" dans un fieldset."
+      "Cocher un réglage indépendant, ou plusieurs options à la fois, avec `type=\"checkbox\"`.",
+      "Choisir une seule valeur dans un groupe fermé, avec `type=\"radio\"` dans un fieldset."
     ]
   },
   {
     "a11y": {
       "guaranteed": [
-        "list-style: none sur ul et ol, avec role=\"list\" explicite.",
+        "list-style: none sur ul et ol, avec `role=\"list\"` explicite.",
         "Espacement par gap ; les enfants n’ont pas de marge."
       ],
       "integrator": [
@@ -1048,8 +1048,8 @@
       ],
       "keyboard": ["Le composant ne prend pas le focus et ne change pas l’ordre de tabulation."],
       "screenReader": [
-        "Avec as=\"ul\" ou as=\"ol\", role=\"list\" est posé : VoiceOver garde la sémantique de liste.",
-        "Avec as=\"nav\" et label, le repère est nommé ; sans label, il est anonyme."
+        "Avec `as=\"ul\"` ou `as=\"ol\"`, `role=\"list\"` est posé : VoiceOver garde la sémantique de liste.",
+        "Avec `as=\"nav\"` et label, le repère est nommé ; sans label, il est anonyme."
       ]
     },
     "avoid": [
@@ -1066,39 +1066,39 @@
     "props": [
       {
         "description": "Espacement entre les enfants (token `--pp-space-*`).",
-        "fallback": "'s'",
-        "name": "space",
-        "type": "\"xs\" | \"s\" | \"m\" | \"l\" | \"xl\""
+        "fallback": "`'s'`",
+        "name": "`space`",
+        "type": "`\"xs\" | \"s\" | \"m\" | \"l\" | \"xl\"`"
       },
       {
         "description": "Répartition des enfants dans l'axe en ligne.",
-        "fallback": "'start'",
-        "name": "justify",
-        "type": "\"start\" | \"center\" | \"end\" | \"between\""
+        "fallback": "`'start'`",
+        "name": "`justify`",
+        "type": "`\"start\" | \"center\" | \"end\" | \"between\"`"
       },
       {
         "description": "Alignement des enfants dans l'axe de bloc.",
-        "fallback": "'center'",
-        "name": "align",
-        "type": "\"start\" | \"center\" | \"end\" | \"baseline\""
+        "fallback": "`'center'`",
+        "name": "`align`",
+        "type": "`\"start\" | \"center\" | \"end\" | \"baseline\"`"
       },
       {
         "description": "Élément rendu ; avec `ul` ou `ol`, les enfants doivent être des `<li>`.",
-        "fallback": "'div'",
-        "name": "as",
-        "type": "\"div\" | \"ul\" | \"ol\" | \"nav\""
+        "fallback": "`'div'`",
+        "name": "`as`",
+        "type": "`\"div\" | \"ul\" | \"ol\" | \"nav\"`"
       },
       {
         "description": "Nom accessible, rendu en `aria-label` (utile avec `as=\"nav\"`).",
         "fallback": "—",
-        "name": "label",
-        "type": "string"
+        "name": "`label`",
+        "type": "`string`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "cluster",
@@ -1108,7 +1108,7 @@
     "tokens": ["--pp-space-l", "--pp-space-m", "--pp-space-s", "--pp-space-xl", "--pp-space-xs"],
     "use": [
       "Grouper des étiquettes, des boutons ou des liens courts qui doivent rester côte à côte.",
-      "Donner une navigation secondaire courte, avec as=\"nav\" et un label."
+      "Donner une navigation secondaire courte, avec `as=\"nav\"` et un label."
     ]
   },
   {
@@ -1127,12 +1127,12 @@
         "Non vérifié : la restitution par lecteur d’écran des régions nommées et de l’annonce de copie."
       ],
       "keyboard": [
-        "Le bloc de code reçoit le focus (tabindex=\"0\") : les flèches le font défiler (WCAG 2.1.1).",
+        "Le bloc de code reçoit le focus (`tabindex=\"0\"`) : les flèches le font défiler (WCAG 2.1.1).",
         "Le bouton de copie s’active avec Entrée ou Espace, comme tout bouton natif."
       ],
       "screenReader": [
-        "Avec label ou filename, le bloc est une région nommée (role=\"region\", aria-label).",
-        "Le message de copie est écrit dans un role=\"status\" vide au départ, annoncé sans déplacer le focus (WCAG 4.1.3)."
+        "Avec label ou filename, le bloc est une région nommée (`role=\"region\"`, aria-label).",
+        "Le message de copie est écrit dans un `role=\"status\"` vide au départ, annoncé sans déplacer le focus (WCAG 4.1.3)."
       ]
     },
     "avoid": [
@@ -1152,38 +1152,38 @@
       {
         "description": "Code à afficher, tel quel (le saut de ligne final est retiré).",
         "fallback": "—",
-        "name": "code (obligatoire)",
-        "type": "string"
+        "name": "`code` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Langue : ts, js, json, shellscript, astro, css, html ou yaml. Autre valeur : texte sans couleur.",
         "fallback": "—",
-        "name": "lang",
-        "type": "string"
+        "name": "`lang`",
+        "type": "`string`"
       },
       {
         "description": "Nom accessible du bloc. À défaut, `filename` sert de nom ; sans les deux, le bloc n'est pas nommé.",
         "fallback": "—",
-        "name": "label",
-        "type": "string"
+        "name": "`label`",
+        "type": "`string`"
       },
       {
         "description": "Libellé visible du bouton de copie (par exemple « Copier »).",
         "fallback": "—",
-        "name": "copyLabel (obligatoire)",
-        "type": "string"
+        "name": "`copyLabel` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Message annoncé après la copie (par exemple « Copié »).",
         "fallback": "—",
-        "name": "copiedLabel (obligatoire)",
-        "type": "string"
+        "name": "`copiedLabel` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Nom de fichier affiché au-dessus du code.",
         "fallback": "—",
-        "name": "filename",
-        "type": "string"
+        "name": "`filename`",
+        "type": "`string`"
       }
     ],
     "slug": "code-block",
@@ -1222,7 +1222,7 @@
     "a11y": {
       "guaranteed": [
         "Sans script, le champ reste un <input list> relié à un <datalist> natif.",
-        "La saisie filtre sans sélectionner d’option d’elle-même (aria-autocomplete=\"list\").",
+        "La saisie filtre sans sélectionner d’option d’elle-même (`aria-autocomplete=\"list\"`).",
         "Le filtre ignore la casse et les accents : « ege » trouve « Égypte ».",
         "Options d’au moins --pp-size-target-min de haut (WCAG 2.5.8).",
         "L’option active est soulignée en plus du fond coloré (WCAG 1.4.1).",
@@ -1244,7 +1244,7 @@
       "screenReader": [
         "Le champ a le rôle combobox, son nom vient du <label for> (WCAG 4.1.2).",
         "aria-expanded indique si la liste est ouverte ; aria-controls la désigne.",
-        "Une zone role=\"status\" annonce le nombre de suggestions (WCAG 4.1.3).",
+        "Une zone `role=\"status\"` annonce le nombre de suggestions (WCAG 4.1.3).",
         "Rendu non testé avec VoiceOver, NVDA ni JAWS : à vérifier avant usage critique."
       ]
     },
@@ -1267,74 +1267,74 @@
       {
         "description": "Libellé visible du champ ; nomme aussi la liste de suggestions.",
         "fallback": "—",
-        "name": "label (obligatoire)",
-        "type": "string"
+        "name": "`label` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Nom envoyé avec le formulaire (le texte du champ).",
         "fallback": "—",
-        "name": "name (obligatoire)",
-        "type": "string"
+        "name": "`name` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Id du champ ; dérive `<id>-listbox`, `<id>-datalist` et `<id>-option-<n>`.",
         "fallback": "—",
-        "name": "id (obligatoire)",
-        "type": "string"
+        "name": "`id` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Suggestions proposées : `{ value, label }`.",
         "fallback": "—",
-        "name": "options (obligatoire)",
-        "type": "Option[]"
+        "name": "`options` (obligatoire)",
+        "type": "`Option[]`"
       },
       {
         "description": "Valeur initiale : `value` d'une option (son libellé est affiché) ou texte libre.",
         "fallback": "—",
-        "name": "value",
-        "type": "string"
+        "name": "`value`",
+        "type": "`string`"
       },
       {
         "description": "Indication sous le libellé, reliée par `aria-describedby`.",
         "fallback": "—",
-        "name": "hint",
-        "type": "string"
+        "name": "`hint`",
+        "type": "`string`"
       },
       {
         "description": "Annonce quand aucune suggestion ne correspond, par exemple « Aucun résultat ».",
         "fallback": "—",
-        "name": "noResultsLabel (obligatoire)",
-        "type": "string"
+        "name": "`noResultsLabel` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Annonce du nombre de suggestions, avec `{count}`, par exemple « {count} résultats ».",
         "fallback": "—",
-        "name": "countLabel (obligatoire)",
-        "type": "string"
+        "name": "`countLabel` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Saisie obligatoire (`required`).",
-        "fallback": "false",
-        "name": "required",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`required`",
+        "type": "`boolean`"
       },
       {
         "description": "Texte accolé au libellé si `required`, par exemple « obligatoire ».",
         "fallback": "—",
-        "name": "requiredLabel",
-        "type": "string"
+        "name": "`requiredLabel`",
+        "type": "`string`"
       },
       {
         "description": "Pose `aria-invalid=\"true\"` sur le champ.",
-        "fallback": "false",
-        "name": "invalid",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`invalid`",
+        "type": "`boolean`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "combobox",
@@ -1381,7 +1381,7 @@
       ],
       "keyboard": ["Le composant ne prend pas le focus et ne change pas l’ordre de tabulation."],
       "screenReader": [
-        "Avec as=\"main\", le repère main est exposé ; as=\"section\" ne crée un repère que s’il porte un nom.",
+        "Avec `as=\"main\"`, le repère main est exposé ; `as=\"section\"` ne crée un repère que s’il porte un nom.",
         "Le composant n’ajoute ni rôle ni libellé."
       ]
     },
@@ -1398,27 +1398,27 @@
     "props": [
       {
         "description": "Largeur maximale : la page (`--pp-size-page`) ou la mesure de lecture (`--pp-size-measure`).",
-        "fallback": "'page'",
-        "name": "width",
-        "type": "\"page\" | \"measure\""
+        "fallback": "`'page'`",
+        "name": "`width`",
+        "type": "`\"page\" | \"measure\"`"
       },
       {
         "description": "Marge intérieure en ligne, pour que le contenu ne touche pas les bords.",
-        "fallback": "'s'",
-        "name": "gutter",
-        "type": "\"s\" | \"m\" | \"l\""
+        "fallback": "`'s'`",
+        "name": "`gutter`",
+        "type": "`\"s\" | \"m\" | \"l\"`"
       },
       {
         "description": "Élément HTML rendu (sémantique de la page).",
-        "fallback": "'div'",
-        "name": "as",
-        "type": "\"div\" | \"section\" | \"main\" | \"header\" | \"footer\" | \"article\""
+        "fallback": "`'div'`",
+        "name": "`as`",
+        "type": "`\"div\" | \"section\" | \"main\" | \"header\" | \"footer\" | \"article\"`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "container",
@@ -1434,7 +1434,7 @@
     ],
     "use": [
       "Borner la largeur d’une page ou d’une section, centrée horizontalement.",
-      "Limiter un texte à la mesure de lecture avec width=\"measure\"."
+      "Limiter un texte à la mesure de lecture avec `width=\"measure\"`."
     ]
   },
   {
@@ -1456,7 +1456,7 @@
       ],
       "screenReader": [
         "Le tableau porte une légende (caption) et la région a le même nom accessible.",
-        "Les colonnes de séries sont des th scope=\"col\", l’abscisse des th scope=\"row\".",
+        "Les colonnes de séries sont des th `scope=\"col\"`, l’abscisse des th `scope=\"row\"`.",
         "Une colonne masquée par un filtre est retirée de l’arbre d’accessibilité : le groupe de filtres, nommé par sa légende, dit lesquelles sont affichées."
       ]
     },
@@ -1477,44 +1477,44 @@
       {
         "description": "Préfixe unique des ids des cases à cocher : lettres, chiffres et tirets.",
         "fallback": "—",
-        "name": "id (obligatoire)",
-        "type": "string"
+        "name": "`id` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Légende du tableau, nom accessible de sa région défilante.",
         "fallback": "—",
-        "name": "title (obligatoire)",
-        "type": "string"
+        "name": "`title` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Jeu de données (`schema: 1`) : validé, sinon le build échoue avec le code d'erreur.",
         "fallback": "—",
-        "name": "dataset (obligatoire)",
-        "type": "unknown"
+        "name": "`dataset` (obligatoire)",
+        "type": "`unknown`"
       },
       {
         "description": "Locale des nombres et des dates. Défaut : `fr`.",
-        "fallback": "'fr'",
-        "name": "locale",
-        "type": "string"
+        "fallback": "`'fr'`",
+        "name": "`locale`",
+        "type": "`string`"
       },
       {
         "description": "Filtres de séries (défaut : oui s'il y a deux séries ou plus).",
-        "fallback": "true",
-        "name": "filters",
-        "type": "boolean"
+        "fallback": "`true`",
+        "name": "`filters`",
+        "type": "`boolean`"
       },
       {
         "description": "Légende du groupe de filtres.",
-        "fallback": "'Séries affichées'",
-        "name": "filtersLabel",
-        "type": "string"
+        "fallback": "`'Séries affichées'`",
+        "name": "`filtersLabel`",
+        "type": "`string`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "data-table",
@@ -1550,7 +1550,7 @@
       ],
       "keyboard": [
         "Sans scroll, le schéma ne reçoit pas le focus et n’a pas de touche propre.",
-        "Avec scroll, le conteneur reçoit le focus (tabindex=\"0\") et se parcourt au clavier.",
+        "Avec scroll, le conteneur reçoit le focus (`tabindex=\"0\"`) et se parcourt au clavier.",
         "Le contour de focus entoure le conteneur (WCAG 2.4.7)."
       ],
       "screenReader": [
@@ -1576,44 +1576,44 @@
       {
         "description": "Préfixe unique des ids de titre et de description : lettres, chiffres et tirets.",
         "fallback": "—",
-        "name": "id (obligatoire)",
-        "type": "string"
+        "name": "`id` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Titre court du schéma, premier élément du nom accessible.",
         "fallback": "—",
-        "name": "title (obligatoire)",
-        "type": "string"
+        "name": "`title` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Alternative textuelle complète : étapes, relations, sens des flèches.",
         "fallback": "—",
-        "name": "description (obligatoire)",
-        "type": "string"
+        "name": "`description` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Légende visible sous le schéma.",
         "fallback": "—",
-        "name": "caption",
-        "type": "string"
+        "name": "`caption`",
+        "type": "`string`"
       },
       {
         "description": "Boîte du SVG, « min-x min-y largeur hauteur », par exemple « 0 0 360 120 ».",
         "fallback": "—",
-        "name": "viewBox (obligatoire)",
-        "type": "string"
+        "name": "`viewBox` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Schéma à largeur naturelle, dans un conteneur défilable et focalisable au clavier.",
-        "fallback": "false",
-        "name": "scroll",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`scroll`",
+        "type": "`boolean`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "diagram",
@@ -1642,7 +1642,7 @@
     "a11y": {
       "guaranteed": [
         "Élément dialog natif, ouvert par show-modal sans script.",
-        "closedby=\"any\" : un clic hors de la boîte la ferme.",
+        "`closedby=\"any\"` : un clic hors de la boîte la ferme.",
         "Aucun autofocus et aucun attribut style."
       ],
       "integrator": [
@@ -1676,20 +1676,20 @@
       {
         "description": "Identifiant du `<dialog>`, visé par `commandfor` sur le déclencheur.",
         "fallback": "—",
-        "name": "id (obligatoire)",
-        "type": "string"
+        "name": "`id` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Titre visible, rendu en `<h2>` et nom accessible (`aria-labelledby`).",
         "fallback": "—",
-        "name": "title (obligatoire)",
-        "type": "string"
+        "name": "`title` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Libellé visible du bouton de fermeture, fourni par le site (traduit).",
         "fallback": "—",
-        "name": "closeLabel (obligatoire)",
-        "type": "string"
+        "name": "`closeLabel` (obligatoire)",
+        "type": "`string`"
       }
     ],
     "slug": "dialog",
@@ -1731,13 +1731,13 @@
         "Passer du texte brut dans text : le HTML n’est pas interprété."
       ],
       "keyboard": [
-        "La région défilante reçoit le focus (tabindex=\"0\") : un contenu large se parcourt au clavier.",
+        "La région défilante reçoit le focus (`tabindex=\"0\"`) : un contenu large se parcourt au clavier.",
         "Le contour de focus visible entoure la région entière, pas chaque ligne."
       ],
       "screenReader": [
         "La région est nommée par la légende (aria-label reprend caption).",
         "Chaque ligne ajoutée ou supprimée commence par son libellé, masqué visuellement.",
-        "Le signe visible est masqué aux lecteurs d’écran (aria-hidden=\"true\")."
+        "Le signe visible est masqué aux lecteurs d’écran (`aria-hidden=\"true\"`)."
       ]
     },
     "avoid": [
@@ -1754,36 +1754,36 @@
       {
         "description": "Légende visible, reprise comme nom accessible de la région défilante.",
         "fallback": "—",
-        "name": "caption (obligatoire)",
-        "type": "string"
+        "name": "`caption` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Lignes du diff : `{ kind: 'added' | 'removed' | 'context', text }`.",
         "fallback": "—",
-        "name": "lines (obligatoire)",
-        "type": "Line[]"
+        "name": "`lines` (obligatoire)",
+        "type": "`Line[]`"
       },
       {
         "description": "Libellé lu avant chaque ligne ajoutée.",
         "fallback": "—",
-        "name": "addedLabel (obligatoire)",
-        "type": "string"
+        "name": "`addedLabel` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Libellé lu avant chaque ligne supprimée.",
         "fallback": "—",
-        "name": "removedLabel (obligatoire)",
-        "type": "string"
+        "name": "`removedLabel` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "diff",
-    "snippet": "---\nimport Diff from '@paulperigault/astro/Diff.astro';\n\nconst lines: { kind: 'add' | 'del' | 'ctx'; text: string }[] = [\n  { kind: 'del', text: '  return items.length;' },\n  { kind: 'add', text: '  return items.reduce((sum, item) => sum + item.price, 0);' },\n];\n---\n\n<Diff\n  caption=\"Calcul du total d’un panier\"\n  lines={lines}\n  addedLabel=\"Ligne ajoutée\"\n  removedLabel=\"Ligne supprimée\"\n/>",
+    "snippet": "---\nimport Diff from '@paulperigault/astro/Diff.astro';\n\nconst lines: { kind: 'add' | 'del' | 'ctx'; text: string }[] = [\n  { kind: 'del', text: '  return items.length;' },\n  { kind: 'add', text: '  return items.reduce((sum, item) => sum + item.price, 0);' },\n];\n---\n\n<Diff\n  `caption=\"Calcul du total d’un panier\"`\n  lines={lines}\n  `addedLabel=\"Ligne ajoutée\"`\n  `removedLabel=\"Ligne supprimée\"`\n/>",
     "summary": "Diff affiche une différence de texte ligne à ligne, en chasse fixe, avec un signe par ligne.",
     "title": "Diff",
     "tokens": [
@@ -1849,26 +1849,26 @@
       {
         "description": "Titre de l'état vide, lu comme nom de la section (par exemple « Aucun résultat »).",
         "fallback": "—",
-        "name": "title (obligatoire)",
-        "type": "string"
+        "name": "`title` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Niveau du titre dans le plan du document, de 2 à 4. Défaut : 2.",
-        "fallback": "DEFAULT_HEADING_LEVEL",
-        "name": "headingLevel",
-        "type": "2 | 3 | 4"
+        "fallback": "`DEFAULT_HEADING_LEVEL`",
+        "name": "`headingLevel`",
+        "type": "`2 | 3 | 4`"
       },
       {
         "description": "Alignement du contenu : `start` (défaut) ou `center`.",
-        "fallback": "'start'",
-        "name": "align",
-        "type": "\"start\" | \"center\""
+        "fallback": "`'start'`",
+        "name": "`align`",
+        "type": "`\"start\" | \"center\"`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "empty-state",
@@ -1901,7 +1901,7 @@
     "a11y": {
       "guaranteed": [
         "Libellé relié par for et id ; identifiants <id>-hint et <id>-error (Field.test.ts).",
-        "Icône d’erreur décorative : aria-hidden=\"true\" et focusable=\"false\" (Field.test.ts).",
+        "Icône d’erreur décorative : `aria-hidden=\"true\"` et `focusable=\"false\"` (Field.test.ts).",
         "Erreur signalée par le texte et l’icône, jamais par la seule couleur (Field.astro)."
       ],
       "integrator": [
@@ -1935,50 +1935,50 @@
       {
         "description": "Champ obligatoire : `requiredLabel` est alors exigé et accolé au libellé.",
         "fallback": "—",
-        "name": "required",
-        "type": "boolean"
+        "name": "`required`",
+        "type": "`boolean`"
       },
       {
         "description": "Texte visible accolé au libellé, par exemple « obligatoire » : jamais un « * » seul.",
         "fallback": "—",
-        "name": "requiredLabel",
-        "type": "string"
+        "name": "`requiredLabel`",
+        "type": "`string`"
       },
       {
         "description": "Id du contrôle enveloppé ; dérive aussi `<id>-hint` et `<id>-error`.",
         "fallback": "—",
-        "name": "id (obligatoire)",
-        "type": "string"
+        "name": "`id` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Libellé visible du champ.",
         "fallback": "—",
-        "name": "label (obligatoire)",
-        "type": "string"
+        "name": "`label` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Indication affichée sous le libellé, reliée par `aria-describedby`.",
         "fallback": "—",
-        "name": "hint",
-        "type": "string"
+        "name": "`hint`",
+        "type": "`string`"
       },
       {
         "description": "Message d'erreur ; s'il est présent, le champ passe en état invalide.",
         "fallback": "—",
-        "name": "error",
-        "type": "string"
+        "name": "`error`",
+        "type": "`string`"
       },
       {
         "description": "Préfixe de l'erreur, par exemple « Erreur : ». Absent : aucun préfixe rendu.",
         "fallback": "—",
-        "name": "errorLabel",
-        "type": "string"
+        "name": "`errorLabel`",
+        "type": "`string`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "field",
@@ -2031,20 +2031,20 @@
       {
         "description": "Légende, obligatoire et non vide.",
         "fallback": "—",
-        "name": "caption (obligatoire)",
-        "type": "string"
+        "name": "`caption` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Crédit complet (ex. « Photo : … »).",
         "fallback": "—",
-        "name": "credit",
-        "type": "string"
+        "name": "`credit`",
+        "type": "`string`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "figure",
@@ -2073,7 +2073,7 @@
         "Échap ferme le dialogue, et le focus revient sur la vignette."
       ],
       "screenReader": [
-        "role=\"list\" garde la sémantique de liste, même sans puces.",
+        "`role=\"list\"` garde la sémantique de liste, même sans puces.",
         "Le bouton porte « Agrandir : » suivi de l’alt ; le dialogue est nommé par l’alt."
       ]
     },
@@ -2094,32 +2094,32 @@
       {
         "description": "Préfixe des identifiants des dialogues.",
         "fallback": "—",
-        "name": "id (obligatoire)",
-        "type": "string"
+        "name": "`id` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Images : `{ src, alt, caption? }` ; l'alternative est obligatoire.",
         "fallback": "—",
-        "name": "items (obligatoire)",
-        "type": "GalleryItem[]"
+        "name": "`items` (obligatoire)",
+        "type": "`GalleryItem[]`"
       },
       {
         "description": "Proportion des vignettes.",
-        "fallback": "'square'",
-        "name": "ratio",
-        "type": "\"portrait\" | \"square\" | \"landscape\" | \"wide\""
+        "fallback": "`'square'`",
+        "name": "`ratio`",
+        "type": "`\"portrait\" | \"square\" | \"landscape\" | \"wide\"`"
       },
       {
         "description": "Chaque vignette ouvre l'image entière dans un dialogue natif.",
         "fallback": "—",
-        "name": "enlarge",
-        "type": "boolean"
+        "name": "`enlarge`",
+        "type": "`boolean`"
       },
       {
         "description": "Libellés `{ open, close }` des boutons d'agrandissement, fournis par le site.",
         "fallback": "—",
-        "name": "labels",
-        "type": "GalleryLabels"
+        "name": "`labels`",
+        "type": "`GalleryLabels`"
       }
     ],
     "slug": "gallery",
@@ -2167,7 +2167,7 @@
         "Le tableau des zones se déplie au clavier (élément details natif)."
       ],
       "screenReader": [
-        "Le SVG porte role=\"img\", nommé par un title et décrit par un desc.",
+        "Le SVG porte `role=\"img\"`, nommé par un title et décrit par un desc.",
         "Le desc donne la valeur, l’intervalle, la zone atteinte et la liste des zones avec leurs bornes.",
         "Le tableau des zones est lié sous le graphique ; la ligne de la zone actuelle porte la valeur."
       ]
@@ -2189,92 +2189,92 @@
       {
         "description": "Valeur mesurée ; `null` : état vide. Hors intervalle, l'aiguille est bornée et le dit.",
         "fallback": "—",
-        "name": "value (obligatoire)",
-        "type": "number | null"
+        "name": "`value` (obligatoire)",
+        "type": "`number | null`"
       },
       {
         "description": "Borne basse de l'intervalle (défaut 0).",
-        "fallback": "0",
-        "name": "min",
-        "type": "number"
+        "fallback": "`0`",
+        "name": "`min`",
+        "type": "`number`"
       },
       {
         "description": "Borne haute de l'intervalle ; strictement supérieure à min.",
-        "fallback": "DEFAULT_MAX",
-        "name": "max",
-        "type": "number"
+        "fallback": "`DEFAULT_MAX`",
+        "name": "`max`",
+        "type": "`number`"
       },
       {
         "description": "Unité écrite avec la valeur et les bornes (`%`, `ms`…).",
-        "fallback": "''",
-        "name": "unit",
-        "type": "string"
+        "fallback": "`''`",
+        "name": "`unit`",
+        "type": "`string`"
       },
       {
         "description": "Libellé central, tronqué à l'affichage ; le texte complet reste dans `<desc>`.",
-        "fallback": "''",
-        "name": "label",
-        "type": "string"
+        "fallback": "`''`",
+        "name": "`label`",
+        "type": "`string`"
       },
       {
         "description": "Zones dans l'ordre : `{ label, to, tone? }`, la dernière s'arrête au maximum (`to` omis).",
-        "fallback": "[]",
-        "name": "zones",
-        "type": "ZoneSpec[]"
+        "fallback": "`[]`",
+        "name": "`zones`",
+        "type": "`ZoneSpec[]`"
       },
       {
         "description": "`half` (défaut) : demi-cercle ; `full` : cercle complet depuis midi.",
-        "fallback": "'half'",
-        "name": "shape",
-        "type": "\"half\" | \"full\""
+        "fallback": "`'half'`",
+        "name": "`shape`",
+        "type": "`\"half\" | \"full\"`"
       },
       {
         "description": "Textes de l'interface (défaut : français).",
-        "fallback": "{}",
-        "name": "labels",
-        "type": "Partial<GaugeLabels>"
+        "fallback": "`{}`",
+        "name": "`labels`",
+        "type": "`Partial<GaugeLabels>`"
       },
       {
         "description": "Préfixe unique des ids du titre et de la description : lettres, chiffres et tirets.",
         "fallback": "—",
-        "name": "id (obligatoire)",
-        "type": "string"
+        "name": "`id` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Titre du graphique, premier élément de son nom accessible.",
         "fallback": "—",
-        "name": "title (obligatoire)",
-        "type": "string"
+        "name": "`title` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Locale des nombres et des dates. Défaut : `fr`.",
-        "fallback": "'fr'",
-        "name": "locale",
-        "type": "string"
+        "fallback": "`'fr'`",
+        "name": "`locale`",
+        "type": "`string`"
       },
       {
         "description": "Libellé du tableau de données lié.",
         "fallback": "—",
-        "name": "tableLabel",
-        "type": "string"
+        "name": "`tableLabel`",
+        "type": "`string`"
       },
       {
         "description": "Message de l'état vide (aucune valeur présente).",
         "fallback": "—",
-        "name": "emptyLabel",
-        "type": "string"
+        "name": "`emptyLabel`",
+        "type": "`string`"
       },
       {
         "description": "Début du message d'erreur de rendu ; le code d'erreur le suit.",
         "fallback": "—",
-        "name": "errorLabel",
-        "type": "string"
+        "name": "`errorLabel`",
+        "type": "`string`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "gauge-chart",
@@ -2329,7 +2329,7 @@
         "Le composant ne réordonne pas les enfants : l’ordre de tabulation suit le DOM."
       ],
       "screenReader": [
-        "Avec as=\"ul\", la liste reste lue comme liste : les puces ne sont pas retirées.",
+        "Avec `as=\"ul\"`, la liste reste lue comme liste : les puces ne sont pas retirées.",
         "Le composant n’ajoute ni rôle ni libellé."
       ]
     },
@@ -2347,27 +2347,27 @@
     "props": [
       {
         "description": "Espacement entre les enfants (token `--pp-space-*`).",
-        "fallback": "'m'",
-        "name": "space",
-        "type": "\"xs\" | \"s\" | \"m\" | \"l\" | \"xl\""
+        "fallback": "`'m'`",
+        "name": "`space`",
+        "type": "`\"xs\" | \"s\" | \"m\" | \"l\" | \"xl\"`"
       },
       {
         "description": "Largeur minimale d'une colonne avant passage à la ligne (fraction de la mesure).",
-        "fallback": "'medium'",
-        "name": "min",
-        "type": "\"narrow\" | \"medium\" | \"wide\""
+        "fallback": "`'medium'`",
+        "name": "`min`",
+        "type": "`\"narrow\" | \"medium\" | \"wide\"`"
       },
       {
         "description": "Élément rendu ; avec `ul` ou `ol`, les enfants doivent être des `<li>`.",
-        "fallback": "'div'",
-        "name": "as",
-        "type": "\"div\" | \"ul\" | \"ol\" | \"section\""
+        "fallback": "`'div'`",
+        "name": "`as`",
+        "type": "`\"div\" | \"ul\" | \"ol\" | \"section\"`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "grid",
@@ -2405,7 +2405,7 @@
       ],
       "screenReader": [
         "Le nom vient du label for : le placeholder ne sert jamais de nom.",
-        "invalid pose aria-invalid=\"true\", annoncé par les lecteurs d’écran (Input.astro).",
+        "invalid pose `aria-invalid=\"true\"`, annoncé par les lecteurs d’écran (Input.astro).",
         "describedBy relie le message d’erreur ; l’intégrateur fournit l’identifiant."
       ]
     },
@@ -2426,80 +2426,80 @@
       {
         "description": "Identifiant, visé par `<label for>`.",
         "fallback": "—",
-        "name": "id (obligatoire)",
-        "type": "string"
+        "name": "`id` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Nom envoyé avec le formulaire.",
         "fallback": "—",
-        "name": "name (obligatoire)",
-        "type": "string"
+        "name": "`name` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Type de saisie ; choisit aussi le clavier virtuel sur mobile.",
-        "fallback": "'text'",
-        "name": "type",
-        "type": "\"number\" | \"text\" | \"email\" | \"url\" | \"tel\" | \"search\" | \"password\""
+        "fallback": "`'text'`",
+        "name": "`type`",
+        "type": "`\"number\" | \"text\" | \"email\" | \"url\" | \"tel\" | \"search\" | \"password\"`"
       },
       {
         "description": "Valeur initiale.",
         "fallback": "—",
-        "name": "value",
-        "type": "string | number"
+        "name": "`value`",
+        "type": "`string | number`"
       },
       {
         "description": "Saisie obligatoire (`required`).",
-        "fallback": "false",
-        "name": "required",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`required`",
+        "type": "`boolean`"
       },
       {
         "description": "Désactive le champ.",
-        "fallback": "false",
-        "name": "disabled",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`disabled`",
+        "type": "`boolean`"
       },
       {
         "description": "Jeton `autocomplete` (WCAG 1.3.5), par exemple `email` ou `name`.",
         "fallback": "—",
-        "name": "autocomplete",
-        "type": "string"
+        "name": "`autocomplete`",
+        "type": "`string`"
       },
       {
         "description": "Clavier virtuel à afficher quand `type` ne suffit pas.",
         "fallback": "—",
-        "name": "inputmode",
-        "type": "\"text\" | \"email\" | \"url\" | \"tel\" | \"search\" | \"none\" | \"numeric\" | \"decimal\""
+        "name": "`inputmode`",
+        "type": "`\"text\" | \"email\" | \"url\" | \"tel\" | \"search\" | \"none\" | \"numeric\" | \"decimal\"`"
       },
       {
         "description": "Libellé de la touche Entrée du clavier virtuel (`enterkeyhint`), par exemple `next`.",
         "fallback": "—",
-        "name": "enterkeyhint",
-        "type": "\"search\" | \"enter\" | \"done\" | \"go\" | \"next\" | \"previous\" | \"send\""
+        "name": "`enterkeyhint`",
+        "type": "`\"search\" | \"enter\" | \"done\" | \"go\" | \"next\" | \"previous\" | \"send\"`"
       },
       {
         "description": "Identifiants (séparés par des espaces) des éléments d'aide ou d'erreur.",
         "fallback": "—",
-        "name": "describedBy",
-        "type": "string"
+        "name": "`describedBy`",
+        "type": "`string`"
       },
       {
         "description": "Pose `aria-invalid=\"true\"` ; à relier au message d'erreur par `describedBy`.",
-        "fallback": "false",
-        "name": "invalid",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`invalid`",
+        "type": "`boolean`"
       },
       {
         "description": "Exemple de saisie ; jamais à la place du libellé.",
         "fallback": "—",
-        "name": "placeholder",
-        "type": "string"
+        "name": "`placeholder`",
+        "type": "`string`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "input",
@@ -2568,62 +2568,62 @@
       {
         "description": "Valeur mesurée ; `null` : état vide.",
         "fallback": "—",
-        "name": "value (obligatoire)",
-        "type": "number | null"
+        "name": "`value` (obligatoire)",
+        "type": "`number | null`"
       },
       {
         "description": "Unité écrite avec la valeur (`€`, `%`, `ms`).",
-        "fallback": "''",
-        "name": "unit",
-        "type": "string"
+        "fallback": "`''`",
+        "name": "`unit`",
+        "type": "`string`"
       },
       {
         "description": "Valeur de comparaison (période précédente, objectif) ; absente : pas de variation.",
-        "fallback": "null",
-        "name": "reference",
-        "type": "number | null"
+        "fallback": "`null`",
+        "name": "`reference`",
+        "type": "`number | null`"
       },
       {
         "description": "Ce à quoi se compare la variation, écrit après elle (« par rapport à septembre »).",
-        "fallback": "''",
-        "name": "referenceLabel",
-        "type": "string"
+        "fallback": "`''`",
+        "name": "`referenceLabel`",
+        "type": "`string`"
       },
       {
         "description": "Tendance : un jeu à une série ; son titre nomme la période (« Visites par mois »).",
         "fallback": "—",
-        "name": "trend",
-        "type": "{ title: string; dataset: unknown; }"
+        "name": "`trend`",
+        "type": "`{ title: string; dataset: unknown; }`"
       },
       {
         "description": "Textes de l'interface (défaut : français).",
-        "fallback": "{}",
-        "name": "labels",
-        "type": "Partial<KpiLabels>"
+        "fallback": "`{}`",
+        "name": "`labels`",
+        "type": "`Partial<KpiLabels>`"
       },
       {
         "description": "Préfixe unique des ids du titre et de la description : lettres, chiffres et tirets.",
         "fallback": "—",
-        "name": "id (obligatoire)",
-        "type": "string"
+        "name": "`id` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Titre du graphique, premier élément de son nom accessible.",
         "fallback": "—",
-        "name": "title (obligatoire)",
-        "type": "string"
+        "name": "`title` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Locale des nombres et des dates. Défaut : `fr`.",
-        "fallback": "'fr'",
-        "name": "locale",
-        "type": "string"
+        "fallback": "`'fr'`",
+        "name": "`locale`",
+        "type": "`string`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "kpi-card",
@@ -2697,32 +2697,32 @@
       {
         "description": "Préfixe unique des ids des motifs : lettres, chiffres et tirets.",
         "fallback": "—",
-        "name": "id (obligatoire)",
-        "type": "string"
+        "name": "`id` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Libellés dans l'ordre des séries (6 au plus) ; le rang fixe couleur, motif et marqueur.",
         "fallback": "—",
-        "name": "items (obligatoire)",
-        "type": "string[]"
+        "name": "`items` (obligatoire)",
+        "type": "`string[]`"
       },
       {
         "description": "`line` (trait et marqueur, défaut) ou `bar` (carré de motif).",
-        "fallback": "'line'",
-        "name": "kind",
-        "type": "\"line\" | \"bar\""
+        "fallback": "`'line'`",
+        "name": "`kind`",
+        "type": "`\"line\" | \"bar\"`"
       },
       {
         "description": "Nom accessible de la liste.",
-        "fallback": "'Légende'",
-        "name": "label",
-        "type": "string"
+        "fallback": "`'Légende'`",
+        "name": "`label`",
+        "type": "`string`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "legend",
@@ -2768,7 +2768,7 @@
         "Le tableau lié se déplie au clavier (élément details natif) et défile au clavier."
       ],
       "screenReader": [
-        "Le SVG porte role=\"img\", nommé par un title et décrit par un desc.",
+        "Le SVG porte `role=\"img\"`, nommé par un title et décrit par un desc.",
         "Le desc résume : début, fin, tendance chiffrée, extrêmes, données manquantes, origine non nulle.",
         "Le tableau de toutes les données est lié sous le graphique, dans un details fermé."
       ]
@@ -2790,50 +2790,50 @@
       {
         "description": "Préfixe unique des ids du titre et de la description : lettres, chiffres et tirets.",
         "fallback": "—",
-        "name": "id (obligatoire)",
-        "type": "string"
+        "name": "`id` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Titre du graphique, premier élément de son nom accessible.",
         "fallback": "—",
-        "name": "title (obligatoire)",
-        "type": "string"
+        "name": "`title` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Jeu de données (`schema: 1`) : validé, sinon le build échoue avec le code d'erreur.",
         "fallback": "—",
-        "name": "dataset (obligatoire)",
-        "type": "Dataset"
+        "name": "`dataset` (obligatoire)",
+        "type": "`Dataset`"
       },
       {
         "description": "Locale des nombres et des dates. Défaut : `fr`.",
-        "fallback": "'fr'",
-        "name": "locale",
-        "type": "string"
+        "fallback": "`'fr'`",
+        "name": "`locale`",
+        "type": "`string`"
       },
       {
         "description": "Libellé du tableau de données lié.",
         "fallback": "—",
-        "name": "tableLabel",
-        "type": "string"
+        "name": "`tableLabel`",
+        "type": "`string`"
       },
       {
         "description": "Message de l'état vide (aucune valeur présente).",
         "fallback": "—",
-        "name": "emptyLabel",
-        "type": "string"
+        "name": "`emptyLabel`",
+        "type": "`string`"
       },
       {
         "description": "Début du message d'erreur de rendu ; le code d'erreur le suit.",
         "fallback": "—",
-        "name": "errorLabel",
-        "type": "string"
+        "name": "`errorLabel`",
+        "type": "`string`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "line-chart",
@@ -2891,9 +2891,9 @@
         "Échap ferme le menu et rend le focus au bouton ; Tab ferme le menu."
       ],
       "screenReader": [
-        "Le bouton annonce aria-haspopup=\"menu\" et son état aria-expanded (APG Menu Button).",
-        "Le panneau a role=\"menu\", nommé par le bouton ; chaque entrée a role=\"menuitem\".",
-        "Une entrée désactivée porte aria-disabled=\"true\" et reste focalisable, comme l’APG le recommande."
+        "Le bouton annonce `aria-haspopup=\"menu\"` et son état aria-expanded (APG Menu Button).",
+        "Le panneau a `role=\"menu\"`, nommé par le bouton ; chaque entrée a `role=\"menuitem\"`.",
+        "Une entrée désactivée porte `aria-disabled=\"true\"` et reste focalisable, comme l’APG le recommande."
       ]
     },
     "avoid": [
@@ -2912,26 +2912,26 @@
       {
         "description": "Texte du bouton, qui sert aussi de nom accessible au menu.",
         "fallback": "—",
-        "name": "label (obligatoire)",
-        "type": "string"
+        "name": "`label` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Identifiant du panneau ; le bouton a pour id `<id>-button`. Unique dans la page.",
         "fallback": "—",
-        "name": "id (obligatoire)",
-        "type": "string"
+        "name": "`id` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Entrées du menu, dans l'ordre d'affichage.",
         "fallback": "—",
-        "name": "items (obligatoire)",
-        "type": "Item[]"
+        "name": "`items` (obligatoire)",
+        "type": "`Item[]`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "menu",
@@ -2979,8 +2979,8 @@
       ],
       "screenReader": [
         "Le repère nav porte le nom donné par label.",
-        "La liste porte role=\"list\" : VoiceOver garde la sémantique malgré list-style: none.",
-        "La page courante porte aria-current=\"page\" et n’est pas un lien."
+        "La liste porte `role=\"list\"` : VoiceOver garde la sémantique malgré list-style: none.",
+        "La page courante porte `aria-current=\"page\"` et n’est pas un lien."
       ]
     },
     "avoid": [
@@ -2999,32 +2999,32 @@
       {
         "description": "Nom accessible du repère de navigation (`aria-label`), par exemple « Pagination ».",
         "fallback": "—",
-        "name": "label (obligatoire)",
-        "type": "string"
+        "name": "`label` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Pages affichées : `{ label, href, current? }` ; `current` en fait la page courante, sans lien.",
         "fallback": "—",
-        "name": "items (obligatoire)",
-        "type": "Item[]"
+        "name": "`items` (obligatoire)",
+        "type": "`Item[]`"
       },
       {
         "description": "Lien vers la page précédente, affiché avant les pages. Absent : rien n'est rendu.",
         "fallback": "—",
-        "name": "previous",
-        "type": "Link"
+        "name": "`previous`",
+        "type": "`Link`"
       },
       {
         "description": "Lien vers la page suivante, affiché après les pages. Absent : rien n'est rendu.",
         "fallback": "—",
-        "name": "next",
-        "type": "Link"
+        "name": "`next`",
+        "type": "`Link`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "pagination",
@@ -3053,9 +3053,9 @@
     "a11y": {
       "guaranteed": [
         "alt est obligatoire : une chaîne vide ou blanche lève une erreur au build.",
-        "alt=\"\" n’est posé qu’avec decorative, jamais par défaut.",
+        "`alt=\"\"` n’est posé qu’avec decorative, jamais par défaut.",
         "width et height sont toujours rendus.",
-        "priority : loading=\"eager\" et fetchpriority=\"high\" ; sinon loading=\"lazy\" et decoding=\"async\".",
+        "priority : `loading=\"eager\"` et `fetchpriority=\"high\"` ; sinon `loading=\"lazy\"` et `decoding=\"async\"`.",
         "Aucun attribut style."
       ],
       "integrator": [
@@ -3066,11 +3066,11 @@
       ],
       "keyboard": [
         "Photo ne rend aucun élément interactif : rien à atteindre au clavier.",
-        "Le fond d’attente est masqué (aria-hidden=\"true\", focusable=\"false\") : il n’est pas focalisable."
+        "Le fond d’attente est masqué (`aria-hidden=\"true\"`, `focusable=\"false\"`) : il n’est pas focalisable."
       ],
       "screenReader": [
         "Le texte de l’attribut alt est lu comme nom de l’image.",
-        "Avec decorative, alt=\"\" : l’image est ignorée par les lecteurs d’écran.",
+        "Avec decorative, `alt=\"\"` : l’image est ignorée par les lecteurs d’écran.",
         "Le fond d’attente à la couleur dominante est masqué aux technologies d’assistance."
       ]
     },
@@ -3090,72 +3090,72 @@
       {
         "description": "Texte alternatif : ce que l'image apporte au contenu. Vide : erreur au build.",
         "fallback": "—",
-        "name": "alt",
-        "type": "string"
+        "name": "`alt`",
+        "type": "`string`"
       },
       {
         "description": "Image purement décorative, rendue avec `alt=\"\"`. Exclusif de `alt`.",
         "fallback": "—",
-        "name": "decorative",
-        "type": "true"
+        "name": "`decorative`",
+        "type": "`true`"
       },
       {
         "description": "Image importée localement (`import photo from './photo.jpg'`).",
         "fallback": "—",
-        "name": "src (obligatoire)",
-        "type": "ImageMetadata"
+        "name": "`src` (obligatoire)",
+        "type": "`ImageMetadata`"
       },
       {
         "description": "Proportion du cadre ; absente, l'image garde sa proportion propre.",
         "fallback": "—",
-        "name": "ratio",
-        "type": "\"portrait\" | \"square\" | \"landscape\" | \"wide\""
+        "name": "`ratio`",
+        "type": "`\"portrait\" | \"square\" | \"landscape\" | \"wide\"`"
       },
       {
         "description": "Point gardé visible quand le cadre recadre l'image.",
-        "fallback": "'center'",
-        "name": "focal",
-        "type": "\"center\" | \"top\" | \"bottom\" | \"left\" | \"right\" | \"top-left\" | \"top-right\" | \"bottom-left\" | \"bottom-right\""
+        "fallback": "`'center'`",
+        "name": "`focal`",
+        "type": "`\"center\" | \"top\" | \"bottom\" | \"left\" | \"right\" | \"top-left\" | \"top-right\" | \"bottom-left\" | \"bottom-right\"`"
       },
       {
         "description": "Image principale de la page (LCP) : chargée tout de suite, en priorité.",
-        "fallback": "false",
-        "name": "priority",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`priority`",
+        "type": "`boolean`"
       },
       {
         "description": "Emplacement dans la page ; règle `sizes` et les largeurs générées.",
-        "fallback": "'measure'",
-        "name": "layout",
-        "type": "\"page\" | \"measure\" | \"half\" | \"third\" | \"avatar\""
+        "fallback": "`'measure'`",
+        "name": "`layout`",
+        "type": "`\"page\" | \"measure\" | \"half\" | \"third\" | \"avatar\"`"
       },
       {
         "description": "Nature de l'image ; règle la qualité et le format de repli (JPEG pour une photo, PNG sinon).",
-        "fallback": "'photo'",
-        "name": "kind",
-        "type": "\"photo\" | \"capture\" | \"illustration\""
+        "fallback": "`'photo'`",
+        "name": "`kind`",
+        "type": "`\"photo\" | \"capture\" | \"illustration\"`"
       },
       {
         "description": "Filet autour du cadre (captures sur fond clair).",
-        "fallback": "false",
-        "name": "rule",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`rule`",
+        "type": "`boolean`"
       },
       {
         "description": "Remplace `sizes` déduit de `layout`, quand la hauteur borne l'image (dialogue).",
         "fallback": "—",
-        "name": "sizes",
-        "type": "string"
+        "name": "`sizes`",
+        "type": "`string`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "photo",
-    "snippet": "---\nimport Photo from '@paulperigault/astro/Photo.astro';\nimport portrait from './portrait.jpg';\n---\n\n<Photo src={portrait} alt=\"Portrait recadré, visage au centre\" ratio=\"portrait\" focal=\"top\" />",
+    "snippet": "---\nimport Photo from '@paulperigault/astro/Photo.astro';\nimport portrait from './portrait.jpg';\n---\n\n<Photo src={portrait} `alt=\"Portrait recadré, visage au centre\"` `ratio=\"portrait\"` `focal=\"top\"` />",
     "summary": "Photo affiche une image importée localement, optimisée au build, avec sa place réservée avant chargement.",
     "title": "Photo",
     "tokens": [
@@ -3213,20 +3213,20 @@
       {
         "description": "Texte visible du bouton qui ouvre le panneau.",
         "fallback": "—",
-        "name": "triggerLabel (obligatoire)",
-        "type": "string"
+        "name": "`triggerLabel` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Identifiant du panneau, obligatoire : il relie le bouton au panneau.",
         "fallback": "—",
-        "name": "id (obligatoire)",
-        "type": "string"
+        "name": "`id` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "popover",
@@ -3290,62 +3290,62 @@
       {
         "description": "Identifiant de la barre, relié à son libellé.",
         "fallback": "—",
-        "name": "id (obligatoire)",
-        "type": "string"
+        "name": "`id` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Libellé visible, nom accessible.",
         "fallback": "—",
-        "name": "label (obligatoire)",
-        "type": "string"
+        "name": "`label` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "`progress` pour une tâche en cours, `meter` pour une mesure dans une plage connue.",
-        "fallback": "'progress'",
-        "name": "kind",
-        "type": "\"progress\" | \"meter\""
+        "fallback": "`'progress'`",
+        "name": "`kind`",
+        "type": "`\"progress\" | \"meter\"`"
       },
       {
         "description": "Valeur actuelle ; absente pour une progression indéterminée.",
         "fallback": "—",
-        "name": "value",
-        "type": "number"
+        "name": "`value`",
+        "type": "`number`"
       },
       {
         "description": "Valeur maximale (défaut : 1, valeur native).",
-        "fallback": "1",
-        "name": "max",
-        "type": "number"
+        "fallback": "`1`",
+        "name": "`max`",
+        "type": "`number`"
       },
       {
         "description": "Seuil bas d'une jauge (`meter`).",
         "fallback": "—",
-        "name": "low",
-        "type": "number"
+        "name": "`low`",
+        "type": "`number`"
       },
       {
         "description": "Seuil haut d'une jauge (`meter`).",
         "fallback": "—",
-        "name": "high",
-        "type": "number"
+        "name": "`high`",
+        "type": "`number`"
       },
       {
         "description": "Valeur optimale d'une jauge (`meter`).",
         "fallback": "—",
-        "name": "optimum",
-        "type": "number"
+        "name": "`optimum`",
+        "type": "`number`"
       },
       {
         "description": "Texte visible de la valeur.",
         "fallback": "—",
-        "name": "valueText",
-        "type": "string"
+        "name": "`valueText`",
+        "type": "`string`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "progress",
@@ -3367,7 +3367,7 @@
     ],
     "use": [
       "Suivre un envoi ou un traitement dont la fin est connue : value et max.",
-      "Afficher une mesure dans une plage connue, avec kind=\"meter\" et ses seuils."
+      "Afficher une mesure dans une plage connue, avec `kind=\"meter\"` et ses seuils."
     ]
   },
   {
@@ -3399,50 +3399,50 @@
       {
         "description": "Texte alternatif : ce que l'image apporte au contenu. Vide : erreur au build.",
         "fallback": "—",
-        "name": "alt",
-        "type": "string"
+        "name": "`alt`",
+        "type": "`string`"
       },
       {
         "description": "Image purement décorative, rendue avec `alt=\"\"`. Exclusif de `alt`.",
         "fallback": "—",
-        "name": "decorative",
-        "type": "true"
+        "name": "`decorative`",
+        "type": "`true`"
       },
       {
         "description": "Image importée localement.",
         "fallback": "—",
-        "name": "src (obligatoire)",
-        "type": "ImageMetadata"
+        "name": "`src` (obligatoire)",
+        "type": "`ImageMetadata`"
       },
       {
         "description": "Proportion du cadre.",
-        "fallback": "'landscape'",
-        "name": "ratio",
-        "type": "\"landscape\" | \"wide\""
+        "fallback": "`'landscape'`",
+        "name": "`ratio`",
+        "type": "`\"landscape\" | \"wide\"`"
       },
       {
         "description": "Emplacement dans la page ; règle `sizes`.",
-        "fallback": "'third'",
-        "name": "layout",
-        "type": "\"third\" | \"half\" | \"page\""
+        "fallback": "`'third'`",
+        "name": "`layout`",
+        "type": "`\"third\" | \"half\" | \"page\"`"
       },
       {
         "description": "Nature de l'image ; une capture garde un texte net.",
-        "fallback": "'capture'",
-        "name": "kind",
-        "type": "\"photo\" | \"capture\" | \"illustration\""
+        "fallback": "`'capture'`",
+        "name": "`kind`",
+        "type": "`\"photo\" | \"capture\" | \"illustration\"`"
       },
       {
         "description": "Image principale de la page (LCP).",
-        "fallback": "false",
-        "name": "priority",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`priority`",
+        "type": "`boolean`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "project-cover",
@@ -3464,7 +3464,7 @@
       ],
       "integrator": [
         "Garder une seule h1 par page : le titre de la page en porte déjà une.",
-        "Ajouter tabindex=\"0\" à un bloc pre large si son contenu doit être atteint au clavier.",
+        "Ajouter `tabindex=\"0\"` à un bloc pre large si son contenu doit être atteint au clavier.",
         "Fournir une caption à chaque tableau de données."
       ],
       "keyboard": [
@@ -3492,8 +3492,8 @@
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "prose",
@@ -3562,15 +3562,15 @@
     "props": [
       {
         "description": "Position du texte dans l'axe de bloc.",
-        "fallback": "'end'",
-        "name": "place",
-        "type": "\"start\" | \"end\""
+        "fallback": "`'end'`",
+        "name": "`place`",
+        "type": "`\"start\" | \"end\"`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "scrim",
@@ -3588,7 +3588,7 @@
     ],
     "use": [
       "Poser un titre ou une légende sur une photo, quelle que soit l’image dessous.",
-      "Placer le texte en bas (place=\"end\") ou en haut (place=\"start\") de l’image."
+      "Placer le texte en bas (`place=\"end\"`) ou en haut (`place=\"start\"`) de l’image."
     ]
   },
   {
@@ -3630,62 +3630,62 @@
       {
         "description": "Identifiant, visé par `<label for>`.",
         "fallback": "—",
-        "name": "id (obligatoire)",
-        "type": "string"
+        "name": "`id` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Nom envoyé avec le formulaire.",
         "fallback": "—",
-        "name": "name (obligatoire)",
-        "type": "string"
+        "name": "`name` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Options proposées : `{ value, label, disabled? }`.",
         "fallback": "—",
-        "name": "options (obligatoire)",
-        "type": "Option[]"
+        "name": "`options` (obligatoire)",
+        "type": "`Option[]`"
       },
       {
         "description": "Valeur de l'option sélectionnée.",
         "fallback": "—",
-        "name": "value",
-        "type": "string"
+        "name": "`value`",
+        "type": "`string`"
       },
       {
         "description": "Première option `value=\"\"`, désactivée ; sélectionnée si `value` est absent.",
         "fallback": "—",
-        "name": "placeholder",
-        "type": "string"
+        "name": "`placeholder`",
+        "type": "`string`"
       },
       {
         "description": "Choix obligatoire (`required`).",
-        "fallback": "false",
-        "name": "required",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`required`",
+        "type": "`boolean`"
       },
       {
         "description": "Désactive la liste.",
-        "fallback": "false",
-        "name": "disabled",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`disabled`",
+        "type": "`boolean`"
       },
       {
         "description": "Identifiants des textes d'aide ou d'erreur, séparés par des espaces.",
         "fallback": "—",
-        "name": "describedBy",
-        "type": "string"
+        "name": "`describedBy`",
+        "type": "`string`"
       },
       {
         "description": "Pose `aria-invalid=\"true\"` ; à relier au message d'erreur par `describedBy`.",
-        "fallback": "false",
-        "name": "invalid",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`invalid`",
+        "type": "`boolean`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "select",
@@ -3727,7 +3727,7 @@
       "keyboard": ["Le filet n’est pas interactif : il ne prend jamais le focus."],
       "screenReader": [
         "Par défaut, un hr natif est lu comme séparateur.",
-        "Avec decorative, le filet est masqué (role=\"presentation\", aria-hidden=\"true\")."
+        "Avec decorative, le filet est masqué (`role=\"presentation\"`, `aria-hidden=\"true\"`)."
       ]
     },
     "avoid": [
@@ -3742,21 +3742,21 @@
     "props": [
       {
         "description": "`true` : filet masqué aux technologies d'assistance ; `false` : séparateur lu.",
-        "fallback": "false",
-        "name": "decorative",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`decorative`",
+        "type": "`boolean`"
       },
       {
         "description": "Espacement autour du filet.",
-        "fallback": "'m'",
-        "name": "space",
-        "type": "\"xs\" | \"s\" | \"m\" | \"l\" | \"xl\""
+        "fallback": "`'m'`",
+        "name": "`space`",
+        "type": "`\"xs\" | \"s\" | \"m\" | \"l\" | \"xl\"`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "separator",
@@ -3809,33 +3809,33 @@
     "props": [
       {
         "description": "Côté de la barre : `start` = premier enfant, `end` = dernier enfant.",
-        "fallback": "'start'",
-        "name": "side",
-        "type": "\"start\" | \"end\""
+        "fallback": "`'start'`",
+        "name": "`side`",
+        "type": "`\"start\" | \"end\"`"
       },
       {
         "description": "Espacement entre les enfants (token `--pp-space-*`).",
-        "fallback": "'m'",
-        "name": "space",
-        "type": "\"xs\" | \"s\" | \"m\" | \"l\" | \"xl\""
+        "fallback": "`'m'`",
+        "name": "`space`",
+        "type": "`\"xs\" | \"s\" | \"m\" | \"l\" | \"xl\"`"
       },
       {
         "description": "Largeur de la colonne latérale avant que les deux colonnes ne s'empilent.",
-        "fallback": "'narrow'",
-        "name": "sideWidth",
-        "type": "\"narrow\" | \"medium\""
+        "fallback": "`'narrow'`",
+        "name": "`sideWidth`",
+        "type": "`\"narrow\" | \"medium\"`"
       },
       {
         "description": "Élément HTML rendu (sémantique de la page).",
-        "fallback": "'div'",
-        "name": "as",
-        "type": "\"div\" | \"section\" | \"article\" | \"main\" | \"aside\""
+        "fallback": "`'div'`",
+        "name": "`as`",
+        "type": "`\"div\" | \"section\" | \"article\" | \"main\" | \"aside\"`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "sidebar",
@@ -3873,8 +3873,8 @@
         "Aucune touche n’est gérée par le composant."
       ],
       "screenReader": [
-        "Le libellé est le texte lu de la zone role=\"status\".",
-        "Les lignes sont masquées aux lecteurs d’écran (aria-hidden=\"true\")."
+        "Le libellé est le texte lu de la zone `role=\"status\"`.",
+        "Les lignes sont masquées aux lecteurs d’écran (`aria-hidden=\"true\"`)."
       ]
     },
     "avoid": [
@@ -3892,15 +3892,15 @@
     "props": [
       {
         "description": "Nombre de lignes, de 1 à 6. Une valeur hors plage est ramenée à la borne la plus proche.",
-        "fallback": "DEFAULT_LINES",
-        "name": "lines",
-        "type": "number"
+        "fallback": "`DEFAULT_LINES`",
+        "name": "`lines`",
+        "type": "`number`"
       },
       {
         "description": "Texte visible et lu par les lecteurs d'écran, par exemple « Chargement du contenu ».",
         "fallback": "—",
-        "name": "label (obligatoire)",
-        "type": "string"
+        "name": "`label` (obligatoire)",
+        "type": "`string`"
       }
     ],
     "slug": "skeleton",
@@ -3940,7 +3940,7 @@
         "Le tableau lié se déplie au clavier (élément details natif)."
       ],
       "screenReader": [
-        "Le SVG porte role=\"img\", nommé par un title et décrit par un desc.",
+        "Le SVG porte `role=\"img\"`, nommé par un title et décrit par un desc.",
         "Le desc donne le début, la fin, la tendance chiffrée, les extrêmes et les données manquantes.",
         "Le tableau de toutes les valeurs est lié sous le graphique, dans un details fermé."
       ]
@@ -3962,63 +3962,63 @@
     "props": [
       {
         "description": "Légende écrite des repères (défaut : oui) ; `false` quand la valeur est écrite à côté.",
-        "fallback": "true",
-        "name": "legend",
-        "type": "boolean"
+        "fallback": "`true`",
+        "name": "`legend`",
+        "type": "`boolean`"
       },
       {
         "description": "Textes de l'interface (défaut : français).",
         "fallback": "—",
-        "name": "labels",
-        "type": "Partial<SparkLabels>"
+        "name": "`labels`",
+        "type": "`Partial<SparkLabels>`"
       },
       {
         "description": "Préfixe unique des ids du titre et de la description : lettres, chiffres et tirets.",
         "fallback": "—",
-        "name": "id (obligatoire)",
-        "type": "string"
+        "name": "`id` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Titre du graphique, premier élément de son nom accessible.",
         "fallback": "—",
-        "name": "title (obligatoire)",
-        "type": "string"
+        "name": "`title` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Jeu de données (`schema: 1`) : validé, sinon le build échoue avec le code d'erreur.",
         "fallback": "—",
-        "name": "dataset (obligatoire)",
-        "type": "Dataset"
+        "name": "`dataset` (obligatoire)",
+        "type": "`Dataset`"
       },
       {
         "description": "Locale des nombres et des dates. Défaut : `fr`.",
-        "fallback": "'fr'",
-        "name": "locale",
-        "type": "string"
+        "fallback": "`'fr'`",
+        "name": "`locale`",
+        "type": "`string`"
       },
       {
         "description": "Libellé du tableau de données lié.",
         "fallback": "—",
-        "name": "tableLabel",
-        "type": "string"
+        "name": "`tableLabel`",
+        "type": "`string`"
       },
       {
         "description": "Message de l'état vide (aucune valeur présente).",
         "fallback": "—",
-        "name": "emptyLabel",
-        "type": "string"
+        "name": "`emptyLabel`",
+        "type": "`string`"
       },
       {
         "description": "Début du message d'erreur de rendu ; le code d'erreur le suit.",
         "fallback": "—",
-        "name": "errorLabel",
-        "type": "string"
+        "name": "`errorLabel`",
+        "type": "`string`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "sparkline",
@@ -4062,12 +4062,12 @@
       ],
       "integrator": [
         "Garder dans le DOM l’ordre de lecture voulu : le composant ne le réordonne pas.",
-        "Avec as=\"ul\", ne mettre que des li comme enfants directs."
+        "Avec `as=\"ul\"`, ne mettre que des li comme enfants directs."
       ],
       "keyboard": ["Le composant n’ajoute aucun élément interactif et ne modifie pas le focus."],
       "screenReader": [
         "Le composant n’ajoute ni rôle ni libellé.",
-        "Avec as=\"ul\" ou as=\"ol\", la liste reste lue comme liste : les puces ne sont pas retirées."
+        "Avec `as=\"ul\"` ou `as=\"ol\"`, la liste reste lue comme liste : les puces ne sont pas retirées."
       ]
     },
     "avoid": [
@@ -4085,21 +4085,21 @@
     "props": [
       {
         "description": "Espacement entre les enfants (token `--pp-space-*`).",
-        "fallback": "'m'",
-        "name": "space",
-        "type": "\"xs\" | \"s\" | \"m\" | \"l\" | \"xl\""
+        "fallback": "`'m'`",
+        "name": "`space`",
+        "type": "`\"xs\" | \"s\" | \"m\" | \"l\" | \"xl\"`"
       },
       {
         "description": "Élément rendu. Avec `ul` ou `ol`, les enfants doivent être des `<li>`.",
-        "fallback": "'div'",
-        "name": "as",
-        "type": "\"div\" | \"section\" | \"ul\" | \"ol\" | \"article\""
+        "fallback": "`'div'`",
+        "name": "`as`",
+        "type": "`\"div\" | \"section\" | \"ul\" | \"ol\" | \"article\"`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "stack",
@@ -4130,7 +4130,7 @@
       ],
       "screenReader": [
         "Le libellé et la valeur sont du texte ordinaire, dans une liste de description (dl, dt, dd).",
-        "L’icône de tendance est masquée (aria-hidden=\"true\") : le sens passe par le texte du delta."
+        "L’icône de tendance est masquée (`aria-hidden=\"true\"`) : le sens passe par le texte du delta."
       ]
     },
     "avoid": [
@@ -4149,32 +4149,32 @@
       {
         "description": "Nom de l'indicateur, par exemple « Visites ».",
         "fallback": "—",
-        "name": "label (obligatoire)",
-        "type": "string"
+        "name": "`label` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Valeur affichée, déjà formatée (par exemple « 1 204 »).",
         "fallback": "—",
-        "name": "value (obligatoire)",
-        "type": "string"
+        "name": "`value` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Texte de variation, par exemple « +3 depuis la semaine dernière ». Obligatoire si `trend` est donné.",
         "fallback": "—",
-        "name": "delta",
-        "type": "string"
+        "name": "`delta`",
+        "type": "`string`"
       },
       {
         "description": "Sens de la variation : `up`, `down` ou `flat`. Défaut : `flat`.",
         "fallback": "—",
-        "name": "trend",
-        "type": "\"up\" | \"down\" | \"flat\""
+        "name": "`trend`",
+        "type": "`\"up\" | \"down\" | \"flat\"`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "stat",
@@ -4205,14 +4205,14 @@
       "integrator": [
         "Fournir un libellé court qui décrit l’état, dans la langue du site.",
         "Ne pas ajouter de couleur seule à côté du composant pour transmettre l’état.",
-        "Poser role=\"status\" autour des mises à jour à annoncer : le composant ne le fait pas."
+        "Poser `role=\"status\"` autour des mises à jour à annoncer : le composant ne le fait pas."
       ],
       "keyboard": [
         "Le composant est statique : il ne reçoit pas le focus.",
         "Aucune touche n’est gérée par le composant."
       ],
       "screenReader": [
-        "Le libellé est le texte lu ; l’icône est masquée (aria-hidden=\"true\").",
+        "Le libellé est le texte lu ; l’icône est masquée (`aria-hidden=\"true\"`).",
         "Aucun rôle n’est posé : le contenu est lu comme du texte ordinaire."
       ]
     },
@@ -4229,27 +4229,27 @@
     "props": [
       {
         "description": "État affiché, avec sa forme d'icône propre et son libellé.",
-        "fallback": "'running'",
-        "name": "state",
-        "type": "\"passed\" | \"failed\" | \"degraded\" | \"running\""
+        "fallback": "`'running'`",
+        "name": "`state`",
+        "type": "`\"passed\" | \"failed\" | \"degraded\" | \"running\"`"
       },
       {
         "description": "Libellé visible de l'état (par exemple « Réussi »).",
         "fallback": "—",
-        "name": "label (obligatoire)",
-        "type": "string"
+        "name": "`label` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Police mono, pour un identifiant tel qu'une empreinte de commit.",
-        "fallback": "false",
-        "name": "mono",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`mono`",
+        "type": "`boolean`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "status",
@@ -4274,7 +4274,7 @@
   {
     "a11y": {
       "guaranteed": [
-        "Case à cocher native avec role=\"switch\" ; l’état checked est porté par le navigateur.",
+        "Case à cocher native avec `role=\"switch\"` ; l’état checked est porté par le navigateur.",
         "L’état se lit à la position du curseur, pas seulement à la couleur.",
         "Les transitions sont désactivées avec prefers-reduced-motion."
       ],
@@ -4309,38 +4309,38 @@
       {
         "description": "Identifiant du contrôle, relié à son libellé.",
         "fallback": "—",
-        "name": "id (obligatoire)",
-        "type": "string"
+        "name": "`id` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Nom envoyé avec le formulaire.",
         "fallback": "—",
-        "name": "name (obligatoire)",
-        "type": "string"
+        "name": "`name` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Libellé visible, nom accessible de l'interrupteur.",
         "fallback": "—",
-        "name": "label (obligatoire)",
-        "type": "string"
+        "name": "`label` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Activé au chargement.",
-        "fallback": "false",
-        "name": "checked",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`checked`",
+        "type": "`boolean`"
       },
       {
         "description": "Désactive l'interrupteur.",
-        "fallback": "false",
-        "name": "disabled",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`disabled`",
+        "type": "`boolean`"
       },
       {
         "description": "Identifiant(s) du texte d'aide ou d'erreur associé (`aria-describedby`).",
         "fallback": "—",
-        "name": "describedBy",
-        "type": "string"
+        "name": "`describedBy`",
+        "type": "`string`"
       }
     ],
     "slug": "switch",
@@ -4380,7 +4380,7 @@
       ],
       "integrator": [
         "Vérifier que l’ordre du DOM se lit bien quand les blocs passent sur plusieurs lignes.",
-        "Avec as=\"ul\" ou as=\"ol\", tester la sémantique de liste : display: flex peut la retirer.",
+        "Avec `as=\"ul\"` ou `as=\"ol\"`, tester la sémantique de liste : display: flex peut la retirer.",
         "Tester à la largeur réelle du conteneur, pas seulement à la largeur de la fenêtre."
       ],
       "keyboard": [
@@ -4389,7 +4389,7 @@
       ],
       "screenReader": [
         "Le composant ne pose aucun rôle : les enfants sont lus dans l’ordre du DOM.",
-        "Avec as=\"ul\" ou as=\"ol\", les enfants doivent être des li."
+        "Avec `as=\"ul\"` ou `as=\"ol\"`, les enfants doivent être des li."
       ]
     },
     "avoid": [
@@ -4406,27 +4406,27 @@
     "props": [
       {
         "description": "Largeur de conteneur sous laquelle les enfants s'empilent.",
-        "fallback": "'measure'",
-        "name": "threshold",
-        "type": "\"measure\" | \"page\""
+        "fallback": "`'measure'`",
+        "name": "`threshold`",
+        "type": "`\"measure\" | \"page\"`"
       },
       {
         "description": "Espacement entre les enfants (token `--pp-space-*`).",
-        "fallback": "'m'",
-        "name": "space",
-        "type": "\"xs\" | \"s\" | \"m\" | \"l\" | \"xl\""
+        "fallback": "`'m'`",
+        "name": "`space`",
+        "type": "`\"xs\" | \"s\" | \"m\" | \"l\" | \"xl\"`"
       },
       {
         "description": "Élément rendu ; avec `ul` ou `ol`, les enfants doivent être des `<li>`.",
-        "fallback": "'div'",
-        "name": "as",
-        "type": "\"div\" | \"section\" | \"ul\" | \"ol\" | \"article\""
+        "fallback": "`'div'`",
+        "name": "`as`",
+        "type": "`\"div\" | \"section\" | \"ul\" | \"ol\" | \"article\"`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "switcher",
@@ -4450,7 +4450,7 @@
   {
     "a11y": {
       "guaranteed": [
-        "La légende est rendue en caption, et la région porte tabindex=\"0\".",
+        "La légende est rendue en caption, et la région porte `tabindex=\"0\"`.",
         "Les colonnes numériques sont alignées en fin, en chiffres tabulaires.",
         "Aucun script et aucun attribut style."
       ],
@@ -4465,7 +4465,7 @@
       ],
       "screenReader": [
         "La région est annoncée avec la légende comme nom (aria-label).",
-        "Les en-têtes de colonne sont en scope=\"col\" ; l’en-tête de ligne en scope=\"row\"."
+        "Les en-têtes de colonne sont en `scope=\"col\"` ; l’en-tête de ligne en `scope=\"row\"`."
       ]
     },
     "avoid": [
@@ -4482,32 +4482,32 @@
       {
         "description": "Légende visible du tableau, reprise comme nom accessible de la région.",
         "fallback": "—",
-        "name": "caption (obligatoire)",
-        "type": "string"
+        "name": "`caption` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Colonnes : `{ key, label, numeric? }` ; `numeric` aligne en fin et en chiffres tabulaires.",
         "fallback": "—",
-        "name": "columns (obligatoire)",
-        "type": "Column[]"
+        "name": "`columns` (obligatoire)",
+        "type": "`Column[]`"
       },
       {
         "description": "Lignes : une valeur texte par clé de colonne.",
         "fallback": "—",
-        "name": "rows (obligatoire)",
-        "type": "Record<string, string>[]"
+        "name": "`rows` (obligatoire)",
+        "type": "`Record<string, string>[]`"
       },
       {
         "description": "Clé de la colonne rendue en `<th scope=\"row\">`.",
         "fallback": "—",
-        "name": "rowHeader",
-        "type": "string"
+        "name": "`rowHeader`",
+        "type": "`string`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "table",
@@ -4538,7 +4538,7 @@
         "Sans script, les liens d’ancre et les sections titrées gardent tout le contenu lisible (WCAG 1.3.1).",
         "L’onglet actif se distingue par un trait et une graisse, pas par la couleur seule (WCAG 1.4.1).",
         "Les onglets font au moins la taille minimale de cible (WCAG 2.5.8).",
-        "Le panneau actif reçoit tabindex=\"0\" s’il ne contient rien de focalisable (motif APG Tabs)."
+        "Le panneau actif reçoit `tabindex=\"0\"` s’il ne contient rien de focalisable (motif APG Tabs)."
       ],
       "integrator": [
         "Fournir des id uniques dans la page, et un slot du même nom pour chaque onglet.",
@@ -4552,7 +4552,7 @@
         "Un seul onglet est dans l’ordre de tabulation (tabindex itinérant) ; Tab mène ensuite au panneau."
       ],
       "screenReader": [
-        "Le script pose role=\"tablist\", role=\"tab\" et role=\"tabpanel\", avec aria-selected et aria-controls.",
+        "Le script pose `role=\"tablist\"`, `role=\"tab\"` et `role=\"tabpanel\"`, avec aria-selected et aria-controls.",
         "La liste porte le nom donné par label ; chaque panneau est nommé par son onglet.",
         "Non vérifié avec VoiceOver, NVDA ou JAWS : seul le DOM produit est testé."
       ]
@@ -4572,26 +4572,26 @@
       {
         "description": "Nom accessible de la liste d'onglets (`aria-label`), par exemple « Langages ».",
         "fallback": "—",
-        "name": "label (obligatoire)",
-        "type": "string"
+        "name": "`label` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Onglets, au moins deux. Chaque `id` désigne un slot nommé qui porte le contenu du panneau.",
         "fallback": "—",
-        "name": "tabs (obligatoire)",
-        "type": "Tab[]"
+        "name": "`tabs` (obligatoire)",
+        "type": "`Tab[]`"
       },
       {
         "description": "`id` de l'onglet actif au chargement. Défaut : le premier.",
         "fallback": "—",
-        "name": "selected",
-        "type": "string"
+        "name": "`selected`",
+        "type": "`string`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "tabs",
@@ -4656,62 +4656,62 @@
       {
         "description": "Identifiant, visé par `<label for>`.",
         "fallback": "—",
-        "name": "id (obligatoire)",
-        "type": "string"
+        "name": "`id` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Nom envoyé avec le formulaire.",
         "fallback": "—",
-        "name": "name (obligatoire)",
-        "type": "string"
+        "name": "`name` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Texte initial.",
-        "fallback": "''",
-        "name": "value",
-        "type": "string"
+        "fallback": "`''`",
+        "name": "`value`",
+        "type": "`string`"
       },
       {
         "description": "Saisie obligatoire (`required`).",
-        "fallback": "false",
-        "name": "required",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`required`",
+        "type": "`boolean`"
       },
       {
         "description": "Désactive le champ.",
-        "fallback": "false",
-        "name": "disabled",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`disabled`",
+        "type": "`boolean`"
       },
       {
         "description": "Identifiants (séparés par des espaces) de l'aide ou du message d'erreur.",
         "fallback": "—",
-        "name": "describedBy",
-        "type": "string"
+        "name": "`describedBy`",
+        "type": "`string`"
       },
       {
         "description": "Pose `aria-invalid=\"true\"` ; à relier au message d'erreur par `describedBy`.",
-        "fallback": "false",
-        "name": "invalid",
-        "type": "boolean"
+        "fallback": "`false`",
+        "name": "`invalid`",
+        "type": "`boolean`"
       },
       {
         "description": "Hauteur initiale en lignes.",
-        "fallback": "DEFAULT_ROWS",
-        "name": "rows",
-        "type": "number"
+        "fallback": "`DEFAULT_ROWS`",
+        "name": "`rows`",
+        "type": "`number`"
       },
       {
         "description": "Libellé de la touche Entrée du clavier virtuel (`enterkeyhint`), par exemple `next`.",
         "fallback": "—",
-        "name": "enterkeyhint",
-        "type": "\"enter\" | \"done\" | \"go\" | \"next\" | \"previous\" | \"search\" | \"send\""
+        "name": "`enterkeyhint`",
+        "type": "`\"enter\" | \"done\" | \"go\" | \"next\" | \"previous\" | \"search\" | \"send\"`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "textarea",
@@ -4742,7 +4742,7 @@
   {
     "a11y": {
       "guaranteed": [
-        "La liste est sémantique : role=\"list\" est posé, même sans puces (WCAG 1.3.1).",
+        "La liste est sémantique : `role=\"list\"` est posé, même sans puces (WCAG 1.3.1).",
         "La date et le titre portent le sens ; le repère ne le porte pas seul (WCAG 1.4.1).",
         "Le composant ne trie pas : l’ordre affiché est celui de items."
       ],
@@ -4774,26 +4774,26 @@
       {
         "description": "Étapes, dans l'ordre d'affichage. Le composant ne trie pas.",
         "fallback": "—",
-        "name": "items (obligatoire)",
-        "type": "TimelineItem[]"
+        "name": "`items` (obligatoire)",
+        "type": "`TimelineItem[]`"
       },
       {
         "description": "Nom accessible de la liste (`aria-label`). Utile quand la page contient plusieurs chronologies.",
         "fallback": "—",
-        "name": "label",
-        "type": "string"
+        "name": "`label`",
+        "type": "`string`"
       },
       {
         "description": "Sens de tri déclaré par l'intégrateur : `data-order` seul, sans effet sur le rendu.",
         "fallback": "—",
-        "name": "order",
-        "type": "\"asc\" | \"desc\""
+        "name": "`order`",
+        "type": "`\"asc\" | \"desc\"`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "timeline",
@@ -4840,7 +4840,7 @@
         "Après la fermeture, le focus retourne au document. Le renvoyer à un élément précis reste à faire."
       ],
       "screenReader": [
-        "La région a role=\"status\", aria-live=\"polite\" et aria-atomic=\"false\" : seul le toast ajouté est annoncé (WCAG 4.1.3).",
+        "La région a `role=\"status\"`, `aria-live=\"polite\"` et `aria-atomic=\"false\"` : seul le toast ajouté est annoncé (WCAG 4.1.3).",
         "La région porte un nom (label). Le bouton de fermeture a un texte visible (dismissLabel)."
       ]
     },
@@ -4860,20 +4860,20 @@
       {
         "description": "Nom accessible de la région (par exemple « Notifications »).",
         "fallback": "—",
-        "name": "label (obligatoire)",
-        "type": "string"
+        "name": "`label` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Texte du bouton de fermeture de chaque toast (par exemple « Fermer »).",
         "fallback": "—",
-        "name": "dismissLabel (obligatoire)",
-        "type": "string"
+        "name": "`dismissLabel` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "toast",
@@ -4929,7 +4929,7 @@
         "L’infobulle ne reçoit pas le focus."
       ],
       "screenReader": [
-        "L’infobulle porte role=\"tooltip\" et son id.",
+        "L’infobulle porte `role=\"tooltip\"` et son id.",
         "Le script ajoute aria-describedby sur le contrôle : le texte est lu comme description.",
         "Non vérifié : le rendu vocal avec VoiceOver, NVDA et JAWS."
       ]
@@ -4949,20 +4949,20 @@
       {
         "description": "Texte de la description, court et sans balisage.",
         "fallback": "—",
-        "name": "text (obligatoire)",
-        "type": "string"
+        "name": "`text` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Identifiant unique de l'infobulle, cible de `aria-describedby`.",
         "fallback": "—",
-        "name": "id (obligatoire)",
-        "type": "string"
+        "name": "`id` (obligatoire)",
+        "type": "`string`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
-        "name": "class",
-        "type": "string"
+        "name": "`class`",
+        "type": "`string`"
       }
     ],
     "slug": "tooltip",

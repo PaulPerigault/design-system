@@ -3,10 +3,10 @@
  * Tableau des propriétés d'un composant, généré depuis son type `Props` (types, JSDoc, valeurs par
  * défaut) : aucun tableau écrit à la main. Source : `packages/astro/scripts/props`.
  */
-import Table from '@paulperigault/astro/Table.astro';
 import registry from '@paulperigault/astro/registry.json';
 import { resolve } from 'node:path';
 import { propsOf } from '../../../../packages/astro/scripts/props/props.ts';
+import { splitInlineCode } from '../lib/inline-code.ts';
 
 interface Props {
   /** Nom de l'élément du registre (slug de la page). */
@@ -21,18 +21,81 @@ const file = entry?.files.find((candidate) => candidate.path.endsWith('.astro'))
 if (file === undefined) throw new Error(`Composant introuvable dans le registre : ${item}`);
 // Le build de la doc tourne dans apps/docs (npm -w) : les chemins du registre partent de la racine.
 const root = resolve(process.cwd(), '../..');
-const columns = [
-  { key: 'name', label: 'Propriété' },
-  { key: 'type', label: 'Type' },
-  { key: 'fallback', label: 'Défaut' },
-  { key: 'description', label: 'Description' },
-];
-const rows = propsOf(resolve(root, file.path)).map((prop) => ({
-  name: prop.optional ? prop.name : `${prop.name} (obligatoire)`,
-  type: prop.type,
-  fallback: prop.fallback ?? '—',
-  description: prop.description,
-}));
+const labels = ['Propriété', 'Type', 'Défaut', 'Description'];
+const props = propsOf(resolve(root, file.path));
 ---
 
-<Table caption={`Propriétés de ${title}`} columns={columns} rows={rows} rowHeader="name" />
+<!-- Table maison : `Table` n'accepte que du texte, or le type, le défaut et la description
+     contiennent des identifiants à rendre en `<code>` (audit 2026-11, E-3). Mêmes jetons. -->
+<div class="props" tabindex="0" role="region" aria-label={`Propriétés de ${title}`}>
+  <table>
+    <caption>{`Propriétés de ${title}`}</caption>
+    <thead>
+      <tr>
+        {labels.map((label) => (
+          <th scope="col">{label}</th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {props.map((prop) => (
+        <tr>
+          <th scope="row">
+            <code>{prop.name}</code>
+            {prop.optional ? '' : ' (obligatoire)'}
+          </th>
+          <td>
+            <code>{prop.type}</code>
+          </td>
+          <td>{prop.fallback === undefined ? '—' : <code>{prop.fallback}</code>}</td>
+          <td>
+            {splitInlineCode(prop.description).map((part) =>
+              part.code ? <code>{part.text}</code> : part.text,
+            )}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .props {
+    overflow-inline: auto;
+  }
+
+  .props:focus-visible {
+    outline: var(--pp-size-focus-width) solid var(--pp-color-focus);
+    outline-offset: var(--pp-size-focus-offset);
+  }
+
+  table {
+    border-collapse: collapse;
+    inline-size: 100%;
+  }
+
+  caption {
+    text-align: start;
+    font-weight: var(--pp-font-weight-semibold);
+    padding-block-end: var(--pp-space-2xs);
+  }
+
+  th,
+  td {
+    padding-block: var(--pp-space-3xs);
+    padding-inline: var(--pp-space-xs);
+    min-block-size: var(--pp-size-target-min);
+    text-align: start;
+    vertical-align: baseline;
+    border-block-end: var(--pp-size-rule) solid var(--pp-color-line);
+  }
+
+  thead th {
+    font-weight: var(--pp-font-weight-bold);
+    border-block-end-width: var(--pp-size-focus-width);
+  }
+
+  tbody th {
+    font-weight: var(--pp-font-weight-semibold);
+  }
+</style>

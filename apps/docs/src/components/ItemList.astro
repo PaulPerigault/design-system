@@ -1,0 +1,18 @@
+---
+/** Liste à puces d'une fiche de composant ; les segments entre backticks passent en `<code>`. */
+import InlineCode from './InlineCode.astro';
+
+interface Props {
+  items: string[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul>
+  {items.map((item) => (
+    <li>
+      <InlineCode text={item} />
+    </li>
+  ))}
+</ul>

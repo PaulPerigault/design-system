@@ -49,12 +49,12 @@ const snippet = `<Combobox
     screenReader: [
       'Le champ a le rôle combobox, son nom vient du <label for> (WCAG 4.1.2).',
       'aria-expanded indique si la liste est ouverte ; aria-controls la désigne.',
-      'Une zone role="status" annonce le nombre de suggestions (WCAG 4.1.3).',
+      'Une zone `role="status"` annonce le nombre de suggestions (WCAG 4.1.3).',
       'Rendu non testé avec VoiceOver, NVDA ni JAWS : à vérifier avant usage critique.',
     ],
     guaranteed: [
       'Sans script, le champ reste un <input list> relié à un <datalist> natif.',
-      'La saisie filtre sans sélectionner d’option d’elle-même (aria-autocomplete="list").',
+      'La saisie filtre sans sélectionner d’option d’elle-même (`aria-autocomplete="list"`).',
       'Le filtre ignore la casse et les accents : « ege » trouve « Égypte ».',
       'Options d’au moins --pp-size-target-min de haut (WCAG 2.5.8).',
       'L’option active est soulignée en plus du fond coloré (WCAG 1.4.1).',

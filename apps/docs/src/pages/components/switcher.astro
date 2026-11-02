@@ -28,7 +28,7 @@ const snippet = `<Switcher threshold="page" space="l" as="section">
     ],
     screenReader: [
       'Le composant ne pose aucun rôle : les enfants sont lus dans l’ordre du DOM.',
-      'Avec as="ul" ou as="ol", les enfants doivent être des li.',
+      'Avec `as="ul"` ou `as="ol"`, les enfants doivent être des li.',
     ],
     guaranteed: [
       'L’ordre visuel est celui du DOM, quel que soit le seuil (Switcher.astro, aucun order).',
@@ -36,7 +36,7 @@ const snippet = `<Switcher threshold="page" space="l" as="section">
     ],
     integrator: [
       'Vérifier que l’ordre du DOM se lit bien quand les blocs passent sur plusieurs lignes.',
-      'Avec as="ul" ou as="ol", tester la sémantique de liste : display: flex peut la retirer.',
+      'Avec `as="ul"` ou `as="ol"`, tester la sémantique de liste : display: flex peut la retirer.',
       'Tester à la largeur réelle du conteneur, pas seulement à la largeur de la fenêtre.',
     ],
   }}

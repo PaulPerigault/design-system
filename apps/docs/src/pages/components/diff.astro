@@ -25,10 +25,10 @@ const snippet = [
   '---',
   '',
   '<Diff',
-  '  caption="Calcul du total d’un panier"',
+  '  `caption="Calcul du total d’un panier"`',
   '  lines={lines}',
-  '  addedLabel="Ligne ajoutée"',
-  '  removedLabel="Ligne supprimée"',
+  '  `addedLabel="Ligne ajoutée"`',
+  '  `removedLabel="Ligne supprimée"`',
   '/>',
 ].join('\n');
 ---
@@ -48,13 +48,13 @@ const snippet = [
   snippet={snippet}
   a11y={{
     keyboard: [
-      'La région défilante reçoit le focus (tabindex="0") : un contenu large se parcourt au clavier.',
+      'La région défilante reçoit le focus (`tabindex="0"`) : un contenu large se parcourt au clavier.',
       'Le contour de focus visible entoure la région entière, pas chaque ligne.',
     ],
     screenReader: [
       'La région est nommée par la légende (aria-label reprend caption).',
       'Chaque ligne ajoutée ou supprimée commence par son libellé, masqué visuellement.',
-      'Le signe visible est masqué aux lecteurs d’écran (aria-hidden="true").',
+      'Le signe visible est masqué aux lecteurs d’écran (`aria-hidden="true"`).',
     ],
     guaranteed: [
       'Signes +, - et espace visibles : l’information ne repose pas sur la couleur seule.',

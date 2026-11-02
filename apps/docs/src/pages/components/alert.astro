@@ -13,7 +13,7 @@ const snippet = `<Alert tone="failed" toneLabel="Échec" title="Contrôle de tai
   summary="Alert met un message en avant, avec un ton écrit en clair et une annonce optionnelle."
   use={[
     'Signaler un résultat, un avertissement ou une information qui doit être lu avec la page.',
-    'Annoncer un message inséré après le chargement, avec live="polite" ou live="assertive".',
+    'Annoncer un message inséré après le chargement, avec `live="polite"` ou `live="assertive"`.',
   ]}
   avoid={[
     'Pour un message ajouté après le chargement sans live : aucun rôle n’est posé, rien n’est annoncé.',
@@ -27,11 +27,11 @@ const snippet = `<Alert tone="failed" toneLabel="Échec" title="Contrôle de tai
     ],
     screenReader: [
       'Sans live, aucun rôle : le message est lu dans le flux de la page.',
-      'live="polite" donne role="status" ; live="assertive" donne role="alert", qui interrompt.',
+      '`live="polite"` donne `role="status"` ; `live="assertive"` donne `role="alert"`, qui interrompt.',
       'L’icône est masquée (aria-hidden) : le ton est lu par toneLabel.',
     ],
     guaranteed: [
-      'L’icône est décorative : aria-hidden="true" et focusable="false".',
+      'L’icône est décorative : `aria-hidden="true"` et `focusable="false"`.',
       'Le ton est écrit en clair : la couleur ne porte jamais seule l’information.',
       'En forced-colors, le filet et l’icône passent en CanvasText.',
     ],

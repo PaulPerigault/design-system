@@ -46,7 +46,7 @@ const packageRows = measure.packages.map(({ name, archive, unpacked }) => ({
   rowHeader="page"
 />
 <p>
-  Site : {measure.files} fichiers publiés. Le plus gros fichier est
+  Site : {measure.files} fichiers publiés. Le plus gros fichier est{' '}
   <code>{measure.largest.path}</code>, de {kib(measure.largest.bytes)}.
 </p>
 <Table

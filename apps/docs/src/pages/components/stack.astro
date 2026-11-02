@@ -26,7 +26,7 @@ const snippet = `<Stack space="l" as="section">
     keyboard: ['Le composant n’ajoute aucun élément interactif et ne modifie pas le focus.'],
     screenReader: [
       'Le composant n’ajoute ni rôle ni libellé.',
-      'Avec as="ul" ou as="ol", la liste reste lue comme liste : les puces ne sont pas retirées.',
+      'Avec `as="ul"` ou `as="ol"`, la liste reste lue comme liste : les puces ne sont pas retirées.',
     ],
     guaranteed: [
       'Espacement par margin-block et tokens --pp-space-*, sans marge avant le premier enfant.',
@@ -34,7 +34,7 @@ const snippet = `<Stack space="l" as="section">
     ],
     integrator: [
       'Garder dans le DOM l’ordre de lecture voulu : le composant ne le réordonne pas.',
-      'Avec as="ul", ne mettre que des li comme enfants directs.',
+      'Avec `as="ul"`, ne mettre que des li comme enfants directs.',
     ],
   }}
   evidence={[

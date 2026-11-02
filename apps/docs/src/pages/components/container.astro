@@ -14,7 +14,7 @@ const snippet = `<Container as="section" width="measure" gutter="l">
   summary="Container centre son contenu dans l’axe d’inline, limite sa largeur et réserve une gouttière de chaque côté."
   use={[
     'Borner la largeur d’une page ou d’une section, centrée horizontalement.',
-    'Limiter un texte à la mesure de lecture avec width="measure".',
+    'Limiter un texte à la mesure de lecture avec `width="measure"`.',
   ]}
   avoid={[
     'Pour une mise en page à plusieurs colonnes : utiliser Grid, Sidebar ou Switcher.',
@@ -24,7 +24,7 @@ const snippet = `<Container as="section" width="measure" gutter="l">
   a11y={{
     keyboard: ['Le composant ne prend pas le focus et ne change pas l’ordre de tabulation.'],
     screenReader: [
-      'Avec as="main", le repère main est exposé ; as="section" ne crée un repère que s’il porte un nom.',
+      'Avec `as="main"`, le repère main est exposé ; `as="section"` ne crée un repère que s’il porte un nom.',
       'Le composant n’ajoute ni rôle ni libellé.',
     ],
     guaranteed: [
