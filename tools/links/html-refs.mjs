@@ -18,7 +18,8 @@ export function attribute(attrs, name) {
   return match ? (match[1] ?? match[2] ?? match[3]) : undefined;
 }
 
-const decode = (value) => value.replaceAll('&amp;', '&').replaceAll('&#38;', '&');
+// Une seule passe : décoder `&amp;` puis `&#38;` en deux temps décoderait deux fois (CodeQL).
+const decode = (value) => value.replace(/&(?:amp|#38);/g, '&');
 
 /** @returns {{ tag: string, url: string }[]} références (`href`, `src`) d'une page */
 export function extractLinks(html) {
