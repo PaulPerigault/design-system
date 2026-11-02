@@ -865,6 +865,11 @@
       "date": "2026-11-02",
       "decision": "Plafond de 12 skills : option A de Paul (#232, « Refs #232 »). `encre-architecture` retiré (le fond est dans ADR-0006 ; l'entrée du registre garde le verdict « retiré, doublon d'ADR-0006 », 2026-11-02) ; `encre-accessibilite` ajouté, 150 lignes au plus. Candidat `accessibility` de web-quality-skills (MIT, Addy Osmani, SHA `afa8da94`) relu avec la grille de D-116 : aucun hook, télémétrie ni binaire ; seules signalées l'exécution de `npx lighthouse` et l'installation globale d'`axe`, neutralisées ; le script `analyze.sh` du dépôt voisin n'est pas repris. Le skill est un texte original écrit à partir des critères WCAG 2.2 et des règles du dépôt (`role=\"list\"`, noms de `nav`, CSP sans `style`), avec la seule idée de l'ordre de gravité reprise de la source ; `PROVENANCE.md` conserve la licence MIT. Les numéros de critères sont cités de la norme sans réouverture de la page W3C : `[À VÉRIFIER]` écrit dans le skill. Contrôle mensuel : six lignes suivies. Écartée : écrire le skill sans relire le candidat. Retour arrière : revert de la PR.",
       "id": "D-125"
+    },
+    {
+      "date": "2026-11-02",
+      "decision": "Descriptions de skills à 300 caractères au plus (#232, « Closes #232 »), décision de Paul. Les sept descriptions d'origine (374 à 475 caractères) passent à 241 à 265 : le « quand charger » et les formules de déclenchement sont conservés, les phrases « Propre au projet » et les listes de dossiers ou d'issues sont retirées (le corps du skill les dit). Les descriptions de `encre-accessibilite`, `encre-mobile-natif` et `encre-veille` perdent leur « : » (un deux-points suivi d'une espace casse un scalaire YAML simple ; le chargeur actuel le tolère, une autre implémentation pourrait refuser). Mesure : 12 skills, plus longue description 289 caractères. Règle D-116 tenue sans exception. Écartée : laisser les anciennes descriptions (coût de contexte permanent). Retour arrière : revert de la PR.",
+      "id": "D-126"
     }
   ]
 }

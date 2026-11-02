@@ -1,6 +1,6 @@
 ---
 name: encre-veille
-description: Chercher, évaluer et installer un skill tiers sous la règle de provenance (D-116) et le plafond de 12 : manque constaté, correction répétée de Paul, nouvelle technologie, revue mensuelle. « veille de skills », « un skill pour ça ? ».
+description: Chercher, évaluer et installer un skill tiers sous la règle de provenance (D-116) et le plafond de 12 ; manque constaté, correction répétée de Paul, nouvelle technologie, revue mensuelle. « veille de skills », « un skill pour ça ? ».
 ---
 
 # Encre : veille de skills

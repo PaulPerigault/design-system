@@ -1,6 +1,6 @@
 ---
 name: encre-mobile
-description: Revue mobile du design system de Paul Perigault. À charger pour relire ou écrire un composant, une page, une mise en page, un graphique, une feuille d'impression, un `viewport`, une cible tactile, une animation, un test de matrice (`apps/docs/e2e/`) ; à la demande « revue mobile », « mobile Encre », « ça tient à 375 px ? », « réseau lent ». Propre au projet, web statique.
+description: Revue mobile d'un composant, d'une mise en page, d'un graphique, impression, `viewport`, cible tactile, animation, matrice `apps/docs/e2e/`. À charger pour relire ou écrire ces sujets ; « revue mobile », « ça tient à 375 px ? », « réseau lent ». Web statique.
 ---
 
 # Encre : revue mobile

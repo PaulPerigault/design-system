@@ -1,6 +1,6 @@
 ---
 name: encre-accessibilite
-description: Revue d'accessibilité WCAG 2.2 AA d'un composant ou d'une page : sémantique, noms accessibles, clavier et focus, formulaires, liens, langue, mouvement. À charger pour relire ou écrire du balisage ; « revue a11y », « accessibilité Encre ».
+description: Revue d'accessibilité WCAG 2.2 AA d'un composant ou d'une page ; sémantique, noms accessibles, clavier et focus, formulaires, liens, langue, mouvement. À charger pour relire ou écrire du balisage ; « revue a11y », « accessibilité Encre ».
 ---
 
 # Encre : revue d'accessibilité

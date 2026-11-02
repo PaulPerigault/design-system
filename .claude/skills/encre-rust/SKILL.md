@@ -1,6 +1,6 @@
 ---
 name: encre-rust
-description: Conventions Rust et WebAssembly du design system de Paul Perigault. À charger pour écrire ou relire un crate (`crates/pp-color`, `crates/pp-data`, crates `-wasm`), un `Cargo.toml`, `rust-toolchain.toml`, `deny.toml`, un test de parité TypeScript/Rust, un `proptest`, le build ou le poids d'un `.wasm`, ou les étapes #88, #89, #90, #98, #99 ; à la demande « revue Rust », « Rust Encre », « conventions des crates ». Propre au projet.
+description: Conventions Rust et WebAssembly pour les crates `pp-color`, `pp-data` et `-wasm`, `Cargo.toml`, `deny.toml`, parité TypeScript/Rust, `proptest`, poids d'un `.wasm`. À charger pour écrire ou relire ces fichiers ; « revue Rust », « conventions des crates ».
 ---
 
 # Encre : conventions Rust et WebAssembly

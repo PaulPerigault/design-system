@@ -1,6 +1,6 @@
 ---
 name: encre-greenops
-description: Revue de sobriété numérique (GreenOps) du design system de Paul Perigault. À charger pour relire ou écrire du JavaScript client, une police, une image, une dépendance d'exécution, un budget ou une mesure de poids, une estimation carbone, l'usage de l'offre gratuite Cloudflare (`tools/benchmark/`, `apps/docs/e2e/perf.spec.ts`, #102) ; à la demande « revue greenops », « sobriété Encre », « combien pèse cette page ». Propre au projet, web statique.
+description: Sobriété numérique (GreenOps) pour JavaScript client, polices, images, dépendances d'exécution, budgets et mesures de poids, estimation carbone, offre gratuite Cloudflare. À charger pour relire ou écrire ces sujets ; « revue greenops », « combien pèse cette page ».
 ---
 
 # Encre : revue GreenOps

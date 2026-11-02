@@ -1,6 +1,6 @@
 ---
 name: encre-voix
-description: Voix écrite du design system de Paul Perigault, en français. À déclencher pour écrire, réécrire ou relire un texte du site de documentation, du README, d'une page d'auteur, d'une description de paquet ou d'un message public du projet ; à la demande « voix Encre », « réécris ce texte », « fais-le moins IA », « accroche de page ». Propre au projet. Complète la revue visuelle `encre-design`.
+description: Voix écrite en français pour le texte du site, README, page d'auteur, description de paquet, message public. À charger pour écrire, réécrire ou relire un texte ; « voix Encre », « réécris ce texte », « fais-le moins IA », « accroche de page ».
 ---
 
 # Encre : voix écrite
