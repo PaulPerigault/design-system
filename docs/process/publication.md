@@ -34,7 +34,7 @@ Bon : `permissions: {}` au niveau du workflow, `id-token: write` et `contents: r
 
 ## Risques trouvés
 
-1. **Gabarits de `create` : version `0.0.0`.** `packages/create/templates/versions.json` fixe `@paulperigault/css`, `tokens`, `guards`, `mcp` à `0.0.0` et n'est mis à jour par aucun mécanisme de release. Après la première vraie version, `pp-create create` produirait un site qui dépend de la `0.0.0` d'amorce, un paquet vide. Corrigé par une synchronisation à `prepack` (PR suivante de #236).
+1. **Gabarits de `create` : version `0.0.0`.** `packages/create/templates/versions.json` fixe `@paulperigault/css`, `tokens`, `guards`, `mcp` à `0.0.0` et n'est mis à jour par aucun mécanisme de release. Après la première vraie version, `pp-create create` produirait un site qui dépend de la `0.0.0` d'amorce, un paquet vide. Corrigé par une synchronisation à `prepack` (D-129).
 2. **Ordre de publication.** `publish-new.mjs` publie par ordre alphabétique, non par ordre de dépendances : npm ne l'exige pas (les dépendances se résolvent à l'installation), mais pendant quelques minutes un paquet est installable sans son amont.
 3. **Jeton de release-please.** `release.yml` lit le secret `RELEASE_PLEASE_TOKEN` : [À VÉRIFIER] qu'il existe (lecture des secrets non faite ici).
 4. **npm ≥ 11.5.1** requis pour la publication de confiance : npm 11.16.0 ici ; [À VÉRIFIER] la version fournie par l'image du workflow.
