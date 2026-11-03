@@ -46,8 +46,10 @@ l'enregistrement DNS `design.paulperigault.dev`.
 ## 3. Trusted publisher npm (et `0.0.0` d'amorce si nécessaire)
 
 Le trusted publisher se déclare sur la page de réglages de chaque paquet sur npmjs.com
-(<https://www.npmjs.com/package/@paulperigault/tokens/access>). Si cette page n'existe pas encore
-(paquet jamais publié), publier d'abord une `0.0.0` vide, **depuis un dossier hors du dépôt** :
+(<https://www.npmjs.com/package/@paulperigault/tokens/access>). Un paquet doit déjà exister sur npm
+pour l'avoir (documentation `npm trust`, lue le 2026-11-03) : publier d'abord une `0.0.0` vide,
+**depuis un dossier hors du dépôt**. L'ordre complet, la fenêtre de deux jours après la configuration
+et l'environnement `npm-publish` à créer : `docs/process/publication.md`.
 
 ```shell
 for name in tokens css astro dataviz guards create mcp color data; do

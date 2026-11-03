@@ -957,6 +957,13 @@
       "decision": "Visuel : une PR de rendu ne capture que deux des trois largeurs de référence (#256, « Closes #256 », question 9, option A). `VISUAL_PR_PROJECTS` (360 et 1440 px) dans `devices.ts` ; `visual.yml` reçoit l'entrée `matrix` (`pr` par défaut, `full`), le cron du lundi force `full`, un appel de `ci` n'a pas d'entrée donc `pr` ; `tools/checks/visual-projects.mjs` (testé) donne au workflow les drapeaux `--project` depuis `devices.ts`. Les références commitées restent celles de la matrice complète (360, 820, 1440) : une PR en compare 152 sur 228, une régénération `update=true` pèse 40 154 189 o au lieu de 61 617 398 o (34,8 % de moins). Écart avec la consigne : 375 et 1280 px n'ont aucune référence (ce sont les appareils de l'e2e) ; 360 et 1440 couvrent les mêmes mises en page (sous 27 rem, au-dessus du plafond de 72 rem), sans ajouter de PNG à l'historique. Le job `visuel` et `ci` ne changent pas de forme. Aucun budget d'images touché.",
       "id": "D-141",
       "rollback": "Retirer l'entrée `matrix` et `VISUAL_PR_PROJECTS` ; `visual.yml` relit `VISUAL_PROJECTS` seul."
+    },
+    {
+      "alternative": "`release-as` par paquet : clé dépréciée dans le schéma, à retirer après la première version. Un commit `Release-As` : pas de trace dans la config.",
+      "date": "2026-11-03",
+      "decision": "Pré-publication, deuxième passe (#258, « Closes #258 »). Rejeu : `check:pack` vert, neuf tarballs installés ensemble dans un projet vierge hors du dépôt (289 paquets, imports et `pp-mcp --self-test` ok, `pp-create create` génère un site), tous les chemins d'export et `bin` des neuf paquets existent. Faux dans le dépôt : la PR #40 annonçait 1.0.0 pour les neuf paquets (aucun tag, donc version initiale par défaut de release-please) ; `\"initial-version\": \"0.1.0\"` ajouté à `release-please-config.json`, avec `release-config.test.mjs` (neuf paquets en config, manifeste et dossiers, tous en 0.x ; `packages/effect`, privé, exclu). Réponse écrite dans `publication.md` d'après la documentation npm lue le 2026-11-03 : un trusted publisher exige que le paquet existe déjà (`npm trust`), donc amorce `0.0.0` à la main ; une configuration neuve doit réussir sa première publication dans les 2 jours, donc la configurer juste avant de fusionner #40. L'environnement GitHub `npm-publish` n'existe pas (0 environnement) : étape de Paul. Rien publié, aucun secret lu.",
+      "id": "D-142",
+      "rollback": "Retirer `initial-version` ; #40 repasse à 1.0.0 au prochain run de release-please."
     }
   ]
 }
