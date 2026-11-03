@@ -32,8 +32,8 @@ export const STATEMENT: AccessibilityStatement = {
   standard: 'RGAA 4.1',
   conformity: 'non évalué',
   rate: null,
-  date: '',
-  contact: '',
+  date: '2026-11-03',
+  contact: 'contact@paulperigault.fr',
   appeal: {
     name: 'Défenseur des droits',
     url: 'https://formulaire.defenseurdesdroits.fr',

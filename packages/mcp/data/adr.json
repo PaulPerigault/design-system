@@ -978,6 +978,13 @@
       "decision": "Bandeaux de brouillon retirés des pages validées par Paul (#262, « Closes #262 »). Accueil, architecture et ADR 0001 à 0004 et 0006 à 0008 : aucun mot modifié. Le bandeau reste sur `/auteur/`, `/confidentialite/`, `/mentions-legales/`, `/declaration-accessibilite/` (champs à compléter) et sur les ADR 0009 et 0010 (non validées). L'heuristique `isDraft` (première personne) est complétée par la liste `VALIDATED` de `lib/adr.ts` (`needsReview`, 1 test). `DraftNotice` conservé : cinq pages l'utilisent. Références Visuel régénérées une fois (360 et 1440 px, D-141). Budgets et garde-fous inchangés.",
       "id": "D-144",
       "rollback": "Restaurer `index.astro`, `architecture.astro`, `[id].astro` et `adr.ts`."
+    },
+    {
+      "alternative": "Publier une adresse d'éditeur ; affirmer « hors champ » sans lire le décret et la directive.",
+      "date": "2026-11-03",
+      "decision": "Pages légales renseignées sans rien inventer (#264, « Refs #264 »). Contact contact@paulperigault.fr ; hébergeur Cloudflare, Inc., 101 Townsend St, San Francisco (adresse lue sur sa politique de confidentialité le 2026-11-03, téléphone et durée des journaux [À VÉRIFIER]) ; date de la déclaration d'accessibilité 2026-11-03 (contrôles automatisés, aucun taux, aucun audit) ; cadre légal paraphrasé d'après l'article 47 lu, champ non établi donc démarche volontaire. Identité de l'éditeur : ⚖️ (options A et B) dans `tmp/questions-paul.md`, aucune adresse publiée. Bandeau retiré de `/auteur/` et `/accessibilite/` seulement. Budgets et garde-fous inchangés.",
+      "id": "D-145",
+      "rollback": "Restaurer `legal.ts`, `a11y-statement.ts` et les cinq pages."
     }
   ]
 }

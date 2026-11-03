@@ -1,5 +1,4 @@
 ---
-import Alert from '@paulperigault/astro/Alert.astro';
 import Table from '@paulperigault/astro/Table.astro';
 import DocsLayout from '../layouts/DocsLayout.astro';
 
@@ -31,9 +30,6 @@ const ROWS = CHOICES.map(([choix, statut, preuve]) => ({ choix, statut, preuve }
   description="Engagements d’accessibilité du design system : critères WCAG 2.2 visés, ce qui est testé par axe et Playwright, ce qui reste une convention."
 >
   <div class="docs-prose">
-    <Alert tone="degraded" toneLabel="Brouillon à relire par Paul">
-      <p>Ce texte n’a pas encore été relu. Le champ de contact reste à compléter.</p>
-    </Alert>
     <h1>Accessibilité</h1>
     <p>
       Cette page décrit ce que le design system vise, ce qui est testé et où en est la conformité.
@@ -75,13 +71,13 @@ const ROWS = CHOICES.map(([choix, statut, preuve]) => ({ choix, statut, preuve }
 
     <h3>Établissement de la déclaration</h3>
     <p>
-      Date de l’auto-évaluation : 23 octobre 2026. Elle repose sur les contrôles automatisés
+      Date de l’auto-évaluation : 3 novembre 2026. Elle repose sur les contrôles automatisés
       ci-dessus. Les critères qui ne se testent pas automatiquement n’ont pas été évalués.
     </p>
 
     <h3>Retour d’information et contact</h3>
     <p>Pour signaler un problème d’accessibilité, écrivez au contact ci-dessous.</p>
-    <p>contact : [à compléter par Paul]</p>
+    <p>contact : contact@paulperigault.fr</p>
 
     <h3>Voies de recours</h3>
     <p>

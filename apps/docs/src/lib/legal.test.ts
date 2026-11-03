@@ -12,7 +12,7 @@ const COMPLETE: Legal = {
 
 describe('legalProblems', () => {
   it('liste les champs vides de la configuration par défaut', () => {
-    expect(legalProblems(LEGAL)).toEqual(['host', 'contact', 'licenseContent']);
+    expect(legalProblems(LEGAL)).toEqual(['licenseContent']);
   });
 
   it('renvoie une liste vide quand tous les champs sont renseignés', () => {

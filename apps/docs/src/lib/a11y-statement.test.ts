@@ -9,13 +9,12 @@ const COMPLETE: AccessibilityStatement = {
 };
 
 describe('statementProblems', () => {
-  it('détecte les champs vides de la configuration par défaut', () => {
-    expect(statementProblems(STATEMENT)).toEqual(['date', 'contact']);
+  it('ne signale aucun champ vide dans la configuration publiée', () => {
+    expect(statementProblems(STATEMENT)).toEqual([]);
   });
 
-  it('accepte un champ rempli et ne le signale plus', () => {
-    const statement = { ...STATEMENT, contact: 'contact@exemple.test' };
-    expect(statementProblems(statement)).toEqual(['date']);
+  it('signale un champ vidé', () => {
+    expect(statementProblems({ ...STATEMENT, contact: '' })).toEqual(['contact']);
   });
 
   it('renvoie une liste vide quand tous les champs sont renseignés', () => {
