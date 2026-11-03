@@ -1,4 +1,5 @@
 import { GLOSSARY_DEV } from './glossary-dev';
+import { GLOSSARY_OUTILS } from './glossary-outils';
 import { GLOSSARY_PROJECT } from './glossary-project';
 import { GLOSSARY_WEB } from './glossary-web';
 
@@ -15,4 +16,5 @@ export const GLOSSARY: readonly Entry[] = [
   ...GLOSSARY_WEB,
   ...GLOSSARY_PROJECT,
   ...GLOSSARY_DEV,
+  ...GLOSSARY_OUTILS,
 ].sort(byTerm);
