@@ -4,7 +4,7 @@ import { join, posix, sep } from 'node:path';
 import process from 'node:process';
 import { linkTerms, term } from '../../../tools/typography/term-links.mjs';
 
-/** Termes ajoutés au glossaire par #209 : la liste de l'audit (M-8). */
+/** Termes liés au glossaire : la liste de l'audit (#209, M-8) et les outils (#211). */
 export const TERMS = [
   term('apca', ['APCA']),
   term('ci', ['CI']),
@@ -17,6 +17,14 @@ export const TERMS = [
   term('props', ['props']),
   term('slot', ['slot', 'slots']),
   term('workflow', ['workflow', 'workflows']),
+  // « axe » seul est aussi un mot français (axe vertical) : seul le nom du paquet est lié.
+  term('axe-core', ['axe-core']),
+  term('brotli', ['brotli']),
+  term('gzip', ['gzip']),
+  term('oidc', ['OIDC']),
+  term('playwright', ['Playwright']),
+  term('svg', ['SVG']),
+  term('trusted-publishing', ['trusted publishing']),
 ];
 
 const ARGV_START = 2;
