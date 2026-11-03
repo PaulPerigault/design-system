@@ -971,6 +971,13 @@
       "decision": "Nettoyage des fichiers inutilisés (#260, « Closes #260 »). Inventaire en lecture seule des 1 735 fichiers suivis (références par chemin, nom et radical ; importeurs des sources ; scripts npm ; assets ; fichiers vides ; doublons), rapport `docs/process/nettoyage-2026-11.md`. Aucun fichier suivi supprimé : aucun n'est à la fois prouvé inutilisé et non historique. Les 126 fiches de `tasks/` (613 Ko, 125 sans référence par chemin) sont conservées : historiques (leurs identifiants sont cités dans les décisions, le journal et des tests) et le dossier est lu par `batch.ts`. Local : `tmp/` de 148 Mo à 3 fichiers, branche `chore/lockfile-bin-dist` supprimée (squash équivalent dans `main`, `git cherry`), `git gc` (`.git` de 443 à 316 Mo), deux stashs laissés avec leur commande de suppression pour Paul. Retrait du « [À VÉRIFIER] » devenu faux de `publication.md` (#40 annonce 0.1.0). Question 14 close : les PR de rendu gardent 360 et 1440 px (option A, D-141).",
       "id": "D-143",
       "rollback": "Les fichiers de `tmp/` ne sont pas récupérables ; tout le reste est dans l'historique git."
+    },
+    {
+      "alternative": "Supprimer le composant ; retirer la mention « Paul » des ADR (modifierait un texte validé).",
+      "date": "2026-11-03",
+      "decision": "Bandeaux de brouillon retirés des pages validées par Paul (#262, « Closes #262 »). Accueil, architecture et ADR 0001 à 0004 et 0006 à 0008 : aucun mot modifié. Le bandeau reste sur `/auteur/`, `/confidentialite/`, `/mentions-legales/`, `/declaration-accessibilite/` (champs à compléter) et sur les ADR 0009 et 0010 (non validées). L'heuristique `isDraft` (première personne) est complétée par la liste `VALIDATED` de `lib/adr.ts` (`needsReview`, 1 test). `DraftNotice` conservé : cinq pages l'utilisent. Références Visuel régénérées une fois (360 et 1440 px, D-141). Budgets et garde-fous inchangés.",
+      "id": "D-144",
+      "rollback": "Restaurer `index.astro`, `architecture.astro`, `[id].astro` et `adr.ts`."
     }
   ]
 }
