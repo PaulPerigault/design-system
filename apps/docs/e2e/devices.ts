@@ -57,3 +57,10 @@ export const VISUAL_PROJECTS: readonly string[] = [
   'matrice-tablette-820x1180',
   'matrice-bureau-1440x900',
 ];
+
+/**
+ * Sous-ensemble capturé sur une PR de rendu (D-141) : le plus étroit et le plus large des projets
+ * ci-dessus. Les références commitées restent celles de VISUAL_PROJECTS ; seuls le cron du lundi et
+ * `matrix=full` capturent aussi la tablette.
+ */
+export const VISUAL_PR_PROJECTS: readonly string[] = ['matrice-360x800', 'matrice-bureau-1440x900'];

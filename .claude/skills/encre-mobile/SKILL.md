@@ -59,7 +59,7 @@ vient ensuite. Le réseau et le processeur se **mesurent** : ce skill ne pose au
 - Tablette : `tablette-820x1180` (1). Bureaux : `1280x800`, `1440x900`, `1920x1080` (3).
 - `360x800-mouvement-reduit` : le plus petit téléphone avec `reducedMotion: 'reduce'` (1).
 - Tactile : contexte mobile, densité 3 (2 pour la tablette). Chaque entrée est un projet
-  Playwright `matrice-<nom>`. Régression visuelle : 360, 820 et 1440 seulement (`VISUAL_PROJECTS`).
+  Playwright `matrice-<nom>`. Régression visuelle : 360, 820 et 1440 (`VISUAL_PROJECTS`) ; une PR de rendu : 360 et 1440 (D-141).
 - CI : une PR qui touche le rendu lance `chromium`, `matrice-375x667` et `matrice-bureau-1280x800` ;
   la matrice entière tourne chaque lundi et à la demande (`ci.yml`, D-029). Un doute de mise en page : lancer
   `npm run e2e -- --project=matrice-360x800`.
