@@ -964,6 +964,13 @@
       "decision": "Pré-publication, deuxième passe (#258, « Closes #258 »). Rejeu : `check:pack` vert, neuf tarballs installés ensemble dans un projet vierge hors du dépôt (289 paquets, imports et `pp-mcp --self-test` ok, `pp-create create` génère un site), tous les chemins d'export et `bin` des neuf paquets existent. Faux dans le dépôt : la PR #40 annonçait 1.0.0 pour les neuf paquets (aucun tag, donc version initiale par défaut de release-please) ; `\"initial-version\": \"0.1.0\"` ajouté à `release-please-config.json`, avec `release-config.test.mjs` (neuf paquets en config, manifeste et dossiers, tous en 0.x ; `packages/effect`, privé, exclu). Réponse écrite dans `publication.md` d'après la documentation npm lue le 2026-11-03 : un trusted publisher exige que le paquet existe déjà (`npm trust`), donc amorce `0.0.0` à la main ; une configuration neuve doit réussir sa première publication dans les 2 jours, donc la configurer juste avant de fusionner #40. L'environnement GitHub `npm-publish` n'existe pas (0 environnement) : étape de Paul. Rien publié, aucun secret lu.",
       "id": "D-142",
       "rollback": "Retirer `initial-version` ; #40 repasse à 1.0.0 au prochain run de release-please."
+    },
+    {
+      "alternative": "Supprimer les 126 fiches de `tasks/` : perte de lecture des spécifications, ids cités sans cible ; à décider par Paul.",
+      "date": "2026-11-03",
+      "decision": "Nettoyage des fichiers inutilisés (#260, « Closes #260 »). Inventaire en lecture seule des 1 735 fichiers suivis (références par chemin, nom et radical ; importeurs des sources ; scripts npm ; assets ; fichiers vides ; doublons), rapport `docs/process/nettoyage-2026-11.md`. Aucun fichier suivi supprimé : aucun n'est à la fois prouvé inutilisé et non historique. Les 126 fiches de `tasks/` (613 Ko, 125 sans référence par chemin) sont conservées : historiques (leurs identifiants sont cités dans les décisions, le journal et des tests) et le dossier est lu par `batch.ts`. Local : `tmp/` de 148 Mo à 3 fichiers, branche `chore/lockfile-bin-dist` supprimée (squash équivalent dans `main`, `git cherry`), `git gc` (`.git` de 443 à 316 Mo), deux stashs laissés avec leur commande de suppression pour Paul. Retrait du « [À VÉRIFIER] » devenu faux de `publication.md` (#40 annonce 0.1.0). Question 14 close : les PR de rendu gardent 360 et 1440 px (option A, D-141).",
+      "id": "D-143",
+      "rollback": "Les fichiers de `tmp/` ne sont pas récupérables ; tout le reste est dans l'historique git."
     }
   ]
 }
