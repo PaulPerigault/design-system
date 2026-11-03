@@ -1,6 +1,6 @@
 # Publication npm : pré-vol à blanc et actions de Paul
 
-Issue : [#236](https://github.com/PaulPerigault/design-system/issues/236). Mesuré le 2026-11-02, sur `main`, Node 24.18.0, npm 11.16.0. Rien n'a été publié : seuls `npm pack` (dry-run et tarballs locaux hors du dépôt), `npm install` de ces tarballs dans un projet vierge et des lectures. Aucun secret lu ni écrit.
+Issues : [#236](https://github.com/PaulPerigault/design-system/issues/236) (mesure du 2026-11-02) et [#258](https://github.com/PaulPerigault/design-system/issues/258) (rejeu et trusted publisher du 2026-11-03). Mesuré sur `main`, Node 24.18.0, npm 11.16.0. Rien n'a été publié : seuls `npm pack` (dry-run et tarballs locaux hors du dépôt), `npm install` de ces tarballs dans un projet vierge et des lectures. Aucun secret lu ni écrit.
 
 ## Les neuf paquets
 
@@ -36,8 +36,11 @@ Bon : `permissions: {}` au niveau du workflow, `id-token: write` et `contents: r
 
 1. **Gabarits de `create` : version `0.0.0`.** `packages/create/templates/versions.json` fixe `@paulperigault/css`, `tokens`, `guards`, `mcp` à `0.0.0` et n'est mis à jour par aucun mécanisme de release. Après la première vraie version, `pp-create create` produirait un site qui dépend de la `0.0.0` d'amorce, un paquet vide. Corrigé par une synchronisation à `prepack` (D-129).
 2. **Ordre de publication.** `publish-new.mjs` publie par ordre alphabétique, non par ordre de dépendances : npm ne l'exige pas (les dépendances se résolvent à l'installation), mais pendant quelques minutes un paquet est installable sans son amont.
-3. **Jeton de release-please.** `release.yml` lit le secret `RELEASE_PLEASE_TOKEN` : [À VÉRIFIER] qu'il existe (lecture des secrets non faite ici).
-4. **npm ≥ 11.5.1** requis pour la publication de confiance : npm 11.16.0 ici ; [À VÉRIFIER] la version fournie par l'image du workflow.
+3. **Jeton de release-please.** Le secret `RELEASE_PLEASE_TOKEN` existe (liste des noms de secrets du dépôt, 2026-11-03 ; la valeur n'est pas lue).
+4. **npm ≥ 11.5.1** requis pour la publication de confiance : `setup-node` installe la dernière 24.x (`.nvmrc`), npm 11.16.0 avec Node 24.18.0 ici ; déduit, [À VÉRIFIER] dans le journal du premier run.
+5. **La PR de release-please (#40) proposait 1.0.0 pour les neuf paquets** (relevé le 2026-11-03), contre la règle « 0.x ». Cause : aucun tag ni release n'existe (`git tag -l` et `gh release list` vides), donc release-please applique sa version initiale par défaut, et le manifeste à 0.0.0 n'y change rien. Corrigé par `"initial-version": "0.1.0"` dans `release-please-config.json` (clé du schéma officiel : « Releases the initial library with a specified version »), avec un test (`tools/release/release-config.test.mjs`). Non rejoué ici : release-please exige un jeton GitHub. **Après la fusion de cette correction, relire #40 : elle doit annoncer 0.1.0 ; si elle affiche encore 1.0.0, ne pas la fusionner.** [À VÉRIFIER]
+6. **L'environnement GitHub `npm-publish` n'existe pas** (API `environments` : `total_count` 0, 2026-11-03). Le commentaire de `release.yml` le dit créé par IaC (dépôt du portfolio, `apply` interdit à l'assistant). Sans lui, GitHub en crée un sans protection au premier run : le nom correspondrait, sans restriction de branche. À créer par Paul avant de configurer le trusted publisher (étape 4 ci-dessous).
+7. **Fenêtre de deux jours** : voir la réponse ci-dessous ; configurer les trusted publishers juste avant de fusionner #40.
 
 ## Miroir GitHub Packages (facultatif, #130)
 
@@ -62,12 +65,42 @@ Créer le jeton sur GitHub (Settings, Developer settings, Personal access tokens
 
 ## Actions manuelles de Paul, dans l'ordre
 
-1. Compte npm avec double authentification (`npm profile enable-2fa auth-and-writes`), sur l'organisation ou le compte qui possède le scope `@paulperigault`.
-2. Vérifier le scope : `npm view @paulperigault/tokens` doit répondre `404` (rien n'est pris). Idem pour les huit autres.
-3. Amorce `0.0.0` si la page de réglages du paquet n'existe pas encore : une `0.0.0` vide par paquet, **depuis un dossier hors du dépôt** (boucle sur les **neuf** noms : `docs/manual-steps.md` §3).
-4. Trusted publisher, paquet par paquet (neuf), sur `https://www.npmjs.com/package/@paulperigault/<nom>/access` : organisation `PaulPerigault`, dépôt `design-system`, workflow `release.yml`, environnement `npm-publish`.
-5. Vérifier le secret `RELEASE_PLEASE_TOKEN` et l'environnement `npm-publish` du dépôt.
-6. Relire puis fusionner la PR de release-please (#40) : versions, changelog, `ci` verte. La fusion déclenche `release.yml`.
-7. Après la publication : `npm view @paulperigault/<nom>` répond pour les neuf, la provenance est affichée, `npm audit signatures` dans un projet qui les installe.
+**Réponse : un trusted publisher ne peut pas être configuré avant la première publication ; l'amorce `0.0.0` publiée à la main est nécessaire.** Sources lues par WebFetch le 2026-11-03 (texte résumé, citations telles que rendues) : [Trusted publishing](https://docs.npmjs.com/trusted-publishers), [`npm trust`](https://docs.npmjs.com/cli/v11/commands/npm-trust), [Generating provenance statements](https://docs.npmjs.com/generating-provenance-statements), [schéma de release-please](https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json).
 
-Jamais par l'assistant : `npm publish`, `apply`, réglage de compte.
+- `npm trust` : « The package you're configuring must already exist on the npm registry. »
+- Trusted publishing : la configuration se fait dans « your package settings on npmjs.com » ; la page ne dit pas qu'un paquet absent du registre puisse l'avoir. Je n'ai pas pu ouvrir la page de réglages sans connexion : l'impossibilité côté interface n'est pas observée, [À VÉRIFIER] à l'étape 3.
+- Fenêtre : « A newly created trusted publisher configuration must complete its first successful publish within 2 days. » Ne configurer qu'au moment de publier (étapes 6 et 7).
+
+**Champs, par paquet** (« Navigate to your package settings on npmjs.com and find the "Trusted Publisher" section », puis GitHub Actions) :
+
+| Champ                | Valeur          | Obligatoire |
+| -------------------- | --------------- | ----------- |
+| Organization or user | `PaulPerigault` | oui         |
+| Repository           | `design-system` | oui         |
+| Workflow filename    | `release.yml`   | oui         |
+| Environment name     | `npm-publish`   | non         |
+
+Le workflow est le nom de fichier (`.github/workflows/release.yml`, titre « Release »), l'environnement est celui du job `publish`. npm ne vérifie pas la configuration à l'enregistrement : une faute n'apparaît qu'à la publication. Prérequis : npm CLI ≥ 11.5.1, Node ≥ 22.14.0, `id-token: write` (présent). La provenance est produite sans `--provenance` ; `publish-new.mjs` le passe quand même. Provenance : dépôt public dont l'URL correspond à `repository` (vérifié : `git+https://github.com/PaulPerigault/design-system.git` dans les neuf paquets), exécuteur hébergé par GitHub. Limite : 10 trusted publishers par paquet.
+
+Variante en ligne de commande (npm ≥ 11.15.0, ici 11.16.0 ; double authentification au niveau du compte ; jetons « bypass 2FA » et mot de passe refusés) : `npm trust github @paulperigault/<nom> --repo PaulPerigault/design-system --file release.yml --env npm-publish --allow-publish`, puis `npm trust list @paulperigault/<nom>`. Syntaxe tirée de la page `npm trust`, non exécutée (elle écrit sur le compte) : [À VÉRIFIER] sur un premier paquet.
+
+## Actions, dans l'ordre
+
+**Paul**
+
+1. `npm login` (authentification web, clé de sécurité), puis `npm whoami` : `paulperigault` (aujourd'hui : `ENEEDAUTH`).
+2. `npm view @paulperigault/<nom>` : `E404` pour les neuf (confirmé par Paul ; à rejouer juste avant).
+3. **Amorce `0.0.0`**, depuis un dossier hors du dépôt : la boucle de `docs/manual-steps.md` §3, neuf publications avec `--access public`. La garde `prepublishOnly` n'est pas en jeu (dossier vide). L'amorce n'a ni provenance ni contenu : voulu. [À VÉRIFIER] : nombre de demandes de la clé de sécurité.
+4. **Environnement GitHub** : Settings, Environments, New environment `npm-publish`, Deployment branches : Selected branches, `main`. Relecteurs facultatifs : un relecteur obligatoire fait attendre le job `publish` jusqu'à son approbation.
+5. Relire #40 après la fusion de la PR de #258 : les neuf paquets en **0.1.0**, changelogs, `ci` verte. Sinon, ne pas la fusionner.
+6. **Dans la même session que l'étape 7** : configurer le trusted publisher des neuf paquets (tableau ci-dessus).
+7. Fusionner #40 (propriétaire). La fusion déclenche `release.yml`.
+8. Après : `npm view @paulperigault/<nom>` répond 0.1.0 pour les neuf, provenance affichée sur la page du paquet ; `npm audit signatures` dans un projet qui les installe. Puis, par paquet, Publishing access : « Require two-factor authentication and disallow tokens ».
+
+**La CI (`release.yml`, après la fusion de #40)**
+
+1. `release-please` crée les tags et les releases GitHub.
+2. Job `publish` (`environment: npm-publish`, `id-token: write`) : `npm ci --ignore-scripts`, build, `.wasm` compilés et empreinte vérifiée, `npm audit signatures` (dépendances), SBOM, puis `publish-new.mjs` : publication avec `--provenance --access public --tag latest` de chaque version absente du registre (jeton OIDC, aucun secret npm). Un échec en cours de route se rejoue : les versions déjà publiées sont sautées.
+3. Job `mirror` : miroir GitHub Packages (voir plus haut).
+
+Jamais par l'assistant : publication npm, `npm trust`, `apply`, réglage de compte.
