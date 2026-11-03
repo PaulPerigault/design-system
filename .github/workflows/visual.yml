@@ -1,10 +1,11 @@
 name: Visuel
 
 # Régression visuelle (gap.md n° 20) : captures pleine page de chaque page et de chaque thème,
-# comparées aux références Linux versionnées dans apps/docs/e2e/references. Projets : VISUAL_PROJECTS
-# (apps/docs/e2e/devices.ts). Appelé par `ci` sur les PR de rendu ; lancé à la main avec `update`
-# pour régénérer les références (artefact `visuel-references`, à committer par PR : procédure dans
-# docs/process/visual-references.md) ; chaque lundi 05:00 UTC en comparaison.
+# comparées aux références Linux versionnées dans apps/docs/e2e/references. Appelé par `ci` sur les
+# PR de rendu, avec le sous-ensemble de largeurs VISUAL_PR_PROJECTS ; la matrice complète
+# (VISUAL_PROJECTS, apps/docs/e2e/devices.ts) tourne chaque lundi 05:00 UTC et à la demande
+# (`matrix=full`). `update` régénère les références (artefact `visuel-references`, à committer par
+# PR) pour les largeurs choisies : procédure dans docs/process/visual-references.md (D-141).
 
 on:
   workflow_dispatch:
@@ -13,6 +14,11 @@ on:
         description: Régénérer les références au lieu de les comparer
         type: boolean
         default: false
+      matrix:
+        description: Largeurs capturées (pr = sous-ensemble d'une PR de rendu, full = matrice complète)
+        type: choice
+        options: [pr, full]
+        default: pr
   workflow_call:
   schedule:
     - cron: '0 5 * * 1'
@@ -35,7 +41,13 @@ jobs:
         env:
           PP_VISUAL: '1'
           UPDATE: ${{ inputs.update && 'all' || 'none' }}
-        run: npx playwright test -c apps/docs/playwright.config.ts visual.spec.ts --update-snapshots="$UPDATE"
+          # Le cron capture tout ; un appel de `ci` n'a pas d'entrée : sous-ensemble.
+          MATRIX: ${{ github.event_name == 'schedule' && 'full' || inputs.matrix || 'pr' }}
+        run: |
+          read -ra projects <<< "$(node tools/checks/visual-projects.mjs "$MATRIX")"
+          echo "matrice $MATRIX : ${projects[*]}" >> "$GITHUB_STEP_SUMMARY"
+          npx playwright test -c apps/docs/playwright.config.ts visual.spec.ts \
+            "${projects[@]}" --update-snapshots="$UPDATE"
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: ${{ !cancelled() && inputs.update }}
         with:

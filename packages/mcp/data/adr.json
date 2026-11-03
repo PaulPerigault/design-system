@@ -950,6 +950,13 @@
       "date": "2026-11-02",
       "decision": "Option Effect-TS : poids installé mesuré, option de `create` en attente (#118, « Refs #118 »). Mesure (ADR-0010) : `effect` 4.1.2 = 56 590 403 octets décompressés, 3 013 fichiers (métadonnées npm), environ 62 Mo sur disque pour une installation vierge, sans autre dépendance ; paquet de l'option : environ 10 Ko ; sans l'option : 0 octet (test d'isolation). Poids de poste et de CI, non de page servie ; lourd pour un projet GreenOps : option désactivée par défaut, poids annoncé. La quatrième PR (option « effect » de `create`, documentation) N'EST PAS FAITE : `@paulperigault/effect` est privé, donc un site généré avec l'option dépendrait d'un paquet non publiable tant que Paul n'a pas décidé de le publier ; ⚖️ dans `tmp/questions-paul.md`. #118 reste ouverte (critères restants : option de `create`, documentation de l'option). Écartée : générer un site qui dépend d'un paquet privé ; passer le paquet en public sans décision. Retour arrière : revert de la PR.",
       "id": "D-140"
+    },
+    {
+      "alternative": "Rebaser la matrice sur 375, 820 et 1280 : environ 38 Mo de PNG de plus dans l'historique, définitifs (⚖️ dans `tmp/questions-paul.md`). Git LFS : l'historique existant reste lourd.",
+      "date": "2026-11-03",
+      "decision": "Visuel : une PR de rendu ne capture que deux des trois largeurs de référence (#256, « Closes #256 », question 9, option A). `VISUAL_PR_PROJECTS` (360 et 1440 px) dans `devices.ts` ; `visual.yml` reçoit l'entrée `matrix` (`pr` par défaut, `full`), le cron du lundi force `full`, un appel de `ci` n'a pas d'entrée donc `pr` ; `tools/checks/visual-projects.mjs` (testé) donne au workflow les drapeaux `--project` depuis `devices.ts`. Les références commitées restent celles de la matrice complète (360, 820, 1440) : une PR en compare 152 sur 228, une régénération `update=true` pèse 40 154 189 o au lieu de 61 617 398 o (34,8 % de moins). Écart avec la consigne : 375 et 1280 px n'ont aucune référence (ce sont les appareils de l'e2e) ; 360 et 1440 couvrent les mêmes mises en page (sous 27 rem, au-dessus du plafond de 72 rem), sans ajouter de PNG à l'historique. Le job `visuel` et `ci` ne changent pas de forme. Aucun budget d'images touché.",
+      "id": "D-141",
+      "rollback": "Retirer l'entrée `matrix` et `VISUAL_PR_PROJECTS` ; `visual.yml` relit `VISUAL_PROJECTS` seul."
     }
   ]
 }

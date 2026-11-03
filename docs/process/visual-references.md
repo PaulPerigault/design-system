@@ -32,20 +32,37 @@ fin de liste ne change plus aucune capture. Toute nouvelle page dont la hauteur 
 rejoint `VIEWPORT_ONLY`. Les pages de composants restent en pleine page : le signal de régression est
 intact.
 
-## Quand la comparaison est exécutée
+## Quand la comparaison est exécutée (D-141)
 
 Le job `visuel` de `ci` appelle le workflow sur les PR qui touchent le rendu (même filtre que e2e :
 `packages/css|tokens|astro`, `apps/`, dépendances de rendu) ; il est requis par le job agrégé `ci`.
-Il ne tourne ni sur un push ni sur une PR de documentation. Le workflow tourne aussi chaque lundi
-(05:00 UTC) et à la demande.
+Il ne tourne ni sur un push ni sur une PR de documentation.
+
+| Déclencheur                               | Largeurs capturées                      | Captures |
+| ----------------------------------------- | --------------------------------------- | -------- |
+| PR de rendu (appel de `ci`)               | `VISUAL_PR_PROJECTS` : 360 et 1440 px   | 152      |
+| `workflow_dispatch`, `matrix=pr` (défaut) | idem                                    | 152      |
+| `workflow_dispatch`, `matrix=full`        | `VISUAL_PROJECTS` : 360, 820 et 1440 px | 228      |
+| Lundi 05:00 UTC (cron)                    | matrice complète                        | 228      |
+
+Les références commitées sont toujours celles de la matrice complète : une PR compare deux largeurs
+sur trois, elle n'en supprime aucune. La largeur de 820 px (tablette) n'est donc vérifiée que le lundi
+ou à la demande : un défaut propre à cette largeur apparaît au plus tard le lundi suivant. Les deux
+listes vivent dans `apps/docs/e2e/devices.ts`, le workflow les lit par `tools/checks/visual-projects.mjs`.
 
 ## Régénérer les références (changement de rendu voulu)
 
-1. Pousser la branche, puis `gh workflow run visual.yml --ref <branche> -f update=true`.
+1. Pousser la branche, puis `gh workflow run visual.yml --ref <branche> -f update=true`. Par défaut
+   (`matrix=pr`) seules les largeurs 360 et 1440 sont régénérées ; ajouter `-f matrix=full` pour les trois.
 2. Attendre la fin, puis `gh run download <id> -n visuel-references -D <dossier vide>`.
 3. Supprimer `apps/docs/e2e/references/`, y copier le contenu téléchargé (un fichier qui ne change
-   pas reste identique octet à octet : seuls les écarts apparaissent dans le diff).
+   pas reste identique octet à octet : seuls les écarts apparaissent dans le diff ; les largeurs non
+   capturées gardent les références déjà commitées, le dossier téléchargé les contient).
 4. Relire les images modifiées dans le diff de la PR, committer, pousser : le job `visuel` compare.
+
+Poids (mesuré le 2026-11-03) : 228 références = 61 617 398 octets ; deux largeurs (360 et 1440) =
+40 154 189 octets, soit 34,8 % de moins par régénération. Un écart de la tablette seule se règle par un
+run `matrix=full`, jamais en régénérant les deux autres largeurs.
 
 Un écart signalé sur une PR : télécharger l'artefact `visuel-differences` (`actual`, `expected`, `diff`).
 Si l'écart est voulu, appliquer la procédure ci-dessus ; sinon corriger le rendu.
