@@ -63,6 +63,13 @@ Le script est idempotent (une valeur déjà posée n'est pas réécrite) et exig
 4. Marqueurs : ajouter `Milestone` et `Status` dans `Fields` de la vue ; masquer les cartes de pull request (filtre `-is:pr`).
 5. Enregistrer la vue (`Save changes`).
 
+Les deux réglages manuels qui décident de ce que la vue montre :
+
+- **Champs de date** : dans `Date fields`, début = « Début » et fin = « Échéance ». Ces deux champs sont de type date (vérifié par GraphQL), donc le script les remplit correctement ; sans ce réglage, la vue n'affiche aucune barre.
+- **Échelle** : `Month` ou `Quarter`. `Month` montre le détail des jalons récents, `Quarter` le plan jusqu'à la version 1.0.
+
+Beaucoup d'issues fermées tiennent sur un seul jour (début et échéance identiques) : elles apparaissent comme de très courts repères, pas comme des barres. C'est attendu, pas une erreur du script.
+
 ## Suite
 
 F2a-3 : previews Cloudflare (`tofu apply` par Paul), puis F2b (modèles, contrôle « PR liée à une issue », issues de rattrapage).
