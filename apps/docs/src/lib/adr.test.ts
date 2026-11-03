@@ -65,6 +65,14 @@ describe('descriptionOf et isDraft', () => {
   });
 });
 
+describe('needsReview', () => {
+  it('retire le bandeau des ADR validées, le garde sur les autres', () => {
+    expect(adr.needsReview('0001', 'Nous construisons.')).toBe(false);
+    expect(adr.needsReview('0009', 'Nous construisons.')).toBe(true);
+    expect(adr.needsReview('0009', 'Le serveur est en lecture seule.')).toBe(false);
+  });
+});
+
 describe('adrEntry et byId', () => {
   it('assemble l’entrée de liste et trie par identifiant', () => {
     const entry = adr.adrEntry('0009-exemple.md', FIXTURE);

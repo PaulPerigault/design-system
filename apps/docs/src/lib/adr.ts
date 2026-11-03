@@ -11,6 +11,8 @@ const CONTEXT_HEADING = /^## Contexte\b/;
 const TRAILING_COLON = /\s*:$/;
 const TRAILING_DOT = /\.$/;
 const OWNER_MENTION = /\b(nous|propriétaire|Paul)\b/i;
+/** ADR relues et validées par Paul (2026-11-03) : plus de bandeau de brouillon. */
+const VALIDATED = new Set(['0001', '0002', '0003', '0004', '0006', '0007', '0008']);
 
 export interface AdrEntry {
   id: string;
@@ -84,6 +86,10 @@ export function descriptionOf(markdown: string): string {
 
 /** Vrai si le texte parle à la première personne ou du propriétaire : il est alors un brouillon. */
 export const isDraft = (markdown: string): boolean => OWNER_MENTION.test(markdown);
+
+/** Vrai si l’ADR porte le bandeau : brouillon à la première personne et non validée. */
+export const needsReview = (id: string, markdown: string): boolean =>
+  !VALIDATED.has(id) && isDraft(markdown);
 
 /** Entrée de liste : identifiant, titre, statut, résumé et chemin de la page. */
 export function adrEntry(filename: string, markdown: string): AdrEntry {

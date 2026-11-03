@@ -1,5 +1,4 @@
 ---
-import DraftNotice from '../components/DraftNotice.astro';
 import HomeDemo from '../components/HomeDemo.astro';
 import DocsLayout from '../layouts/DocsLayout.astro';
 import { graph, personLd, websiteLd } from '../lib/seo.ts';
@@ -13,7 +12,6 @@ const count = GROUPS.reduce((total, group) => total + group.links.length, 0);
   description="Design system de paulperigault.fr, développé par un seul auteur : règles vérifiées en CI, décisions datées, preuves sourcées, composants Astro et données."
   jsonLd={graph(personLd(), websiteLd())}
 >
-  <DraftNotice />
   <div class="docs-prose">
     <h1>Design system</h1>
     <p>

@@ -3,7 +3,7 @@ import Prose from '@paulperigault/astro/Prose.astro';
 import type { MarkdownInstance } from 'astro';
 import DraftNotice from '../../components/DraftNotice.astro';
 import DocsLayout from '../../layouts/DocsLayout.astro';
-import { adrId, adrTitle, descriptionOf, isDraft } from '../../lib/adr.ts';
+import { adrId, adrTitle, descriptionOf, needsReview } from '../../lib/adr.ts';
 import { canonicalOf, graph, techArticleLd, titleOf } from '../../lib/seo.ts';
 
 export function getStaticPaths() {
@@ -26,7 +26,7 @@ const jsonLd = graph(techArticleLd({ title, description, url }));
 ---
 
 <DocsLayout title={titleOf(title)} description={description} jsonLd={jsonLd}>
-  {isDraft(markdown) && <DraftNotice />}
+  {needsReview(Astro.params.id ?? '', markdown) && <DraftNotice />}
   <p>
     <a href="/decisions/">Toutes les décisions</a>
   </p>

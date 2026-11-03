@@ -1,7 +1,6 @@
 ---
 import Table from '@paulperigault/astro/Table.astro';
 import ArchitectureDiagram from '../components/ArchitectureDiagram.astro';
-import DraftNotice from '../components/DraftNotice.astro';
 import DocsLayout from '../layouts/DocsLayout.astro';
 import { CHECKS, PACKAGES } from '../lib/architecture.ts';
 
@@ -23,7 +22,6 @@ const chkRows = CHECKS.map(([controle, verif, fichier]) => ({ controle, verif, f
   description="Architecture du design system : paquets et dépendances, CI, publication npm et infrastructure. Chaque fait renvoie à son fichier source."
 >
   <div class="docs-prose">
-    <DraftNotice />
     <h1>Architecture</h1>
     <p>
       {PACKAGES.length - 1} paquets npm, une application de documentation et {CHECKS.length}{' '}
