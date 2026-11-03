@@ -17,8 +17,8 @@ export type Env = Readonly<Record<string, string | undefined>>;
 
 export const LEGAL: Legal = {
   publisher: 'Paul Perigault',
-  host: '',
-  contact: '',
+  host: 'Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, États-Unis',
+  contact: 'contact@paulperigault.fr',
   licenseCode: 'MIT',
   licenseContent: '',
 };

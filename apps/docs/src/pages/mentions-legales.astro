@@ -20,7 +20,7 @@ const pending = (value: string): string => value || 'à compléter';
 
     <h2>Éditeur</h2>
     <p>Le site est édité par {LEGAL.publisher}, personne physique.</p>
-    <p>Adresse postale et téléphone : à compléter (LCEN, article 6 III).</p>
+    <p>Adresse postale et téléphone : à compléter (LCEN, article 6 III) [À VÉRIFIER].</p>
     <p>Contact : {pending(LEGAL.contact)}</p>
 
     <h2>Directeur de la publication</h2>
@@ -28,6 +28,13 @@ const pending = (value: string): string => value || 'à compléter';
 
     <h2>Hébergeur</h2>
     <p>Hébergeur : {pending(LEGAL.host)}</p>
+    <p>
+      Adresse lue le 3 novembre 2026 sur la{' '}
+      <a href="https://www.cloudflare.com/privacypolicy/">
+        politique de confidentialité de Cloudflare
+      </a>
+      . Téléphone de l’hébergeur : [À VÉRIFIER].
+    </p>
 
     <h2>Propriété intellectuelle</h2>
     <p>
