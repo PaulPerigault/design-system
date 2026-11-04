@@ -1006,6 +1006,13 @@
       "decision": "Faits corrigés de la passe humaine (#266, « Refs #266 », lignes 1 à 3 du rapport, acceptées par Paul). Neuf paquets et non sept : `PACKAGES` (`lib/architecture.ts`) ajoute `color` et `data` d'après le tableau d'`AGENTS.md`, `PACKAGE_COUNT` et `PACKAGE_COUNT_WORD` en tirent le nombre, repris par `/` et `/architecture/`. `proofs.json` mesuré le 2026-11-04 : 2 830 tests unitaires (`npm test`), 9 406 tests e2e (`playwright test --list`, tous projets, non exécutés en entier), 82 pages de `dist/`, 53 composants, 54 éléments de registre, 48 termes de glossaire, 209 paquets à attestations (`npm audit signatures`), axe sans violation sur 164 tests du projet 360x800 ; paires de contraste inchangées (19). `<title>` de l'ADR-0009 : `title` ajouté aux balises que `term-links.mjs` ne lie pas. Les lignes 4 à 13 du rapport ne sont pas appliquées (aucune réponse de Paul). Budgets et garde-fous inchangés.",
       "id": "D-148",
       "rollback": "Restaurer `architecture.ts`, `architecture.astro`, `index.astro`, `proofs.json`, `term-links.mjs`."
+    },
+    {
+      "alternative": "Appliquer l'option A sur une lecture incertaine de « non professionnel » ; citer le téléphone d'un annuaire tiers.",
+      "date": "2026-11-04",
+      "decision": "Pages légales (#264, « Refs #264 », décisions de Paul Q17 à Q21). Légifrance lu le 2026-11-04 : l'identification de l'éditeur est à l'article 1-1 de la loi 2004-575 (créé par la loi 2024-449, en vigueur depuis le 2024-05-23), non à l'article 6 III, dont le III vise aujourd'hui les fournisseurs d'accès ; référence corrigée. Le II permet à l'éditeur « à titre non professionnel » de ne publier que le nom et l'adresse de l'hébergeur, s'il lui a communiqué son identité ; le texte ne définit pas « non professionnel » : un portfolio lu par des recruteurs n'entre pas clairement dans le cas, l'option A n'est pas appliquée (⚖️ question 17), page et bandeau inchangés. Téléphone de Cloudflare lu dans le HTML de https://www.cloudflare.com/privacypolicy/ (« Have Questions? », +1 (650) 319-8930) : publié, l'article 1-1 I 4° l'exige sans anonymat ; adresse reprise telle que lue, sans « siège social ». Article 47 de la loi 2005-102 (version du 2023-09-08) et décret 2019-768, article 2 (Légifrance) : seuil de 250 millions d'euros ; champ de la directive 2019/882 non lu hors EUR-Lex : [À VÉRIFIER] conservé, démarche volontaire inchangée. Durée des journaux : « à compléter » et bandeau conservés. Aucun bandeau retiré. Budgets et garde-fous inchangés.",
+      "id": "D-149",
+      "rollback": "Restaurer `mentions-legales.astro`, `declaration-accessibilite.astro`, `legal.ts`."
     }
   ]
 }

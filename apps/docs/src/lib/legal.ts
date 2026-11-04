@@ -23,7 +23,7 @@ export const LEGAL: Legal = {
   licenseContent: '',
 };
 
-/** Champs que la LCEN (article 6 III) impose à l'éditeur et à l'hébergeur. */
+/** Champs que la LCEN (article 1-1) impose à l'éditeur et à l'hébergeur. */
 const REQUIRED_IN_PRODUCTION: readonly (keyof Legal)[] = ['host', 'contact'];
 
 const isBlank = (value: string): boolean => value.trim() === '';
