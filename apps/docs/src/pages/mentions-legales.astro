@@ -19,8 +19,20 @@ const pending = (value: string): string => value || 'à compléter';
     <h1>Mentions légales</h1>
 
     <h2>Éditeur</h2>
-    <p>Le site est édité par {LEGAL.publisher}, personne physique.</p>
-    <p>Adresse postale et téléphone : à compléter (LCEN, article 1-1, I, 1°) [À VÉRIFIER].</p>
+    <p>
+      Le site est édité par {LEGAL.publisher}, personne physique, à titre non professionnel. Il ne
+      rapporte aucun revenu. L’éditeur agit sous sa responsabilité et a communiqué son identité à
+      l’hébergeur.
+    </p>
+    <p>
+      Il applique l’
+      <a href="https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000049568614">
+        article 1-1, II, de la loi 2004-575
+      </a>{' '}
+      (lu le 4 novembre 2026) : un éditeur non professionnel peut ne rendre public que le nom et
+      l’adresse de son hébergeur. Aucun domicile ni téléphone personnel n’est publié. La loi ne
+      définit pas « non professionnel » : cette qualification n’est pas établie juridiquement.
+    </p>
     <p>Contact : {pending(LEGAL.contact)}</p>
 
     <h2>Directeur de la publication</h2>
