@@ -1042,6 +1042,13 @@
       "decision": "Pied de page de release-please compatible avec commitlint (#278, « Closes #278 », option B de Paul). Le pied de page par défaut (« This PR was generated with [Release Please]… ») est refusé par `no-tool-signature` (D-004, sans exemption) : le job `commitlint` de #40 échouait. `release-please-config.json` reçoit un `pull-request-footer` en français, sans « generated with » ; une chaîne vide est impossible (`footer",
       "id": "D-154",
       "rollback": "DEFAULT_FOOTER`). Test : le pied de page par défaut reste refusé, le configuré passe, « Generated with Claude Code » et `Co-Authored-By`restent refusés. Le garde-fou`no-tool-signature`n'est pas modifié. Alternative écartée : exempter les PR de release-please (option A : affaiblit la règle, critère de reconnaissance à maintenir). Retour arrière : retirer la clé, #40 redevient rouge à`commitlint`."
+    },
+    {
+      "alternative": "Garde de code dans `create`.",
+      "date": "2026-11-04",
+      "decision": "Procédure de test du paquet publié hors du dépôt (#281, « Closes #281 »). `npx @paulperigault/create` lancé depuis la racine du dépôt exécute la copie de workspace (`versions.json` commité en `0.0.0`), pas le paquet du registre : le site généré dépend alors de l'amorce vide. Mesuré : depuis un dossier hors du dépôt, le paquet 0.1.0 génère des dépendances en `0.1.0`. Documenté dans `publication.md` avec la procédure (npx hors du dépôt, install, build, version déclarée) et la limite du job CI « site » (tarballs locaux). Alternative écartée : une garde dans `create` qui refuse de générer avec `versions.json` en `0.0.0` (Paul : pas de garde). Retour arrière : retirer la section de `publication.md`.",
+      "id": "D-155",
+      "rollback": "Retirer la section de `publication.md`."
     }
   ]
 }
