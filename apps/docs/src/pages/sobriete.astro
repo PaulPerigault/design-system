@@ -36,10 +36,11 @@ npm run benchmark:weight</code></pre>
       du corps est préchargée et chargée.
     </p>
     <p>
-      Mesure du 2026-11-01, sur mon poste Windows avec Chromium, pour <code>/</code>, la page du
-      bouton, le tableau de bord et cette page : LCP de 0,98 à 1,26 s, INP de 56 à 96 ms, CLS de 0,
-      JavaScript de 1 005 octets en gzip, deux fichiers de police. Sur les runners de GitHub, l’INP
-      est plus haut (D-021). Une seule série, un seul poste : ce n’est pas une distribution.
+      Mesure du 2026-11-01, sur mon poste Windows avec Chromium : LCP de 0,98 à 1,26 s, INP de 56 à
+      96 ms, CLS de 0, JavaScript de 1 005 octets en gzip, deux fichiers de police. Pages mesurées :{' '}
+      <code>/</code>, la page du bouton, le tableau de bord et cette page. Sur les runners de
+      GitHub, l’INP est plus haut (D-021). Une seule série, un seul poste : ce n’est pas une
+      distribution.
     </p>
     <pre tabindex="0"><code>npm run e2e -- --project=chromium perf.spec.ts</code></pre>
 
@@ -49,11 +50,11 @@ npm run benchmark:weight</code></pre>
       <a href="https://sustainablewebdesign.org/estimating-digital-emissions/">
         sustainablewebdesign.org
       </a>
-      , page lue le 2026-11-01). C’est un modèle descendant : il applique au volume transféré une
-      énergie par gigaoctet pour trois segments (centres de données, réseaux, appareils), en partie
-      opérationnelle et en partie incorporée, avec une intensité électrique de 494 gCO2e par kWh. La
-      somme est de 0,300 kWh par gigaoctet, soit 148,2 gCO2e par gigaoctet pour un nouveau visiteur
-      et un hébergement non déclaré vert.
+      , page lue le 2026-11-01). C’est un modèle descendant. Il applique au volume transféré une
+      énergie par gigaoctet, pour trois segments : centres de données, réseaux, appareils. Cette
+      énergie est en partie opérationnelle et en partie incorporée, avec une intensité électrique de
+      494 gCO2e par kWh. La somme est de 0,300 kWh par gigaoctet, soit 148,2 gCO2e par gigaoctet
+      pour un nouveau visiteur et un hébergement non déclaré vert.
     </p>
     <ul>
       <li>

@@ -15,6 +15,12 @@ export const GLOSSARY_OUTILS: readonly Entry[] = [
       'Algorithme de compression des fichiers envoyés au navigateur. Il réduit la taille transférée sans changer le contenu.',
   },
   {
+    id: 'devsecops',
+    term: 'DevSecOps',
+    definition:
+      'Pratique qui place les contrôles de sécurité dans le cycle de développement et de livraison, au lieu de les reporter à la fin. C’est une convention de métier, sans norme.',
+  },
+  {
     id: 'gzip',
     term: 'gzip',
     definition:
