@@ -15,7 +15,7 @@ export class RegistryError extends Error {
   }
 }
 
-const encodeName = (name) => name.replace('/', '%2f');
+const encodeName = (name) => name.replaceAll('/', '%2f');
 
 /** 200 : présent, 404 : absent, tout le reste : RegistryError (jamais « présent » par défaut). */
 function verdict(where, response, isPresent) {
