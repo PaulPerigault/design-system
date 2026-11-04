@@ -999,6 +999,13 @@
       "decision": "Accessibilité cognitive (#211, « Closes #211 »). Règles FALC lues à la source : « L'information pour tous » (Unapei, 2009), https://www.inclusion-europe.eu/wp-content/uploads/2017/06/FR_Information_for_all.pdf, lu le 2026-11-03. Appliqué sans refonte ni texte validé modifié : sept entrées de glossaire (axe-core, brotli, gzip, OIDC, Playwright, SVG, trusted publishing) liées à la première occurrence (règle 11) ; « axe » seul non lié (mot français). Les ADR de plus de 700 mots ont déjà leur résumé. Phrases courtes (règle 19) et contact sur l'accueil (règle 9) : notés dans le corps de #211, en attente de la réponse de Paul sur la passe humaine (D-146). Budgets et garde-fous inchangés.",
       "id": "D-147",
       "rollback": "Retirer `glossary-outils.ts` et les sept `term()` de `link-terms.mjs`."
+    },
+    {
+      "alternative": "Écrire le nombre de paquets à la main ; retirer le lien en modifiant le titre de l'ADR.",
+      "date": "2026-11-04",
+      "decision": "Faits corrigés de la passe humaine (#266, « Refs #266 », lignes 1 à 3 du rapport, acceptées par Paul). Neuf paquets et non sept : `PACKAGES` (`lib/architecture.ts`) ajoute `color` et `data` d'après le tableau d'`AGENTS.md`, `PACKAGE_COUNT` et `PACKAGE_COUNT_WORD` en tirent le nombre, repris par `/` et `/architecture/`. `proofs.json` mesuré le 2026-11-04 : 2 830 tests unitaires (`npm test`), 9 406 tests e2e (`playwright test --list`, tous projets, non exécutés en entier), 82 pages de `dist/`, 53 composants, 54 éléments de registre, 48 termes de glossaire, 209 paquets à attestations (`npm audit signatures`), axe sans violation sur 164 tests du projet 360x800 ; paires de contraste inchangées (19). `<title>` de l'ADR-0009 : `title` ajouté aux balises que `term-links.mjs` ne lie pas. Les lignes 4 à 13 du rapport ne sont pas appliquées (aucune réponse de Paul). Budgets et garde-fous inchangés.",
+      "id": "D-148",
+      "rollback": "Restaurer `architecture.ts`, `architecture.astro`, `index.astro`, `proofs.json`, `term-links.mjs`."
     }
   ]
 }

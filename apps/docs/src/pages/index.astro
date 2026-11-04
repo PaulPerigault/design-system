@@ -1,6 +1,7 @@
 ---
 import HomeDemo from '../components/HomeDemo.astro';
 import DocsLayout from '../layouts/DocsLayout.astro';
+import { PACKAGE_COUNT_WORD } from '../lib/architecture.ts';
 import { graph, personLd, websiteLd } from '../lib/seo.ts';
 import { GROUPS } from '../navigation';
 
@@ -45,9 +46,9 @@ const count = GROUPS.reduce((total, group) => total + group.links.length, 0);
 
     <h2 id="utiliser">Utiliser le système</h2>
     <p>
-      Sept paquets npm pour des sites d’un seul auteur, écrits en Astro : tokens, css, dataviz,
-      astro, guards, create et mcp (tableau d’<code>AGENTS.md</code>). Rien n’est publié : les
-      versions sont en <code>0.x</code> (<code>README.md</code>).
+      Pour des sites d’un seul auteur, écrits en Astro : {PACKAGE_COUNT_WORD} paquets npm (tokens,
+      css, dataviz, color, data, astro, guards, create et mcp ; tableau d’<code>AGENTS.md</code>).
+      Rien n’est publié : les versions sont en <code>0.x</code> (<code>README.md</code>).
     </p>
     <ul role="list" class="docs-start">
       <li>

@@ -2,7 +2,7 @@
 import Table from '@paulperigault/astro/Table.astro';
 import ArchitectureDiagram from '../components/ArchitectureDiagram.astro';
 import DocsLayout from '../layouts/DocsLayout.astro';
-import { CHECKS, PACKAGES } from '../lib/architecture.ts';
+import { CHECKS, PACKAGES, PACKAGE_COUNT, PACKAGE_COUNT_WORD } from '../lib/architecture.ts';
 
 const col = (key: string, label: string) => ({ key, label });
 const PKG_COLS = [col('paquet', 'Paquet'), col('role', 'Rôle'), col('depend', 'Dépend de')];
@@ -24,14 +24,14 @@ const chkRows = CHECKS.map(([controle, verif, fichier]) => ({ controle, verif, f
   <div class="docs-prose">
     <h1>Architecture</h1>
     <p>
-      {PACKAGES.length - 1} paquets npm, une application de documentation et {CHECKS.length}{' '}
-      contrôles de CI : chaque fait de cette page renvoie au fichier qui l’établit.
+      {PACKAGE_COUNT} paquets npm, une application de documentation et {CHECKS.length} contrôles de
+      CI : chaque fait de cette page renvoie au fichier qui l’établit.
     </p>
     <h2>Paquets et sens des dépendances</h2>
     <p>
-      Le dépôt compte sept paquets npm et une application de documentation. astro dépend de css et
-      de dataviz, dataviz et css dépendent de tokens. Un import qui remonte ce sens est une erreur
-      (AGENTS.md).
+      Le dépôt compte {PACKAGE_COUNT_WORD} paquets npm et une application de documentation. astro
+      dépend de css et de dataviz, dataviz et css dépendent de tokens. Un import qui remonte ce sens
+      est une erreur (AGENTS.md).
     </p>
   </div>
   <Table caption="Paquets et dépendances" columns={PKG_COLS} rows={pkgRows} rowHeader="paquet" />

@@ -9,12 +9,37 @@ export const PACKAGES: [string, string, string][] = [
     'contrat Dataset, formatage fr, palettes dérivées de l’accent',
     'tokens',
   ],
+  [
+    '@paulperigault/color',
+    'couleur OKLCH, contraste WCAG 2 et APCA en WebAssembly',
+    'rien à l’exécution',
+  ],
+  ['@paulperigault/data', 'quantiles, agrégation et LTTB en WebAssembly', 'dataviz'],
   ['@paulperigault/astro', 'composants .astro, behaviors, variants()', 'css, tokens'],
   ['@paulperigault/guards', 'contrôles de taille, couleurs, couches, images', 'rien à l’exécution'],
   ['@paulperigault/create', 'CLI create, add, eject, diff', 'rien à l’exécution'],
   ['@paulperigault/mcp', 'serveur MCP stdio en lecture seule', 'tokens, guards'],
   ['apps/docs', 'documentation vivante du design system', 'tous les paquets'],
 ];
+
+/** Nombre de paquets npm : les lignes du tableau, moins l’application de documentation. */
+export const PACKAGE_COUNT = PACKAGES.length - 1;
+
+const WORDS = [
+  'zéro',
+  'un',
+  'deux',
+  'trois',
+  'quatre',
+  'cinq',
+  'six',
+  'sept',
+  'huit',
+  'neuf',
+  'dix',
+];
+/** Le nombre de paquets en toutes lettres, calculé depuis `PACKAGES`. */
+export const PACKAGE_COUNT_WORD = WORDS[PACKAGE_COUNT] ?? String(PACKAGE_COUNT);
 
 // Source : .github/workflows/*.yml. Chaque ligne renvoie au fichier qui l’établit.
 export const CHECKS: [string, string, string][] = [

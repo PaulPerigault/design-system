@@ -1,5 +1,5 @@
 // Lie la première occurrence de chaque terme du glossaire dans le texte d'une page construite.
-// Hors code, titres, liens, boutons et légendes : un lien dans un lien ou un titre serait une faute.
+// Hors code, titres, <title>, liens, boutons et légendes : un lien dans un lien ou un titre serait une faute.
 import { mapText } from './html-text.mjs';
 
 const SKIP = new Set([
@@ -13,6 +13,7 @@ const SKIP = new Set([
   'button',
   'summary',
   'label',
+  'title',
   'th',
   'dt',
 ]);
