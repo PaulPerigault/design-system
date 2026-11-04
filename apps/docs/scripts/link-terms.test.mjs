@@ -26,6 +26,12 @@ describe('linkTerms', () => {
       `<h2>Le build</h2><code>CI</code><a href="/x">CI</a><p>puis ${link('build', 'build')}</p>`,
     );
   });
+  it('ne touche pas le <title> du document, texte brut sans balisage', () => {
+    const html = '<head><title>Jamais en CI · Design system</title></head><p>la CI</p>';
+    expect(linkTerms(html, terms)).toBe(
+      `<head><title>Jamais en CI · Design system</title></head><p>la ${link('ci', 'CI')}</p>`,
+    );
+  });
   it('ne coupe pas un mot ni un identifiant composé', () => {
     const html = '<p>CIBLE build-data rebuild CI.</p>';
     expect(linkTerms(html, terms)).toBe(`<p>CIBLE build-data rebuild ${link('ci', 'CI')}.</p>`);
