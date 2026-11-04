@@ -37,10 +37,14 @@ function patternFor(extension) {
   return parts ? new RegExp(parts.map((part) => `(${part})`).join('|'), 'gm') : undefined;
 }
 
+/** Texte d'un commentaire HTML, sans filtrage : l'outil mesure, il n'assainit rien. */
+const unwrapHtml = (raw) =>
+  raw.startsWith('<!--') ? raw.slice('<!--'.length, -'-->'.length) : raw;
+
 const stripMarks = (raw) =>
-  raw
+  unwrapHtml(raw)
     .replace(/^(?:\/\/[/!]?|#)\s?/, '')
-    .replace(/^\/\*+!?\s?|\s*\*+\/$|^<!--\s?|\s*-->$/g, '')
+    .replace(/^\/\*+!?\s?|\s*\*+\/$/g, '')
     .replace(/^\s*\* ?/gm, '')
     .trim();
 
