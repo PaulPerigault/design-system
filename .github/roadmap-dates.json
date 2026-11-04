@@ -5,7 +5,7 @@
     "start": "Début",
     "due": "Échéance"
   },
-  "generated": "2026-11-02",
+  "generated": "2026-11-04",
   "items": [
     {
       "issue": 42,
@@ -798,6 +798,134 @@
       "due": "2026-11-23",
       "kind": "estimate",
       "note": "Début = création (fait). Échéance estimée : version 1.0 dans 2 à 3 semaines (rythme observé : 10 à 15 PR par jour de travail)."
+    },
+    {
+      "issue": 289,
+      "title": "[Processus] audit de propreté 2026-11 : plan d'exécution",
+      "start": "2026-11-05",
+      "due": "2026-11-20",
+      "kind": "estimate",
+      "note": "Estimation du 2026-11-04 : cadence observée de 10 à 15 PR par jour de travail ; à réécrire au démarrage."
+    },
+    {
+      "issue": 290,
+      "title": "[Processus] traçabilité : PR, commits et issues dans le Project",
+      "start": "2026-11-05",
+      "due": "2026-11-06",
+      "kind": "estimate",
+      "note": "Estimation du 2026-11-04 : cadence observée de 10 à 15 PR par jour de travail ; à réécrire au démarrage."
+    },
+    {
+      "issue": 291,
+      "title": "[Processus] nettoyage des issues : titres, parents, états",
+      "start": "2026-11-06",
+      "due": "2026-11-09",
+      "kind": "estimate",
+      "note": "Estimation du 2026-11-04 : cadence observée de 10 à 15 PR par jour de travail ; à réécrire au démarrage."
+    },
+    {
+      "issue": 292,
+      "title": "[Processus] gouvernance et dépôt prêt pour l'open source",
+      "start": "2026-11-05",
+      "due": "2026-11-06",
+      "kind": "estimate",
+      "note": "Estimation du 2026-11-04 : cadence observée de 10 à 15 PR par jour de travail ; à réécrire au démarrage."
+    },
+    {
+      "issue": 293,
+      "title": "[Processus] fichiers inutiles et archivage de tasks/",
+      "start": "2026-11-09",
+      "due": "2026-11-10",
+      "kind": "estimate",
+      "note": "Estimation du 2026-11-04 : cadence observée de 10 à 15 PR par jour de travail ; à réécrire au démarrage."
+    },
+    {
+      "issue": 294,
+      "title": "[Commentaires] docs : commentaires techniques seulement",
+      "start": "2026-11-10",
+      "due": "2026-11-10",
+      "kind": "estimate",
+      "note": "Estimation du 2026-11-04 : cadence observée de 10 à 15 PR par jour de travail ; à réécrire au démarrage."
+    },
+    {
+      "issue": 295,
+      "title": "[Commentaires] agents : commentaires techniques seulement",
+      "start": "2026-11-11",
+      "due": "2026-11-11",
+      "kind": "estimate",
+      "note": "Estimation du 2026-11-04 : cadence observée de 10 à 15 PR par jour de travail ; à réécrire au démarrage."
+    },
+    {
+      "issue": 296,
+      "title": "[Commentaires] ci : commentaires techniques seulement",
+      "start": "2026-11-12",
+      "due": "2026-11-12",
+      "kind": "estimate",
+      "note": "Estimation du 2026-11-04 : cadence observée de 10 à 15 PR par jour de travail ; à réécrire au démarrage."
+    },
+    {
+      "issue": 297,
+      "title": "[Commentaires] color : commentaires techniques seulement",
+      "start": "2026-11-13",
+      "due": "2026-11-13",
+      "kind": "estimate",
+      "note": "Estimation du 2026-11-04 : cadence observée de 10 à 15 PR par jour de travail ; à réécrire au démarrage."
+    },
+    {
+      "issue": 298,
+      "title": "[Commentaires] data : commentaires techniques seulement",
+      "start": "2026-11-14",
+      "due": "2026-11-14",
+      "kind": "estimate",
+      "note": "Estimation du 2026-11-04 : cadence observée de 10 à 15 PR par jour de travail ; à réécrire au démarrage."
+    },
+    {
+      "issue": 299,
+      "title": "[Commentaires] dataviz : commentaires techniques seulement",
+      "start": "2026-11-15",
+      "due": "2026-11-15",
+      "kind": "estimate",
+      "note": "Estimation du 2026-11-04 : cadence observée de 10 à 15 PR par jour de travail ; à réécrire au démarrage."
+    },
+    {
+      "issue": 300,
+      "title": "[Commentaires] create : commentaires techniques seulement",
+      "start": "2026-11-16",
+      "due": "2026-11-16",
+      "kind": "estimate",
+      "note": "Estimation du 2026-11-04 : cadence observée de 10 à 15 PR par jour de travail ; à réécrire au démarrage."
+    },
+    {
+      "issue": 301,
+      "title": "[Commentaires] mcp : commentaires techniques seulement",
+      "start": "2026-11-17",
+      "due": "2026-11-17",
+      "kind": "estimate",
+      "note": "Estimation du 2026-11-04 : cadence observée de 10 à 15 PR par jour de travail ; à réécrire au démarrage."
+    },
+    {
+      "issue": 302,
+      "title": "[Commentaires] astro : commentaires techniques seulement",
+      "start": "2026-11-18",
+      "due": "2026-11-18",
+      "kind": "estimate",
+      "note": "Estimation du 2026-11-04 : cadence observée de 10 à 15 PR par jour de travail ; à réécrire au démarrage."
+    },
+    {
+      "issue": 303,
+      "title": "[Commentaires] tokens : commentaires techniques seulement",
+      "start": "2026-11-19",
+      "due": "2026-11-19",
+      "kind": "estimate",
+      "note": "Estimation du 2026-11-04 : cadence observée de 10 à 15 PR par jour de travail ; à réécrire au démarrage."
+    },
+    {
+      "issue": 304,
+      "title": "[Commentaires] guards : commentaires techniques seulement",
+      "start": "2026-11-20",
+      "due": "2026-11-20",
+      "kind": "estimate",
+      "note": "Estimation du 2026-11-04 : cadence observée de 10 à 15 PR par jour de travail ; à réécrire au démarrage."
     }
   ]
 }
