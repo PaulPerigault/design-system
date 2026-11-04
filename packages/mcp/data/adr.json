@@ -1030,6 +1030,11 @@
       "date": "2026-11-04",
       "decision": "Contrôle bloquant des dépendances internes dans `check:pack` (#275). `tools/release/internal-deps.mjs` : toute dépendance `@paulperigault/*` d'un paquet publié doit satisfaire la version du workspace ; `*`, `latest`, une amorce `0.0.0` quand le voisin a avancé, un paquet inconnu : échec. `0.0.0` reste admis tant que le voisin est lui-même en `0.0.0` (avant la première release). `templates/versions.json` est lu après `pack` (`prepack` l'aligne). Alternative écartée : refuser `0.0.0` en toute circonstance (échouerait sur `main` avant la première release). Retour arrière : retirer l'appel `dependencyFailure` de `runAll`.",
       "id": "D-152"
+    },
+    {
+      "date": "2026-11-04",
+      "decision": "Gabarit de `create` vérifié dans son état empaqueté (#277, « Refs #277 »). Sur la PR de release, `templates/versions.json` reste en `0.0.0` (release-please ne le met pas à jour) alors que les paquets passent en 0.1.0 : le test qui lisait le fichier commité échouait. Le test applique `syncVersions` (ce que fait `prepack`) avant de comparer, comme `check:pack` à l'exécution ; il passe sur `main` (tout en 0.0.0) et sur l'état simulé de la PR (0.1.0). Alternative écartée : `extra-files` de release-please sur `versions.json` (impossible à simuler hors GitHub, effet sur un paquet monté par le seul plugin `node-workspace` non documenté, une clé fausse casserait la génération de #40). Retour arrière : lire le fichier commité dans le test (rouge de nouveau sur la PR de release).",
+      "id": "D-153"
     }
   ]
 }
