@@ -63,12 +63,28 @@ Bon : `permissions: {}` au niveau du workflow, `id-token: write` et `contents: r
 
 ## Miroir GitHub Packages (facultatif, #130)
 
-npmjs reste la source publique ; GitHub Packages est un miroir ajouté juste après la publication npm, pour que Paul consomme les paquets dans ses autres projets. Rien n'est publié par cette préparation.
+npmjs reste la source publique ; GitHub Packages est un miroir ajouté après la publication npm, pour que Paul consomme les paquets dans ses autres projets.
 
-- Déclenchement : le job `mirror` de `release.yml`, `needs: publish`, seulement si une release est créée, jamais pour une PR. Permissions du job : `contents: read` et `packages: write` ; `GITHUB_TOKEN` du workflow, aucun secret ajouté.
-- Méthode : `tools/release/mirror-github-packages.mjs` télécharge le tarball déjà publié sur npmjs, réécrit son `publishConfig` (registre GitHub, accès public) et le republie sur `https://npm.pkg.github.com`. Plan pur testé (`mirror-plan.test.mjs`) ; le script refuse de tourner hors de GitHub Actions. L'échec du miroir ne touche pas la publication npm.
-- Provenance : **non demandée** sur le miroir. La page de GitHub Packages lue le 2026-11-02 n'en parle pas : `[À VÉRIFIER]` avant d'ajouter `--provenance`. La provenance npm reste celle de npmjs.
-- Scope : GitHub exige que le scope du paquet soit celui du propriétaire en minuscules (`@paulperigault`) : tenu, et contrôlé par le script.
+- Déclenchement : le job `mirror` de `release.yml` (`needs: publish`, seulement si une release est créée) ou, à la main, le workflow `mirror.yml` (`workflow_dispatch`). Permissions : `contents: read` et `packages: write` ; `GITHUB_TOKEN` du workflow, aucun secret, ni environnement `npm-publish`, ni OIDC.
+- Méthode : `tools/release/mirror-github-packages.mjs` télécharge le tarball publié sur npmjs, réécrit son `publishConfig` (registre GitHub, accès public) et le republie sur `https://npm.pkg.github.com`. Il refuse de tourner hors de GitHub Actions.
+- Provenance : **non demandée** sur le miroir. La page « Working with the npm registry » de GitHub (lue le 2026-11-04) n'en parle pas : `[À VÉRIFIER]` avant d'ajouter `--provenance`.
+- Scope : celui du propriétaire en minuscules (`@paulperigault`), contrôlé par le script.
+
+### Défaut du 2026-11-04 : miroir vide, job vert (D-161 à D-163)
+
+Constat : à 18:14 UTC le job ignore huit paquets (« pas encore publié sur npmjs ») et écrit « déjà sur GitHub Packages » pour `tokens` ; relancé à 20:42, il l'écrit pour les neuf. `gh api users/PaulPerigault/packages?package_type=npm` renvoie pourtant une liste vide.
+
+Cause **lue dans le code** : l'ancien script testait la présence par `npm view <nom>@<version> --registry <registre>` et traitait toute erreur comme « absent ». Cause **supposée, non établie** `[À VÉRIFIER]` : `actions/setup-node` avec `registry-url` GitHub écrit aussi `@paulperigault:registry=https://npm.pkg.github.com/` (la documentation de l'action dit que la portée est celle du propriétaire) ; un registre de portée l'emporte sur `--registry`. Les deux vérifications interrogeaient alors le même registre, GitHub, et « publié sur npmjs » ou « déjà sur GitHub » dépendait de ce que GitHub répondait pour un paquet absent de chez lui. Ce qui est établi : la réponse de GitHub à `npm view` ne prouve pas la présence ; ce qui ne l'est pas : si GitHub relaie vers npmjs `[À VÉRIFIER]` (la page lue ne le décrit pas).
+
+Correction :
+
+- Les sondes passent par HTTP, sans configuration npm : npmjs `GET /<nom>/<version>` ; GitHub, API REST `GET /users/<proprietaire>/packages/npm/<nom sans portée>/versions`, version exacte. 200 : présent ; 404 : absent ; tout autre code (401, 403, 500) : `RegistryError` avec le code, le job échoue, jamais « déjà publié » par défaut.
+- Attente de propagation npm : jusqu'à 10 minutes, toutes les 15 secondes (timeout du job : 25 minutes). Ensuite un paquet public absent de npmjs fait échouer le job.
+- Après publication, chaque version est revérifiée sur GitHub (2 minutes) ; une absence fait échouer le job. Un miroir vide ne peut plus être vert.
+- `npm pack` force la portée vers npmjs (`--@paulperigault:registry=`) pour ne pas relire le tarball chez GitHub.
+- Limite à confirmer `[À VÉRIFIER]` : l'API REST avec le `GITHUB_TOKEN` du workflow doit lister les versions d'un paquet qu'il vient de publier ; sinon le job échoue franchement (403 ou 404 après publication) au lieu de mentir.
+
+Déclenchement manuel et vérification : `tmp/commandes-paul.md` (jamais exécutés par un agent). Un paquet GitHub est **privé par défaut** à sa première publication (documentation GitHub lue le 2026-11-04) ; le lien au dépôt vient du champ `repository` de `package.json`, déjà présent.
 
 Côté consommateur (documentation de GitHub, lue le 2026-11-02 : un jeton est nécessaire pour installer, même un paquet public ; seul un jeton personnel « classic » est pris en charge) :
 
@@ -80,7 +96,7 @@ Côté consommateur (documentation de GitHub, lue le 2026-11-02 : un jeton est n
 
 Créer le jeton sur GitHub (Settings, Developer settings, Personal access tokens (classic)) avec la seule portée `read:packages`, puis `export GITHUB_TOKEN=…` avant d'installer un paquet.
 
-**Limite connue :** comme l'installation exige un jeton, `npx @paulperigault/create` et tout usage public passent par npmjs ; le miroir ne sert qu'aux projets de Paul. Action manuelle de Paul : aucune avant la première release (le job se déclenche seul) ; après elle, vérifier la page Packages du dépôt.
+**Limite connue :** comme l'installation exige un jeton, `npx @paulperigault/create` et tout usage public passent par npmjs ; le miroir ne sert qu'aux projets de Paul. Après une release ou un `mirror.yml`, vérifier la page Packages du dépôt.
 
 ## Actions manuelles de Paul, dans l'ordre
 

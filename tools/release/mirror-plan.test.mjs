@@ -38,21 +38,25 @@ describe('scopeProblem', () => {
 });
 
 describe('mirrorPlan', () => {
-  it('ne miroite que ce qui est publié sur npmjs et absent du miroir, jamais un paquet privé', () => {
+  it('sépare à miroiter, ignoré (privé, déjà présent) et manquant sur npmjs', () => {
     const state = {
       onNpm: (name) => name !== '@paulperigault/data',
       onGithub: (name) => name === '@paulperigault/css',
     };
-    const { toMirror, skipped } = mirrorPlan(manifests, state);
+    const { toMirror, skipped, missing } = mirrorPlan(manifests, state);
     expect(toMirror).toEqual(['@paulperigault/tokens@0.1.0']);
     expect(skipped).toEqual([
       { name: '@paulperigault/css', why: 'déjà sur GitHub Packages' },
       { name: '@paulperigault/docs', why: 'privé' },
-      { name: '@paulperigault/data', why: 'pas encore publié sur npmjs (npmjs d’abord)' },
     ]);
+    expect(missing).toEqual(['@paulperigault/data@0.1.0']);
   });
-  it('ne fait rien quand rien n’est publié', () => {
-    const { toMirror } = mirrorPlan(manifests, { onNpm: () => false, onGithub: () => false });
+  it('un paquet public absent de npmjs n’est jamais ignoré en silence', () => {
+    const { toMirror, missing } = mirrorPlan(manifests, {
+      onNpm: () => false,
+      onGithub: () => false,
+    });
     expect(toMirror).toEqual([]);
+    expect(missing).toHaveLength(3);
   });
 });
