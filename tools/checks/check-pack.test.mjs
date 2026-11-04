@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+import { syncVersions } from '../../packages/create/scripts/sync-versions-core.ts';
 import {
   PACK_ARGS,
   contentFailure,
@@ -61,16 +62,52 @@ describe('check-pack', () => {
       '@paulperigault/p : LICENSE absent',
     ]);
   });
-  it('bloque une dépendance interne à 0.0.0, * ou latest, accepte le dépôt tel quel', () => {
-    const entries = manifests();
-    const versions = JSON.parse(readFileSync('packages/create/templates/versions.json', 'utf8'));
-    expect(dependencyFailure(entries, versions)).toBeNull();
-    const moved = entries.map((m) => ({ ...m, version: '0.1.0' }));
-    expect(dependencyFailure(moved, {})).toContain('amorce vide');
-    const floating = entries.map((m) => ({ ...m, dependencies: { '@paulperigault/css': '*' } }));
-    expect(dependencyFailure(floating, {})).toContain('dépendance interne invalide');
-    expect(dependencyFailure(entries, { '@paulperigault/css': 'latest' })).toContain(
-      'versions.json',
+  it('bloque une dépendance interne à 0.0.0, * ou latest', () => {
+    const tokens = { name: '@paulperigault/tokens', version: '0.1.0' };
+    const css = (dependencies) => ({ name: '@paulperigault/css', version: '0.1.0', dependencies });
+    const dep = (spec) => ({ '@paulperigault/tokens': spec });
+    expect(dependencyFailure([tokens, css(dep('0.0.0'))], {})).toContain('amorce vide');
+    expect(dependencyFailure([tokens, css(dep('*'))], {})).toContain('dépendance interne invalide');
+    expect(dependencyFailure([tokens, css(dep('0.1.0'))], {})).toBeNull();
+    const latest = { '@paulperigault/css': 'latest' };
+    expect(dependencyFailure([tokens, css(dep('0.1.0'))], latest)).toContain('versions.json');
+  });
+});
+
+/** Ce que fait release-please : version des paquets et de leurs dépendances internes à 0.1.0. */
+function releaseState(entries) {
+  const FIELDS = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies'];
+  const bump = (deps) =>
+    Object.fromEntries(
+      Object.entries(deps).map(([k, v]) => [k, k.startsWith('@paulperigault/') ? '0.1.0' : v]),
     );
+  return entries.map((m) => ({
+    ...m,
+    version: '0.1.0',
+    ...Object.fromEntries(FIELDS.filter((f) => m[f]).map((f) => [f, bump(m[f])])),
+  }));
+}
+
+describe('check-pack : gabarit de create, état empaqueté', () => {
+  const committed = JSON.parse(readFileSync('packages/create/templates/versions.json', 'utf8'));
+  /** Ce que `prepack` écrit dans le gabarit : les versions réelles des paquets du dépôt. */
+  const packed = (entries) => {
+    const byName = new Map(entries.map((m) => [m.name, m.version]));
+    return syncVersions(committed, (name) => byName.get(name)).next;
+  };
+
+  it('accepte le dépôt dans son état courant une fois `prepack` passé', () => {
+    const entries = manifests();
+    expect(dependencyFailure(entries, packed(entries))).toBeNull();
+  });
+
+  it('accepte l’état de la PR de release une fois `prepack` passé', () => {
+    const entries = releaseState(manifests());
+    expect(dependencyFailure(entries, packed(entries))).toBeNull();
+  });
+
+  it('ne lit pas le fichier commité : release-please ne le met pas à jour', () => {
+    const entries = releaseState(manifests());
+    expect(dependencyFailure(entries, committed)).toContain('templates/versions.json');
   });
 });
