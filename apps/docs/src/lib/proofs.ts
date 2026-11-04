@@ -3,7 +3,7 @@
 export interface Proofs {
   measuredOn: string;
   source: string;
-  tests: { unit: number; e2e: number; devices: number; themes: number };
+  tests: { unit: number; e2eDeclared: number; devices: number; themes: number };
   content: { pages: number; components: number; registryItems: number; glossaryTerms: number };
   accessibility: {
     target: string;
@@ -32,7 +32,7 @@ const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 const SCHEMA: Schema = {
   measuredOn: 'date',
   source: 'text',
-  tests: { unit: 'positive', e2e: 'positive', devices: 'positive', themes: 'positive' },
+  tests: { unit: 'positive', e2eDeclared: 'positive', devices: 'positive', themes: 'positive' },
   content: {
     pages: 'positive',
     components: 'positive',
