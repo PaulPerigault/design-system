@@ -9,7 +9,7 @@ export interface Legal {
   contact: string;
   /** Licence du code (identifiant SPDX). */
   licenseCode: string;
-  /** Licence des contenus et de l'identité. Vide : « licence à choisir par Paul ». */
+  /** Licence des contenus et de l'identité. Choix de Paul : option A, tous droits réservés. */
   licenseContent: string;
 }
 
@@ -20,7 +20,7 @@ export const LEGAL: Legal = {
   host: 'Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, États-Unis',
   contact: 'contact@paulperigault.fr',
   licenseCode: 'MIT',
-  licenseContent: '',
+  licenseContent: 'tous droits réservés',
 };
 
 /** Champs que la LCEN (article 1-1) impose à l'éditeur et à l'hébergeur. */

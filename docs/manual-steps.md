@@ -92,11 +92,9 @@ aucun identifiant Kiro.
 2. **Choisir l'hébergeur** et compléter `apps/docs/src/lib/legal.ts` (`host`, `contact`). Le build
    de production (`PP_PRODUCTION=1`) échoue tant qu'ils sont vides. Comparatif : ADR-0004. Les
    adaptateurs d'en-têtes (Cloudflare Pages, Netlify, Vercel, Nginx) sont prêts et testés.
-3. **Licence des contenus et de l'identité** (le code est MIT). Proposition : CC BY 4.0 pour les
-   textes et schémas (réutilisables avec mention de l'auteur) ; logo, favicon et nom **réservés**
-   (tous droits réservés), car l'identité distingue l'auteur. Alternative : CC BY-NC-SA 4.0 si tu
-   refuses la réutilisation commerciale ; elle gêne l'usage par des tiers. À inscrire dans
-   `lib/legal.ts` (`licenseContent`) puis dans la page Mentions légales.
+3. **Licence des contenus et de l'identité** : faite (#113, D-158). Option A de Paul : textes et
+   identité visuelle en tous droits réservés, code des paquets en MIT. Ce n'est pas un avis juridique.
+   Inscrit dans `lib/legal.ts` (`licenseContent`) et sur la page Mentions légales.
 4. **Déclaration d'accessibilité** (`lib/a11y-statement.ts`) : date et contact à compléter. Le
    taux RGAA n'est pas mesuré ; seul un audit manuel le fournirait. Question à trancher : le site
    personnel entre-t-il dans le champ de la directive (UE) 2019/882 ou de l'art. 47 de la loi de 2005 ?

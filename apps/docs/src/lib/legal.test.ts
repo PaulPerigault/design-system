@@ -7,12 +7,12 @@ const COMPLETE: Legal = {
   host: 'Hébergeur exemple, 1 rue Exemple',
   contact: 'contact@exemple.test',
   licenseCode: 'MIT',
-  licenseContent: 'CC BY 4.0',
+  licenseContent: 'tous droits réservés',
 };
 
 describe('legalProblems', () => {
-  it('liste les champs vides de la configuration par défaut', () => {
-    expect(legalProblems(LEGAL)).toEqual(['licenseContent']);
+  it('ne trouve aucun champ vide dans la configuration publiée', () => {
+    expect(legalProblems(LEGAL)).toEqual([]);
   });
 
   it('renvoie une liste vide quand tous les champs sont renseignés', () => {
