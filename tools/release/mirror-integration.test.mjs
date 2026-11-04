@@ -16,7 +16,12 @@ const roots = [];
 
 /** npm hors du dépôt, avec une configuration vide : ni .npmrc de l'utilisateur, ni jeton. */
 function npm(args, cwd, config) {
-  const env = { ...process.env, npm_config_userconfig: config, npm_config_globalconfig: config };
+  // Deux fichiers distincts : npm refuse de charger le même fichier comme « user » puis « global ».
+  const env = {
+    ...process.env,
+    npm_config_userconfig: config,
+    npm_config_globalconfig: `${config}.global`,
+  };
   // Windows : npm est un .cmd que Node refuse de lancer sans shell ; on appelle son script JS.
   const cli = join(dirname(process.execPath), 'node_modules', 'npm', 'bin', 'npm-cli.js');
   const [file, head] = existsSync(cli) ? [process.execPath, [cli]] : ['npm', []];
@@ -29,6 +34,7 @@ function scratch() {
   roots.push(root);
   const config = join(root, 'npmrc');
   writeFileSync(config, '');
+  writeFileSync(`${config}.global`, '');
   const workdir = join(root, 'work');
   mkdirSync(workdir);
   return { root, config, workdir };
