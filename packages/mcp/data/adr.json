@@ -1020,6 +1020,16 @@
       "decision": "Mesure outillée de `proofs.json` (#273, « Closes #273 »). Le chiffre e2e est un décompte `playwright test --list` : champ renommé `e2eDeclared`, ligne de /preuves/ « Tests de bout en bout déclarés » (source : `playwright test --list`, comptés, non exécutés ici), car « mesuré » suppose une exécution. `npm run proofs` (`tools/checks/measure-proofs.mjs`, analyseurs purs testés dans `proofs-core.mjs`, sans dépendance) mesure tests unitaires, e2e déclarés, pages, composants, registre, glossaire, paires de contraste et attestations npm ; les autres champs (dont `axeViolations`) restent tels quels. Procédure : `docs/process/preuves-mesure.md`. Mentions légales inchangées : le choix de Paul pour Q17 (B, A ou attente) n'était pas tranché dans le prompt, traité comme attente. Budgets et garde-fous inchangés.",
       "id": "D-150",
       "rollback": "Supprimer les trois fichiers `tools/checks/*proofs*`, le script `proofs` et restaurer `proofs.json`, `proofs.ts`, `preuves.astro`."
+    },
+    {
+      "date": "2026-11-04",
+      "decision": "Dépendances internes alignées sur la version des paquets (#275, « Closes #275 »). Mesure sur la branche de #40 : release-please met à jour les dépendances internes des neuf paquets (exactes, `0.0.0` vers `0.1.0`), mais pas celles d'`apps/docs`, privée et hors configuration : `npm ci` cherchait `@paulperigault/*@0.0.0` dans le registre. Les quatre dépendances d'`apps/docs` passent à `*` ; les paquets publiés gardent des versions exactes tenues par le plugin. Verrou resynchronisé. Alternatives écartées : plage `^0.1.0` (ne correspond pas aux paquets en 0.0.0 sur `main`) ; `extra-files` pour réécrire `apps/docs` (fragile, le verrou ne suit pas) ; déclarer `apps/docs` à release-please (version, tag et changelog sans objet) ; passer les versions de `main` à 0.1.0 (la première release ne serait plus 0.1.0). Retour arrière : remettre `0.0.0`, la PR de release redevient rouge.",
+      "id": "D-151"
+    },
+    {
+      "date": "2026-11-04",
+      "decision": "Contrôle bloquant des dépendances internes dans `check:pack` (#275). `tools/release/internal-deps.mjs` : toute dépendance `@paulperigault/*` d'un paquet publié doit satisfaire la version du workspace ; `*`, `latest`, une amorce `0.0.0` quand le voisin a avancé, un paquet inconnu : échec. `0.0.0` reste admis tant que le voisin est lui-même en `0.0.0` (avant la première release). `templates/versions.json` est lu après `pack` (`prepack` l'aligne). Alternative écartée : refuser `0.0.0` en toute circonstance (échouerait sur `main` avant la première release). Retour arrière : retirer l'appel `dependencyFailure` de `runAll`.",
+      "id": "D-152"
     }
   ]
 }
