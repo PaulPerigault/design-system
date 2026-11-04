@@ -1035,6 +1035,13 @@
       "date": "2026-11-04",
       "decision": "Gabarit de `create` vérifié dans son état empaqueté (#277, « Refs #277 »). Sur la PR de release, `templates/versions.json` reste en `0.0.0` (release-please ne le met pas à jour) alors que les paquets passent en 0.1.0 : le test qui lisait le fichier commité échouait. Le test applique `syncVersions` (ce que fait `prepack`) avant de comparer, comme `check:pack` à l'exécution ; il passe sur `main` (tout en 0.0.0) et sur l'état simulé de la PR (0.1.0). Alternative écartée : `extra-files` de release-please sur `versions.json` (impossible à simuler hors GitHub, effet sur un paquet monté par le seul plugin `node-workspace` non documenté, une clé fausse casserait la génération de #40). Retour arrière : lire le fichier commité dans le test (rouge de nouveau sur la PR de release).",
       "id": "D-153"
+    },
+    {
+      "alternative": "",
+      "date": "2026-11-04",
+      "decision": "Pied de page de release-please compatible avec commitlint (#278, « Closes #278 », option B de Paul). Le pied de page par défaut (« This PR was generated with [Release Please]… ») est refusé par `no-tool-signature` (D-004, sans exemption) : le job `commitlint` de #40 échouait. `release-please-config.json` reçoit un `pull-request-footer` en français, sans « generated with » ; une chaîne vide est impossible (`footer",
+      "id": "D-154",
+      "rollback": "DEFAULT_FOOTER`). Test : le pied de page par défaut reste refusé, le configuré passe, « Generated with Claude Code » et `Co-Authored-By`restent refusés. Le garde-fou`no-tool-signature`n'est pas modifié. Alternative écartée : exempter les PR de release-please (option A : affaiblit la règle, critère de reconnaissance à maintenir). Retour arrière : retirer la clé, #40 redevient rouge à`commitlint`."
     }
   ]
 }
