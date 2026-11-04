@@ -104,7 +104,7 @@ Cause racine des 96 `Status` : le workflow du Project « item fermé → Fait »
 
 Script : `npm run audit:comments` (`tools/audit/measure-comments.mjs`), échantillons : `npm run audit:comments -- --samples 30` (stockés dans `docs/audit-commentaires-echantillons-2026-11.md`). Il lit 1 069 fichiers suivis `.ts`, `.mjs`, `.astro`, `.rs`, `.css`, `.yml`, hors `tasks/`, références Visuel et `.agents/`. Les lignes consécutives forment un seul commentaire. Les chaînes sont sautées par expression régulière ; un littéral de regex contenant `//` peut être mal lu (1 cas constaté : `tools/links/external.mjs:12`).
 
-**Totaux : 2 418 commentaires** (227 dans des tests).
+**Totaux : 2 418 commentaires** (227 dans des tests), mesurés avant l'ajout des scripts d'audit ; le dépôt qui les contient en compte 2 452.
 
 | Langage       | Total | À supprimer | À reformuler | Garder (technique) | Garder |
 | ------------- | ----- | ----------- | ------------ | ------------------ | ------ |
