@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { GITHUB_REGISTRY, mirrorManifest, mirrorPlan, scopeProblem } from './mirror-plan.mjs';
+import { mirrorPlan, scopeProblem } from './mirror-plan.mjs';
 
 const manifests = [
   { name: '@paulperigault/tokens', version: '0.1.0' },
@@ -7,27 +7,6 @@ const manifests = [
   { name: '@paulperigault/docs', version: '0.0.0', private: true },
   { name: '@paulperigault/data', version: '0.1.0' },
 ];
-
-describe('mirrorManifest', () => {
-  it('pointe vers GitHub Packages, retire la provenance et garde le reste', () => {
-    const manifest = {
-      name: '@paulperigault/tokens',
-      version: '0.1.0',
-      publishConfig: {
-        registry: 'https://registry.npmjs.org/',
-        access: 'public',
-        provenance: true,
-      },
-    };
-    const mirrored = mirrorManifest(manifest);
-    expect(mirrored.publishConfig).toEqual({ registry: GITHUB_REGISTRY, access: 'public' });
-    expect(mirrored.version).toBe('0.1.0');
-    expect(manifest.publishConfig.provenance).toBe(true);
-  });
-  it('fonctionne sans publishConfig', () => {
-    expect(mirrorManifest({ name: 'a' }).publishConfig.registry).toBe(GITHUB_REGISTRY);
-  });
-});
 
 describe('scopeProblem', () => {
   it('exige le scope du propriétaire, en minuscules', () => {

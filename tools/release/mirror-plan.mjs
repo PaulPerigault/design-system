@@ -2,13 +2,6 @@
 // publication npm, le tarball publié avec un `publishConfig` pointant vers GitHub Packages.
 export const GITHUB_REGISTRY = 'https://npm.pkg.github.com';
 
-/** @returns {object} manifeste du miroir : registre GitHub, plus de provenance (non documentée là-bas) */
-export function mirrorManifest(manifest) {
-  const kept = { ...manifest.publishConfig };
-  delete kept.provenance;
-  return { ...manifest, publishConfig: { ...kept, registry: GITHUB_REGISTRY, access: 'public' } };
-}
-
 /** Un nom de paquet de miroir doit être dans le scope du propriétaire, en minuscules. */
 export function scopeProblem(name, owner) {
   const scope = `@${owner.toLowerCase()}/`;

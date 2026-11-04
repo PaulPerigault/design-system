@@ -6,9 +6,15 @@ const GITHUB_API = 'https://api.github.com';
 const API_VERSION = '2022-11-28';
 const PAGE = 100;
 
+const FORBIDDEN = new Set([401, 403]);
+const FORBIDDEN_HINT =
+  'le jeton ne peut pas lire les versions de ce paquet (GITHUB_TOKEN du workflow : droit de lecture ' +
+  'du paquet non établi), la présence n’est ni confirmée ni infirmée';
+
 export class RegistryError extends Error {
-  constructor(where, status, detail = '') {
-    super(`${where} : réponse inattendue ${status} ${detail}`.trim());
+  constructor(where, status) {
+    const hint = FORBIDDEN.has(status) && where === 'GitHub Packages' ? ` : ${FORBIDDEN_HINT}` : '';
+    super(`${where} : réponse inattendue ${status}${hint}`);
     this.name = 'RegistryError';
     this.where = where;
     this.status = status;
