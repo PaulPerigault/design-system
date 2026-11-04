@@ -1084,6 +1084,27 @@
       "decision": "Audit de propreté en mesure seule (#289, « Refs #289 »). Objectif de Paul : un dépôt tenu comme avec un PO, un tech lead et un architecte. Livré : `npm run audit:traceability` (lecture seule, ne bloque jamais), `npm run audit:comments` (candidats lexicaux, relecture humaine), `docs/audit-proprete-2026-11.md`, `docs/audit-commentaires-echantillons-2026-11.md`, `docs/process/gouvernance.md`. Mesuré : 128 PR sur 155 hors du Project 13, 96 issues fermées sur 110 pas à `Fait`, 8 jalons sans échéance, aucun suffixe « (#n) » valide sur `main` depuis #37, 2 418 commentaires dont 53 à reformuler, README annonçant « rien n'est publié » après la 0.1.0. Quinze issues de suivi (#290 à #304) sous le chantier #289, jalon M5 1.0, dates en estimation. Questions 22 à 31 de `tmp/questions-paul.md`.",
       "id": "D-160",
       "rollback": "Supprimer les deux scripts et leurs lignes `package.json` ; les issues #289 à #304 se ferment sans effet."
+    },
+    {
+      "alternative": "Garder `npm view` avec `--userconfig` isolé (écartée : dépend encore d'un comportement npm non vérifié).",
+      "date": "2026-11-04",
+      "decision": "Sondes du miroir par HTTP et échec franc (#130, « Refs #130 »). Le miroir GitHub Packages était vide alors que le job était vert : `npm view --registry` avalait toute erreur comme « absent » et la portée `@paulperigault:registry` écrite par setup-node (cause supposée, [À VÉRIFIER]) l'emporte sur `--registry`. Désormais npmjs et l'API REST de GitHub sont lus par `fetch`, version exacte ; seul 404 signifie absent, tout autre code lève `RegistryError`.",
+      "id": "D-161",
+      "rollback": "Rétablir `exists` de `mirror-github-packages.mjs` (commit précédent)."
+    },
+    {
+      "alternative": "Ignorer en silence comme avant (écartée : c'est le défaut constaté).",
+      "date": "2026-11-04",
+      "decision": "Attente de propagation et échec du job (#130). npmjs peut ne pas avoir propagé quand `mirror` démarre : attente de 10 minutes au plus (15 s), `timeout-minutes` du job porté à 25. Un paquet public absent de npmjs ou, après publication, de GitHub fait échouer le job.",
+      "id": "D-162",
+      "rollback": "Revenir à `timeout-minutes: 10` et à l'ancien plan."
+    },
+    {
+      "alternative": "Déclencheur manuel dans `release.yml` (écartée : le fichier porte `publish` et ses droits OIDC, un `workflow_dispatch` y élargirait la surface).",
+      "date": "2026-11-04",
+      "decision": "Workflow manuel `mirror.yml` (#130). `workflow_dispatch` seul, `contents: read` et `packages: write`, `GITHUB_TOKEN`, actions épinglées, même script, aucun environnement `npm-publish`. Permet de remplir le miroir sans release.",
+      "id": "D-163",
+      "rollback": "Supprimer `.github/workflows/mirror.yml`."
     }
   ]
 }

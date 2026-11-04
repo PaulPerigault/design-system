@@ -19,22 +19,17 @@ export function scopeProblem(name, owner) {
 /**
  * @param {{ name: string, version: string, private?: boolean }[]} manifests paquets du dépôt
  * @param {{ onNpm: (name: string, version: string) => boolean, onGithub: (name: string, version: string) => boolean }} state
- * @returns {{ toMirror: string[], skipped: { name: string, why: string }[] }}
+ * @returns {{ toMirror: string[], skipped: { name: string, why: string }[], missing: string[] }}
+ *   `missing` : paquets publics absents de npmjs (après attente) ; le job doit échouer.
  */
 export function mirrorPlan(manifests, { onNpm, onGithub }) {
-  const toMirror = [];
-  const skipped = [];
+  const plan = { toMirror: [], skipped: [], missing: [] };
   for (const { name, version, private: isPrivate } of manifests) {
-    const why = skipReason(name, version, { isPrivate, onNpm, onGithub });
-    if (why) skipped.push({ name, why });
-    else toMirror.push(`${name}@${version}`);
+    const spec = `${name}@${version}`;
+    if (isPrivate) plan.skipped.push({ name, why: 'privé' });
+    else if (!onNpm(name, version)) plan.missing.push(spec);
+    else if (onGithub(name, version)) plan.skipped.push({ name, why: 'déjà sur GitHub Packages' });
+    else plan.toMirror.push(spec);
   }
-  return { toMirror, skipped };
-}
-
-function skipReason(name, version, { isPrivate, onNpm, onGithub }) {
-  if (isPrivate) return 'privé';
-  if (!onNpm(name, version)) return 'pas encore publié sur npmjs (npmjs d’abord)';
-  if (onGithub(name, version)) return 'déjà sur GitHub Packages';
-  return null;
+  return plan;
 }

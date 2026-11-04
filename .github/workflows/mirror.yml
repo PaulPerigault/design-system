@@ -1,0 +1,32 @@
+name: Miroir GitHub Packages
+
+# Déclenchement manuel du miroir (#130), sans release : republie sur GitHub Packages les versions
+# déjà publiées sur npmjs. Même script que le job `mirror` de release.yml. Aucun secret ajouté,
+# aucun environnement npm-publish, aucun droit OIDC.
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .nvmrc
+          registry-url: https://npm.pkg.github.com
+      - run: node tools/release/mirror-github-packages.mjs
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
