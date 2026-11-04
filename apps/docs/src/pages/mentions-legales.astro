@@ -1,6 +1,5 @@
 ---
 import process from 'node:process';
-import DraftNotice from '../components/DraftNotice.astro';
 import DocsLayout from '../layouts/DocsLayout.astro';
 import { LEGAL, assertProductionReady } from '../lib/legal.ts';
 
@@ -15,7 +14,6 @@ const pending = (value: string): string => value || 'à compléter';
   description="Mentions légales du design system : éditeur, directeur de la publication, hébergeur, contact et licences du code et des contenus."
 >
   <div class="docs-prose">
-    <DraftNotice />
     <h1>Mentions légales</h1>
 
     <h2>Éditeur</h2>
@@ -50,12 +48,10 @@ const pending = (value: string): string => value || 'à compléter';
 
     <h2>Propriété intellectuelle</h2>
     <p>
-      Le code du design system est publié sous licence {LEGAL.licenseCode}. Le texte de la licence
-      est dans le fichier LICENSE du dépôt.
-    </p>
-    <p>
-      Contenus et identité : {LEGAL.licenseContent || 'licence à choisir par Paul'}. Les polices et
-      les outils tiers sont listés sur la page <a href="/credits/">Crédits</a>.
+      Les textes et l’identité visuelle du site sont {LEGAL.licenseContent}. Le code des paquets est
+      publié sous licence {LEGAL.licenseCode} ; le texte de la licence est dans le fichier LICENSE
+      du dépôt. Les polices et les outils tiers sont listés sur la page{' '}
+      <a href="/credits/">Crédits</a>.
     </p>
 
     <h2>Données personnelles</h2>
