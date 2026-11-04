@@ -28,6 +28,18 @@ Aucun fichier de test, `.env`, clé, `tsconfig` du dépôt ni `node_modules` dan
 
 Les neuf tarballs installés ensemble (`npm install --ignore-scripts`, 289 paquets) : succès. Imports vérifiés : `tokens/color`, `contrast`, `palette`, `customize` ; `dataviz` ; `guards/design`, `guards/eslint` ; `color` ; `data` : tous chargent. Fichiers `tokens.css`, `tokens.json`, `css/base.css`, `css/theme.css`, `astro/registry.json`, `astro/Stack.astro` : présents. `pp-create create <dossier>` génère un site complet ; `pp-mcp --self-test` : ok ; `pp-guards --help` : ok. Limite normale : `@paulperigault/astro/variants` et `field-ids` sont des `.ts` qu'un `node` simple refuse sous `node_modules` (`ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING`) ; Astro et Vite les compilent.
 
+## Tester le paquet publié : hors du dépôt (#281)
+
+**Piège** (mesuré le 2026-11-04). `npx @paulperigault/create create <dossier>` lancé depuis la racine du dépôt n'exécute pas le paquet publié : `node_modules/@paulperigault/create` est un lien vers `packages/create`, et `npx` préfère le binaire local. `templates/versions.json` y garde la valeur commitée (`0.0.0`) : seul `prepack` l'aligne sur les versions des paquets. Le site généré déclare alors `@paulperigault/css`, `tokens`, `guards` et `mcp` en `0.0.0`, `npm install` installe l'amorce vide du registre et `npm run build` échoue (`Rolldown failed to resolve import "@paulperigault/css"`). Même commande depuis un dossier hors du dépôt, avec le paquet 0.1.0 du registre : les quatre dépendances valent `0.1.0`. Le paquet publié est correct ; une copie de `main` en retard sur la release aggrave l'écart. Aucune garde de code (décision de Paul).
+
+**Procédure de référence**, depuis un dossier hors du dépôt (jamais sous `D:\design-system`) :
+
+1. `npx --yes @paulperigault/create create <dossier>`.
+2. Lire `<dossier>/package.json` : les quatre `@paulperigault/*` (`css`, `tokens` en `dependencies` ; `guards`, `mcp` en `devDependencies`) valent la version publiée (`npm view @paulperigault/<nom> version`), ni `0.0.0`, ni `*`, ni `latest`.
+3. `cd <dossier>`, `npm install`, `npm run build` : succès.
+
+**Limite du job CI « site ».** Il génère le site depuis des tarballs produits par `npm pack` du dépôt et les installe en local : il vérifie le paquet tel qu'on le construit, pas celui que le registre sert. Il ne remplace pas ce test, à rejouer après chaque publication.
+
 ## `release.yml` relu
 
 Bon : `permissions: {}` au niveau du workflow, `id-token: write` et `contents: read` seulement sur le job `publish` ; environnement protégé `npm-publish` ; actions épinglées par SHA ; `npm ci --ignore-scripts` ; `.wasm` compilés en CI (`wasm-bindgen-cli@0.2.130 --locked`) puis `check:wasm` ; `npm audit signatures` ; SBOM CycloneDX en artefact ; publication par `publish-new.mjs` avec `--provenance`, préversion sous `next`. `npm audit signatures` ne s'applique pas à nos propres paquets avant leur première publication (il vérifie les paquets installés depuis le registre) : il porte ici sur les dépendances.
