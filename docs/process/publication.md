@@ -86,6 +86,25 @@ Correction :
 
 Déclenchement manuel et vérification : `tmp/commandes-paul.md` (jamais exécutés par un agent). Un paquet GitHub est **privé par défaut** à sa première publication (documentation GitHub lue le 2026-11-04) ; le lien au dépôt vient du champ `repository` de `package.json`, déjà présent.
 
+### Second défaut du 2026-11-04 : `prepublishOnly` introuvable (#308, D-164 à D-166)
+
+Constat (journal du run 41912123905 de `mirror.yml`, lu par Paul) : le job échoue à la première publication, `Cannot find module '/tmp/tools/checks/check-publish-env.mjs'` puis `Command failed: npm publish /tmp/mirror-d2aQtC/package --registry https://npm.pkg.github.com`. Rien n'a été publié.
+
+Cause **lue dans le code** : le tarball publié sur npmjs est extrait dans `/tmp/mirror-xxxx/package`. Son `package.json` garde les scripts du dépôt, dont `"prepublishOnly": "node ../../tools/checks/check-publish-env.mjs"` (et `prepack`). npm les exécute à la publication d'un dossier ; le chemin relatif ne mène plus au dépôt. Le défaut existait avant D-161 : l'ancien message « déjà sur GitHub Packages » le masquait, et les tests simulaient la publication sans jamais exécuter npm.
+
+Même avec un chemin valide, le garde aurait refusé : `check-publish-env.mjs` exige un jeton OIDC, et le job `mirror` n'a pas `id-token: write`. Le garde de `prepublishOnly` n'a pas de sens dans ce job.
+
+Correction :
+
+- `mirrorManifest` (`tools/release/mirror-manifest.mjs`) retire de la **copie** `prepublish`, `prepublishOnly`, `prepare`, `prepack`, `postpack`, `publish` et `postpublish`, au moment où il réécrit déjà `publishConfig`. Les autres scripts (`build`, `check`…) et le reste du manifeste sont conservés. Le tarball de npmjs n'est pas touché.
+- Le garde reste respecté : `mirror-github-packages.mjs` refuse de tourner hors de GitHub Actions (`GITHUB_ACTIONS !== 'true'`), avant toute publication.
+- **Alternative écartée :** l'option `--ignore-scripts` de la commande de publication. Elle laisse dans le manifeste des scripts qui ne s'exécutent pas et coupe aussi ceux qu'on ne connaît pas encore ; retirer ceux d'une liste fermée, dans une copie, est explicite et testable.
+- Contrôle de présence final : après les publications, chaque version publique attendue est cherchée sur GitHub Packages (API REST, version exacte, 2 minutes au plus), pour tous les paquets publics et non seulement ceux publiés pendant le run. Absente : le job échoue en nommant la version. 401 ou 403 : le job échoue avec le code HTTP et l'explication « le jeton ne peut pas lire les versions ». **À vérifier `[À VÉRIFIER]` :** le droit du `GITHUB_TOKEN` du workflow de lister les versions d'un paquet de compte utilisateur n'est pas établi (aucun run depuis la correction) ; un 403 sur la première sonde, avant toute publication, arrêterait aussi le job. C'est voulu : un échec franc plutôt qu'un vert menteur.
+
+Tests (bloquants, sans réseau) : réécriture pure (`mirror-manifest.test.mjs`), déroulé avec publication injectée, contrôle après la dernière publication (`mirror-run.test.mjs`), contrôle final et 403 (`mirror-verify.test.mjs`) et intégration locale (`mirror-integration.test.mjs`) : tarball réel de `tokens` et `create` (commande `pack`, sans `prepack`), extrait hors du dépôt, réécrit par le code du miroir, puis essai à blanc de publication avec une configuration npm vide. L'essai à blanc exécute les scripts de cycle de vie sans publier. Témoin dans le même fichier : sans réécriture il échoue sur `check-publish-env.mjs`, le défaut du 2026-11-04. Limite : le test suppose `npm` et `tar` dans le `PATH` ; il lance npm hors du dépôt avec `npm_config_userconfig` vide, donc aucun jeton ni `.npmrc` de l'utilisateur.
+
+Relancer et vérifier : `tmp/commandes-paul.md`. Un paquet GitHub est privé à sa première publication : le passer en public est une décision de Paul, non faite ici.
+
 Côté consommateur (documentation de GitHub, lue le 2026-11-02 : un jeton est nécessaire pour installer, même un paquet public ; seul un jeton personnel « classic » est pris en charge) :
 
 ```shell
