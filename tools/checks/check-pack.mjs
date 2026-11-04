@@ -1,6 +1,7 @@
 // Contrôle de publication à blanc : `npm pack --dry-run` sur chaque paquet, sortie JSON ignorée.
 import { spawnSync } from 'node:child_process';
 import { globSync, readFileSync } from 'node:fs';
+import { internalDependencyProblems, templateVersionProblems } from '../release/internal-deps.mjs';
 import { parsePackOutput } from '../release/pack-output.mjs';
 import { tarballProblems } from '../release/tarball-rules.mjs';
 
@@ -13,12 +14,35 @@ export function packFailure(result) {
   return null;
 }
 
-/** @returns {Map<string, { wasm: boolean }>} paquets publiables (`packages/*`, non privés) */
-export function publishable(read = (file) => JSON.parse(readFileSync(file, 'utf8'))) {
-  const entries = globSync('packages/*/package.json')
+const readJson = (file) => JSON.parse(readFileSync(file, 'utf8'));
+const TEMPLATE_VERSIONS = 'packages/create/templates/versions.json';
+
+/** @returns {object[]} manifestes des paquets publiables (`packages/*`, non privés) */
+export function manifests(read = readJson) {
+  return globSync('packages/*/package.json')
     .map((file) => read(file))
     .filter((manifest) => !manifest.private);
+}
+
+/** @returns {Map<string, { wasm: boolean }>} paquets publiables et présence d'un `.wasm` */
+export function publishable(read = readJson) {
+  const entries = manifests(read);
   return new Map(entries.map((m) => [m.name, { wasm: (m.files ?? []).includes('wasm') }]));
+}
+
+/**
+ * @returns {string | null} échec si une dépendance `@paulperigault/*` d'un paquet publié, ou une
+ * version du gabarit de `create` (lue après `prepack`), vaut `0.0.0`, `*`, `latest` ou ne
+ * satisfait pas la version du workspace
+ */
+export function dependencyFailure(entries, versions = {}) {
+  const workspace = new Map(entries.map((m) => [m.name, m.version]));
+  const problems = [
+    ...internalDependencyProblems(entries),
+    ...templateVersionProblems(versions, workspace),
+  ];
+  if (problems.length === 0) return null;
+  return `dépendance interne invalide :\n${problems.join('\n')}`;
 }
 
 /** @returns {string | null} échec si un tarball contient un fichier interdit ; avertissements à `warn` */
@@ -51,9 +75,19 @@ export function run({ packages = new Map(), warn = () => {}, ...system } = {}) {
   return packFailure(result) ?? contentFailure(result.stdout, packages, warn);
 }
 
+/** Les versions du gabarit sont lues après le pack : `prepack` les a alignées sur le workspace. */
+export function runAll({ read = readJson, ...options } = {}) {
+  const entries = manifests(read);
+  const packages = new Map(
+    entries.map((m) => [m.name, { wasm: (m.files ?? []).includes('wasm') }]),
+  );
+  const failure = run({ ...options, packages });
+  return failure ?? dependencyFailure(entries, read(TEMPLATE_VERSIONS));
+}
+
 if (import.meta.main) {
   const warn = (message) => console.warn(`avertissement : ${message}`);
-  const failure = run({ packages: publishable(), warn });
+  const failure = runAll({ warn });
   if (failure) {
     console.error(failure);
     process.exit(1);

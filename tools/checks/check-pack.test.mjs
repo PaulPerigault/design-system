@@ -1,5 +1,14 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { PACK_ARGS, contentFailure, packFailure, publishable, run } from './check-pack.mjs';
+import {
+  PACK_ARGS,
+  contentFailure,
+  dependencyFailure,
+  manifests,
+  packFailure,
+  publishable,
+  run,
+} from './check-pack.mjs';
 
 describe('check-pack', () => {
   it('accepte un code de sortie nul', () => {
@@ -51,5 +60,17 @@ describe('check-pack', () => {
       '@paulperigault/p : README.md absent',
       '@paulperigault/p : LICENSE absent',
     ]);
+  });
+  it('bloque une dépendance interne à 0.0.0, * ou latest, accepte le dépôt tel quel', () => {
+    const entries = manifests();
+    const versions = JSON.parse(readFileSync('packages/create/templates/versions.json', 'utf8'));
+    expect(dependencyFailure(entries, versions)).toBeNull();
+    const moved = entries.map((m) => ({ ...m, version: '0.1.0' }));
+    expect(dependencyFailure(moved, {})).toContain('amorce vide');
+    const floating = entries.map((m) => ({ ...m, dependencies: { '@paulperigault/css': '*' } }));
+    expect(dependencyFailure(floating, {})).toContain('dépendance interne invalide');
+    expect(dependencyFailure(entries, { '@paulperigault/css': 'latest' })).toContain(
+      'versions.json',
+    );
   });
 });
