@@ -1056,6 +1056,13 @@
       "decision": "Mentions légales : régime de l'éditeur non professionnel (#283, « Closes #283 »). Déclaration de Paul, écrite le 2026-11-04 (Q17) : « Mon site ne me rapporte aucun revenu et n'a pas vocation à en rapporter. Je suis une personne physique et j'agis à titre non professionnel, sous ma responsabilité. Mon compte Cloudflare est à mon nom, mon identité est donc communiquée à l'hébergeur. J'accepte de publier mon nom complet, Paul Perigault. Je ne publie ni domicile, ni téléphone personnel, ni adresse de domiciliation. » Application de l'article 1-1, II, de la loi 2004-575 (Légifrance, lu le 2026-11-04) : un éditeur non professionnel peut ne rendre public que le nom et l'adresse de son hébergeur, s'il a communiqué son identité à celui-ci. Publiés : nom, contact@paulperigault.fr, nom, adresse et téléphone de l'hébergeur (D-149). Réserve : le texte ne définit pas « non professionnel » ; aucun juriste ni la CNIL n'a confirmé que le site entre dans ce cas, la page ne le présente donc pas comme juridiquement certain. Bandeau de `/mentions-legales/` conservé : la licence des contenus reste à choisir (#113). Q18 et Q19 inchangées.",
       "id": "D-156",
       "rollback": "Ajouter l'adresse et le téléphone dans `mentions-legales.astro` et retirer le paragraphe de l'article 1-1, II."
+    },
+    {
+      "alternative": "Tout appliquer, y compris les lignes 5 et 9 (écarté par Paul).",
+      "date": "2026-11-04",
+      "decision": "Passe humaine appliquée (#266, #285, « Closes #266 »). Réponse de Paul : appliquer les lignes 4, 6, 7, 8, 10, 11, 12 et 13 de `docs/design/passe-humaine-2026-11.md`, garder 5 et 9 ; lignes 1 à 3 déjà faites (PR #271, vérifié : `PACKAGE_COUNT` = 9, `proofs.json` du 2026-11-04, titre de l'ADR-0009 sans balisage). Ligne 8 : « Courriel : » et lien `mailto` sur `/auteur/` et `/accessibilite/`. Ligne 10 : une seule entrée manquait au glossaire (DevSecOps) ; OIDC, trusted publishing, axe-core, Playwright, gzip, brotli et SVG existaient. Ligne 13 : forme seulement, fond et [À VÉRIFIER] inchangés.",
+      "id": "D-157",
+      "rollback": "Revenir au texte du rapport (colonne « Texte actuel »)."
     }
   ]
 }

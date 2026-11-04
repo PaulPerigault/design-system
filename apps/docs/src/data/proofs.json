@@ -2,7 +2,7 @@
   "measuredOn": "2026-11-04",
   "source": "npm run verify, npm run e2e et workflows CI du dépôt",
   "tests": {
-    "unit": 2835,
+    "unit": 2863,
     "e2eDeclared": 9406,
     "devices": 13,
     "themes": 2
@@ -11,7 +11,7 @@
     "pages": 82,
     "components": 53,
     "registryItems": 54,
-    "glossaryTerms": 48
+    "glossaryTerms": 49
   },
   "accessibility": {
     "target": "WCAG 2.2 AA, plus 2.5.5, 2.4.13, 1.4.6 et 2.3.3 (AAA)",

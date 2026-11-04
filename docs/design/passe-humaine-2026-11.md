@@ -94,8 +94,9 @@ Les numéros renvoient aux lignes ci-dessous. « Ligne » = ligne de la source `
 - Les textes de `mentions-legales`, `confidentialite` et `declaration-accessibilite` portent encore des
   champs « à compléter » ou [À VÉRIFIER] (#264) : ils ne sont pas jugés ici.
 
-## Décision attendue de Paul
+## Décision de Paul (2026-11-04)
 
-Pour chaque ligne : « appliquer », « garder », ou « changer autrement ». Les lignes 1 à 3 corrigent un
-fait ou un défaut de balisage ; les lignes 4 à 13 sont de goût (convention ou préférence). Aucune ligne
-n'est appliquée avant votre réponse écrite.
+- Lignes 1 à 3 : faites (PR #271), vérifié le 2026-11-04.
+- Appliquées (#285, D-157) : 4, 6, 7, 8, 10, 11, 12, 13.
+- Gardées telles quelles : 5, 9.
+- Ligne 10 : seule l'entrée DevSecOps manquait au glossaire.
