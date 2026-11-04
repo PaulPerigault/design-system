@@ -21,6 +21,8 @@
     "benchmark:images": "node tools/benchmark/images.mjs",
     "benchmark:weight": "node tools/benchmark/weight.mjs",
     "proofs": "node tools/checks/measure-proofs.mjs",
+    "audit:traceability": "node tools/github/audit-traceability.mjs",
+    "audit:comments": "node tools/audit/measure-comments.mjs",
     "check:size": "node tools/checks/check-size.mjs",
     "check:duplication": "node tools/checks/check-duplication.mjs",
     "check:readability": "node tools/checks/check-readability.mjs",
