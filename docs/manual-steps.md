@@ -86,9 +86,8 @@ aucun identifiant Kiro.
 
 ## 6. Vitrine : ce que Paul doit trancher ou écrire
 
-1. **Relire et réécrire les brouillons** marqués « à relire par Paul » (`DraftNotice`) : accueil,
-   auteur, utiliser, architecture, déclaration d'accessibilité. Aucun texte à la première personne
-   n'est définitif. Rien n'a été inventé : employeur, formation et dates sont absents.
+1. **Relire et réécrire les brouillons** : faite (#112, fermée le 2026-11-04). Paul a relu et
+   validé les textes. Rien n'a été inventé : employeur, formation et dates restent absents.
 2. **Choisir l'hébergeur** et compléter `apps/docs/src/lib/legal.ts` (`host`, `contact`). Le build
    de production (`PP_PRODUCTION=1`) échoue tant qu'ils sont vides. Comparatif : ADR-0004. Les
    adaptateurs d'en-têtes (Cloudflare Pages, Netlify, Vercel, Nginx) sont prêts et testés.
@@ -98,8 +97,10 @@ aucun identifiant Kiro.
 4. **Déclaration d'accessibilité** (`lib/a11y-statement.ts`) : date et contact à compléter. Le
    taux RGAA n'est pas mesuré ; seul un audit manuel le fournirait. Question à trancher : le site
    personnel entre-t-il dans le champ de la directive (UE) 2019/882 ou de l'art. 47 de la loi de 2005 ?
-5. **Procédure VoiceOver / TalkBack** (`docs/a11y/manual-checklist.md`) : aucun résultat consigné.
-6. **PWA** : essayer l'installation sur un vrai appareil (Chrome Android, Safari iOS) ; non fait.
+5. **Procédure VoiceOver / TalkBack** (`docs/a11y/manual-checklist.md`, #110, ouverte) : VoiceOver
+   iOS essayé par Paul, sans compte rendu écrit dans `docs/a11y/`. Reste VoiceOver macOS
+   (`npm run a11y:voiceover`) et TalkBack, puis la consignation des résultats.
+6. **PWA** : faite (#111, fermée le 2026-11-04). Installation essayée sur un appareil réel.
 7. **Combobox, Menu, Tabs, Tooltip** : les comportements clavier sont testés en logique pure, pas au
    clavier réel dans un navigateur ni avec un lecteur d'écran. Un passage manuel est utile.
 
