@@ -34,7 +34,12 @@ const SECTIONS = [
     title: 'Tests',
     rows: [
       row('Tests unitaires', n(tests.unit), MEASURED, 'npm run verify (Vitest)'),
-      row('Tests de bout en bout', n(tests.e2e), MEASURED, 'npm run e2e (Playwright)'),
+      row(
+        'Tests de bout en bout déclarés',
+        n(tests.e2eDeclared),
+        MEASURED,
+        'playwright test --list (comptés, non exécutés ici)',
+      ),
       row('Appareils', n(tests.devices), CONVENTION, 'apps/docs/e2e/devices.ts'),
       row('Thèmes', `${n(tests.themes)} (clair et sombre)`, CONVENTION, 'apps/docs/e2e/helpers.ts'),
     ],

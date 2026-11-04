@@ -21,7 +21,7 @@ describe('loadProofs', () => {
   });
 
   it('refuse un champ manquant et le nomme', () => {
-    expect(() => loadProofs(patched('tests.e2e', undefined))).toThrow(/proofs\.tests\.e2e/);
+    expect(() => loadProofs(patched('tests.e2eDeclared', undefined))).toThrow(/tests\.e2eDeclared/);
   });
 
   it('refuse un nombre négatif ou nul là où un nombre positif est attendu', () => {

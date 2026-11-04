@@ -1,16 +1,35 @@
 {
   "measuredOn": "2026-11-04",
   "source": "npm run verify, npm run e2e et workflows CI du dépôt",
-  "tests": { "unit": 2830, "e2e": 9406, "devices": 13, "themes": 2 },
-  "content": { "pages": 82, "components": 53, "registryItems": 54, "glossaryTerms": 48 },
+  "tests": {
+    "unit": 2835,
+    "e2eDeclared": 9406,
+    "devices": 13,
+    "themes": 2
+  },
+  "content": {
+    "pages": 82,
+    "components": 53,
+    "registryItems": 54,
+    "glossaryTerms": 48
+  },
   "accessibility": {
     "target": "WCAG 2.2 AA, plus 2.5.5, 2.4.13, 1.4.6 et 2.3.3 (AAA)",
     "axeViolations": 0,
     "contrastPairs": 19,
-    "contrastMinimums": { "7:1": 2, "4.5:1": 13, "3:1": 4 }
+    "contrastMinimums": {
+      "7:1": 2,
+      "4.5:1": 13,
+      "3:1": 4
+    }
   },
   "performance": {
-    "budgets": { "lcpMs": 2500, "inpMs": 200, "cls": 0.1, "scriptGzipBytes": 1024 },
+    "budgets": {
+      "lcpMs": 2500,
+      "inpMs": 200,
+      "cls": 0.1,
+      "scriptGzipBytes": 1024
+    },
     "profile": "360 × 800, CPU ralenti ×4, réseau Slow 4G",
     "note": "Les valeurs sont affichées dans le rapport du test, sans seuil bloquant (D-106) ; l'INP des runners GitHub est plus haut (D-021)."
   },

@@ -1013,6 +1013,13 @@
       "decision": "Pages légales (#264, « Refs #264 », décisions de Paul Q17 à Q21). Légifrance lu le 2026-11-04 : l'identification de l'éditeur est à l'article 1-1 de la loi 2004-575 (créé par la loi 2024-449, en vigueur depuis le 2024-05-23), non à l'article 6 III, dont le III vise aujourd'hui les fournisseurs d'accès ; référence corrigée. Le II permet à l'éditeur « à titre non professionnel » de ne publier que le nom et l'adresse de l'hébergeur, s'il lui a communiqué son identité ; le texte ne définit pas « non professionnel » : un portfolio lu par des recruteurs n'entre pas clairement dans le cas, l'option A n'est pas appliquée (⚖️ question 17), page et bandeau inchangés. Téléphone de Cloudflare lu dans le HTML de https://www.cloudflare.com/privacypolicy/ (« Have Questions? », +1 (650) 319-8930) : publié, l'article 1-1 I 4° l'exige sans anonymat ; adresse reprise telle que lue, sans « siège social ». Article 47 de la loi 2005-102 (version du 2023-09-08) et décret 2019-768, article 2 (Légifrance) : seuil de 250 millions d'euros ; champ de la directive 2019/882 non lu hors EUR-Lex : [À VÉRIFIER] conservé, démarche volontaire inchangée. Durée des journaux : « à compléter » et bandeau conservés. Aucun bandeau retiré. Budgets et garde-fous inchangés.",
       "id": "D-149",
       "rollback": "Restaurer `mentions-legales.astro`, `declaration-accessibilite.astro`, `legal.ts`."
+    },
+    {
+      "alternative": "Garder le décompte sous le libellé « Tests de bout en bout » ; retirer le chiffre.",
+      "date": "2026-11-04",
+      "decision": "Mesure outillée de `proofs.json` (#273, « Closes #273 »). Le chiffre e2e est un décompte `playwright test --list` : champ renommé `e2eDeclared`, ligne de /preuves/ « Tests de bout en bout déclarés » (source : `playwright test --list`, comptés, non exécutés ici), car « mesuré » suppose une exécution. `npm run proofs` (`tools/checks/measure-proofs.mjs`, analyseurs purs testés dans `proofs-core.mjs`, sans dépendance) mesure tests unitaires, e2e déclarés, pages, composants, registre, glossaire, paires de contraste et attestations npm ; les autres champs (dont `axeViolations`) restent tels quels. Procédure : `docs/process/preuves-mesure.md`. Mentions légales inchangées : le choix de Paul pour Q17 (B, A ou attente) n'était pas tranché dans le prompt, traité comme attente. Budgets et garde-fous inchangés.",
+      "id": "D-150",
+      "rollback": "Supprimer les trois fichiers `tools/checks/*proofs*`, le script `proofs` et restaurer `proofs.json`, `proofs.ts`, `preuves.astro`."
     }
   ]
 }
