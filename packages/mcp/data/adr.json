@@ -1126,6 +1126,13 @@
       "decision": "Contrôle de présence final (#308). Après les publications, chaque version publique attendue est cherchée sur GitHub Packages (API REST, version exacte, jusqu'à 2 minutes) : le job échoue sinon. Un 401 ou 403 donne une ligne d'échec avec le code HTTP et l'explication : le `GITHUB_TOKEN` du workflow ne lit peut-être pas les versions, la présence n'est ni confirmée ni infirmée. Établi par la lecture du code, non par un run : le droit du `GITHUB_TOKEN` de lister les versions d'un paquet de compte utilisateur `[À VÉRIFIER]` au prochain `mirror.yml`.",
       "id": "D-166",
       "rollback": "Retirer l'appel `verifyOnGithub` de `mirror-run.mjs`."
+    },
+    {
+      "alternative": "Lancer npm hors du dépôt (dépend de la ligne implicite de setup-node) ; retirer la portée du `.npmrc` du dépôt (affaiblit le registre unique npmjs).",
+      "date": "2026-11-05",
+      "decision": "Registre de portée fixé en ligne de commande pour le miroir (#130). La publication choisit `@paulperigault:registry` avant `--registry` et `publishConfig.registry` (`pickRegistry` de npm-registry-fetch 19.1.1, lu dans npm 11.19.1) ; le `.npmrc` du dépôt pointe la portée vers npmjs, d'où l'ENEEDAUTH du run 41944822044. `publishArgs` ajoute `--@paulperigault:registry=https://npm.pkg.github.com` ; test bloquant `mirror-target.test.mjs` (essai à blanc depuis la racine, `.npmrc` de setup-node, ligne « Publishing to » exacte), rouge avant, vert après.",
+      "id": "D-167",
+      "rollback": "Retirer l'argument de `publishArgs`."
     }
   ]
 }
