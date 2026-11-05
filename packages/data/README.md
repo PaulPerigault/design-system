@@ -1,11 +1,25 @@
 # @paulperigault/data
 
 `pp-data` (agrégation, quantiles de type 7, sous-échantillonnage LTTB) compilé en WebAssembly,
-avec une enveloppe TypeScript. Statut : en construction (0.0.0, non publié).
+avec une enveloppe TypeScript.
 
-Le TypeScript de `@paulperigault/dataviz` reste la référence : ce paquet ne remplace aucun de ses
-appels tant que la parité n'est pas établie en CI. Le rendu des graphiques n'en dépend pas : il
-fonctionne sans ce paquet. Décisions : ADR-0006 (décision 4), ADR-0007 (décision 1), D-099, D-100.
+Publié sur npmjs. Série `0.x` : l'API peut changer d'une version à l'autre, lire le
+[CHANGELOG](https://github.com/PaulPerigault/design-system/blob/main/packages/data/CHANGELOG.md)
+avant une mise à jour.
+
+Le TypeScript de `@paulperigault/dataviz` reste la référence et n'appelle pas ce paquet. La CI
+rejoue la parité et le contrat contre le `.wasm` construit (job `wasm`, `test/parity.test.ts`). Le
+rendu des graphiques n'en dépend pas : il fonctionne sans ce paquet. Décisions : ADR-0006
+(décision 4), ADR-0007 (décision 1), D-099, D-100.
+
+## Installation
+
+```bash
+npm install @paulperigault/data
+```
+
+Node 24 ou plus récent, ou un navigateur qui charge WebAssembly (voir « Construction »). Seule
+dépendance d'exécution : `@paulperigault/dataviz` (`Result`, `ok`, `fail`).
 
 ## Usage
 
@@ -48,3 +62,17 @@ sans seuil bloquant.
 `../wasm/pp_data_wasm_bg.wasm` relative au module. Le glue est chargé par une URL calculée : un
 bundleur doit copier le dossier `wasm/` (ou ne pas le traiter). Sous CSP, le navigateur n'exige que
 `'wasm-unsafe-eval'` dans `script-src` et `'self'` dans `connect-src`.
+
+## Provenance
+
+Chaque version est publiée par le workflow `release` du dépôt, avec une attestation de
+provenance npm. Dans un projet qui installe ce paquet, `npm audit signatures` vérifie les
+signatures du registre et les attestations. Détails :
+[publication npm](https://github.com/PaulPerigault/design-system/blob/main/docs/process/publication.md).
+
+## Licence et liens
+
+- Licence MIT : [LICENSE](https://github.com/PaulPerigault/design-system/blob/main/packages/data/LICENSE)
+- Documentation : <https://design.paulperigault.dev>
+- Source : <https://github.com/PaulPerigault/design-system/tree/main/packages/data>
+- Versions : [CHANGELOG.md](https://github.com/PaulPerigault/design-system/blob/main/packages/data/CHANGELOG.md)

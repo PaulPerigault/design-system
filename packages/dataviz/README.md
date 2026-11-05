@@ -2,9 +2,22 @@
 
 Contrat de données, formatage français et palettes de graphiques accessibles, dérivées de la
 couleur d'accent. TypeScript pur : aucun rendu, aucune dépendance d'exécution hors
-`@paulperigault/tokens`. Les composants Astro qui l'utilisent viennent avec V2a.
+`@paulperigault/tokens`. Les graphiques de `@paulperigault/astro` (`LineChart`, `AreaChart` et les
+autres composants de `src/data/`) s'en servent.
 
-Statut : en construction (0.0.0). Décisions : [ADR-0007](../../docs/adr/0007-visualisation-de-donnees.md).
+Publié sur npmjs. Série `0.x` : l'API peut changer d'une version à l'autre, lire le
+[CHANGELOG](https://github.com/PaulPerigault/design-system/blob/main/packages/dataviz/CHANGELOG.md)
+avant une mise à jour. Décisions :
+[ADR-0007](https://github.com/PaulPerigault/design-system/blob/main/docs/adr/0007-visualisation-de-donnees.md).
+
+## Installation
+
+```bash
+npm install @paulperigault/dataviz @paulperigault/tokens
+```
+
+Node 24 ou plus récent. `@paulperigault/tokens` est déjà une dépendance ; l'installer à part
+n'est utile que pour importer `tokens.json` comme dans l'exemple.
 
 ## Usage
 
@@ -29,7 +42,7 @@ if (base.ok) {
 
 Aucune fonction publique ne lève d'exception : toute erreur est un `Result` typé (`errors.ts`).
 
-## Géométrie pure (V2a-1)
+## Géométrie pure
 
 - `linearScale`, `verticalScale` (axe Y SVG inversé), `bandScale`, `timeDomain`, `timeScale` : domaine vers étendue.
 - `niceTicks` (pas 1, 2, 5 × 10^n, domaine élargi) et `timeTicks` (jour, semaine, mois, année, alignés UTC).
@@ -37,7 +50,7 @@ Aucune fonction publique ne lève d'exception : toute erreur est un `Result` typ
 - `linePath` (`d` interrompu aux `null`, points isolés signalés) et `barRects` / `rectsPath` (barres groupées).
 - Toutes renvoient un `Result` typé (`scale.*`, `geometry.bad-input`, `downsample.bad-target`, `stats.*`).
 
-## Aires et jauges (V2b-1)
+## Aires et jauges
 
 - `areaPath(points, base)` : aire sous la courbe jusqu'à la base, un sous-chemin fermé par segment, rompue aux `null`.
 - `stackSeries(colonnes)` : couches empilées (`lower`, `upper`). **Valeur manquante** : elle compte pour zéro dans le
@@ -53,8 +66,9 @@ Aucune fonction publique ne lève d'exception : toute erreur est un `Result` typ
 teinte : la clarté et le chroma restent ceux du système (clair `oklch(47% 0.19 h)`, sombre
 `oklch(78% 0.1 h)`), pour garder les contrastes AA. La typographie se règle par `--pp-font-stack`
 (pile du texte, dont dérive `--pp-font-family-sans` ; `--pp-font-family-mono` reste à part).
-Sorties inchangées : `--pp-color-accent`, `--pp-chart-*`, `--pp-font-family-*`. Ces deux variables
-sont nommées ici ; leur branchement dans le build de `tokens` et dans `create` est une étape à part.
+Sorties inchangées : `--pp-color-accent`, `--pp-chart-*`, `--pp-font-family-*`. Ces deux entrées
+passent par le build de `@paulperigault/tokens` (son README, « Entrées du build ») ou par les
+options `--accent-hue` et `--font-stack` de `@paulperigault/create`.
 
 ## Ce que garantit la dérivation
 
@@ -73,3 +87,17 @@ d'abord, puis la candidate la plus distincte des couleurs déjà prises.
 
 `src/domain` (contrat, dates ISO, échelles, LTTB, géométrie : pur, sans E/S ; la dérivation de palettes vit dans `@paulperigault/tokens/palette`, réexportée ici), `src/application` (ports),
 `src/infrastructure` (validation à la frontière, `Intl`, lecture de `tokens.json`), `src/errors.ts`.
+
+## Provenance
+
+Chaque version est publiée par le workflow `release` du dépôt, avec une attestation de
+provenance npm. Dans un projet qui installe ce paquet, `npm audit signatures` vérifie les
+signatures du registre et les attestations. Détails :
+[publication npm](https://github.com/PaulPerigault/design-system/blob/main/docs/process/publication.md).
+
+## Licence et liens
+
+- Licence MIT : [LICENSE](https://github.com/PaulPerigault/design-system/blob/main/packages/dataviz/LICENSE)
+- Documentation : <https://design.paulperigault.dev>
+- Source : <https://github.com/PaulPerigault/design-system/tree/main/packages/dataviz>
+- Versions : [CHANGELOG.md](https://github.com/PaulPerigault/design-system/blob/main/packages/dataviz/CHANGELOG.md)
