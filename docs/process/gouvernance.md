@@ -82,6 +82,32 @@ La vue Roadmap du Project (réglages : `github-setup.md`) lit `Début` et `Éch�
 - **À chaque jalon** : bilan dans `docs/lots/` ou `docs/run-report.md` (fin de jalon seulement), puis jalon fermé.
 - **Chaque mois** : contrôle des skills tiers (`skills-amont.yml`), des dépendances (Dependabot, `docs/process/dependabot.md`) et de cet audit (`audit:traceability`, `audit:comments`).
 
+## Dates des jalons
+
+Posées par Paul le 2026-11-05 dans les réglages des jalons, relues par `gh api
+repos/PaulPerigault/design-system/milestones?state=all` (lecture seule). GitHub les stocke à minuit
+UTC. Ce sont des **estimations**, pas des engagements.
+
+| Jalon                                 | Échéance estimée |
+| ------------------------------------- | ---------------- |
+| M0 fondations                         | 2026-11-09       |
+| M-analyse visualisation de donnees BI | 2026-11-09       |
+| M1 TypeScript strict                  | 2026-11-16       |
+| M2 publication npm 0.x                | 2026-11-16       |
+| M4 Rust pp-color et pp-data           | 2026-11-16       |
+| M5 1.0                                | 2026-11-23       |
+| M3 migration du portfolio (L9)        | 2026-11-30       |
+
+M-histoire (rattrapage d'avant le processus) est fermé et n'a pas d'échéance : ses issues portent
+leurs dates réelles.
+
+- **Qui les révise** : Paul seul (rôle PO). Un agent propose une nouvelle date dans
+  `tmp/questions-paul.md`, il ne modifie pas un jalon.
+- **Quand** : à la relecture hebdomadaire (voir « Roadmap : cadence de revue »), et dès qu'une
+  issue d'un jalon glisse au-delà de son échéance.
+- **Comment** : la nouvelle date remplace l'ancienne dans le jalon ; l'ancienne date et la raison
+  vont dans `docs/decisions-log.md` (ligne D-xxx). Jamais d'effacement silencieux.
+
 ## Décisions : où écrire quoi
 
 | Nature                                          | Lieu                         | Forme                                                         |
