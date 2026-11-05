@@ -55,7 +55,16 @@ node tools/github/sync-project-dates.mjs            # dry-run : plan seulement
 node tools/github/sync-project-dates.mjs --apply    # crée les champs « Début » et « Échéance », écrit les dates
 ```
 
-Le script est idempotent (une valeur déjà posée n'est pas réécrite) et exige le scope `project` de `gh` (`gh auth refresh -s project`).
+Le script est idempotent (une valeur déjà posée n'est pas réécrite) et exige le scope `project` de `gh` (`gh auth refresh -s project`). `gh project item-list` abîme l'initiale de la clé « Échéance » (`��chéance`) : le champ se lit par nom normalisé (`field`, `tools/github/traceability/issue-rules.mjs`).
+
+Deux scripts complètent les dates, sur le même modèle (dry-run par défaut, `--apply`, idempotents) :
+
+```shell
+node tools/github/sync-catch-up-dates.mjs   # #42 à #66 : dates des PR de catch-up.md (Q23), réécrit le fichier
+node tools/github/sync-project-pulls.mjs    # PR fusionnées depuis #38 : ajout au Project, Début = création, Échéance = fusion (Q30)
+```
+
+Les dates sont des jours civils à l'heure de Paris. `sync-catch-up-dates.mjs --apply` ne touche que `.github/roadmap-dates.json` ; `sync-project-dates.mjs --apply` pose ensuite les dates dans le Project.
 
 Étapes manuelles de la vue Roadmap, dans l'interface (l'API ne crée pas de vue) :
 

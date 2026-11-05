@@ -19,6 +19,8 @@ function section(title, rows, spec, all) {
   const bad = rows.filter((row) => !keys(row).every((key) => spec.good.includes(key)));
   for (const row of all ? bad : bad.slice(0, SAMPLE)) lines.push(`  - ${spec.show(row)}`);
   if (!all && bad.length > SAMPLE) lines.push(`  … ${bad.length - SAMPLE} autres (option --all)`);
+  const waived = countBy(rows, (row) => row.exemptions ?? []);
+  if (waived.length > 0) lines.push(`exemptions : ${render(waived)}`);
   return lines;
 }
 

@@ -1,5 +1,11 @@
 // Assemble les règles pures sur les données lues. Aucune E/S.
-import { checkIssue, checkMilestones, classifyBranches, field } from './issue-rules.mjs';
+import {
+  checkIssue,
+  checkMilestones,
+  classifyBranches,
+  exemptions,
+  field,
+} from './issue-rules.mjs';
 import { catchUpRefs, classifyCommits, classifyPulls } from './pull-rules.mjs';
 
 export const CUTOFF = 37; // PR de la bascule vers `main` seule : avant elle, pas de processus
@@ -21,6 +27,7 @@ function issueRows(data, items) {
       state: issue.state,
       status: item ? (field(item, 'status') ?? 'aucun') : 'hors-project',
       problems: checkIssue(issue, { item, parent: data.parents.get(issue.number) }),
+      exemptions: exemptions(issue),
     };
   });
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { checkIssue, classifyBranches, field } from './issue-rules.mjs';
+import { checkIssue, classifyBranches, exemptions, field } from './issue-rules.mjs';
 
 const pull = (number, extra = {}) => ({
   number,
@@ -39,6 +39,16 @@ describe('issue-rules', () => {
       'hors-project',
       'parent-non-lie',
     ]);
+  });
+
+  it('exempte une issue de rattrapage du label prio: (Q24), pas des autres labels', () => {
+    const item = { début: '2026-10-20', échéance: '2026-10-20', status: 'Fait' };
+    const catchUp = issue({ labels: [{ name: 'type:rattrapage' }, { name: 'pkg:ci' }] });
+    expect(checkIssue(catchUp, { item })).toEqual(['label-taille']);
+    expect(exemptions(catchUp)).toEqual(['prio-rattrapage']);
+    expect(exemptions(issue())).toEqual([]);
+    const withPrio = { labels: [...labels, { name: 'type:rattrapage' }] };
+    expect(exemptions(issue(withPrio))).toEqual([]);
   });
 
   it('lit un champ dont l’initiale accentuée est abîmée', () => {
