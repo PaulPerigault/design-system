@@ -1,4 +1,4 @@
-// Mesure du pipeline d'images (#91) : parties pures. Les fichiers de `dist/_astro` sont l'original
+// Mesure du pipeline d'images : parties pures. Les fichiers de `dist/_astro` sont l'original
 // copié (`nom.HASH.ext`) et ses variantes (`nom.HASH_VARIANTE.ext`), une par format et par largeur.
 const FILE =
   /^(?<source>.+?\.[A-Za-z0-9-]+?)(?:_(?<variant>[A-Za-z0-9-]+))?\.(?<ext>avif|webp|jpe?g|png)$/;

@@ -1,4 +1,4 @@
-// Plan pur des PR fusionnées à mettre dans le Project (décision Q30, issue #290) : toute PR
+// Plan pur des PR fusionnées à mettre dans le Project : toute PR
 // fusionnée de numéro ≥ SINCE y figure avec Début = création et Échéance = fusion. Aucune E/S.
 import { parisDay } from '../project-dates/day.mjs';
 

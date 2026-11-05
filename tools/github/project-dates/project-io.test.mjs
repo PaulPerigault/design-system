@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { planDates } from './plan.mjs';
 import { readProject } from './project-io.mjs';
 
-// Clé réelle renvoyée par `gh project item-list --format json` (gh 2.x, 2026-11-05) :
+// Clé réelle renvoyée par `gh project item-list --format json` (gh 2.x) :
 // l'initiale « É » devient deux U+FFFD, « début » reste intacte.
 const DAMAGED = Buffer.from('efbfbdefbfbd6368c3a9616e6365', 'hex').toString('utf8');
 const names = { start: 'Début', due: 'Échéance' };

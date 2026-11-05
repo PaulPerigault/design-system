@@ -1,7 +1,7 @@
 // Audit de traçabilité (lecture seule) : PR, commits, issues, Project, branches, jalons.
 // AFFICHE sans jamais échouer (code de sortie 0). `--all` liste toutes les anomalies, `--json` le brut.
 // Exemptions : PR de release-please et de Dependabot (aucune issue par conception) ; label prio:
-// des issues type:rattrapage (décision Q24, issue #290), affichées à part et jamais comptées.
+// des issues type:rattrapage, affichées à part et jamais comptées.
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { analyse } from './traceability/analyse.mjs';

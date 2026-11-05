@@ -68,7 +68,7 @@ jobs:
       # Publie chaque paquet dont la version n'existe pas encore sur npmjs ; préversion → tag next.
       - run: node tools/release/publish-new.mjs
 
-  # Miroir facultatif sur GitHub Packages (#130, D-135) : après la publication npm seulement, jamais
+  # Miroir facultatif sur GitHub Packages : après la publication npm seulement, jamais
   # pour une PR. npmjs reste la source ; l'échec du miroir ne touche pas la publication.
   mirror:
     needs: [release-please, publish]

@@ -36,8 +36,8 @@ describe('release-please : neuf paquets en 0.x', () => {
   });
 });
 
-// Corps d'une PR de release-please : en-tête, notes entre deux `---`, pied de page (code source de
-// `PullRequestBody`, lu le 2026-11-04). Un pied de page vide retombe sur celui par défaut.
+// Corps d'une PR de release-please : en-tête, notes entre deux `---`, pied de page (d'après le code source de
+// `PullRequestBody`). Un pied de page vide retombe sur celui par défaut.
 const DEFAULT_HEADER = ':robot: I have created a release *beep* *boop*';
 const DEFAULT_FOOTER =
   'This PR was generated with [Release Please](https://github.com/googleapis/release-please).';

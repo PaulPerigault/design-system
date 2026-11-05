@@ -1193,6 +1193,11 @@
       "date": "2026-11-05",
       "decision": "Commentaires de `agents` : dates et numéros de tâche retirés (#295, Q25 A). Trois commentaires : la date de relevé disparaît de `stream.ts` (version de kiro-cli 2.32 gardée) et de `verdict.ts` (modèle `gpt-5.6-terra` gardé), le numéro de tâche T2.09 disparaît de `task.ts` (la raison technique reste : retirer les guillemets d'une commande `node -e \"…\"` la fausse). Gardés avec leur raison : les identifiants `L3`, `L8`, `T1.01`, `T2.02` de `batch.ts`, `integrate.ts`, `lead-queue.ts`, `lead-session.ts`, `review.ts` et `run.ts` sont des exemples d'appel ou de format, pas des renvois ; `audit:comments` les classe en « décision » par motif lexical. Aucun code modifié ; `vitest run tools/agents` vert. Alternative écartée : remplacer les exemples par des identifiants inventés (moins fidèles à l'usage réel). Retour arrière : rétablir les trois commentaires.",
       "id": "D-178"
+    },
+    {
+      "date": "2026-11-05",
+      "decision": "Commentaires de `ci`, `tools/release`, `tools/github`, `tools/benchmark`, `tools/skills`, `tools/checks` et `tools/commitlint` sans renvoi inutile (#296, Q25 A). Trente fichiers : numéros d'issue (#91, #102, #130, #212, #222, #290, #308), numéros de décision Q22, Q23, Q24, Q30, D-116, D-135, lot L11 et dates de relevé (2026-11-01, -04, -05) retirés ; le fait technique reste (source du modèle de carbone par son URL, version de `gh`, raison du registre de portée, ENEEDAUTH). D-004 (aucune signature d'outil) et D-127 (liens externes jamais bloquants) restent : elles définissent la règle appliquée. Gardés avec leur raison : `#42 à #66` et `#38` (bornes de données utilisées par le code), `PR #50` (donnée d'un test), `epique.yml:28` et `external.mjs:12`, `measure-comments.mjs:27` (`#` de syntaxe détecté à tort comme commentaire), `html-refs.mjs:21` (`&#38;` est une entité, pas une issue). Aucun code modifié ; `vitest run tools` : 465 réussis. Alternative écartée : retirer aussi D-004 et D-127. Retour arrière : rétablir les renvois retirés.",
+      "id": "D-179"
     }
   ]
 }

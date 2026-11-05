@@ -1,9 +1,9 @@
 name: Skills amont
 
-# Contrôle mensuel, en lecture seule (D-116, #222) : compare le SHA relu de chaque skill tiers
+# Contrôle mensuel, en lecture seule : compare le SHA relu de chaque skill tiers
 # (tableau « Suivi amont » de docs/design/skills-registre.md) au SHA courant de son dépôt amont,
 # par l'API publique de GitHub, sans jeton. Le résultat va dans le résumé du job. Aucune issue,
-# aucune PR, aucune écriture : relire un amont qui a changé reste une décision de Paul.
+# aucune PR, aucune écriture : relire un amont qui a changé reste une décision du propriétaire.
 on:
   schedule:
     - cron: '17 5 1 * *'

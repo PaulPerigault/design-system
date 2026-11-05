@@ -1,8 +1,7 @@
 import { spawnSync } from 'node:child_process';
 import { describe, expect, it } from 'vitest';
 
-// Décision Q22 de Paul (issue #290) : « (#n) » est écrit dans `--subject` à la fusion et compte dans les 72 caractères
-// du sujet. Le job `squash-message` relit le sujet tel quel ; le job `commitlint` ajoute
+// « (#n) » est écrit dans `--subject` à la fusion et compte dans les 72 caractères du sujet. Le job `squash-message` relit le sujet tel quel ; le job `commitlint` ajoute
 // « (#n) » au titre de la PR avant le contrôle (.github/workflows/ci.yml).
 const BIN = 'node_modules/.bin/commitlint';
 const lint = (message) => spawnSync(BIN, [], { input: message, encoding: 'utf8' }).status;

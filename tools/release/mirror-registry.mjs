@@ -1,4 +1,4 @@
-// Miroir GitHub Packages (#130) : sondes de registre par HTTP, sans passer par la configuration npm.
+// Miroir GitHub Packages : sondes de registre par HTTP, sans passer par la configuration npm.
 // `npm view --registry X` est inutilisable ici : setup-node écrit `@paulperigault:registry=` et un
 // registre de portée l'emporte sur `--registry`. Toute réponse autre que 200 ou 404 est une erreur.
 const NPMJS_URL = 'https://registry.npmjs.org';

@@ -1,4 +1,4 @@
-// Miroir GitHub Packages (#130) : logique pure. npmjs reste la source ; le miroir republie, après la
+// Miroir GitHub Packages : logique pure. npmjs reste la source ; le miroir republie, après la
 // publication npm, le tarball publié avec un `publishConfig` pointant vers GitHub Packages.
 export const GITHUB_REGISTRY = 'https://npm.pkg.github.com';
 

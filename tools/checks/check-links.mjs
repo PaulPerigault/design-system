@@ -1,4 +1,4 @@
-// Contrôle des liens de `apps/docs/dist` (#212). Liens internes et ancres : BLOQUANT, 0 attendu.
+// Contrôle des liens de `apps/docs/dist`. Liens internes et ancres : BLOQUANT, 0 attendu.
 // Liens externes (`--external`) : mesure dans le résumé du job, jamais bloquante (D-127).
 import { appendFileSync, existsSync, readFileSync } from 'node:fs';
 import { relative, resolve } from 'node:path';

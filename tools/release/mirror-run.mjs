@@ -1,4 +1,4 @@
-// Miroir GitHub Packages (#130, #308) : déroulé complet, dépendances injectées (sondes, publication,
+// Miroir GitHub Packages : déroulé complet, dépendances injectées (sondes, publication,
 // horloge, journal). L'ordre est le contrat : sondes, publications, PUIS contrôle de présence final.
 import { mirrorPlan } from './mirror-plan.mjs';
 import { waitFor } from './mirror-registry.mjs';

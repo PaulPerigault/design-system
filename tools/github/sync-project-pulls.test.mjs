@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { planPulls } from './project-pulls/plan.mjs';
 import { run } from './sync-project-pulls.mjs';
 
-const DAMAGED = '��chéance'; // clé renvoyée par `gh project item-list` (2026-11-05)
+const DAMAGED = '��chéance'; // clé renvoyée par `gh project item-list`
 const fields = { start: 'Début', due: 'Échéance' };
 const pull = (number, extra = {}) => ({
   number,
