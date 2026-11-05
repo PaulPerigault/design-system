@@ -26,7 +26,7 @@ Une demande n'est listée que si une source écrite la formule. Aucune demande n
 Chaque étape découle d'une ligne du tableau.
 
 1. **Inventaire côté portfolio** (demandes 1 et 4), en lecture seule : lister les composants du portfolio qui ont un équivalent parmi les 51 composants publiés, et noter ceux qui dépendent d'une couleur, d'une taille ou d'un rayon que les jetons `--pp-*` ne couvrent pas. Sortie : un tableau, dans le corps de #51 ou ailleurs, au choix de Paul. Aucune écriture dans le portfolio avant son accord.
-2. **Dist-tag `next`** (demande 2) : interroger les neuf paquets (`npm view @paulperigault/<nom> dist-tags`). Si `next` manque, publier une préversion est une action de Paul : les agents n'ont pas le droit de publier.
+2. **Dist-tag `next`** (demande 2) : lu le 2026-11-05 (`npm view @paulperigault/<nom> dist-tags`), les neuf paquets n'ont que `latest` (0.1.0) et aucun `next`. Publier une préversion `next` est une action de Paul : les agents n'ont pas le droit de publier.
 3. **Premier lot de migration** (demande 1) : un composant de mise en page (`Stack`, `Cluster`), le risque visuel le plus faible. Preuve attendue : e2e du portfolio et références visuelles inchangées (demande 3).
 4. **`noExternal`** (demande 4) : vérifier sur ce premier lot ; si une consigne est nécessaire, l'écrire dans `docs/process/` du design system pour les sites consommateurs.
 5. **Réciprocité des liens** (demande 6) : lancer une fois `PORTFOLIO_LINK_CHECK=1` avec le test `cross-links` depuis un poste qui a le réseau, et noter la date.
@@ -37,5 +37,4 @@ Hors de ce plan : l'`apply` OpenTofu (demande 7), l'intitulé et les photos (dem
 ## Incertitudes
 
 - Aucune demande récente émise dans le dépôt du portfolio (issue ou PR) n'a été lue : seules les traces de ce dépôt ont servi.
-- L'état de publication des six autres paquets (`dataviz`, `guards`, `create`, `mcp`, `color`, `data`) n'a pas été interrogé.
 - L'échéance de #51 (2026-11-30) est une estimation de `.github/roadmap-dates.json`.
