@@ -11,7 +11,7 @@ const CONTEXT_HEADING = /^## Contexte\b/;
 const TRAILING_COLON = /\s*:$/;
 const TRAILING_DOT = /\.$/;
 const OWNER_MENTION = /\b(nous|propriétaire|Paul)\b/i;
-/** ADR relues et validées par Paul (2026-11-03) : plus de bandeau de brouillon. */
+/** ADR relues et validées : plus de bandeau de brouillon. */
 const VALIDATED = new Set(['0001', '0002', '0003', '0004', '0006', '0007', '0008']);
 
 export interface AdrEntry {

@@ -1,5 +1,5 @@
 /**
- * Matrice d'appareils de L12 (docs/benchmark/gap.md) : téléphones en portrait et paysage,
+ * Matrice d'appareils (docs/benchmark/gap.md) : téléphones en portrait et paysage,
  * tablette, ordinateurs, et le plus petit téléphone avec mouvement réduit. Chaque entrée devient
  * un projet Playwright `matrice-<nom>` qui exécute `e2e/matrix/`.
  */

@@ -37,7 +37,7 @@ const EXAMPLES_ONLY = [
 
 /**
  * Pages dont la hauteur suit le contenu (liste qui grandit à chaque ADR ou composant) : capture du
- * viewport seul, donc stable quand on ajoute une ligne en fin de liste (#127).
+ * viewport seul, donc stable quand on ajoute une ligne en fin de liste.
  */
 const VIEWPORT_ONLY = ['/decisions/', '/composants/', '/donnees/'];
 

@@ -4,7 +4,7 @@ import { join, posix, sep } from 'node:path';
 import process from 'node:process';
 import { linkTerms, term } from '../../../tools/typography/term-links.mjs';
 
-/** Termes liés au glossaire : la liste de l'audit (#209, M-8) et les outils (#211). */
+/** Termes liés au glossaire : termes de développement, de contrôle et d'outils. */
 export const TERMS = [
   term('apca', ['APCA']),
   term('ci', ['CI']),
