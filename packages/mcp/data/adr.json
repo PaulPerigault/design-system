@@ -1198,6 +1198,11 @@
       "date": "2026-11-05",
       "decision": "Commentaires de `ci`, `tools/release`, `tools/github`, `tools/benchmark`, `tools/skills`, `tools/checks` et `tools/commitlint` sans renvoi inutile (#296, Q25 A). Trente fichiers : numéros d'issue (#91, #102, #130, #212, #222, #290, #308), numéros de décision Q22, Q23, Q24, Q30, D-116, D-135, lot L11 et dates de relevé (2026-11-01, -04, -05) retirés ; le fait technique reste (source du modèle de carbone par son URL, version de `gh`, raison du registre de portée, ENEEDAUTH). D-004 (aucune signature d'outil) et D-127 (liens externes jamais bloquants) restent : elles définissent la règle appliquée. Gardés avec leur raison : `#42 à #66` et `#38` (bornes de données utilisées par le code), `PR #50` (donnée d'un test), `epique.yml:28` et `external.mjs:12`, `measure-comments.mjs:27` (`#` de syntaxe détecté à tort comme commentaire), `html-refs.mjs:21` (`&#38;` est une entité, pas une issue). Aucun code modifié ; `vitest run tools` : 465 réussis. Alternative écartée : retirer aussi D-004 et D-127. Retour arrière : rétablir les renvois retirés.",
       "id": "D-179"
+    },
+    {
+      "date": "2026-11-05",
+      "decision": "Commentaires de `apps/docs` sans renvoi inutile (#294, Q25 A). Douze fichiers : lots (L12), tâches (T12.05, T13.01, T14.03), issues (#127, #209, #211, #121), « Paul » et la date de validation des ADR retirés ; le fait technique reste. Le commentaire de `accent-hue-demo.astro` ne dit plus « tant que #121 n'est pas faite » (l'issue est fermée) mais que les jetons `--pp-chart-1..6` restent calculés sur l'accent par défaut. D-106 et ADR-0006 (décision 5), qui fixent l'absence de seuil bloquant de `perf.spec.ts`, restent. Gardés avec leur raison : `legal.ts` et `a11y-statement.ts` portent les pages mentions légales et déclaration d'accessibilité, que ce chantier ne touche pas ; `seo.ts:22` cite le nom du site (`Paul Perigault`), pas une personne qui décide. Aucun code modifié ; build de la documentation, `check:registry` et `check:mcp-data` sans diff hors la ligne D-180. Alternative écartée : reformuler aussi `legal.ts` (pages à ne pas modifier). Retour arrière : rétablir les renvois retirés.",
+      "id": "D-180"
     }
   ]
 }

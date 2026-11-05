@@ -72,6 +72,6 @@ test('photo : une seule image prioritaire, chargée sans différé, servie en AV
   ).toHaveCount(0);
   await priority.evaluate((img: HTMLImageElement) => img.decode());
   expect(await priority.evaluate((img: HTMLImageElement) => img.currentSrc)).toMatch(/\.avif$/);
-  // Depuis le gabarit de page (T13.01), l'exemple est sous la ligne de flottaison : il n'est plus
+  // Depuis le gabarit de page, l'exemple est sous la ligne de flottaison : il n'est plus
   // candidat LCP. Le marquage prioritaire reste vérifié ci-dessus (D-023).
 });

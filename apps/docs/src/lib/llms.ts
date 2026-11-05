@@ -1,4 +1,4 @@
-/** Texte de /llms.txt (llmstxt.org), logique pure ; cite les `.md` et `llms-full.txt` (T14.03). */
+/** Texte de /llms.txt (llmstxt.org), logique pure ; cite les `.md` et `llms-full.txt`. */
 import type { DocGroup } from '../navigation';
 import { DOC_PAGES } from './llms-pages.ts';
 

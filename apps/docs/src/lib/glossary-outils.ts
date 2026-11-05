@@ -1,6 +1,6 @@
 import type { Entry } from './glossary';
 
-/** Termes d'outils et de publication ajoutés par #211 (règle FALC 11 : expliquer les mots difficiles). */
+/** Termes d'outils et de publication (règle FALC 11 : expliquer les mots difficiles). */
 export const GLOSSARY_OUTILS: readonly Entry[] = [
   {
     id: 'axe-core',

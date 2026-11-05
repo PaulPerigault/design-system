@@ -5,7 +5,7 @@ import { readInp } from './inp';
 import { injectVitals, readCls } from './web-vitals';
 
 /**
- * Repères de L12 (docs/benchmark/gap.md), mesurés sur un téléphone d'entrée de gamme. Ce sont des
+ * Repères (docs/benchmark/gap.md), mesurés sur un téléphone d'entrée de gamme. Ce sont des
  * mesures affichées, jamais des seuils qui font échouer le test (D-106, ADR-0006 décision 5).
  */
 const REFERENCES = 'LCP 2500 ms, CLS 0,1, INP 200 ms, JavaScript 1 Kio gzip, 2 fichiers de police';

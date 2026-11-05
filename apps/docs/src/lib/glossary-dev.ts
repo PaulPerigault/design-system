@@ -1,6 +1,6 @@
 import type { Entry } from './glossary';
 
-/** Termes de développement et de contrôle ajoutés par #209 (audit M-8). */
+/** Termes de développement et de contrôle. */
 export const GLOSSARY_DEV: readonly Entry[] = [
   {
     id: 'apca',
