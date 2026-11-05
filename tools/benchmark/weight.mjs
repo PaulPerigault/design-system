@@ -1,4 +1,4 @@
-// Poids des pages et des paquets, estimation carbone (#102). Affiche, ne bloque jamais : sort 0.
+// Poids des pages et des paquets, estimation carbone. Affiche, ne bloque jamais : sort 0.
 //   node tools/benchmark/weight.mjs [dist=apps/docs/dist] [--write apps/docs/src/data/sobriete.json]
 import { spawnSync } from 'node:child_process';
 import {

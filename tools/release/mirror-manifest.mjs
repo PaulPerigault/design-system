@@ -1,4 +1,4 @@
-// Miroir GitHub Packages (#130, #308) : réécriture pure du manifeste de la COPIE à republier.
+// Miroir GitHub Packages : réécriture pure du manifeste de la COPIE à republier.
 // Le tarball publié sur npmjs n'est jamais touché. La copie vit hors du dépôt : un script de cycle
 // de vie qui vise un fichier du dépôt (`prepublishOnly` : ../../tools/checks/...) n'y résout plus.
 import { GITHUB_REGISTRY } from './mirror-plan.mjs';

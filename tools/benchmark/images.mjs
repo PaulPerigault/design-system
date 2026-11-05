@@ -1,4 +1,4 @@
-// Mesure du pipeline d'images (#91) : variantes produites par le build de la documentation, leur
+// Mesure du pipeline d'images : variantes produites par le build de la documentation, leur
 // poids par format et, avec `--build`, la durée d'un build à froid puis à chaud. Affiche, ne bloque
 // jamais : le code de sortie est toujours 0.
 //   node tools/benchmark/images.mjs [dossier=apps/docs/dist/_astro] [--build]

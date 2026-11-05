@@ -1,6 +1,6 @@
-// Intégration locale du miroir (#308), sans réseau : tarball réel d'un paquet du dépôt, extrait HORS du
+// Intégration locale du miroir, sans réseau : tarball réel d'un paquet du dépôt, extrait HORS du
 // dépôt comme dans le job, réécrit par le code du miroir, puis essai à blanc de publication. L'essai à
-// blanc ne publie rien mais exécute les scripts de cycle de vie : c'est ce qui a échoué le 2026-11-04.
+// blanc ne publie rien mais exécute les scripts de cycle de vie : c'est ce qui échoue sur un manifeste non réécrit.
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';

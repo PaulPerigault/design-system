@@ -1,6 +1,6 @@
 name: Miroir GitHub Packages
 
-# Déclenchement manuel du miroir (#130), sans release : republie sur GitHub Packages les versions
+# Déclenchement manuel du miroir, sans release : republie sur GitHub Packages les versions
 # déjà publiées sur npmjs. Même script que le job `mirror` de release.yml. Aucun secret ajouté,
 # aucun environnement npm-publish, aucun droit OIDC.
 on:

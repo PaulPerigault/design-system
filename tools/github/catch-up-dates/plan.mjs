@@ -1,4 +1,4 @@
-// Plan pur des dates de rattrapage (décision Q23, issue #290) : les issues #42 à #66 prennent les
+// Plan pur des dates de rattrapage : les issues #42 à #66 prennent les
 // dates des PR que cite `docs/history/catch-up.md` (Début = création, Échéance = fusion). Aucune E/S.
 import { parisDay } from '../project-dates/day.mjs';
 

@@ -1,4 +1,4 @@
-// Miroir GitHub Packages (#308) : contrôle de présence final, après la publication.
+// Miroir GitHub Packages : contrôle de présence final, après la publication.
 import { RegistryError, waitFor } from './mirror-registry.mjs';
 
 /**

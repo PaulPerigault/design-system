@@ -1,6 +1,6 @@
-// Registre cible du miroir (#130), sans réseau : la commande de publication du job, lancée comme
+// Registre cible du miroir, sans réseau : la commande de publication du job, lancée comme
 // dans le job (depuis la racine du dépôt, donc avec son `.npmrc` de projet, et avec le `.npmrc`
-// qu'écrit setup-node), doit viser GitHub Packages. Le 2026-11-05 elle visait npmjs : ENEEDAUTH.
+// qu'écrit setup-node), doit viser GitHub Packages. Sans le registre de portée en ligne de commande, elle vise npmjs : ENEEDAUTH.
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';

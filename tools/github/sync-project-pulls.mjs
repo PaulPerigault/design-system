@@ -1,5 +1,5 @@
 // Ajoute au Project 13 les PR fusionnées depuis #38, avec Début = création et Échéance = fusion
-// (décision Q30, issue #290). Dry-run par défaut, `--apply` pour écrire ; idempotent : une PR déjà
+// Dry-run par défaut, `--apply` pour écrire ; idempotent : une PR déjà
 // présente avec les bonnes dates n'est pas proposée. Cible et noms des champs : roadmap-dates.json.
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';

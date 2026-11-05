@@ -1,5 +1,5 @@
-// Estimation du carbone d'une page vue (#102), modèle Sustainable Web Design v4.
-// Source : https://sustainablewebdesign.org/estimating-digital-emissions/ (page lue le 2026-11-01).
+// Estimation du carbone d'une page vue, modèle Sustainable Web Design v4.
+// Source : https://sustainablewebdesign.org/estimating-digital-emissions/.
 // C'est une estimation par un modèle descendant, jamais une mesure : voir la page « Sobriété ».
 const BYTES_PER_GB = 1e9;
 

@@ -1,4 +1,4 @@
-// Observation ciblée de pages publiques (L11) : une page par acteur, sans connexion, robots.txt
+// Observation ciblée de pages publiques : une page par acteur, sans connexion, robots.txt
 // respecté, arrêt sur une page protégée. Usage : node tools/benchmark/observe.mjs <sites.json> <sortie.json>
 import { readFileSync, writeFileSync } from 'node:fs';
 import { chromium } from '@playwright/test';

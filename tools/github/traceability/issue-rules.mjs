@@ -6,7 +6,7 @@ const REQUIRED = [
   ['prio:', 'label-prio'],
 ];
 const PARENT_MENTION = /Issue parente[\s\S]{0,60}#\d+/i;
-// Décision Q24 de Paul (issue #290) : une issue de rattrapage n'a pas de priorité (travail livré).
+// Une issue de rattrapage n'a pas de priorité (travail livré).
 const EXEMPTIONS = [['type:rattrapage', 'label-prio', 'prio-rattrapage']];
 
 const plain = (text) => text.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();

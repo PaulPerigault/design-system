@@ -1,4 +1,4 @@
-// Poids d'une page construite (#102) : parties pures. Une page = son HTML, ses feuilles de style,
+// Poids d'une page construite : parties pures. Une page = son HTML, ses feuilles de style,
 // ses scripts, ses polices préchargées et ses images `<img>` ; les polices chargées à la demande
 // (`unicode-range`) et les images en `srcset` non retenues par le navigateur ne sont pas comptées.
 import { brotliCompressSync, gzipSync } from 'node:zlib';

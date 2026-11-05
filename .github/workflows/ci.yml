@@ -48,7 +48,7 @@ jobs:
     # D-004 : sur `main`, relit le commit de squash créé par GitHub (sujet et corps : conventions
     # et aucune signature d'outil ; un `Co-authored-by` ajouté par GitHub signale un auteur git
     # différent du compte qui fusionne). Le sujet est relu tel quel : le suffixe « (#n) », écrit
-    # dans `--subject` à la fusion, compte dans les 72 caractères (décision Q22, issue #290). Fusionner
+    # dans `--subject` à la fusion, compte dans les 72 caractères. Fusionner
     # avec `gh pr merge --squash --subject --body-file` (AGENTS.md), sinon le corps est la liste des commits.
     if: github.event_name == 'push'
     runs-on: ubuntu-latest

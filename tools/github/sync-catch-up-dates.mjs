@@ -1,4 +1,4 @@
-// Dates factuelles des issues de rattrapage #42 à #66 (décision Q23, issue #290) : celles des PR
+// Dates factuelles des issues de rattrapage #42 à #66 : celles des PR
 // citées par docs/history/catch-up.md. Dry-run par défaut ; `--apply` réécrit seulement
 // .github/roadmap-dates.json, puis `sync-project-dates.mjs --apply` pose les dates dans le Project.
 // Idempotent : une entrée déjà juste n'est pas proposée. Lecture GitHub par `gh` injecté.

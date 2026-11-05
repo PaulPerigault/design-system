@@ -1,4 +1,4 @@
-// Miroir GitHub Packages (#308) : prépare un tarball publié à republier, partagé par le script du
+// Miroir GitHub Packages : prépare un tarball publié à republier, partagé par le script du
 // miroir et par son test d'intégration (le test exerce donc le code réel, pas une copie).
 import { execFileSync } from 'node:child_process';
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';

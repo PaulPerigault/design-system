@@ -1,7 +1,7 @@
-// Contrôle mensuel des skills tiers (D-116, #222) : lecture seule. Compare le SHA relu de chaque
+// Contrôle mensuel des skills tiers : lecture seule. Compare le SHA relu de chaque
 // dépôt source (tableau « Suivi amont » du registre) au SHA courant de son amont, via l'API
 // publique de GitHub, sans jeton. Affiche les dépôts changés ou indisponibles ; ne modifie rien,
-// n'échoue jamais (consigne de Paul : information, non verrou). Un amont injoignable se voit au compte.
+// n'échoue jamais (information, non verrou). Un amont injoignable se voit au compte.
 import { appendFileSync, readFileSync } from 'node:fs';
 
 const REGISTRY = 'docs/design/skills-registre.md';
