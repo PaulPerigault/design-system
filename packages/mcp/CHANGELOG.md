@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.1.1](https://github.com/PaulPerigault/design-system/compare/mcp-v0.1.0...mcp-v0.1.1) (2026-11-05)
+
+
+### Bug Fixes
+
+* **ci:** miroir github packages qui échoue au lieu de rester vide ([b6dd2e7](https://github.com/PaulPerigault/design-system/commit/b6dd2e72293068fc9d09c95615cd1e57c7ed6985))
+* **ci:** miroir publié vers github packages et non vers npmjs ([#311](https://github.com/PaulPerigault/design-system/issues/311)) ([f69b295](https://github.com/PaulPerigault/design-system/commit/f69b2953c1aa8f3ff756f943201877826c5408a9))
+* **ci:** retire les scripts de cycle de vie de la copie du miroir ([#308](https://github.com/PaulPerigault/design-system/issues/308)) ([428bf6d](https://github.com/PaulPerigault/design-system/commit/428bf6da8aaff3b6df82c047e74530e22e10c759))
+* **deps:** minimatch 11.0.1 minimum, avis ghsa-g3hv-75wg-m249 ([#312](https://github.com/PaulPerigault/design-system/issues/312)) ([fe750e0](https://github.com/PaulPerigault/design-system/commit/fe750e0d2e005f4160f73d2891534c31709746fd))
+
 ## 0.1.0 (2026-11-04)
 
 

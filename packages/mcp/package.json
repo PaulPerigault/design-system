@@ -1,6 +1,6 @@
 {
   "name": "@paulperigault/mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Serveur MCP (stdio, lecture seule) du design system @paulperigault : composants, jetons, contraste, garde-fous.",
   "type": "module",
   "license": "MIT",
