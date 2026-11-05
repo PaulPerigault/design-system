@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { sparkline } from '../src/domain/sparkline/sparkline.ts';
 
-/** ADR-0007 : sparkline ≤ 1,5 ko ; l'étape V3a-1 borne le chemin à 2 ko, la mesure est plus stricte. */
+/** ADR-0007 : sparkline ≤ 1,5 ko ; le chemin est borné à 2 ko, la mesure est plus stricte. */
 const BUDGET = 1500;
 const size = { width: 120, height: 32 };
 const geometry = (values: (number | null)[], extra = {}) => {

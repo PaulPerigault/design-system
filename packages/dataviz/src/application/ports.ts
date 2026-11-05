@@ -14,8 +14,9 @@ export interface Formatter {
 }
 
 /**
- * Agrégation d'un jeu de données par catégorie ou par pas de temps (D-098). Implémentée d'abord en
- * TypeScript (`createAggregator`, la référence), plus tard par l'adaptateur WebAssembly (ADR-0007).
+ * Agrégation d'un jeu de données par catégorie ou par pas de temps (D-098). Implémentée en
+ * TypeScript (`createAggregator`, la référence) et par `createWasmAggregator` de `@paulperigault/data`
+ * (WebAssembly, ADR-0007).
  */
 export interface Aggregator {
   aggregate(dataset: Dataset, spec: AggregateSpec): Result<Dataset>;

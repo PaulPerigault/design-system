@@ -1203,6 +1203,11 @@
       "date": "2026-11-05",
       "decision": "Commentaires de `apps/docs` sans renvoi inutile (#294, Q25 A). Douze fichiers : lots (L12), tâches (T12.05, T13.01, T14.03), issues (#127, #209, #211, #121), « Paul » et la date de validation des ADR retirés ; le fait technique reste. Le commentaire de `accent-hue-demo.astro` ne dit plus « tant que #121 n'est pas faite » (l'issue est fermée) mais que les jetons `--pp-chart-1..6` restent calculés sur l'accent par défaut. D-106 et ADR-0006 (décision 5), qui fixent l'absence de seuil bloquant de `perf.spec.ts`, restent. Gardés avec leur raison : `legal.ts` et `a11y-statement.ts` portent les pages mentions légales et déclaration d'accessibilité, que ce chantier ne touche pas ; `seo.ts:22` cite le nom du site (`Paul Perigault`), pas une personne qui décide. Aucun code modifié ; build de la documentation, `check:registry` et `check:mcp-data` sans diff hors la ligne D-180. Alternative écartée : reformuler aussi `legal.ts` (pages à ne pas modifier). Retour arrière : rétablir les renvois retirés.",
       "id": "D-180"
+    },
+    {
+      "date": "2026-11-05",
+      "decision": "Commentaires de `dataviz`, `tokens` et `guards` : deux corrections, le reste gardé (#299, #303, #304, Q25 A). Dans `dataviz`, le port `Aggregator` n'est plus décrit comme « plus tard » implémenté en WebAssembly : `createWasmAggregator` de `@paulperigault/data` existe et est publié ; « l'étape V3a-1 » disparaît du test du sparkline (borne de 2 ko gardée). Gardés avec leur raison : D-042, D-098 et ADR-0007 (`limits.ts`, `ports.ts`, `operations.ts`, `words.ts`) définissent des plafonds et des contrats que le code applique ; `keys.ts:10` et `dataset.ts:12` contiennent des dates d'exemple (`2026-10-28`), pas des renvois ; `thresholds.ts` (#303) cite ADR-0007 qui fixe les seuils ΔE00 ; `rings.ts` (#304) cite ADR-0006, décision 1, la règle que le fichier applique. `audit:comments` ne relève aucun renvoi réel dans `tokens` ni `guards`, donc aucun changement dans ces deux paquets. Aucun code modifié ; `vitest run packages/dataviz` vert. Alternative écartée : retirer ADR-0007 et D-042, qui définissent les valeurs. Retour arrière : rétablir les deux commentaires.",
+      "id": "D-181"
     }
   ]
 }
