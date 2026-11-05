@@ -1178,6 +1178,11 @@
       "date": "2026-11-05",
       "decision": "Version anglaise : ADR-0011 proposée, aucun code (#245). L'ADR compare trois façons de produire l'anglais (à la main, outil, mixte), propose un périmètre (pages d'usage, composants et glossaire traduits ; ADR et pages légales en français), les routes `/en/` avec français à la racine, `hreflang` réciproque et un sitemap par langue, et chiffre le poids des références Visuel (228 PNG, 58,7 Mo ; échantillon anglais proposé : 69 captures, 14,4 Mo). Chiffres relus le 2026-11-05 : 74 pages `.astro`, 10 ADR, 228 PNG pour 61 570 713 octets. Statut « proposé » : la décision revient à Paul, rien n'est lancé. `docs/plans/portfolio-demandes.md` : relevé des demandes du portfolio, avec l'état de publication relu (neuf paquets en 0.1.0, dist-tag `latest` seul, pas de `next`). Alternative écartée : écrire le code i18n avant la décision de Paul. Retour arrière : supprimer les deux fichiers.",
       "id": "D-175"
+    },
+    {
+      "date": "2026-11-05",
+      "decision": "Commentaires de `color` : renvois d'étape et d'issue retirés (#297, Q25 A). Les en-têtes de `pp-color` et `pp-color-wasm` perdent « étape 7a, issue #88 », « étape 7b, issue #89 » et « étape 8, issue #90 » ; ADR-0006, décision 4, reste parce qu'elle fixe la séparation entre crate métier et crate `-wasm` que le code applique. Les autres fichiers de la liste de l'issue (tests de parité, propriétés, vecteurs, `packages/color/test/parity.test.ts`) sont gardés : `audit:comments` n'y relève aucun renvoi. Aucun code modifié ; `cargo test -p pp-color -p pp-color-wasm` vert. Alternative écartée : retirer aussi ADR-0006. Retour arrière : rétablir les trois renvois.",
+      "id": "D-176"
     }
   ]
 }
