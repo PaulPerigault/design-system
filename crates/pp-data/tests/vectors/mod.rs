@@ -3,7 +3,7 @@ use pp_data::DataError;
 use serde_json::Value;
 
 const VECTORS: &str = include_str!("parity.json");
-/// Seuil de l'ADR-0007 sur les quantiles : écart relatif (confirmé en V4a, D-097).
+/// Seuil de l'ADR-0007 sur les quantiles : écart relatif (D-097).
 pub const TOLERANCE: f64 = 1e-9;
 
 pub fn vectors() -> Value {
