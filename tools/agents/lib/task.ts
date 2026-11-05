@@ -21,7 +21,7 @@ const scalar = (text: string): FrontValue => {
       .filter(Boolean);
   }
   // Guillemets retirés seulement s'ils encadrent toute la valeur : une commande comme
-  // `node -e "…"` garde les siens (bug constaté sur T2.09, quatre paliers échoués à tort).
+  // `node -e "…"` garde les siens (les retirer fausse la commande).
   const quoted = /^(["'])(.*)\1$/.exec(text);
   return quoted?.[2] ?? text;
 };

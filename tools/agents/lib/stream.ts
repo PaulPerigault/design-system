@@ -1,6 +1,6 @@
 // Lecture du flux `--output-format stream-json` de kiro-cli 2.32 (événements ACP en JSON Lines) :
 // statut final, texte final, appels d'outils, crédits consommés
-// (`_meta.kiro.promptTurnSummaries[].usage`, unité « credit », relevé le 2026-10-20).
+// (`_meta.kiro.promptTurnSummaries[].usage`, unité « credit »).
 import type { StreamSummary } from './types.ts';
 
 const QUOTA =
