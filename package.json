@@ -53,6 +53,9 @@
     "check:mcp-data": "npm -w @paulperigault/mcp run check:data",
     "check:mcp-self-test": "node packages/mcp/dist/bin/pp-mcp.js --self-test"
   },
+  "overrides": {
+    "minimatch": "^11.0.1"
+  },
   "devDependencies": {
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",

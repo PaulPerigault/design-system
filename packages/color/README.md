@@ -1,10 +1,23 @@
 # @paulperigault/color
 
 `pp-color` (OKLCH, sRGB, gamut, contraste WCAG 2 et APCA) compilé en WebAssembly, avec une
-enveloppe TypeScript. Zéro dépendance d'exécution. Statut : en construction (0.0.0, non publié).
+enveloppe TypeScript. Zéro dépendance d'exécution.
 
-Le TypeScript de `@paulperigault/tokens` reste la référence : ce paquet ne remplace aucun de ses
-appels tant que la parité n'est pas établie en CI. Décisions : ADR-0006 (décision 4), D-091 à D-094.
+Publié sur npmjs. Série `0.x` : l'API peut changer d'une version à l'autre, lire le
+[CHANGELOG](https://github.com/PaulPerigault/design-system/blob/main/packages/color/CHANGELOG.md)
+avant une mise à jour.
+
+Le TypeScript de `@paulperigault/tokens` reste la référence et n'appelle pas ce paquet. La CI
+rejoue la parité et le contrat contre le `.wasm` construit (job `wasm`, `test/parity.test.ts`).
+Décisions : ADR-0006 (décision 4), D-091 à D-094.
+
+## Installation
+
+```bash
+npm install @paulperigault/color
+```
+
+Node 24 ou plus récent, ou un navigateur qui charge WebAssembly (voir « Construction »).
 
 ## Usage
 
@@ -53,3 +66,17 @@ un bundleur doit copier le dossier `wasm/` (ou ne pas le traiter).
 
 Sous CSP, le navigateur n'exige que `'wasm-unsafe-eval'` dans `script-src` et `'self'` dans
 `connect-src`, déjà dans la politique de la documentation.
+
+## Provenance
+
+Chaque version est publiée par le workflow `release` du dépôt, avec une attestation de
+provenance npm. Dans un projet qui installe ce paquet, `npm audit signatures` vérifie les
+signatures du registre et les attestations. Détails :
+[publication npm](https://github.com/PaulPerigault/design-system/blob/main/docs/process/publication.md).
+
+## Licence et liens
+
+- Licence MIT : [LICENSE](https://github.com/PaulPerigault/design-system/blob/main/packages/color/LICENSE)
+- Documentation : <https://design.paulperigault.dev>
+- Source : <https://github.com/PaulPerigault/design-system/tree/main/packages/color>
+- Versions : [CHANGELOG.md](https://github.com/PaulPerigault/design-system/blob/main/packages/color/CHANGELOG.md)

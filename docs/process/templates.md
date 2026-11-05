@@ -54,9 +54,8 @@ issues vierges désactivées.
 
 ## Pull request
 
-Sections courtes : quoi et pourquoi, issue liée (`Closes #n`), type, vérifications, impact visuel
-ou accessibilité, notes pour la fusion. Titre en Conventional Commits, minuscules, 72 caractères au
-plus avec `(#n)` : le suffixe s'écrit dans `--subject` à la fusion (`AGENTS.md`, section Git). Corps à 90 colonnes au plus. Aucune signature d'outil.
+Gabarit : `.github/PULL_REQUEST_TEMPLATE.md`. Titre, corps, mots-clés de fermeture et fusion :
+`AGENTS.md` (Git, GitHub) et le skill `encre-processus`, qui en sont la source.
 
 ## Retrouver un commit ancien
 

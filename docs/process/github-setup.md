@@ -26,9 +26,11 @@ Pour ajouter ou changer un label : modifier le fichier dans une PR, puis lancer 
 
 ## Branches
 
-`<type>/<issue>-<slug>`, en minuscules : `fonction/142-cluster-gap`, `tache/155-hook-pre-push`.
-Types : `fonction`, `bogue`, `tache`, `doc`, `chantier` ; les étapes de processus utilisent aussi
-`processus/<étape>-<slug>`. Une branche = une issue = une PR.
+`<type>/<issue>-<slug>`, en minuscules : `feat/142-cluster-gap`, `docs/292-gouvernance-open-source`.
+`<type>` est un type Conventional Commits (`feat`, `fix`, `docs`, `refactor`, `test`, `chore`, `ci`,
+`perf`), comme dans `gouvernance.md` (« Règle de traçabilité ») ; les anciens types `fonction/`,
+`tache/`, `bogue/`, `doc/`, `chantier/` et `processus/` sont abandonnés. Une branche = une issue =
+une PR.
 
 ## Chaîne obligatoire
 

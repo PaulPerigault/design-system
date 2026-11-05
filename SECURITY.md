@@ -13,8 +13,19 @@ maintenu par une seule personne, pas un engagement contractuel.
 
 ## Versions suivies
 
-Les paquets `@paulperigault/*` sont en version `0.x`. Seule la dernière version publiée reçoit des
-correctifs.
+Les neuf paquets `@paulperigault/*` sont publiés sur npmjs depuis la version 0.1.0 (4 novembre 2026) et restent en série `0.x`.
+
+| Version                                        | Correctifs de sécurité |
+| ---------------------------------------------- | ---------------------- |
+| dernière version publiée de chaque paquet      | oui                    |
+| versions antérieures, y compris l'amorce 0.0.0 | non                    |
+
+Aucune branche de maintenance : un correctif sort dans une nouvelle version du paquet.
+Les paquets exigent Node 24 ou plus récent (champ `engines`), branche LTS dont le support court
+jusqu'au 30 avril 2028 ([docs/process/lts.md](docs/process/lts.md)).
+
+Vérifier qu'une version installée vient du workflow `release` : `npm audit signatures` dans le
+projet qui l'installe ([docs/process/publication.md](docs/process/publication.md)).
 
 ## Ce que le dépôt met en place
 

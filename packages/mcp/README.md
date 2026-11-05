@@ -6,6 +6,10 @@ système et les décisions d'architecture. Transport stdio, lecture seule, hors 
 
 Node 24 ou plus récent.
 
+Publié sur npmjs. Série `0.x` : l'API peut changer d'une version à l'autre, lire le
+[CHANGELOG](https://github.com/PaulPerigault/design-system/blob/main/packages/mcp/CHANGELOG.md)
+avant une mise à jour.
+
 ## Installation
 
 Aucune installation préalable : l'éditeur lance le serveur avec `npx -y @paulperigault/mcp`.
@@ -133,6 +137,16 @@ npm -w @paulperigault/mcp run check:data
 
 `check:data` sort avec le code 1 et liste les fichiers de `data/` à régénérer.
 
-## Licence
+## Provenance
 
-MIT
+Chaque version est publiée par le workflow `release` du dépôt, avec une attestation de
+provenance npm. Dans un projet qui installe ce paquet, `npm audit signatures` vérifie les
+signatures du registre et les attestations. Détails :
+[publication npm](https://github.com/PaulPerigault/design-system/blob/main/docs/process/publication.md).
+
+## Licence et liens
+
+- Licence MIT : [LICENSE](https://github.com/PaulPerigault/design-system/blob/main/packages/mcp/LICENSE)
+- Documentation : <https://design.paulperigault.dev>
+- Source : <https://github.com/PaulPerigault/design-system/tree/main/packages/mcp>
+- Versions : [CHANGELOG.md](https://github.com/PaulPerigault/design-system/blob/main/packages/mcp/CHANGELOG.md)
