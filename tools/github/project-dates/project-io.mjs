@@ -6,7 +6,7 @@ const MAX_ITEMS = '500';
 
 const json = (run, args) => JSON.parse(run(args));
 
-/** @returns {{ projectId: string, fields: { id: string, name: string }[], items: Map<number, object> }} */
+/** @returns {{ projectId: string, fields: object[], items: Map<number, object>, pulls: Map<number, object> }} */
 export function readProject(run, { owner, project }, names) {
   const base = [owner && '--owner', owner].filter(Boolean);
   const view = json(run, ['project', 'view', String(project), ...base, '--format', 'json']);
@@ -28,16 +28,22 @@ export function readProject(run, { owner, project }, names) {
     '--format',
     'json',
   ]);
-  const items = new Map();
-  for (const item of list.items) {
-    if (item.content?.type !== 'Issue') continue;
-    items.set(item.content.number, {
+  const pulls = index(list.items, 'PullRequest', names);
+  return { projectId: view.id, fields, items: index(list.items, 'Issue', names), pulls };
+}
+
+/** Éléments d'un type (`Issue`, `PullRequest`) par numéro : identifiant et dates lues. */
+export function index(items, type, names) {
+  const found = new Map();
+  for (const item of items) {
+    if (item.content?.type !== type) continue;
+    found.set(item.content.number, {
       itemId: item.id,
       start: field(item, names.start),
       due: field(item, names.due),
     });
   }
-  return { projectId: view.id, fields, items };
+  return found;
 }
 
 /** Crée un champ de date ; `gh project field-create` est idempotent seulement si le nom manque. */
@@ -69,4 +75,10 @@ export function writeDate(run, { projectId }, { itemId, fieldId, value }) {
     '--date',
     value,
   ]);
+}
+
+/** Ajoute une PR (ou une issue) au Project ; rend l'identifiant de l'élément créé. */
+export function addItem(run, { owner, project }, url) {
+  const args = ['project', 'item-add', String(project), '--owner', owner, '--url', url];
+  return JSON.parse(run([...args, '--format', 'json'])).id;
 }
