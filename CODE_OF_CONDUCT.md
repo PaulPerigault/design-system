@@ -84,6 +84,9 @@ Les dirigeant·e·s de communauté suivront ces directives d'application sur l'i
 
 Ce code de conduite est adapté du [Contributor Covenant][homepage], version 2.1,
 disponible à [https://www.contributor-covenant.org/version/2/1/code_of_conduct.html][v2.1].
+Le Contributor Covenant a été créé par Coraline Ada Ehmke ; le texte est publié sous licence
+[Creative Commons Attribution 4.0 (CC BY 4.0)][cc-by]. Modifications apportées ici : le
+paragraphe d'introduction sur le responsable unique et l'adresse de signalement.
 
 Les Directives d'application ont été inspirées par le [Code of conduct enforcement ladder][Mozilla CoC] de Mozilla.
 
@@ -94,3 +97,4 @@ Pour obtenir des réponses aux questions courantes sur ce code de conduite, cons
 [Mozilla CoC]: https://github.com/mozilla/diversity
 [FAQ]: https://www.contributor-covenant.org/faq
 [translations]: https://www.contributor-covenant.org/translations
+[cc-by]: https://creativecommons.org/licenses/by/4.0/
