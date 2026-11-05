@@ -36,17 +36,20 @@ jobs:
           persist-credentials: false
       - uses: ./.github/actions/setup
       - name: titre et corps de la PR (futur message de squash)
+        # Le suffixe « (#n) » écrit dans `--subject` à la fusion (AGENTS.md) est ajouté ici : la
+        # limite de 72 caractères du sujet le compte déjà sur la PR, pas seulement après fusion.
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
           PR_BODY: ${{ github.event.pull_request.body }}
-        run: printf '%s\n\n%s\n' "$PR_TITLE" "$PR_BODY" | npx --no -- commitlint --verbose
+        run: printf '%s (#%s)\n\n%s\n' "$PR_TITLE" "$PR_NUMBER" "$PR_BODY" | npx --no -- commitlint --verbose
 
   squash-message:
     # D-004 : sur `main`, relit le commit de squash créé par GitHub (sujet et corps : conventions
     # et aucune signature d'outil ; un `Co-authored-by` ajouté par GitHub signale un auteur git
-    # différent du compte qui fusionne). Le suffixe « (#n) » ajouté par GitHub au sujet est retiré
-    # avant le contrôle : la limite de 72 caractères porte sur le titre de la PR. Fusionner avec
-    # `gh pr merge --squash --subject --body-file` (AGENTS.md), sinon le corps est la liste des commits.
+    # différent du compte qui fusionne). Le sujet est relu tel quel : le suffixe « (#n) », écrit
+    # dans `--subject` à la fusion, compte dans les 72 caractères (décision Q22, issue #290). Fusionner
+    # avec `gh pr merge --squash --subject --body-file` (AGENTS.md), sinon le corps est la liste des commits.
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -56,7 +59,7 @@ jobs:
           persist-credentials: false
       - uses: ./.github/actions/setup
       - name: message du dernier commit de main
-        run: git log -1 --format=%B | sed -E '1s/ \(#[0-9]+\)$//' | npx --no -- commitlint --verbose
+        run: git log -1 --format=%B | npx --no -- commitlint --verbose
 
   verify:
     runs-on: ubuntu-latest
