@@ -16,7 +16,7 @@ méthode, pas une preuve : « prouvé » seulement si une source l'établit, sin
   est une fixture de test (Vitest, `apps/docs/e2e/`) ou une page d'exemple de `apps/docs`.
 - Pas de masque dégradé pour cacher une coupure : défilement avec bordure visible, ou pagination.
 - Pas de bibliothèque de virtualisation (zéro dépendance inutile) : paginer, ou dire « à décider ».
-- Propriétés logiques (`inline`, `block`), jamais `left` ni `width` figée (`AGENTS.md`).
+- Propriétés logiques (`inline`, `block`), jamais `left` ni `width` figée ; `style` en ligne interdit (`AGENTS.md`).
 - Rapport d'abord, correctifs ensuite, sur demande de Paul ; une PR à la fois, aucun sous-agent.
 - Pas de phrase d'accueil imposée : on répond à la demande. Données d'essai en `example.org` ou `.test`.
 

@@ -55,7 +55,7 @@ issues vierges désactivées.
 ## Pull request
 
 Gabarit : `.github/PULL_REQUEST_TEMPLATE.md`. Titre, corps, mots-clés de fermeture et fusion :
-`AGENTS.md` (Git) et le skill `encre-processus`, qui en sont la source.
+`AGENTS.md` (Git, GitHub) et le skill `encre-processus`, qui en sont la source.
 
 ## Retrouver un commit ancien
 
