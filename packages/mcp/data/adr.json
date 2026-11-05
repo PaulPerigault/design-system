@@ -1158,6 +1158,11 @@
       "date": "2026-11-05",
       "decision": "Commentaires de `create` et `effect` sans renvoi inutile (#300, Q25 A). Dix commentaires perdent un renvoi D-xxx, ADR ou numéro d'issue qui ne définit pas la valeur utilisée dans le code ; le texte technique reste. Aucun code, aucun test modifié. Mesure `audit:comments` : `packages/create` n'a plus de commentaire à reformuler. Alternative écartée : garder les renvois pour l'historique (l'historique est dans `docs/decisions-log.md` et git). Retour arrière : rétablir les renvois retirés.",
       "id": "D-172"
+    },
+    {
+      "date": "2026-11-05",
+      "decision": "Commentaires de `mcp` sans renvoi inutile (#301, Q25 A). Cinq fichiers : les renvois à ADR-0003, ADR-0006 et aux lignes D-040, D-041, D-055 sont retirés quand ils ne définissent pas la valeur utilisée ; deux commentaires sont reformulés sans changer de sens (« Certaines lignes du journal ont trois colonnes » remplace une liste de numéros qui se périmait, « impose que » remplace « garantit que »). Aucun code, aucun test modifié. Mesure `audit:comments` : `packages/mcp` passe de 1 à reformuler et 1 tournure à 0. Alternative écartée : garder la liste des trois lignes de journal (elle ne se met pas à jour toute seule). Retour arrière : rétablir les renvois et la liste.",
+      "id": "D-173"
     }
   ]
 }

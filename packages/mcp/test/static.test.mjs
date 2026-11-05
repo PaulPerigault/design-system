@@ -2,7 +2,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-// Garde de ADR-0003 : le code de src/ (tous les anneaux, sous-dossiers compris) ne fait ni
+// Garde : le code de src/ (tous les anneaux, sous-dossiers compris) ne fait ni
 // réseau, ni exécution, ni écriture. Elle lit chaque fichier au lieu d'en compter un nombre fixe.
 describe('analyse statique de src/ : ni réseau, ni exécution, ni écriture', () => {
   const dir = join(import.meta.dirname, '..', 'src');
