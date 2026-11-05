@@ -1,4 +1,4 @@
-//! Liaison WebAssembly de `pp-color` (ADR-0006, décision 4, étape 8, issue #90).
+//! Liaison WebAssembly de `pp-color` (ADR-0006, décision 4).
 //!
 //! Crate mince : conversion des types JavaScript vers ceux de `pp-color`, aucune logique de couleur.
 //! Une erreur de `pp-color` devient une chaîne `code:grandeur` (voir [`fault`]), jamais un panic ;

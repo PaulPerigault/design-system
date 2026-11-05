@@ -1,8 +1,8 @@
-//! Couleur OKLCH, sRGB et gamut sRGB, en Rust pur (ADR-0006, décision 4, étape 7a, issue #88).
+//! Couleur OKLCH, sRGB et gamut sRGB, en Rust pur (ADR-0006, décision 4).
 //!
 //! Aucune dépendance à `wasm-bindgen` : la liaison WebAssembly vivra dans un crate `-wasm`.
-//! Référence de comportement : `packages/tokens` (TypeScript) ; la parité formelle (étape 7b, issue #89)
-//! est testée contre `tests/vectors/parity.json`, produit par `tools/color/build.mjs`.
+//! Référence de comportement : `packages/tokens` (TypeScript) ; la parité est
+//! testée contre `tests/vectors/parity.json`, produit par `tools/color/build.mjs`.
 #![forbid(unsafe_code)]
 #![deny(
     clippy::unwrap_used,
