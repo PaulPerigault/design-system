@@ -2,11 +2,61 @@
 
 Design tokens DTCG 2025.10 de paulperigault.fr : CSS, JSON et types générés ; couleur et contraste.
 
-Statut : en construction (0.0.0). Voir le [README du dépôt](../../README.md).
+Publié sur npmjs. Série `0.x` : l'API peut changer d'une version à l'autre, lire le
+[CHANGELOG](https://github.com/PaulPerigault/design-system/blob/main/packages/tokens/CHANGELOG.md)
+avant une mise à jour. Aucune dépendance d'exécution.
+
+## Installation
+
+```bash
+npm install @paulperigault/tokens
+```
+
+Node 24 ou plus récent.
+
+## Exemple
+
+En CSS, les tokens sont des propriétés `--pp-*` posées sur `:root` :
+
+```css
+@import '@paulperigault/tokens/tokens.css';
+
+.note {
+  color: var(--pp-color-fg);
+  background-color: var(--pp-color-surface);
+  padding: var(--pp-space-m);
+}
+```
+
+Les couleurs utilisent `light-dark()` et suivent `prefers-color-scheme` ; `data-theme="light"` ou
+`data-theme="dark"` sur `<html>` force l'un des deux thèmes.
+
+En TypeScript, le contraste WCAG 2 accepte un hexadécimal ou un texte `oklch(…)` :
+
+```ts
+import { contrastRatio } from '@paulperigault/tokens/contrast';
+
+contrastRatio('#171921', '#ffffff'); // 17,54…
+contrastRatio('oklch(47% 0.19 270.7)', '#ffffff'); // 7,24… (accent clair)
+```
+
+## Sous-chemins
+
+| Import                              | Contenu                                                          |
+| ----------------------------------- | ---------------------------------------------------------------- |
+| `@paulperigault/tokens/tokens.css`  | propriétés `--pp-*`, thèmes clair et sombre                      |
+| `@paulperigault/tokens/tokens.json` | les mêmes valeurs en JSON                                        |
+| `@paulperigault/tokens/types`       | type `TokenName` (union des noms `--pp-*`)                       |
+| `@paulperigault/tokens/color`       | OKLCH vers sRGB, gamut, `parseOklch`, `formatOklch`              |
+| `@paulperigault/tokens/contrast`    | `contrastRatio` (WCAG 2), `apcaLc`, `relativeLuminance`          |
+| `@paulperigault/tokens/palette`     | dérivation des palettes de graphiques (réexportée par `dataviz`) |
+| `@paulperigault/tokens/customize`   | `parseBuildInput`, `deriveOverrides` (voir la section suivante)  |
 
 ## Entrées du build : teinte d'accent et pile de police
 
-Contrat d'un projet externe (ADR-0006 décision 3, ADR-0007 décision 4) :
+Contrat d'un projet externe (ADR-0006 décision 3, ADR-0007 décision 4). La ligne de commande
+ci-dessous se lance depuis `packages/tokens` dans le dépôt (`scripts/` n'est pas publié) ; un site
+généré par `@paulperigault/create` passe les mêmes entrées par `--accent-hue` et `--font-stack`.
 
 | Entrée            | Valeur                                        | Sorties régénérées                                                                 |
 | ----------------- | --------------------------------------------- | ---------------------------------------------------------------------------------- |
@@ -35,3 +85,17 @@ En code : `parseBuildInput` et `deriveOverrides` (`@paulperigault/tokens/customi
 
 Limites : les rampes `--pp-chart-seq-*` et `--pp-chart-div-*` sont dérivées mais pas émises (le
 défaut ne les porte pas). Décisions : D-056, D-057.
+
+## Provenance
+
+Chaque version est publiée par le workflow `release` du dépôt, avec une attestation de
+provenance npm. Dans un projet qui installe ce paquet, `npm audit signatures` vérifie les
+signatures du registre et les attestations. Détails :
+[publication npm](https://github.com/PaulPerigault/design-system/blob/main/docs/process/publication.md).
+
+## Licence et liens
+
+- Licence MIT : [LICENSE](https://github.com/PaulPerigault/design-system/blob/main/packages/tokens/LICENSE)
+- Documentation : <https://design.paulperigault.dev>
+- Source : <https://github.com/PaulPerigault/design-system/tree/main/packages/tokens>
+- Versions : [CHANGELOG.md](https://github.com/PaulPerigault/design-system/blob/main/packages/tokens/CHANGELOG.md)

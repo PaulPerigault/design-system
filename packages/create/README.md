@@ -3,6 +3,13 @@
 CLI pour créer un site Astro qui consomme le design system, ajouter des composants
 `@paulperigault/astro`, les éjecter dans le projet ou les comparer au paquet.
 
+Publié sur npmjs. Série `0.x` : l'API peut changer d'une version à l'autre, lire le
+[CHANGELOG](https://github.com/PaulPerigault/design-system/blob/main/packages/create/CHANGELOG.md)
+avant une mise à jour.
+
+Node 24 ou plus récent. Aucune installation préalable : `npm create` et `npx` téléchargent le
+paquet.
+
 ## Utilisation
 
 ```bash
@@ -153,3 +160,17 @@ npm run dev
 npx @paulperigault/create eject stack
 npx @paulperigault/create diff stack
 ```
+
+## Provenance
+
+Chaque version est publiée par le workflow `release` du dépôt, avec une attestation de
+provenance npm. Dans un projet qui installe ce paquet, `npm audit signatures` vérifie les
+signatures du registre et les attestations. Détails :
+[publication npm](https://github.com/PaulPerigault/design-system/blob/main/docs/process/publication.md).
+
+## Licence et liens
+
+- Licence MIT : [LICENSE](https://github.com/PaulPerigault/design-system/blob/main/packages/create/LICENSE)
+- Documentation : <https://design.paulperigault.dev>
+- Source : <https://github.com/PaulPerigault/design-system/tree/main/packages/create>
+- Versions : [CHANGELOG.md](https://github.com/PaulPerigault/design-system/blob/main/packages/create/CHANGELOG.md)

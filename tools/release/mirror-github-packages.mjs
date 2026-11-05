@@ -8,7 +8,7 @@ import { execFileSync } from 'node:child_process';
 import { globSync, mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { GITHUB_REGISTRY, scopeProblem } from './mirror-plan.mjs';
+import { publishArgs, scopeProblem } from './mirror-plan.mjs';
 import { prepareMirrorDir } from './mirror-prepare.mjs';
 import { githubHas, npmjsHas } from './mirror-registry.mjs';
 import { runMirror } from './mirror-run.mjs';
@@ -22,13 +22,16 @@ const WAIT = {
 };
 const run = (args, options = {}) => execFileSync('npm', args, { encoding: 'utf8', ...options });
 
-/** `--@scope:registry=` l'emporte sur le `@scope:registry` écrit par setup-node dans .npmrc. */
+/**
+ * `--@scope:registry=` en ligne de commande l'emporte sur tout `@scope:registry` des `.npmrc`
+ * (celui du dépôt : npmjs ; celui de setup-node : GitHub). `pack` lit npmjs, `publish` vise GitHub.
+ */
 function publishOne(spec) {
   const workdir = mkdtempSync(join(tmpdir(), 'mirror-'));
   const scope = spec.slice(0, spec.indexOf('/'));
   run(['pack', spec, `--${scope}:registry=${NPMJS}`, '--pack-destination', workdir]);
   const packageDir = prepareMirrorDir(workdir);
-  run(['publish', packageDir, '--registry', GITHUB_REGISTRY], { stdio: 'inherit' });
+  run(publishArgs(packageDir, scope), { stdio: 'inherit' });
 }
 
 async function main(env) {
