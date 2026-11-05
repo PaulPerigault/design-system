@@ -7,5 +7,5 @@
   "packages/astro": "0.1.0",
   "packages/guards": "0.1.0",
   "packages/create": "0.1.0",
-  "packages/mcp": "0.1.0"
+  "packages/mcp": "0.1.1"
 }
