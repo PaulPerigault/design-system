@@ -41,6 +41,8 @@ function npm(args, cwd, userconfig) {
     npm_config_globalconfig: `${userconfig}.global`,
   };
   delete env.GITHUB_ACTIONS;
+  delete env.NPM_CONFIG_USERCONFIG;
+  delete env.NPM_CONFIG_GLOBALCONFIG;
   const [file, head] = npmCommand();
   const done = spawnSync(file, [...head, ...args, '--offline'], { cwd, env, encoding: 'utf8' });
   return { status: done.status, output: `${done.stdout}${done.stderr}` };
