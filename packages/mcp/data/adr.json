@@ -1208,6 +1208,11 @@
       "date": "2026-11-05",
       "decision": "Commentaires de `dataviz`, `tokens` et `guards` : deux corrections, le reste gardé (#299, #303, #304, Q25 A). Dans `dataviz`, le port `Aggregator` n'est plus décrit comme « plus tard » implémenté en WebAssembly : `createWasmAggregator` de `@paulperigault/data` existe et est publié ; « l'étape V3a-1 » disparaît du test du sparkline (borne de 2 ko gardée). Gardés avec leur raison : D-042, D-098 et ADR-0007 (`limits.ts`, `ports.ts`, `operations.ts`, `words.ts`) définissent des plafonds et des contrats que le code applique ; `keys.ts:10` et `dataset.ts:12` contiennent des dates d'exemple (`2026-10-28`), pas des renvois ; `thresholds.ts` (#303) cite ADR-0007 qui fixe les seuils ΔE00 ; `rings.ts` (#304) cite ADR-0006, décision 1, la règle que le fichier applique. `audit:comments` ne relève aucun renvoi réel dans `tokens` ni `guards`, donc aucun changement dans ces deux paquets. Aucun code modifié ; `vitest run packages/dataviz` vert. Alternative écartée : retirer ADR-0007 et D-042, qui définissent les valeurs. Retour arrière : rétablir les deux commentaires.",
       "id": "D-181"
+    },
+    {
+      "date": "2026-11-05",
+      "decision": "Vitest 5.1.0 (#326, Q7 A). Guide de migration 4 vers 5 lu (vitest.dev/guide/migration) : Node ≥ 22.12 et Vite ≥ 6.4, le dépôt a Node 24 et Vite 8.3.4. Essai sur branche : `vitest` passe de `^4.1.12` à `^5.1.0`, lockfile régénéré par npm. Un seul écart : le projet `astro` (`getViteConfig`) ne trouvait plus ses 86 fichiers de test, sa racine n'étant plus résolue vers le paquet ; `root: import.meta.dirname` dans `packages/astro/vitest.config.ts` le rétablit. Résultat identique à la v4 : 266 fichiers réussis et 4 ignorés, 2932 tests réussis et 16 ignorés, `npm run verify` vert, `check:mcp-data` et `check:registry` sans diff. Vitest 5 écrit ses rapports dans `.vitest/` seulement avec un reporter explicite ; le dossier n'est pas créé par `npm test`. Aucun test modifié. Alternative écartée : rester en 4.1.12 (la v4 reste maintenue sous le tag `V4`). Retour arrière : `vitest@^4.1.12`, retirer la ligne `root`.",
+      "id": "D-182"
     }
   ]
 }

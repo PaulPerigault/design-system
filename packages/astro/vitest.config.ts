@@ -6,6 +6,7 @@ export default getViteConfig({
   ...sourceResolve,
   test: {
     name: 'astro',
+    root: import.meta.dirname,
     include: ['test/**/*.test.ts'],
     passWithNoTests: true,
   },
