@@ -23,5 +23,6 @@ Aucun, ou décrire : composants touchés, références visuelles régénérées,
 
 ## Notes pour la fusion
 
-Titre : Conventional Commits en minuscules, 72 caractères au plus avec `(#n)`.
+Titre : Conventional Commits en minuscules ; sujet (après `type(scope): `) de 72 caractères
+au plus avec `(#n)`.
 Corps : 90 colonnes au plus par ligne. Aucune signature d'outil.

@@ -44,8 +44,8 @@ lint-staged. Ne jamais les contourner (`--no-verify`, `HUSKY=0`).
 
 - Remplir [le gabarit de PR](.github/PULL_REQUEST_TEMPLATE.md) : `Closes #n` en première ligne de
   « Issue liée », ou `Refs #n` si d'autres PR suivent.
-- Titre de 72 caractères au plus avec le suffixe `(#n)`, corps de 90 colonnes au plus par ligne :
-  ils deviennent le message du commit de fusion.
+- Sujet du titre (après `type(scope): `) de 72 caractères au plus avec le suffixe `(#n)`, corps
+  de 90 colonnes au plus par ligne : ils deviennent le message du commit de fusion.
 - Le ruleset de `main` exige une PR, la fusion en squash, un historique linéaire et le contrôle `ci`
   vert (`.github/rulesets/main.json`). Le propriétaire relit et fusionne.
 

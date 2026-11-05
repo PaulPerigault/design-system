@@ -119,9 +119,11 @@ Fusion d'une PR (squash : le message = titre + corps de la PR, jamais la liste d
 gh pr merge <n> --squash --delete-branch --subject "<titre> (#<n>)" --body-file <fichier du corps>
 ```
 
-Le suffixe `(#n)` s'écrit dans `--subject` (avec `--subject`, GitHub ne l'ajoute pas) ; titre ≤ 72
-caractères **avec** le suffixe, corps ≤ 90 colonnes par ligne. Les jobs `commitlint` et
-`squash-message` comptent le suffixe dans la limite du sujet. Sans `--subject` et `--body-file`,
+Le suffixe `(#n)` s'écrit dans `--subject` (avec `--subject`, GitHub ne l'ajoute pas). La limite de
+72 caractères (`subject-max-length`) porte sur le sujet de commitlint, c'est-à-dire le texte après
+`type(scope): `, suffixe `(#n)` compris ; `type(scope): ` n'est pas compté. Garder en plus la ligne
+entière sous 100 caractères, pour la lisibilité de `git log` (recommandation, non contrôlée). Corps
+≤ 90 colonnes par ligne. Les jobs `commitlint` et `squash-message` appliquent cette mesure. Sans `--subject` et `--body-file`,
 GitHub reprend la liste des commits et `squash-message` échoue sur `main`.
 
 ## Coordination (orchestrateur et ds-lead)

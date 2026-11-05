@@ -55,9 +55,10 @@ Sources : `AGENTS.md` (Git, GitHub, Fichiers générés, Décisions), `commitlin
 - Conventional Commits. Types admis : `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`,
   `ci`, `perf`, `revert`. Pas de `build` (`commitlint.config.mjs`).
 - Sujet en minuscules, 72 caractères au plus (`subject-case`, `subject-max-length`).
-- Le titre de la PR compte avec son suffixe « (#n) » : 72 caractères au plus **avec** « (#n) ».
-  Le titre saisi n'en porte pas ; le suffixe s'écrit dans `--subject` à la fusion (avec
-  `--subject`, GitHub ne l'ajoute pas). Les jobs `commitlint` et `squash-message` le comptent.
+- Le suffixe « (#n) » compte dans les 72 caractères du sujet, mesuré par commitlint après
+  `type(scope): ` (préfixe non compté). Le titre saisi n'en porte pas ; le suffixe s'écrit dans
+  `--subject` à la fusion. Jobs `commitlint` et `squash-message`. Recommandé, non contrôlé : ligne
+  entière sous 100 caractères (lisibilité de `git log`).
 - Aucune signature d'outil : ni `Co-authored-by`, ni « Generated with » (règle `no-tool-signature`,
   D-004, sans exemption).
 - Hooks locaux : `commit-msg` (commitlint) et `pre-commit` (lint-staged). Jamais `--no-verify` ni
@@ -137,7 +138,7 @@ npm run check:size                      # taille de fichier (limite d'`AGENTS.md
 ```
 
 - Corps de PR : mesurer chaque ligne avant `gh pr create` (90 colonnes, en caractères).
-- Titre : mesurer avec « (#n) » (72 caractères).
+- Titre : mesurer le sujet (après `type(scope): `) avec « (#n) » : 72 caractères au plus.
 - Les limites de taille sont celles d'`AGENTS.md` (on découpe, on ne les relève jamais). Ce skill
   respecte la sienne : 150 lignes au plus, fixées par #178.
 
