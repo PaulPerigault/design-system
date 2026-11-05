@@ -16,7 +16,7 @@ méthode, pas une preuve : « prouvé » seulement si une source l'établit, sin
   est une fixture de test (Vitest, `apps/docs/e2e/`) ou une page d'exemple de `apps/docs`.
 - Pas de masque dégradé pour cacher une coupure : défilement avec bordure visible, ou pagination.
 - Pas de bibliothèque de virtualisation (zéro dépendance inutile) : paginer, ou dire « à décider ».
-- Propriétés logiques (`inline`, `block`), jamais `left` ni `width` figée ; aucun attribut `style`.
+- Propriétés logiques (`inline`, `block`), jamais `left` ni `width` figée (`AGENTS.md`).
 - Rapport d'abord, correctifs ensuite, sur demande de Paul ; une PR à la fois, aucun sous-agent.
 - Pas de phrase d'accueil imposée : on répond à la demande. Données d'essai en `example.org` ou `.test`.
 
@@ -98,7 +98,7 @@ de lire la valeur. **Tronquer au milieu** quand les valeurs diffèrent par la fi
 - Formulaires : étiquette visible, aide, erreur à côté du champ ; plusieurs erreurs : résumé lié.
 - Cibles ≥ `--pp-target-min` ; texte lisible à 320 px et à 200 % de zoom, sans défilement latéral.
 - `prefers-reduced-motion` respecté ; aucun contenu qui défile seul sans pause.
-- Aucune couleur, taille ni durée brute : jetons `--pp-*` ; aucun attribut `style`.
+- Aucune couleur, taille ni durée brute : jetons `--pp-*` (`AGENTS.md`).
 
 ## Rapport
 

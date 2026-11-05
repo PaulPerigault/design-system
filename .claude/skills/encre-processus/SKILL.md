@@ -134,13 +134,13 @@ Lecture initiale d'une session : `tmp/etat-autonome.md`, `AGENTS.md`, les skills
 
 ```
 npm run verify                          # guards, lint, format, tests, build, mcp, pack
-npm run check:size                      # fichier ≤ 120 lignes
+npm run check:size                      # limites de taille d'`AGENTS.md`
 ```
 
 - Corps de PR : mesurer chaque ligne avant `gh pr create` (90 colonnes, en caractères).
 - Titre : mesurer avec « (#n) » (72 caractères).
-- Un fichier de plus de 120 lignes se découpe ; la limite ne se relève jamais. Ce skill respecte
-  la sienne : 150 lignes au plus, fixées par #178.
+- Les limites de taille sont celles d'`AGENTS.md` (on découpe, on ne les relève jamais). Ce skill
+  respecte la sienne : 150 lignes au plus, fixées par #178.
 
 ## Corrections répétées, skill manquant (D-124)
 
