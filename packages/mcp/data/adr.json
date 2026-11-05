@@ -1183,6 +1183,11 @@
       "date": "2026-11-05",
       "decision": "Commentaires de `color` : renvois d'étape et d'issue retirés (#297, Q25 A). Les en-têtes de `pp-color` et `pp-color-wasm` perdent « étape 7a, issue #88 », « étape 7b, issue #89 » et « étape 8, issue #90 » ; ADR-0006, décision 4, reste parce qu'elle fixe la séparation entre crate métier et crate `-wasm` que le code applique. Les autres fichiers de la liste de l'issue (tests de parité, propriétés, vecteurs, `packages/color/test/parity.test.ts`) sont gardés : `audit:comments` n'y relève aucun renvoi. Aucun code modifié ; `cargo test -p pp-color -p pp-color-wasm` vert. Alternative écartée : retirer aussi ADR-0006. Retour arrière : rétablir les trois renvois.",
       "id": "D-176"
+    },
+    {
+      "date": "2026-11-05",
+      "decision": "Commentaires de `data` : renvois d'étape et d'issue retirés (#298, Q25 A). Les en-têtes de `pp-data` et `pp-data-wasm` perdent « étape V4a, issue #98 » et « étape V4b, issue #99 » ; ADR-0006 (décision 4) et ADR-0007 (décision 1, port `Aggregator`) restent, elles fixent la structure appliquée. Dans `tests/vectors/mod.rs`, « confirmé en V4a » est retiré et D-097 reste : D-097 fixe le seuil de 1e-9 en relatif utilisé par `TOLERANCE`. Les autres fichiers de la liste de l'issue (tests de parité, propriétés, `numbers.rs`, `aggregate.ts`, `parity.test.ts`) sont gardés : `audit:comments` n'y relève aucun renvoi. Aucun code modifié ; `cargo test -p pp-data -p pp-data-wasm` vert. Alternative écartée : retirer D-097, qui définit la valeur. Retour arrière : rétablir les trois renvois.",
+      "id": "D-177"
     }
   ]
 }

@@ -1,4 +1,4 @@
-//! Liaison WebAssembly de `pp-data` (ADR-0006, décision 4, étape V4b, issue #99).
+//! Liaison WebAssembly de `pp-data` (ADR-0006, décision 4).
 //!
 //! Crate mince : conversion des types JavaScript (tableaux typés, masque des valeurs manquantes)
 //! vers ceux de `pp-data`, aucune logique de calcul. Une erreur devient une chaîne littérale (voir

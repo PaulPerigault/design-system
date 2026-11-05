@@ -1,5 +1,5 @@
-//! Agrégation, quantiles de type 7 et sous-échantillonnage LTTB, en Rust pur (ADR-0006, décision 4,
-//! étape V4a, issue #98 ; ADR-0007, décision 1, port `Aggregator`).
+//! Agrégation, quantiles de type 7 et sous-échantillonnage LTTB, en Rust pur (ADR-0006, décision 4 ;
+//! ADR-0007, décision 1, port `Aggregator`).
 //!
 //! Aucune dépendance à `wasm-bindgen` : la liaison WebAssembly vivra dans un crate `-wasm`.
 //! Référence de comportement : `packages/dataviz` (TypeScript) ; la parité est testée contre
