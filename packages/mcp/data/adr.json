@@ -1223,6 +1223,11 @@
       "date": "2026-11-05",
       "decision": "Dates de rattrapage de #290 (Q23 A) : `node tools/github/sync-catch-up-dates.mjs` en dry-run (23 entrées à réécrire, #51 et #66 laissées telles quelles faute de PR fusionnée citée), puis `--apply`, qui n'écrit que `.github/roadmap-dates.json`. Les dates deviennent celles des PR de `docs/history/catch-up.md` (du 2026-10-20 au 2026-10-27) au lieu du 2026-10-28 par défaut. Les écritures dans le Project 13 (`sync-project-dates.mjs`, `sync-project-pulls.mjs` avec `--apply`) restent à Paul. Écarté : garder le 2026-10-28 partout (dates fausses sur la feuille de route). Retour arrière : revert de la PR ; le Project n'est pas touché.",
       "id": "D-184"
+    },
+    {
+      "date": "2026-11-05",
+      "decision": "Dates des jalons documentées (#289, #290). Dates posées par Paul le 2026-11-05 et relues par `gh api repos/PaulPerigault/design-system/milestones?state=all` : M0 et M-analyse 2026-11-09, M1, M2 et M4 2026-11-16, M5 2026-11-23, M3 2026-11-30 (minuit UTC ; M-histoire, fermé, sans échéance). `docs/process/gouvernance.md` les déclare estimations, révisées par Paul seul à la relecture hebdomadaire, l'ancienne date et la raison notées dans une ligne D-xxx. Aucun jalon modifié par un agent. Écarté : poser une échéance sur M-histoire (jalon fermé, rattrapage daté issue par issue). Retour arrière : revert de la PR ; les jalons ne sont pas touchés.",
+      "id": "D-185"
     }
   ]
 }
