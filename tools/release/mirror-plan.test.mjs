@@ -1,5 +1,17 @@
 import { describe, expect, it } from 'vitest';
-import { mirrorPlan, scopeProblem } from './mirror-plan.mjs';
+import { GITHUB_REGISTRY, mirrorPlan, publishArgs, scopeProblem } from './mirror-plan.mjs';
+
+describe('publishArgs', () => {
+  it('fixe le registre ET le registre de la portée sur GitHub Packages', () => {
+    expect(publishArgs('/tmp/x/package', '@paulperigault')).toEqual([
+      'publish',
+      '/tmp/x/package',
+      '--registry',
+      GITHUB_REGISTRY,
+      `--@paulperigault:registry=${GITHUB_REGISTRY}`,
+    ]);
+  });
+});
 
 const manifests = [
   { name: '@paulperigault/tokens', version: '0.1.0' },
