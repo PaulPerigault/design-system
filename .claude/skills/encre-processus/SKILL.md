@@ -134,7 +134,7 @@ Lecture initiale d'une session : `tmp/etat-autonome.md`, `AGENTS.md`, les skills
 
 ```
 npm run verify                          # guards, lint, format, tests, build, mcp, pack
-npm run check:size                      # limites de taille d'`AGENTS.md`
+npm run check:size                      # taille de fichier (limite d'`AGENTS.md`)
 ```
 
 - Corps de PR : mesurer chaque ligne avant `gh pr create` (90 colonnes, en caractères).

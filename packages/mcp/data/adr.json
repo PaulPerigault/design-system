@@ -1143,6 +1143,11 @@
       "date": "2026-11-05",
       "decision": "Gouvernance ouverte et README alignés sur 0.1.0 publié (#292). `CONTRIBUTING.md` (renvoie à `AGENTS.md` et `gouvernance.md` sans les recopier), `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1 en français, CC BY 4.0, auteur et modifications cités, signalement à contact@paulperigault.fr, Q29 A), `.github/CODEOWNERS` (propriétaire unique `@PaulPerigault`), README racine et des neuf paquets (version, installation, provenance, liens ; chiffres relus : 0.1.0 publié le 2026-11-04 d'après `npm view time`, attestation SLSA v1 sur les neuf, 54 composants dans `exports`). Noms de branche de `github-setup.md` ramenés aux types Conventional Commits. Alternative écartée : un code de conduite écrit à la main (le texte du Covenant est reconnu et sa licence permet l'adaptation avec attribution). Action de Paul, non faite ici : la revue obligatoire par propriétaire (`require_code_owner_review`) reste désactivée dans le ruleset ; `CODEOWNERS` ne l'active pas. Retour arrière : supprimer les trois fichiers et rétablir les README.",
       "id": "D-169"
+    },
+    {
+      "date": "2026-11-05",
+      "decision": "Doublons de règles réduits, `tasks/` gardé, `astro check` déjà en CI (#293). Les skills `encre-accessibilite`, `encre-cas-limites`, `encre-processus`, `encre-securite` et `docs/process/templates.md` renvoient à `AGENTS.md` au lieu de recopier « 120 lignes » et « attribut `style` » (Q27 A). `tasks/` n'est pas archivé (Q28) : `tools/agents/batch.ts` lit `tasks/` en dur (`readdir` sur `tasks`), donc l'option B exigerait du code et des tests ; Q28 A, 126 fiches conservées. `@astrojs/check` reste : `npm run verify` appelle déjà `docs run check` (`astro check`), mesuré le 2026-11-05 sur 235 fichiers d'`apps/docs` : 0 erreur, 0 avertissement, 1 indication, 7 secondes (Q26 A, rien à brancher). Alternative écartée : retirer `@astrojs/check`, utilisé. Retour arrière : restaurer les phrases recopiées des quatre skills et de `templates.md`.",
+      "id": "D-170"
     }
   ]
 }
