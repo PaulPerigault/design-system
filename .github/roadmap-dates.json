@@ -926,6 +926,14 @@
       "due": "2026-11-20",
       "kind": "estimate",
       "note": "Estimation du 2026-11-04 : cadence observée de 10 à 15 PR par jour de travail ; à réécrire au démarrage."
+    },
+    {
+      "issue": 326,
+      "title": "[Dépendances] Vitest 5 : essai et passage à 5.1.0",
+      "start": "2026-11-05",
+      "due": "2026-11-06",
+      "kind": "estimate",
+      "note": "Estimation du 2026-11-05 : essai déjà fait en local, reste la CI."
     }
   ]
 }
