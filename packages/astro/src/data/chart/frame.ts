@@ -1,5 +1,5 @@
 /**
- * Gabarit commun des graphiques : unités du viewBox, marges et budgets (ADR-0007). Le texte
+ * Gabarit commun des graphiques : unités du viewBox, marges et budgets. Le texte
  * d'axe fait 0,9 rem (14,4 unités) ; sur un écran de 375 px le tracé s'affiche à 309 px, soit
  * 309 / 360 × 14,4 = 12,4 px : au-dessus du plancher de 12 px des graphiques (ADR-0007, point 3).
  */

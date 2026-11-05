@@ -27,7 +27,7 @@ describe('BarChart (libellés de catégories, #143)', () => {
       props: { id: 'p', title: 'P', dataset: make(['Accueil', 'Journal']) },
     });
     const axis = document.querySelector('.pp-bar-chart__axis')?.getAttribute('d') ?? '';
-    // « 3 000 » : 5 caractères, soit 5 × 8 + 8 = 48 unités (72 avant).
+    // « 3 000 » : 5 caractères, soit 5 × 8 + 8 = 48 unités.
     expect(axis).toMatch(/^M48 /);
   });
 
