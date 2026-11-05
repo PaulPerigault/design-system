@@ -1163,6 +1163,11 @@
       "date": "2026-11-05",
       "decision": "Commentaires de `mcp` sans renvoi inutile (#301, Q25 A). Cinq fichiers : les renvois à ADR-0003, ADR-0006 et aux lignes D-040, D-041, D-055 sont retirés quand ils ne définissent pas la valeur utilisée ; deux commentaires sont reformulés sans changer de sens (« Certaines lignes du journal ont trois colonnes » remplace une liste de numéros qui se périmait, « impose que » remplace « garantit que »). Aucun code, aucun test modifié. Mesure `audit:comments` : `packages/mcp` passe de 1 à reformuler et 1 tournure à 0. Alternative écartée : garder la liste des trois lignes de journal (elle ne se met pas à jour toute seule). Retour arrière : rétablir les renvois et la liste.",
       "id": "D-173"
+    },
+    {
+      "date": "2026-11-05",
+      "decision": "Commentaires de `astro` sans renvoi inutile (#302, Q25 A). Quatre fichiers : le renvoi à ADR-0007 du gabarit des graphiques et les mentions « lot images » et « 72 avant » sont retirés ; le plancher de 12 px du texte des graphiques ne cite plus « décision de Paul, 2026-10-29 » mais D-049 et ADR-0007, qui définissent la valeur utilisée. Aucun code, aucun test modifié, hors ce commentaire. Mesure `audit:comments` : `packages/astro` passe de 1 commentaire à reformuler et 1 décision à 0. Alternative écartée : garder « décision de Paul » et la date (renvoi à une conversation). Retour arrière : rétablir les anciens commentaires.",
+      "id": "D-174"
     }
   ]
 }
