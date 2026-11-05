@@ -2,6 +2,22 @@
 // publication npm, le tarball publié avec un `publishConfig` pointant vers GitHub Packages.
 export const GITHUB_REGISTRY = 'https://npm.pkg.github.com';
 
+/**
+ * Arguments de la commande de publication de la copie du miroir. npm choisit d'abord le registre
+ * de la portée du paquet (`@scope:registry`), puis seulement `registry` ; le `.npmrc` du dépôt fixe
+ * `@paulperigault:registry` sur npmjs. `--registry` seul ne suffit donc pas : la ligne de commande,
+ * prioritaire sur tout `.npmrc`, fixe aussi le registre de la portée.
+ */
+export function publishArgs(packageDir, scope) {
+  return [
+    'publish',
+    packageDir,
+    '--registry',
+    GITHUB_REGISTRY,
+    `--${scope}:registry=${GITHUB_REGISTRY}`,
+  ];
+}
+
 /** Un nom de paquet de miroir doit être dans le scope du propriétaire, en minuscules. */
 export function scopeProblem(name, owner) {
   const scope = `@${owner.toLowerCase()}/`;
