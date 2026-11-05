@@ -2,6 +2,10 @@
 
 Contrôles de conception et d'architecture du design system, sans dépendance d'exécution.
 
+Publié sur npmjs. Série `0.x` : l'API peut changer d'une version à l'autre, lire le
+[CHANGELOG](https://github.com/PaulPerigault/design-system/blob/main/packages/guards/CHANGELOG.md)
+avant une mise à jour.
+
 ## Installation
 
 ```bash
@@ -225,8 +229,8 @@ Un script `guard` lance tous les contrôles, et `verify` l'appelle, comme dans l
 ## Configuration ESLint
 
 Les seuils de conception (fonction de 40 lignes au plus, complexité 8, profondeur 3, 4 paramètres,
-3 callbacks imbriqués, pas de nombre magique) sont exportés pour ESLint. Le sous-chemin
-`@paulperigault/guards/eslint` dépend d'un export déclaré dans `package.json` par l'orchestrateur.
+3 callbacks imbriqués, pas de nombre magique) sont exportés pour ESLint par le sous-chemin
+`@paulperigault/guards/eslint`.
 
 ```javascript
 // eslint.config.mjs
@@ -245,3 +249,17 @@ export default tseslint.config(...tseslint.configs.recommended, ...designConfig(
 
 La règle `@typescript-eslint/no-magic-numbers` demande que le greffon `typescript-eslint` soit
 chargé par le projet : ce paquet n'a aucune dépendance d'exécution.
+
+## Provenance
+
+Chaque version est publiée par le workflow `release` du dépôt, avec une attestation de
+provenance npm. Dans un projet qui installe ce paquet, `npm audit signatures` vérifie les
+signatures du registre et les attestations. Détails :
+[publication npm](https://github.com/PaulPerigault/design-system/blob/main/docs/process/publication.md).
+
+## Licence et liens
+
+- Licence MIT : [LICENSE](https://github.com/PaulPerigault/design-system/blob/main/packages/guards/LICENSE)
+- Documentation : <https://design.paulperigault.dev>
+- Source : <https://github.com/PaulPerigault/design-system/tree/main/packages/guards>
+- Versions : [CHANGELOG.md](https://github.com/PaulPerigault/design-system/blob/main/packages/guards/CHANGELOG.md)

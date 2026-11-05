@@ -1,4 +1,4 @@
-// Le cœur n'a aucune dépendance à Effect (ADR-0006 décision 2, ADR-0010) : manifestes et sources.
+// Le cœur n'a aucune dépendance à Effect : manifestes et sources.
 import { globSync, readFileSync } from 'node:fs';
 import { URL, fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';

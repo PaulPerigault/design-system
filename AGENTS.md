@@ -116,11 +116,13 @@ depends_on: [T1.01]
 Fusion d'une PR (squash : le message = titre + corps de la PR, jamais la liste des commits) :
 
 ```
-gh pr merge <n> --squash --delete-branch --subject "<titre>" --body-file <fichier du corps>
+gh pr merge <n> --squash --delete-branch --subject "<titre> (#<n>)" --body-file <fichier du corps>
 ```
 
-Titre ≤ 72 caractères sans `(#n)` (GitHub l'ajoute), corps ≤ 90 colonnes par ligne. Sans `--subject`
-et `--body-file`, GitHub reprend la liste des commits et `squash-message` échoue sur `main`.
+Le suffixe `(#n)` s'écrit dans `--subject` (avec `--subject`, GitHub ne l'ajoute pas) ; titre ≤ 72
+caractères **avec** le suffixe, corps ≤ 90 colonnes par ligne. Les jobs `commitlint` et
+`squash-message` comptent le suffixe dans la limite du sujet. Sans `--subject` et `--body-file`,
+GitHub reprend la liste des commits et `squash-message` échoue sur `main`.
 
 ## Coordination (orchestrateur et ds-lead)
 

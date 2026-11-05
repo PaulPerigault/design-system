@@ -1,5 +1,5 @@
-// Erreurs typées de l'option Effect : un nom littéral par cas, comme les `*Error` du cœur
-// (ADR-0006, décision 1), exprimées en erreurs Effect (`Schema.TaggedError`, ADR-0010).
+// Erreurs typées de l'option Effect : un nom littéral par cas, comme les `*Error` du cœur,
+// exprimées en erreurs Effect (`Schema.TaggedError`).
 import { Schema } from 'effect';
 
 /** Un port de système de fichiers a échoué (lecture, écriture, existence). */

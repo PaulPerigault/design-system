@@ -1,5 +1,5 @@
 // Erreurs typées de `create` : un code littéral par cas, le message et le contexte utile.
-// Aucune erreur anonyme ne franchit une frontière de couche (ADR-0006, décision 1).
+// Aucune erreur anonyme ne franchit une frontière de couche.
 
 export type CreateErrorCode =
   | 'io.cwd-relative'

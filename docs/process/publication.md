@@ -105,6 +105,41 @@ Tests (bloquants, sans réseau) : réécriture pure (`mirror-manifest.test.mjs`)
 
 Relancer et vérifier : `tmp/commandes-paul.md`. Un paquet GitHub est privé à sa première publication : le passer en public est une décision de Paul, non faite ici.
 
+### Troisième défaut du 2026-11-05 : publication envoyée à npmjs (#130)
+
+Constat (run 41944822044 de `mirror.yml`, après #308) : le tarball de `@paulperigault/tokens@0.1.0` est préparé, puis `npm error code ENEEDAUTH … This command requires you to be logged in to https://registry.npmjs.org/` sur `npm publish /tmp/mirror-…/package --registry https://npm.pkg.github.com`. La commande visait npmjs malgré `--registry`. Rien n'a été publié.
+
+Cause **lue dans le code de npm 11.19.1 et reproduite** :
+
+- `lib/commands/publish.js` choisit le registre par `npmFetch.pickRegistry(resolved, opts)`. Dans `npm-registry-fetch` 19.1.1, `pickRegistry` prend d'abord `opts['@<portée>:registry']` quand le nom a une portée, et seulement à défaut `opts.registry`. `--registry` et `publishConfig.registry` ne fixent que `opts.registry` : un registre de portée l'emporte sur les deux.
+- Le job lance npm depuis la racine du dépôt. Le `.npmrc` du dépôt (configuration de projet) contient `@paulperigault:registry=https://registry.npmjs.org/`. Celui de setup-node (`NPM_CONFIG_USERCONFIG`, configuration utilisateur) contient `@paulperigault:registry=https://npm.pkg.github.com/` et le jeton. La configuration de projet passe avant la configuration utilisateur : npmjs gagne, sans jeton pour lui, d'où `ENEEDAUTH`.
+- Sources, lues le 2026-11-05 : [npm config](https://docs.npmjs.com/cli/v11/using-npm/config) (ordre : ligne de commande, variables `npm_config_*`, `.npmrc` de projet, d'utilisateur, global, intégré) ; [scope](https://docs.npmjs.com/cli/v11/using-npm/scope) (« Any `npm publish` for a package name that contains the scope will be published to that registry instead ») ; [package.json, `publishConfig`](https://docs.npmjs.com/cli/v11/configuring-npm/package-json) (muet sur la priorité face à la ligne de commande ; le code filtre les clés passées en ligne de commande) ; [`authutil.ts` de setup-node](https://raw.githubusercontent.com/actions/setup-node/main/src/authutil.ts) (portée par défaut : propriétaire du dépôt en minuscules ; fichier dans `RUNNER_TEMP`, exporté par `NPM_CONFIG_USERCONFIG`).
+
+Essais à blanc hors réseau (`--dry-run --offline`, jeton factice, copie réécrite de `tokens` hors du dépôt), ligne « Publishing to » :
+
+| Essai | Conditions (une seule varie)                                         | Registre visé            |
+| ----- | -------------------------------------------------------------------- | ------------------------ |
+| E1    | comme le job : racine du dépôt, `.npmrc` de setup-node, `--registry` | npmjs (défaut reproduit) |
+| E2    | E1, mais lancé hors du dépôt                                         | GitHub                   |
+| E3    | E1, configuration utilisateur vide                                   | npmjs                    |
+| E4    | E1 + `--@paulperigault:registry=https://npm.pkg.github.com`          | GitHub, jeton trouvé     |
+| E5    | E1 sans `--registry` (`publishConfig.registry` seul)                 | npmjs                    |
+| E6    | test d'intégration de #308 : dossier du paquet, configuration vide   | GitHub                   |
+| E7    | E1 + `provenance: true` remis dans `publishConfig`                   | npmjs (sans effet)       |
+| E8    | E1 + `@paulperigault:registry` dans `publishConfig`                  | GitHub                   |
+
+**La provenance n'est pas la cause** (E7 identique à E1 ; `mirrorManifest` la retire déjà). Le test de #308 (E6) lançait npm depuis le dossier du paquet, hors du dépôt, avec une configuration vide : il ne voyait ni le `.npmrc` du dépôt ni celui de setup-node, et son `toContain(GITHUB_REGISTRY)` était satisfait.
+
+Correction : `publishArgs` (`tools/release/mirror-plan.mjs`) ajoute `--@paulperigault:registry=https://npm.pkg.github.com` à `--registry`. La ligne de commande passe avant tout `.npmrc` ; c'est déjà la méthode de `npm pack` dans le même script (portée forcée vers npmjs). Le `.npmrc` du dépôt reste inchangé : il protège toutes les autres commandes contre un registre de portée inattendu.
+
+Test bloquant (`tools/release/mirror-target.test.mjs`, sans réseau) : essai à blanc **depuis la racine du dépôt**, avec une copie du `.npmrc` de setup-node et un jeton factice ; la ligne « Publishing to » doit valoir exactement `https://npm.pkg.github.com`, sans avertissement d'authentification. Vérifié rouge sur le code d'avant la correction, vert après. Témoin dans le même fichier : `--registry` seul vise npmjs.
+
+Alternatives écartées :
+
+- Lancer la publication hors du dépôt (E2) : ça marche, mais seulement grâce à la ligne de portée qu'écrit setup-node, un comportement implicite de l'action.
+- Mettre `@paulperigault:registry` dans le `publishConfig` de la copie (E8) : ça marche dans npm 11.19.1, mais la documentation de `publishConfig` ne garantit pas les clés de portée ; la ligne de commande est documentée comme prioritaire.
+- Retirer la ligne de portée du `.npmrc` du dépôt : affaiblit la règle « registre unique : npmjs » pour tout le dépôt.
+
 Côté consommateur (documentation de GitHub, lue le 2026-11-02 : un jeton est nécessaire pour installer, même un paquet public ; seul un jeton personnel « classic » est pris en charge) :
 
 ```shell

@@ -56,9 +56,8 @@ Sources : `AGENTS.md` (Git, GitHub, Fichiers générés, Décisions), `commitlin
   `ci`, `perf`, `revert`. Pas de `build` (`commitlint.config.mjs`).
 - Sujet en minuscules, 72 caractères au plus (`subject-case`, `subject-max-length`).
 - Le titre de la PR compte avec son suffixe « (#n) » : 72 caractères au plus **avec** « (#n) ».
-  GitHub ajoute le suffixe au squash ; le titre saisi n'en porte pas (`docs/process/templates.md`).
-  Le contrôle `squash-message` retire le suffixe avant de mesurer, donc viser 72 moins la longueur
-  de « (#n) » par prudence (préférence).
+  Le titre saisi n'en porte pas ; le suffixe s'écrit dans `--subject` à la fusion (avec
+  `--subject`, GitHub ne l'ajoute pas). Les jobs `commitlint` et `squash-message` le comptent.
 - Aucune signature d'outil : ni `Co-authored-by`, ni « Generated with » (règle `no-tool-signature`,
   D-004, sans exemption).
 - Hooks locaux : `commit-msg` (commitlint) et `pre-commit` (lint-staged). Jamais `--no-verify` ni
@@ -75,7 +74,7 @@ Sources : `AGENTS.md` (Git, GitHub, Fichiers générés, Décisions), `commitlin
 ## Fusion
 
 - Squash, avec le titre et le corps de la PR, jamais la liste des commits :
-  `gh pr merge <n> --squash --delete-branch --subject "<titre>" --body-file <fichier>`.
+  `gh pr merge <n> --squash --delete-branch --subject "<titre> (#<n>)" --body-file <fichier>`.
 - Sans `--subject` et `--body-file`, GitHub reprend les commits et `squash-message` échoue sur
   `main` (`AGENTS.md`).
 - Une seule PR ouverte à la fois, fusionnée avant la suivante. Pas de fusion différée avec
@@ -134,13 +133,13 @@ Lecture initiale d'une session : `tmp/etat-autonome.md`, `AGENTS.md`, les skills
 
 ```
 npm run verify                          # guards, lint, format, tests, build, mcp, pack
-npm run check:size                      # fichier ≤ 120 lignes
+npm run check:size                      # taille de fichier (limite d'`AGENTS.md`)
 ```
 
 - Corps de PR : mesurer chaque ligne avant `gh pr create` (90 colonnes, en caractères).
 - Titre : mesurer avec « (#n) » (72 caractères).
-- Un fichier de plus de 120 lignes se découpe ; la limite ne se relève jamais. Ce skill respecte
-  la sienne : 150 lignes au plus, fixées par #178.
+- Les limites de taille sont celles d'`AGENTS.md` (on découpe, on ne les relève jamais). Ce skill
+  respecte la sienne : 150 lignes au plus, fixées par #178.
 
 ## Corrections répétées, skill manquant (D-124)
 
