@@ -1,4 +1,4 @@
-// Ports de processus et de réseau, vus par Effect (ADR-0006 : `Process`, `Fetcher` injectés à la
+// Ports de processus et de réseau, vus par Effect (`Process`, `Fetcher` injectés à la
 // frontière). Aucun accès réseau ni processus réel ici : tout vient du port fourni.
 import { Context } from 'effect';
 

@@ -1,5 +1,5 @@
 // Validation d'une valeur à la frontière avec `Schema`, erreur typée à la sortie. Exemple de la
-// règle du cœur : la teinte d'accent est un nombre fini entre 0 et 360 (D-056).
+// règle du cœur : la teinte d'accent est un nombre fini entre 0 et 360.
 import { Effect, Schema } from 'effect';
 import { ValidationError } from './errors.ts';
 

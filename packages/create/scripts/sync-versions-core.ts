@@ -1,4 +1,4 @@
-// Aligne les versions `@paulperigault/*` du gabarit sur celles des paquets du dépôt (#236, D-129).
+// Aligne les versions `@paulperigault/*` du gabarit sur celles des paquets du dépôt.
 // Pur : les versions viennent d'une fonction injectée, rien n'est lu ici.
 const SCOPE = '@paulperigault/';
 

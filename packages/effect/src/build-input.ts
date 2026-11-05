@@ -1,5 +1,5 @@
 // Entrées de build (`accentHue`, `fontStack`) validées avec `Schema`. Mêmes règles que le cœur
-// (`tokens/customize`, D-056) : un test de parité vérifie que les deux acceptent et refusent pareil.
+// (`tokens/customize`) : un test de parité vérifie que les deux acceptent et refusent pareil.
 import { Effect, Schema } from 'effect';
 import { ValidationError } from './errors.ts';
 import { Hue } from './validate.ts';
