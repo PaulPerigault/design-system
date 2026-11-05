@@ -6,6 +6,8 @@ const REQUIRED = [
   ['prio:', 'label-prio'],
 ];
 const PARENT_MENTION = /Issue parente[\s\S]{0,60}#\d+/i;
+// Décision Q24 de Paul (issue #290) : une issue de rattrapage n'a pas de priorité (travail livré).
+const EXEMPTIONS = [['type:rattrapage', 'label-prio', 'prio-rattrapage']];
 
 const plain = (text) => text.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 
@@ -20,9 +22,18 @@ export function field(item, name) {
   return key ? item[key] : undefined;
 }
 
+const names = (issue) => issue.labels.map((label) => label.name);
+const missing = (labels) =>
+  REQUIRED.filter(([prefix]) => !labels.some((n) => n.startsWith(prefix))).map(([, c]) => c);
+const waivers = (labels) =>
+  EXEMPTIONS.filter(([label, code]) => labels.includes(label) && missing(labels).includes(code));
+
+/** Écarts levés par une exemption (affichés par l'audit, jamais comptés comme écarts). */
+export const exemptions = (issue) => waivers(names(issue)).map(([, , shown]) => shown);
+
 function labelProblems(issue) {
-  const names = issue.labels.map((label) => label.name);
-  return REQUIRED.filter(([prefix]) => !names.some((n) => n.startsWith(prefix))).map(([, c]) => c);
+  const waived = new Set(waivers(names(issue)).map(([, code]) => code));
+  return missing(names(issue)).filter((code) => !waived.has(code));
 }
 
 function projectProblems(item) {

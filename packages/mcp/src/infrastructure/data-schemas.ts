@@ -34,7 +34,7 @@ const tokens = z.object({
 const decisions = z.object({
   adrs: z.array(z.object({ id: text, title: text, text })),
   decisions: z.array(
-    // Les lignes du journal à trois colonnes (D-040, D-041, D-055) n'ont ni alternative ni retour.
+    // Certaines lignes du journal ont trois colonnes : elles n'ont ni alternative ni retour.
     z.object({
       id: text,
       date: text,
@@ -47,7 +47,7 @@ const decisions = z.object({
 
 const docs = z.array(z.object({ path: text, title: text, url: text, body: text }));
 
-/** Un schéma par jeu ; `ZodType<Data[K]>` garantit que la validation produit le type du domaine. */
+/** Un schéma par jeu ; `ZodType<Data[K]>` impose que la validation produise le type du domaine. */
 export const SCHEMAS: { [K in keyof Data]: z.ZodType<Data[K]> } = {
   components: z.array(component),
   tokens,

@@ -1,5 +1,5 @@
 // Les ports du cœur, vus par Effect : des services de `Context`. Les interfaces TypeScript du cœur
-// (`FileSystem`, `Clock`, ADR-0006) restent la source ; ces services ne les remplacent pas.
+// (`FileSystem`, `Clock`) restent la source ; ces services ne les remplacent pas.
 import { Context } from 'effect';
 
 /** Forme synchrone du port de fichiers du cœur (extrait de `CreateIo`). */

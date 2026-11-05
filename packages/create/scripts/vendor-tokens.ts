@@ -1,6 +1,6 @@
 // Embarque la version compilée de `@paulperigault/tokens` dans `dist/vendor/tokens/` et réécrit les
 // spécificateurs `@paulperigault/tokens/...` de `dist/` en chemins relatifs : `create` publié n'a
-// aucune dépendance d'exécution (#151, D-056). À lancer après `tsc`, `tokens` compilé avant.
+// aucune dépendance d'exécution. À lancer après `tsc`, `tokens` compilé avant.
 import { cpSync, existsSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, sep } from 'node:path';
 

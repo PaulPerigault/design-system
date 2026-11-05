@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { HEIGHT, WIDTH } from '../src/data/chart/frame.ts';
 
 const ROOT_FONT_PX = 16;
-/** Plancher de taille du texte d'axe et de légende des graphiques (décision de Paul, 2026-10-29). */
+/** Plancher de taille du texte d'axe et de légende des graphiques (D-049, ADR-0007). */
 const MIN_CHART_TEXT_PX = 12;
 const PHONE_SCREEN_PX = 375;
 /** Largeur d'un graphique de la documentation sur un écran de 375 px (mesurée en navigateur). */

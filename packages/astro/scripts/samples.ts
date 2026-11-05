@@ -1,5 +1,5 @@
 /**
- * Images d'exemple du lot images : compositions géométriques à aplats, sans visage, sans texte,
+ * Images d'exemple : compositions géométriques à aplats, sans visage, sans texte,
  * sans dégradé, écrites sans métadonnées. `node packages/astro/scripts/samples.ts` les régénère
  * (sortie déterministe).
  */

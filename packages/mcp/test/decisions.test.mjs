@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { validateData } from '../src/infrastructure/data.ts';
 import { docsTools } from '../src/application/tools-docs.ts';
 
-// Trois lignes du journal (D-040, D-041, D-055) n'ont que trois colonnes.
+// Certaines lignes du journal n'ont que trois colonnes (ni alternative ni retour).
 const short = { id: 'D-040', date: 'd', decision: 'Ligne courte' };
 const full = { id: 'D-021', date: 'd', decision: 'Budget INP', alternative: 'a', rollback: 'r' };
 const empty = [];

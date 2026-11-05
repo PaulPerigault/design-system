@@ -16,8 +16,8 @@ obstacles : un score de 100 n'est pas une conformité.
 
 - Niveau visé : WCAG 2.2 AA ; AAA seulement si le dépôt le dit (cibles de 44 px : préférence).
 - Aucun outil installé ni lancé en ligne de commande distante ; contrôles du dépôt et lecture du rendu.
-- Aucun attribut `style` en ligne (CSP) : états par `data-*` ou classe. Zéro JS par défaut : la
-  sémantique native d'abord (`button`, `a`, `details`, `dialog`).
+- Règles du dépôt dans `AGENTS.md` (pas de `style` en ligne, zéro JS par défaut) : états par
+  `data-*` ou classe, la sémantique native d'abord (`button`, `a`, `details`, `dialog`).
 - Pas de lecteur d'écran dans la CI : la procédure manuelle fait foi. Une PR à la fois, aucun sous-agent.
 
 ## Comment l'utiliser
