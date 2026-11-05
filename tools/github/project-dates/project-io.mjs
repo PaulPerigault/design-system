@@ -1,8 +1,10 @@
 // Lecture et écriture du Project via `gh` (exécuteur injecté : testable sans réseau).
+// `gh project item-list` abîme l'initiale « É » de la clé (`��chéance`) : lecture par nom normalisé.
+import { field } from '../traceability/issue-rules.mjs';
+
 const MAX_ITEMS = '500';
 
 const json = (run, args) => JSON.parse(run(args));
-const key = (name) => name.toLowerCase();
 
 /** @returns {{ projectId: string, fields: { id: string, name: string }[], items: Map<number, object> }} */
 export function readProject(run, { owner, project }, names) {
@@ -31,8 +33,8 @@ export function readProject(run, { owner, project }, names) {
     if (item.content?.type !== 'Issue') continue;
     items.set(item.content.number, {
       itemId: item.id,
-      start: item[key(names.start)],
-      due: item[key(names.due)],
+      start: field(item, names.start),
+      due: field(item, names.due),
     });
   }
   return { projectId: view.id, fields, items };
