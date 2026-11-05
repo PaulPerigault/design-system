@@ -10,65 +10,74 @@
     {
       "issue": 42,
       "title": "[L0] vérifications, squelette, CI, agents, dispatcher",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-20",
+      "due": "2026-10-20",
+      "kind": "fact",
+      "note": "PR #1 : création et fusion (catch-up.md)"
     },
     {
       "issue": 43,
       "title": "[L1] pilote Stack via Kiro",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-20",
+      "due": "2026-10-20",
+      "kind": "fact",
+      "note": "PR #2 : création et fusion (catch-up.md)"
     },
     {
       "issue": 44,
       "title": "[L2] identité « Encre » et fondations",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-21",
+      "due": "2026-10-21",
+      "kind": "fact",
+      "note": "PR #3 : création et fusion (catch-up.md)"
     },
     {
       "issue": 45,
       "title": "[L3] primitives de layout",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-21",
+      "due": "2026-10-21",
+      "kind": "fact",
+      "note": "PR #5 : création et fusion (catch-up.md)"
     },
     {
       "issue": 46,
       "title": "[L4] formulaires",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-21",
+      "due": "2026-10-21",
+      "kind": "fact",
+      "note": "PR #6 : création et fusion (catch-up.md)"
     },
     {
       "issue": 47,
       "title": "[L5] retour et structure",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-21",
+      "due": "2026-10-21",
+      "kind": "fact",
+      "note": "PR #7 : création et fusion (catch-up.md)"
     },
     {
       "issue": 48,
       "title": "[L6] images",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-21",
+      "due": "2026-10-21",
+      "kind": "fact",
+      "note": "PR #10 : création et fusion (catch-up.md)"
     },
     {
       "issue": 49,
       "title": "[L7] documentation, accessibilité sur toutes les pages, registre",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-21",
+      "due": "2026-10-21",
+      "kind": "fact",
+      "note": "PR #11 : création et fusion (catch-up.md)"
     },
     {
       "issue": 50,
       "title": "[L8] garde-fous empaquetés et CLI",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-21",
+      "due": "2026-10-21",
+      "kind": "fact",
+      "note": "PR #9 : création et fusion (catch-up.md)"
     },
     {
       "issue": 51,
@@ -81,100 +90,114 @@
     {
       "issue": 52,
       "title": "[L10] corrections et hygiène",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-21",
+      "due": "2026-10-21",
+      "kind": "fact",
+      "note": "PR #13 : création et fusion (catch-up.md)"
     },
     {
       "issue": 53,
       "title": "[L11] référentiel",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-21",
+      "due": "2026-10-21",
+      "kind": "fact",
+      "note": "PR #14 : création et fusion (catch-up.md)"
     },
     {
       "issue": 54,
       "title": "[L12] mobile d'abord, ordinateur excellent",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-23",
+      "due": "2026-10-23",
+      "kind": "fact",
+      "note": "PR #15 : création et fusion (catch-up.md)"
     },
     {
       "issue": 55,
       "title": "[L13] documentation lisible et accessible",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-23",
+      "due": "2026-10-23",
+      "kind": "fact",
+      "note": "PR #17 : création et fusion (catch-up.md)"
     },
     {
       "issue": 56,
       "title": "[L14] lisible par les IA",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-23",
+      "due": "2026-10-23",
+      "kind": "fact",
+      "note": "PR #17 : création et fusion (catch-up.md)"
     },
     {
       "issue": 57,
       "title": "[L15] sécurité et chaîne d'approvisionnement",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-24",
+      "due": "2026-10-24",
+      "kind": "fact",
+      "note": "PR #19 : création et fusion (catch-up.md)"
     },
     {
       "issue": 58,
       "title": "[L16] site vitrine",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-24",
+      "due": "2026-10-24",
+      "kind": "fact",
+      "note": "PR #19 : création et fusion (catch-up.md)"
     },
     {
       "issue": 59,
       "title": "[L17] déclaration d'accessibilité et PWA",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-24",
+      "due": "2026-10-24",
+      "kind": "fact",
+      "note": "PR #21 : création et fusion (catch-up.md)"
     },
     {
       "issue": 60,
       "title": "[L18] composants de niveau 2 (1/2)",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-24",
+      "due": "2026-10-24",
+      "kind": "fact",
+      "note": "PR #22 : création et fusion (catch-up.md)"
     },
     {
       "issue": 61,
       "title": "[L19] composants de niveau 2 (2/2)",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-24",
+      "due": "2026-10-24",
+      "kind": "fact",
+      "note": "PR #22 : création et fusion (catch-up.md)"
     },
     {
       "issue": 62,
       "title": "[L20] images Open Graph, police Atkinson, domaine design",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-24",
+      "due": "2026-10-24",
+      "kind": "fact",
+      "note": "PR #24 : création et fusion (catch-up.md)"
     },
     {
       "issue": 63,
       "title": "[Divers 2026-10-20/21] amorce, coordination ds-lead, rapport final",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-21",
+      "due": "2026-10-21",
+      "kind": "fact",
+      "note": "PR #4, #12 : création et fusion (catch-up.md)"
     },
     {
       "issue": 64,
       "title": "[Divers 2026-10-24] arrêt final, ADR-0005, tokens en TypeScript strict",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-24",
+      "due": "2026-10-24",
+      "kind": "fact",
+      "note": "PR #23, #25, #26 : création et fusion (catch-up.md)"
     },
     {
       "issue": 65,
       "title": "[Divers 2026-10-27] dépendances et guards en TypeScript strict",
-      "start": "2026-10-28",
-      "due": "2026-10-28",
-      "kind": "fact"
+      "start": "2026-10-27",
+      "due": "2026-10-27",
+      "kind": "fact",
+      "note": "PR #27, #28, #30 : création et fusion (catch-up.md)"
     },
     {
       "issue": 66,

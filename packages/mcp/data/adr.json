@@ -1218,6 +1218,11 @@
       "date": "2026-11-05",
       "decision": "Règle du sujet de squash dite exactement (#290, Q32 A). Lu : `commitlint.config.mjs` (`subject-max-length` 72), job `commitlint` de `ci.yml` (ajoute « (#n) » au titre) et `tools/commitlint/squash-subject.test.mjs` (72 caractères passent, 73 échouent). Ce que commitlint mesure est le sujet, c'est-à-dire le texte après `type(scope): `, suffixe « (#n) » compris ; le préfixe n'est pas compté. `AGENTS.md`, `encre-processus` et `gouvernance.md` disaient « titre ≤ 72 avec le suffixe », ce que la règle ne mesure pas. Ajout : garder la ligne entière sous 100 caractères pour la lisibilité de `git log`, recommandation non contrôlée. Aucun garde-fou modifié. Écarté : ligne entière limitée à 72 (rendrait la règle plus stricte que Q32 A et casserait des titres valides). Retour arrière : revert de la PR.",
       "id": "D-183"
+    },
+    {
+      "date": "2026-11-05",
+      "decision": "Dates de rattrapage de #290 (Q23 A) : `node tools/github/sync-catch-up-dates.mjs` en dry-run (23 entrées à réécrire, #51 et #66 laissées telles quelles faute de PR fusionnée citée), puis `--apply`, qui n'écrit que `.github/roadmap-dates.json`. Les dates deviennent celles des PR de `docs/history/catch-up.md` (du 2026-10-20 au 2026-10-27) au lieu du 2026-10-28 par défaut. Les écritures dans le Project 13 (`sync-project-dates.mjs`, `sync-project-pulls.mjs` avec `--apply`) restent à Paul. Écarté : garder le 2026-10-28 partout (dates fausses sur la feuille de route). Retour arrière : revert de la PR ; le Project n'est pas touché.",
+      "id": "D-184"
     }
   ]
 }
