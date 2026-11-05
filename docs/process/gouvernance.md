@@ -56,7 +56,7 @@ Chaîne obligatoire : **issue → branche → commits → PR → Project**. Aucu
 1. **Issue** datée, avec jalon, dans le Project, dates posées (voir « Définition de prêt »).
 2. **Branche** `<type>/<n>-<sujet>`, où `<type>` est un type Conventional Commits (`feat`, `fix`, `docs`, `refactor`, `test`, `chore`, `ci`, `perf`) et `<n>` le numéro de l'issue. Les anciens noms de `github-setup.md` (`fonction/`, `tache/`) sont abandonnés : 103 des 161 PR suivent déjà la forme `<type>/<n>-`.
 3. **Commits** en Conventional Commits, minuscules, 72 caractères au plus, sans signature d'outil.
-4. **PR** vers `main` : `Closes #n` ou `Refs #n` dans le corps, ajoutée au Project, fusion squash avec `--subject` et `--body-file`. Titre avec « (#n) » si la décision Q-A1 le retient ; sinon la PR se retrouve par `pull.mergeCommit`.
+4. **PR** vers `main` : `Closes #n` ou `Refs #n` dans le corps, ajoutée au Project, fusion squash avec `--subject` et `--body-file`. Sujet de squash avec « (#n) » écrit dans `--subject`, 72 caractères au plus suffixe compris (décision Q22 de Paul, `AGENTS.md`).
 5. **Aucune réécriture d'historique** : un écart ancien se documente (`docs/history/catch-up.md`, rapport d'audit), il ne se corrige pas par `rebase`.
 
 Contrôle : `npm run audit:traceability` affiche les écarts sans jamais échouer. Une PR de release-please ou de Dependabot est exemptée (aucune issue par conception).

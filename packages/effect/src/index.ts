@@ -1,4 +1,4 @@
-// Option Effect-TS (ADR-0010) : hors du cœur, le cœur n'en dépend jamais.
+// Option Effect-TS : hors du cœur, le cœur n'en dépend jamais.
 export { AccentHue, BuildInput, FontStack, parseBuildInput } from './build-input.ts';
 export { FetchError, FileSystemError, ValidationError } from './errors.ts';
 export { clockLayer, fileSystemLayer, now, readText, writeText } from './layers.ts';

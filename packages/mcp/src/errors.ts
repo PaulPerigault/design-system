@@ -1,5 +1,5 @@
 // Erreurs typées de `mcp` : un code littéral par cas, le message tel que montré au client.
-// Aucune erreur anonyme ne franchit une frontière de couche (ADR-0006, décision 1).
+// Aucune erreur anonyme ne franchit une frontière de couche.
 
 export type ToolErrorCode =
   | 'input.refused'
