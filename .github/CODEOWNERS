@@ -1,0 +1,3 @@
+# Propriétaire unique du dépôt (docs/process/gouvernance.md, « Rôles »).
+# Le ruleset de main n’exige pas sa revue (require_code_owner_review: false).
+* @PaulPerigault
