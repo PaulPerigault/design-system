@@ -1,0 +1,40 @@
+/* Blocs de code nus des pages de documentation (F-3) : ils défilent dans leur boîte et ne
+   changent pas la colonne de lecture. Indice : un filet d'accent au bord de fin tant qu'il reste du
+   code à lire ; il disparaît en bout de course. Sans `animation-timeline`, la barre de défilement
+   reste le seul indice. */
+.docs-main pre:not([class]) {
+  max-inline-size: 100%;
+  overflow-inline: auto;
+  padding: var(--pp-space-s) var(--pp-space-m);
+  background-color: var(--pp-color-surface);
+  border-inline-end: var(--pp-size-focus-width) solid transparent;
+  border-radius: var(--pp-radius-surface);
+  font-size: var(--pp-font-size--1);
+  scrollbar-color: var(--pp-color-muted) var(--pp-color-surface);
+}
+
+.docs-main pre:not([class]):focus-visible {
+  outline-offset: calc(var(--pp-size-focus-offset) * -1);
+}
+
+@keyframes docs-code-more {
+  from {
+    border-inline-end-color: var(--pp-color-accent);
+  }
+  90%,
+  to {
+    border-inline-end-color: transparent;
+  }
+}
+
+/* Propriétés détaillées : le minifieur fusionnerait `animation-timeline` dans le raccourci, que
+   Chromium ne lit pas. */
+@supports (animation-timeline: scroll(self inline)) {
+  .docs-main pre:not([class]) {
+    animation-name: docs-code-more;
+    animation-duration: 1ms;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: scroll(self inline);
+  }
+}
