@@ -43,4 +43,21 @@ describe('analyse et format', () => {
     expect(text).toContain('## Issues (1)');
     expect(text).toContain('[À VÉRIFIER] jalons illisible : x');
   });
+
+  it('affiche les exemptions sans les compter comme écarts', () => {
+    const rattrapage = [{ name: 'type:rattrapage' }, { name: 'pkg:ci' }, { name: 'taille:page' }];
+    const item = {
+      content: { type: 'Issue', number: 43 },
+      status: 'Fait',
+      début: 'a',
+      échéance: 'b',
+    };
+    const report = analyse({
+      ...data,
+      issues: [issue({ number: 43, labels: rattrapage })],
+      items: [item],
+    });
+    expect(report.issues[0].problems).toEqual([]);
+    expect(formatReport(report)).toContain('exemptions : prio-rattrapage 1');
+  });
 });

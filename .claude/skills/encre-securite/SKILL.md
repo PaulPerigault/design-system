@@ -21,7 +21,7 @@ l'établit ; sinon « convention » ou « préférence ». Une faille ne se sign
 ## CSP sans `unsafe-inline` (ADR-0004)
 
 - Les consommateurs ont une CSP stricte (`style-src` par hachages, sans `unsafe-inline`) : un attribut
-  `style` en ligne est ignoré (`AGENTS.md`). Variantes par `data-*` ou classe, mappées en CSS.
+  `style` en ligne est ignoré : règle et variantes dans `AGENTS.md`.
 - Politique du site : `apps/docs/scripts/headers/policy.mjs`, `default-src 'none'`, `script-src 'self'
 'wasm-unsafe-eval'` plus hachages, `style-src 'self'` plus hachages, `object-src 'none'`,
   `base-uri 'none'`, `frame-ancestors 'none'`. Ni `unsafe-inline`, ni `unsafe-eval`.
