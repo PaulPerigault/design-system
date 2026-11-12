@@ -19,8 +19,8 @@ import DocsLayout from '../layouts/DocsLayout.astro';
     <h2 id="poids">Poids des pages et des paquets</h2>
     <p>
       Octets transférés après compression brotli, par type de ressource. Une page compte son HTML,
-      ses feuilles de style, ses scripts, ses polices préchargées et ses images <code>img</code> ;
-      les polices chargées à la demande ne sont pas comptées. Les chiffres se reproduisent :
+      ses feuilles de style, ses scripts, ses polices préchargées et ses images <code>img</code>.
+      Les polices chargées à la demande ne sont pas comptées. Les chiffres se reproduisent :
     </p>
     <pre tabindex="0"><code>npm -w @paulperigault/docs run build
 npm run benchmark:weight</code></pre>
@@ -36,8 +36,8 @@ npm run benchmark:weight</code></pre>
       du corps est préchargée et chargée.
     </p>
     <p>
-      Mesure du 2026-11-01, sur mon poste Windows avec Chromium : LCP de 0,98 à 1,26 s, INP de 56 à
-      96 ms, CLS de 0, JavaScript de 1 005 octets en gzip, deux fichiers de police. Pages mesurées :{' '}
+      Mesure du 2026-11-01, sur mon poste Windows avec Chromium. LCP : 0,98 à 1,26 s. INP : 56 à 96
+      ms. CLS : 0. JavaScript : 1 005 octets en gzip. Polices : deux fichiers. Pages mesurées :{' '}
       <code>/</code>, la page du bouton, le tableau de bord et cette page. Sur les runners de
       GitHub, l’INP est plus haut (D-021). Une seule série, un seul poste : ce n’est pas une
       distribution.
