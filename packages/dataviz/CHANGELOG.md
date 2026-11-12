@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.1](https://github.com/PaulPerigault/design-system/compare/dataviz-v0.1.0...dataviz-v0.1.1) (2026-11-12)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @paulperigault/tokens bumped from 0.1.0 to 0.2.0
+
 ## 0.1.0 (2026-11-04)
 
 

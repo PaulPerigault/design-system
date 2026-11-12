@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.2.0](https://github.com/PaulPerigault/design-system/compare/mcp-v0.1.0...mcp-v0.2.0) (2026-11-12)
+
+
+### Features
+
+* **astro:** alert edge, jeton status-info, card density ([#342](https://github.com/PaulPerigault/design-system/issues/342)) ([ec79ea9](https://github.com/PaulPerigault/design-system/commit/ec79ea9ebba3f3259f05c4c832fd88034eb997a8))
+* **astro:** état invalide commun, button block et bord ([#343](https://github.com/PaulPerigault/design-system/issues/343)) ([8bd9295](https://github.com/PaulPerigault/design-system/commit/8bd9295b6e51815081c3c9798132cc1a23dc06c9))
+* **astro:** gabarits d'en-tête et de pied de site à slots ([#345](https://github.com/PaulPerigault/design-system/issues/345)) ([3c1ff9e](https://github.com/PaulPerigault/design-system/commit/3c1ff9e2d085b1e5b33a182dc6964d78104c96bb))
+* **astro:** navigation de site repliable sans script ([#344](https://github.com/PaulPerigault/design-system/issues/344)) ([d699f82](https://github.com/PaulPerigault/design-system/commit/d699f82dae75ad03277f3fa9373526c3b1eda299))
+* **docs:** blocs de code défilants avec indice de fin ([#332](https://github.com/PaulPerigault/design-system/issues/332)) ([1a8b842](https://github.com/PaulPerigault/design-system/commit/1a8b842f67d9732e749561213561bc08e8647733))
+* **tokens:** jetons accent-text et prose ([#341](https://github.com/PaulPerigault/design-system/issues/341)) ([99eed50](https://github.com/PaulPerigault/design-system/commit/99eed50d227a0666351f8c4046b69ec0a2eae63c))
+
+
+### Bug Fixes
+
+* **ci:** miroir github packages qui échoue au lieu de rester vide ([b6dd2e7](https://github.com/PaulPerigault/design-system/commit/b6dd2e72293068fc9d09c95615cd1e57c7ed6985))
+* **ci:** miroir publié vers github packages et non vers npmjs ([#311](https://github.com/PaulPerigault/design-system/issues/311)) ([f69b295](https://github.com/PaulPerigault/design-system/commit/f69b2953c1aa8f3ff756f943201877826c5408a9))
+* **ci:** retire les scripts de cycle de vie de la copie du miroir ([#308](https://github.com/PaulPerigault/design-system/issues/308)) ([428bf6d](https://github.com/PaulPerigault/design-system/commit/428bf6da8aaff3b6df82c047e74530e22e10c759))
+* **deps:** minimatch 11.0.1 minimum, avis ghsa-g3hv-75wg-m249 ([#312](https://github.com/PaulPerigault/design-system/issues/312)) ([fe750e0](https://github.com/PaulPerigault/design-system/commit/fe750e0d2e005f4160f73d2891534c31709746fd))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @paulperigault/tokens bumped from 0.1.0 to 0.2.0
+
 ## 0.1.0 (2026-11-04)
 
 

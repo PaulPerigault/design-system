@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.2.0](https://github.com/PaulPerigault/design-system/compare/astro-v0.1.0...astro-v0.2.0) (2026-11-12)
+
+
+### Features
+
+* **astro:** alert edge, jeton status-info, card density ([#342](https://github.com/PaulPerigault/design-system/issues/342)) ([ec79ea9](https://github.com/PaulPerigault/design-system/commit/ec79ea9ebba3f3259f05c4c832fd88034eb997a8))
+* **astro:** état invalide commun, button block et bord ([#343](https://github.com/PaulPerigault/design-system/issues/343)) ([8bd9295](https://github.com/PaulPerigault/design-system/commit/8bd9295b6e51815081c3c9798132cc1a23dc06c9))
+* **astro:** gabarits d'en-tête et de pied de site à slots ([#345](https://github.com/PaulPerigault/design-system/issues/345)) ([3c1ff9e](https://github.com/PaulPerigault/design-system/commit/3c1ff9e2d085b1e5b33a182dc6964d78104c96bb))
+* **astro:** navigation de site repliable sans script ([#344](https://github.com/PaulPerigault/design-system/issues/344)) ([d699f82](https://github.com/PaulPerigault/design-system/commit/d699f82dae75ad03277f3fa9373526c3b1eda299))
+* **tokens:** jetons accent-text et prose ([#341](https://github.com/PaulPerigault/design-system/issues/341)) ([99eed50](https://github.com/PaulPerigault/design-system/commit/99eed50d227a0666351f8c4046b69ec0a2eae63c))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @paulperigault/css bumped from 0.1.0 to 0.2.0
+    * @paulperigault/dataviz bumped from 0.1.0 to 0.1.1
+    * @paulperigault/tokens bumped from 0.1.0 to 0.2.0
+
 ## 0.1.0 (2026-11-04)
 
 
