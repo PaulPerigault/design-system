@@ -1,0 +1,28 @@
+/* Styles de SiteFooter : fichier global, classes `.pp-site-footer*`. Colonnes dès 48 rem. */
+.pp-site-footer {
+  container-type: inline-size;
+  border-block-start: var(--pp-size-rule) solid var(--pp-color-line);
+}
+
+.pp-site-footer__columns {
+  display: grid;
+  gap: var(--pp-space-m);
+  padding-block: var(--pp-space-m);
+  padding-inline: var(--pp-space-s);
+}
+
+.pp-site-footer__column > :first-child {
+  margin-block-start: 0;
+}
+
+.pp-site-footer__column > :last-child {
+  margin-block-end: 0;
+}
+
+@container (min-inline-size: 48rem) {
+  .pp-site-footer__columns {
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: var(--pp-space-l);
+  }
+}

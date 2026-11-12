@@ -1,0 +1,37 @@
+---
+/**
+ * SiteHeader : en-tête de site à trois slots : `signature` (nom ou logo, lien vers l'accueil),
+ * `navigation` (un `SiteNav` ou un `SiteMenu`) et `action` (un `Button`). Étroit : la signature,
+ * puis la navigation en dessous ; l'action est masquée (la mettre dans le slot de `SiteMenu`).
+ * Large (conteneur de 48 rem et plus) : une rangée, l'action à la fin. Un slot vide ne laisse ni
+ * espace ni élément. Zéro JavaScript, aucun texte en dur, aucun `style`, tout par les jetons.
+ */
+import './site-header.css';
+
+interface Props {
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<header class:list={['pp-site-header', className]}>
+  <div class="pp-site-header__bar">
+    {Astro.slots.has('signature') && (
+      <div class="pp-site-header__signature">
+        <slot name="signature" />
+      </div>
+    )}
+    {Astro.slots.has('navigation') && (
+      <div class="pp-site-header__navigation">
+        <slot name="navigation" />
+      </div>
+    )}
+    {Astro.slots.has('action') && (
+      <div class="pp-site-header__action">
+        <slot name="action" />
+      </div>
+    )}
+  </div>
+</header>

@@ -1,0 +1,52 @@
+---
+import ComponentPage from '../../components/ComponentPage.astro';
+import SiteFooterExamples from '../../components/examples/site-footer.astro';
+
+const snippet = `<SiteFooter>
+  <p slot="identity">Atelier</p>
+  <p slot="contact">contact@exemple.fr</p>
+  <SiteNav slot="links" label="Liens légaux" items={legal} />
+</SiteFooter>`;
+---
+
+<ComponentPage
+  slug="site-footer"
+  title="SiteFooter"
+  summary="SiteFooter range l’identité, les coordonnées et les liens d’un site en colonnes dès 48 rem, en une colonne dessous."
+  use={[
+    'Poser le pied d’un site : identité, coordonnées, liens légaux.',
+    'Laisser un slot vide : il ne laisse ni colonne ni espace.',
+  ]}
+  avoid={[
+    'Pour un menu de navigation principal : utiliser SiteHeader.',
+    'Pour plus de trois zones : composer son propre gabarit avec Grid.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Les liens se parcourent avec Tab, dans l’ordre du document : identité, coordonnées, liens.',
+      'Aucun piège clavier : le composant n’ajoute aucun élément interactif.',
+    ],
+    screenReader: [
+      'Le composant rend un élément footer.',
+      'Un repère nav placé dans le slot garde son nom.',
+    ],
+    guaranteed: [
+      'L’ordre du document et l’ordre visuel sont les mêmes : une colonne par slot, dans l’ordre.',
+      'Zéro JavaScript ; le seuil est une requête de conteneur en rem.',
+    ],
+    integrator: [
+      'Donner un nom distinct à chaque repère nav de la page (critère 2.4.1).',
+      'Fournir les textes dans la langue du site.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.3.2 Ordre séquentiel logique',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html',
+    },
+    { label: 'Tests : packages/astro/test/SiteHeader.test.ts' },
+  ]}
+>
+  <SiteFooterExamples />
+</ComponentPage>

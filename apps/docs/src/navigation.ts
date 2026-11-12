@@ -74,6 +74,8 @@ export const GROUPS: readonly DocGroup[] = [
       link('menu', 'Menu'),
       link('site-nav', 'SiteNav'),
       link('site-menu', 'SiteMenu'),
+      link('site-header', 'SiteHeader'),
+      link('site-footer', 'SiteFooter'),
     ],
   },
   {

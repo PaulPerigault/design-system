@@ -1,0 +1,41 @@
+/* Styles de SiteHeader : fichier global, classes `.pp-site-header*`. Rangée unique dès 48 rem. */
+.pp-site-header {
+  container-type: inline-size;
+  border-block-end: var(--pp-size-rule) solid var(--pp-color-line);
+}
+
+.pp-site-header__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--pp-space-3xs) var(--pp-space-s);
+  padding-block: var(--pp-space-3xs);
+  padding-inline: var(--pp-space-s);
+}
+
+.pp-site-header__signature {
+  flex: none;
+  min-block-size: var(--pp-size-control-height);
+  display: flex;
+  align-items: center;
+}
+
+.pp-site-header__navigation {
+  flex: 1 1 100%;
+  min-inline-size: 0;
+}
+
+.pp-site-header__action {
+  display: none;
+}
+
+@container (min-inline-size: 48rem) {
+  .pp-site-header__navigation {
+    flex-basis: 0;
+  }
+
+  .pp-site-header__action {
+    display: block;
+    flex: none;
+  }
+}

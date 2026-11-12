@@ -1941,6 +1941,58 @@
       }
     },
     {
+      "name": "site-footer",
+      "type": "registry:ui",
+      "title": "SiteFooter",
+      "description": "Pied de site à trois slots (identité, coordonnées, liens) : une colonne par slot rempli dès 48 rem de conteneur, zéro JavaScript.",
+      "files": [
+        {
+          "path": "packages/astro/src/navigation/SiteFooter.astro",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/navigation/site-footer.css",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-line",
+          "--pp-size-rule",
+          "--pp-space-l",
+          "--pp-space-m",
+          "--pp-space-s"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
+      "name": "site-header",
+      "type": "registry:ui",
+      "title": "SiteHeader",
+      "description": "En-tête de site à trois slots (signature, navigation, action) : une rangée dès 48 rem de conteneur, zéro JavaScript.",
+      "files": [
+        {
+          "path": "packages/astro/src/navigation/SiteHeader.astro",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/navigation/site-header.css",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-line",
+          "--pp-size-control-height",
+          "--pp-size-rule",
+          "--pp-space-3xs",
+          "--pp-space-s"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
       "name": "site-menu",
       "type": "registry:ui",
       "title": "SiteMenu",

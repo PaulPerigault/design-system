@@ -3882,6 +3882,106 @@
   {
     "a11y": {
       "guaranteed": [
+        "L’ordre du document et l’ordre visuel sont les mêmes : une colonne par slot, dans l’ordre.",
+        "Zéro JavaScript ; le seuil est une requête de conteneur en rem."
+      ],
+      "integrator": [
+        "Donner un nom distinct à chaque repère nav de la page (critère 2.4.1).",
+        "Fournir les textes dans la langue du site."
+      ],
+      "keyboard": [
+        "Les liens se parcourent avec Tab, dans l’ordre du document : identité, coordonnées, liens.",
+        "Aucun piège clavier : le composant n’ajoute aucun élément interactif."
+      ],
+      "screenReader": [
+        "Le composant rend un élément footer.",
+        "Un repère nav placé dans le slot garde son nom."
+      ]
+    },
+    "avoid": [
+      "Pour un menu de navigation principal : utiliser SiteHeader.",
+      "Pour plus de trois zones : composer son propre gabarit avec Grid."
+    ],
+    "evidence": [
+      "[WCAG 1.3.2 Ordre séquentiel logique](https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html)",
+      "Tests : packages/astro/test/SiteHeader.test.ts"
+    ],
+    "group": "navigation",
+    "props": [
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "`class`",
+        "type": "`string`"
+      }
+    ],
+    "slug": "site-footer",
+    "snippet": "<SiteFooter>\n  <p slot=\"identity\">Atelier</p>\n  <p slot=\"contact\">contact@exemple.fr</p>\n  <SiteNav slot=\"links\" label=\"Liens légaux\" items={legal} />\n</SiteFooter>",
+    "summary": "SiteFooter range l’identité, les coordonnées et les liens d’un site en colonnes dès 48 rem, en une colonne dessous.",
+    "title": "SiteFooter",
+    "tokens": ["--pp-color-line", "--pp-size-rule", "--pp-space-l", "--pp-space-m", "--pp-space-s"],
+    "use": [
+      "Poser le pied d’un site : identité, coordonnées, liens légaux.",
+      "Laisser un slot vide : il ne laisse ni colonne ni espace."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "Chaque zone fait au moins --pp-size-control-height de haut.",
+        "Étroit, l’action est masquée : la mettre aussi dans le slot de SiteMenu.",
+        "Zéro JavaScript ; le seuil est une requête de conteneur en rem, il suit le zoom du texte."
+      ],
+      "integrator": [
+        "Donner un nom distinct à chaque repère nav de la page (critère 2.4.1).",
+        "Le conteneur prend la largeur de son parent : placer l’en-tête dans un élément de pleine largeur.",
+        "Le lien de la signature mène à l’accueil."
+      ],
+      "keyboard": [
+        "Les liens et le bouton se parcourent avec Tab, dans l’ordre du document : signature, navigation, action.",
+        "Le bouton « Menu » s’ouvre avec Entrée et Espace (voir SiteMenu)."
+      ],
+      "screenReader": [
+        "Le composant rend un élément header ; la navigation garde le nom de son repère nav.",
+        "Un slot vide ne rend aucun élément."
+      ]
+    },
+    "avoid": [
+      "Pour la navigation seule : utiliser SiteNav ou SiteMenu.",
+      "Pour un en-tête de page ou de section : un titre suffit."
+    ],
+    "evidence": [
+      "[WCAG 1.4.10 Redistribution du contenu](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html)",
+      "Tests : packages/astro/test/SiteHeader.test.ts, apps/docs/e2e/site-header.spec.ts"
+    ],
+    "group": "navigation",
+    "props": [
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "`class`",
+        "type": "`string`"
+      }
+    ],
+    "slug": "site-header",
+    "snippet": "<SiteHeader>\n  <a slot=\"signature\" href=\"/\">Atelier</a>\n  <SiteMenu slot=\"navigation\" label=\"Navigation\" summary=\"Menu\" items={items} />\n  <Button slot=\"action\" tone=\"secondary\" href=\"/rdv/\">Rendez-vous</Button>\n</SiteHeader>",
+    "summary": "SiteHeader range la signature, la navigation et l’action d’un site dans un en-tête qui tient sur une rangée dès 48 rem.",
+    "title": "SiteHeader",
+    "tokens": [
+      "--pp-color-line",
+      "--pp-size-control-height",
+      "--pp-size-rule",
+      "--pp-space-3xs",
+      "--pp-space-s"
+    ],
+    "use": [
+      "Poser l’en-tête d’un site : une signature, un SiteMenu ou un SiteNav, une action.",
+      "Composer sans JavaScript : le repli vient de SiteMenu."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
         "Le bouton de repli et les liens font au moins --pp-size-control-height de haut.",
         "La page courante garde `aria-current=\"page\"` dans les deux rendus.",
         "Zéro JavaScript ; le seuil est une requête de conteneur en rem, il suit le zoom du texte."

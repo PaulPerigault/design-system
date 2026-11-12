@@ -1,0 +1,54 @@
+---
+import ComponentPage from '../../components/ComponentPage.astro';
+import SiteHeaderExamples from '../../components/examples/site-header.astro';
+
+const snippet = `<SiteHeader>
+  <a slot="signature" href="/">Atelier</a>
+  <SiteMenu slot="navigation" label="Navigation" summary="Menu" items={items} />
+  <Button slot="action" tone="secondary" href="/rdv/">Rendez-vous</Button>
+</SiteHeader>`;
+---
+
+<ComponentPage
+  slug="site-header"
+  title="SiteHeader"
+  summary="SiteHeader range la signature, la navigation et l’action d’un site dans un en-tête qui tient sur une rangée dès 48 rem."
+  use={[
+    'Poser l’en-tête d’un site : une signature, un SiteMenu ou un SiteNav, une action.',
+    'Composer sans JavaScript : le repli vient de SiteMenu.',
+  ]}
+  avoid={[
+    'Pour la navigation seule : utiliser SiteNav ou SiteMenu.',
+    'Pour un en-tête de page ou de section : un titre suffit.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Les liens et le bouton se parcourent avec Tab, dans l’ordre du document : signature, navigation, action.',
+      'Le bouton « Menu » s’ouvre avec Entrée et Espace (voir SiteMenu).',
+    ],
+    screenReader: [
+      'Le composant rend un élément header ; la navigation garde le nom de son repère nav.',
+      'Un slot vide ne rend aucun élément.',
+    ],
+    guaranteed: [
+      'Chaque zone fait au moins --pp-size-control-height de haut.',
+      'Étroit, l’action est masquée : la mettre aussi dans le slot de SiteMenu.',
+      'Zéro JavaScript ; le seuil est une requête de conteneur en rem, il suit le zoom du texte.',
+    ],
+    integrator: [
+      'Donner un nom distinct à chaque repère nav de la page (critère 2.4.1).',
+      'Le conteneur prend la largeur de son parent : placer l’en-tête dans un élément de pleine largeur.',
+      'Le lien de la signature mène à l’accueil.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.4.10 Redistribution du contenu',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/reflow.html',
+    },
+    { label: 'Tests : packages/astro/test/SiteHeader.test.ts, apps/docs/e2e/site-header.spec.ts' },
+  ]}
+>
+  <SiteHeaderExamples />
+</ComponentPage>

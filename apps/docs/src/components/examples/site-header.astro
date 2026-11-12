@@ -1,0 +1,26 @@
+---
+/** Exemple vivant de la page SiteHeader : signature, navigation repliable et action. */
+import Button from '@paulperigault/astro/Button.astro';
+import SiteHeader from '@paulperigault/astro/SiteHeader.astro';
+import SiteMenu from '@paulperigault/astro/SiteMenu.astro';
+
+const items = [
+  { label: 'Accueil', href: '#contenu' },
+  { label: 'Tarifs', href: '#contenu', current: true },
+  { label: 'Contact', href: '#contenu' },
+];
+---
+
+<SiteHeader>
+  <a slot="signature" href="#contenu">
+    <strong>Atelier exemple</strong>
+  </a>
+  <SiteMenu slot="navigation" label="Navigation de l’en-tête" summary="Menu" items={items}>
+    <Button block href="#contenu">
+      Prendre rendez-vous
+    </Button>
+  </SiteMenu>
+  <Button slot="action" tone="secondary" href="#contenu">
+    Prendre rendez-vous
+  </Button>
+</SiteHeader>
