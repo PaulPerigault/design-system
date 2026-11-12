@@ -1,0 +1,19 @@
+---
+/** Exemple vivant de la page SiteMenu : replié sous 48 rem de conteneur, en ligne au-delà. */
+import Button from '@paulperigault/astro/Button.astro';
+import SiteMenu from '@paulperigault/astro/SiteMenu.astro';
+---
+
+<SiteMenu
+  label="Navigation du site"
+  summary="Menu"
+  items={[
+    { label: 'Accueil', href: '#contenu' },
+    { label: 'Tarifs', href: '#contenu', current: true },
+    { label: 'Contact', href: '#contenu' },
+  ]}
+>
+  <Button block href="#contenu">
+    Prendre rendez-vous
+  </Button>
+</SiteMenu>

@@ -1,0 +1,63 @@
+---
+import ComponentPage from '../../components/ComponentPage.astro';
+import SiteMenuExamples from '../../components/examples/site-menu.astro';
+
+const snippet = `<SiteMenu
+  label="Navigation du site"
+  summary="Menu"
+  items={[
+    { label: 'Accueil', href: '/' },
+    { label: 'Tarifs', href: '/tarifs/', current: true },
+  ]}
+>
+  <Button block href="/rendez-vous/">Prendre rendez-vous</Button>
+</SiteMenu>`;
+---
+
+<ComponentPage
+  slug="site-menu"
+  title="SiteMenu"
+  summary="SiteMenu replie la navigation d’un site dans un menu natif sous 48 rem de conteneur, et l’affiche en ligne au-delà."
+  use={[
+    'Offrir la navigation d’un site sur téléphone sans JavaScript.',
+    'Placer une action dans le panneau replié avec le slot, par exemple un Button `block`.',
+  ]}
+  avoid={[
+    'Pour une navigation toujours visible : utiliser SiteNav.',
+    'Pour un menu d’actions : utiliser Menu, qui gère le clavier fléché en JavaScript.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Le bouton « Menu » est un `summary` natif : Entrée et Espace ouvrent et ferment le panneau.',
+      'Les liens se parcourent avec Tab, dans l’ordre du document, panneau ouvert.',
+    ],
+    screenReader: [
+      'Le `details` annonce son état ouvert ou fermé ; le repère nav porte le nom donné par label.',
+      'Un seul des deux rendus est affiché à la fois : l’autre est en `display: none`, donc absent de l’arbre d’accessibilité.',
+    ],
+    guaranteed: [
+      'Le bouton de repli et les liens font au moins --pp-size-control-height de haut.',
+      'La page courante garde `aria-current="page"` dans les deux rendus.',
+      'Zéro JavaScript ; le seuil est une requête de conteneur en rem, il suit le zoom du texte.',
+    ],
+    integrator: [
+      'Le conteneur prend la largeur de son parent : dans un parent flex, lui donner `flex: 1`.',
+      'Fournir `summary` et `label` dans la langue du site.',
+      'Poser `current` sur une seule entrée.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 2.1.1 Clavier',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html',
+    },
+    {
+      label: 'WCAG 1.4.10 Redistribution du contenu',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/reflow.html',
+    },
+    { label: 'Tests : packages/astro/test/SiteMenu.test.ts, apps/docs/e2e/site-menu.spec.ts' },
+  ]}
+>
+  <SiteMenuExamples />
+</ComponentPage>

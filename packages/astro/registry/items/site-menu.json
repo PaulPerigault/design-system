@@ -1,0 +1,41 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "site-menu",
+  "type": "registry:ui",
+  "title": "SiteMenu",
+  "description": "Navigation de site repliable sans JavaScript : details natif sous 48 rem de conteneur, liste en ligne au-delà ; s'appuie sur SiteNav.",
+  "files": [
+    {
+      "path": "packages/astro/src/navigation/SiteMenu.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/navigation/site-menu.css",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/navigation/SiteNav.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/navigation/site-nav.css",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-control",
+      "--pp-color-fg",
+      "--pp-font-weight-bold",
+      "--pp-radius-control",
+      "--pp-size-control-height",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-rule",
+      "--pp-space-3xs",
+      "--pp-space-s",
+      "--pp-space-xs"
+    ],
+    "version": "0.0.0"
+  }
+}
