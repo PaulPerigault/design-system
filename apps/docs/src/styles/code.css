@@ -2,7 +2,7 @@
    changent pas la colonne de lecture. Indice : un filet d'accent au bord de fin tant qu'il reste du
    code à lire ; il disparaît en bout de course. Sans `animation-timeline`, la barre de défilement
    reste le seul indice. */
-.docs-main pre:not([class]) {
+.docs-main pre:not([class], .pp-diff-scroll > pre) {
   max-inline-size: 100%;
   overflow-inline: auto;
   padding: var(--pp-space-s) var(--pp-space-m);
@@ -13,7 +13,7 @@
   scrollbar-color: var(--pp-color-muted) var(--pp-color-surface);
 }
 
-.docs-main pre:not([class]):focus-visible {
+.docs-main pre:not([class], .pp-diff-scroll > pre):focus-visible {
   outline-offset: calc(var(--pp-size-focus-offset) * -1);
 }
 
@@ -30,7 +30,7 @@
 /* Propriétés détaillées : le minifieur fusionnerait `animation-timeline` dans le raccourci, que
    Chromium ne lit pas. */
 @supports (animation-timeline: scroll(self inline)) {
-  .docs-main pre:not([class]) {
+  .docs-main pre:not([class], .pp-diff-scroll > pre) {
     animation-name: docs-code-more;
     animation-duration: 1ms;
     animation-timing-function: linear;
