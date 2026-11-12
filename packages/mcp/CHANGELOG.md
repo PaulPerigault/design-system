@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.0](https://github.com/PaulPerigault/design-system/compare/mcp-v0.2.0...mcp-v0.3.0) (2026-11-12)
+
+
+### Features
+
+* **astro:** habillage de la navigation et zone légale du pied de site ([#356](https://github.com/PaulPerigault/design-system/issues/356)) ([f4f4efb](https://github.com/PaulPerigault/design-system/commit/f4f4efb3a3b204ae51f930315caa0dcacb133986))
+* **astro:** seuil, entrées de barre et mise en page de l'en-tête de site ([#354](https://github.com/PaulPerigault/design-system/issues/354)) ([9308619](https://github.com/PaulPerigault/design-system/commit/9308619ba3d21c773443b5889381af91248e1e8e))
+
 ## [0.2.0](https://github.com/PaulPerigault/design-system/compare/mcp-v0.1.0...mcp-v0.2.0) (2026-11-12)
 
 

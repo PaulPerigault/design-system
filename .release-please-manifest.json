@@ -4,8 +4,8 @@
   "packages/color": "0.1.1",
   "packages/data": "0.1.1",
   "packages/dataviz": "0.1.1",
-  "packages/astro": "0.2.0",
+  "packages/astro": "0.3.0",
   "packages/guards": "0.1.0",
   "packages/create": "0.2.0",
-  "packages/mcp": "0.2.0"
+  "packages/mcp": "0.3.0"
 }
