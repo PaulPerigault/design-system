@@ -9,7 +9,8 @@ const ITEMS = [
 ];
 const PROPS = { label: 'Navigation principale', summary: 'Menu', items: ITEMS };
 
-const render = (slot = '') => renderDom(SiteMenu, { props: PROPS, slot });
+const render = (slot = '', props: Record<string, unknown> = {}) =>
+  renderDom(SiteMenu, { props: { ...PROPS, ...props }, slot });
 
 describe('SiteMenu (rendu)', () => {
   it('replie la navigation dans un details natif, fermé au chargement', async () => {
@@ -45,12 +46,48 @@ describe('SiteMenu (rendu)', () => {
   });
 });
 
-describe('SiteMenu (source CSS)', () => {
-  const css = readFileSync(new URL('../src/navigation/site-menu.css', import.meta.url), 'utf8');
+describe('SiteMenu (barItems et expandAt)', () => {
+  const BAR = [{ label: 'Accueil', href: '/' }];
+  const labels = (nav: Element | null | undefined) =>
+    [...(nav?.querySelectorAll('a') ?? [])].map((link) => link.textContent?.trim());
 
-  it('bascule par une requête de conteneur de 48 rem', () => {
-    expect(css).toContain('container-type: inline-size');
-    expect(css).toContain('@container (min-inline-size: 48rem)');
+  it('sans barItems, la barre reprend items', async () => {
+    const document = await render();
+    expect(labels(document.querySelector('.pp-site-menu__bar'))).toEqual(['Accueil', 'Contact']);
+  });
+
+  it('avec barItems, la barre a sa liste et le repli garde items', async () => {
+    const document = await render('', { barItems: BAR });
+    expect(labels(document.querySelector('.pp-site-menu__bar'))).toEqual(['Accueil']);
+    expect(labels(document.querySelector('details'))).toEqual(['Accueil', 'Contact']);
+  });
+
+  it('expandAt : 48 par défaut, valeur de la liste sinon', async () => {
+    const seuil = async (props: Record<string, unknown>) =>
+      (await render('', props)).querySelector('.pp-site-menu')?.getAttribute('data-expand-at');
+    expect(await seuil({})).toBe('48');
+    expect(await seuil({ expandAt: 75 })).toBe('75');
+    expect(await seuil({ expandAt: 50 })).toBe('48');
+  });
+});
+
+describe('SiteMenu (source CSS)', () => {
+  const read = (file: string) =>
+    readFileSync(new URL(`../src/navigation/${file}`, import.meta.url), 'utf8');
+  const css = read('site-menu.css');
+  const expand = read('site-expand.css');
+
+  it('seul, le menu est un conteneur nommé ; dans un en-tête, il n’en est pas un', () => {
+    expect(css).toContain('.pp-site-menu:not(.pp-site-header *)');
+    expect(css).toContain('container: pp-site-bar / inline-size');
+  });
+
+  it('une requête de conteneur nommée par valeur de la liste fermée', () => {
+    for (const seuil of [48, 56, 64, 75]) {
+      expect(expand).toContain(`@container pp-site-bar (min-inline-size: ${seuil}rem)`);
+      expect(expand).toContain(`[data-expand-at='${seuil}']`);
+    }
+    expect(expand.match(/@container/g)).toHaveLength(4);
   });
 
   it('le bouton de repli est une cible d’un contrôle, sans valeur brute', () => {

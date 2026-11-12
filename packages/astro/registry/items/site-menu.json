@@ -3,7 +3,7 @@
   "name": "site-menu",
   "type": "registry:ui",
   "title": "SiteMenu",
-  "description": "Navigation de site repliable sans JavaScript : details natif sous 48 rem de conteneur, liste en ligne au-delà ; s'appuie sur SiteNav.",
+  "description": "Navigation de site repliable sans JavaScript : details natif sous le seuil expandAt (48 rem par défaut), liste en ligne au-delà (barItems : autre liste) ; s'appuie sur SiteNav.",
   "files": [
     {
       "path": "packages/astro/src/navigation/SiteMenu.astro",
@@ -19,6 +19,14 @@
     },
     {
       "path": "packages/astro/src/navigation/site-nav.css",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/navigation/site-expand.css",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/navigation/site-expand.ts",
       "type": "registry:ui"
     }
   ],

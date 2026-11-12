@@ -2,21 +2,40 @@
 /**
  * SiteHeader : en-tête de site à trois slots : `signature` (nom ou logo, lien vers l'accueil),
  * `navigation` (un `SiteNav` ou un `SiteMenu`) et `action` (un `Button`). Étroit : la signature,
- * puis la navigation en dessous ; l'action est masquée (la mettre dans le slot de `SiteMenu`).
- * Large (conteneur de 48 rem et plus) : une rangée, l'action à la fin. Un slot vide ne laisse ni
- * espace ni élément. Zéro JavaScript, aucun texte en dur, aucun `style`, tout par les jetons.
+ * puis la navigation en dessous (`layout="inline"` : sur une rangée) ; l'action est masquée (la
+ * mettre dans le slot de `SiteMenu`). Dès 48 rem de conteneur : une rangée. L'en-tête est le
+ * conteneur nommé du seuil `expandAt` : l'action apparaît et le `SiteMenu` se déplie à cette
+ * largeur (défaut 48 rem). Marges : `--pp-site-header-padding-block` et `-inline`. Un slot vide ne
+ * laisse ni espace ni élément. Zéro JavaScript, aucun texte en dur, aucun `style`.
  */
+import './site-expand.css';
 import './site-header.css';
+import { expandAtOf } from './site-expand.ts';
+import type { ExpandAt } from './site-expand.ts';
 
 interface Props {
+  /**
+   * `stacked` : la navigation sous la signature en étroit ; `inline` : signature et bouton de
+   * menu sur une rangée, bouton à droite, panneau ouvert sous l'en-tête.
+   */
+  layout?: 'stacked' | 'inline';
+  /**
+   * Largeur d'en-tête (en rem) à partir de laquelle l'action apparaît et le `SiteMenu` se
+   * déplie : 48, 56, 64 ou 75. Une seule valeur pour les deux.
+   */
+  expandAt?: ExpandAt;
   /** Réservé au placement du composant dans son parent. */
   class?: string;
 }
 
-const { class: className } = Astro.props;
+const { layout = 'stacked', expandAt, class: className } = Astro.props;
 ---
 
-<header class:list={['pp-site-header', className]}>
+<header
+  class:list={['pp-site-header', className]}
+  data-layout={layout}
+  data-expand-at={expandAtOf(expandAt)}
+>
   <div class="pp-site-header__bar">
     {Astro.slots.has('signature') && (
       <div class="pp-site-header__signature">

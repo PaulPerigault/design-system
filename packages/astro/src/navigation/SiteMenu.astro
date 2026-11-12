@@ -2,13 +2,18 @@
 /**
  * SiteMenu : navigation de site qui se replie sous un seuil, sans JavaScript. Étroit : un
  * `<details>`/`<summary>` natif (clavier : Entrée et Espace) ouvre la liste, un par ligne, suivie
- * du contenu du slot (une action, par exemple). Large : la liste s'affiche en ligne, sans repli.
- * Seuil : requête de conteneur de 48 rem. Un seul des deux rendus est affiché à la fois (l'autre est
- * en `display: none`) : le repère garde le même nom. Le conteneur prend la largeur de son parent
- * (dans un parent flex : `flex: 1`). Zéro JavaScript, aucun texte en dur, aucun `style`.
+ * du contenu du slot (une action, par exemple). Large : la liste s'affiche en ligne, sans repli
+ * (`barItems` : autre liste pour la barre). Seuil `expandAt` : requête de conteneur, 48 rem par
+ * défaut. Dans un `SiteHeader`, le conteneur est l'en-tête entier et sa valeur prime ; seul, le
+ * menu est son propre conteneur et prend la largeur de son parent (parent flex : `flex: 1`). Un
+ * seul des deux rendus est affiché à la fois : le repère garde le même nom. Zéro JavaScript,
+ * aucun texte en dur, aucun `style`.
  */
+import './site-expand.css';
 import './site-menu.css';
 import SiteNav from './SiteNav.astro';
+import { expandAtOf } from './site-expand.ts';
+import type { ExpandAt } from './site-expand.ts';
 
 interface Item {
   label: string;
@@ -21,16 +26,23 @@ interface Props {
   label: string;
   /** Libellé du bouton qui ouvre le menu replié, par exemple « Menu ». */
   summary: string;
-  /** Entrées, dans l'ordre d'affichage. */
+  /** Entrées du menu replié, dans l'ordre d'affichage. */
   items: Item[];
+  /** Entrées de la barre dépliée ; sans elle, la barre reprend `items`. */
+  barItems?: Item[];
+  /**
+   * Largeur de conteneur (en rem) à partir de laquelle la barre remplace le repli : 48, 56, 64 ou
+   * 75. Dans un `SiteHeader`, c'est la valeur de l'en-tête qui décide.
+   */
+  expandAt?: ExpandAt;
   /** Réservé au placement du composant dans son parent. */
   class?: string;
 }
 
-const { label, summary, items, class: className } = Astro.props;
+const { label, summary, items, barItems, expandAt, class: className } = Astro.props;
 ---
 
-<div class:list={['pp-site-menu', className]}>
+<div class:list={['pp-site-menu', className]} data-expand-at={expandAtOf(expandAt)}>
   <details class="pp-site-menu__fold">
     <summary>{summary}</summary>
     <div class="pp-site-menu__panel">
@@ -38,5 +50,5 @@ const { label, summary, items, class: className } = Astro.props;
       <slot />
     </div>
   </details>
-  <SiteNav class="pp-site-menu__bar" label={label} items={items} />
+  <SiteNav class="pp-site-menu__bar" label={label} items={barItems ?? items} />
 </div>

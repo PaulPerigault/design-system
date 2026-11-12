@@ -7,8 +7,8 @@ import { renderDom } from './render';
 const read = (file: string) =>
   readFileSync(new URL(`../src/navigation/${file}`, import.meta.url), 'utf8');
 
-const withSlots = (slots: Record<string, string>): Promise<Document> =>
-  renderDom(SiteHeader, { slots });
+const withSlots = (slots: Record<string, string>, props = {}): Promise<Document> =>
+  renderDom(SiteHeader, { slots, props });
 
 describe('SiteHeader (rendu)', () => {
   it('rend un header avec les trois slots, dans l’ordre signature, navigation, action', async () => {

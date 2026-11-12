@@ -1,0 +1,77 @@
+---
+/**
+ * Variantes de la page SiteHeader : la recette d'un site (barre à 4 entrées, menu à 8, action
+ * aussi dans le menu, seuil à 75 rem, signature et bouton sur une rangée), le seuil à 64 rem et
+ * des marges par jetons de marque.
+ */
+import Button from '@paulperigault/astro/Button.astro';
+import SiteHeader from '@paulperigault/astro/SiteHeader.astro';
+import SiteMenu from '@paulperigault/astro/SiteMenu.astro';
+
+const entries = [
+  'Accueil',
+  'Séances',
+  'Tarifs',
+  'Lieu',
+  'Parcours',
+  'Questions',
+  'Actualités',
+  'Contact',
+];
+const items = entries.map((label) => ({ label, href: '#contenu', current: label === 'Tarifs' }));
+const BAR_LENGTH = 4;
+const barItems = items.slice(0, BAR_LENGTH);
+---
+
+<div class="demo-en-tetes">
+  <SiteHeader layout="inline" expandAt={75}>
+    <a slot="signature" href="#contenu">
+      <strong>Recette</strong>
+    </a>
+    <SiteMenu
+      slot="navigation"
+      label="Recette : navigation"
+      summary="Menu"
+      items={items}
+      barItems={barItems}
+    >
+      <Button block href="#contenu">
+        Prendre rendez-vous
+      </Button>
+    </SiteMenu>
+    <Button slot="action" tone="secondary" href="#contenu">
+      Prendre rendez-vous
+    </Button>
+  </SiteHeader>
+
+  <SiteHeader expandAt={64}>
+    <a slot="signature" href="#contenu">
+      <strong>Seuil à 64 rem</strong>
+    </a>
+    <SiteMenu slot="navigation" label="Seuil 64 : navigation" summary="Menu" items={barItems} />
+    <Button slot="action" tone="secondary" href="#contenu">
+      Contact
+    </Button>
+  </SiteHeader>
+
+  <div class="demo-marges">
+    <SiteHeader>
+      <a slot="signature" href="#contenu">
+        <strong>Marges</strong>
+      </a>
+      <SiteMenu slot="navigation" label="Marges : navigation" summary="Menu" items={barItems} />
+    </SiteHeader>
+  </div>
+</div>
+
+<style>
+  .demo-en-tetes {
+    display: grid;
+    gap: var(--pp-space-m);
+  }
+
+  .demo-marges {
+    --pp-site-header-padding-block: var(--pp-space-xs);
+    --pp-site-header-padding-inline: var(--pp-space-m);
+  }
+</style>
