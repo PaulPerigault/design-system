@@ -1,6 +1,7 @@
 ---
 import ComponentPage from '../../components/ComponentPage.astro';
 import SiteMenuExamples from '../../components/examples/site-menu.astro';
+import SiteMenuVariants from '../../components/examples/site-menu-variantes.astro';
 
 const snippet = `<SiteMenu
   label="Navigation du site"
@@ -9,6 +10,8 @@ const snippet = `<SiteMenu
     { label: 'Accueil', href: '/' },
     { label: 'Tarifs', href: '/tarifs/', current: true },
   ]}
+  barItems={[{ label: 'Accueil', href: '/' }]}
+  expandAt={64}
 >
   <Button block href="/rendez-vous/">Prendre rendez-vous</Button>
 </SiteMenu>`;
@@ -17,10 +20,11 @@ const snippet = `<SiteMenu
 <ComponentPage
   slug="site-menu"
   title="SiteMenu"
-  summary="SiteMenu replie la navigation d’un site dans un menu natif sous 48 rem de conteneur, et l’affiche en ligne au-delà."
+  summary="SiteMenu replie la navigation d’un site dans un menu natif sous un seuil de conteneur (48 rem par défaut, réglable), et l’affiche en ligne au-delà."
   use={[
     'Offrir la navigation d’un site sur téléphone sans JavaScript.',
     'Placer une action dans le panneau replié avec le slot, par exemple un Button `block`.',
+    'Montrer moins d’entrées en barre que dans le menu replié (`barItems`), ou déplier plus tard (`expandAt`).',
   ]}
   avoid={[
     'Pour une navigation toujours visible : utiliser SiteNav.',
@@ -42,7 +46,8 @@ const snippet = `<SiteMenu
       'Zéro JavaScript ; le seuil est une requête de conteneur en rem, il suit le zoom du texte.',
     ],
     integrator: [
-      'Le conteneur prend la largeur de son parent : dans un parent flex, lui donner `flex: 1`.',
+      'Seul, le menu est son propre conteneur : il prend la largeur de son parent (parent flex : `flex: 1`). `expandAt` vaut 48, 56, 64 ou 75 (rem), jamais un jeton : une requête de conteneur n’en accepte pas.',
+      'Dans un `SiteHeader`, le seuil est celui de l’en-tête entier, donné par sa prop `expandAt` : celle du menu est ignorée.',
       'Fournir `summary` et `label` dans la langue du site.',
       'Poser `current` sur une seule entrée.',
     ],
@@ -60,4 +65,7 @@ const snippet = `<SiteMenu
   ]}
 >
   <SiteMenuExamples />
+  <Fragment slot="variants">
+    <SiteMenuVariants />
+  </Fragment>
 </ComponentPage>

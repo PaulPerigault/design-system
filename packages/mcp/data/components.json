@@ -3930,11 +3930,14 @@
       "guaranteed": [
         "Chaque zone fait au moins --pp-size-control-height de haut.",
         "Étroit, l’action est masquée : la mettre aussi dans le slot de SiteMenu.",
-        "Zéro JavaScript ; le seuil est une requête de conteneur en rem, il suit le zoom du texte."
+        "Zéro JavaScript ; le seuil est une requête de conteneur en rem, il suit le zoom du texte.",
+        "`expandAt` (48, 56, 64 ou 75 rem) règle d’une seule valeur l’apparition de l’action et le dépliage du `SiteMenu` de l’en-tête."
       ],
       "integrator": [
         "Donner un nom distinct à chaque repère nav de la page (critère 2.4.1).",
-        "Le conteneur prend la largeur de son parent : placer l’en-tête dans un élément de pleine largeur.",
+        "Le conteneur prend la largeur de son parent : placer l’en-tête dans un élément de pleine largeur, jamais dans un parent flex ou grille qui le dimensionne selon son contenu.",
+        "`layout=\"inline\"` garde la signature et le bouton de menu sur une rangée ; le panneau ouvert se pose sous l’en-tête, sur toute sa largeur.",
+        "`--pp-site-header-padding-block` et `-inline` règlent les marges (défauts : `--pp-space-3xs` et `--pp-space-s`).",
         "Le lien de la signature mène à l’accueil."
       ],
       "keyboard": [
@@ -3957,6 +3960,18 @@
     "group": "navigation",
     "props": [
       {
+        "description": "`stacked` : la navigation sous la signature en étroit ; `inline` : signature et bouton de menu sur une rangée, bouton à droite, panneau ouvert sous l'en-tête.",
+        "fallback": "`'stacked'`",
+        "name": "`layout`",
+        "type": "`\"stacked\" | \"inline\"`"
+      },
+      {
+        "description": "Largeur d'en-tête (en rem) à partir de laquelle l'action apparaît et le `SiteMenu` se déplie : 48, 56, 64 ou 75. Une seule valeur pour les deux.",
+        "fallback": "—",
+        "name": "`expandAt`",
+        "type": "`48 | 56 | 64 | 75`"
+      },
+      {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
         "name": "`class`",
@@ -3964,15 +3979,17 @@
       }
     ],
     "slug": "site-header",
-    "snippet": "<SiteHeader>\n  <a slot=\"signature\" href=\"/\">Atelier</a>\n  <SiteMenu slot=\"navigation\" label=\"Navigation\" summary=\"Menu\" items={items} />\n  <Button slot=\"action\" tone=\"secondary\" href=\"/rdv/\">Rendez-vous</Button>\n</SiteHeader>",
-    "summary": "SiteHeader range la signature, la navigation et l’action d’un site dans un en-tête qui tient sur une rangée dès 48 rem.",
+    "snippet": "<!-- Recette : barre à 4 entrées, menu replié à 8, action aussi dans le menu, seuil à 75 rem -->\n<SiteHeader layout=\"inline\" expandAt={75}>\n  <a slot=\"signature\" href=\"/\">Atelier</a>\n  <SiteMenu\n    slot=\"navigation\"\n    label=\"Navigation\"\n    summary=\"Menu\"\n    items={allItems}\n    barItems={allItems.slice(0, 4)}\n  >\n    <Button block href=\"/rdv/\">Rendez-vous</Button>\n  </SiteMenu>\n  <Button slot=\"action\" tone=\"secondary\" href=\"/rdv/\">Rendez-vous</Button>\n</SiteHeader>\n\n/* Marges de marque, posées sur un ancêtre */\n:root {\n  --pp-site-header-padding-block: var(--pp-space-xs);\n  --pp-site-header-padding-inline: var(--pp-space-m);\n}",
+    "summary": "SiteHeader range la signature, la navigation et l’action d’un site dans un en-tête qui tient sur une rangée dès 48 rem ; le seuil d’apparition de l’action et de dépliage du menu se règle.",
     "title": "SiteHeader",
     "tokens": [
+      "--pp-color-bg",
       "--pp-color-line",
       "--pp-size-control-height",
       "--pp-size-rule",
       "--pp-space-3xs",
-      "--pp-space-s"
+      "--pp-space-s",
+      "--pp-z-overlay"
     ],
     "use": [
       "Poser l’en-tête d’un site : une signature, un SiteMenu ou un SiteNav, une action.",
@@ -3987,7 +4004,8 @@
         "Zéro JavaScript ; le seuil est une requête de conteneur en rem, il suit le zoom du texte."
       ],
       "integrator": [
-        "Le conteneur prend la largeur de son parent : dans un parent flex, lui donner `flex: 1`.",
+        "Seul, le menu est son propre conteneur : il prend la largeur de son parent (parent flex : `flex: 1`). `expandAt` vaut 48, 56, 64 ou 75 (rem), jamais un jeton : une requête de conteneur n’en accepte pas.",
+        "Dans un `SiteHeader`, le seuil est celui de l’en-tête entier, donné par sa prop `expandAt` : celle du menu est ignorée.",
         "Fournir `summary` et `label` dans la langue du site.",
         "Poser `current` sur une seule entrée."
       ],
@@ -4024,10 +4042,22 @@
         "type": "`string`"
       },
       {
-        "description": "Entrées, dans l'ordre d'affichage.",
+        "description": "Entrées du menu replié, dans l'ordre d'affichage.",
         "fallback": "—",
         "name": "`items` (obligatoire)",
         "type": "`Item[]`"
+      },
+      {
+        "description": "Entrées de la barre dépliée ; sans elle, la barre reprend `items`.",
+        "fallback": "—",
+        "name": "`barItems`",
+        "type": "`Item[]`"
+      },
+      {
+        "description": "Largeur de conteneur (en rem) à partir de laquelle la barre remplace le repli : 48, 56, 64 ou 75. Dans un `SiteHeader`, c'est la valeur de l'en-tête qui décide.",
+        "fallback": "—",
+        "name": "`expandAt`",
+        "type": "`48 | 56 | 64 | 75`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",
@@ -4037,8 +4067,8 @@
       }
     ],
     "slug": "site-menu",
-    "snippet": "<SiteMenu\n  label=\"Navigation du site\"\n  summary=\"Menu\"\n  items={[\n    { label: 'Accueil', href: '/' },\n    { label: 'Tarifs', href: '/tarifs/', current: true },\n  ]}\n>\n  <Button block href=\"/rendez-vous/\">Prendre rendez-vous</Button>\n</SiteMenu>",
-    "summary": "SiteMenu replie la navigation d’un site dans un menu natif sous 48 rem de conteneur, et l’affiche en ligne au-delà.",
+    "snippet": "<SiteMenu\n  label=\"Navigation du site\"\n  summary=\"Menu\"\n  items={[\n    { label: 'Accueil', href: '/' },\n    { label: 'Tarifs', href: '/tarifs/', current: true },\n  ]}\n  barItems={[{ label: 'Accueil', href: '/' }]}\n  expandAt={64}\n>\n  <Button block href=\"/rendez-vous/\">Prendre rendez-vous</Button>\n</SiteMenu>",
+    "summary": "SiteMenu replie la navigation d’un site dans un menu natif sous un seuil de conteneur (48 rem par défaut, réglable), et l’affiche en ligne au-delà.",
     "title": "SiteMenu",
     "tokens": [
       "--pp-color-control",
@@ -4055,7 +4085,8 @@
     ],
     "use": [
       "Offrir la navigation d’un site sur téléphone sans JavaScript.",
-      "Placer une action dans le panneau replié avec le slot, par exemple un Button `block`."
+      "Placer une action dans le panneau replié avec le slot, par exemple un Button `block`.",
+      "Montrer moins d’entrées en barre que dans le menu replié (`barItems`), ou déplier plus tard (`expandAt`)."
     ]
   },
   {

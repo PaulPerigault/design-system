@@ -1970,7 +1970,7 @@
       "name": "site-header",
       "type": "registry:ui",
       "title": "SiteHeader",
-      "description": "En-tête de site à trois slots (signature, navigation, action) : une rangée dès 48 rem de conteneur, zéro JavaScript.",
+      "description": "En-tête de site à trois slots (signature, navigation, action) : une rangée dès 48 rem de conteneur, seuil `expandAt`, variante `inline`, zéro JavaScript.",
       "files": [
         {
           "path": "packages/astro/src/navigation/SiteHeader.astro",
@@ -1979,15 +1979,25 @@
         {
           "path": "packages/astro/src/navigation/site-header.css",
           "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/navigation/site-expand.css",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/navigation/site-expand.ts",
+          "type": "registry:ui"
         }
       ],
       "meta": {
         "tokens": [
+          "--pp-color-bg",
           "--pp-color-line",
           "--pp-size-control-height",
           "--pp-size-rule",
           "--pp-space-3xs",
-          "--pp-space-s"
+          "--pp-space-s",
+          "--pp-z-overlay"
         ],
         "version": "0.0.0"
       }
@@ -1996,7 +2006,7 @@
       "name": "site-menu",
       "type": "registry:ui",
       "title": "SiteMenu",
-      "description": "Navigation de site repliable sans JavaScript : details natif sous 48 rem de conteneur, liste en ligne au-delà ; s'appuie sur SiteNav.",
+      "description": "Navigation de site repliable sans JavaScript : details natif sous le seuil expandAt (48 rem par défaut), liste en ligne au-delà (barItems : autre liste) ; s'appuie sur SiteNav.",
       "files": [
         {
           "path": "packages/astro/src/navigation/SiteMenu.astro",
@@ -2012,6 +2022,14 @@
         },
         {
           "path": "packages/astro/src/navigation/site-nav.css",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/navigation/site-expand.css",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/navigation/site-expand.ts",
           "type": "registry:ui"
         }
       ],

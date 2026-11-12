@@ -3,7 +3,8 @@ import type { Page } from '@playwright/test';
 
 const NARROW = { width: 360, height: 640 };
 const WIDE = { width: 1440, height: 900 };
-const HEADER = '.docs-main .pp-site-header';
+// Premier bloc d'exemples seulement : les variantes ont leurs propres tests (site-seuils.spec.ts).
+const HEADER = '.docs-main #exemples + .pp-component-page__examples .pp-site-header';
 const FOOTER = '.docs-main .pp-site-footer';
 
 const top = (page: Page, selector: string) =>

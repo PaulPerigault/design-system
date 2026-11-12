@@ -1,6 +1,7 @@
-/* Styles de SiteHeader : fichier global, classes `.pp-site-header*`. Rangée unique dès 48 rem. */
+/* Styles de SiteHeader : fichier global, classes `.pp-site-header*`. Une rangée dès 48 rem ; le
+   seuil de l'action et du menu (`expandAt`) est dans site-expand.css. */
 .pp-site-header {
-  container-type: inline-size;
+  container: pp-site-bar / inline-size;
   border-block-end: var(--pp-size-rule) solid var(--pp-color-line);
 }
 
@@ -9,8 +10,8 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--pp-space-3xs) var(--pp-space-s);
-  padding-block: var(--pp-space-3xs);
-  padding-inline: var(--pp-space-s);
+  padding-block: var(--pp-site-header-padding-block, var(--pp-space-3xs));
+  padding-inline: var(--pp-site-header-padding-inline, var(--pp-space-s));
 }
 
 .pp-site-header__signature {
@@ -33,9 +34,31 @@
   .pp-site-header__navigation {
     flex-basis: 0;
   }
+}
 
-  .pp-site-header__action {
-    display: block;
-    flex: none;
-  }
+/* inline : signature et bouton de menu sur une rangée ; le panneau ouvert se pose sous l'en-tête. */
+.pp-site-header[data-layout='inline'] {
+  position: relative;
+}
+
+.pp-site-header[data-layout='inline'] .pp-site-header__bar {
+  flex-wrap: nowrap;
+}
+
+.pp-site-header[data-layout='inline'] .pp-site-header__navigation {
+  flex-basis: 0;
+}
+
+.pp-site-header[data-layout='inline'] .pp-site-menu__fold > summary {
+  inline-size: fit-content;
+  margin-inline-start: auto;
+}
+
+.pp-site-header[data-layout='inline'] .pp-site-menu__panel {
+  position: absolute;
+  inset-inline: 0;
+  z-index: var(--pp-z-overlay);
+  padding-inline: var(--pp-site-header-padding-inline, var(--pp-space-s));
+  background: var(--pp-color-bg);
+  border-block-end: var(--pp-size-rule) solid var(--pp-color-line);
 }

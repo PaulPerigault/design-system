@@ -4,7 +4,8 @@ import type { Page } from '@playwright/test';
 
 const NARROW = { width: 360, height: 640 };
 const WIDE = { width: 1440, height: 900 };
-const MENU = '.docs-main .pp-site-menu';
+// Premier bloc d'exemples seulement : les variantes ont leurs propres tests (site-seuils.spec.ts).
+const MENU = '.docs-main #exemples + .pp-component-page__examples .pp-site-menu';
 
 const visible = (page: Page, selector: string) => page.locator(selector).first().isVisible();
 

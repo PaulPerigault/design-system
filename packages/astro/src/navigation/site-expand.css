@@ -1,0 +1,70 @@
+/* Seuil de dépliage de SiteHeader et SiteMenu : `data-expand-at` (voir site-expand.ts). Conteneur
+   `pp-site-bar` : l'en-tête entier, ou le menu seul hors en-tête. Au seuil, la barre remplace le
+   repli et l'action de l'en-tête apparaît. */
+@container pp-site-bar (min-inline-size: 48rem) {
+  :is(.pp-site-header, .pp-site-menu:not(.pp-site-header *))[data-expand-at='48']
+    .pp-site-menu__fold {
+    display: none;
+  }
+
+  :is(.pp-site-header, .pp-site-menu:not(.pp-site-header *))[data-expand-at='48']
+    .pp-site-menu__bar {
+    display: block;
+  }
+
+  .pp-site-header[data-expand-at='48'] .pp-site-header__action {
+    display: block;
+    flex: none;
+  }
+}
+
+@container pp-site-bar (min-inline-size: 56rem) {
+  :is(.pp-site-header, .pp-site-menu:not(.pp-site-header *))[data-expand-at='56']
+    .pp-site-menu__fold {
+    display: none;
+  }
+
+  :is(.pp-site-header, .pp-site-menu:not(.pp-site-header *))[data-expand-at='56']
+    .pp-site-menu__bar {
+    display: block;
+  }
+
+  .pp-site-header[data-expand-at='56'] .pp-site-header__action {
+    display: block;
+    flex: none;
+  }
+}
+
+@container pp-site-bar (min-inline-size: 64rem) {
+  :is(.pp-site-header, .pp-site-menu:not(.pp-site-header *))[data-expand-at='64']
+    .pp-site-menu__fold {
+    display: none;
+  }
+
+  :is(.pp-site-header, .pp-site-menu:not(.pp-site-header *))[data-expand-at='64']
+    .pp-site-menu__bar {
+    display: block;
+  }
+
+  .pp-site-header[data-expand-at='64'] .pp-site-header__action {
+    display: block;
+    flex: none;
+  }
+}
+
+@container pp-site-bar (min-inline-size: 75rem) {
+  :is(.pp-site-header, .pp-site-menu:not(.pp-site-header *))[data-expand-at='75']
+    .pp-site-menu__fold {
+    display: none;
+  }
+
+  :is(.pp-site-header, .pp-site-menu:not(.pp-site-header *))[data-expand-at='75']
+    .pp-site-menu__bar {
+    display: block;
+  }
+
+  .pp-site-header[data-expand-at='75'] .pp-site-header__action {
+    display: block;
+    flex: none;
+  }
+}

@@ -3,7 +3,7 @@
   "name": "site-header",
   "type": "registry:ui",
   "title": "SiteHeader",
-  "description": "En-tête de site à trois slots (signature, navigation, action) : une rangée dès 48 rem de conteneur, zéro JavaScript.",
+  "description": "En-tête de site à trois slots (signature, navigation, action) : une rangée dès 48 rem de conteneur, seuil `expandAt`, variante `inline`, zéro JavaScript.",
   "files": [
     {
       "path": "packages/astro/src/navigation/SiteHeader.astro",
@@ -12,15 +12,25 @@
     {
       "path": "packages/astro/src/navigation/site-header.css",
       "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/navigation/site-expand.css",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/navigation/site-expand.ts",
+      "type": "registry:ui"
     }
   ],
   "meta": {
     "tokens": [
+      "--pp-color-bg",
       "--pp-color-line",
       "--pp-size-control-height",
       "--pp-size-rule",
       "--pp-space-3xs",
-      "--pp-space-s"
+      "--pp-space-s",
+      "--pp-z-overlay"
     ],
     "version": "0.0.0"
   }

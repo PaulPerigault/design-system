@@ -1,0 +1,31 @@
+---
+/** Variantes de la page SiteMenu : liste de barre distincte (`barItems`) et seuils `expandAt`. */
+import SiteMenu from '@paulperigault/astro/SiteMenu.astro';
+
+const entries = [
+  'Accueil',
+  'Séances',
+  'Tarifs',
+  'Lieu',
+  'Parcours',
+  'Questions',
+  'Actualités',
+  'Contact',
+];
+const items = entries.map((label) => ({ label, href: '#contenu', current: label === 'Tarifs' }));
+const BAR_LENGTH = 4;
+const barItems = items.slice(0, BAR_LENGTH);
+---
+
+<div class="demo-seuils">
+  <SiteMenu label="Barre à 4 entrées, menu à 8" summary="Menu" items={items} barItems={barItems} />
+  <SiteMenu label="Seuil à 64 rem" summary="Menu 64" items={barItems} expandAt={64} />
+  <SiteMenu label="Seuil à 75 rem" summary="Menu 75" items={barItems} expandAt={75} />
+</div>
+
+<style>
+  .demo-seuils {
+    display: grid;
+    gap: var(--pp-space-m);
+  }
+</style>

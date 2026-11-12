@@ -1,6 +1,7 @@
-/* Styles de SiteMenu : fichier global, classes `.pp-site-menu*`. Repli sous 48 rem de conteneur. */
-.pp-site-menu {
-  container-type: inline-size;
+/* Styles de SiteMenu : fichier global, classes `.pp-site-menu*`. Repli sous le seuil `expandAt`
+   (site-expand.css). Dans un SiteHeader, l'en-tête est le conteneur : le menu n'en est pas un. */
+.pp-site-menu:not(.pp-site-header *) {
+  container: pp-site-bar / inline-size;
 }
 
 .pp-site-menu__fold > summary {
@@ -22,14 +23,4 @@
 
 .pp-site-menu__bar {
   display: none;
-}
-
-@container (min-inline-size: 48rem) {
-  .pp-site-menu__fold {
-    display: none;
-  }
-
-  .pp-site-menu__bar {
-    display: block;
-  }
 }
