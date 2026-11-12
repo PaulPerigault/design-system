@@ -56,9 +56,23 @@ describe('SiteNav (source CSS)', () => {
 
   it('la page courante : soulignement épais et graisse, pas la couleur seule', () => {
     expect(css).toMatch(
-      /a\[aria-current='page'\]\s*\{[^}]*font-weight: var\(--pp-font-weight-bold\)/,
+      /a\[aria-current='page'\]\s*\{[^}]*font-weight: var\(--pp-site-nav-current-weight, var\(--pp-font-weight-bold\)\)/,
     );
     expect(css).toContain('text-decoration-thickness: var(--pp-size-focus-width)');
+  });
+
+  it('habillage par propriétés personnalisées, repli sur les valeurs d’origine', () => {
+    expect(css).toContain('gap: var(--pp-site-nav-gap, var(--pp-space-3xs) var(--pp-space-s))');
+    expect(css).toContain('color: var(--pp-site-nav-color, var(--pp-color-fg))');
+    expect(css).toContain(
+      'color: var(--pp-site-nav-current-color, var(--pp-site-nav-color, var(--pp-color-fg)))',
+    );
+    expect(css).toContain(
+      'font-weight: var(--pp-site-nav-current-weight, var(--pp-font-weight-bold))',
+    );
+    expect(css).toContain(
+      'text-underline-offset: var(--pp-site-nav-underline-offset, var(--pp-size-focus-offset))',
+    );
   });
 
   it('ne redéfinit pas le focus', () => {

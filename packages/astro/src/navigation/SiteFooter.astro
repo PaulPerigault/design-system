@@ -1,9 +1,11 @@
 ---
 /**
  * SiteFooter : pied de site à trois slots nommés, `identity` (nom, mention), `contact`
- * (coordonnées) et `links` (par exemple un `SiteNav` de liens légaux). Étroit : une colonne ;
- * large (conteneur de 48 rem et plus) : une colonne par slot rempli, de largeur égale. Un slot
- * vide ne laisse ni colonne ni espace. Zéro JavaScript, aucun texte en dur, aucun `style`.
+ * (coordonnées) et `links` (par exemple un `SiteNav` de liens légaux), plus `legal` : une zone
+ * pleine largeur sous les colonnes, dans le même `<footer>`. Étroit : une colonne ; large
+ * (conteneur de 48 rem et plus) : une colonne par slot rempli, de largeur égale. Un slot vide ne
+ * laisse ni colonne, ni élément, ni espace. Marges : `--pp-site-footer-padding-block` et `-inline`.
+ * Zéro JavaScript, aucun texte en dur, aucun `style`.
  */
 import './site-footer.css';
 
@@ -33,4 +35,9 @@ const { class: className } = Astro.props;
       </div>
     )}
   </div>
+  {Astro.slots.has('legal') && (
+    <div class="pp-site-footer__legal" data-slot="legal">
+      <slot name="legal" />
+    </div>
+  )}
 </footer>

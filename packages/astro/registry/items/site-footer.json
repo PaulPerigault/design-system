@@ -3,7 +3,7 @@
   "name": "site-footer",
   "type": "registry:ui",
   "title": "SiteFooter",
-  "description": "Pied de site à trois slots (identité, coordonnées, liens) : une colonne par slot rempli dès 48 rem de conteneur, zéro JavaScript.",
+  "description": "Pied de site à trois slots (identité, coordonnées, liens) et une zone légale pleine largeur : colonnes dès 48 rem de conteneur, marges par jetons, zéro JavaScript.",
   "files": [
     {
       "path": "packages/astro/src/navigation/SiteFooter.astro",

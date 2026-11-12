@@ -5,7 +5,7 @@ const NARROW = { width: 360, height: 640 };
 const WIDE = { width: 1440, height: 900 };
 // Premier bloc d'exemples seulement : les variantes ont leurs propres tests (site-seuils.spec.ts).
 const HEADER = '.docs-main #exemples + .pp-component-page__examples .pp-site-header';
-const FOOTER = '.docs-main .pp-site-footer';
+const FOOTER = '.docs-main #exemples + .pp-component-page__examples .pp-site-footer';
 
 const top = (page: Page, selector: string) =>
   page.locator(selector).evaluate((el) => Math.round(el.getBoundingClientRect().top));

@@ -1,21 +1,32 @@
 ---
 import ComponentPage from '../../components/ComponentPage.astro';
 import SiteFooterExamples from '../../components/examples/site-footer.astro';
+import SiteFooterVariants from '../../components/examples/site-footer-variantes.astro';
 
 const snippet = `<SiteFooter>
   <p slot="identity">Atelier</p>
   <p slot="contact">contact@exemple.fr</p>
   <SiteNav slot="links" label="Liens légaux" items={legal} />
-</SiteFooter>`;
+  <Fragment slot="legal">
+    <p>Mention de bien-être, informations légales.</p>
+  </Fragment>
+</SiteFooter>
+
+/* Marges de marque, posées sur un ancêtre */
+:root {
+  --pp-site-footer-padding-block: var(--pp-space-xl);
+  --pp-site-footer-padding-inline: var(--pp-space-m);
+}`;
 ---
 
 <ComponentPage
   slug="site-footer"
   title="SiteFooter"
-  summary="SiteFooter range l’identité, les coordonnées et les liens d’un site en colonnes dès 48 rem, en une colonne dessous."
+  summary="SiteFooter range l’identité, les coordonnées et les liens d’un site en colonnes dès 48 rem, puis une zone légale pleine largeur."
   use={[
     'Poser le pied d’un site : identité, coordonnées, liens légaux.',
     'Laisser un slot vide : il ne laisse ni colonne ni espace.',
+    'Ajouter une zone pleine largeur sous les colonnes (slot `legal`) : mention, informations légales, liens.',
   ]}
   avoid={[
     'Pour un menu de navigation principal : utiliser SiteHeader.',
@@ -38,6 +49,7 @@ const snippet = `<SiteFooter>
     integrator: [
       'Donner un nom distinct à chaque repère nav de la page (critère 2.4.1).',
       'Fournir les textes dans la langue du site.',
+      '`--pp-site-footer-padding-block` et `-inline` règlent les marges (défauts : `--pp-space-m` et `--pp-space-s`).',
     ],
   }}
   evidence={[
@@ -49,4 +61,7 @@ const snippet = `<SiteFooter>
   ]}
 >
   <SiteFooterExamples />
+  <Fragment slot="variants">
+    <SiteFooterVariants />
+  </Fragment>
 </ComponentPage>

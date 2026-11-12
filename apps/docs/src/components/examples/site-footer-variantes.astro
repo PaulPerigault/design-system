@@ -1,0 +1,45 @@
+---
+/** Variantes de la page SiteFooter : zone `legal` sous les colonnes, marges par jetons de marque. */
+import SiteFooter from '@paulperigault/astro/SiteFooter.astro';
+import SiteNav from '@paulperigault/astro/SiteNav.astro';
+
+const legal = [
+  { label: 'Mentions légales', href: '#contenu' },
+  { label: 'Confidentialité', href: '#contenu' },
+];
+---
+
+<div class="demo-pieds">
+  <SiteFooter>
+    <p slot="identity">
+      <strong>Atelier légal</strong>
+    </p>
+    <p slot="contact">contact@exemple.fr</p>
+    <p slot="links">Plan du site</p>
+    <Fragment slot="legal">
+      <p>Séances de bien-être : elles ne remplacent pas un suivi médical.</p>
+      <SiteNav label="Informations légales" items={legal} />
+    </Fragment>
+  </SiteFooter>
+
+  <div class="demo-marges">
+    <SiteFooter>
+      <p slot="identity">
+        <strong>Atelier à marges</strong>
+      </p>
+      <p slot="contact">contact@exemple.fr</p>
+    </SiteFooter>
+  </div>
+</div>
+
+<style>
+  .demo-pieds {
+    display: grid;
+    gap: var(--pp-space-m);
+  }
+
+  .demo-marges {
+    --pp-site-footer-padding-block: var(--pp-space-xl);
+    --pp-site-footer-padding-inline: var(--pp-space-m);
+  }
+</style>
