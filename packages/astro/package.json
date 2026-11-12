@@ -84,6 +84,8 @@
     "./Pagination.astro": "./src/navigation/Pagination.astro",
     "./SiteNav.astro": "./src/navigation/SiteNav.astro",
     "./SiteMenu.astro": "./src/navigation/SiteMenu.astro",
+    "./SiteHeader.astro": "./src/navigation/SiteHeader.astro",
+    "./SiteFooter.astro": "./src/navigation/SiteFooter.astro",
     "./Card.astro": "./src/content/Card.astro",
     "./Photo.astro": "./src/media/Photo.astro",
     "./ArtDirection.astro": "./src/media/ArtDirection.astro",

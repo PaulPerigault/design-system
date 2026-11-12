@@ -1,0 +1,36 @@
+---
+/**
+ * SiteFooter : pied de site à trois slots nommés, `identity` (nom, mention), `contact`
+ * (coordonnées) et `links` (par exemple un `SiteNav` de liens légaux). Étroit : une colonne ;
+ * large (conteneur de 48 rem et plus) : une colonne par slot rempli, de largeur égale. Un slot
+ * vide ne laisse ni colonne ni espace. Zéro JavaScript, aucun texte en dur, aucun `style`.
+ */
+import './site-footer.css';
+
+interface Props {
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<footer class:list={['pp-site-footer', className]}>
+  <div class="pp-site-footer__columns">
+    {Astro.slots.has('identity') && (
+      <div class="pp-site-footer__column" data-slot="identity">
+        <slot name="identity" />
+      </div>
+    )}
+    {Astro.slots.has('contact') && (
+      <div class="pp-site-footer__column" data-slot="contact">
+        <slot name="contact" />
+      </div>
+    )}
+    {Astro.slots.has('links') && (
+      <div class="pp-site-footer__column" data-slot="links">
+        <slot name="links" />
+      </div>
+    )}
+  </div>
+</footer>

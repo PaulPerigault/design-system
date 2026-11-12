@@ -5,7 +5,7 @@ import { parseHTML } from 'linkedom';
 // Attributs de développement ajoutés sous Vitest par certaines versions d'Astro (régression 7.3.5).
 const DEV_ATTRIBUTES = / data-astro-source-(?:file|loc)="[^"]*"/g;
 
-type Options = { props?: Record<string, unknown>; slot?: string };
+type Options = { props?: Record<string, unknown>; slot?: string; slots?: Record<string, string> };
 
 /**
  * Seul point d'entrée des tests de rendu vers la Container API d'Astro, encore expérimentale :
@@ -13,10 +13,13 @@ type Options = { props?: Record<string, unknown>; slot?: string };
  */
 export const renderComponent = async (
   component: AstroComponentFactory,
-  { props = {}, slot = '' }: Options = {},
+  { props = {}, slot = '', slots = {} }: Options = {},
 ): Promise<string> => {
   const container = await AstroContainer.create();
-  const html = await container.renderToString(component, { props, slots: { default: slot } });
+  const html = await container.renderToString(component, {
+    props,
+    slots: { default: slot, ...slots },
+  });
   return html.replace(DEV_ATTRIBUTES, '');
 };
 

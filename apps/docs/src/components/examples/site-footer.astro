@@ -1,0 +1,27 @@
+---
+/** Exemple vivant de la page SiteFooter : identité, coordonnées et liens, en colonnes dès 48 rem. */
+import SiteFooter from '@paulperigault/astro/SiteFooter.astro';
+import SiteNav from '@paulperigault/astro/SiteNav.astro';
+---
+
+<SiteFooter>
+  <p slot="identity">
+    <strong>Atelier exemple</strong>
+    <br />
+    Un texte de présentation court.
+  </p>
+  <p slot="contact">
+    contact@exemple.fr
+    <br />
+    01 23 45 67 89
+  </p>
+  <SiteNav
+    slot="links"
+    label="Liens du pied de page"
+    layout="stack"
+    items={[
+      { label: 'Mentions légales', href: '#contenu' },
+      { label: 'Confidentialité', href: '#contenu' },
+    ]}
+  />
+</SiteFooter>
