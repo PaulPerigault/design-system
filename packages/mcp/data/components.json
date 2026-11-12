@@ -3980,7 +3980,7 @@
     ],
     "slug": "site-header",
     "snippet": "<!-- Recette : barre à 4 entrées, menu replié à 8, action aussi dans le menu, seuil à 75 rem -->\n<SiteHeader layout=\"inline\" expandAt={75}>\n  <a slot=\"signature\" href=\"/\">Atelier</a>\n  <SiteMenu\n    slot=\"navigation\"\n    label=\"Navigation\"\n    summary=\"Menu\"\n    items={allItems}\n    barItems={allItems.slice(0, 4)}\n  >\n    <Button block href=\"/rdv/\">Rendez-vous</Button>\n  </SiteMenu>\n  <Button slot=\"action\" tone=\"secondary\" href=\"/rdv/\">Rendez-vous</Button>\n</SiteHeader>\n\n/* Marges de marque, posées sur un ancêtre */\n:root {\n  --pp-site-header-padding-block: var(--pp-space-xs);\n  --pp-site-header-padding-inline: var(--pp-space-m);\n}",
-    "summary": "SiteHeader range la signature, la navigation et l’action d’un site dans un en-tête qui tient sur une rangée dès 48 rem ; le seuil d’apparition de l’action et de dépliage du menu se règle.",
+    "summary": "SiteHeader range la signature, la navigation et l’action d’un site sur une rangée dès 48 rem ; un seuil unique règle l’action et le dépliage du menu.",
     "title": "SiteHeader",
     "tokens": [
       "--pp-color-bg",
