@@ -3,7 +3,7 @@
   "name": "site-nav",
   "type": "registry:ui",
   "title": "SiteNav",
-  "description": "Navigation de site : liste de liens nommée, page courante par aria-current, cibles de taille d'un contrôle, zéro JavaScript.",
+  "description": "Navigation de site : liste de liens nommée, page courante par aria-current, habillage par propriétés --pp-site-nav-*, cibles de taille d'un contrôle, zéro JavaScript.",
   "files": [
     {
       "path": "packages/astro/src/navigation/SiteNav.astro",

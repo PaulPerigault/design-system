@@ -1,0 +1,23 @@
+---
+/** Variante de la page SiteNav : habillage par propriétés personnalisées, sans toucher aux sélecteurs. */
+import SiteNav from '@paulperigault/astro/SiteNav.astro';
+
+const items = [
+  { label: 'Accueil', href: '#contenu' },
+  { label: 'Tarifs', href: '#contenu', current: true },
+  { label: 'Contact', href: '#contenu' },
+];
+---
+
+<div class="demo-habillage">
+  <SiteNav label="Navigation habillée" items={items} />
+</div>
+
+<style>
+  .demo-habillage {
+    --pp-site-nav-color: var(--pp-color-accent-text);
+    --pp-site-nav-current-weight: var(--pp-font-weight-regular);
+    --pp-site-nav-underline-offset: var(--pp-space-3xs);
+    --pp-site-nav-gap: var(--pp-space-xs);
+  }
+</style>

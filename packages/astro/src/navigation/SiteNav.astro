@@ -4,7 +4,9 @@
  * `list-style: none` retire la sémantique de liste sous VoiceOver). La page courante porte
  * `aria-current="page"` et se distingue par un soulignement épais et une graisse, jamais par la
  * couleur seule (WCAG 2.2, critère 1.4.1). Zéro JavaScript, aucun texte en dur, aucun `style`.
- * Cibles de la hauteur d'un contrôle (≥ 44 px). Pour la replier sous un seuil : `SiteMenu`.
+ * Cibles de la hauteur d'un contrôle (≥ 44 px). Habillage sans toucher aux sélecteurs : propriétés
+ * `--pp-site-nav-color`, `-current-color`, `-current-weight`, `-underline-offset` et `-gap`. Pour la
+ * replier sous un seuil : `SiteMenu`.
  */
 import './site-nav.css';
 

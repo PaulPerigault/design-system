@@ -3887,7 +3887,8 @@
       ],
       "integrator": [
         "Donner un nom distinct à chaque repère nav de la page (critère 2.4.1).",
-        "Fournir les textes dans la langue du site."
+        "Fournir les textes dans la langue du site.",
+        "`--pp-site-footer-padding-block` et `-inline` règlent les marges (défauts : `--pp-space-m` et `--pp-space-s`)."
       ],
       "keyboard": [
         "Les liens se parcourent avec Tab, dans l’ordre du document : identité, coordonnées, liens.",
@@ -3916,13 +3917,14 @@
       }
     ],
     "slug": "site-footer",
-    "snippet": "<SiteFooter>\n  <p slot=\"identity\">Atelier</p>\n  <p slot=\"contact\">contact@exemple.fr</p>\n  <SiteNav slot=\"links\" label=\"Liens légaux\" items={legal} />\n</SiteFooter>",
-    "summary": "SiteFooter range l’identité, les coordonnées et les liens d’un site en colonnes dès 48 rem, en une colonne dessous.",
+    "snippet": "<SiteFooter>\n  <p slot=\"identity\">Atelier</p>\n  <p slot=\"contact\">contact@exemple.fr</p>\n  <SiteNav slot=\"links\" label=\"Liens légaux\" items={legal} />\n  <Fragment slot=\"legal\">\n    <p>Mention de bien-être, informations légales.</p>\n  </Fragment>\n</SiteFooter>\n\n/* Marges de marque, posées sur un ancêtre */\n:root {\n  --pp-site-footer-padding-block: var(--pp-space-xl);\n  --pp-site-footer-padding-inline: var(--pp-space-m);\n}",
+    "summary": "SiteFooter range l’identité, les coordonnées et les liens d’un site en colonnes dès 48 rem, puis une zone légale pleine largeur.",
     "title": "SiteFooter",
     "tokens": ["--pp-color-line", "--pp-size-rule", "--pp-space-l", "--pp-space-m", "--pp-space-s"],
     "use": [
       "Poser le pied d’un site : identité, coordonnées, liens légaux.",
-      "Laisser un slot vide : il ne laisse ni colonne ni espace."
+      "Laisser un slot vide : il ne laisse ni colonne ni espace.",
+      "Ajouter une zone pleine largeur sous les colonnes (slot `legal`) : mention, informations légales, liens."
     ]
   },
   {
@@ -4099,7 +4101,8 @@
       "integrator": [
         "Fournir les libellés dans la langue du site.",
         "Donner un label distinct à chaque repère nav de la page (critère 2.4.1).",
-        "Poser `current` sur une seule entrée."
+        "Poser `current` sur une seule entrée.",
+        "Habiller par `--pp-site-nav-color`, `-current-color`, `-current-weight`, `-underline-offset` et `-gap` : aucun sélecteur du composant à écraser. Garder la page courante distincte sans la couleur seule et vérifier le contraste."
       ],
       "keyboard": [
         "Chaque lien reçoit le focus avec Tab, dans l’ordre du document.",
@@ -4148,8 +4151,8 @@
       }
     ],
     "slug": "site-nav",
-    "snippet": "<SiteNav\n  label=\"Navigation principale\"\n  items={[\n    { label: 'Accueil', href: '/' },\n    { label: 'Tarifs', href: '/tarifs/', current: true },\n    { label: 'Contact', href: '/contact/' },\n  ]}\n/>",
-    "summary": "SiteNav affiche la navigation d’un site : une liste de liens nommée, avec la page courante marquée.",
+    "snippet": "<SiteNav\n  label=\"Navigation principale\"\n  items={[\n    { label: 'Accueil', href: '/' },\n    { label: 'Tarifs', href: '/tarifs/', current: true },\n    { label: 'Contact', href: '/contact/' },\n  ]}\n/>\n\n/* Habillage, posé sur le composant ou un ancêtre */\n.nav-site {\n  --pp-site-nav-color: var(--pp-color-accent-text);\n  --pp-site-nav-current-color: var(--pp-color-accent-text);\n  --pp-site-nav-current-weight: var(--pp-font-weight-regular);\n  --pp-site-nav-underline-offset: var(--pp-space-3xs);\n  --pp-site-nav-gap: var(--pp-space-xs);\n}",
+    "summary": "SiteNav affiche la navigation d’un site : une liste de liens nommée, la page courante marquée, habillable par propriétés.",
     "title": "SiteNav",
     "tokens": [
       "--pp-color-fg",

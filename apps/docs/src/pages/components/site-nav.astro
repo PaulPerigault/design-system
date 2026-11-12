@@ -1,6 +1,7 @@
 ---
 import ComponentPage from '../../components/ComponentPage.astro';
 import SiteNavExamples from '../../components/examples/site-nav.astro';
+import SiteNavVariants from '../../components/examples/site-nav-variantes.astro';
 
 const snippet = `<SiteNav
   label="Navigation principale"
@@ -9,13 +10,22 @@ const snippet = `<SiteNav
     { label: 'Tarifs', href: '/tarifs/', current: true },
     { label: 'Contact', href: '/contact/' },
   ]}
-/>`;
+/>
+
+/* Habillage, posé sur le composant ou un ancêtre */
+.nav-site {
+  --pp-site-nav-color: var(--pp-color-accent-text);
+  --pp-site-nav-current-color: var(--pp-color-accent-text);
+  --pp-site-nav-current-weight: var(--pp-font-weight-regular);
+  --pp-site-nav-underline-offset: var(--pp-space-3xs);
+  --pp-site-nav-gap: var(--pp-space-xs);
+}`;
 ---
 
 <ComponentPage
   slug="site-nav"
   title="SiteNav"
-  summary="SiteNav affiche la navigation d’un site : une liste de liens nommée, avec la page courante marquée."
+  summary="SiteNav affiche la navigation d’un site : une liste de liens nommée, la page courante marquée, habillable par propriétés."
   use={[
     'Lister les pages principales d’un site, en ligne ou en colonne.',
     'Marquer la page courante avec `current` : `aria-current="page"` et un soulignement épais.',
@@ -44,6 +54,7 @@ const snippet = `<SiteNav
       'Fournir les libellés dans la langue du site.',
       'Donner un label distinct à chaque repère nav de la page (critère 2.4.1).',
       'Poser `current` sur une seule entrée.',
+      'Habiller par `--pp-site-nav-color`, `-current-color`, `-current-weight`, `-underline-offset` et `-gap` : aucun sélecteur du composant à écraser. Garder la page courante distincte sans la couleur seule et vérifier le contraste.',
     ],
   }}
   evidence={[
@@ -59,4 +70,7 @@ const snippet = `<SiteNav
   ]}
 >
   <SiteNavExamples />
+  <Fragment slot="variants">
+    <SiteNavVariants />
+  </Fragment>
 </ComponentPage>
