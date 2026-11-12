@@ -32,3 +32,12 @@ describe('--pp-size-prose', () => {
     expect(value('size.prose')).toEqual(value('size.measure'));
   });
 });
+
+describe('--pp-color-status-info', () => {
+  it.each(THEMES)('%s : valeur initiale égale à « en cours »', (theme) => {
+    const source = read(`tokens/${theme}.tokens.json`);
+    expect(at(source, 'color.status.info.$value')).toEqual(
+      at(source, 'color.status.running.$value'),
+    );
+  });
+});

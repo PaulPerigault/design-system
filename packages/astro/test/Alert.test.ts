@@ -4,7 +4,7 @@ import Alert from '../src/feedback/Alert.astro';
 import { renderDom } from './render';
 
 const TONES = ['info', 'passed', 'degraded', 'failed'] as const;
-const STATUS = { info: 'running', passed: 'passed', degraded: 'degraded', failed: 'failed' };
+const STATUS = { info: 'info', passed: 'passed', degraded: 'degraded', failed: 'failed' };
 const BASE = { toneLabel: 'Information' };
 
 const render = async (props: Record<string, unknown> = {}, slot = '<p>Corps</p>') =>
@@ -71,12 +71,29 @@ describe('Alert (rendu)', () => {
   });
 });
 
+describe('Alert (edge)', () => {
+  it('ne pose aucun data-edge par défaut ni pour `start`', async () => {
+    expect((await root()).hasAttribute('data-edge')).toBe(false);
+    expect((await root({ edge: 'start' })).hasAttribute('data-edge')).toBe(false);
+  });
+
+  it('pose data-edge="none" pour `edge="none"`', async () => {
+    expect((await root({ edge: 'none' })).getAttribute('data-edge')).toBe('none');
+  });
+});
+
 describe('Alert (source CSS)', () => {
-  const source = readFileSync(new URL('../src/feedback/Alert.astro', import.meta.url), 'utf8');
+  const source = readFileSync(new URL('../src/feedback/alert.css', import.meta.url), 'utf8');
 
   it.each(TONES)('mappe data-tone="%s" vers une couleur de statut', (tone) => {
     const rule = `\\.pp-alert\\[data-tone='${tone}'\\]\\s*\\{\\s*--alert-tone:\\s*`;
     expect(source).toMatch(new RegExp(`${rule}var\\(--pp-color-status-${STATUS[tone]}\\);`));
+  });
+
+  it('edge="none" garde le contour de 1 px et retire le filet', () => {
+    expect(source).toMatch(
+      /\.pp-alert\[data-edge='none'\]\s*\{\s*border-inline-start: var\(--pp-size-rule\) solid var\(--pp-color-line\);/,
+    );
   });
 
   it('réserve la couleur de statut à l’icône et au filet de début', () => {
@@ -85,7 +102,7 @@ describe('Alert (source CSS)', () => {
     expect(source).toContain('background-color: var(--pp-color-surface)');
   });
 
-  it('vise les enfants du slot via :global(', () => {
-    expect(source).toContain('.pp-alert__content > :global(* + *)');
+  it('vise les enfants du slot (CSS global)', () => {
+    expect(source).toContain('.pp-alert__content > * + *');
   });
 });

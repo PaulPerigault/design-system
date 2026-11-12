@@ -16,6 +16,14 @@ import Alert from '@paulperigault/astro/Alert.astro';
   <p>Un fichier dépasse 120 lignes.</p>
 </Alert>
 
+<h3>Sans bordure latérale</h3>
+<Alert tone="info" toneLabel="Information" title="Contour seul" edge="none">
+  <p>
+    <code>edge="none"</code> retire le filet de début de 4 px ; le contour de 1 px et l’icône
+    restent.
+  </p>
+</Alert>
+
 <h3>Messages dynamiques</h3>
 <p>
   Sans <code>live</code>, aucun rôle n’est posé : le message est lu dans le flux. Réservez{' '}

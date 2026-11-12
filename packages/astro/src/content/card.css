@@ -11,6 +11,10 @@
   color: var(--pp-color-fg);
 }
 
+.pp-card[data-density='m'] {
+  padding: var(--pp-space-m);
+}
+
 .pp-card[data-linked='true']:hover {
   border-color: var(--pp-color-accent);
 }

@@ -21,6 +21,7 @@
   --pp-color-on-accent: light-dark(oklch(99.5% 0.002 270.7), oklch(20.1% 0.0124 270.7));
   --pp-color-status-degraded: light-dark(oklch(50% 0.1 70), oklch(82% 0.11 75));
   --pp-color-status-failed: light-dark(oklch(50% 0.17 25), oklch(76% 0.13 25));
+  --pp-color-status-info: light-dark(oklch(47% 0.19 270.7), oklch(78% 0.1 270.7));
   --pp-color-status-passed: light-dark(oklch(47% 0.105 155), oklch(80% 0.13 155));
   --pp-color-status-running: light-dark(oklch(47% 0.19 270.7), oklch(78% 0.1 270.7));
   --pp-color-surface: light-dark(oklch(95.8% 0.007 270.7), oklch(25% 0.014 270.7));

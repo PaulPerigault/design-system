@@ -8,6 +8,10 @@
     {
       "path": "packages/astro/src/feedback/Alert.astro",
       "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/feedback/alert.css",
+      "type": "registry:ui"
     }
   ],
   "meta": {
@@ -16,8 +20,8 @@
       "--pp-color-line",
       "--pp-color-status-degraded",
       "--pp-color-status-failed",
+      "--pp-color-status-info",
       "--pp-color-status-passed",
-      "--pp-color-status-running",
       "--pp-color-surface",
       "--pp-font-line-height-body",
       "--pp-font-size-1",

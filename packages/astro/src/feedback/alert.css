@@ -1,0 +1,65 @@
+/* Styles d'Alert : fichier global, classes `.pp-alert*`, variantes par `data-*`. */
+.pp-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--pp-space-2xs);
+  padding-block: var(--pp-space-xs);
+  padding-inline: var(--pp-space-s);
+  border: var(--pp-size-rule) solid var(--pp-color-line);
+  border-inline-start: var(--pp-space-3xs) solid var(--alert-tone);
+  border-radius: var(--pp-radius-surface);
+  background-color: var(--pp-color-surface);
+  color: var(--pp-color-fg);
+  line-height: var(--pp-font-line-height-body);
+}
+
+/* Sans bordure de début de 4 px : le contour de 1 px reste. */
+.pp-alert[data-edge='none'] {
+  border-inline-start: var(--pp-size-rule) solid var(--pp-color-line);
+}
+
+.pp-alert[data-tone='info'] {
+  --alert-tone: var(--pp-color-status-info);
+}
+
+.pp-alert[data-tone='passed'] {
+  --alert-tone: var(--pp-color-status-passed);
+}
+
+.pp-alert[data-tone='degraded'] {
+  --alert-tone: var(--pp-color-status-degraded);
+}
+
+.pp-alert[data-tone='failed'] {
+  --alert-tone: var(--pp-color-status-failed);
+}
+
+.pp-alert__icon {
+  flex: none;
+  inline-size: var(--pp-font-size-1);
+  block-size: var(--pp-font-size-1);
+  color: var(--alert-tone);
+}
+
+.pp-alert__heading {
+  margin-block: 0;
+  font-weight: var(--pp-font-weight-semibold);
+}
+
+.pp-alert__content > * {
+  margin-block: 0;
+}
+
+.pp-alert__content > * + * {
+  margin-block-start: var(--pp-space-2xs);
+}
+
+@media (forced-colors: active) {
+  .pp-alert {
+    border-inline-start-color: CanvasText;
+  }
+
+  .pp-alert__icon {
+    color: CanvasText;
+  }
+}

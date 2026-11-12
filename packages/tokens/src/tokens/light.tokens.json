@@ -99,6 +99,13 @@
           "components": [0.47, 0.19, 270.7]
         },
         "$description": "Statut en cours ; toujours avec icône et libellé."
+      },
+      "info": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.47, 0.19, 270.7]
+        },
+        "$description": "Statut d'information (ton info de l'alerte) : valeur initiale égale à « en cours » ; remappable sans toucher à celui-ci. Toujours avec icône et libellé."
       }
     },
     "media-placeholder": {

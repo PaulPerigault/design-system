@@ -14,6 +14,7 @@ export interface RoleBase {
   readonly focus: Oklch;
   readonly accentText: Oklch;
   readonly running: Oklch;
+  readonly info: Oklch;
   readonly surface: Oklch;
 }
 
@@ -26,6 +27,7 @@ const ROLES = [
   { token: '--pp-color-focus', key: 'focus', min: MIN_GRAPHIC_CONTRAST },
   { token: '--pp-color-accent-text', key: 'accentText', min: MIN_TEXT_CONTRAST },
   { token: '--pp-color-status-running', key: 'running', min: MIN_TEXT_CONTRAST },
+  { token: '--pp-color-status-info', key: 'info', min: MIN_TEXT_CONTRAST },
 ] as const;
 
 function measure(token: string, color: Oklch, min: number, grounds: [string, Oklch][]): string[] {

@@ -30,6 +30,7 @@
   --color-status-failed: var(--pp-color-status-failed);
   --color-status-passed: var(--pp-color-status-passed);
   --color-status-running: var(--pp-color-status-running);
+  --color-status-info: var(--pp-color-status-info);
   --color-surface: var(--pp-color-surface);
 
   --font-sans: var(--pp-font-family-sans);
