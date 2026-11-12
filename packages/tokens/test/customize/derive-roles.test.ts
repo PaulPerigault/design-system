@@ -8,6 +8,7 @@ import { readRolePairs } from './role-pairs.ts';
 
 const THEMES = ['light', 'dark'] as const;
 const FOCUS = '--pp-color-focus';
+const ACCENT_TEXT = '--pp-color-accent-text';
 const RUNNING = '--pp-color-status-running';
 
 function derived(hue: number, theme: 'light' | 'dark') {
@@ -24,6 +25,7 @@ describe('deriveRoles', () => {
       const source = sourceOf(theme);
       for (const [token, role] of [
         [FOCUS, 'color.focus'],
+        [ACCENT_TEXT, 'color.accent-text'],
         [RUNNING, 'color.status.running'],
       ]) {
         const color = parseOklch(roles[token ?? ''] ?? '');

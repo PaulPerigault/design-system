@@ -61,6 +61,7 @@
     "target-min": { "$value": { "value": 1.5, "unit": "rem" } },
     "control-height": { "$value": { "value": 2.75, "unit": "rem" } },
     "measure": { "$value": { "value": 36, "unit": "rem" } },
+    "prose": { "$value": { "value": 36, "unit": "rem" } },
     "page": { "$value": { "value": 72, "unit": "rem" } },
     "rule": { "$value": { "value": 1, "unit": "px" } },
     "focus-width": { "$value": { "value": 2, "unit": "px" } },

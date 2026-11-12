@@ -26,6 +26,12 @@
         "colorSpace": "oklch",
         "components": [0.53, 0.19, 33]
       }
+    },
+    "accent-text": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.53, 0.19, 33]
+      }
     }
   },
   "dark": {
@@ -48,6 +54,12 @@
       }
     },
     "accent": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.74, 0.14, 33]
+      }
+    },
+    "accent-text": {
       "$value": {
         "colorSpace": "oklch",
         "components": [0.74, 0.14, 33]

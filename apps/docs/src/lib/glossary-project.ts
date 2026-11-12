@@ -26,6 +26,18 @@ export const GLOSSARY_PROJECT: readonly Entry[] = [
       'API HTML qui relie un bouton à un élément via les attributs command et commandfor, sans script.',
   },
   {
+    id: 'jeton-accent-text',
+    term: "jeton de texte d'accent",
+    definition:
+      "`--pp-color-accent-text` : la couleur d'accent quand elle sert à du texte (liens, onglets, fil d'Ariane). Sa valeur initiale est celle de `--pp-color-accent`, qui garde les aplats. Un site remappe l'un sans l'autre.",
+  },
+  {
+    id: 'jeton-prose',
+    term: 'jeton de longueur de ligne',
+    definition:
+      '`--pp-size-prose` : largeur maximale du texte courant. Sa valeur initiale est celle de `--pp-size-measure`, qui reste la largeur des images, des alertes et des cadres.',
+  },
+  {
     id: 'jeton',
     term: 'jeton',
     definition:

@@ -20,9 +20,13 @@ export const TWELVE_HUES = Array.from({ length: 12 }, (_, index) => index * 30);
 /** Base d'un thème lue dans `tokens.json` : palette, neutres, focus, statut et surface. */
 export function sourceOf(theme: Theme): ThemeSource {
   const base = themeBaseFromTokens(tokens, theme);
-  const [focus, running, surface] = ['focus', 'status-running', 'surface'].map((name) =>
-    readThemeColor(tokens, theme, `--pp-color-${name}`),
-  );
-  if (!base.ok || !focus || !running || !surface) throw new Error(`tokens.json : ${theme}`);
-  return { ...base.value, focus, running, surface };
+  const [focus, accentText, running, surface] = [
+    'focus',
+    'accent-text',
+    'status-running',
+    'surface',
+  ].map((name) => readThemeColor(tokens, theme, `--pp-color-${name}`));
+  if (!base.ok || !focus || !accentText || !running || !surface)
+    throw new Error(`tokens.json : ${theme}`);
+  return { ...base.value, focus, accentText, running, surface };
 }

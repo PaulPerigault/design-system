@@ -68,8 +68,8 @@ describe('Prose (rendu)', () => {
 describe('Prose (source CSS)', () => {
   const source = readFileSync(new URL('../src/content/Prose.astro', import.meta.url), 'utf8');
 
-  it('utilise max-inline-size avec --pp-size-measure', () => {
-    expect(source).toContain('max-inline-size: var(--pp-size-measure)');
+  it('utilise max-inline-size avec --pp-size-prose', () => {
+    expect(source).toContain('max-inline-size: var(--pp-size-prose)');
   });
 
   it('style les titres h1 à h6 avec tokens', () => {
@@ -83,11 +83,11 @@ describe('Prose (source CSS)', () => {
     expect(source).toMatch(/:global\(/);
   });
 
-  it('style les liens avec --pp-color-accent', () => {
-    expect(source).toContain('color: var(--pp-color-accent)');
+  it('style les liens avec --pp-color-accent-text', () => {
+    expect(source).toContain('color: var(--pp-color-accent-text)');
   });
 
-  it('style les blockquotes avec accent et spacing', () => {
+  it('style les blockquotes avec accent-text et spacing', () => {
     expect(source).toContain('border-inline-start: var(--pp-size-focus-width)');
     expect(source).toContain('var(--pp-space-m)');
   });

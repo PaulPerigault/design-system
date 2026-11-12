@@ -63,7 +63,7 @@
 /* Longueur de ligne tenue sur grand écran (docs/benchmark/gap.md, n° 19) : le texte courant ne
    dépasse jamais la mesure ; spécificité nulle, un composant peut la redéfinir. */
 .docs-main :where(p, li, dt, dd, figcaption, blockquote) {
-  max-inline-size: var(--pp-size-measure);
+  max-inline-size: var(--pp-size-prose);
 }
 
 .docs-footer {
@@ -81,7 +81,7 @@ div.docs-prose {
   max-inline-size: var(--pp-size-page);
 }
 .docs-prose {
-  max-inline-size: var(--pp-size-measure);
+  max-inline-size: var(--pp-size-prose);
 }
 
 .docs-direction {
@@ -97,7 +97,7 @@ div.docs-prose {
   padding-inline: var(--pp-space-2xs);
   border: var(--pp-size-rule) solid var(--pp-color-accent);
   border-radius: var(--pp-radius-control);
-  color: var(--pp-color-accent);
+  color: var(--pp-color-accent-text);
   font-size: var(--pp-font-size--1);
   font-weight: var(--pp-font-weight-semibold);
 }
