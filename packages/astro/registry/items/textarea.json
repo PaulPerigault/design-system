@@ -8,6 +8,10 @@
     {
       "path": "packages/astro/src/forms/Textarea.astro",
       "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/forms/invalid.css",
+      "type": "registry:ui"
     }
   ],
   "meta": {
@@ -24,7 +28,6 @@
       "--pp-size-rule",
       "--pp-size-target-min",
       "--pp-space-2xs",
-      "--pp-space-3xs",
       "--pp-space-xs"
     ],
     "version": "0.0.0"

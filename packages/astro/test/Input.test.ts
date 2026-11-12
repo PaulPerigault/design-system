@@ -82,10 +82,9 @@ describe('Input (rendu)', () => {
 describe('Input (source CSS)', () => {
   const source = readFileSync(new URL('../src/forms/Input.astro', import.meta.url), 'utf8');
 
-  it('colore l’erreur via aria-invalid et :user-invalid', () => {
-    expect(source).toContain(".pp-input[aria-invalid='true']");
-    expect(source).toContain('.pp-input:user-invalid');
-    expect(source).toContain('var(--pp-color-status-failed)');
+  it('importe l’état invalide commun à Input et Textarea', () => {
+    expect(source).toContain("import './invalid.css'");
+    expect(source).not.toContain('--pp-color-status-failed');
   });
 
   it('utilise les tokens de contrôle', () => {

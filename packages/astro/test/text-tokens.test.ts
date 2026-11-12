@@ -8,7 +8,7 @@ const ACCENT_TEXT = [
   'content/Accordion.astro',
   'content/Breadcrumb.astro',
   'content/Prose.astro',
-  'forms/Button.astro',
+  'forms/button.css',
   'navigation/Pagination.astro',
   'navigation/Tabs.astro',
 ];

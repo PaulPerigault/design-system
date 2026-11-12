@@ -513,10 +513,15 @@
         {
           "path": "packages/astro/src/forms/button-variants.ts",
           "type": "registry:lib"
+        },
+        {
+          "path": "packages/astro/src/forms/button.css",
+          "type": "registry:ui"
         }
       ],
       "meta": {
         "tokens": [
+          "--pp-color-accent",
           "--pp-color-accent-text",
           "--pp-color-control",
           "--pp-color-fg",
@@ -1196,6 +1201,10 @@
       "files": [
         {
           "path": "packages/astro/src/forms/Input.astro",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/forms/invalid.css",
           "type": "registry:ui"
         }
       ],
@@ -2285,6 +2294,10 @@
         {
           "path": "packages/astro/src/forms/Textarea.astro",
           "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/forms/invalid.css",
+          "type": "registry:ui"
         }
       ],
       "meta": {
@@ -2301,7 +2314,6 @@
           "--pp-size-rule",
           "--pp-size-target-min",
           "--pp-space-2xs",
-          "--pp-space-3xs",
           "--pp-space-xs"
         ],
         "version": "0.0.0"

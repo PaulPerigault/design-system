@@ -1,4 +1,5 @@
 ---
+import './button.css';
 import { button } from './button-variants';
 
 /**
@@ -17,12 +18,24 @@ interface Props {
   disabled?: boolean;
   /** Rend un lien `<a>` stylé en bouton au lieu d'un `<button>` : pour naviguer, pas pour agir. */
   href?: string;
+  /** Pleine largeur, libellé centré (défaut `false`) : pour un panneau étroit. */
+  block?: boolean;
   /** Réservé au placement du composant dans son parent. */
   class?: string;
 }
 
-const { tone, size, type = 'button', disabled = false, href, class: className } = Astro.props;
-const classes = [button({ tone, size }), className].filter(Boolean).join(' ');
+const {
+  tone,
+  size,
+  type = 'button',
+  disabled = false,
+  href,
+  block,
+  class: className,
+} = Astro.props;
+const classes = [button({ tone, size }), block ? 'pp-button--block' : '', className]
+  .filter(Boolean)
+  .join(' ');
 const isLink = href !== undefined;
 ---
 
@@ -40,71 +53,3 @@ const isLink = href !== undefined;
     <slot />
   </button>
 )}
-
-<style>
-  .pp-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    min-block-size: var(--pp-size-control-height);
-    min-inline-size: var(--pp-size-target-min);
-    padding-inline: var(--pp-space-s);
-    border: var(--pp-size-rule) solid transparent;
-    border-radius: var(--pp-radius-control);
-    font-family: inherit;
-    font-size: var(--pp-font-size-0);
-    font-weight: var(--pp-font-weight-medium);
-    line-height: var(--pp-font-line-height-heading);
-    text-decoration: none;
-    cursor: pointer;
-    transition:
-      color var(--pp-duration-fast) var(--pp-easing-standard),
-      background-color var(--pp-duration-fast) var(--pp-easing-standard),
-      border-color var(--pp-duration-fast) var(--pp-easing-standard);
-  }
-
-  .pp-button--l {
-    padding-inline: var(--pp-space-m);
-    font-size: var(--pp-font-size-1);
-  }
-
-  .pp-button--primary {
-    background-color: var(--pp-color-accent-text);
-    color: var(--pp-color-on-accent);
-  }
-
-  .pp-button--secondary {
-    background-color: transparent;
-    border-color: var(--pp-color-control);
-    color: var(--pp-color-fg);
-  }
-
-  .pp-button--secondary:hover {
-    border-color: var(--pp-color-fg);
-  }
-
-  .pp-button--quiet {
-    background-color: transparent;
-    color: var(--pp-color-fg);
-    text-decoration: underline;
-  }
-
-  .pp-button--quiet:hover {
-    color: var(--pp-color-accent-text);
-  }
-
-  .pp-button:disabled,
-  .pp-button[aria-disabled='true'] {
-    background-color: transparent;
-    border-color: var(--pp-color-control);
-    color: var(--pp-color-muted);
-    cursor: not-allowed;
-  }
-
-  @media (forced-colors: active) {
-    .pp-button--primary {
-      border-color: ButtonText;
-    }
-  }
-</style>

@@ -1,0 +1,8 @@
+/* État invalide commun à Input et Textarea : même bord, `--pp-size-rule` et couleur d'échec,
+   aucune épaisseur propre à un champ. */
+.pp-input[aria-invalid='true'],
+.pp-input:user-invalid,
+.pp-textarea[aria-invalid='true'],
+.pp-textarea:user-invalid {
+  border-color: var(--pp-color-status-failed);
+}

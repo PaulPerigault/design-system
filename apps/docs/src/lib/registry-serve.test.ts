@@ -38,12 +38,13 @@ describe('toServedItem', () => {
   it('sert button avec le contenu en ligne et la cible de chaque fichier', () => {
     const served = toServedItem(findItem('button'), readRepoFile);
     expect(served.name).toBe('button');
-    expect(served.files).toHaveLength(2);
+    expect(served.files).toHaveLength(3);
     for (const file of served.files) {
       expect(file.content.length).toBeGreaterThan(0);
     }
     expect(served.files[0]?.target).toBe('components/pp/Button.astro');
     expect(served.files[1]?.target).toBe('lib/pp/button-variants.ts');
+    expect(served.files[2]?.target).toBe('lib/pp/button.css');
   });
 
   it('lève une erreur claire quand un fichier du registre est absent', () => {
@@ -69,6 +70,7 @@ describe('toServedIndex', () => {
       files: [
         { path: 'packages/astro/src/forms/Button.astro', type: 'registry:ui' },
         { path: 'packages/astro/src/forms/button-variants.ts', type: 'registry:lib' },
+        { path: 'packages/astro/src/forms/button.css', type: 'registry:ui' },
       ],
     });
     expect(index.items).toHaveLength(typedRegistry.items.length);

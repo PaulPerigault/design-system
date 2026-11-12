@@ -75,7 +75,7 @@ describe('Button (rendu)', () => {
 });
 
 describe('Button (source CSS)', () => {
-  const source = readFileSync(new URL('../src/forms/Button.astro', import.meta.url), 'utf8');
+  const source = readFileSync(new URL('../src/forms/button.css', import.meta.url), 'utf8');
 
   it('utilise les tokens de contrôle', () => {
     expect(source).toContain('min-block-size: var(--pp-size-control-height)');
