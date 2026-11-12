@@ -8,6 +8,10 @@
     {
       "path": "packages/astro/src/forms/Input.astro",
       "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/forms/invalid.css",
+      "type": "registry:ui"
     }
   ],
   "meta": {

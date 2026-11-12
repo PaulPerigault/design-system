@@ -5,6 +5,8 @@
  * Le libellé, le message d'aide et le message d'erreur sont fournis par le site (`<label for>`,
  * `describedBy`) : le composant n'embarque aucun texte. Le focus vient de `@paulperigault/css`.
  */
+import './invalid.css';
+
 interface Props {
   /** Identifiant, visé par `<label for>`. */
   id: string;
@@ -86,11 +88,6 @@ const {
   .pp-input::placeholder {
     color: var(--pp-color-muted);
     opacity: 1;
-  }
-
-  .pp-input[aria-invalid='true'],
-  .pp-input:user-invalid {
-    border-color: var(--pp-color-status-failed);
   }
 
   .pp-input:disabled {

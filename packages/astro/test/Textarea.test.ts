@@ -69,6 +69,32 @@ describe('Textarea (rendu)', () => {
   });
 });
 
+describe('État invalide commun (invalid.css)', () => {
+  const read = (file: string) =>
+    readFileSync(new URL(`../src/forms/${file}`, import.meta.url), 'utf8');
+  const invalid = read('invalid.css');
+
+  it('Input et Textarea l’importent, aucun n’écrit son propre bord d’erreur', () => {
+    for (const file of ['Input.astro', 'Textarea.astro']) {
+      expect(read(file)).toContain("import './invalid.css'");
+      expect(read(file)).not.toMatch(/status-failed|aria-invalid='true'|border-inline-start/);
+    }
+  });
+
+  it('un seul bord : couleur d’échec, aucune épaisseur propre à un champ', () => {
+    for (const selector of [
+      ".pp-input[aria-invalid='true']",
+      '.pp-input:user-invalid',
+      ".pp-textarea[aria-invalid='true']",
+      '.pp-textarea:user-invalid',
+    ]) {
+      expect(invalid).toContain(selector);
+    }
+    expect(invalid).toContain('border-color: var(--pp-color-status-failed)');
+    expect(invalid).not.toMatch(/border-(inline|block|width)|--pp-space-/);
+  });
+});
+
 describe('Textarea (source CSS)', () => {
   const source = readFileSync(new URL('../src/forms/Textarea.astro', import.meta.url), 'utf8');
 

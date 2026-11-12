@@ -1,9 +1,11 @@
 ---
 /**
  * Textarea : `<textarea>` natif, zéro JavaScript. Le nom accessible vient d'un `<label for={id}>`
- * (voir Field) ; aucun texte n'est écrit ici. L'erreur est exposée par `aria-invalid` et par une
- * bordure plus épaisse en plus de la couleur (WCAG 1.4.1). Aucun attribut `style` (CSP stricte).
+ * (voir Field) ; aucun texte n'est écrit ici. L'erreur est exposée par `aria-invalid` ; son bord est celui
+ * d'Input (`invalid.css`) et le message d'erreur la dit en toutes lettres (WCAG 1.4.1). Aucun attribut `style` (CSP stricte).
  */
+import './invalid.css';
+
 interface Props {
   /** Identifiant, visé par `<label for>`. */
   id: string;
@@ -69,11 +71,6 @@ const {
     font: inherit;
     line-height: var(--pp-font-line-height-body);
     resize: block;
-  }
-
-  .pp-textarea[aria-invalid='true'] {
-    border-color: var(--pp-color-status-failed);
-    border-inline-start-width: var(--pp-space-3xs);
   }
 
   .pp-textarea:disabled {

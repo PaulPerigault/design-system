@@ -685,7 +685,9 @@
       "integrator": [
         "Donner un libellé qui décrit l’action seul : « Envoyer », pas « Cliquer ici ».",
         "Choisir href pour une navigation, et un bouton pour une action.",
-        "Vérifier le contraste des tons dans le thème utilisé : le composant ne le mesure pas."
+        "Vérifier le contraste des tons dans le thème utilisé : le composant ne le mesure pas.",
+        "`block` donne la pleine largeur et centre le libellé : à réserver aux panneaux étroits.",
+        "`--pp-button-border-color` remplace le bord de tous les tons ; sans elle, le bord actuel est gardé."
       ],
       "keyboard": [
         "Un bouton natif reçoit le focus avec Tab et s’active avec Entrée ou Espace.",
@@ -742,6 +744,12 @@
         "type": "`string`"
       },
       {
+        "description": "Pleine largeur, libellé centré (défaut `false`) : pour un panneau étroit.",
+        "fallback": "—",
+        "name": "`block`",
+        "type": "`boolean`"
+      },
+      {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
         "name": "`class`",
@@ -753,6 +761,7 @@
     "summary": "Button rend un bouton natif, ou un lien stylé en bouton quand href est fourni.",
     "title": "Button",
     "tokens": [
+      "--pp-color-accent",
       "--pp-color-accent-text",
       "--pp-color-control",
       "--pp-color-fg",
@@ -4637,7 +4646,7 @@
     "a11y": {
       "guaranteed": [
         "Élément textarea natif, sans JavaScript et sans texte en dur.",
-        "L’erreur passe aussi par une bordure plus épaisse, en plus de la couleur.",
+        "L’erreur passe aussi par un message écrit, en plus de la couleur.",
         "Hauteur minimale fixée par les jetons --pp-size-target-min ou --pp-size-control-height."
       ],
       "integrator": [
@@ -4746,7 +4755,6 @@
       "--pp-size-rule",
       "--pp-size-target-min",
       "--pp-space-2xs",
-      "--pp-space-3xs",
       "--pp-space-xs"
     ],
     "use": [

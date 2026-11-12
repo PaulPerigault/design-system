@@ -12,10 +12,15 @@
     {
       "path": "packages/astro/src/forms/button-variants.ts",
       "type": "registry:lib"
+    },
+    {
+      "path": "packages/astro/src/forms/button.css",
+      "type": "registry:ui"
     }
   ],
   "meta": {
     "tokens": [
+      "--pp-color-accent",
       "--pp-color-accent-text",
       "--pp-color-control",
       "--pp-color-fg",

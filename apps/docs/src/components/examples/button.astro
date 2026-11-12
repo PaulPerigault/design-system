@@ -10,6 +10,23 @@ import Button from '@paulperigault/astro/Button.astro';
   <Button href="/">Retour à l’accueil</Button>
 </p>
 
+<h3>Pleine largeur</h3>
+<div class="demo-narrow">
+  <Button block>Prendre rendez-vous en visio</Button>
+  <Button block tone="secondary" href="/">
+    Retour à l’accueil
+  </Button>
+</div>
+
+<h3>Bord de marque</h3>
+<p class="demo-brand">
+  <Button>Valider</Button>
+</p>
+<p>
+  <code>--pp-button-border-color</code> pose le bord de tous les tons : utile quand le fond de
+  marque reste sous 3:1 sur la page.
+</p>
+
 <h3>Erreur</h3>
 <p id="button-erreur" role="alert">
   L’envoi a échoué. Vérifiez la connexion puis réessayez.
@@ -27,3 +44,15 @@ import Button from '@paulperigault/astro/Button.astro';
     Lien désactivé
   </Button>
 </p>
+
+<style>
+  .demo-narrow {
+    display: grid;
+    gap: var(--pp-space-xs);
+    max-inline-size: calc(var(--pp-size-measure) / 2);
+  }
+
+  .demo-brand {
+    --pp-button-border-color: var(--pp-color-fg);
+  }
+</style>
