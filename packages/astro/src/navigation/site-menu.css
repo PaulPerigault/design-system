@@ -1,0 +1,35 @@
+/* Styles de SiteMenu : fichier global, classes `.pp-site-menu*`. Repli sous 48 rem de conteneur. */
+.pp-site-menu {
+  container-type: inline-size;
+}
+
+.pp-site-menu__fold > summary {
+  display: flex;
+  align-items: center;
+  min-block-size: var(--pp-size-control-height);
+  padding-inline: var(--pp-space-xs);
+  border: var(--pp-size-rule) solid var(--pp-color-control);
+  border-radius: var(--pp-radius-control);
+  color: var(--pp-color-fg);
+  cursor: pointer;
+}
+
+.pp-site-menu__panel {
+  display: grid;
+  gap: var(--pp-space-xs);
+  padding-block: var(--pp-space-xs);
+}
+
+.pp-site-menu__bar {
+  display: none;
+}
+
+@container (min-inline-size: 48rem) {
+  .pp-site-menu__fold {
+    display: none;
+  }
+
+  .pp-site-menu__bar {
+    display: block;
+  }
+}

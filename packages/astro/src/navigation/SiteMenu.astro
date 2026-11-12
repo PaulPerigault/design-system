@@ -1,0 +1,42 @@
+---
+/**
+ * SiteMenu : navigation de site qui se replie sous un seuil, sans JavaScript. Étroit : un
+ * `<details>`/`<summary>` natif (clavier : Entrée et Espace) ouvre la liste, un par ligne, suivie
+ * du contenu du slot (une action, par exemple). Large : la liste s'affiche en ligne, sans repli.
+ * Seuil : requête de conteneur de 48 rem. Un seul des deux rendus est affiché à la fois (l'autre est
+ * en `display: none`) : le repère garde le même nom. Le conteneur prend la largeur de son parent
+ * (dans un parent flex : `flex: 1`). Zéro JavaScript, aucun texte en dur, aucun `style`.
+ */
+import './site-menu.css';
+import SiteNav from './SiteNav.astro';
+
+interface Item {
+  label: string;
+  href: string;
+  current?: boolean;
+}
+
+interface Props {
+  /** Nom accessible du repère (`aria-label`), par exemple « Navigation principale ». */
+  label: string;
+  /** Libellé du bouton qui ouvre le menu replié, par exemple « Menu ». */
+  summary: string;
+  /** Entrées, dans l'ordre d'affichage. */
+  items: Item[];
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { label, summary, items, class: className } = Astro.props;
+---
+
+<div class:list={['pp-site-menu', className]}>
+  <details class="pp-site-menu__fold">
+    <summary>{summary}</summary>
+    <div class="pp-site-menu__panel">
+      <SiteNav label={label} items={items} layout="stack" />
+      <slot />
+    </div>
+  </details>
+  <SiteNav class="pp-site-menu__bar" label={label} items={items} />
+</div>

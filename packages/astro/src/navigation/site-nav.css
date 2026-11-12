@@ -1,0 +1,39 @@
+/* Styles de SiteNav : fichier global, classes `.pp-site-nav*`, variante par `data-layout`. */
+.pp-site-nav > ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pp-space-3xs) var(--pp-space-s);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pp-site-nav[data-layout='stack'] > ul {
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.pp-site-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--pp-size-control-height);
+  color: var(--pp-color-fg);
+  text-decoration: none;
+}
+
+.pp-site-nav a:hover {
+  text-decoration: underline;
+}
+
+.pp-site-nav a[aria-current='page'] {
+  font-weight: var(--pp-font-weight-bold);
+  text-decoration: underline;
+  text-decoration-thickness: var(--pp-size-focus-width);
+  text-underline-offset: var(--pp-size-focus-offset);
+}
+
+@media (forced-colors: active) {
+  .pp-site-nav a[aria-current='page'] {
+    text-decoration-color: LinkText;
+  }
+}

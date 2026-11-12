@@ -11,7 +11,7 @@
   margin-block-start: var(--pp-space-xs);
 }
 
-.pp-component-page ul:not(.pp-component-page__tokens) {
+.pp-component-page ul:not(.pp-component-page__tokens, :where(.pp-site-nav) > ul) {
   list-style: disc;
   padding-inline-start: var(--pp-space-m);
 }

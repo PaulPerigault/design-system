@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "site-nav",
+  "type": "registry:ui",
+  "title": "SiteNav",
+  "description": "Navigation de site : liste de liens nommée, page courante par aria-current, cibles de taille d'un contrôle, zéro JavaScript.",
+  "files": [
+    {
+      "path": "packages/astro/src/navigation/SiteNav.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/navigation/site-nav.css",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "tokens": [
+      "--pp-color-fg",
+      "--pp-font-weight-bold",
+      "--pp-size-control-height",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-space-3xs",
+      "--pp-space-s"
+    ],
+    "version": "0.0.0"
+  }
+}

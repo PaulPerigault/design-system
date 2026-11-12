@@ -1,0 +1,42 @@
+---
+/**
+ * SiteNav : navigation d'un site, `<nav aria-label>` + `<ul role="list">` (`role="list"` explicite :
+ * `list-style: none` retire la sémantique de liste sous VoiceOver). La page courante porte
+ * `aria-current="page"` et se distingue par un soulignement épais et une graisse, jamais par la
+ * couleur seule (WCAG 2.2, critère 1.4.1). Zéro JavaScript, aucun texte en dur, aucun `style`.
+ * Cibles de la hauteur d'un contrôle (≥ 44 px). Pour la replier sous un seuil : `SiteMenu`.
+ */
+import './site-nav.css';
+
+interface Item {
+  label: string;
+  href: string;
+  /** Page courante : `aria-current="page"` et style de page courante. */
+  current?: boolean;
+}
+
+interface Props {
+  /** Nom accessible du repère (`aria-label`), par exemple « Navigation principale ». */
+  label: string;
+  /** Entrées, dans l'ordre d'affichage. */
+  items: Item[];
+  /** `row` : en ligne, à la ligne si besoin (défaut) ; `stack` : une entrée par ligne. */
+  layout?: 'row' | 'stack';
+  /** Réservé au placement du composant dans son parent. */
+  class?: string;
+}
+
+const { label, items, layout = 'row', class: className } = Astro.props;
+---
+
+<nav class:list={['pp-site-nav', className]} aria-label={label} data-layout={layout}>
+  <ul role="list">
+    {items.map((item) => (
+      <li>
+        <a href={item.href} aria-current={item.current ? 'page' : undefined}>
+          {item.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>

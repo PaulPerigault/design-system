@@ -2,19 +2,11 @@
  * Sommaire de la documentation : source unique du menu et de la page d'accueil. L'e2e
  * `navigation.spec.ts` vérifie que chaque page construite y figure, et inversement.
  */
-export interface DocLink {
-  slug: string;
-  title: string;
-}
+import { link } from './nav-link';
+import type { DocGroup, DocLink } from './nav-link';
+import { MEDIA_GROUPS } from './navigation-media';
 
-export interface DocGroup {
-  /** Identifiant d'ancre, sans espace. */
-  id: string;
-  title: string;
-  links: DocLink[];
-}
-
-const link = (slug: string, title: string): DocLink => ({ slug, title });
+export type { DocGroup, DocLink };
 
 export const GROUPS: readonly DocGroup[] = [
   {
@@ -76,41 +68,20 @@ export const GROUPS: readonly DocGroup[] = [
   {
     id: 'navigation',
     title: 'Navigation',
-    links: [link('pagination', 'Pagination'), link('tabs', 'Tabs'), link('menu', 'Menu')],
+    links: [
+      link('pagination', 'Pagination'),
+      link('tabs', 'Tabs'),
+      link('menu', 'Menu'),
+      link('site-nav', 'SiteNav'),
+      link('site-menu', 'SiteMenu'),
+    ],
   },
   {
     id: 'surcouches',
     title: 'Surcouches',
     links: [link('popover', 'Popover'), link('tooltip', 'Tooltip')],
   },
-  {
-    id: 'images',
-    title: 'Images',
-    links: [
-      link('photo', 'Photo'),
-      link('art-direction', 'ArtDirection'),
-      link('figure', 'Figure'),
-      link('scrim', 'Scrim'),
-      link('avatar', 'Avatar'),
-      link('project-cover', 'ProjectCover'),
-      link('gallery', 'Gallery'),
-      link('diagram', 'Diagram'),
-    ],
-  },
-  {
-    id: 'donnees',
-    title: 'Données',
-    links: [
-      link('line-chart', 'LineChart'),
-      link('bar-chart', 'BarChart'),
-      link('area-chart', 'AreaChart'),
-      link('gauge-chart', 'GaugeChart'),
-      link('sparkline', 'Sparkline'),
-      link('kpi-card', 'KpiCard'),
-      link('data-table', 'DataTable'),
-      link('legend', 'Legend'),
-    ],
-  },
+  ...MEDIA_GROUPS,
 ];
 
 export const hrefOf = ({ slug }: DocLink): string => `/components/${slug}/`;

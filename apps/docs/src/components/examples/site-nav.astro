@@ -1,0 +1,17 @@
+---
+/** Exemples vivants de la page SiteNav : navigation en ligne et en colonne, page courante marquée. */
+import SiteNav from '@paulperigault/astro/SiteNav.astro';
+import Stack from '@paulperigault/astro/Stack.astro';
+
+const items = [
+  { label: 'Accueil', href: '#contenu' },
+  { label: 'Tarifs', href: '#contenu', current: true },
+  { label: 'Questions fréquentes', href: '#contenu' },
+  { label: 'Contact', href: '#contenu' },
+];
+---
+
+<Stack space="xs">
+  <SiteNav label="Navigation principale" items={items} />
+  <SiteNav label="Navigation en colonne" items={items} layout="stack" />
+</Stack>

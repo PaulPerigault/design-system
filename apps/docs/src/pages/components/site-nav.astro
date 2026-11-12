@@ -1,0 +1,62 @@
+---
+import ComponentPage from '../../components/ComponentPage.astro';
+import SiteNavExamples from '../../components/examples/site-nav.astro';
+
+const snippet = `<SiteNav
+  label="Navigation principale"
+  items={[
+    { label: 'Accueil', href: '/' },
+    { label: 'Tarifs', href: '/tarifs/', current: true },
+    { label: 'Contact', href: '/contact/' },
+  ]}
+/>`;
+---
+
+<ComponentPage
+  slug="site-nav"
+  title="SiteNav"
+  summary="SiteNav affiche la navigation d’un site : une liste de liens nommée, avec la page courante marquée."
+  use={[
+    'Lister les pages principales d’un site, en ligne ou en colonne.',
+    'Marquer la page courante avec `current` : `aria-current="page"` et un soulignement épais.',
+  ]}
+  avoid={[
+    'Pour la replier sous un seuil : utiliser SiteMenu, qui s’appuie sur SiteNav.',
+    'Pour un fil d’Ariane : utiliser Breadcrumb. Pour des pages de résultats : Pagination.',
+  ]}
+  snippet={snippet}
+  a11y={{
+    keyboard: [
+      'Chaque lien reçoit le focus avec Tab, dans l’ordre du document.',
+      'Le focus visible est celui de la feuille de base de `@paulperigault/css`.',
+    ],
+    screenReader: [
+      'Le repère nav porte le nom donné par label.',
+      'La liste porte `role="list"` : VoiceOver garde la sémantique malgré list-style: none.',
+      'La page courante porte `aria-current="page"` et reste un lien.',
+    ],
+    guaranteed: [
+      'La page courante se distingue par un soulignement épais et une graisse, pas par la couleur seule (critère 1.4.1).',
+      'Chaque lien fait au moins --pp-size-control-height de haut (critères 2.5.5 et 2.5.8).',
+      'Zéro JavaScript : le composant ne contient aucun script.',
+    ],
+    integrator: [
+      'Fournir les libellés dans la langue du site.',
+      'Donner un label distinct à chaque repère nav de la page (critère 2.4.1).',
+      'Poser `current` sur une seule entrée.',
+    ],
+  }}
+  evidence={[
+    {
+      label: 'WCAG 1.4.1 Utilisation de la couleur',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html',
+    },
+    {
+      label: 'WCAG 2.5.8 Taille de la cible (minimum)',
+      href: 'https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html',
+    },
+    { label: 'Tests : packages/astro/test/SiteNav.test.ts' },
+  ]}
+>
+  <SiteNavExamples />
+</ComponentPage>

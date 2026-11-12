@@ -3882,6 +3882,161 @@
   {
     "a11y": {
       "guaranteed": [
+        "Le bouton de repli et les liens font au moins --pp-size-control-height de haut.",
+        "La page courante garde `aria-current=\"page\"` dans les deux rendus.",
+        "Zéro JavaScript ; le seuil est une requête de conteneur en rem, il suit le zoom du texte."
+      ],
+      "integrator": [
+        "Le conteneur prend la largeur de son parent : dans un parent flex, lui donner `flex: 1`.",
+        "Fournir `summary` et `label` dans la langue du site.",
+        "Poser `current` sur une seule entrée."
+      ],
+      "keyboard": [
+        "Le bouton « Menu » est un `summary` natif : Entrée et Espace ouvrent et ferment le panneau.",
+        "Les liens se parcourent avec Tab, dans l’ordre du document, panneau ouvert."
+      ],
+      "screenReader": [
+        "Le `details` annonce son état ouvert ou fermé ; le repère nav porte le nom donné par label.",
+        "Un seul des deux rendus est affiché à la fois : l’autre est en `display: none`, donc absent de l’arbre d’accessibilité."
+      ]
+    },
+    "avoid": [
+      "Pour une navigation toujours visible : utiliser SiteNav.",
+      "Pour un menu d’actions : utiliser Menu, qui gère le clavier fléché en JavaScript."
+    ],
+    "evidence": [
+      "[WCAG 2.1.1 Clavier](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html)",
+      "[WCAG 1.4.10 Redistribution du contenu](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html)",
+      "Tests : packages/astro/test/SiteMenu.test.ts, apps/docs/e2e/site-menu.spec.ts"
+    ],
+    "group": "navigation",
+    "props": [
+      {
+        "description": "Nom accessible du repère (`aria-label`), par exemple « Navigation principale ».",
+        "fallback": "—",
+        "name": "`label` (obligatoire)",
+        "type": "`string`"
+      },
+      {
+        "description": "Libellé du bouton qui ouvre le menu replié, par exemple « Menu ».",
+        "fallback": "—",
+        "name": "`summary` (obligatoire)",
+        "type": "`string`"
+      },
+      {
+        "description": "Entrées, dans l'ordre d'affichage.",
+        "fallback": "—",
+        "name": "`items` (obligatoire)",
+        "type": "`Item[]`"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "`class`",
+        "type": "`string`"
+      }
+    ],
+    "slug": "site-menu",
+    "snippet": "<SiteMenu\n  label=\"Navigation du site\"\n  summary=\"Menu\"\n  items={[\n    { label: 'Accueil', href: '/' },\n    { label: 'Tarifs', href: '/tarifs/', current: true },\n  ]}\n>\n  <Button block href=\"/rendez-vous/\">Prendre rendez-vous</Button>\n</SiteMenu>",
+    "summary": "SiteMenu replie la navigation d’un site dans un menu natif sous 48 rem de conteneur, et l’affiche en ligne au-delà.",
+    "title": "SiteMenu",
+    "tokens": [
+      "--pp-color-control",
+      "--pp-color-fg",
+      "--pp-font-weight-bold",
+      "--pp-radius-control",
+      "--pp-size-control-height",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-rule",
+      "--pp-space-3xs",
+      "--pp-space-s",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Offrir la navigation d’un site sur téléphone sans JavaScript.",
+      "Placer une action dans le panneau replié avec le slot, par exemple un Button `block`."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
+        "La page courante se distingue par un soulignement épais et une graisse, pas par la couleur seule (critère 1.4.1).",
+        "Chaque lien fait au moins --pp-size-control-height de haut (critères 2.5.5 et 2.5.8).",
+        "Zéro JavaScript : le composant ne contient aucun script."
+      ],
+      "integrator": [
+        "Fournir les libellés dans la langue du site.",
+        "Donner un label distinct à chaque repère nav de la page (critère 2.4.1).",
+        "Poser `current` sur une seule entrée."
+      ],
+      "keyboard": [
+        "Chaque lien reçoit le focus avec Tab, dans l’ordre du document.",
+        "Le focus visible est celui de la feuille de base de `@paulperigault/css`."
+      ],
+      "screenReader": [
+        "Le repère nav porte le nom donné par label.",
+        "La liste porte `role=\"list\"` : VoiceOver garde la sémantique malgré list-style: none.",
+        "La page courante porte `aria-current=\"page\"` et reste un lien."
+      ]
+    },
+    "avoid": [
+      "Pour la replier sous un seuil : utiliser SiteMenu, qui s’appuie sur SiteNav.",
+      "Pour un fil d’Ariane : utiliser Breadcrumb. Pour des pages de résultats : Pagination."
+    ],
+    "evidence": [
+      "[WCAG 1.4.1 Utilisation de la couleur](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+      "[WCAG 2.5.8 Taille de la cible (minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)",
+      "Tests : packages/astro/test/SiteNav.test.ts"
+    ],
+    "group": "navigation",
+    "props": [
+      {
+        "description": "Nom accessible du repère (`aria-label`), par exemple « Navigation principale ».",
+        "fallback": "—",
+        "name": "`label` (obligatoire)",
+        "type": "`string`"
+      },
+      {
+        "description": "Entrées, dans l'ordre d'affichage.",
+        "fallback": "—",
+        "name": "`items` (obligatoire)",
+        "type": "`Item[]`"
+      },
+      {
+        "description": "`row` : en ligne, à la ligne si besoin (défaut) ; `stack` : une entrée par ligne.",
+        "fallback": "`'row'`",
+        "name": "`layout`",
+        "type": "`\"row\" | \"stack\"`"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "`class`",
+        "type": "`string`"
+      }
+    ],
+    "slug": "site-nav",
+    "snippet": "<SiteNav\n  label=\"Navigation principale\"\n  items={[\n    { label: 'Accueil', href: '/' },\n    { label: 'Tarifs', href: '/tarifs/', current: true },\n    { label: 'Contact', href: '/contact/' },\n  ]}\n/>",
+    "summary": "SiteNav affiche la navigation d’un site : une liste de liens nommée, avec la page courante marquée.",
+    "title": "SiteNav",
+    "tokens": [
+      "--pp-color-fg",
+      "--pp-font-weight-bold",
+      "--pp-size-control-height",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-space-3xs",
+      "--pp-space-s"
+    ],
+    "use": [
+      "Lister les pages principales d’un site, en ligne ou en colonne.",
+      "Marquer la page courante avec `current` : `aria-current=\"page\"` et un soulignement épais."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
         "Le libellé est visible au-dessus des lignes : aucun texte masqué à l’œil.",
         "La zone est un message d’état, sans focus volé (WCAG 4.1.3).",
         "L’animation s’arrête sous prefers-reduced-motion et la ligne reste un aplat fixe.",
