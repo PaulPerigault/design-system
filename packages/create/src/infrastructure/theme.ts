@@ -21,6 +21,7 @@ const TOKENS = {
   focus: '--pp-color-focus',
   accentText: '--pp-color-accent-text',
   running: '--pp-color-status-running',
+  info: '--pp-color-status-info',
   surface: '--pp-color-surface',
 } as const;
 
@@ -42,6 +43,7 @@ const sourceOf = (theme: Theme) => ({
   focus: colorOf(theme, TOKENS.focus),
   accentText: colorOf(theme, TOKENS.accentText),
   running: colorOf(theme, TOKENS.running),
+  info: colorOf(theme, TOKENS.info),
   surface: colorOf(theme, TOKENS.surface),
 });
 

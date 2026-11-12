@@ -18,15 +18,21 @@ interface Props {
   href?: string;
   /** Niveau du titre (2, 3 ou 4), à choisir selon la hiérarchie de la page. */
   headingLevel?: keyof typeof TAGS;
+  /** Marge intérieure : `s` (défaut) ou `m`, un cran d'espacement de plus. */
+  density?: 's' | 'm';
   /** Réservé au placement du composant dans son parent. */
   class?: string;
 }
 
-const { title, href, headingLevel, class: className } = Astro.props;
+const { title, href, headingLevel, density, class: className } = Astro.props;
 const Heading = (headingLevel && TAGS[headingLevel]) || DEFAULT_TAG;
 ---
 
-<article class:list={['pp-card', className]} data-linked={href ? 'true' : undefined}>
+<article
+  class:list={['pp-card', className]}
+  data-linked={href ? 'true' : undefined}
+  data-density={density === 'm' ? 'm' : undefined}
+>
   {Astro.slots.has('media') && (
     <div class="pp-card__media">
       <slot name="media" />

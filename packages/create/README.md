@@ -69,7 +69,7 @@ généré est identique octet pour octet à celui du gabarit. Avec l'une des deu
 `src/styles/pp-theme.css` et ajoute son import à `src/layouts/Base.astro`, après celui de
 `@paulperigault/css`. La feuille surcharge les variables du thème, sans dépendance ajoutée :
 
-- teinte : `--pp-color-accent`, `--pp-color-accent-text`, `--pp-color-on-accent`, `--pp-color-focus`, `--pp-color-status-running` et `--pp-chart-1` à `--pp-chart-6`, en `light-dark(clair, sombre)`,
+- teinte : `--pp-color-accent`, `--pp-color-accent-text`, `--pp-color-on-accent`, `--pp-color-focus`, `--pp-color-status-running`, `--pp-color-status-info` et `--pp-chart-1` à `--pp-chart-6`, en `light-dark(clair, sombre)`,
   dérivés par le code de `@paulperigault/tokens` (embarqué, compilé, dans `dist/vendor/tokens/`) ;
   les contrastes sont contrôlés à la dérivation ;
 - pile : `--pp-font-family-sans`. La police est servie par le projet, hors du paquet.

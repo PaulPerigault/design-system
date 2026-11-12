@@ -85,7 +85,8 @@
       "integrator": [
         "Écrire toneLabel dans la langue de la page.",
         "Poser live seulement sur un message ajouté après le chargement.",
-        "Garder le titre et le corps lisibles sans la couleur."
+        "Garder le titre et le corps lisibles sans la couleur.",
+        "`edge=\"none\"` retire le filet de 4 px ; le ton « info » lit `--pp-color-status-info`, remappable sans toucher à « en cours »."
       ],
       "keyboard": [
         "Le composant n’est pas interactif : il ne prend pas le focus.",
@@ -135,6 +136,12 @@
         "type": "`\"polite\" | \"assertive\"`"
       },
       {
+        "description": "Bordure de début : `start` (défaut) ou `none` (contour seul, sans filet de 4 px).",
+        "fallback": "—",
+        "name": "`edge`",
+        "type": "`\"start\" | \"none\"`"
+      },
+      {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
         "name": "`class`",
@@ -150,8 +157,8 @@
       "--pp-color-line",
       "--pp-color-status-degraded",
       "--pp-color-status-failed",
+      "--pp-color-status-info",
       "--pp-color-status-passed",
-      "--pp-color-status-running",
       "--pp-color-surface",
       "--pp-font-line-height-body",
       "--pp-font-size-1",
@@ -782,7 +789,8 @@
         "Choisir headingLevel selon la hiérarchie de la page, sans sauter de niveau.",
         "Donner un titre unique à chaque carte : il sert de nom au lien.",
         "Ne pas placer de lien ou de bouton dans le slot par défaut ni dans media.",
-        "Fournir un texte alternatif aux images du slot media."
+        "Fournir un texte alternatif aux images du slot media.",
+        "`density=\"m\"` élargit la marge intérieure ; sans `density`, la marge reste `--pp-space-s`."
       ],
       "keyboard": [
         "Avec href, la carte compte un seul arrêt de tabulation : le lien du titre.",
@@ -825,6 +833,12 @@
         "type": "`2 | 3 | 4`"
       },
       {
+        "description": "Marge intérieure : `s` (défaut) ou `m`, un cran d'espacement de plus.",
+        "fallback": "—",
+        "name": "`density`",
+        "type": "`\"s\" | \"m\"`"
+      },
+      {
         "description": "Réservé au placement du composant dans son parent.",
         "fallback": "—",
         "name": "`class`",
@@ -852,6 +866,7 @@
       "--pp-size-target-min",
       "--pp-space-2xs",
       "--pp-space-3xs",
+      "--pp-space-m",
       "--pp-space-s",
       "--pp-space-xs",
       "--pp-z-sticky"

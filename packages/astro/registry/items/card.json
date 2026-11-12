@@ -32,6 +32,7 @@
       "--pp-size-target-min",
       "--pp-space-2xs",
       "--pp-space-3xs",
+      "--pp-space-m",
       "--pp-space-s",
       "--pp-space-xs",
       "--pp-z-sticky"

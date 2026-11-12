@@ -5,6 +5,8 @@
  * écrit en clair (`toneLabel`) : jamais la couleur seule (WCAG 2.2, critère 1.4.1).
  * Sans `live`, aucun rôle (contenu statique) ; `polite` → `status`, `assertive` → `alert`.
  */
+import './alert.css';
+
 interface Props {
   /** Nature du message, écrite en clair dans le texte (la couleur n'est jamais seule). */
   tone?: 'info' | 'passed' | 'degraded' | 'failed';
@@ -14,6 +16,8 @@ interface Props {
   title?: string;
   /** Annonce par les lecteurs d'écran : `polite` attend la fin de la lecture, `assertive` interrompt. Absent : aucune annonce. */
   live?: 'polite' | 'assertive';
+  /** Bordure de début : `start` (défaut) ou `none` (contour seul, sans filet de 4 px). */
+  edge?: 'start' | 'none';
   /** Réservé au placement du composant dans son parent. */
   class?: string;
 }
@@ -27,11 +31,16 @@ const ICONS = {
 } as const;
 const ROLES = { polite: 'status', assertive: 'alert' } as const;
 
-const { tone = 'info', toneLabel, title, live, class: className } = Astro.props;
+const { tone = 'info', toneLabel, title, live, edge, class: className } = Astro.props;
 const role = live === undefined ? undefined : ROLES[live];
 ---
 
-<div class:list={['pp-alert', className]} data-tone={tone} role={role}>
+<div
+  class:list={['pp-alert', className]}
+  data-tone={tone}
+  data-edge={edge === 'none' ? 'none' : undefined}
+  role={role}
+>
   <svg
     class="pp-alert__icon"
     viewBox="0 0 24 24"
@@ -56,65 +65,3 @@ const role = live === undefined ? undefined : ROLES[live];
     </div>
   </div>
 </div>
-
-<style>
-  .pp-alert {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--pp-space-2xs);
-    padding-block: var(--pp-space-xs);
-    padding-inline: var(--pp-space-s);
-    border: var(--pp-size-rule) solid var(--pp-color-line);
-    border-inline-start: var(--pp-space-3xs) solid var(--alert-tone);
-    border-radius: var(--pp-radius-surface);
-    background-color: var(--pp-color-surface);
-    color: var(--pp-color-fg);
-    line-height: var(--pp-font-line-height-body);
-  }
-
-  .pp-alert[data-tone='info'] {
-    --alert-tone: var(--pp-color-status-running);
-  }
-
-  .pp-alert[data-tone='passed'] {
-    --alert-tone: var(--pp-color-status-passed);
-  }
-
-  .pp-alert[data-tone='degraded'] {
-    --alert-tone: var(--pp-color-status-degraded);
-  }
-
-  .pp-alert[data-tone='failed'] {
-    --alert-tone: var(--pp-color-status-failed);
-  }
-
-  .pp-alert__icon {
-    flex: none;
-    inline-size: var(--pp-font-size-1);
-    block-size: var(--pp-font-size-1);
-    color: var(--alert-tone);
-  }
-
-  .pp-alert__heading {
-    margin-block: 0;
-    font-weight: var(--pp-font-weight-semibold);
-  }
-
-  .pp-alert__content > :global(*) {
-    margin-block: 0;
-  }
-
-  .pp-alert__content > :global(* + *) {
-    margin-block-start: var(--pp-space-2xs);
-  }
-
-  @media (forced-colors: active) {
-    .pp-alert {
-      border-inline-start-color: CanvasText;
-    }
-
-    .pp-alert__icon {
-      color: CanvasText;
-    }
-  }
-</style>

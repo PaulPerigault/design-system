@@ -23,6 +23,7 @@ const isDerived = (name: string): boolean =>
     '--pp-color-accent-text',
     '--pp-color-focus',
     '--pp-color-status-running',
+    '--pp-color-status-info',
   ].includes(name) || name.startsWith('--pp-chart-');
 
 describe('generateWith : teinte d’accent', () => {

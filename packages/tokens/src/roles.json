@@ -103,6 +103,18 @@
       "norm": "WCAG 1.4.3 (AA, texte)"
     },
     {
+      "fg": "color.status.info",
+      "bg": "color.bg",
+      "min": 4.5,
+      "norm": "WCAG 1.4.3 (AA, texte)"
+    },
+    {
+      "fg": "color.status.info",
+      "bg": "color.surface",
+      "min": 4.5,
+      "norm": "WCAG 1.4.3 (AA, texte)"
+    },
+    {
       "fg": "color.control",
       "bg": "color.bg",
       "min": 3,

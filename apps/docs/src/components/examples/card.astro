@@ -1,5 +1,5 @@
 ---
-/** Exemples vivants de la page Card : carte liée, carte sans lien, carte avec pied de carte. */
+/** Exemples vivants de la page Card : carte liée, carte sans lien, carte avec pied de carte, carte à marge plus large. */
 import Card from '@paulperigault/astro/Card.astro';
 import Stack from '@paulperigault/astro/Stack.astro';
 ---
@@ -16,5 +16,11 @@ import Stack from '@paulperigault/astro/Stack.astro';
     <a slot="footer" href="/composants/">
       Astro
     </a>
+  </Card>
+  <Card title="Marge plus large" density="m" headingLevel={4}>
+    <p>
+      <code>density="m"</code> passe la marge intérieure de <code>--pp-space-s</code> à{' '}
+      <code>--pp-space-m</code>.
+    </p>
   </Card>
 </Stack>

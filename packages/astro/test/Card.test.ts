@@ -65,8 +65,24 @@ describe('Card (rendu)', () => {
   });
 });
 
+describe('Card (density)', () => {
+  it('ne pose aucun data-density par défaut ni pour `s`', async () => {
+    expect((await root()).hasAttribute('data-density')).toBe(false);
+    expect((await root({ density: 's' })).hasAttribute('data-density')).toBe(false);
+  });
+
+  it('pose data-density="m" pour `density="m"`', async () => {
+    expect((await root({ density: 'm' })).getAttribute('data-density')).toBe('m');
+  });
+});
+
 describe('Card (source CSS)', () => {
   const source = readFileSync(new URL('../src/content/card.css', import.meta.url), 'utf8');
+
+  it('density="m" lit --pp-space-m, le défaut garde --pp-space-s', () => {
+    expect(source).toMatch(/\.pp-card\s*\{[^}]*padding: var\(--pp-space-s\)/);
+    expect(source).toMatch(/\.pp-card\[data-density='m'\]\s*\{\s*padding: var\(--pp-space-m\);/);
+  });
 
   it('étend le lien sur la racine positionnée', () => {
     expect(source).toMatch(/\.pp-card\s*\{[^}]*position: relative/);

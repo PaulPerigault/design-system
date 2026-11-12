@@ -18,6 +18,7 @@ export type TokenName =
   | '--pp-color-on-accent'
   | '--pp-color-status-degraded'
   | '--pp-color-status-failed'
+  | '--pp-color-status-info'
   | '--pp-color-status-passed'
   | '--pp-color-status-running'
   | '--pp-color-surface'

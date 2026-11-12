@@ -33,9 +33,10 @@ function roleBase(entries: ThemeEntry[]): RoleBase | undefined {
   const focus = colorOf(entries, '--pp-color-focus');
   const accentText = colorOf(entries, '--pp-color-accent-text');
   const running = colorOf(entries, '--pp-color-status-running');
+  const info = colorOf(entries, '--pp-color-status-info');
   const surface = colorOf(entries, '--pp-color-surface');
-  return focus && accentText && running && surface
-    ? { focus, accentText, running, surface }
+  return focus && accentText && running && info && surface
+    ? { focus, accentText, running, info, surface }
     : undefined;
 }
 

@@ -10,6 +10,7 @@ const THEMES = ['light', 'dark'] as const;
 const FOCUS = '--pp-color-focus';
 const ACCENT_TEXT = '--pp-color-accent-text';
 const RUNNING = '--pp-color-status-running';
+const INFO = '--pp-color-status-info';
 
 function derived(hue: number, theme: 'light' | 'dark') {
   const result = deriveRoles(hue, theme, sourceOf(theme));
@@ -27,6 +28,7 @@ describe('deriveRoles', () => {
         [FOCUS, 'color.focus'],
         [ACCENT_TEXT, 'color.accent-text'],
         [RUNNING, 'color.status.running'],
+        [INFO, 'color.status.info'],
       ]) {
         const color = parseOklch(roles[token ?? ''] ?? '');
         expect(color.h).toBeCloseTo(hue, 6);
