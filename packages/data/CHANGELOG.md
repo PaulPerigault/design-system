@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.1](https://github.com/PaulPerigault/design-system/compare/data-v0.1.0...data-v0.1.1) (2026-11-12)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @paulperigault/dataviz bumped from 0.1.0 to 0.1.1
+
 ## 0.1.0 (2026-11-04)
 
 

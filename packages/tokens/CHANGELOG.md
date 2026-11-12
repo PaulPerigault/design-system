@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.0](https://github.com/PaulPerigault/design-system/compare/tokens-v0.1.0...tokens-v0.2.0) (2026-11-12)
+
+
+### Features
+
+* **astro:** alert edge, jeton status-info, card density ([#342](https://github.com/PaulPerigault/design-system/issues/342)) ([ec79ea9](https://github.com/PaulPerigault/design-system/commit/ec79ea9ebba3f3259f05c4c832fd88034eb997a8))
+* **tokens:** jetons accent-text et prose ([#341](https://github.com/PaulPerigault/design-system/issues/341)) ([99eed50](https://github.com/PaulPerigault/design-system/commit/99eed50d227a0666351f8c4046b69ec0a2eae63c))
+
 ## 0.1.0 (2026-11-04)
 
 

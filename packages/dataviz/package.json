@@ -1,6 +1,6 @@
 {
   "name": "@paulperigault/dataviz",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Contrat de données, formatage fr et palettes accessibles dérivées de l'accent, pour les graphiques statiques.",
   "type": "module",
   "license": "MIT",
@@ -45,6 +45,6 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@paulperigault/tokens": "0.1.0"
+    "@paulperigault/tokens": "0.2.0"
   }
 }
