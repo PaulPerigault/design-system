@@ -87,7 +87,7 @@ describe('Prose (source CSS)', () => {
     expect(source).toContain('color: var(--pp-color-accent-text)');
   });
 
-  it('style les blockquotes avec accent et spacing', () => {
+  it('style les blockquotes avec accent-text et spacing', () => {
     expect(source).toContain('border-inline-start: var(--pp-size-focus-width)');
     expect(source).toContain('var(--pp-space-m)');
   });

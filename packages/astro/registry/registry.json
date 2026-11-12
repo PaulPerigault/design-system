@@ -1791,7 +1791,6 @@
       ],
       "meta": {
         "tokens": [
-          "--pp-color-accent",
           "--pp-color-accent-text",
           "--pp-color-fg",
           "--pp-color-line",

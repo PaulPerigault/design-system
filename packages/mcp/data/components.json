@@ -3501,7 +3501,6 @@
     "summary": "Prose met en forme un contenu éditorial rendu en Markdown, avec une largeur de lecture bornée.",
     "title": "Prose",
     "tokens": [
-      "--pp-color-accent",
       "--pp-color-accent-text",
       "--pp-color-fg",
       "--pp-color-line",
