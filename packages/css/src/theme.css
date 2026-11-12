@@ -11,6 +11,7 @@
   --spacing-*: initial;
 
   --color-accent: var(--pp-color-accent);
+  --color-accent-text: var(--pp-color-accent-text);
   --color-bg: var(--pp-color-bg);
   --color-chart-1: var(--pp-chart-1);
   --color-chart-2: var(--pp-chart-2);
@@ -56,4 +57,5 @@
 
   --container-page: var(--pp-size-page);
   --container-measure: var(--pp-size-measure);
+  --container-prose: var(--pp-size-prose);
 }

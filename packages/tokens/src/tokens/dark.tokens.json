@@ -50,6 +50,13 @@
       },
       "$description": "Accent unique : liens et actions principales."
     },
+    "accent-text": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.78, 0.1, 270.7]
+      },
+      "$description": "Texte d'accent (liens, focus) : valeur initiale égale à l'accent ; remappable sans toucher à l'aplat."
+    },
     "on-accent": {
       "$value": {
         "colorSpace": "oklch",

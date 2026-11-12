@@ -37,6 +37,18 @@
       "norm": "WCAG 1.4.3 (AA, texte)"
     },
     {
+      "fg": "color.accent-text",
+      "bg": "color.bg",
+      "min": 4.5,
+      "norm": "WCAG 1.4.3 (AA, texte)"
+    },
+    {
+      "fg": "color.accent-text",
+      "bg": "color.surface",
+      "min": 4.5,
+      "norm": "WCAG 1.4.3 (AA, texte)"
+    },
+    {
       "fg": "color.on-accent",
       "bg": "color.accent",
       "min": 4.5,

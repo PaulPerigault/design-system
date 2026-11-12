@@ -12,6 +12,7 @@ import { settle } from './settle.ts';
 /** Rôles qui portent la teinte d'accent, et surface contre laquelle ils sont mesurés. */
 export interface RoleBase {
   readonly focus: Oklch;
+  readonly accentText: Oklch;
   readonly running: Oklch;
   readonly surface: Oklch;
 }
@@ -23,6 +24,7 @@ const RATIO_DIGITS = 2;
 /** Seuils de `roles.json` : anneau de focus 1.4.11 (3:1), statut en texte 1.4.3 (4,5:1). */
 const ROLES = [
   { token: '--pp-color-focus', key: 'focus', min: MIN_GRAPHIC_CONTRAST },
+  { token: '--pp-color-accent-text', key: 'accentText', min: MIN_TEXT_CONTRAST },
   { token: '--pp-color-status-running', key: 'running', min: MIN_TEXT_CONTRAST },
 ] as const;
 
@@ -34,7 +36,7 @@ function measure(token: string, color: Oklch, min: number, grounds: [string, Okl
 }
 
 /**
- * Dérive focus et statut « en cours » : clarté et chroma des jetons, teinte de l'accent (déjà
+ * Dérive focus, texte d'accent et statut « en cours » : clarté et chroma des jetons, teinte de l'accent (déjà
  * normalisée par la dérivation des palettes). Le contraste est mesuré sur la valeur émise.
  */
 export function deriveRoles(hue: number, theme: Theme, source: ThemeSource): Result<TokenMap> {

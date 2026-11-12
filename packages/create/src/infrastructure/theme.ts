@@ -19,6 +19,7 @@ const TOKENS = {
   fg: '--pp-color-fg',
   line: '--pp-color-line',
   focus: '--pp-color-focus',
+  accentText: '--pp-color-accent-text',
   running: '--pp-color-status-running',
   surface: '--pp-color-surface',
 } as const;
@@ -39,6 +40,7 @@ const sourceOf = (theme: Theme) => ({
   fg: colorOf(theme, TOKENS.fg),
   line: colorOf(theme, TOKENS.line),
   focus: colorOf(theme, TOKENS.focus),
+  accentText: colorOf(theme, TOKENS.accentText),
   running: colorOf(theme, TOKENS.running),
   surface: colorOf(theme, TOKENS.surface),
 });

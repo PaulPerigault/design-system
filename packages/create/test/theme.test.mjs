@@ -51,6 +51,9 @@ describe('buildTheme : mêmes règles que le build de tokens', () => {
   it('dérive l’accent d’une teinte et la pile seule', () => {
     const hued = buildTheme({ accentHue: '150' });
     expect(hued.ok && hued.css).toContain('--pp-color-accent: light-dark(oklch(47% 0.1294 150)');
+    expect(hued.ok && hued.css).toContain(
+      '--pp-color-accent-text: light-dark(oklch(47% 0.1294 150)',
+    );
     const stacked = buildTheme({ fontStack: 'Inter, system-ui, sans-serif' });
     expect(stacked.ok && stacked.css).not.toContain('--pp-color-accent');
   });

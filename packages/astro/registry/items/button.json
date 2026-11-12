@@ -16,7 +16,7 @@
   ],
   "meta": {
     "tokens": [
-      "--pp-color-accent",
+      "--pp-color-accent-text",
       "--pp-color-control",
       "--pp-color-fg",
       "--pp-color-muted",

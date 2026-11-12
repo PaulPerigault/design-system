@@ -10,6 +10,7 @@
   --pp-chart-5: light-dark(oklch(44% 0.1781 0.7), oklch(72% 0.1514 75.7));
   --pp-chart-6: light-dark(oklch(64% 0.2025 285.7), oklch(60% 0.1 165.7));
   --pp-color-accent: light-dark(oklch(47% 0.19 270.7), oklch(78% 0.1 270.7));
+  --pp-color-accent-text: light-dark(oklch(47% 0.19 270.7), oklch(78% 0.1 270.7));
   --pp-color-bg: light-dark(oklch(98.5% 0.004 270.7), oklch(20.1% 0.0124 270.7));
   --pp-color-control: light-dark(oklch(60% 0.02 270.7), oklch(60% 0.02 270.7));
   --pp-color-fg: light-dark(oklch(21.5% 0.016 270.7), oklch(94.5% 0.008 270.7));
@@ -61,6 +62,7 @@
   --pp-size-focus-width: 2px;
   --pp-size-measure: 36rem;
   --pp-size-page: 72rem;
+  --pp-size-prose: 36rem;
   --pp-size-rule: 1px;
   --pp-size-target-min: 1.5rem;
   --pp-space-2xl: 4rem;

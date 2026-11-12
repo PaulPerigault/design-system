@@ -31,9 +31,12 @@ function paletteBase(entries: ThemeEntry[]): ThemeBase | undefined {
 
 function roleBase(entries: ThemeEntry[]): RoleBase | undefined {
   const focus = colorOf(entries, '--pp-color-focus');
+  const accentText = colorOf(entries, '--pp-color-accent-text');
   const running = colorOf(entries, '--pp-color-status-running');
   const surface = colorOf(entries, '--pp-color-surface');
-  return focus && running && surface ? { focus, running, surface } : undefined;
+  return focus && accentText && running && surface
+    ? { focus, accentText, running, surface }
+    : undefined;
 }
 
 function baseOf(entries: ThemeEntry[] | undefined): ThemeSource | undefined {

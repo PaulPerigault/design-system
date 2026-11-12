@@ -3,12 +3,12 @@
   /* Contraste >= 4,5:1 sur le fond (test). Fonctions et paramètres gardent --pp-color-fg. */
   --shiki-foreground: var(--pp-color-fg);
   --shiki-token-comment: var(--pp-color-muted);
-  --shiki-token-keyword: var(--pp-color-accent);
+  --shiki-token-keyword: var(--pp-color-accent-text);
   --shiki-token-string: var(--pp-color-status-passed);
   --shiki-token-string-expression: var(--pp-color-status-passed);
   --shiki-token-constant: var(--pp-color-status-degraded);
   --shiki-token-punctuation: var(--pp-color-muted);
-  --shiki-token-link: var(--pp-color-accent);
+  --shiki-token-link: var(--pp-color-accent-text);
 
   margin: 0;
   border: var(--pp-size-rule) solid var(--pp-color-line);

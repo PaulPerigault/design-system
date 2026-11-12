@@ -13,6 +13,7 @@
   "meta": {
     "tokens": [
       "--pp-color-accent",
+      "--pp-color-accent-text",
       "--pp-color-fg",
       "--pp-color-line",
       "--pp-color-muted",
@@ -28,7 +29,7 @@
       "--pp-font-weight-bold",
       "--pp-radius-surface",
       "--pp-size-focus-width",
-      "--pp-size-measure",
+      "--pp-size-prose",
       "--pp-size-rule",
       "--pp-space-2xs",
       "--pp-space-3xs",
