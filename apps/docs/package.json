@@ -17,7 +17,7 @@
     "@paulperigault/dataviz": "*",
     "@paulperigault/tokens": "*",
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.4.1",
+    "astro": "^7.4.7",
     "fontkitten": "1.0.3",
     "tailwindcss": "^4.3.3"
   },
