@@ -19,8 +19,14 @@ const items = (text, key) =>
 const duplicates = (values) => values.filter((value, index) => values.indexOf(value) !== index);
 
 function packageOptions(text) {
-  const block = /id: paquet\n[\s\S]*?options: \[(.*)\]/.exec(text);
-  return block ? block[1].split(',').map((item) => item.trim()) : [];
+  // Prettier replie la liste sur plusieurs lignes quand elle dépasse 100 colonnes.
+  const block = /id: paquet\n[\s\S]*?options:\s*\[([^\]]*)\]/.exec(text);
+  return block
+    ? block[1]
+        .split(',')
+        .map((item) => item.trim())
+        .filter(Boolean)
+    : [];
 }
 
 /** @returns {string[]} problèmes d'un formulaire d'issue (`text` = contenu du fichier) */

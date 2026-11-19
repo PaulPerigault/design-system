@@ -21,6 +21,11 @@ describe('formulaires d’issue', () => {
   it('accepte un formulaire complet', () => {
     expect(templateProblems(form("'type:bogue'"), LABELS)).toEqual([]);
   });
+  it('lit la liste de paquets repliée sur plusieurs lignes par Prettier', () => {
+    const folded = 'options:\n        [\n          css,\n          inconnu,\n        ]';
+    const text = form("'type:bogue'").replace('options: [css]', folded);
+    expect(templateProblems(text, LABELS)).toEqual(['paquet sans label : inconnu']);
+  });
   it('refuse un label inconnu', () => {
     expect(templateProblems(form("'type:autre'"), LABELS)).toEqual(['label inconnu : type:autre']);
   });

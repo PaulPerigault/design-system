@@ -28,6 +28,7 @@ export default tseslint.config(
       '.claude/**',
       'packages/color/wasm/**',
       'packages/data/wasm/**',
+      'packages/milestones-3d/wasm/**',
     ],
   },
   js.configs.recommended,
