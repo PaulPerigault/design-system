@@ -22,6 +22,10 @@
       "type": "registry:ui"
     },
     {
+      "path": "packages/astro/src/behaviors/milestones-3d-types.ts",
+      "type": "registry:ui"
+    },
+    {
       "path": "packages/astro/src/behaviors/milestones-3d-view.ts",
       "type": "registry:ui"
     },

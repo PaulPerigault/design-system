@@ -1,19 +1,19 @@
 /**
  * Comportement de Milestones3D (opt-in, ADR-0012). Le rendu serveur est la liste complète ; ce
- * module y ajoute la scène 3D quand toutes les conditions tiennent : pas de mouvement réduit, pas
- * d'économie de données, section proche de l'écran (`milestones-3d-gate.ts`), puis WebGL2 et
- * appareil non faible (jugés par `@paulperigault/milestones-3d`, chargé par `import()` dynamique).
- * Tout échec (chargement, `init`, perte de contexte) ramène à la liste, sans message à l'écran.
- * L'importer suppose le paquet `@paulperigault/milestones-3d` installé (dépendance facultative).
- *
- * CSP du site consommateur : `script-src 'self' 'wasm-unsafe-eval'` (le .wasm est instancié) et
- * `connect-src 'self'` (il est chargé par `fetch`). Sans eux, l'init échoue et la liste reste.
- * Le serveur doit envoyer le .wasm en `application/wasm`. Aucun style en ligne n'est posé.
+ * module y ajoute la scène 3D si : pas de mouvement réduit, pas d'économie de données, section
+ * proche de l'écran (`milestones-3d-gate.ts`), puis WebGL2 et appareil non faible (jugés par
+ * `@paulperigault/milestones-3d`, chargé par `import()` dynamique : dépendance facultative, mais
+ * à installer pour importer ce module). Tout échec ramène à la liste, sans message à l'écran.
+ * CSP du consommateur : `script-src 'self' 'wasm-unsafe-eval'`, `connect-src 'self'` et le
+ * .wasm servi en `application/wasm`. Sans eux l'init échoue et la liste reste.
  */
 import type { EarlyEnv, GateEnv } from './milestones-3d-gate';
 import { blockedEarly, browserGate, whenReady } from './milestones-3d-gate';
+import type { Deps, Scene, SceneModule } from './milestones-3d-types';
 import type { Parts } from './milestones-3d-view';
 import { addSelectors, collect, itemId, removeSelectors, showActive } from './milestones-3d-view';
+
+export type { Deps, Scene, SceneModule } from './milestones-3d-types';
 
 export const HOST_SELECTOR = '[data-pp-milestones]';
 
@@ -22,34 +22,12 @@ const STATE = 'data-state';
 /** Composants déjà pris en charge : deux appels d'`install` ne démarrent pas deux scènes. */
 const started = new WeakSet<Element>();
 
-type Revert = () => void;
-
-/** Ce que le comportement attend du paquet 3D (sous-ensemble de son API publique). */
-export interface Scene {
-  destroy(): void;
-  setActive(id: string): void;
-}
-export interface SceneModule {
-  canEnhance(env: unknown): boolean;
-  enhanceEnv(visible: boolean): unknown;
-  readTheme(root: Element): unknown;
-  init(
-    canvas: HTMLCanvasElement,
-    data: unknown,
-    theme: unknown,
-    options: { activeId: string; onSelect(id: string): void; onFallback(reason: string): void },
-  ): Promise<Scene>;
-}
-
-export interface Deps {
-  load(): Promise<SceneModule>;
-  early(): string | null;
-  ready(host: Element): Promise<void>;
-}
-
 export const defaultDeps = (win: Window & typeof globalThis = window): Deps => {
   const gate: GateEnv = browserGate(win);
-  const env: EarlyEnv = { matchMedia: (query) => win.matchMedia(query), navigator: win.navigator };
+  const env: EarlyEnv = {
+    matchMedia: (query) => win.matchMedia(query),
+    navigator: win.navigator as EarlyEnv['navigator'],
+  };
   return {
     load: () => import('@paulperigault/milestones-3d') as Promise<SceneModule>,
     early: () => blockedEarly(env),
@@ -66,7 +44,11 @@ function makeCanvas(host: Element): HTMLCanvasElement {
 }
 
 /** Retour au rendu classique : idempotent, sans effet si rien n'a été amélioré. */
-function reverter(parts: Parts, canvas: HTMLCanvasElement, scene: () => Scene | undefined): Revert {
+function reverter(
+  parts: Parts,
+  canvas: HTMLCanvasElement,
+  scene: () => Scene | undefined,
+): () => void {
   let done = false;
   return (): void => {
     if (done) return;
