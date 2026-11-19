@@ -140,7 +140,7 @@ jobs:
             fi
             # Paquets WebAssembly : les crates, les références de la parité, les paquets, leurs vecteurs, le
             # SBOM et ce workflow ou la publication (qui construit aussi le .wasm).
-            wasm_paths='^(crates/|packages/(color|data)/|packages/(tokens|dataviz)/src/|tools/(color|data|release)/|Cargo\.(toml|lock)$|rust-toolchain\.toml$|\.github/workflows/(ci|release)\.yml$)'
+            wasm_paths='^(crates/|packages/(color|data)/|packages/(tokens|dataviz)/src/|tools/(color|data|release|wasm)/|Cargo\.(toml|lock)$|rust-toolchain\.toml$|\.github/workflows/(ci|release)\.yml$)'
             if git diff --name-only "$BASE_SHA" HEAD | grep -Eq "$wasm_paths"; then
               wasm=true
             fi
@@ -217,6 +217,9 @@ jobs:
       - run: npm -w @paulperigault/color run build && npm -w @paulperigault/data run build
       - run: npm -w @paulperigault/color run build:wasm && npm -w @paulperigault/data run build:wasm
       - run: npm -w @paulperigault/color run check:wasm && npm -w @paulperigault/data run check:wasm
+      # Scène de jalons (ADR-0012) : cargo, wasm-bindgen puis wasm-opt -Oz (binaryen vient de
+      # `npm ci`, étape de ./.github/actions/setup). Poids avant et après dans le résumé, jamais bloquant.
+      - run: node tools/wasm/build-milestones.ts
       - name: parité et contrat du paquet construit
         env:
           PP_COLOR_WASM: required
@@ -230,6 +233,7 @@ jobs:
           path: |
             packages/color/wasm/
             packages/data/wasm/
+            packages/milestones-3d/wasm/
             sbom/paulperigault-color.cdx.json
             sbom/paulperigault-data.cdx.json
           retention-days: 30

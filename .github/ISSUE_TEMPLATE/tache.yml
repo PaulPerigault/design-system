@@ -47,7 +47,22 @@ body:
     id: paquet
     attributes:
       label: Paquet concerné
-      options: [tokens, color, data, css, astro, guards, create, mcp, docs, agents, ci, processus]
+      options:
+        [
+          tokens,
+          color,
+          data,
+          css,
+          astro,
+          milestones,
+          guards,
+          create,
+          mcp,
+          docs,
+          agents,
+          ci,
+          processus,
+        ]
     validations:
       required: true
   - type: dropdown
