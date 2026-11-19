@@ -54,26 +54,9 @@ Non établi, donc non affirmé : le gain de `-Oz` sur ce `.wasm`, le poids de `g
 
 ### 1. Modèle de données (générique, sans donnée métier)
 
-```ts
-type MilestoneStatus = 'achieved' | 'planned';
-interface Milestone {
-  id: string; // unique, [a-z0-9-]+
-  label: string;
-  group?: string; // émetteur, catégorie
-  status: MilestoneStatus;
-  date?: string; // 'AAAA-MM' ou 'AAAA-MM-JJ'
-  href?: string; // https: ou chemin relatif, validé
-  emblem?: EmblemKey; // clé d'emblème géométrique
-}
-interface Goal {
-  label: string;
-  href?: string;
-} // cible finale facultative
-interface MilestonesData {
-  milestones: Milestone[];
-  goal?: Goal;
-}
-```
+- `Milestone` : `id` (unique, `[a-z0-9-]+`), `label`, `group?` (émetteur ou catégorie), `status` (`achieved` ou `planned`), `date?` (`AAAA-MM` ou `AAAA-MM-JJ`), `href?` (`https:` ou chemin relatif, validé), `emblem?` (clé d'emblème géométrique).
+- `Goal` : `label`, `href?` (cible finale facultative).
+- `MilestonesData` : `milestones: Milestone[]` et `goal?: Goal`.
 
 Valeurs par défaut tranchées :
 
@@ -98,13 +81,8 @@ Valeurs par défaut tranchées :
 - **Profil** : `opt-level = "z"` pour les deux crates par `[profile.release.package.pp-milestones]` et `…-wasm`, le reste du profil racine inchangé (`lto`, `codegen-units = 1`, `panic = "abort"`, `strip`). Le profil racine reste `"s"` : `pp-color-wasm` et `pp-data-wasm` ne bougent pas. Si `"s"` mesure plus petit que `"z"` sur ce crate (arrive avec `lto`), la mesure l'emporte et la sous-issue 1 le consigne.
 - **`wasm-opt -Oz`** : appelé par un script du dépôt après `wasm-bindgen`, avec `binaryen` en dépendance de développement à version exacte (paquet npm qui embarque `wasm-opt`, registre npm seulement, donc compatible avec `check:lockfile`). Alternative écartée : `wasm-pack`, que le dépôt n'utilise pas. Le script échoue clairement si `wasm-opt` manque, au lieu de sauter l'étape en silence ; le poids affiché dit s'il est passé.
 - **Wrapper TypeScript strict** `@paulperigault/milestones-3d` (paquet public, même modèle de publication et de provenance que `@paulperigault/color`) :
-  ```ts
-  init(canvas: HTMLCanvasElement, data: MilestonesData, theme: Theme,
-       options?: { dprMax?: number; activeId?: string; onSelect?: (id: string) => void;
-                   onFallback?: (reason: FallbackReason) => void })
-    : Promise<{ destroy(): void; setTheme(theme: Theme): void; setActive(id: string): void }>
-  ```
-  plus `readTheme(root: Element): Theme` (voir Design) et `canEnhance(env): boolean` (voir Repli), qui sont de la logique pure à dépendances injectées. Aucun rendu côté TypeScript : il charge le `.wasm`, valide, branche les écouteurs et relaie.
+  - `init(canvas, data, theme, options?)` rend `Promise<{ destroy(), setTheme(theme), setActive(id) }>` ; `options` : `dprMax?`, `activeId?`, `onSelect?(id)`, `onFallback?(reason)`.
+  - Aussi `readTheme(root: Element): Theme` (voir Design) et `canEnhance(env): boolean` (voir Repli), logique pure à dépendances injectées. Aucun rendu côté TypeScript : il charge le `.wasm`, valide, branche les écouteurs et relaie.
 
 ### 4. Design : aucune couleur, durée ni courbe en dur
 
