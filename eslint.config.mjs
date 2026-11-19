@@ -11,6 +11,7 @@ const TS_STRICT_FILES = [
   'packages/dataviz/**/*.ts',
   'packages/color/**/*.ts',
   'packages/data/**/*.ts',
+  'packages/milestones-3d/**/*.ts',
   'packages/create/**/*.ts',
   'packages/mcp/**/*.ts',
   'tools/agents/**/*.ts',

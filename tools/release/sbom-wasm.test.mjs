@@ -46,8 +46,11 @@ describe('addWasmToSbom', () => {
 `,
     'packages/data/wasm/pp_data_wasm_bg.wasm.sha256': `${SHA}  pp_data_wasm_bg.wasm
 `,
+    'packages/milestones-3d/wasm/pp_milestones_wasm_bg.wasm.sha256': `${SHA}  pp_milestones_wasm_bg.wasm
+`,
     'sbom/paulperigault-color.cdx.json': '{"components":[]}',
     'sbom/paulperigault-data.cdx.json': '{"components":[]}',
+    'sbom/paulperigault-milestones-3d.cdx.json': '{"components":[]}',
   };
   const io = (present) => {
     const written = {};
@@ -72,6 +75,9 @@ describe('addWasmToSbom', () => {
     expect(addWasmToSbom(context)).toBe(true);
     expect(context.written['sbom/paulperigault-color.cdx.json']).toContain(SHA);
     expect(context.written['sbom/paulperigault-data.cdx.json']).toContain('pp_data_wasm_bg.wasm');
+    expect(context.written['sbom/paulperigault-milestones-3d.cdx.json']).toContain(
+      'pp_milestones_wasm_bg.wasm',
+    );
   });
 
   it('n’ajoute que le .wasm construit', () => {

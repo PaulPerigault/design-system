@@ -48,6 +48,10 @@
       "component": "data",
       "package-name": "@paulperigault/data"
     },
+    "packages/milestones-3d": {
+      "component": "milestones-3d",
+      "package-name": "@paulperigault/milestones-3d"
+    },
     "packages/dataviz": {
       "component": "dataviz",
       "package-name": "@paulperigault/dataviz"
