@@ -51,6 +51,7 @@ describe('courbes', () => {
       'cubic-bezier(1.2, 0, 0, 1)',
       'cubic-bezier(0.2, 0, -0.1, 1)',
       'cubic-bezier(a, b, c, d)',
+      'cubic-bezier(,,,)',
       'constructor',
       'spring(1)',
     ];

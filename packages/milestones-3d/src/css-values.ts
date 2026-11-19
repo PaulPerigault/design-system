@@ -4,7 +4,7 @@ import type { Curve } from './types.ts';
 const DURATION = /^(\d*\.?\d+)(ms|s)$/;
 const MS_PER_S = 1000;
 const CURVE_POINTS = 4;
-const BEZIER = /^cubic-bezier\(\s*([^()]*?)\s*\)$/;
+const BEZIER_OPEN = 'cubic-bezier(';
 
 /* eslint-disable @typescript-eslint/no-magic-numbers -- points de contrôle définis par CSS Easing Level 1 */
 const KEYWORDS: Readonly<Record<string, Curve>> = {
@@ -31,7 +31,9 @@ const isFour = (values: number[]): values is Four =>
   values.length === CURVE_POINTS && values.every(Number.isFinite);
 
 function bezier(args: string): Curve | null {
-  const numbers = args.split(/\s*,\s*/).map(Number);
+  const numbers = args
+    .split(',')
+    .map((part) => (part.trim() === '' ? Number.NaN : Number(part.trim())));
   if (!isFour(numbers)) return null;
   const [x1, y1, x2, y2] = numbers;
   return unit(x1) && unit(x2) ? [x1, y1, x2, y2] : null;
@@ -40,7 +42,8 @@ function bezier(args: string): Curve | null {
 /** `cubic-bezier(…)` ou mot-clé ; `null` pour une courbe non reconnue (`steps()`, texte libre). */
 export function parseEasing(text: string): Curve | null {
   const clean = text.trim().toLowerCase();
-  const match = BEZIER.exec(clean);
-  if (match?.[1] !== undefined) return bezier(match[1]);
+  if (clean.startsWith(BEZIER_OPEN) && clean.endsWith(')')) {
+    return bezier(clean.slice(BEZIER_OPEN.length, -1).trim());
+  }
   return Object.hasOwn(KEYWORDS, clean) ? (KEYWORDS[clean] ?? null) : null;
 }

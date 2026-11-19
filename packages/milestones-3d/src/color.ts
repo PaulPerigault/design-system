@@ -19,7 +19,7 @@ import {
 import { MilestonesError } from './error.ts';
 import type { ThemeColor } from './types.ts';
 
-const FUNCTION = /^([a-z][a-z0-9-]*)\(\s*([^()]*?)\s*\)$/;
+const NAME = /^[a-z][a-z0-9-]*$/;
 /** Transfert sRGB (IEC 61966-2-1) : seuil linéaire, pente basse, exposant et décalage. */
 const LINEAR_KNEE = 0.0031308;
 const LOW_SLOPE = 12.92;
@@ -83,10 +83,18 @@ const tokens = (args: string): string[] =>
  * Analyse `text` en couleur sRGB ou OKLCH.
  * @throws MilestonesError `unsupported-color` si le format n'est pas pris en charge.
  */
+/** Nom et arguments de `nom(arguments)` : découpage par indices, sans expression rationnelle. */
+function split(text: string): { name: string; args: string } | null {
+  const open = text.indexOf('(');
+  if (open < 1 || !text.endsWith(')')) return null;
+  const name = text.slice(0, open);
+  const args = text.slice(open + 1, -1);
+  return NAME.test(name) && !args.includes('(') && !args.includes(')') ? { name, args } : null;
+}
+
 export function parseColor(text: string): ThemeColor {
-  const match = FUNCTION.exec(text.trim().toLowerCase());
-  const parse = match?.[1] === undefined ? undefined : PARSERS.get(match[1]);
-  const color = match?.[2] === undefined ? null : (parse?.(tokens(match[2])) ?? null);
+  const call = split(text.trim().toLowerCase());
+  const color = call ? (PARSERS.get(call.name)?.(tokens(call.args)) ?? null) : null;
   if (!color) throw new MilestonesError('unsupported-color', text);
   return color;
 }
