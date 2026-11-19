@@ -55,7 +55,7 @@ export interface ExtraSection {
   title: string;
 }
 
-/** Sections propres à cette page, insérées avant « Preuves et décisions » (sommaire compris). */
+/** Sections propres à cette page, insérées entre « Accessibilité » et « Propriétés » (sommaire compris). */
 export const EXTRA_SECTIONS: readonly ExtraSection[] = [
   { id: 'chargement', title: 'Quand la 3D se charge' },
   { id: 'donnees', title: 'Fournir ses données' },

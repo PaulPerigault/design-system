@@ -15,7 +15,7 @@ import PageNav from './PageNav.astro';
 import PropsTable from './PropsTable.astro';
 
 interface Props extends ComponentPageData {
-  /** Sections propres à la page (slot `more`), insérées avant « Preuves et décisions ». */
+  /** Sections propres à la page (slot `more`), insérées entre « Accessibilité » et « Propriétés ». */
   extra?: readonly Section[];
 }
 
@@ -26,11 +26,8 @@ const tokens = registry.items.find((item) => item.name === slug)?.meta?.tokens ?
 const hasVariants = Astro.slots.has('variants');
 const base = SECTIONS.filter((section) => section.id !== 'variantes' || hasVariants);
 const { extra = [] } = Astro.props;
-const renderedSections = [
-  ...base.filter((section) => section.id !== 'preuves'),
-  ...extra,
-  ...base.filter((section) => section.id === 'preuves'),
-];
+const at = base.findIndex((section) => section.id === 'proprietes');
+const renderedSections = [...base.slice(0, at), ...extra, ...base.slice(at)];
 const group = GROUPS.find((entry) => entry.links.some((link) => link.slug === slug));
 const url = canonicalOf(`/components/${slug}/`);
 const jsonLd = graph(
@@ -88,6 +85,8 @@ const notes = [
       </>
     ))}
 
+    <slot name="more" />
+
     <h2 id="proprietes">{heading('proprietes')}</h2>
     <PropsTable item={slug} title={title} />
 
@@ -99,8 +98,6 @@ const notes = [
         </li>
       ))}
     </ul>
-
-    <slot name="more" />
 
     <h2 id="preuves">{heading('preuves')}</h2>
     <ul>

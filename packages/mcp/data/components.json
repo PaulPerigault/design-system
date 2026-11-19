@@ -2997,7 +2997,18 @@
         "Fournir des libellés, dates et liens complets : la scène n’ajoute aucune information.",
         "Passer `locale` (langue des dates) et `labels` (mots d’interface) dans la langue de la page.",
         "Donner un `label` quand la page porte plusieurs parcours.",
-        "Vérifier le contraste du texte de vos données sur le fond de votre page : le composant n’impose pas de fond."
+        "Vérifier le contraste du texte de vos données sur le fond de votre page : le composant n’impose pas de fond.",
+        "Pas de `prefers-reduced-motion: reduce`. Vérifié avant tout téléchargement.",
+        "Pas d’économie de données (`navigator.connection.saveData`), quand le navigateur l’expose : Chromium seulement. Vérifié avant tout téléchargement.",
+        "Appareil non faible : plus de 2 cœurs (`hardwareConcurrency`) et plus de 2 Go (`deviceMemory`). Une valeur absente ne compte pas comme faible : Firefox et Safari n’exposent pas `deviceMemory`.",
+        "WebGL2 disponible, testé sur un canvas jetable, rendu au navigateur aussitôt.",
+        "Section proche de l’écran (marge de 200 px). Déjà visible à l’ouverture : la 3D attend le premier geste ou l’inactivité du navigateur, pour ne pas toucher au LCP.",
+        "[web-features](https://web-platform-dx.github.io/web-features-explorer/features/webgl2)",
+        "[caniuse](https://caniuse.com/webgl2)",
+        "`id` (obligatoire) : identifiant unique, `[a-z0-9-]+`.",
+        "`label` et `status` (obligatoires) : `achieved` ou `planned`.",
+        "`group`, `date` (`AAAA-MM` ou `AAAA-MM-JJ`), `href` (`https:` ou chemin relatif) : facultatifs.",
+        "`emblem` : `disc` (défaut), `check`, `shield`, `cloud`, `network`, `database`, `code`, `key`, `gear`. Une clé inconnue est refusée par la scène, la liste reste."
       ],
       "keyboard": [
         "Sans 3D, la liste n’a que des liens : Tab les parcourt dans l’ordre des jalons.",
@@ -3086,18 +3097,7 @@
       "--pp-size-target-min",
       "--pp-space-3xs",
       "--pp-space-s",
-      "--pp-space-xs",
-      "Pas de prefers-reduced-motion: reduce. Vérifié avant tout téléchargement.",
-      "Pas d’économie de données (navigator.connection.saveData), quand le navigateur l’expose : Chromium seulement. Vérifié avant tout téléchargement.",
-      "Appareil non faible : plus de 2 cœurs (hardwareConcurrency) et plus de 2 Go (deviceMemory). Une valeur absente ne compte pas comme faible : Firefox et Safari n’exposent pas deviceMemory.",
-      "WebGL2 disponible, testé sur un canvas jetable, rendu au navigateur aussitôt.",
-      "Section proche de l’écran (marge de 200 px). Déjà visible à l’ouverture : la 3D attend le premier geste ou l’inactivité du navigateur, pour ne pas toucher au LCP.",
-      "[web-features](https://web-platform-dx.github.io/web-features-explorer/features/webgl2)",
-      "[caniuse](https://caniuse.com/webgl2)",
-      "id (obligatoire) : identifiant unique, [a-z0-9-]+.",
-      "label et status (obligatoires) : achieved ou planned.",
-      "group, date (AAAA-MM ou AAAA-MM-JJ), href (https: ou chemin relatif) : facultatifs.",
-      "emblem : disc (défaut), check, shield, cloud, network, database, code, key, gear. Une clé inconnue est refusée par la scène, la liste reste."
+      "--pp-space-xs"
     ],
     "use": [
       "Montrer un parcours, une feuille de route ou une suite de réalisations, avec des jalons atteints et des jalons prévus.",
