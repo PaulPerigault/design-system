@@ -7,8 +7,8 @@ const manifests = globSync('packages/*/package.json')
   .filter(({ manifest }) => !manifest.private);
 
 describe('LICENSE des paquets publiés', () => {
-  it('trouve les neuf paquets', () => {
-    expect(manifests).toHaveLength(9);
+  it('trouve les dix paquets', () => {
+    expect(manifests).toHaveLength(10);
   });
   it.each(manifests.map(({ file }) => [file.replace('package.json', 'LICENSE')]))(
     '%s est identique à la licence du dépôt',

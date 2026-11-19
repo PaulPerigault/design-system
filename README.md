@@ -8,17 +8,18 @@ publiés sur npmjs sous le scope `@paulperigault` depuis la version 0.1.0 (4 nov
 avec une attestation de provenance. Les règles du dépôt sont écrites une fois dans
 [AGENTS.md](AGENTS.md) et vérifiées en CI.
 
-| Paquet                                       | Rôle                                                                                       |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| [`@paulperigault/tokens`](packages/tokens)   | design tokens au format DTCG 2025.10, générés en CSS, JSON et types ; couleur et contraste |
-| [`@paulperigault/css`](packages/css)         | base, reset, impression, polices et thème Tailwind v4                                      |
-| [`@paulperigault/dataviz`](packages/dataviz) | contrat de données, formatage fr et palettes accessibles dérivées de l'accent              |
-| [`@paulperigault/color`](packages/color)     | couleur OKLCH, contraste WCAG 2 et APCA en WebAssembly (Rust), parité avec `tokens`        |
-| [`@paulperigault/data`](packages/data)       | quantiles, agrégation et échantillonnage LTTB en WebAssembly (Rust), parité avec `dataviz` |
-| [`@paulperigault/astro`](packages/astro)     | composants `.astro` publiés en source                                                      |
-| [`@paulperigault/guards`](packages/guards)   | contrôles de conception et config ESLint                                                   |
-| [`@paulperigault/create`](packages/create)   | CLI `create`, `add`, `eject`, `diff`                                                       |
-| [`@paulperigault/mcp`](packages/mcp)         | serveur MCP (stdio, lecture seule) du design system                                        |
+| Paquet                                                   | Rôle                                                                                       |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| [`@paulperigault/tokens`](packages/tokens)               | design tokens au format DTCG 2025.10, générés en CSS, JSON et types ; couleur et contraste |
+| [`@paulperigault/css`](packages/css)                     | base, reset, impression, polices et thème Tailwind v4                                      |
+| [`@paulperigault/dataviz`](packages/dataviz)             | contrat de données, formatage fr et palettes accessibles dérivées de l'accent              |
+| [`@paulperigault/color`](packages/color)                 | couleur OKLCH, contraste WCAG 2 et APCA en WebAssembly (Rust), parité avec `tokens`        |
+| [`@paulperigault/data`](packages/data)                   | quantiles, agrégation et échantillonnage LTTB en WebAssembly (Rust), parité avec `dataviz` |
+| [`@paulperigault/milestones-3d`](packages/milestones-3d) | scène 3D de jalons en WebGL2 (Rust et WebAssembly), amélioration progressive d'une liste   |
+| [`@paulperigault/astro`](packages/astro)                 | composants `.astro` publiés en source                                                      |
+| [`@paulperigault/guards`](packages/guards)               | contrôles de conception et config ESLint                                                   |
+| [`@paulperigault/create`](packages/create)               | CLI `create`, `add`, `eject`, `diff`                                                       |
+| [`@paulperigault/mcp`](packages/mcp)                     | serveur MCP (stdio, lecture seule) du design system                                        |
 
 Documentation vivante : [design.paulperigault.dev](https://design.paulperigault.dev) (source dans
 `apps/docs`). Chaque paquet a son README et son `CHANGELOG.md` dans `packages/<nom>/`.

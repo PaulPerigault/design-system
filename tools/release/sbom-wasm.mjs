@@ -1,6 +1,6 @@
-// SBOM du `.wasm` de @paulperigault/color : le fichier (empreinte SHA-256) et les crates de son
-// graphe de dépendances (`cargo tree`, cible wasm32, hors macros procédurales), ajoutés au
-// SBOM CycloneDX du paquet. Pur : les entrées-sorties sont injectées.
+// SBOM du `.wasm` de chaque paquet WebAssembly (color, data, milestones-3d) : le fichier (empreinte
+// SHA-256) et les crates de son graphe de dépendances (`cargo tree`, cible wasm32, hors macros
+// procédurales), ajoutés au SBOM CycloneDX du paquet. Pur : les entrées-sorties sont injectées.
 const WASM_PACKAGES = [
   {
     sbom: 'paulperigault-color.cdx.json',
@@ -13,6 +13,12 @@ const WASM_PACKAGES = [
     dir: 'packages/data',
     stem: 'pp_data',
     crate: 'pp-data-wasm',
+  },
+  {
+    sbom: 'paulperigault-milestones-3d.cdx.json',
+    dir: 'packages/milestones-3d',
+    stem: 'pp_milestones',
+    crate: 'pp-milestones-wasm',
   },
 ];
 const wasmName = ({ stem }) => `${stem}_wasm_bg.wasm`;

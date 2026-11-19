@@ -36,6 +36,11 @@
         "packages": ["@paulperigault/color"]
       },
       {
+        "name": "milestones-3d",
+        "paths": ["packages/milestones-3d/src"],
+        "packages": ["@paulperigault/milestones-3d"]
+      },
+      {
         "name": "dataviz",
         "paths": ["packages/dataviz/src"],
         "packages": ["@paulperigault/dataviz"]
