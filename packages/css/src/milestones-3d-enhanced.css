@@ -1,0 +1,54 @@
+/*
+ * Milestones3D, mode amélioré : `data-state="loading"` (emplacement réservé, scène en cours
+ * d'initialisation) puis `data-state="enhanced"` (scène affichée, liste devenue sélecteur).
+ * Sans cet attribut, rien ici ne s'applique : le rendu classique reste seul.
+ */
+.pp-milestones__stage {
+  display: none;
+}
+
+.pp-milestones[data-state] .pp-milestones__stage {
+  display: block;
+  inline-size: 100%;
+  aspect-ratio: var(--pp-ratio-wide);
+  /* Aucun fond : la page garde le sien, aucun écart de teinte au changement de thème. */
+}
+
+.pp-milestones__canvas {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  touch-action: pan-y;
+}
+
+.pp-milestones__select {
+  inline-size: 100%;
+  padding-block: var(--pp-space-3xs);
+  padding-inline: var(--pp-space-xs);
+  border: var(--pp-size-rule) solid var(--pp-color-line);
+  border-radius: var(--pp-radius-control);
+  background-color: var(--pp-color-bg);
+  color: var(--pp-color-fg);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+/* Jalon actif : bordure accent et graisse (jamais la couleur seule), et `aria-pressed`. */
+.pp-milestones__select[aria-pressed='true'] {
+  border-color: var(--pp-color-accent);
+  font-weight: var(--pp-font-weight-bold);
+}
+
+.pp-milestones__panel {
+  display: grid;
+  gap: var(--pp-space-3xs);
+  padding: var(--pp-space-s);
+  border: var(--pp-size-rule) solid var(--pp-color-line);
+  border-radius: var(--pp-radius-surface);
+  background-color: var(--pp-color-surface);
+}
+
+.pp-milestones__panel[hidden] {
+  display: none;
+}
