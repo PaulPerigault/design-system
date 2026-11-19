@@ -1,0 +1,43 @@
+---
+/**
+ * Exemple vivant de la page Milestones3D : la même liste deux fois. Le premier exemple reste en
+ * version classique (le comportement ne le voit pas) ; le second reçoit la scène 3D si le
+ * navigateur l'admet. Jalons fictifs.
+ */
+import Milestones3D from '@paulperigault/astro/Milestones3D.astro';
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { DEMO_GOAL, DEMO_MILESTONES } from '../../data/milestones-3d';
+
+const milestones = [...DEMO_MILESTONES];
+// Le .wasm n'est jamais commité : le build Cloudflare n'a pas cargo. Sans lui, la liste reste seule.
+const wasm = resolve(process.cwd(), '../../packages/milestones-3d/wasm/pp_milestones_wasm_bg.wasm');
+const withWasm = existsSync(wasm);
+---
+
+<div class="pp-milestones-demo">
+  <h3 id="demo-classique">Version classique</h3>
+  <Milestones3D
+    label="Parcours fictif, version classique"
+    milestones={milestones}
+    goal={DEMO_GOAL}
+  />
+
+  <h3 id="demo-3d">Version améliorée</h3>
+  {!withWasm && (
+    <p data-milestones-note>
+      Cette construction du site n’inclut pas le fichier <code>.wasm</code> : la liste classique
+      s’affiche seule, comme sur un navigateur sans WebGL2.
+    </p>
+  )}
+  <div data-milestones-demo>
+    <Milestones3D label="Parcours fictif, version 3D" milestones={milestones} goal={DEMO_GOAL} />
+  </div>
+</div>
+
+<script>
+  import { install } from '@paulperigault/astro/milestones-3d';
+
+  const target = document.querySelector('[data-milestones-demo]');
+  if (target) install(target);
+</script>

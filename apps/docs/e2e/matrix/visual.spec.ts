@@ -52,6 +52,9 @@ function examplesClip(page: Page) {
   });
 }
 
+/** Page à scène WebGL : la capture compare le rendu classique seul (mouvement réduit, aucun canvas). */
+const WEBGL_PAGE = '/components/milestones-3d/';
+
 /** Gabarits de page : les deux thèmes. */
 const TEMPLATE_PAGES = [
   '/',
@@ -82,6 +85,7 @@ for (const path of PAGES) {
         !VISUAL_PROJECTS.includes(test.info().project.name),
         'Appareil hors matrice visuelle.',
       );
+      if (path === WEBGL_PAGE) await page.emulateMedia({ reducedMotion: 'reduce' });
       await visit(page, path, theme);
       await settleImages(page);
       const clip = EXAMPLES_ONLY.includes(path) ? await examplesClip(page) : undefined;
