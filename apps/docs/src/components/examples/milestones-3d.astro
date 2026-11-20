@@ -5,14 +5,9 @@
  * navigateur l'admet. Jalons fictifs.
  */
 import Milestones3D from '@paulperigault/astro/Milestones3D.astro';
-import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { DEMO_GOAL, DEMO_MILESTONES } from '../../data/milestones-3d';
 
 const milestones = [...DEMO_MILESTONES];
-// Le .wasm n'est jamais commité : le build Cloudflare n'a pas cargo. Sans lui, la liste reste seule.
-const wasm = resolve(process.cwd(), '../../packages/milestones-3d/wasm/pp_milestones_wasm_bg.wasm');
-const withWasm = existsSync(wasm);
 ---
 
 <div class="pp-milestones-demo">
@@ -24,12 +19,11 @@ const withWasm = existsSync(wasm);
   />
 
   <h3 id="demo-3d">Version améliorée</h3>
-  {!withWasm && (
-    <p data-milestones-note>
-      Cette construction du site n’inclut pas le fichier <code>.wasm</code> : la liste classique
-      s’affiche seule, comme sur un navigateur sans WebGL2.
-    </p>
-  )}
+  <p>
+    La scène s’ajoute à la liste quand le navigateur l’admet. Sans WebGL2, avec le mouvement réduit,
+    en économie de données, ou si le fichier <code>.wasm</code> n’est pas servi, la liste reste
+    seule, comme ci-dessus.
+  </p>
   <div data-milestones-demo>
     <Milestones3D label="Parcours fictif, version 3D" milestones={milestones} goal={DEMO_GOAL} />
   </div>

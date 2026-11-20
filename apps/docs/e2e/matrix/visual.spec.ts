@@ -28,11 +28,15 @@ async function settleImages(page: Page): Promise<void> {
   );
 }
 
-/** Pages dont les motifs de hachures alourdissent trop une capture pleine page (budget d'images). */
+/** Page à scène WebGL : la capture compare le rendu classique seul (mouvement réduit, aucun canvas). */
+const WEBGL_PAGE = '/components/milestones-3d/';
+
+/** Pages dont les motifs de hachures et sections de démonstration alourdissent trop une capture pleine page (budget d'images). */
 const EXAMPLES_ONLY = [
   '/components/area-chart/',
   '/components/bar-chart/',
   '/components/gauge-chart/',
+  WEBGL_PAGE,
 ];
 
 /**
@@ -41,12 +45,14 @@ const EXAMPLES_ONLY = [
  */
 const VIEWPORT_ONLY = ['/decisions/', '/composants/', '/donnees/'];
 
-/** Zone des exemples (de « Exemples » à « Variantes »), en coordonnées de page. */
+/** Zone des exemples (de « Exemples » à « Variantes », ou « Accessibilité » sans variantes), en coordonnées de page. */
 function examplesClip(page: Page) {
   return page.evaluate(() => {
     const start = document.querySelector('h2#exemples')?.getBoundingClientRect();
-    const end = document.querySelector('h2#variantes')?.getBoundingClientRect();
-    if (!start || !end) throw new Error('sections « Exemples » et « Variantes » introuvables');
+    const end = (
+      document.querySelector('h2#variantes') ?? document.querySelector('h2#accessibilite')
+    )?.getBoundingClientRect();
+    if (!start || !end) throw new Error('section de fin des exemples introuvable');
     const top = start.top + window.scrollY;
     return { x: 0, y: top, width: window.innerWidth, height: end.top + window.scrollY - top };
   });

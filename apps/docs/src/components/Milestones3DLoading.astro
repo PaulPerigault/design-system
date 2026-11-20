@@ -9,7 +9,7 @@ const conditions = [
   'Pas d’économie de données (`navigator.connection.saveData`), quand le navigateur l’expose : Chromium seulement. Vérifié avant tout téléchargement.',
   'Appareil non faible : plus de 2 cœurs (`hardwareConcurrency`) et plus de 2 Go (`deviceMemory`). Une valeur absente ne compte pas comme faible : Firefox et Safari n’exposent pas `deviceMemory`.',
   'WebGL2 disponible, testé sur un canvas jetable, rendu au navigateur aussitôt.',
-  'Section proche de l’écran (marge de 200 px). Déjà visible à l’ouverture : la 3D attend le premier clic, toucher ou touche, pour ne pas décaler la liste déjà affichée (CLS) ni toucher au LCP.',
+  'Section proche de l’écran (marge de 200 px). Déjà visible à l’ouverture : la 3D attend le premier geste ou l’inactivité du navigateur, pour ne pas toucher au LCP.',
 ];
 const fields = [
   '`id` (obligatoire) : identifiant unique, `[a-z0-9-]+`.',
