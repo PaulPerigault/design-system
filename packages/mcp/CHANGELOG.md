@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.4.0](https://github.com/PaulPerigault/design-system/compare/mcp-v0.3.0...mcp-v0.4.0) (2026-11-20)
+
+
+### Features
+
+* **guards:** contrôle scene et entrée mcp de milestones3d ([#373](https://github.com/PaulPerigault/design-system/issues/373)) ([e554320](https://github.com/PaulPerigault/design-system/commit/e55432023de895a9a01d4b9e7a89b5cc91d8176b))
+
+
+### Bug Fixes
+
+* **css:** repli de police pour linux et android ([#381](https://github.com/PaulPerigault/design-system/issues/381)) ([9937879](https://github.com/PaulPerigault/design-system/commit/9937879fac87278b4d5e80e84849e7c78d4b71bd))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @paulperigault/guards bumped from 0.1.0 to 0.2.0
+    * @paulperigault/tokens bumped from 0.2.0 to 0.2.1
+
 ## [0.3.0](https://github.com/PaulPerigault/design-system/compare/mcp-v0.2.0...mcp-v0.3.0) (2026-11-12)
 
 

@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.4.0](https://github.com/PaulPerigault/design-system/compare/astro-v0.3.0...astro-v0.4.0) (2026-11-20)
+
+
+### Features
+
+* **astro:** composant milestones3d et son comportement 3d ([#371](https://github.com/PaulPerigault/design-system/issues/371)) ([56e6a84](https://github.com/PaulPerigault/design-system/commit/56e6a840c49aae898f7385927d3fc672380c2ad6))
+
+
+### Bug Fixes
+
+* **ci:** remettre au vert la pr de release-please ([#378](https://github.com/PaulPerigault/design-system/issues/378)) ([42a9fb3](https://github.com/PaulPerigault/design-system/commit/42a9fb366d638136becb840ad22fec3473f03083))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @paulperigault/css bumped from 0.2.0 to 0.3.0
+    * @paulperigault/dataviz bumped from 0.1.1 to 0.1.2
+    * @paulperigault/tokens bumped from 0.2.0 to 0.2.1
+  * peerDependencies
+    * @paulperigault/milestones-3d bumped from >=0.0.0 <1.0.0 to >=0.1.0
+
 ## [0.3.0](https://github.com/PaulPerigault/design-system/compare/astro-v0.2.0...astro-v0.3.0) (2026-11-12)
 
 
