@@ -16,7 +16,7 @@
 /* fallback:start */
 @font-face {
   font-family: 'Atkinson Next Fallback';
-  src: local('Arial');
+  src: local('Arial'), local('Liberation Sans'), local('Arimo');
   size-adjust: 99.6%;
   ascent-override: 98.8%;
   descent-override: 31.73%;
@@ -24,8 +24,17 @@
 }
 
 @font-face {
+  font-family: 'Atkinson Next Fallback Roboto';
+  src: local('Roboto');
+  size-adjust: 99.81%;
+  ascent-override: 98.58%;
+  descent-override: 31.66%;
+  line-gap-override: 0%;
+}
+
+@font-face {
   font-family: 'Atkinson Mono Fallback';
-  src: local('Courier New');
+  src: local('Courier New'), local('Liberation Mono'), local('Cousine');
   size-adjust: 105.32%;
   ascent-override: 93.43%;
   descent-override: 30%;

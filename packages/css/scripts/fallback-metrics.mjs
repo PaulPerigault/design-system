@@ -1,5 +1,5 @@
 /**
- * Calcule les métriques des polices de repli (Arial, Courier New) pour qu'elles occupent la même
+ * Calcule les métriques des polices de repli (Arial, Roboto, Courier New) pour qu'elles occupent la même
  * place qu'Atkinson Hyperlegible Next et Mono pendant le chargement : moins de décalage de mise
  * en page au remplacement (`font-display: swap`).
  *
@@ -12,6 +12,7 @@ import arial from '@capsizecss/metrics/arial';
 import atkinsonHyperlegibleMono from '@capsizecss/metrics/atkinsonHyperlegibleMono';
 import atkinsonHyperlegibleNext from '@capsizecss/metrics/atkinsonHyperlegibleNext';
 import courierNew from '@capsizecss/metrics/courierNew';
+import roboto from '@capsizecss/metrics/roboto';
 
 export const START = '/* fallback:start */';
 export const END = '/* fallback:end */';
@@ -20,16 +21,26 @@ export const FONTS_CSS = new URL('../src/fonts.css', import.meta.url);
 const PERCENT = 100;
 const DECIMALS = 2;
 
+/*
+ * `local('Arial')` échoue sous Linux : Liberation Sans et Arimo (compatibles), Liberation Mono et
+ * Cousine (Courier New) prennent le relais. Roboto (Android, ChromeOS) : repli séparé.
+ */
 export const PAIRS = [
   {
     family: 'Atkinson Next Fallback',
-    local: 'Arial',
+    locals: ['Arial', 'Liberation Sans', 'Arimo'],
     font: atkinsonHyperlegibleNext,
     fallback: arial,
   },
   {
+    family: 'Atkinson Next Fallback Roboto',
+    locals: ['Roboto'],
+    font: atkinsonHyperlegibleNext,
+    fallback: roboto,
+  },
+  {
     family: 'Atkinson Mono Fallback',
-    local: 'Courier New',
+    locals: ['Courier New', 'Liberation Mono', 'Cousine'],
     font: atkinsonHyperlegibleMono,
     fallback: courierNew,
   },
@@ -56,12 +67,12 @@ export function computeFallback(font, fallback) {
 }
 
 /** Une règle `@font-face` de repli, au format Prettier du dépôt. */
-export function renderFontFace({ family, local, font, fallback }) {
+export function renderFontFace({ family, locals, font, fallback }) {
   const m = computeFallback(font, fallback);
   return [
     '@font-face {',
     `  font-family: '${family}';`,
-    `  src: local('${local}');`,
+    `  src: ${locals.map((name) => `local('${name}')`).join(', ')};`,
     `  size-adjust: ${percent(m.sizeAdjust)};`,
     `  ascent-override: ${percent(m.ascentOverride)};`,
     `  descent-override: ${percent(m.descentOverride)};`,
