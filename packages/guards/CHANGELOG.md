@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/PaulPerigault/design-system/compare/guards-v0.1.0...guards-v0.2.0) (2026-11-20)
+
+
+### Features
+
+* **guards:** contrôle scene et entrée mcp de milestones3d ([#373](https://github.com/PaulPerigault/design-system/issues/373)) ([e554320](https://github.com/PaulPerigault/design-system/commit/e55432023de895a9a01d4b9e7a89b5cc91d8176b))
+
 ## 0.1.0 (2026-11-04)
 
 

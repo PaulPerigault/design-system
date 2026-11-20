@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.3.0](https://github.com/PaulPerigault/design-system/compare/css-v0.2.0...css-v0.3.0) (2026-11-20)
+
+
+### Features
+
+* **astro:** composant milestones3d et son comportement 3d ([#371](https://github.com/PaulPerigault/design-system/issues/371)) ([56e6a84](https://github.com/PaulPerigault/design-system/commit/56e6a840c49aae898f7385927d3fc672380c2ad6))
+
+
+### Bug Fixes
+
+* **css:** repli de police pour linux et android ([#381](https://github.com/PaulPerigault/design-system/issues/381)) ([9937879](https://github.com/PaulPerigault/design-system/commit/9937879fac87278b4d5e80e84849e7c78d4b71bd))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @paulperigault/tokens bumped from 0.2.0 to 0.2.1
+
 ## [0.2.0](https://github.com/PaulPerigault/design-system/compare/css-v0.1.0...css-v0.2.0) (2026-11-12)
 
 

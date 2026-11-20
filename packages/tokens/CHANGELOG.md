@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/PaulPerigault/design-system/compare/tokens-v0.2.0...tokens-v0.2.1) (2026-11-20)
+
+
+### Bug Fixes
+
+* **css:** repli de police pour linux et android ([#381](https://github.com/PaulPerigault/design-system/issues/381)) ([9937879](https://github.com/PaulPerigault/design-system/commit/9937879fac87278b4d5e80e84849e7c78d4b71bd))
+
 ## [0.2.0](https://github.com/PaulPerigault/design-system/compare/tokens-v0.1.0...tokens-v0.2.0) (2026-11-12)
 
 

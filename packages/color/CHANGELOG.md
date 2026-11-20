@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.2](https://github.com/PaulPerigault/design-system/compare/color-v0.1.1...color-v0.1.2) (2026-11-20)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @paulperigault/tokens bumped from 0.2.0 to 0.2.1
+
 ## [0.1.1](https://github.com/PaulPerigault/design-system/compare/color-v0.1.0...color-v0.1.1) (2026-11-12)
 
 
