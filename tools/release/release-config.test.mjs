@@ -14,10 +14,10 @@ const workspaces = globSync('packages/*/package.json')
   .filter(({ pkg }) => !pkg.private);
 const isZeroX = (version) => /^0\.\d+\.\d+$/.test(version);
 
-describe('release-please : neuf paquets en 0.x', () => {
-  it('config, manifeste et dossiers listent les mêmes neuf paquets', () => {
+describe('release-please : dix paquets en 0.x', () => {
+  it('config, manifeste et dossiers listent les mêmes dix paquets', () => {
     const dirs = workspaces.map(({ dir }) => dir).sort();
-    expect(dirs).toHaveLength(9);
+    expect(dirs).toHaveLength(10);
     expect(Object.keys(config.packages).sort()).toEqual(dirs);
     expect(Object.keys(manifest).sort()).toEqual(dirs);
   });

@@ -21,6 +21,11 @@
   "layers": {
     "layers": [
       {
+        "name": "milestones-3d",
+        "paths": ["packages/milestones-3d/src"],
+        "packages": ["@paulperigault/milestones-3d"]
+      },
+      {
         "name": "tokens",
         "paths": ["packages/tokens/src", "packages/tokens/scripts"],
         "packages": ["@paulperigault/tokens"]
@@ -52,6 +57,16 @@
       }
     ]
   },
+  "scene": {
+    "roots": [
+      "crates/pp-milestones/src",
+      "crates/pp-milestones-wasm/src",
+      "packages/milestones-3d/src"
+    ],
+    "extensions": [".rs", ".ts", ".glsl"],
+    "themeFiles": ["packages/milestones-3d/src/constants.ts"],
+    "tokens": "packages/tokens/generated/tokens.json"
+  },
   "architecture": {
     "roots": ["packages/guards/src", "packages/create/src", "packages/mcp/src"],
     "pureNode": ["node:path", "node:buffer", "node:util", "node:crypto"],
@@ -60,6 +75,11 @@
   "images": {
     "roots": ["packages", "apps"],
     "allow": ["src/media", "packages/guards/README.md"],
-    "budgets": [{ "path": "apps/docs/e2e/references", "maxKb": 600 }]
+    "budgets": [
+      {
+        "path": "apps/docs/e2e/references",
+        "maxKb": 600
+      }
+    ]
   }
 }

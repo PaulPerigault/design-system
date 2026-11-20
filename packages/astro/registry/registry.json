@@ -1628,6 +1628,72 @@
       }
     },
     {
+      "name": "milestones-3d",
+      "type": "registry:ui",
+      "title": "Milestones3D",
+      "description": "Jalons en liste ordonnée complète, avec scène 3D WebGL2 en amélioration progressive chargée par import dynamique.",
+      "files": [
+        {
+          "path": "packages/astro/src/content/Milestones3D.astro",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/content/milestones-3d-model.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/behaviors/milestones-3d.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/behaviors/milestones-3d-gate.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/behaviors/milestones-3d-types.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/astro/src/behaviors/milestones-3d-view.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/css/src/milestones-3d.css",
+          "type": "registry:ui"
+        },
+        {
+          "path": "packages/css/src/milestones-3d-enhanced.css",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "tokens": [
+          "--pp-color-accent",
+          "--pp-color-accent-text",
+          "--pp-color-bg",
+          "--pp-color-fg",
+          "--pp-color-focus",
+          "--pp-color-line",
+          "--pp-color-muted",
+          "--pp-color-surface",
+          "--pp-font-size--1",
+          "--pp-font-weight-bold",
+          "--pp-font-weight-semibold",
+          "--pp-radius-control",
+          "--pp-radius-surface",
+          "--pp-ratio-wide",
+          "--pp-size-focus-offset",
+          "--pp-size-focus-width",
+          "--pp-size-rule",
+          "--pp-size-target-min",
+          "--pp-space-3xs",
+          "--pp-space-s",
+          "--pp-space-xs"
+        ],
+        "version": "0.0.0"
+      }
+    },
+    {
       "name": "pagination",
       "type": "registry:ui",
       "title": "Pagination",

@@ -57,6 +57,11 @@
     "description": "Crate Rust pp-data : agrégation, quantiles, sous-échantillonnage"
   },
   { "name": "pkg:astro", "color": "3d4f63", "description": "Paquet @paulperigault/astro" },
+  {
+    "name": "pkg:milestones",
+    "color": "3d4f63",
+    "description": "Scène 3D de jalons : crates pp-milestones et paquet milestones-3d"
+  },
   { "name": "pkg:guards", "color": "3d4f63", "description": "Paquet @paulperigault/guards" },
   { "name": "pkg:create", "color": "3d4f63", "description": "Paquet @paulperigault/create (CLI)" },
   {
