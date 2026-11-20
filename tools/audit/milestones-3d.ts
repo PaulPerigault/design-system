@@ -84,7 +84,7 @@ async function auditEngine(engine: Launched, base: string, out: string): Promise
 async function collect(engines: Launched[], base: string, out: string): Promise<Row[]> {
   const rows: Row[] = [];
   for (const engine of engines) rows.push(...(await auditEngine(engine, base, out)));
-  if (!values['skip-lighthouse']) rows.push(...auditLighthouse(base, out));
+  if (!values['skip-lighthouse']) rows.push(...(await auditLighthouse(base, out)));
   return rows;
 }
 

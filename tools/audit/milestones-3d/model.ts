@@ -34,6 +34,22 @@ export const IDLE_WAIT_MS = 800;
 /** Avertissement du rastériseur logiciel de Chromium, émis par tout canvas WebGL2 (vérifié à vide). */
 export const SOFTWARE_GL_NOISE = /GL Driver Message .*GPU stall due to ReadPixels/;
 
+/**
+ * Firefox signale tout `loseContext()` explicite (vérifié sur une page vide). La page relâche son
+ * contexte jetable de détection exprès : le nombre de contextes actifs est plafonné.
+ */
+export const RELEASED_CONTEXT_NOISE = /WebGL context was lost\./;
+
+/**
+ * Firefox signale tout écouteur `deviceorientation` (vérifié sur une page vide). La page l'ajoute
+ * exprès : le gyroscope est actif « là où il est disponible sans autorisation » (ADR-0012).
+ */
+export const ORIENTATION_NOTICE = /Use of the orientation sensor is deprecated\./;
+
+/** Message émis par le navigateur lui-même, pas par la page. */
+export const isEngineNoise = (text: string): boolean =>
+  [SOFTWARE_GL_NOISE, RELEASED_CONTEXT_NOISE, ORIENTATION_NOTICE].some((re) => re.test(text));
+
 export const at = (engine: string, scenario: string): Where => ({ engine, scenario });
 
 export const row = (where: Where, check: string, ok: boolean, detail: string): Row => ({

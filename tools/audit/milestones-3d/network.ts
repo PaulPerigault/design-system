@@ -4,7 +4,7 @@
 import type { Page, Response } from '@playwright/test';
 import type { Launched } from './browser.ts';
 import { openPage, untilEnhanced } from './browser.ts';
-import { IDLE_WAIT_MS, SOFTWARE_GL_NOISE, at, info, row, skip } from './model.ts';
+import { IDLE_WAIT_MS, at, isEngineNoise, info, row, skip } from './model.ts';
 import type { Row, Where } from './model.ts';
 
 const YEAR_SECONDS = 31_536_000;
@@ -14,12 +14,14 @@ interface Seen {
   noise: number;
   wasm: Response[];
   hosts: Set<string>;
+  /** Encodages annoncés par le moteur (première requête : le flux du .wasm n'expose pas l'en-tête). */
+  accept?: Promise<string | null>;
 }
 
 function watch(page: Page, seen: Seen): void {
   page.on('console', (message) => {
     if (!['error', 'warning'].includes(message.type())) return;
-    if (SOFTWARE_GL_NOISE.test(message.text())) seen.noise += 1;
+    if (isEngineNoise(message.text())) seen.noise += 1;
     else seen.problems.push(`${message.type()} : ${message.text().slice(0, 120)}`);
   });
   page.on('pageerror', (error) => seen.problems.push(`exception : ${error.message.slice(0, 120)}`));
@@ -29,12 +31,13 @@ function watch(page: Page, seen: Seen): void {
   });
   page.on('response', (response) => {
     if (response.url().endsWith('.wasm')) seen.wasm.push(response);
+    else seen.accept ??= response.request().headerValue('accept-encoding');
   });
 }
 
 const maxAgeOf = (cache: string): number => Number(/max-age=(\d+)/.exec(cache)?.[1] ?? 0);
 
-function wasmRows(where: Where, response: Response | undefined): Row[] {
+function wasmRows(where: Where, response: Response | undefined, offered: boolean): Row[] {
   if (!response) return [skip(where, '.wasm', 'aucun .wasm chargé (construction sans .wasm)')];
   const headers = response.headers();
   const cache = headers['cache-control'] ?? '';
@@ -46,17 +49,23 @@ function wasmRows(where: Where, response: Response | undefined): Row[] {
       headers['content-type'] === 'application/wasm',
       headers['content-type'] ?? 'absent',
     ),
-    row(
-      where,
-      '.wasm compressé en brotli',
-      headers['content-encoding'] === 'br',
-      headers['content-encoding'] ?? 'non compressé',
-    ),
+    offered
+      ? row(
+          where,
+          '.wasm compressé en brotli',
+          headers['content-encoding'] === 'br',
+          headers['content-encoding'] ?? 'non compressé',
+        )
+      : skip(
+          where,
+          '.wasm compressé en brotli',
+          'le moteur n’annonce pas br en http local (WebKit : seulement en https)',
+        ),
     row(where, '.wasm en cache long', long, cache || 'absent'),
   ];
 }
 
-function rowsOf(engine: string, base: string, seen: Seen): Row[] {
+function rowsOf(engine: string, base: string, seen: Seen, offered: boolean): Row[] {
   const consoleAt = at(engine, 'console');
   const netAt = at(engine, 'réseau');
   const host = new URL(base).host;
@@ -69,14 +78,14 @@ function rowsOf(engine: string, base: string, seen: Seen): Row[] {
       seen.problems.join(' | ') || 'console propre',
     ),
     row(netAt, 'aucune requête tierce', foreign.length === 0, foreign.join(', ') || `seul ${host}`),
-    ...wasmRows(netAt, seen.wasm[0]),
+    ...wasmRows(netAt, seen.wasm[0], offered),
   ];
   if (seen.noise > 0)
     rows.push(
       info(
         consoleAt,
-        'bruit du rastériseur logiciel',
-        `${seen.noise} message(s) GPU stall, hors page`,
+        'bruit du navigateur',
+        `${seen.noise} message(s) GPU stall ou contexte relâché ou capteur, hors page`,
       ),
     );
   return rows;
@@ -88,7 +97,7 @@ export async function auditNetwork(engine: Launched, base: string): Promise<Row[
   try {
     await untilEnhanced(page);
     await page.waitForTimeout(IDLE_WAIT_MS);
-    return rowsOf(engine.name, base, seen);
+    return rowsOf(engine.name, base, seen, /\bbr\b/.test((await seen.accept) ?? ''));
   } finally {
     await context.close();
   }

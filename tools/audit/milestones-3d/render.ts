@@ -33,8 +33,8 @@ export async function rendererOf(page: Page): Promise<string> {
 }
 
 async function enhanceAndShoot(page: Page): Promise<Buffer> {
-  await page.locator(STAGE).scrollIntoViewIfNeeded();
   await untilEnhanced(page);
+  await page.locator(STAGE).scrollIntoViewIfNeeded();
   await page.waitForTimeout(IDLE_WAIT_MS);
   return page.locator(STAGE).screenshot();
 }

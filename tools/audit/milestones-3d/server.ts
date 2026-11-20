@@ -5,6 +5,7 @@ import { createServer } from 'node:http';
 import type { IncomingMessage, Server, ServerResponse } from 'node:http';
 import { extname, join, normalize, resolve } from 'node:path';
 import { brotliCompressSync } from 'node:zlib';
+import { forLocalHttp } from './csp.ts';
 
 const MIME: Record<string, string> = {
   '.html': 'text/html; charset=utf-8',
@@ -64,6 +65,7 @@ function headersOf(
     {},
     ...matching.map((rule) => rule.headers),
   );
+  forLocalHttp(headers);
   headers['content-type'] = MIME[ext] ?? 'application/octet-stream';
   if (COMPRESSIBLE.has(ext) && acceptEncoding.includes('br')) headers['content-encoding'] = 'br';
   return headers;

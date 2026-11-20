@@ -2,7 +2,8 @@
 // démonstration, profil mobile (CPU ralenti 4 fois, 4G lente), avant (rendu classique seul, mouvement
 // réduit forcé) et après (3D active : l'ancre met la section à l'écran, un clavier simulé la réveille, voir server.ts). Mesures, jamais de seuil
 // sur le poids ; seule une régression d'accessibilité échoue.
-import { spawnSync } from 'node:child_process';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import { mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { chromium } from '@playwright/test';
@@ -10,6 +11,8 @@ import { DEMO_HASH, PAGE, at, info, row, skip } from './model.ts';
 import type { Row } from './model.ts';
 
 export const LIGHTHOUSE_VERSION = '13.6.0';
+const RUN_TIMEOUT_MS = 180_000;
+const MAX_OUTPUT_BYTES = 16_000_000;
 const CATEGORIES = ['performance', 'accessibility', 'best-practices', 'seo'] as const;
 const THROTTLING = [
   '--throttling.cpuSlowdownMultiplier=4',
@@ -28,6 +31,9 @@ interface Report {
   audits: Record<string, { numericValue?: number }>;
 }
 
+/** Windows passe par un shell, qui exige les guillemets ; ailleurs, ils resteraient dans l'argument. */
+const quoted = (value: string): string => (process.platform === 'win32' ? `"${value}"` : value);
+
 function command(url: string, out: string, extra: string[]): string[] {
   return [
     '--yes',
@@ -39,19 +45,27 @@ function command(url: string, out: string, extra: string[]): string[] {
     `--only-categories=${CATEGORIES.join(',')}`,
     '--form-factor=mobile',
     ...THROTTLING,
-    `--chrome-flags="${[...FLAGS, ...extra].join(' ')}"`,
+    `--chrome-flags=${quoted([...FLAGS, ...extra].join(' '))}`,
   ];
 }
 
-function run(url: string, out: string, extra: string[]): Report | string {
-  const result = spawnSync('npx', command(url, out, extra), {
-    shell: process.platform === 'win32',
-    encoding: 'utf8',
-    env: { ...process.env, CHROME_PATH: chromium.executablePath() },
-  });
-  if (result.status === 0) return JSON.parse(readFileSync(out, 'utf8')) as Report;
-  const message = (result.stderr || result.stdout).split('\n').find(Boolean) ?? 'sans message';
-  return `Lighthouse a échoué : ${message}`;
+const execFileAsync = promisify(execFile);
+
+/** Asynchrone : le serveur de l'audit vit dans ce processus, qu'un appel bloquant gèlerait. */
+async function run(url: string, out: string, extra: string[]): Promise<Report | string> {
+  try {
+    await execFileAsync('npx', command(url, out, extra), {
+      shell: process.platform === 'win32',
+      timeout: RUN_TIMEOUT_MS,
+      maxBuffer: MAX_OUTPUT_BYTES,
+      env: { ...process.env, CHROME_PATH: chromium.executablePath() },
+    });
+    return JSON.parse(readFileSync(out, 'utf8')) as Report;
+  } catch (error) {
+    const text = String((error as { stderr?: string }).stderr || error);
+    const message = text.split('\n').find((line) => line && !line.startsWith('npm warn'));
+    return `Lighthouse a échoué : ${message ?? 'sans message'}`;
+  }
 }
 
 const score = (r: Report, key: string): number => Math.round((r.categories[key]?.score ?? 0) * 100);
@@ -60,15 +74,15 @@ const scores = (r: Report): string => CATEGORIES.map((c) => `${c} ${score(r, c)}
 const vitals = (r: Report): string =>
   `${value(r, 'largest-contentful-paint').toFixed(0)} ms / ${value(r, 'cumulative-layout-shift').toFixed(3)} / ${value(r, 'total-blocking-time').toFixed(0)} ms`;
 
-export function auditLighthouse(base: string, outDir: string): Row[] {
+export async function auditLighthouse(base: string, outDir: string): Promise<Row[]> {
   const where = at('chromium', 'Lighthouse mobile, CPU x4, 4G lente');
   mkdirSync(outDir, { recursive: true });
   const url = `${base}${PAGE}${DEMO_HASH}`;
   const woken = `${base}${PAGE}?wake${DEMO_HASH}`;
-  const before = run(url, join(outDir, 'lighthouse-classique.json'), [
+  const before = await run(url, join(outDir, 'lighthouse-classique.json'), [
     '--force-prefers-reduced-motion',
   ]);
-  const after = run(woken, join(outDir, 'lighthouse-3d.json'), []);
+  const after = await run(woken, join(outDir, 'lighthouse-3d.json'), []);
   if (typeof before === 'string') return [skip(where, 'Lighthouse', before)];
   if (typeof after === 'string') return [skip(where, 'Lighthouse', after)];
   return [
