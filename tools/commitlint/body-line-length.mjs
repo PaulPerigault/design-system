@@ -1,11 +1,12 @@
 // Règle commitlint « longueur des lignes du corps » : 100 caractères au plus (valeur de
 // `@commitlint/config-conventional`), sauf pour un message de montée de version générée par
 // Dependabot (`chore(deps): bump …`), dont le corps recopie les notes de version du paquet, et pour
-// la PR de release-please (`chore: release main`), dont le corps est le changelog généré.
+// la PR de release-please (`chore: release main`, avec ou sans le suffixe `(#n)` que la CI ajoute
+// au titre), dont le corps est le changelog généré.
 // Les autres règles, dont l'absence de signature d'outil, restent appliquées à ces messages.
 
 const MAX_LINE = 100;
-const GENERATED_HEADER = /^(chore\(deps(-dev)?\): bump |chore: release main$)/;
+const GENERATED_HEADER = /^(chore\(deps(-dev)?\): bump |chore: release main( \(#\d+\))?$)/;
 
 /** Règle au format commitlint : `[valide, message]`. */
 export const bodyLineLength = (parsed) => {

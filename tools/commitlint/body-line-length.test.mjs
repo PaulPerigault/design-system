@@ -25,8 +25,14 @@ describe('bodyLineLength', () => {
     expect(bodyLineLength({ header: 'chore: release main', body: long })[0]).toBe(true);
   });
 
+  it('accepte le sujet de release avec le suffixe (#n) ajouté par la CI', () => {
+    expect(bodyLineLength({ header: 'chore: release main (#370)', body: long })[0]).toBe(true);
+  });
+
   it('applique la limite à un sujet de release qui n’est pas exact', () => {
     expect(bodyLineLength({ header: 'chore: release main now', body: long })[0]).toBe(false);
+    expect(bodyLineLength({ header: 'chore: release main now (#370)', body: long })[0]).toBe(false);
+    expect(bodyLineLength({ header: 'chore: release main (#x)', body: long })[0]).toBe(false);
   });
 
   it('applique la limite à un faux sujet de montée sans le préfixe exact', () => {
