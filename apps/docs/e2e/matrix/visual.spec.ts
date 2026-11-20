@@ -58,9 +58,6 @@ function examplesClip(page: Page) {
   });
 }
 
-/** Page à scène WebGL : la capture compare le rendu classique seul (mouvement réduit, aucun canvas). */
-const WEBGL_PAGE = '/components/milestones-3d/';
-
 /** Gabarits de page : les deux thèmes. */
 const TEMPLATE_PAGES = [
   '/',
