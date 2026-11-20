@@ -61,6 +61,7 @@ export const GROUPS: readonly DocGroup[] = [
       link('empty-state', 'EmptyState'),
       link('stat', 'Stat'),
       link('timeline', 'Timeline'),
+      link('milestones-3d', 'Milestones3D'),
       link('card', 'Card'),
       link('code-block', 'CodeBlock'),
     ],

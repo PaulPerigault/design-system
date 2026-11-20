@@ -1,0 +1,65 @@
+---
+/** Page Milestones3D : politique de sécurité à prévoir côté consommateur et poids mesurés. */
+import Table from '@paulperigault/astro/Table.astro';
+import { EXTRA_SECTIONS, WEIGHTS } from '../data/milestones-3d';
+import InlineCode from './InlineCode.astro';
+
+const [, , security, weight] = EXTRA_SECTIONS;
+const bytes = (value: number): string => new Intl.NumberFormat('fr-FR').format(value);
+const columns = [
+  { key: 'file', label: 'Fichier' },
+  { key: 'raw', label: 'Brut (octets)', numeric: true },
+  { key: 'gzip', label: 'gzip (octets)', numeric: true },
+  { key: 'brotli', label: 'brotli (octets)', numeric: true },
+];
+const tables = WEIGHTS.map(({ date, tool, rows }) => ({
+  date,
+  tool,
+  rows: rows.map((row) => ({
+    file: row.file,
+    raw: bytes(row.raw),
+    gzip: bytes(row.gzip),
+    brotli: bytes(row.brotli),
+  })),
+}));
+const policy = `Content-Security-Policy: script-src 'self' 'wasm-unsafe-eval'; connect-src 'self'; style-src 'self'
+Content-Type: application/wasm   (réponse du fichier .wasm)`;
+const mdn =
+  'https://developer.mozilla.org/docs/Web/HTTP/Headers/Content-Security-Policy/script-src';
+const text = {
+  wasm: "Le `.wasm` est servi par le même domaine. Sans `'wasm-unsafe-eval'` dans `script-src`, le navigateur refuse de l’instancier ; `connect-src 'self'` couvre son chargement. Cette directive n’autorise pas `eval()`. Le composant ne pose aucun attribut `style` : un `style-src` sans `'unsafe-inline'` suffit.",
+  site: 'Ce site a déjà ces directives (la recherche charge du WebAssembly). Sans elles, un site consommateur garde la liste classique, sans erreur visible. Autre réglage : ce site refuse `gyroscope` et `accelerometer` dans sa `Permissions-Policy`, donc l’inclinaison se fait au pointeur seul ; un site qui veut le gyroscope doit les autoriser. Sous iOS, l’autorisation n’est demandée qu’à un geste.',
+  budget:
+    'Le budget visé est de 60 Kio en brotli pour le `.wasm` ; le poids n’est jamais bloquant. Le `.wasm` et la glue ne se chargent qu’à l’appel de `init` : zéro octet de 3D pour qui n’active pas le comportement.',
+};
+---
+
+<h2 id={security?.id}>{security?.title}</h2>
+<p>
+  <InlineCode text={text.wasm} />
+</p>
+<pre class="pp-component-page__snippet" tabindex="0"><code>{policy}</code></pre>
+<p>
+  <InlineCode text={text.site} />
+</p>
+<p>
+  Source : <a href={mdn}>MDN, script-src</a>
+</p>
+
+<h2 id={weight?.id}>{weight?.title}</h2>
+{tables.map(({ date, tool, rows }) => (
+  <>
+    <Table
+      caption={`Poids du paquet 3D, relevé du ${date}`}
+      columns={columns}
+      rows={rows}
+      rowHeader="file"
+    />
+    <p>
+      Outil : <code>{tool}</code>
+    </p>
+  </>
+))}
+<p>
+  <InlineCode text={text.budget} />
+</p>

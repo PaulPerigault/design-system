@@ -1,0 +1,37 @@
+---
+/**
+ * Exemple vivant de la page Milestones3D : la même liste deux fois. Le premier exemple reste en
+ * version classique (le comportement ne le voit pas) ; le second reçoit la scène 3D si le
+ * navigateur l'admet. Jalons fictifs.
+ */
+import Milestones3D from '@paulperigault/astro/Milestones3D.astro';
+import { DEMO_GOAL, DEMO_MILESTONES } from '../../data/milestones-3d';
+
+const milestones = [...DEMO_MILESTONES];
+---
+
+<div class="pp-milestones-demo">
+  <h3 id="demo-classique">Version classique</h3>
+  <Milestones3D
+    label="Parcours fictif, version classique"
+    milestones={milestones}
+    goal={DEMO_GOAL}
+  />
+
+  <h3 id="demo-3d">Version améliorée</h3>
+  <p>
+    La scène s’ajoute à la liste quand le navigateur l’admet. Sans WebGL2, avec le mouvement réduit,
+    en économie de données, ou si le fichier <code>.wasm</code> n’est pas servi, la liste reste
+    seule, comme ci-dessus.
+  </p>
+  <div data-milestones-demo>
+    <Milestones3D label="Parcours fictif, version 3D" milestones={milestones} goal={DEMO_GOAL} />
+  </div>
+</div>
+
+<script>
+  import { install } from '@paulperigault/astro/milestones-3d';
+
+  const target = document.querySelector('[data-milestones-demo]');
+  if (target) install(target);
+</script>
