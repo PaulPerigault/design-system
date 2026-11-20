@@ -4,8 +4,9 @@
  * liste ordonnée (`<ol role="list">`), un `<li>` par jalon (date, groupe, libellé, statut écrit en
  * toutes lettres, lien), puis la cible finale. Lisible sans JavaScript, sans WebGL, indexable ; elle
  * n'est jamais retirée ni masquée. Le comportement externe (`behaviors/milestones-3d.ts`) y ajoute,
- * quand les conditions de l'ADR-0012 tiennent, une scène 3D dans l'emplacement `data-pp-stage`
- * (canvas `aria-hidden`), fait de la liste le sélecteur et remplit le panneau de détail.
+ * quand les conditions de l'ADR-0012 tiennent, une scène 3D (canvas `aria-hidden`) dans l'emplacement
+ * `data-pp-stage`, fait de la liste le sélecteur et remplit le panneau de détail. L'emplacement suit
+ * la liste : l'insérer au-dessus décalerait la liste déjà affichée (CLS mesuré par l'audit #366).
  * Le composant ne trie pas : l'ordre est celui de `milestones`. Données : bloc JSON non exécuté.
  */
 import '@paulperigault/css/milestones-3d.css';
@@ -44,7 +45,6 @@ const items = milestones.map((item) => ({
 ---
 
 <section class:list={['pp-milestones', className]} aria-label={label} data-pp-milestones>
-  <div class="pp-milestones__stage" data-pp-stage aria-hidden="true"></div>
   <ol class="pp-milestones__list" role="list" data-pp-list>
     {items.map((item) => (
       <li class="pp-milestones__item" data-pp-item={item.id} data-status={item.status}>
@@ -76,6 +76,7 @@ const items = milestones.map((item) => ({
       {goal.href ? <a href={goal.href}>{goal.label}</a> : <strong>{goal.label}</strong>}
     </p>
   )}
+  <div class="pp-milestones__stage" data-pp-stage aria-hidden="true"></div>
   <div
     class="pp-milestones__panel"
     data-pp-panel

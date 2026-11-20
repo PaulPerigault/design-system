@@ -45,13 +45,24 @@
   color: var(--pp-color-muted);
 }
 
+/*
+ * Même boîte que le bouton du mode amélioré (marges, bordure, hauteur minimale) : remplacer le texte
+ * par le bouton ne déplace rien (CLS de 0,19 à 0,22 mesuré par l'audit #366 avec une boîte plus
+ * petite). Le trait est transparent : le texte n'a pas de cadre sans JavaScript.
+ */
 .pp-milestones__name {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--pp-size-target-min);
+  padding-block: var(--pp-space-3xs);
+  padding-inline: var(--pp-space-xs);
+  border: var(--pp-size-rule) solid transparent;
   font-weight: var(--pp-font-weight-semibold);
   overflow-wrap: anywhere;
 }
 
-.pp-milestones__link,
-.pp-milestones__select {
+.pp-milestones__link {
   min-block-size: var(--pp-size-target-min);
   min-inline-size: var(--pp-size-target-min);
 }

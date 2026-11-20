@@ -1,3 +1,4 @@
+import { WEBGL_ATTRIBUTES } from './constants.ts';
 import { MilestonesError, parseFault } from './error.ts';
 import type { CanvasLike, RawScene, SceneFactory, SceneInput } from './raw.ts';
 
@@ -31,6 +32,11 @@ async function start(glue: Glue): Promise<void> {
 
 function factory(glue: Glue): SceneFactory {
   return {
+    prepare(canvas: CanvasLike): void {
+      if (typeof HTMLCanvasElement !== 'undefined' && canvas instanceof HTMLCanvasElement) {
+        canvas.getContext('webgl2', WEBGL_ATTRIBUTES);
+      }
+    },
     create(canvas: CanvasLike, input: SceneInput): RawScene {
       if (typeof HTMLCanvasElement === 'undefined' || !(canvas instanceof HTMLCanvasElement)) {
         throw new MilestonesError('gl-unavailable');

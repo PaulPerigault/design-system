@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   blockedEarly,
+  GESTURES,
   inFirstScreen,
   whenReady,
   type GateEnv,
@@ -32,9 +33,9 @@ describe('inFirstScreen', () => {
   });
 });
 
-/** Plateforme d'attente factice : on déclenche l'entrée, le geste et l'inactivité à la main. */
+/** Plateforme d'attente factice : on déclenche l'entrée et le geste à la main. */
 function fakeGate(rect: { top: number; bottom: number }) {
-  const calls = { gesture: () => undefined, idle: () => undefined, stopped: 0, listening: 0 };
+  const calls = { gesture: () => undefined, stopped: 0, listening: 0 };
   const env: GateEnv = {
     observe: (_target, onEntry) => {
       queueMicrotask(() => onEntry({ isIntersecting: true, ...rect }));
@@ -49,10 +50,6 @@ function fakeGate(rect: { top: number; bottom: number }) {
       return () => {
         calls.listening -= 1;
       };
-    },
-    onIdle: (callback) => {
-      calls.idle = callback as never;
-      return () => undefined;
     },
   };
   return { env, calls };
@@ -77,11 +74,15 @@ describe('whenReady', () => {
     expect(calls.listening).toBe(0);
   });
 
-  it('attend l’inactivité du navigateur à défaut de geste', async () => {
-    const { env, calls } = fakeGate({ top: 100, bottom: 400 });
-    const pending = whenReady(page(), env);
-    await new Promise((resolve) => setTimeout(resolve));
-    calls.idle();
-    await expect(pending).resolves.toBeUndefined();
+  it('n’attend ni le défilement ni la molette : seuls les gestes discrets comptent', () => {
+    expect(GESTURES).toEqual(['pointerdown', 'keydown']);
+  });
+
+  it('ne se résout pas sans geste, même après un long moment (pas d’inactivité)', async () => {
+    const { env } = fakeGate({ top: 100, bottom: 400 });
+    let ready = false;
+    void whenReady(page(), env).then(() => (ready = true));
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    expect(ready).toBe(false);
   });
 });

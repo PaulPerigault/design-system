@@ -43,5 +43,7 @@ export interface SceneInput {
 
 /** Crée une scène sur un canvas ; lève un code littéral du `.wasm` en cas de refus. */
 export interface SceneFactory {
+  /** Crée d'avance le contexte WebGL2 (étape à part, pour ne pas former une tâche longue). */
+  prepare?(canvas: CanvasLike): void;
   create(canvas: CanvasLike, input: SceneInput): RawScene;
 }
