@@ -59,9 +59,22 @@ describe('états du composant', () => {
   });
 
   it('garantit des cibles tactiles minimales aux liens et aux boutons', () => {
+    const target = String.raw`min-block-size:\s*var\(--pp-size-target-min\)`;
+    expect(base).toMatch(new RegExp(String.raw`\.pp-milestones__link\s*\{[^}]*` + target));
+    expect(enhanced).toMatch(new RegExp(String.raw`\.pp-milestones__select\s*\{[^}]*` + target));
+  });
+
+  it('donne au libellé la boîte du bouton : le remplacer ne déplace rien (CLS)', () => {
+    const name = String.raw`\.pp-milestones__name\s*\{[^}]*`;
     expect(base).toMatch(
-      /\.pp-milestones__link,\s*\.pp-milestones__select\s*\{[^}]*min-block-size:\s*var\(--pp-size-target-min\)/,
+      new RegExp(name + String.raw`min-block-size:\s*var\(--pp-size-target-min\)`),
     );
+    expect(base).toMatch(new RegExp(name + String.raw`box-sizing:\s*border-box`));
+    expect(enhanced).toMatch(
+      /\[data-state='enhanced'\] \.pp-milestones__name\s*\{\s*padding:\s*0;\s*border:\s*0/,
+    );
+    // Pas avant : au chargement le libellé est encore du texte, sa boîte ne doit pas rétrécir.
+    expect(enhanced).not.toMatch(/\[data-state\] \.pp-milestones__name/);
   });
 
   it('marque le jalon actif par plus que la couleur', () => {

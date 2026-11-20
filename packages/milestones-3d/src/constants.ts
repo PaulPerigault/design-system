@@ -35,3 +35,17 @@ export const COLOR_ORDER = ['bg', 'fg', 'accent', 'onAccent', 'line', 'muted'] a
 export const FALLBACK_DURATION_MS = 0;
 /** Repli d'une courbe non reconnue : progression linéaire. */
 export const FALLBACK_EASING = [0, 0, 1, 1] as const;
+
+/**
+ * Attributs du contexte WebGL2, miroir de `pp-milestones-wasm/src/gl.rs` (un test le vérifie).
+ * Le contexte est créé ici d'abord, dans sa propre tâche : un contexte logiciel coûte environ 26 ms
+ * avec le processeur ralenti 4 fois, et formerait avec le reste de la scène une tâche longue.
+ */
+export const WEBGL_ATTRIBUTES = {
+  alpha: true,
+  depth: true,
+  antialias: true,
+  premultipliedAlpha: true,
+  preserveDrawingBuffer: false,
+  powerPreference: 'low-power',
+} as const;

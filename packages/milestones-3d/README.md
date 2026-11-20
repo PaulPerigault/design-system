@@ -202,6 +202,37 @@ lecture du thème, rendu, bascule clair et sombre, inclinaison au pointeur, sél
 puis restauration du contexte (image identique à celle d'avant la perte), repli sans restauration,
 `destroy()` idempotent. L'audit complet est la brique #366.
 
+## Adopter dans un site
+
+Version à consommer : `^0.1.0`, la première publiée. release-please ouvre la PR de release, que le
+propriétaire fusionne ; tant qu'elle ne l'est pas, le paquet n'est pas sur npmjs et l'installation
+échoue (404).
+
+```bash
+npm install @paulperigault/milestones-3d@^0.1.0 @paulperigault/astro @paulperigault/css
+```
+
+Le composant `Milestones3D` et son comportement viennent de `@paulperigault/astro` (propriétés
+`milestones`, `goal`, `label`, `locale`, `labels`) ; le comportement charge ce paquet par `import()`.
+Dans la page, après le composant :
+
+```astro
+<script>
+  import { install } from '@paulperigault/astro/milestones-3d';
+  install(document);
+</script>
+```
+
+`@paulperigault/astro` ne déclare pas encore ce paquet en `peerDependencies` facultative : la mise à
+jour du `package-lock.json` était interdite pendant la livraison (voir la PR #371). L'installer
+explicitement, comme ci-dessus, tant que ce n'est pas fait. Importer le comportement sans le paquet
+échoue au build ; ne pas l'importer laisse la liste classique seule.
+
+Côté serveur du site : `script-src 'self' 'wasm-unsafe-eval'` et `connect-src 'self'` dans la CSP, le
+`.wasm` servi en `application/wasm`. Pour l'inclinaison au gyroscope, autoriser `gyroscope` et
+`accelerometer` dans la `Permissions-Policy` ; sans eux, l'inclinaison se fait au pointeur. Détails et
+poids : [page du composant](https://design.paulperigault.dev/components/milestones-3d/).
+
 ## Provenance
 
 Chaque version est publiée par le workflow `release` du dépôt, avec une attestation de provenance

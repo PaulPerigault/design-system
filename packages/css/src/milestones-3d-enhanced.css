@@ -21,8 +21,17 @@
   touch-action: pan-y;
 }
 
+/* La boîte passe du libellé au bouton : mêmes dimensions, rien ne bouge. */
+.pp-milestones[data-state='enhanced'] .pp-milestones__name {
+  padding: 0;
+  border: 0;
+}
+
 .pp-milestones__select {
+  box-sizing: border-box;
   inline-size: 100%;
+  min-block-size: var(--pp-size-target-min);
+  min-inline-size: var(--pp-size-target-min);
   padding-block: var(--pp-space-3xs);
   padding-inline: var(--pp-space-xs);
   border: var(--pp-size-rule) solid var(--pp-color-line);

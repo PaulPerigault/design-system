@@ -6,6 +6,7 @@ import { themeToArray } from './raw-theme.ts';
 import { createSession } from './session.ts';
 import type { InitOptions, MilestonesData, MilestonesHandle, Theme } from './types.ts';
 import { validateData } from './validate.ts';
+import { yieldToMain } from './yield.ts';
 
 interface Deps {
   readonly options: InitOptions;
@@ -36,7 +37,12 @@ async function build(
       ? cause
       : new MilestonesError('load-failed', undefined, { cause });
   });
-  return factory.create(canvas, input(valid, theme, deps.options.activeId));
+  await yieldToMain();
+  factory.prepare?.(canvas);
+  await yieldToMain();
+  const scene = factory.create(canvas, input(valid, theme, deps.options.activeId));
+  await yieldToMain();
+  return scene;
 }
 
 /**

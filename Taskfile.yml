@@ -1,0 +1,15 @@
+# Tâches de poste. Installation de `task` : `winget install Task.Task` (Windows),
+# `brew install go-task` (macOS), `npm install -g @go-task/cli` ou https://taskfile.dev/installation.
+# La CI n'utilise pas `task` : elle appelle directement le script Node.
+version: '3'
+
+tasks:
+  audit:milestones-3d:
+    desc: Audit web de la scène 3D de jalons (rendu, performance, robustesse, accessibilité, réseau)
+    summary: |
+      Construit la documentation (et le .wasm s'il manque : cargo, wasm-bindgen 0.2.130, binaryen),
+      la sert comme l'hébergeur, puis audite Chromium, Firefox et WebKit.
+      Prérequis : npm ci, `npx playwright install chromium firefox webkit`, Rust (rustup) pour le .wasm.
+      Options après `--` : --engines chromium,firefox --skip-build --skip-lighthouse --url <preview>.
+    cmds:
+      - node tools/audit/milestones-3d.ts {{.CLI_ARGS}}
