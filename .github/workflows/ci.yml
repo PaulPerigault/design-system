@@ -259,7 +259,8 @@ jobs:
   milestones-3d-audit:
     # Audit web de la scène 3D (#366, ADR-0012) : rendu, robustesse, accessibilité, console et réseau
     # sur Chromium, Firefox et WebKit, puis performance et Lighthouse (version épinglée par npx).
-    # Même commande que `task audit:milestones-3d`, sans `task`. Seulement si `changes` voit un
+    # Même commande que `task audit:milestones-3d`, sans `task`, sous Xvfb : Firefox sans écran n'a pas
+    # de WebGL2 sous Linux (#379). Seulement si `changes` voit un
     # chemin du composant ; sauté, il compte comme réussi dans l'agrégat `ci`. Aucun seuil sur le
     # poids (D-106) : les mesures vont dans le résumé, les captures dans un artefact.
     needs: changes
@@ -277,7 +278,7 @@ jobs:
       - name: audit (construction de la documentation et du .wasm comprise)
         run: |
           set -o pipefail
-          node tools/audit/milestones-3d.ts | tee audit.log
+          xvfb-run -a -s '-screen 0 1280x1024x24' node tools/audit/milestones-3d.ts | tee audit.log
       - name: résumé
         if: ${{ !cancelled() }}
         run: |

@@ -14,6 +14,26 @@ const SOFTWARE_ARGS = ['--use-angle=swiftshader', '--enable-unsafe-swiftshader',
 
 export type Gpu = 'software' | 'default';
 
+export interface LaunchOptions {
+  args: string[];
+  headless?: boolean;
+}
+
+/**
+ * Options de lancement d'un moteur. Firefox sans écran sous Linux n'offre pas WebGL2 (liste de
+ * blocage, aucun pilote GL) ; avec un écran, il le fournit par défaut. Un affichage défini
+ * (`DISPLAY`, par exemple sous `xvfb-run`) le lance donc avec écran.
+ */
+export function launchOptions(
+  name: EngineName,
+  gpu: Gpu,
+  env: Readonly<Record<string, string | undefined>>,
+): LaunchOptions {
+  const args = name === 'chromium' && gpu === 'software' ? SOFTWARE_ARGS : [];
+  const display = (env['DISPLAY'] ?? '') !== '';
+  return name === 'firefox' && display ? { args, headless: false } : { args };
+}
+
 export interface Launched {
   name: EngineName;
   browser: Browser;
@@ -27,8 +47,8 @@ export async function launch(
   const missing: Row[] = [];
   for (const name of names) {
     try {
-      const args = name === 'chromium' && gpu === 'software' ? SOFTWARE_ARGS : [];
-      engines.push({ name, browser: await LAUNCHERS[name].launch({ args }) });
+      const options = launchOptions(name, gpu, process.env);
+      engines.push({ name, browser: await LAUNCHERS[name].launch(options) });
     } catch (error) {
       const reason = error instanceof Error ? error.message.split('\n')[0] : String(error);
       missing.push({
