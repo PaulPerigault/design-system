@@ -7,14 +7,24 @@ const PLACEHOLDER = '0.0.0';
 const FLOATING = new Set(['*', 'latest', 'x', '']);
 const SPEC = /^([\^~]?)(\d+)\.(\d+)\.(\d+)$/;
 
+const BOUNDS = /^>=(\d+\.\d+\.\d+) <(\d+\.\d+\.\d+)$/;
+
 const parse = (version) => (SPEC.exec(version) ?? []).slice(2).map(Number);
 
 function compare(a, b) {
   return a.reduce((diff, part, index) => diff || part - b[index], 0);
 }
 
-/** @returns {boolean} la version du workspace satisfait la plage (exacte, `^` ou `~`) */
+/** @returns {boolean} la version est dans l'intervalle `>=bas <haut` */
+function withinBounds([, low, high], version) {
+  const actual = parse(version);
+  return actual.length > 0 && compare(actual, parse(low)) >= 0 && compare(actual, parse(high)) < 0;
+}
+
+/** @returns {boolean} la version du workspace satisfait la plage (exacte, `^`, `~` ou `>=a <b`) */
 export function satisfies(spec, version) {
+  const bounds = BOUNDS.exec(spec);
+  if (bounds) return withinBounds(bounds, version);
   const match = SPEC.exec(spec);
   const actual = parse(version);
   if (!match || actual.length === 0) return false;

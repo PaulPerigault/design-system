@@ -21,6 +21,14 @@ describe('bodyLineLength', () => {
     expect(bodyLineLength({ header, body: long })[0]).toBe(true);
   });
 
+  it('accepte le changelog généré par la PR de release-please', () => {
+    expect(bodyLineLength({ header: 'chore: release main', body: long })[0]).toBe(true);
+  });
+
+  it('applique la limite à un sujet de release qui n’est pas exact', () => {
+    expect(bodyLineLength({ header: 'chore: release main now', body: long })[0]).toBe(false);
+  });
+
   it('applique la limite à un faux sujet de montée sans le préfixe exact', () => {
     expect(bodyLineLength({ header: 'chore: bump hono', body: long })[0]).toBe(false);
   });
