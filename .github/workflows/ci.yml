@@ -148,7 +148,9 @@ jobs:
             fi
             # Audit web de la scène 3D (#366) : seulement les PR qui touchent ses crates, son paquet, le
             # composant, son comportement, ses styles, sa page de démonstration ou l'audit lui-même.
-            audit_paths='^(crates/pp-milestones|packages/milestones-3d/|packages/astro/src/(content/[Mm]ilestones|behaviors/milestones-3d)|packages/css/src/milestones-3d|apps/docs/src/(pages/components/milestones-3d|components/(examples/milestones-3d|Milestones3D))|tools/audit/|Taskfile\.yml$|\.github/workflows/ci\.yml$)'
+            # Pas ci.yml : un autre job modifié ne justifie pas neuf minutes d'audit. Une modification
+            # du job d'audit se vérifie par un déclenchement manuel (audit=true, plus haut).
+            audit_paths='^(crates/pp-milestones|packages/milestones-3d/|packages/astro/src/(content/[Mm]ilestones|behaviors/milestones-3d)|packages/css/src/milestones-3d|apps/docs/src/(pages/components/milestones-3d|components/(examples/milestones-3d|Milestones3D))|tools/audit/|Taskfile\.yml$)'
             # La PR de release-please ne change que des versions et des changelogs : l'audit a déjà
             # tourné sur les PR de code (D-029 garde e2e et wasm, qui protègent la publication).
             if [[ "$HEAD_REF" != release-please--* ]] \
