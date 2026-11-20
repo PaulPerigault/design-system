@@ -18,7 +18,7 @@ npm i -D @paulperigault/guards
 pp-guards <contrôle> [options] [racines…]
 ```
 
-Contrôles : `tokens`, `design`, `size`, `layers`, `architecture`, `images`, et `all`.
+Contrôles : `tokens`, `design`, `size`, `layers`, `scene`, `architecture`, `images`, et `all`.
 
 Codes de sortie : `0` (succès), `1` (problèmes détectés), `2` (usage ou configuration).
 
@@ -136,6 +136,22 @@ pp-guards layers [racines…]
 Pas de drapeau propre : la liste `layers` se règle dans la configuration. Les clés `roots`
 (défaut : `.`) et `extensions` (défaut : `.ts`, `.mjs`, `.js`, `.astro`, `.css`) sont facultatives.
 
+### `scene`
+
+Refuse, dans les sources d'une scène 3D (Rust, TypeScript, GLSL), toute couleur, durée ou courbe
+écrite en dur : `#336699`, `rgb(10, 20, 30)`, `oklch(0.5 …)`, `vec3(0.2, 0.4, 0.6)`, `160ms`,
+`cubic-bezier(0.2, 0, 0, 1)`. Seuls les littéraux sont refusés : un nom de fonction ou une
+constante ne l'est pas. Commentaires, dossiers `test`, fichiers `*.test.*`, `tests.rs` et bloc
+`#[cfg(test)]` sont ignorés. Le contrôle vérifie aussi que chaque jeton `--pp-*` cité par les
+fichiers de `themeFiles` existe dans `tokens.json`. Chaque problème porte le fichier et la ligne.
+
+```bash
+pp-guards scene [racines…] --tokens tokens.json
+```
+
+Clés de configuration : `roots` (défaut : `src`), `extensions` (défaut : `.rs`, `.ts`, `.glsl`),
+`themeFiles` (fichiers dont les jetons sont contrôlés ; défaut : aucun) et `tokens`.
+
 ### `architecture`
 
 Vérifie la règle de dépendance vers l'intérieur d'un paquet (ADR-0006, décision 1). Sous chaque
@@ -184,7 +200,7 @@ Racines par défaut : `src` et `public`. Trois vérifications :
 pp-guards all [--config <fichier>]
 ```
 
-Exécute dans l'ordre `tokens`, `design`, `size`, `layers`, `architecture`, `images`, mais seulement ceux dont la
+Exécute dans l'ordre `tokens`, `design`, `size`, `layers`, `scene`, `architecture`, `images`, mais seulement ceux dont la
 section existe dans la configuration. Le code de sortie est le plus élevé des codes obtenus. Aucune
 section : code `2`. Les positionnels et les autres drapeaux ne sont pas acceptés.
 
