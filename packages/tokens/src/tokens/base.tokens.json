@@ -6,6 +6,7 @@
         "$value": [
           "Atkinson Hyperlegible Next Variable",
           "Atkinson Next Fallback",
+          "Atkinson Next Fallback Roboto",
           "system-ui",
           "sans-serif"
         ],

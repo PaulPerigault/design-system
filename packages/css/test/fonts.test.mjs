@@ -40,20 +40,32 @@ describe('fallback-metrics', () => {
     expect(fontsCss).toContain(renderBlock());
   });
 
-  it('déclare les deux replis locaux avec leurs quatre métriques', () => {
+  it('déclare les replis locaux avec leurs quatre métriques', () => {
     const block = fontsCss.slice(fontsCss.indexOf(START), fontsCss.indexOf(END));
     expect(block).toContain("font-family: 'Atkinson Next Fallback';");
-    expect(block).toContain("src: local('Arial');");
+    expect(block).toContain("src: local('Arial'), local('Liberation Sans'), local('Arimo');");
+    expect(block).toContain("font-family: 'Atkinson Next Fallback Roboto';");
+    expect(block).toContain("src: local('Roboto');");
     expect(block).toContain("font-family: 'Atkinson Mono Fallback';");
-    expect(block).toContain("src: local('Courier New');");
+    expect(block).toContain(
+      "src: local('Courier New'), local('Liberation Mono'), local('Cousine');",
+    );
     for (const prop of [
       'size-adjust',
       'ascent-override',
       'descent-override',
       'line-gap-override',
     ]) {
-      expect(block.match(new RegExp(`${prop}: [\\d.]+%;`, 'g'))).toHaveLength(2);
+      expect(block.match(new RegExp(`${prop}: [\\d.]+%;`, 'g'))).toHaveLength(3);
     }
+  });
+
+  it('nomme le repli Roboto dans la pile de texte, après le repli Arial', () => {
+    const tokens = readFileSync(
+      new URL('../../tokens/generated/tokens.css', import.meta.url),
+      'utf8',
+    );
+    expect(tokens).toMatch(/'Atkinson Next Fallback', 'Atkinson Next Fallback Roboto', system-ui/);
   });
 
   it('replaceBlock échoue sans balises', () => {
