@@ -45,12 +45,14 @@ const EXAMPLES_ONLY = [
  */
 const VIEWPORT_ONLY = ['/decisions/', '/composants/', '/donnees/'];
 
-/** Zone des exemples (de « Exemples » à « Variantes »), en coordonnées de page. */
+/** Zone des exemples (de « Exemples » à « Variantes », ou « Accessibilité » sans variantes), en coordonnées de page. */
 function examplesClip(page: Page) {
   return page.evaluate(() => {
     const start = document.querySelector('h2#exemples')?.getBoundingClientRect();
-    const end = document.querySelector('h2#variantes')?.getBoundingClientRect();
-    if (!start || !end) throw new Error('sections « Exemples » et « Variantes » introuvables');
+    const end = (
+      document.querySelector('h2#variantes') ?? document.querySelector('h2#accessibilite')
+    )?.getBoundingClientRect();
+    if (!start || !end) throw new Error('section de fin des exemples introuvable');
     const top = start.top + window.scrollY;
     return { x: 0, y: top, width: window.innerWidth, height: end.top + window.scrollY - top };
   });
