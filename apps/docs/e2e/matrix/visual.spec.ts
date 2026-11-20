@@ -28,11 +28,15 @@ async function settleImages(page: Page): Promise<void> {
   );
 }
 
-/** Pages dont les motifs de hachures alourdissent trop une capture pleine page (budget d'images). */
+/** Page à scène WebGL : la capture compare le rendu classique seul (mouvement réduit, aucun canvas). */
+const WEBGL_PAGE = '/components/milestones-3d/';
+
+/** Pages dont les motifs de hachures et sections de démonstration alourdissent trop une capture pleine page (budget d'images). */
 const EXAMPLES_ONLY = [
   '/components/area-chart/',
   '/components/bar-chart/',
   '/components/gauge-chart/',
+  WEBGL_PAGE,
 ];
 
 /**
@@ -51,9 +55,6 @@ function examplesClip(page: Page) {
     return { x: 0, y: top, width: window.innerWidth, height: end.top + window.scrollY - top };
   });
 }
-
-/** Page à scène WebGL : la capture compare le rendu classique seul (mouvement réduit, aucun canvas). */
-const WEBGL_PAGE = '/components/milestones-3d/';
 
 /** Gabarits de page : les deux thèmes. */
 const TEMPLATE_PAGES = [
