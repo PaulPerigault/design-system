@@ -1279,6 +1279,17 @@
       "date": "2026-11-19",
       "decision": "Scène 3D de jalons (ADR-0012, #360) : composant générique `Milestones3D`, rendu Rust/WebGL2 en deux crates (`pp-milestones` pur, `pp-milestones-wasm` pour les appels de plateforme), paquet `@paulperigault/milestones-3d`, version HTML complète toujours rendue, 3D en amélioration progressive (WebGL2, pas de mouvement réduit, pas de `saveData`, pas d appareil faible, section visible), repli sur échec ou perte de contexte, aucune boucle au repos, couleurs, durées et courbes lues des jetons. Écarté : `wgpu`, `three-d`, boucle d animation permanente, profil racine en `z`.",
       "id": "D-194"
+    },
+    {
+      "alternative": "Revenir à l'inactivité dans `milestones-3d-gate.ts`, retirer `prepare` et `yieldToMain` ; l'audit reste utilisable seul.",
+      "date": "2026-11-20",
+      "decision": "Scène 3D de jalons, corrections de l'audit web (#366) : section déjà à l'écran au chargement, la scène attend un geste discret (clic ou touche) et non l'inactivité du navigateur (CLS de 0,19 mesuré) ; l'emplacement de la scène suit la liste ; le libellé a la boîte du bouton ; le contexte WebGL2 est créé d'avance dans sa propre tâche et l'init rend la main entre ses étapes (tâche longue de 57 ms avec CPU x4). Audit : Playwright, Lighthouse 13.6.0 lancé par npx (le lockfile est interdit en écriture : pas de dépendance), `task audit:milestones-3d`, job CI conditionnel.",
+      "id": "D-195"
+    },
+    {
+      "date": "2026-11-20",
+      "decision": "Fin du chantier #360 : montées Dependabot exemptées de la longueur des lignes du corps seulement (règle `body-line-length`, #374), bruits émis par le navigateur seul (GPU stall, contexte relâché, capteur d'orientation) comptés à part dans l'audit, gyroscope inchangé (ADR-0012), `peerDependencies` facultative `^0.0.0` (remontée par release-please ; `^0.1.0` échoue en 404 avant la release) et `lighthouse@13.6.0` en dépendance de développement (corrige D-195 : le lockfile a été écrit par npm). Alternative écartée : ignorer tous les commits Dependabot (retirerait aussi l'interdiction des signatures d'outil). Retour arrière : revert de la PR.",
+      "id": "D-196"
     }
   ]
 }

@@ -43,6 +43,7 @@
     "shiki": "4.5.0"
   },
   "peerDependencies": {
+    "@paulperigault/milestones-3d": "^0.0.0",
     "astro": "^7.4.0"
   },
   "devDependencies": {
@@ -116,5 +117,10 @@
     "./Legend.astro": "./src/data/Legend.astro",
     "./Milestones3D.astro": "./src/content/Milestones3D.astro",
     "./milestones-3d": "./src/behaviors/milestones-3d.ts"
+  },
+  "peerDependenciesMeta": {
+    "@paulperigault/milestones-3d": {
+      "optional": true
+    }
   }
 }

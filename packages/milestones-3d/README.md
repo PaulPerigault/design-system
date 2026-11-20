@@ -200,16 +200,64 @@ Le job CI `wasm` rejoue en plus les tests contre le `.wasm` construit (`PP_MILES
 Parcours réel hors dépôt (Playwright, rendu logiciel) sur Chromium 156, Firefox 153 et WebKit 27 :
 lecture du thème, rendu, bascule clair et sombre, inclinaison au pointeur, sélection au clic, perte
 puis restauration du contexte (image identique à celle d'avant la perte), repli sans restauration,
-`destroy()` idempotent. L'audit complet est la brique #366.
+`destroy()` idempotent.
+
+## Audit web
+
+`task audit:milestones-3d` (brique #366, `tools/audit/milestones-3d.ts`) construit la documentation,
+la sert avec les en-têtes de l'hébergeur et contrôle la page de démonstration sur Chromium 156,
+Firefox 157 et WebKit 27, en rendu logiciel pour rester comparable à la CI Linux. Relevé du
+2026-11-20 : 123 lignes, 109 réussies, 0 échec, 5 sautées (fuites et mesures CDP : Chromium
+seulement ; brotli : WebKit n'annonce pas `br` en http local), 9 mesures.
+
+Contrôles sur les trois moteurs : rendu non vide, cadrage et fidélité de la teinte aux jetons, clair
+et sombre, bureau et mobile ; `prefers-reduced-motion`, `saveData`, appareil faible et absence de
+WebGL2 donnent la liste seule ; perte de contexte avec et sans restauration ; `destroy()` ; axe sans
+violation à 360 et 1440 px, avec et sans 3D ; clavier ; contraste du panneau ; console sans erreur ni
+avertissement ; aucune requête tierce ; `.wasm` en `application/wasm`, brotli, cache d'un an.
+
+Messages de console que le navigateur émet seul (vérifiés sur une page vide) et que l'audit compte à
+part : « GPU stall due to ReadPixels » (Chromium, rastériseur logiciel), « WebGL context was lost. »
+(Firefox, à chaque `loseContext()` du contexte jetable relâché exprès) et « Use of the orientation
+sensor is deprecated. » (Firefox, à la pose d'un écouteur `deviceorientation`).
+
+Mesures sur Chromium, profil mobile, CPU ralenti 4 fois, 4G lente (jamais bloquantes) :
+
+| Mesure                                        |  Sans 3D |       Avec 3D |
+| --------------------------------------------- | -------: | ------------: |
+| Poids transféré de la page de démonstration   | 80 435 o |     122 339 o |
+| LCP (audit Playwright, `PerformanceObserver`) |   640 ms |        633 ms |
+| CLS                                           |    0,000 |         0,000 |
+| Première image de la scène                    |        - |        511 ms |
+| Durée d'image moyenne / p95                   |        - | 16 ms / 17 ms |
+| INP (clic sur un jalon)                       |        - |         56 ms |
+| Instanciation du `.wasm`                      |        - |        139 ms |
+
+Lighthouse 13.6.0, mêmes conditions, sur la même page (sans 3D : mouvement réduit ; avec 3D : scène
+activée par un geste simulé) :
+
+| Catégorie ou mesure                  | Sans 3D | Avec 3D |
+| ------------------------------------ | ------: | ------: |
+| Performance                          |      88 |      90 |
+| Accessibilité, bonnes pratiques, SEO |     100 |     100 |
+| LCP                                  |  950 ms | 1548 ms |
+| CLS                                  |   0,000 |   0,000 |
+| TBT                                  |  491 ms |  391 ms |
+
+Le LCP de Lighthouse monte de 950 à 1548 ms avec la 3D, alors que l'audit Playwright ne mesure
+aucun écart (640 contre 633 ms). Les protocoles diffèrent (Lighthouse active la scène dès le
+chargement) et la cause de l'écart n'est pas établie. Aucune valeur n'est un seuil ; elles sont
+publiées telles que mesurées.
 
 ## Adopter dans un site
 
-Version à consommer : `^0.1.0`, la première publiée. release-please ouvre la PR de release, que le
+Versions à consommer : `@paulperigault/milestones-3d@^0.1.0` et `@paulperigault/astro@^0.4.0`, les
+premières à porter le composant. release-please les prépare dans la PR de release, que le
 propriétaire fusionne ; tant qu'elle ne l'est pas, le paquet n'est pas sur npmjs et l'installation
 échoue (404).
 
 ```bash
-npm install @paulperigault/milestones-3d@^0.1.0 @paulperigault/astro @paulperigault/css
+npm install @paulperigault/milestones-3d@^0.1.0 @paulperigault/astro@^0.4.0 @paulperigault/css
 ```
 
 Le composant `Milestones3D` et son comportement viennent de `@paulperigault/astro` (propriétés
@@ -223,10 +271,9 @@ Dans la page, après le composant :
 </script>
 ```
 
-`@paulperigault/astro` ne déclare pas encore ce paquet en `peerDependencies` facultative : la mise à
-jour du `package-lock.json` était interdite pendant la livraison (voir la PR #371). L'installer
-explicitement, comme ci-dessus, tant que ce n'est pas fait. Importer le comportement sans le paquet
-échoue au build ; ne pas l'importer laisse la liste classique seule.
+`@paulperigault/astro` déclare ce paquet en `peerDependencies` facultative (`^0.0.0`, remontée à chaque release) : npm ne
+l'installe pas seul, d'où la commande ci-dessus. Importer le comportement sans le paquet échoue au
+build ; ne pas l'importer laisse la liste classique seule.
 
 Côté serveur du site : `script-src 'self' 'wasm-unsafe-eval'` et `connect-src 'self'` dans la CSP, le
 `.wasm` servi en `application/wasm`. Pour l'inclinaison au gyroscope, autoriser `gyroscope` et
