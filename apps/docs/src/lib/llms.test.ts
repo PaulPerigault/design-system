@@ -8,7 +8,7 @@ const SLUGS = GROUPS.flatMap((group) => group.links.map((link) => link.slug));
 const text = buildLlms({ groups: GROUPS, items: registry.items, site: SITE });
 const lines = text.split('\n');
 const MD_LINK =
-  /^- \[[^\]]+\]\(https:\/\/design\.paulperigault\.dev\/components\/[a-z-]+\.md\): .+$/;
+  /^- \[[^\]]+\]\(https:\/\/design\.paulperigault\.dev\/components\/[a-z0-9-]+\.md\): .+$/;
 
 describe('buildLlms', () => {
   it('commence par le titre de niveau 1', () => {

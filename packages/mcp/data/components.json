@@ -2988,6 +2988,125 @@
   {
     "a11y": {
       "guaranteed": [
+        "La liste n’est jamais retirée ni masquée, avec ou sans 3D (WCAG 1.3.1).",
+        "Le statut est écrit en toutes lettres, doublé d’un trait plein ou pointillé : la forme seule ne porte pas le sens (WCAG 1.4.1).",
+        "Aucun mouvement ne démarre seul : pas de pause à offrir (WCAG 2.2.2). Le mouvement déclenché par un geste est supprimé sous `prefers-reduced-motion`, avec la 3D entière (WCAG 2.3.3, niveau AAA, retenu par prudence).",
+        "Liens et boutons ont une cible d’au moins `--pp-size-target-min` (WCAG 2.5.8)."
+      ],
+      "integrator": [
+        "Fournir des libellés, dates et liens complets : la scène n’ajoute aucune information.",
+        "Passer `locale` (langue des dates) et `labels` (mots d’interface) dans la langue de la page.",
+        "Donner un `label` quand la page porte plusieurs parcours.",
+        "Vérifier le contraste du texte de vos données sur le fond de votre page : le composant n’impose pas de fond.",
+        "Pas de `prefers-reduced-motion: reduce`. Vérifié avant tout téléchargement.",
+        "Pas d’économie de données (`navigator.connection.saveData`), quand le navigateur l’expose : Chromium seulement. Vérifié avant tout téléchargement.",
+        "Appareil non faible : plus de 2 cœurs (`hardwareConcurrency`) et plus de 2 Go (`deviceMemory`). Une valeur absente ne compte pas comme faible : Firefox et Safari n’exposent pas `deviceMemory`.",
+        "WebGL2 disponible, testé sur un canvas jetable, rendu au navigateur aussitôt.",
+        "Section proche de l’écran (marge de 200 px). Déjà visible à l’ouverture : la 3D attend le premier geste ou l’inactivité du navigateur, pour ne pas toucher au LCP.",
+        "[web-features](https://web-platform-dx.github.io/web-features-explorer/features/webgl2)",
+        "[caniuse](https://caniuse.com/webgl2)",
+        "`id` (obligatoire) : identifiant unique, `[a-z0-9-]+`.",
+        "`label` et `status` (obligatoires) : `achieved` ou `planned`.",
+        "`group`, `date` (`AAAA-MM` ou `AAAA-MM-JJ`), `href` (`https:` ou chemin relatif) : facultatifs.",
+        "`emblem` : `disc` (défaut), `check`, `shield`, `cloud`, `network`, `database`, `code`, `key`, `gear`. Une clé inconnue est refusée par la scène, la liste reste."
+      ],
+      "keyboard": [
+        "Sans 3D, la liste n’a que des liens : Tab les parcourt dans l’ordre des jalons.",
+        "Avec la 3D, chaque libellé devient un bouton (`aria-pressed`) ; Entrée ou Espace choisit le jalon et met le panneau de détail à jour.",
+        "Le canvas est hors de l’ordre de tabulation (`tabindex=\"-1\"`) : tout se fait par la liste."
+      ],
+      "screenReader": [
+        "La liste est annoncée comme liste, avec le nombre de jalons ; le statut est écrit (« Atteint », « Prévu »).",
+        "Le canvas est `aria-hidden=\"true\"` : il ne porte aucun texte qui ne soit pas écrit dans la liste (WCAG 1.1.1).",
+        "Le panneau de détail est une région nommée en `aria-live=\"polite\"` : le jalon choisi y est annoncé."
+      ]
+    },
+    "avoid": [
+      "Pour une simple chronologie datée : utiliser Timeline, sans JavaScript ni WebAssembly.",
+      "Pour un contenu qui n’existerait que dans la scène : le canvas ne porte aucun texte et reste masqué aux lecteurs d’écran.",
+      "Au-delà de 24 jalons : la scène refuse, la liste seule s’affiche."
+    ],
+    "evidence": [
+      "[ADR-0012 : scène 3D de jalons](https://design.paulperigault.dev/decisions/0012/)",
+      "[WCAG 2.2.2 Pause, Stop, Hide](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide)",
+      "[WCAG 2.3.3 Animation from Interactions](https://w3c.github.io/wcag/understanding/animation-from-interactions)",
+      "[Khronos : perte de contexte WebGL](https://wikis.khronos.org/webgl/HandlingContextLost)",
+      "Tests : packages/astro/test/Milestones3D.test.ts et milestones-3d.behavior.test.ts"
+    ],
+    "group": "content",
+    "props": [
+      {
+        "description": "Jalons, dans l'ordre d'affichage (1 à 24 pour la scène 3D ; la liste n'a pas de plafond).",
+        "fallback": "—",
+        "name": "`milestones` (obligatoire)",
+        "type": "`MilestoneItem[]`"
+      },
+      {
+        "description": "Cible finale facultative, au bout du parcours.",
+        "fallback": "—",
+        "name": "`goal`",
+        "type": "`MilestoneGoal`"
+      },
+      {
+        "description": "Nom accessible de la région (`aria-label`). Recommandé quand la page en porte plusieurs.",
+        "fallback": "—",
+        "name": "`label`",
+        "type": "`string`"
+      },
+      {
+        "description": "Langue des dates (`Intl`). Défaut : `fr`. À passer avec la langue de la page.",
+        "fallback": "`DEFAULT_LOCALE`",
+        "name": "`locale`",
+        "type": "`string`"
+      },
+      {
+        "description": "Textes écrits par le composant (statuts, cible, lien, panneau). Défaut : français.",
+        "fallback": "—",
+        "name": "`labels`",
+        "type": "`Partial<MilestoneLabels>`"
+      },
+      {
+        "description": "Réservé au placement du composant dans son parent.",
+        "fallback": "—",
+        "name": "`class`",
+        "type": "`string`"
+      }
+    ],
+    "slug": "milestones-3d",
+    "snippet": "---\nimport Milestones3D from '@paulperigault/astro/Milestones3D.astro';\n---\n<Milestones3D\n  label=\"Feuille de route\"\n  milestones={[\n    { id: 'proto', label: 'Prototype', status: 'achieved', date: '2025-03' },\n    { id: 'v1', label: 'Version 1', status: 'planned', date: '2026-06' },\n  ]}\n  goal={{ label: 'Ouverture au public' }}\n/>\n\n<script>\n  import { install } from '@paulperigault/astro/milestones-3d';\n  install(document);\n</script>",
+    "summary": "Milestones3D présente des jalons le long d’un parcours : une liste ordonnée complète, à laquelle une scène 3D WebGL2 peut s’ajouter.",
+    "title": "Milestones3D",
+    "tokens": [
+      "--pp-color-accent",
+      "--pp-color-accent-text",
+      "--pp-color-bg",
+      "--pp-color-fg",
+      "--pp-color-focus",
+      "--pp-color-line",
+      "--pp-color-muted",
+      "--pp-color-surface",
+      "--pp-font-size--1",
+      "--pp-font-weight-bold",
+      "--pp-font-weight-semibold",
+      "--pp-radius-control",
+      "--pp-radius-surface",
+      "--pp-ratio-wide",
+      "--pp-size-focus-offset",
+      "--pp-size-focus-width",
+      "--pp-size-rule",
+      "--pp-size-target-min",
+      "--pp-space-3xs",
+      "--pp-space-s",
+      "--pp-space-xs"
+    ],
+    "use": [
+      "Montrer un parcours, une feuille de route ou une suite de réalisations, avec des jalons atteints et des jalons prévus.",
+      "Offrir une présentation plus visuelle sans perdre le texte : la liste reste la source de vérité."
+    ]
+  },
+  {
+    "a11y": {
+      "guaranteed": [
         "La page courante se distingue par un cadre et une graisse, pas par la couleur seule (critère 1.4.1).",
         "Liens et page courante font au moins --pp-size-target-min de côté (critère 2.5.8).",
         "Les liens restent soulignés pour se distinguer du texte (critère 1.4.1)."

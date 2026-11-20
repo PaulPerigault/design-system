@@ -46,7 +46,7 @@
     "astro": "^7.4.0"
   },
   "devDependencies": {
-    "astro": "^7.4.1",
+    "astro": "^7.4.7",
     "linkedom": "^0.18.13"
   },
   "exports": {
@@ -113,6 +113,8 @@
     "./Sparkline.astro": "./src/data/Sparkline.astro",
     "./KpiCard.astro": "./src/data/KpiCard.astro",
     "./DataTable.astro": "./src/data/DataTable.astro",
-    "./Legend.astro": "./src/data/Legend.astro"
+    "./Legend.astro": "./src/data/Legend.astro",
+    "./Milestones3D.astro": "./src/content/Milestones3D.astro",
+    "./milestones-3d": "./src/behaviors/milestones-3d.ts"
   }
 }

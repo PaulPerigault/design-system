@@ -3,6 +3,7 @@
   "packages/css": "0.2.0",
   "packages/color": "0.1.1",
   "packages/data": "0.1.1",
+  "packages/milestones-3d": "0.0.0",
   "packages/dataviz": "0.1.1",
   "packages/astro": "0.3.0",
   "packages/guards": "0.1.0",

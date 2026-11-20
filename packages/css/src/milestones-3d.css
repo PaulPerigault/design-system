@@ -1,0 +1,79 @@
+/*
+ * Milestones3D : rendu classique (liste ordonnée) et états du composant. Tout passe par les
+ * variables --pp-*, propriétés logiques, aucun style en ligne : les états sont des attributs
+ * `data-*` posés par le comportement. L'emplacement de la scène est masqué tant que la 3D n'est
+ * pas admise ; la liste, elle, n'est jamais masquée.
+ */
+@import './milestones-3d-enhanced.css';
+
+.pp-milestones {
+  display: grid;
+  gap: var(--pp-space-s);
+  color: var(--pp-color-fg);
+}
+
+.pp-milestones__list {
+  display: grid;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
+  list-style: none;
+}
+
+.pp-milestones__item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--pp-space-3xs) var(--pp-space-xs);
+  padding-block: var(--pp-space-xs);
+  padding-inline-start: var(--pp-space-s);
+  border-block-end: var(--pp-size-rule) solid var(--pp-color-line);
+  border-inline-start: var(--pp-size-rule) solid var(--pp-color-accent);
+}
+
+/* Prévu : trait pointillé et texte « Prévu » ; la forme complète le mot, jamais la couleur seule. */
+.pp-milestones__item[data-status='planned'] {
+  border-inline-start-style: dashed;
+  border-inline-start-color: var(--pp-color-muted);
+}
+
+.pp-milestones__date,
+.pp-milestones__group,
+.pp-milestones__status {
+  font-size: var(--pp-font-size--1);
+  color: var(--pp-color-muted);
+}
+
+.pp-milestones__name {
+  font-weight: var(--pp-font-weight-semibold);
+  overflow-wrap: anywhere;
+}
+
+.pp-milestones__link,
+.pp-milestones__select {
+  min-block-size: var(--pp-size-target-min);
+  min-inline-size: var(--pp-size-target-min);
+}
+
+.pp-milestones__link {
+  display: inline-flex;
+  align-items: center;
+  color: var(--pp-color-accent-text);
+}
+
+.pp-milestones__goal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--pp-space-xs);
+  margin-block: 0;
+  padding-block-start: var(--pp-space-xs);
+  border-block-start: var(--pp-size-rule) solid var(--pp-color-line);
+}
+
+.pp-milestones a:focus-visible,
+.pp-milestones button:focus-visible {
+  outline: var(--pp-size-focus-width) solid var(--pp-color-focus);
+  outline-offset: var(--pp-size-focus-offset);
+}

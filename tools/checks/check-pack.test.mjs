@@ -37,8 +37,9 @@ describe('check-pack', () => {
   });
   it('liste les paquets publiables et leurs wasm', () => {
     const packages = publishable();
-    expect(packages.size).toBe(9);
+    expect(packages.size).toBe(10);
     expect(packages.get('@paulperigault/color')).toEqual({ wasm: true });
+    expect(packages.get('@paulperigault/milestones-3d')).toEqual({ wasm: true });
     expect(packages.get('@paulperigault/tokens')).toEqual({ wasm: false });
     expect(packages.has('@paulperigault/docs')).toBe(false);
   });

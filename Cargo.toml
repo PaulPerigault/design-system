@@ -7,6 +7,8 @@ members = [
     "crates/pp-color-wasm",
     "crates/pp-data",
     "crates/pp-data-wasm",
+    "crates/pp-milestones",
+    "crates/pp-milestones-wasm",
 ]
 
 [workspace.package]
@@ -24,3 +26,14 @@ lto = true
 codegen-units = 1
 panic = "abort"
 strip = true
+
+# Scène de jalons (ADR-0012) : `opt-level` fixé par paquet, pour que le poids de ces deux crates ne
+# dépende pas du profil racine et que les `.wasm` de pp-color et pp-data ne bougent pas.
+# Mesure du 2026-11-19 (.wasm après wasm-opt -Oz, brotli) : « s » 28 076 o, « z » 28 435 o ;
+# avant wasm-opt : « s » 36 264 o, « z » 37 665 o. La plus petite l'emporte : « s ». Le choix se
+# refait à chaque changement important du code des crates (voir leurs README).
+[profile.release.package.pp-milestones]
+opt-level = "s"
+
+[profile.release.package.pp-milestones-wasm]
+opt-level = "s"

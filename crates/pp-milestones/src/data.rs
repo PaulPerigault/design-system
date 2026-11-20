@@ -1,0 +1,83 @@
+//! Contrat de données de la scène : ce que le rendu consomme, rien de plus.
+//!
+//! Libellés, groupes, dates et liens vivent dans le HTML : le paquet TypeScript les valide, la
+//! scène ne les voit jamais. Elle rejoue ici ce qui la concerne (ADR-0012, décision 1).
+use crate::error::SceneError;
+use crate::kinds::{Emblem, Status};
+
+pub const MIN_MILESTONES: usize = 1;
+pub const MAX_MILESTONES: usize = 24;
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Milestone {
+    pub id: String,
+    pub status: Status,
+    pub emblem: Emblem,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct MilestonesData {
+    milestones: Vec<Milestone>,
+    goal: bool,
+}
+
+impl MilestonesData {
+    /// Valide le nombre de jalons et l'unicité des identifiants.
+    ///
+    /// # Errors
+    /// `MilestoneCount`, `InvalidId` ou `DuplicateId`.
+    pub fn new(milestones: Vec<Milestone>, goal: bool) -> Result<Self, SceneError> {
+        if !(MIN_MILESTONES..=MAX_MILESTONES).contains(&milestones.len()) {
+            return Err(SceneError::MilestoneCount);
+        }
+        for (index, milestone) in milestones.iter().enumerate() {
+            if !is_id(&milestone.id) {
+                return Err(SceneError::InvalidId);
+            }
+            if milestones
+                .iter()
+                .take(index)
+                .any(|other| other.id == milestone.id)
+            {
+                return Err(SceneError::DuplicateId);
+            }
+        }
+        Ok(Self { milestones, goal })
+    }
+
+    #[must_use]
+    pub fn milestones(&self) -> &[Milestone] {
+        &self.milestones
+    }
+
+    /// Vrai si la scène dessine la cible finale.
+    #[must_use]
+    pub fn has_goal(&self) -> bool {
+        self.goal
+    }
+
+    #[must_use]
+    pub fn len(&self) -> usize {
+        self.milestones.len()
+    }
+
+    /// Jamais vrai pour une valeur construite : `new` exige au moins un jalon.
+    #[must_use]
+    pub fn is_empty(&self) -> bool {
+        self.milestones.is_empty()
+    }
+
+    #[must_use]
+    pub fn index_of(&self, id: &str) -> Option<usize> {
+        self.milestones
+            .iter()
+            .position(|milestone| milestone.id == id)
+    }
+}
+
+fn is_id(text: &str) -> bool {
+    !text.is_empty()
+        && text
+            .bytes()
+            .all(|byte| byte.is_ascii_lowercase() || byte.is_ascii_digit() || byte == b'-')
+}

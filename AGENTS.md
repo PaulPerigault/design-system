@@ -6,18 +6,19 @@ Source unique des règles de ce dépôt. `CLAUDE.md` l'importe, `.kiro/steering/
 
 Design system de paulperigault.fr, monorepo npm workspaces, Node 24, npm 11, licence MIT.
 
-| Paquet                   | Rôle                                                                                                                                          | Dépend de          |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
-| `@paulperigault/tokens`  | source DTCG 2025.10 → `tokens.css`, `tokens.json`, `tokens.d.ts` ; `color` (OKLCH ↔ sRGB, gamut) et `contrast` (WCAG 2)                       | rien à l'exécution |
-| `@paulperigault/css`     | base, reset, impression, polices, `@theme` Tailwind v4, primitives de layout CSS                                                              | `tokens`           |
-| `@paulperigault/dataviz` | contrat `Dataset` validé à la frontière, formatage fr (`Intl`), palettes dérivées de l'accent (ΔE00, daltonisme) ; TypeScript pur, sans rendu | `tokens`           |
-| `@paulperigault/color`   | `.wasm` issu de `crates/pp-color` : couleur OKLCH, contraste WCAG 2 et APCA, parité avec `tokens`                                             | rien à l'exécution |
-| `@paulperigault/data`    | `.wasm` issu de `crates/pp-data` : quantiles, agrégation, LTTB, parité avec `dataviz`                                                         | `dataviz`          |
-| `@paulperigault/astro`   | composants `.astro` publiés en source, behaviors, `variants()`                                                                                | `css`, `tokens`    |
-| `@paulperigault/guards`  | contrôles (taille, couleurs, couches, tokens, images), config ESLint                                                                          | rien à l'exécution |
-| `@paulperigault/create`  | CLI `create`, `add`, `eject`, `diff` (`node:util` parseArgs, FS injecté)                                                                      | rien à l'exécution |
-| `@paulperigault/mcp`     | serveur MCP stdio en lecture seule (7 outils), données embarquées, aucun accès réseau                                                         | `tokens`, `guards` |
-| `apps/docs`              | documentation vivante, design.paulperigault.dev                                                                                               | tous               |
+| Paquet                         | Rôle                                                                                                                                                  | Dépend de          |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| `@paulperigault/tokens`        | source DTCG 2025.10 → `tokens.css`, `tokens.json`, `tokens.d.ts` ; `color` (OKLCH ↔ sRGB, gamut) et `contrast` (WCAG 2)                               | rien à l'exécution |
+| `@paulperigault/css`           | base, reset, impression, polices, `@theme` Tailwind v4, primitives de layout CSS                                                                      | `tokens`           |
+| `@paulperigault/dataviz`       | contrat `Dataset` validé à la frontière, formatage fr (`Intl`), palettes dérivées de l'accent (ΔE00, daltonisme) ; TypeScript pur, sans rendu         | `tokens`           |
+| `@paulperigault/color`         | `.wasm` issu de `crates/pp-color` : couleur OKLCH, contraste WCAG 2 et APCA, parité avec `tokens`                                                     | rien à l'exécution |
+| `@paulperigault/data`          | `.wasm` issu de `crates/pp-data` : quantiles, agrégation, LTTB, parité avec `dataviz`                                                                 | `dataviz`          |
+| `@paulperigault/milestones-3d` | `.wasm` issu de `crates/pp-milestones` et `pp-milestones-wasm` : scène 3D de jalons en WebGL2, enveloppe TypeScript stricte, amélioration progressive | rien à l'exécution |
+| `@paulperigault/astro`         | composants `.astro` publiés en source, behaviors, `variants()`                                                                                        | `css`, `tokens`    |
+| `@paulperigault/guards`        | contrôles (taille, couleurs, couches, tokens, images), config ESLint                                                                                  | rien à l'exécution |
+| `@paulperigault/create`        | CLI `create`, `add`, `eject`, `diff` (`node:util` parseArgs, FS injecté)                                                                              | rien à l'exécution |
+| `@paulperigault/mcp`           | serveur MCP stdio en lecture seule (7 outils), données embarquées, aucun accès réseau                                                                 | `tokens`, `guards` |
+| `apps/docs`                    | documentation vivante, design.paulperigault.dev                                                                                                       | tous               |
 
 Sens unique : `tokens ← css ← astro` et `tokens ← dataviz ← astro`. Un import qui remonte ce sens est une erreur.
 
