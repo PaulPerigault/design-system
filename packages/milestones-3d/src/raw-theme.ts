@@ -1,4 +1,4 @@
-// Le thème sous la forme que reçoit le `.wasm` : 30 nombres (voir `pp-milestones::theme`).
+// Le thème sous la forme que reçoit le `.wasm` : 34 nombres (voir `pp-milestones::theme`).
 import { COLOR_ORDER } from './constants.ts';
 import type { Theme, ThemeColor } from './types.ts';
 
@@ -11,7 +11,7 @@ const color = (value: ThemeColor): number[] =>
     ? [SPACE_SRGB, value.r, value.g, value.b]
     : [SPACE_OKLCH, value.l, value.c, value.h];
 
-/** Six couleurs (espace puis trois composantes), deux durées, quatre points de contrôle. */
+/** Sept couleurs (espace puis trois composantes, `paper` en dernier), deux durées, quatre points de contrôle. */
 export const themeToArray = (theme: Theme): Float32Array =>
   Float32Array.from([
     ...COLOR_ORDER.flatMap((name) => color(theme.colors[name])),

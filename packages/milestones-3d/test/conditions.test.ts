@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { WEAK_CORES, WEAK_MEMORY_GB } from '../src/constants.ts';
-import { canEnhance, enhanceBlocker, hasWebGL2, isWeakDevice } from '../src/conditions.ts';
-import type { CanvasLike, EnhanceEnv } from '../src/conditions.ts';
+import {
+  canEnhance,
+  enhanceBlocker,
+  isWeakDevice,
+  prefersReducedMotion,
+} from '../src/conditions.ts';
+import type { EnhanceEnv } from '../src/conditions.ts';
 
 const base: EnhanceEnv = {
   hasWebGL2: () => true,
@@ -17,9 +22,9 @@ describe('canEnhance : table de cas', () => {
     ['tout est réuni', base, null],
     ['WebGL2 absent', env({ hasWebGL2: () => false }), 'no-webgl2'],
     [
-      'mouvement réduit',
+      'mouvement réduit : la 3D reste admise (ADR-0013)',
       env({ matchMedia: (q) => ({ matches: q.includes('reduced-motion') }) }),
-      'reduced-motion',
+      null,
     ],
     ['saveData actif', nav({ ...base.navigator, connection: { saveData: true } }), 'save-data'],
     ['deux cœurs', nav({ hardwareConcurrency: WEAK_CORES }), 'weak-device'],
@@ -51,6 +56,27 @@ describe('canEnhance : table de cas', () => {
       expect(canEnhance(input)).toBe(reason === null);
     });
   }
+});
+
+describe('prefersReducedMotion', () => {
+  it('lit prefers-reduced-motion, sans rien bloquer', () => {
+    const queries: string[] = [];
+    const asking = (matches: boolean) => ({
+      matchMedia: (query: string) => (queries.push(query), { matches }),
+    });
+    expect(prefersReducedMotion(asking(true))).toBe(true);
+    expect(prefersReducedMotion(asking(false))).toBe(false);
+    expect(queries).toEqual([
+      '(prefers-reduced-motion: reduce)',
+      '(prefers-reduced-motion: reduce)',
+    ]);
+  });
+
+  it('aucune raison de repli ne s’appelle reduced-motion', () => {
+    const reduced = env({ matchMedia: () => ({ matches: true }) });
+    expect(enhanceBlocker(reduced)).toBeNull();
+    expect(canEnhance(reduced)).toBe(true);
+  });
 });
 
 describe('une valeur absente ne compte pas', () => {
@@ -88,30 +114,5 @@ describe('ordre des contrôles', () => {
       navigator: { hardwareConcurrency: 1 },
     });
     expect(enhanceBlocker(all)).toBe('weak-device');
-  });
-});
-
-describe('hasWebGL2', () => {
-  const canvas = (context: ReturnType<CanvasLike['getContext']> | Error): CanvasLike => ({
-    getContext: () => {
-      if (context instanceof Error) throw context;
-      return context;
-    },
-  });
-
-  it('vrai avec un contexte, et le rend au navigateur', () => {
-    let lost = 0;
-    const context = { getExtension: () => ({ loseContext: () => void (lost += 1) }) };
-    expect(hasWebGL2(() => canvas(context))).toBe(true);
-    expect(lost).toBe(1);
-  });
-
-  it('faux sans contexte ou si la création échoue', () => {
-    expect(hasWebGL2(() => canvas(null))).toBe(false);
-    expect(hasWebGL2(() => canvas(new Error('refusé')))).toBe(false);
-  });
-
-  it('vrai même sans extension de perte de contexte', () => {
-    expect(hasWebGL2(() => canvas({ getExtension: () => null }))).toBe(true);
   });
 });

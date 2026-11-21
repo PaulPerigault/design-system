@@ -1,15 +1,18 @@
 // Cibles d'événements à compteurs, faux canvas et observateurs.
-import type { Handler, ListenTarget } from '../src/bag.ts';
+import type { Handler, ListenOptions, ListenTarget } from '../src/bag.ts';
 import type { MutationWatcher, Observer } from '../src/env.ts';
 import type { CanvasLike } from '../src/raw.ts';
 
 export class FakeTarget implements ListenTarget {
   readonly handlers = new Map<string, Set<Handler>>();
+  /** Écouteurs posés avec leurs options : le test vérifie la passivité. */
+  readonly posed: { type: string; options: ListenOptions | undefined }[] = [];
   adds = 0;
   removes = 0;
 
-  addEventListener(type: string, listener: Handler): void {
+  addEventListener(type: string, listener: Handler, options?: ListenOptions): void {
     this.adds += 1;
+    this.posed.push({ type, options });
     const set = this.handlers.get(type) ?? new Set<Handler>();
     set.add(listener);
     this.handlers.set(type, set);
