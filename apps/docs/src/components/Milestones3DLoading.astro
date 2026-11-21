@@ -3,7 +3,7 @@
 import { EXTRA_SECTIONS } from '../data/milestones-3d';
 import InlineCode from './InlineCode.astro';
 
-const [loading, data] = EXTRA_SECTIONS;
+const [, , loading, data] = EXTRA_SECTIONS;
 const conditions = [
   'Pas d’économie de données (`navigator.connection.saveData`), quand le navigateur l’expose : Chromium seulement. Vérifié avant tout téléchargement.',
   'Appareil non faible : plus de 2 cœurs (`hardwareConcurrency`) et plus de 2 Go (`deviceMemory`). Une valeur absente ne compte pas comme faible : Firefox et Safari n’exposent pas `deviceMemory`.',

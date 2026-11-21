@@ -4,7 +4,7 @@ import Table from '@paulperigault/astro/Table.astro';
 import { EXTRA_SECTIONS, WEIGHTS } from '../data/milestones-3d';
 import InlineCode from './InlineCode.astro';
 
-const [, , security, weight] = EXTRA_SECTIONS;
+const [, , , , security, weight] = EXTRA_SECTIONS;
 const bytes = (value: number): string => new Intl.NumberFormat('fr-FR').format(value);
 const columns = [
   { key: 'file', label: 'Fichier' },
@@ -30,7 +30,7 @@ const text = {
   wasm: "Le `.wasm` est servi par le même domaine. Sans `'wasm-unsafe-eval'` dans `script-src`, le navigateur refuse de l’instancier ; `connect-src 'self'` couvre son chargement. Cette directive n’autorise pas `eval()`. Le composant ne pose aucun attribut `style` : un `style-src` sans `'unsafe-inline'` suffit.",
   site: 'Ce site a déjà ces directives (la recherche charge du WebAssembly). Sans elles, un site consommateur garde la liste classique, sans erreur visible. Autre réglage : ce site refuse `gyroscope` et `accelerometer` dans sa `Permissions-Policy`, donc l’inclinaison se fait au pointeur seul ; un site qui veut le gyroscope doit les autoriser. Sous iOS, l’autorisation n’est demandée qu’à un geste.',
   budget:
-    'Le budget visé est de 60 Kio en brotli pour le `.wasm` ; le poids n’est jamais bloquant. Le `.wasm` et la glue ne se chargent qu’à l’appel de `init` : zéro octet de 3D pour qui n’active pas le comportement.',
+    'Cible de l’ADR-0013 : 45 Kio en brotli pour le `.wasm`, contre 60 Kio avant. Le `.wasm` livré passe de 28 076 à 31 992 octets en brotli (31,2 Kio) : la cible est tenue, le poids n’est jamais bloquant. Le `.wasm` et la glue ne se chargent qu’à l’appel de `init` : zéro octet de 3D pour qui n’active pas le comportement.',
 };
 ---
 

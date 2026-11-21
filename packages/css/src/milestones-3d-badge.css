@@ -31,25 +31,21 @@
   object-fit: contain;
 }
 
-/* Lien d'évitement : caché jusqu'au focus sans le mode amélioré, toujours visible avec. */
+/*
+ * Lien d'évitement : il n'a de sens qu'avec la scène (mode amélioré, `data-state`). Sans elle, la
+ * liste seule n'a rien à contourner : le lien est retiré du rendu.
+ */
 .pp-milestones__skip {
-  position: absolute;
-  inline-size: var(--pp-size-rule);
-  block-size: var(--pp-size-rule);
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
+  display: none;
 }
 
-.pp-milestones__skip:focus,
+/* Mode amélioré : le lien a sa propre rangée au-dessus de la scène, il ne recouvre rien. */
 .pp-milestones[data-state] .pp-milestones__skip {
-  inline-size: auto;
-  block-size: auto;
-  overflow: visible;
-  clip-path: none;
-  inset-block-start: var(--pp-space-xs);
-  inset-inline-start: var(--pp-space-xs);
-  z-index: var(--pp-z-sticky);
+  display: inline-block;
+  position: static;
+  grid-area: skip;
+  justify-self: start;
+  min-block-size: var(--pp-size-target-min);
   padding-block: var(--pp-space-3xs);
   padding-inline: var(--pp-space-xs);
   border: var(--pp-size-rule) solid var(--pp-color-line);
@@ -57,12 +53,4 @@
   background-color: var(--pp-color-surface);
   color: var(--pp-color-accent-text);
   font-size: var(--pp-font-size--1);
-}
-
-/* Mode amélioré : le lien a sa propre rangée au-dessus de la scène, il ne recouvre rien. */
-.pp-milestones[data-state] .pp-milestones__skip {
-  position: static;
-  grid-area: skip;
-  justify-self: start;
-  min-block-size: var(--pp-size-target-min);
 }

@@ -1,6 +1,8 @@
 ---
 import ComponentPage from '../../components/ComponentPage.astro';
+import Milestones3DBadges from '../../components/Milestones3DBadges.astro';
 import Milestones3DLoading from '../../components/Milestones3DLoading.astro';
+import Milestones3DScene from '../../components/Milestones3DScene.astro';
 import Milestones3DSecurity from '../../components/Milestones3DSecurity.astro';
 import Milestones3DExamples from '../../components/examples/milestones-3d.astro';
 import { EXTRA_SECTIONS } from '../../data/milestones-3d';
@@ -28,7 +30,7 @@ import Milestones3D from '@paulperigault/astro/Milestones3D.astro';
 <ComponentPage
   slug="milestones-3d"
   title="Milestones3D"
-  summary="Milestones3D présente des certifications ou des jalons le long d’un parcours chronologique : une liste ordonnée complète, à laquelle une scène 3D WebGL2, pilotée au défilement, peut s’ajouter."
+  summary="Milestones3D affiche des certifications le long d’un parcours daté : une liste complète et, si l’appareil le permet, une scène 3D pilotée au défilement."
   use={[
     'Montrer un parcours de certifications ou de réalisations, avec des jalons obtenus (et leur badge) et des jalons prévus.',
     'Offrir une présentation plus visuelle sans perdre le texte : la liste reste la source de vérité.',
@@ -88,7 +90,9 @@ import Milestones3D from '@paulperigault/astro/Milestones3D.astro';
 >
   <Milestones3DExamples />
   <Fragment slot="more">
+    <Milestones3DScene />
     <Milestones3DLoading />
     <Milestones3DSecurity />
+    <Milestones3DBadges />
   </Fragment>
 </ComponentPage>
