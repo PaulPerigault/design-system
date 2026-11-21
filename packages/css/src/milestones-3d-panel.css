@@ -22,7 +22,7 @@
   box-sizing: border-box;
   align-self: end;
   max-block-size: 40svh;
-  overflow-y: auto;
+  overflow-block: auto;
 }
 
 .pp-milestones__panel[data-near='false'] {

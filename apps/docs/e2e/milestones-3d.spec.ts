@@ -49,7 +49,11 @@ test.describe('rendu classique (WebGL2 absent)', () => {
   test.beforeEach(async ({ page }) => {
     await page.addInitScript(() => {
       const original = HTMLCanvasElement.prototype.getContext;
-      HTMLCanvasElement.prototype.getContext = function (type: string, ...rest: unknown[]) {
+      HTMLCanvasElement.prototype.getContext = function (
+        this: HTMLCanvasElement,
+        type: string,
+        ...rest: unknown[]
+      ) {
         return type === 'webgl2'
           ? null
           : (original as (...args: unknown[]) => unknown).call(this, type, ...rest);
