@@ -1,11 +1,18 @@
-//! Propriétés : l'easing reste dans ses bornes et croît, l'interaction ne sort jamais des siennes.
+//! Propriétés : l'easing reste dans ses bornes et croît, le chemin est continu et borné, la
+//! progression et l'étape se correspondent.
 use glam::Vec2;
-use pp_milestones::interaction::Interaction;
+use pp_milestones::CubicBezier;
+use pp_milestones::camera::focus;
+use pp_milestones::layout::{SPACING, knot, path_point, path_tangent};
+use pp_milestones::progress::{nearest, progress_of};
 use pp_milestones::tilt::{MAX_TILT, Tilt};
-use pp_milestones::{CubicBezier, Key};
 use proptest::prelude::*;
 
 const EPS: f32 = 1e-3;
+/// Pas des tests de continuité, vitesse maximale (profondeur, lacet et dénivelé composés, avec marge).
+const STEP: f32 = 0.01;
+const TINY: f32 = 1e-3;
+const MAX_SPEED: f32 = 5.4;
 
 proptest! {
     #[test]
@@ -47,13 +54,47 @@ proptest! {
     }
 
     #[test]
-    fn navigation_stays_in_range(
-        count in 1_usize..=24, keys in proptest::collection::vec(0_usize..4, 0..40),
-    ) {
-        let mut state = Interaction::new(count, 0).unwrap();
-        for key in keys {
-            state.navigate([Key::Next, Key::Previous, Key::First, Key::Last][key]);
-            prop_assert!(state.active() < count);
-        }
+    fn the_path_is_continuous(s in -2.0_f32..26.0) {
+        let (a, b) = (path_point(s), path_point(s + STEP));
+        prop_assert!(a.distance(b) <= STEP * MAX_SPEED);
+    }
+
+    #[test]
+    fn the_path_is_c1_across_segments(i in -1_i16..25) {
+        let at = f32::from(i);
+        let (before, after) = (path_tangent(at - TINY), path_tangent(at + TINY));
+        prop_assert!(before.distance(after) < 1e-2);
+        prop_assert!(path_point(at).distance(knot(at)) < EPS);
+    }
+
+    #[test]
+    fn the_path_advances_in_depth_at_a_near_constant_speed(s in -2.0_f32..26.0) {
+        let speed = path_point(s + STEP).distance(path_point(s)) / STEP;
+        prop_assert!((SPACING..=MAX_SPEED).contains(&speed), "vitesse {speed}");
+        prop_assert!(path_point(s + STEP).z < path_point(s).z, "toujours vers la profondeur");
+    }
+
+    #[test]
+    fn the_path_stays_inside_its_bounds(s in 0.0_f32..24.0) {
+        let p = path_point(s);
+        prop_assert!(p.x.abs() <= 1.6 && (-1.0..=10.0).contains(&p.y));
+    }
+
+    #[test]
+    fn focus_is_a_weight(s in -2.0_f32..26.0) {
+        prop_assert!((0.0..=1.0).contains(&focus(s)));
+    }
+
+    #[test]
+    fn progress_and_stop_correspond(count in 1_usize..=24, goal in any::<bool>(), index in 0_usize..25) {
+        let stops = count + usize::from(goal);
+        let index = index % stops;
+        prop_assert_eq!(nearest(progress_of(index, count, goal), count, goal), index);
+    }
+
+    #[test]
+    fn nearest_is_monotonic_in_progress(count in 1_usize..=24, a in 0.0_f32..=1.0, b in 0.0_f32..=1.0) {
+        let (low, high) = if a <= b { (a, b) } else { (b, a) };
+        prop_assert!(nearest(low, count, true) <= nearest(high, count, true));
     }
 }

@@ -1,61 +1,107 @@
-//! Caméra en perspective qui glisse le long du chemin.
-use crate::layout::{path_point, path_tangent};
+//! Caméra en perspective pilotée par l'abscisse `s` : vue d'ensemble entre les jalons, gros plan
+//! sur chaque jalon (ADR-0013, décision 2).
+use crate::animation::lerp;
+use crate::layout::{FACE_PITCH, MEDAL_RADIUS, elevated_back, path_point};
 use glam::camera::rh::proj::opengl::perspective;
 use glam::camera::rh::view::look_at_mat4;
 use glam::{Mat4, Vec2, Vec3};
 
-/// Recul de la caméra derrière le point regardé, en unités du monde.
-pub const BACK_DISTANCE: f32 = 3.2;
-/// Hauteur de l'œil : assez haute pour voir le jalon actif par-dessus le précédent, qui reste
-/// derrière la caméra tant que `BACK_DISTANCE` est inférieur à l'espacement.
-pub const ELEVATION: f32 = 2.2;
-pub const LOOK_LIFT: f32 = 0.0;
+/// Vue d'ensemble : distance de l'œil à l'ancre sur le chemin, angle d'élévation (radians) et
+/// avance du regard (en abscisses).
+pub const DISTANCE_FAR: f32 = 3.9;
+pub const ANGLE_FAR: f32 = 0.6;
+pub const LOOK_AHEAD: f32 = 1.4;
+/// Part de la plus petite demi-étendue de l'écran que le rayon de la médaille occupe en gros plan :
+/// l'anneau de survol (1,16 rayon) tient alors encore dans le cadre.
+pub const CLOSE_FILL: f32 = 0.74;
+/// Recul maximal du gros plan : le jalon précédent reste derrière l'œil (espacement de 5).
+pub const MAX_CLOSE_DISTANCE: f32 = 3.6;
+/// Écart (en abscisses) sous lequel le gros plan est plein, puis où il retombe à la vue d'ensemble.
+pub const FOCUS_HOLD: f32 = 0.08;
+pub const FOCUS_SPAN: f32 = 0.35;
 /// Champ vertical de base (60°) et champ horizontal minimal (50°) pour les écrans étroits.
 pub const FOV_Y: f32 = core::f32::consts::FRAC_PI_3;
 pub const MIN_FOV_X: f32 = 0.87;
 pub const NEAR: f32 = 0.1;
 pub const FAR: f32 = 120.0;
 const HALF: f32 = 0.5;
+/// Polynôme de Hermite `3t² - 2t³`.
+const HERMITE: [f32; 2] = [3.0, 2.0];
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Camera {
+    pub eye: Vec3,
+    pub target: Vec3,
+}
+
+fn safe_aspect(aspect: f32) -> f32 {
+    if aspect.is_finite() && aspect > 0.0 {
+        aspect
+    } else {
+        1.0
+    }
+}
 
 /// Champ vertical : élargi quand le canvas est plus haut que large, pour garder une médaille entière.
 #[must_use]
 pub fn vertical_fov(aspect: f32) -> f32 {
-    if !aspect.is_finite() || aspect <= 0.0 {
-        return FOV_Y;
-    }
-    let narrow = 2.0 * ((MIN_FOV_X * HALF).tan() / aspect).atan();
+    let narrow = 2.0 * ((MIN_FOV_X * HALF).tan() / safe_aspect(aspect)).atan();
     FOV_Y.max(narrow)
 }
 
-/// Inclinaison de la vue (radians) : les médailles se penchent de cet angle pour faire face à l'œil.
-#[must_use]
-pub fn pitch() -> f32 {
-    ELEVATION.atan2(BACK_DISTANCE)
+fn smoothstep(from: f32, to: f32, x: f32) -> f32 {
+    let t = ((x - from) / (to - from)).clamp(0.0, 1.0);
+    t * t * (HERMITE[0] - HERMITE[1] * t)
 }
 
-/// Position de l'œil quand la caméra regarde l'abscisse `s`.
+/// Poids du gros plan à l'abscisse `s` : 1 sur un jalon (palier de `FOCUS_HOLD`), 0 à mi-chemin.
 #[must_use]
-pub fn eye(s: f32) -> Vec3 {
-    path_point(s) - path_tangent(s) * BACK_DISTANCE + Vec3::Y * ELEVATION
+pub fn focus(s: f32) -> f32 {
+    1.0 - smoothstep(FOCUS_HOLD, FOCUS_SPAN, (s - s.round()).abs())
 }
 
-/// Matrice vue-projection pour l'abscisse `s` et le rapport largeur/hauteur `aspect`.
+/// Distance de l'œil pour que le rayon d'une médaille occupe `CLOSE_FILL` de la plus petite
+/// demi-étendue du cadre (hauteur en paysage, largeur en portrait).
 #[must_use]
-pub fn view_projection(s: f32, aspect: f32) -> Mat4 {
-    let target = path_point(s) + Vec3::Y * LOOK_LIFT;
-    let view = look_at_mat4(eye(s), target, Vec3::Y);
-    let safe = if aspect.is_finite() && aspect > 0.0 {
-        aspect
-    } else {
-        1.0
-    };
-    perspective(vertical_fov(safe), safe, NEAR, FAR) * view
+pub fn close_distance(aspect: f32) -> f32 {
+    let aspect = safe_aspect(aspect);
+    let half_extent = (vertical_fov(aspect) * HALF).tan() * aspect.min(1.0);
+    (MEDAL_RADIUS / (CLOSE_FILL * half_extent)).min(MAX_CLOSE_DISTANCE)
 }
 
-/// Coordonnées normalisées ([-1, 1], y vers le haut) d'un point du monde ; `None` s'il est
-/// derrière la caméra.
+/// Caméra à l'abscisse `s` : sur la spline avec recul et hauteur, regard anticipé ; plus on
+/// approche d'un jalon, plus l'œil vient face à sa médaille et plus le regard se pose dessus.
 #[must_use]
-pub fn project(world: Vec3, view_projection: Mat4) -> Option<Vec2> {
+pub fn camera_at(s: f32, aspect: f32) -> Camera {
+    let f = focus(s);
+    let angle = lerp(ANGLE_FAR, FACE_PITCH, f);
+    let distance = lerp(DISTANCE_FAR, close_distance(aspect), f);
+    Camera {
+        eye: path_point(s) + elevated_back(s, angle) * distance,
+        target: path_point(s + LOOK_AHEAD * (1.0 - f)),
+    }
+}
+
+impl Camera {
+    /// Matrice vue-projection pour le rapport largeur/hauteur `aspect`.
+    #[must_use]
+    pub fn view_projection(&self, aspect: f32) -> Mat4 {
+        let aspect = safe_aspect(aspect);
+        let view = look_at_mat4(self.eye, self.target, Vec3::Y);
+        perspective(vertical_fov(aspect), aspect, NEAR, FAR) * view
+    }
+
+    /// Droite de l'écran, dans le monde (norme 1).
+    #[must_use]
+    pub fn right(&self) -> Vec3 {
+        (self.target - self.eye).cross(Vec3::Y).normalize_or_zero()
+    }
+}
+
+/// Coordonnées normalisées ([-1, 1], y vers le haut) et profondeur de vue d'un point du monde ;
+/// `None` s'il est derrière la caméra.
+#[must_use]
+pub fn project(world: Vec3, view_projection: Mat4) -> Option<(Vec2, f32)> {
     let clip = view_projection * world.extend(1.0);
-    (clip.w > 0.0).then(|| Vec2::new(clip.x / clip.w, clip.y / clip.w))
+    (clip.w > 0.0).then(|| (Vec2::new(clip.x / clip.w, clip.y / clip.w), clip.w))
 }

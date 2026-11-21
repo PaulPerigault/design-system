@@ -12,8 +12,6 @@ pub enum SceneError {
     DuplicateId,
     /// Le statut n'est ni `achieved` ni `planned`.
     UnknownStatus,
-    /// La clé d'emblème n'est pas dans le jeu fermé.
-    UnknownEmblem,
     /// Les tableaux de jalons n'ont pas la même longueur.
     LengthMismatch,
     /// Le tableau du thème n'a pas la longueur attendue.
@@ -24,6 +22,10 @@ pub enum SceneError {
     ThemeColor,
     /// L'indice du jalon actif sort du tableau.
     ActiveIndex,
+    /// L'identifiant ne désigne aucun jalon (ni l'objectif).
+    UnknownId,
+    /// La progression n'est pas un nombre fini.
+    Progress,
     /// Une dimension du canvas n'est pas un nombre strictement positif.
     Viewport,
     /// La géométrie dépasse la capacité des indices.
@@ -39,12 +41,13 @@ impl SceneError {
             Self::InvalidId => "invalid-id",
             Self::DuplicateId => "duplicate-id",
             Self::UnknownStatus => "unknown-status",
-            Self::UnknownEmblem => "unknown-emblem",
             Self::LengthMismatch => "length-mismatch",
             Self::ThemeLength => "theme-length",
             Self::ThemeValue => "theme-value",
             Self::ThemeColor => "theme-color",
             Self::ActiveIndex => "active-index",
+            Self::UnknownId => "unknown-id",
+            Self::Progress => "progress",
             Self::Viewport => "viewport",
             Self::GeometrySize => "geometry-size",
         }

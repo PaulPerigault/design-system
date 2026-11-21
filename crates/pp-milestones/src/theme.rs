@@ -7,11 +7,14 @@ use crate::easing::CubicBezier;
 use crate::error::SceneError;
 use pp_color::{Oklch, fit_to_gamut, oklch_to_srgb};
 
-pub const COLOR_COUNT: usize = 6;
+pub const COLOR_COUNT: usize = 7;
 /// Par couleur : espace (0 sRGB, 1 OKLCH), puis trois composantes.
 pub const COLOR_STRIDE: usize = 4;
 pub const EASING_LEN: usize = 4;
-/// Couleurs, puis `duration-base`, `duration-fast`, puis la courbe.
+/// Contrat du tableau (34 nombres) : sept couleurs dans l'ordre de `Slot` (`bg`, `fg`, `accent`,
+/// `on-accent`, `line`, `muted`, `paper`), puis `duration-base`, `duration-fast` en millisecondes,
+/// puis les quatre points de contrôle de la courbe. Changer cette longueur est une rupture : le
+/// paquet TypeScript et ce crate évoluent ensemble.
 pub const THEME_LEN: usize = COLOR_COUNT * COLOR_STRIDE + 2 + EASING_LEN;
 pub const SPACE_SRGB: f32 = 0.0;
 pub const SPACE_OKLCH: f32 = 1.0;
@@ -28,6 +31,9 @@ pub enum Slot {
     OnAccent,
     Line,
     Muted,
+    /// Jeton `--pp-color-bg` résolu en mode CLAIR, quelle que soit la préférence de la personne :
+    /// support de la médaille (les badges exigent un fond blanc ou très clair, ADR-0013).
+    Paper,
 }
 
 pub type Rgb = [f32; 3];

@@ -1,17 +1,20 @@
 //! Toutes les parties dans un tampon de sommets et un tampon d'indices.
-use super::mesh::{FLOATS_PER_VERTEX, MAX_VERTICES, Mesh, floats_to_bytes, indices_to_bytes};
-use super::{emblem, medal, ribbon};
+use super::bytes::{floats_to_bytes, indices_to_bytes};
+use super::mesh::{FLOATS_PER_VERTEX, MAX_VERTICES, Mesh};
+use super::{medal, rail, star};
 use crate::error::SceneError;
-use crate::kinds::Emblem;
 
 /// Partie dessinable de la scène.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Part {
-    Body,
+    Support,
+    Badge,
     Wire,
-    Ribbon,
-    Goal,
-    Emblem(Emblem),
+    Ring,
+    Rail,
+    Marker,
+    Star,
+    StarOutline,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -36,19 +39,21 @@ pub struct Pack {
 }
 
 impl Pack {
-    /// Construit toutes les parties pour une scène de `length` jalons.
+    /// Construit toutes les parties pour `count` jalons et un objectif éventuel.
     ///
     /// # Errors
     /// `GeometrySize` si le maillage dépasse la capacité des indices.
-    pub fn build(length: usize) -> Result<Self, SceneError> {
+    pub fn build(count: usize, goal: bool) -> Result<Self, SceneError> {
         let mut pack = Self::default();
-        pack.add(Part::Body, &medal::body(), Mode::Triangles);
+        let solid = Mode::Triangles;
+        pack.add(Part::Support, &medal::support(), solid);
+        pack.add(Part::Badge, &medal::badge(), solid);
         pack.add(Part::Wire, &medal::wire(), Mode::Lines);
-        pack.add(Part::Ribbon, &ribbon::ribbon(length), Mode::Triangles);
-        pack.add(Part::Goal, &ribbon::goal(), Mode::Lines);
-        for kind in Emblem::ALL {
-            pack.add(Part::Emblem(kind), &emblem::mesh(kind), Mode::Triangles);
-        }
+        pack.add(Part::Ring, &medal::ring(), solid);
+        pack.add(Part::Rail, &rail::rail(count, goal), solid);
+        pack.add(Part::Marker, &rail::marker(), solid);
+        pack.add(Part::Star, &star::solid(), solid);
+        pack.add(Part::StarOutline, &star::outline(), Mode::Lines);
         if pack.vertices.len() / FLOATS_PER_VERTEX > MAX_VERTICES {
             return Err(SceneError::GeometrySize);
         }

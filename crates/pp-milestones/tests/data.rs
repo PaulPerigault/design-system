@@ -1,7 +1,7 @@
 mod common;
 use common::{data, milestone};
 use pp_milestones::data::{MAX_MILESTONES, MIN_MILESTONES};
-use pp_milestones::{Emblem, MilestonesData, SceneError, Status, from_columns};
+use pp_milestones::{GOAL_ID, MilestonesData, SceneError, Status, from_columns};
 
 fn strings(items: &[&str]) -> Vec<String> {
     items.iter().map(|s| (*s).to_owned()).collect()
@@ -18,7 +18,7 @@ fn accepts_one_to_twenty_four_milestones() {
 fn refuses_zero_and_too_many() {
     for count in [0, MAX_MILESTONES + 1] {
         let milestones = (0..count)
-            .map(|i| milestone(&format!("m{i}"), Status::Planned, Emblem::Disc))
+            .map(|i| milestone(&format!("m{i}"), Status::Planned, false))
             .collect();
         assert_eq!(
             MilestonesData::new(milestones, false),
@@ -30,7 +30,7 @@ fn refuses_zero_and_too_many() {
 #[test]
 fn refuses_invalid_and_duplicate_ids() {
     for id in ["", "A", "a b", "a_b", "é"] {
-        let one = vec![milestone(id, Status::Planned, Emblem::Disc)];
+        let one = vec![milestone(id, Status::Planned, false)];
         assert_eq!(
             MilestonesData::new(one, false),
             Err(SceneError::InvalidId),
@@ -38,23 +38,13 @@ fn refuses_invalid_and_duplicate_ids() {
         );
     }
     let twice = vec![
-        milestone("a", Status::Planned, Emblem::Disc),
-        milestone("a", Status::Planned, Emblem::Disc),
+        milestone("a", Status::Planned, false),
+        milestone("a", Status::Planned, false),
     ];
     assert_eq!(
         MilestonesData::new(twice, false),
         Err(SceneError::DuplicateId)
     );
-}
-
-#[test]
-fn emblem_keys_are_a_closed_set() {
-    for emblem in Emblem::ALL {
-        assert_eq!(Emblem::parse(emblem.key()), Ok(emblem));
-    }
-    assert_eq!(Emblem::parse(""), Ok(Emblem::Disc));
-    assert_eq!(Emblem::parse("star"), Err(SceneError::UnknownEmblem));
-    assert_eq!(Emblem::parse("Disc"), Err(SceneError::UnknownEmblem));
 }
 
 #[test]
@@ -69,7 +59,7 @@ fn columns_build_the_same_data() {
     let built = from_columns(
         &strings(&["a", "b"]),
         &strings(&["achieved", "planned"]),
-        &strings(&["key", ""]),
+        &[1, 0],
         true,
     )
     .unwrap();
@@ -78,9 +68,17 @@ fn columns_build_the_same_data() {
     assert_eq!(built.index_of("b"), Some(1));
     assert_eq!(built.index_of("z"), None);
     assert_eq!(
-        built.milestones().get(1).map(|m| m.emblem),
-        Some(Emblem::Disc)
+        built
+            .milestones()
+            .iter()
+            .map(|m| m.has_badge)
+            .collect::<Vec<_>>(),
+        [true, false]
     );
+    assert_eq!(built.stops(), 3);
+    assert_eq!(built.index_of(GOAL_ID), Some(2));
+    assert_eq!(built.id_at(2), Some(GOAL_ID));
+    assert_eq!(built.id_at(3), None);
 }
 
 #[test]
@@ -88,7 +86,7 @@ fn columns_must_have_the_same_length() {
     let result = from_columns(
         &strings(&["a", "b"]),
         &strings(&["achieved"]),
-        &strings(&["", ""]),
+        &[0, 0],
         false,
     );
     assert_eq!(result, Err(SceneError::LengthMismatch));
@@ -97,5 +95,6 @@ fn columns_must_have_the_same_length() {
 #[test]
 fn every_error_has_a_literal_code() {
     assert_eq!(SceneError::MilestoneCount.code(), "milestone-count");
-    assert_eq!(SceneError::UnknownEmblem.to_string(), "unknown-emblem");
+    assert_eq!(SceneError::Progress.to_string(), "progress");
+    assert_eq!(SceneError::UnknownId.code(), "unknown-id");
 }

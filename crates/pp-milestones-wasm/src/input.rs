@@ -5,17 +5,17 @@ use pp_milestones::{SceneError, SceneState, Theme, from_columns};
 use wasm_bindgen::prelude::wasm_bindgen;
 
 pub(crate) fn build(
-    columns: [&[String]; 3],
+    columns: (&[String], &[String], &[u8]),
     goal: bool,
     theme: &[f32],
     active: &str,
 ) -> Result<SceneState, Fault> {
-    let [ids, statuses, emblems] = columns;
-    let data = from_columns(ids, statuses, emblems, goal)?;
+    let (ids, statuses, badges) = columns;
+    let data = from_columns(ids, statuses, badges, goal)?;
     let index = if active.is_empty() {
-        0
+        None
     } else {
-        data.index_of(active).ok_or(SceneError::ActiveIndex)?
+        Some(data.index_of(active).ok_or(SceneError::ActiveIndex)?)
     };
     Ok(SceneState::new(data, Theme::from_slice(theme)?, index)?)
 }
@@ -32,11 +32,11 @@ pub(crate) fn build(
 pub fn check_input(
     ids: Vec<String>,
     statuses: Vec<String>,
-    emblems: Vec<String>,
+    badges: &[u8],
     goal: bool,
     theme: &[f32],
 ) -> Out<()> {
-    build([&ids, &statuses, &emblems], goal, theme, "")
+    build((&ids, &statuses, badges), goal, theme, "")
         .map(|_| ())
         .map_err(raise)
 }

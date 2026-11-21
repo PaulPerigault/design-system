@@ -1,12 +1,12 @@
 //! Maillages statiques de la scène, générés une fois puis envoyés au GPU en octets.
 //!
-//! Tout est construit en Rust (aucun fichier de modèle) : un corps de médaille, son fil de fer,
-//! neuf emblèmes, un ruban et une cible. [`pack::Pack`] les range dans un seul tampon de sommets
-//! et un seul tampon d'indices ; chaque partie est une plage d'indices.
-pub mod emblem;
+//! Tout est construit en Rust (aucun fichier de modèle) : support de médaille, face du badge,
+//! fantôme filaire, anneau de survol, étoile de l'objectif, rail et repères. [`pack::Pack`] les
+//! range dans un seul tampon de sommets et un seul tampon d'indices ; chaque partie est une plage.
+pub mod bytes;
 pub mod medal;
 pub mod mesh;
 pub mod pack;
-pub mod ribbon;
-pub mod shapes;
+pub mod rail;
 pub mod solids;
+pub mod star;
