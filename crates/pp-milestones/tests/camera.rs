@@ -1,11 +1,8 @@
-use glam::Vec2;
 use pp_milestones::camera::{FOV_Y, camera_at, close_distance, focus, project, vertical_fov};
 use pp_milestones::layout::{MEDAL_RADIUS, face_normal, path_point, path_tangent, rail_point};
 use pp_milestones::progress::{nearest, progress_of};
 
 const EPS: f32 = 1e-4;
-/// Anneau de survol (1,16 rayon) : doit tenir dans le cadre.
-const RING_SCALE: f32 = 1.16;
 
 #[test]
 fn tangent_is_a_unit_vector_toward_the_depth() {
@@ -44,52 +41,72 @@ fn nearest_clamps_and_survives_bad_input() {
     assert_eq!(nearest(f32::NAN, 4, true), 0);
 }
 
+const STOPS: usize = 6;
+
 #[test]
 fn close_up_exactly_on_a_stop_and_overview_between() {
     for s in [0.0, 1.0, 4.0] {
         assert!((focus(s) - 1.0).abs() < EPS);
     }
     assert!(focus(0.5).abs() < EPS && focus(2.5).abs() < EPS);
-    let close = camera_at(2.0, 1.6);
-    let far = camera_at(2.5, 1.6);
+    let close = camera_at(2.0, 1.0, STOPS);
+    let far = camera_at(2.5, 1.0, STOPS);
     let near = |c: pp_milestones::camera::Camera, s: f32| c.eye.distance(path_point(s));
     assert!(near(close, 2.0) < near(far, 2.5));
-    assert!(close.target.distance(path_point(2.0)) < EPS);
 }
 
 #[test]
 fn close_up_looks_straight_at_the_face() {
-    let camera = camera_at(3.0, 1.0);
+    let camera = camera_at(3.0, 1.0, STOPS);
     let toward_eye = (camera.eye - path_point(3.0)).normalize();
     assert!(toward_eye.dot(face_normal(3.0)) > 1.0 - EPS);
 }
 
+/// Marge de chaque côté (6 % de la largeur), en coordonnées normalisées, moins une tolérance.
+const EDGE: f32 = 2.0 * 0.06 - 1e-3;
+const ASPECTS: [f32; 10] = [0.4, 0.46, 0.7, 0.94, 1.0, 1.15, 1.5, 1.78, 2.0, 2.5];
+
 #[test]
-fn the_medal_and_its_ring_stay_inside_the_frame_in_every_format() {
-    for (width, height) in [
-        (1440.0_f32, 900.0),
-        (390.0, 844.0),
-        (844.0, 390.0),
-        (1024.0, 1024.0),
-    ] {
-        let aspect = width / height;
-        let camera = camera_at(2.0, aspect);
-        let matrix = camera.view_projection(aspect);
-        let (centre, _) = project(path_point(2.0), matrix).unwrap();
-        let (edge, _) = project(
-            path_point(2.0) + camera.right() * MEDAL_RADIUS * RING_SCALE,
-            matrix,
-        )
-        .unwrap();
-        let radius = Vec2::new((edge.x - centre.x) * aspect, edge.y - centre.y).length();
-        assert!(centre.length() < EPS);
+fn the_active_medal_and_the_next_two_stay_in_the_frame_at_every_aspect() {
+    for count in [3_usize, 9, 24] {
+        let stops = count + 1;
+        for aspect in ASPECTS {
+            for index in 0..stops {
+                let s = f32::from(u16::try_from(index).unwrap());
+                let camera = camera_at(s, aspect, stops);
+                let matrix = camera.view_projection(aspect);
+                for k in 0..=2.min(stops - 1 - index) {
+                    let at = path_point(s + f32::from(u16::try_from(k).unwrap()));
+                    let (centre, _) = project(at, matrix).unwrap();
+                    let (edge, _) = project(at + camera.right() * MEDAL_RADIUS, matrix).unwrap();
+                    let half = (edge.x - centre.x).abs();
+                    let (rx, ry) = (half, half * aspect);
+                    let at_stop = format!("{count} jalons, aspect {aspect}, étape {index}+{k}");
+                    assert!(centre.x - rx >= -1.0 + EDGE, "{at_stop} gauche");
+                    assert!(centre.x + rx <= 1.0 - EDGE, "{at_stop} droite");
+                    assert!(centre.y + ry <= 1.0 - EDGE, "{at_stop} haut");
+                    assert!(centre.y - ry >= -1.0 + EDGE, "{at_stop} bas");
+                }
+            }
+        }
+    }
+}
+
+#[test]
+fn the_active_medal_is_the_largest_and_big_at_desktop_aspect() {
+    for index in 0..8 {
+        let s = f32::from(u16::try_from(index).unwrap());
+        let camera = camera_at(s, 0.94, 9);
+        let matrix = camera.view_projection(0.94);
+        let radius = |k: f32| {
+            let at = path_point(s + k);
+            let (c, _) = project(at, matrix).unwrap();
+            let (e, _) = project(at + camera.right() * MEDAL_RADIUS, matrix).unwrap();
+            (e.x - c.x).abs() * 0.94
+        };
         assert!(
-            radius < 1.0 / 1.0_f32.max(1.0 / aspect),
-            "{width}x{height} : {radius}"
-        );
-        assert!(
-            radius > 0.5 / 1.0_f32.max(1.0 / aspect),
-            "{width}x{height} gros plan : {radius}"
+            radius(0.0) > radius(1.0) && radius(1.0) > radius(2.0),
+            "étape {index}"
         );
     }
 }

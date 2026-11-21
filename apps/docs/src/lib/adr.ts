@@ -3,7 +3,7 @@
 const SUMMARY_MAX = 200;
 const DESCRIPTION_MAX = 160;
 const ADR_BASENAME = /^(\d{4})-/;
-const TITLE_LINE = /^# (ADR-\d{4} — .+?)\s*$/m;
+const TITLE_LINE = /^# (ADR-\d{4} (?:—|:) .+?)\s*$/m;
 const STATUS_PREFIX = '- Statut : ';
 const STATUS_LEAD = /^- Statut :\s*/;
 const CONTINUATION = /^ {2}\S/;

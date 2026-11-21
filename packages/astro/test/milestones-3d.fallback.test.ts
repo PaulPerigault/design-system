@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { enhance, type Deps } from '../src/behaviors/milestones-3d';
-import { page, setup } from './milestones-3d-fixtures';
+import { fakeEnv, optionsOf, page, setup } from './milestones-3d-fixtures';
 
 describe('enhance (repli sur la liste)', () => {
   it('revient à la liste quand init échoue', async () => {
@@ -27,10 +27,10 @@ describe('enhance (repli sur la liste)', () => {
     expect(host.querySelector('canvas')).toBeNull();
   });
 
-  it('ne charge rien quand le mouvement est réduit ou les données économisées', async () => {
+  it('ne charge rien en économie de données', async () => {
     const load = vi.fn();
     const ready = vi.fn();
-    await enhance(page(), { load, ready, early: () => 'reduced-motion' } as unknown as Deps);
+    await enhance(page(), { load, ready, early: () => 'save-data' } as unknown as Deps);
     expect(load).not.toHaveBeenCalled();
     expect(ready).not.toHaveBeenCalled();
   });
@@ -45,5 +45,42 @@ describe('enhance (repli sur la liste)', () => {
     await enhance(twice, deps);
     await enhance(twice, deps);
     expect(init).toHaveBeenCalledTimes(1);
+  });
+
+  it('ne bloque plus le mouvement réduit : la scène démarre, en mode des étapes', async () => {
+    const host = page();
+    const { deps, init } = setup({}, fakeEnv(true));
+    await enhance(host, deps);
+    expect(init).toHaveBeenCalledTimes(1);
+    expect(host.getAttribute('data-mode')).toBe('steps');
+  });
+
+  it('revient à la liste quand la scène se replie (perte de contexte), une seule fois', async () => {
+    const host = page();
+    const { deps, init, handle, env } = setup({}, fakeEnv());
+    await enhance(host, deps);
+    expect(env.listeners).toBe(1);
+    optionsOf(init)?.onFallback('context-lost');
+    optionsOf(init)?.onFallback('context-lost');
+    expect(host.querySelector('canvas')).toBeNull();
+    expect(host.querySelector('button')).toBeNull();
+    expect(host.querySelector('.pp-milestones__labels')).toBeNull();
+    expect(host.querySelector('.pp-milestones__nav')).toBeNull();
+    expect(['data-state', 'data-mode'].some((name) => host.hasAttribute(name))).toBe(false);
+    expect(host.querySelector('[data-pp-panel]')?.hasAttribute('hidden')).toBe(true);
+    expect(host.querySelector('[data-pp-detail]:not([hidden])')).toBeNull();
+    expect(host.querySelector('[data-pp-name]')?.textContent).toBe('Premier');
+    expect(host.querySelector('a')?.hasAttribute('tabindex')).toBe(false);
+    expect(handle.calls.destroyed).toBe(1);
+    expect(env.listeners).toBe(0);
+    expect(env.flush()).toBe(0);
+  });
+
+  it('revient à la liste, sans message, quand l’init échoue après le canvas (WebGL perdu)', async () => {
+    const host = page();
+    const { deps } = setup({ init: () => Promise.reject(new Error('gl')) });
+    await enhance(host, deps);
+    expect(host.querySelector('canvas')).toBeNull();
+    expect(host.textContent).not.toMatch(/webgl|erreur/i);
   });
 });

@@ -1,0 +1,68 @@
+/* Milestones3D : badge sur sa pastille et lien d'évitement. */
+
+/*
+ * Badge : l'image du consommateur, intacte (aucun filtre, aucune opacité, aucun rognage : `contain`),
+ * sur une pastille claire fixe. `color-scheme: light` fait résoudre `--pp-color-bg` en clair même
+ * dans le thème sombre (conditions des émetteurs de badges, ADR-0013). Rien ne la recouvre.
+ */
+.pp-milestones__medal {
+  box-sizing: border-box;
+  display: grid;
+  flex: none;
+  place-items: center;
+  inline-size: var(--pp-space-2xl);
+  block-size: var(--pp-space-2xl);
+  padding: var(--pp-space-3xs);
+  border: var(--pp-size-rule) solid var(--pp-color-line);
+  border-radius: var(--pp-radius-surface);
+  background-color: var(--pp-color-bg);
+  color-scheme: light;
+}
+
+.pp-milestones__medal--large {
+  inline-size: var(--pp-space-3xl);
+  block-size: var(--pp-space-3xl);
+}
+
+.pp-milestones__badge {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: contain;
+}
+
+/* Lien d'évitement : caché jusqu'au focus sans le mode amélioré, toujours visible avec. */
+.pp-milestones__skip {
+  position: absolute;
+  inline-size: var(--pp-size-rule);
+  block-size: var(--pp-size-rule);
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.pp-milestones__skip:focus,
+.pp-milestones[data-state] .pp-milestones__skip {
+  inline-size: auto;
+  block-size: auto;
+  overflow: visible;
+  clip-path: none;
+  inset-block-start: var(--pp-space-xs);
+  inset-inline-start: var(--pp-space-xs);
+  z-index: var(--pp-z-sticky);
+  padding-block: var(--pp-space-3xs);
+  padding-inline: var(--pp-space-xs);
+  border: var(--pp-size-rule) solid var(--pp-color-line);
+  border-radius: var(--pp-radius-control);
+  background-color: var(--pp-color-surface);
+  color: var(--pp-color-accent-text);
+  font-size: var(--pp-font-size--1);
+}
+
+/* Mode amélioré : le lien a sa propre rangée au-dessus de la scène, il ne recouvre rien. */
+.pp-milestones[data-state] .pp-milestones__skip {
+  position: static;
+  grid-area: skip;
+  justify-self: start;
+  min-block-size: var(--pp-size-target-min);
+}

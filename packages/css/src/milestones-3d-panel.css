@@ -1,0 +1,120 @@
+/*
+ * Milestones3D : panneau de détail (carte à côté de la scène sur grand écran, feuille en bas sur
+ * mobile) et étiquettes de la scène en HTML superposé. Surface opaque (jeton), sans ombre, flou
+ * ni dégradé. Le panneau garde sa place : seul `visibility` change, la scène ne se redimensionne pas.
+ */
+.pp-milestones__panel {
+  display: grid;
+  gap: var(--pp-space-xs);
+  padding: var(--pp-space-s);
+  border: var(--pp-size-rule) solid var(--pp-color-line);
+  border-radius: var(--pp-radius-surface);
+  background-color: var(--pp-color-surface);
+}
+
+.pp-milestones__panel[hidden],
+.pp-milestones__detail[hidden] {
+  display: none;
+}
+
+.pp-milestones[data-state] .pp-milestones__panel {
+  grid-area: panel;
+  box-sizing: border-box;
+  align-self: end;
+  max-block-size: 40svh;
+  overflow-y: auto;
+}
+
+.pp-milestones__panel[data-near='false'] {
+  visibility: hidden;
+}
+
+@media (width < 48rem) {
+  .pp-milestones__detail .pp-milestones__medal--large {
+    inline-size: var(--pp-space-2xl);
+    block-size: var(--pp-space-2xl);
+  }
+}
+
+@media (width >= 48rem) {
+  .pp-milestones[data-state] .pp-milestones__panel {
+    align-self: center;
+    max-block-size: 100%;
+  }
+}
+
+.pp-milestones__detail {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--pp-space-s);
+}
+
+.pp-milestones__detail-title {
+  margin-block: 0;
+  font-size: var(--pp-font-size-1);
+  font-weight: var(--pp-font-weight-semibold);
+  line-height: var(--pp-font-line-height-heading);
+  overflow-wrap: anywhere;
+}
+
+.pp-milestones__detail .pp-milestones__group {
+  margin-block: 0;
+}
+
+/* Étiquettes : posées par le CSSOM d'après `project()` ; `direction: ltr` (coordonnées d'écran). */
+.pp-milestones__labels {
+  position: absolute;
+  inset: 0;
+  direction: ltr;
+  pointer-events: none;
+}
+
+.pp-milestones__label {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  display: grid;
+  justify-items: center;
+  padding-block: var(--pp-space-3xs);
+  padding-inline: var(--pp-space-2xs);
+  border: var(--pp-size-rule) solid var(--pp-color-line);
+  border-radius: var(--pp-radius-control);
+  background-color: var(--pp-color-surface);
+  color: var(--pp-color-fg);
+  font-size: var(--pp-font-size--1);
+  line-height: var(--pp-font-line-height-heading);
+  white-space: nowrap;
+}
+
+.pp-milestones__label[data-status='planned'] {
+  border-style: dashed;
+}
+
+.pp-milestones__label[data-active] {
+  border-color: var(--pp-color-accent);
+}
+
+.pp-milestones__label[data-hidden] {
+  visibility: hidden;
+}
+
+.pp-milestones__label[data-bare]:not([data-active]),
+.pp-milestones__label-title,
+.pp-milestones__label-code:empty,
+.pp-milestones__label-date:empty {
+  display: none;
+}
+
+.pp-milestones__label[data-active] .pp-milestones__label-title {
+  display: block;
+  font-weight: var(--pp-font-weight-semibold);
+}
+
+.pp-milestones__label-code {
+  font-family: var(--pp-font-family-mono);
+  font-weight: var(--pp-font-weight-semibold);
+}
+
+.pp-milestones__label-date {
+  color: var(--pp-color-muted);
+}

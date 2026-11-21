@@ -4,6 +4,7 @@
 //! fantôme filaire, anneau de survol, étoile de l'objectif, rail et repères. [`pack::Pack`] les
 //! range dans un seul tampon de sommets et un seul tampon d'indices ; chaque partie est une plage.
 pub mod bytes;
+pub mod check;
 pub mod medal;
 pub mod mesh;
 pub mod pack;

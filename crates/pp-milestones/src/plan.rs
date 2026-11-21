@@ -10,13 +10,14 @@ use glam::{Mat4, Vec2, Vec3};
 
 /// Direction de la lumière (vers la source), une seule, fixe, et part ambiante.
 pub const LIGHT: Vec3 = Vec3::new(-0.4, 0.7, 0.6);
-pub const AMBIENT: f32 = 0.6;
+pub const AMBIENT: f32 = 0.78;
 /// Fondu du rail et des fantômes vers le transparent : début et fin, en distance de la caméra.
 pub const FOG_START: f32 = 9.0;
 pub const FOG_END: f32 = 42.0;
-/// Étapes tracées autour de la caméra (en abscisses) : derrière, puis devant.
+/// Étapes tracées autour de la caméra (en abscisses) : derrière, puis devant. Devant : l'active et
+/// les deux suivantes, celles que `camera_fit` garantit dans le cadre ; aucune médaille rognée.
 pub const BEHIND_UNITS: f32 = 2.0;
-pub const AHEAD_UNITS: f32 = 5.0;
+pub const AHEAD_UNITS: f32 = 2.6;
 
 #[derive(Debug, Clone, Copy)]
 pub struct DrawItem {

@@ -14,6 +14,7 @@
 
 pub mod animation;
 pub mod camera;
+pub mod camera_fit;
 pub mod columns;
 pub mod controls;
 pub mod data;

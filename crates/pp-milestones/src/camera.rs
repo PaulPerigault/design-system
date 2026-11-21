@@ -1,21 +1,28 @@
 //! Caméra en perspective pilotée par l'abscisse `s` : vue d'ensemble entre les jalons, gros plan
 //! sur chaque jalon (ADR-0013, décision 2).
 use crate::animation::lerp;
-use crate::layout::{FACE_PITCH, MEDAL_RADIUS, elevated_back, path_point};
+use crate::camera_fit::close_camera;
+use crate::layout::{MEDAL_RADIUS, elevated_back, path_point};
+use crate::progress::nearest_to;
 use glam::camera::rh::proj::opengl::perspective;
 use glam::camera::rh::view::look_at_mat4;
 use glam::{Mat4, Vec2, Vec3};
 
 /// Vue d'ensemble : distance de l'œil à l'ancre sur le chemin, angle d'élévation (radians) et
 /// avance du regard (en abscisses).
-pub const DISTANCE_FAR: f32 = 3.9;
-pub const ANGLE_FAR: f32 = 0.6;
+pub const DISTANCE_FAR: f32 = 6.5;
+pub const ANGLE_FAR: f32 = 0.5;
 pub const LOOK_AHEAD: f32 = 1.4;
 /// Part de la plus petite demi-étendue de l'écran que le rayon de la médaille occupe en gros plan :
 /// l'anneau de survol (1,16 rayon) tient alors encore dans le cadre.
-pub const CLOSE_FILL: f32 = 0.74;
+pub const CLOSE_FILL: f32 = 0.38;
+/// Cadre peu large (mobile) : la médaille occupe davantage, au moins ~45 % de la largeur.
+pub const CLOSE_FILL_NARROW: f32 = 0.4;
+pub const CLOSE_FILL_MOBILE: f32 = 0.6;
+const WIDE_SPAN: f32 = 0.5;
+pub const NARROW_ASPECT: f32 = 1.3;
 /// Recul maximal du gros plan : le jalon précédent reste derrière l'œil (espacement de 5).
-pub const MAX_CLOSE_DISTANCE: f32 = 3.6;
+pub const MAX_CLOSE_DISTANCE: f32 = 4.9;
 /// Écart (en abscisses) sous lequel le gros plan est plein, puis où il retombe à la vue d'ensemble.
 pub const FOCUS_HOLD: f32 = 0.08;
 pub const FOCUS_SPAN: f32 = 0.35;
@@ -60,25 +67,54 @@ pub fn focus(s: f32) -> f32 {
     1.0 - smoothstep(FOCUS_HOLD, FOCUS_SPAN, (s - s.round()).abs())
 }
 
+/// Part de remplissage selon le cadre : `CLOSE_FILL_NARROW` en portrait et presque carré (bureau,
+/// scène à côté du panneau), jusqu'à `CLOSE_FILL_MOBILE` à `NARROW_ASPECT` (mobile, scène basse et
+/// large), puis retour à `CLOSE_FILL` en paysage large.
+fn close_fill(aspect: f32) -> f32 {
+    if aspect <= 1.0 {
+        return CLOSE_FILL_NARROW;
+    }
+    if aspect <= NARROW_ASPECT {
+        return lerp(
+            CLOSE_FILL_NARROW,
+            CLOSE_FILL_MOBILE,
+            (aspect - 1.0) / (NARROW_ASPECT - 1.0),
+        );
+    }
+    lerp(
+        CLOSE_FILL_MOBILE,
+        CLOSE_FILL,
+        ((aspect - NARROW_ASPECT) / WIDE_SPAN).clamp(0.0, 1.0),
+    )
+}
+
 /// Distance de l'œil pour que le rayon d'une médaille occupe `CLOSE_FILL` de la plus petite
 /// demi-étendue du cadre (hauteur en paysage, largeur en portrait).
 #[must_use]
 pub fn close_distance(aspect: f32) -> f32 {
     let aspect = safe_aspect(aspect);
+    let fill = close_fill(aspect);
     let half_extent = (vertical_fov(aspect) * HALF).tan() * aspect.min(1.0);
-    (MEDAL_RADIUS / (CLOSE_FILL * half_extent)).min(MAX_CLOSE_DISTANCE)
+    (MEDAL_RADIUS / (fill * half_extent)).min(MAX_CLOSE_DISTANCE)
 }
 
-/// Caméra à l'abscisse `s` : sur la spline avec recul et hauteur, regard anticipé ; plus on
-/// approche d'un jalon, plus l'œil vient face à sa médaille et plus le regard se pose dessus.
+/// Caméra à l'abscisse `s` pour un parcours de `stops` étapes : sur la spline avec recul et hauteur
+/// entre les jalons (vue d'ensemble), cadrage du gros plan (`camera_fit`) à proximité d'une étape.
 #[must_use]
-pub fn camera_at(s: f32, aspect: f32) -> Camera {
+pub fn camera_at(s: f32, aspect: f32, stops: usize) -> Camera {
     let f = focus(s);
-    let angle = lerp(ANGLE_FAR, FACE_PITCH, f);
-    let distance = lerp(DISTANCE_FAR, close_distance(aspect), f);
+    let angle = ANGLE_FAR;
+    let far = Camera {
+        eye: path_point(s) + elevated_back(s, angle) * DISTANCE_FAR,
+        target: path_point(s + LOOK_AHEAD),
+    };
+    if f <= 0.0 {
+        return far;
+    }
+    let close = close_camera(nearest_to(s, stops), stops, aspect);
     Camera {
-        eye: path_point(s) + elevated_back(s, angle) * distance,
-        target: path_point(s + LOOK_AHEAD * (1.0 - f)),
+        eye: far.eye.lerp(close.eye, f),
+        target: far.target.lerp(close.target, f),
     }
 }
 

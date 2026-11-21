@@ -11,7 +11,7 @@ const STEPS_PER_UNIT: usize = 5;
 pub const LEAD_IN_UNITS: usize = 2;
 pub const TAIL_UNITS: usize = 1;
 /// Rayon d'un repère, sa hauteur au-dessus du rail, et son nombre de côtés.
-pub const MARKER_RADIUS: f32 = 0.22;
+pub const MARKER_RADIUS: f32 = 0.2;
 pub const MARKER_LIFT: f32 = 0.01;
 const MARKER_SIDES: usize = 16;
 

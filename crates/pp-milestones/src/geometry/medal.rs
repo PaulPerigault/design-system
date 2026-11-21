@@ -14,8 +14,8 @@ pub const BADGE_MARGIN: f32 = 0.03;
 /// de l'ordre de 1e-5 à 3 unités).
 pub const FACE_LIFT: f32 = 0.004;
 /// Écart de l'anneau au bord du support, et sa largeur.
-pub const RING_GAP: f32 = 0.06;
-pub const RING_WIDTH: f32 = 0.1;
+pub const RING_GAP: f32 = 0.05;
+pub const RING_WIDTH: f32 = 0.035;
 
 pub const FRONT: f32 = MEDAL_THICKNESS / 2.0;
 const BACK: f32 = -FRONT;

@@ -1,7 +1,7 @@
 //! Toutes les parties dans un tampon de sommets et un tampon d'indices.
 use super::bytes::{floats_to_bytes, indices_to_bytes};
 use super::mesh::{FLOATS_PER_VERTEX, MAX_VERTICES, Mesh};
-use super::{medal, rail, star};
+use super::{check, medal, rail, star};
 use crate::error::SceneError;
 
 /// Partie dessinable de la scène.
@@ -11,6 +11,7 @@ pub enum Part {
     Badge,
     Wire,
     Ring,
+    Check,
     Rail,
     Marker,
     Star,
@@ -50,6 +51,7 @@ impl Pack {
         pack.add(Part::Badge, &medal::badge(), solid);
         pack.add(Part::Wire, &medal::wire(), Mode::Lines);
         pack.add(Part::Ring, &medal::ring(), solid);
+        pack.add(Part::Check, &check::check(), solid);
         pack.add(Part::Rail, &rail::rail(count, goal), solid);
         pack.add(Part::Marker, &rail::marker(), solid);
         pack.add(Part::Star, &star::solid(), solid);

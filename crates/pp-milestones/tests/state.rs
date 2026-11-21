@@ -109,24 +109,27 @@ fn pointer_tilt_keeps_rendering_until_it_arrives() {
 }
 
 #[test]
-fn picking_finds_the_centered_medal_and_the_goal_by_its_id() {
+fn picking_finds_the_active_medal_and_the_goal_by_its_id() {
     let mut scene = state(5);
     scene.frame(0.0);
-    assert_eq!(scene.pick(Vec2::ZERO), Some(0));
+    let first = scene.project()[0];
+    let ndc = Vec2::new(first.x * 2.0 - 1.0, 1.0 - first.y * 2.0);
+    assert_eq!(scene.pick(ndc), Some(0));
     assert_eq!(scene.pick(Vec2::new(0.95, 0.95)), None);
     assert_eq!(scene.id_at(5), Some(GOAL_ID));
     assert_eq!(scene.id_at(6), None);
 }
 
 #[test]
-fn project_reports_every_stop_and_centres_the_closeup() {
+fn project_reports_every_stop_and_lowers_the_closeup() {
     let mut scene = state(5);
     scene.resize(390.0, 844.0).unwrap();
     scene.frame(0.0);
     let points = scene.project();
     assert_eq!(points.len(), 6);
     let first = points[0];
-    assert!(first.visible && (first.x - 0.5).abs() < 1e-3 && (first.y - 0.5).abs() < 1e-3);
+    // En gros plan la médaille est en bas du cadre (y vers le bas), jamais hors du cadre.
+    assert!(first.visible && first.y > 0.5 && first.y < 1.0);
     assert!(first.scale > 0.0);
     assert!(
         points
@@ -221,4 +224,13 @@ fn only_nearby_medals_are_drawn() {
     let far = items(24, true, &pose(0.0)).len();
     let all = items(24, true, &pose(12.0)).len();
     assert!(far < 24 * 3 && all < 24 * 3, "{far} {all}");
+}
+
+#[test]
+fn only_the_active_stop_and_the_two_following_are_drawn_and_reported() {
+    let mut scene = state(8);
+    scene.frame(0.0);
+    let points = scene.project();
+    assert!(points.iter().take(3).all(|p| p.visible));
+    assert!(points.iter().skip(3).all(|p| !p.visible));
 }

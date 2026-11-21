@@ -12,7 +12,7 @@ const EPS: f32 = 1e-3;
 /// Pas des tests de continuité, vitesse maximale (profondeur, lacet et dénivelé composés, avec marge).
 const STEP: f32 = 0.01;
 const TINY: f32 = 1e-3;
-const MAX_SPEED: f32 = 5.4;
+const MAX_SPEED: f32 = 8.5;
 
 proptest! {
     #[test]
@@ -77,7 +77,7 @@ proptest! {
     #[test]
     fn the_path_stays_inside_its_bounds(s in 0.0_f32..24.0) {
         let p = path_point(s);
-        prop_assert!(p.x.abs() <= 1.6 && (-1.0..=10.0).contains(&p.y));
+        prop_assert!(p.x.abs() <= 3.6 && (-1.0..=26.0).contains(&p.y));
     }
 
     #[test]

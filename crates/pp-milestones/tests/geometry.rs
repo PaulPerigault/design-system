@@ -129,6 +129,7 @@ fn pack_ranges_cover_every_part_inside_the_index_buffer() {
         Part::Badge,
         Part::Wire,
         Part::Ring,
+        Part::Check,
         Part::Rail,
         Part::Marker,
         Part::Star,

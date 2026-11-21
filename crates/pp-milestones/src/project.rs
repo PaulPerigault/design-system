@@ -2,6 +2,7 @@
 use crate::camera::camera_at;
 use crate::layout::{ordinal, path_point};
 use crate::picking::{Disc, disc};
+use crate::plan::{AHEAD_UNITS, BEHIND_UNITS};
 use crate::state::SceneState;
 use glam::Vec2;
 
@@ -30,10 +31,16 @@ fn in_frame(ndc: Vec2) -> bool {
 impl SceneState {
     /// Disques de toutes les étapes (jalons puis objectif), pour la caméra affichée.
     pub(crate) fn discs(&self) -> Vec<Option<Disc>> {
-        let camera = camera_at(self.shown, self.aspect);
+        let camera = camera_at(self.shown, self.aspect, self.data.stops());
         let matrix = camera.view_projection(self.aspect);
         (0..self.data.stops())
-            .map(|index| disc(path_point(ordinal(index)), &camera, matrix, self.aspect))
+            .map(|index| {
+                let at = ordinal(index);
+                let drawn = (-BEHIND_UNITS..=AHEAD_UNITS).contains(&(at - self.shown));
+                drawn
+                    .then(|| disc(path_point(at), &camera, matrix, self.aspect))
+                    .flatten()
+            })
             .collect()
     }
 

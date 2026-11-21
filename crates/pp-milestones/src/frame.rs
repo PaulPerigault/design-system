@@ -44,7 +44,8 @@ impl SceneState {
             pack: &self.pack,
         };
         Frame {
-            view_projection: camera_at(self.shown, self.aspect).view_projection(self.aspect),
+            view_projection: camera_at(self.shown, self.aspect, self.data.stops())
+                .view_projection(self.aspect),
             items: build(&inputs, &pose),
             animating: self.camera.is_running(now) || !self.interaction.tilt.settled(),
         }

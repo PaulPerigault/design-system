@@ -1,0 +1,40 @@
+---
+/** Panneau de détail d'un jalon, rendu masqué (`hidden`) : le comportement affiche l'actif. */
+import MilestoneBadge from '../media/MilestoneBadge.astro';
+import type { MilestoneLabels } from './milestones-3d-model';
+import { isExternal, type Step } from './milestones-3d-step';
+
+interface Props {
+  step: Step;
+  text: MilestoneLabels;
+}
+
+const { step, text } = Astro.props;
+---
+
+<article class="pp-milestones__detail" data-pp-detail={step.id} data-status={step.status} hidden>
+  {step.badge && <MilestoneBadge badge={step.badge} large />}
+  <div class="pp-milestones__detail-text">
+    <p class="pp-milestones__detail-title">{step.label}</p>
+    {step.group && <p class="pp-milestones__group">{step.group}</p>}
+    <p class="pp-milestones__meta">
+      <span class="pp-milestones__status">{step.state}</span>
+      {step.when && (
+        <time class="pp-milestones__date" datetime={step.when.datetime}>
+          {step.when.text}
+        </time>
+      )}
+      {step.code && <span class="pp-milestones__code">{step.code}</span>}
+    </p>
+    {step.description && <p class="pp-milestones__description">{step.description}</p>}
+    {step.href && (
+      <a
+        class="pp-milestones__link"
+        href={step.href}
+        rel={isExternal(step.href) ? 'noopener noreferrer' : undefined}
+      >
+        {text.verify}
+      </a>
+    )}
+  </div>
+</article>

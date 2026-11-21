@@ -6,24 +6,27 @@
 //! premier jalon (amorce du rail), sans tableau. L'écart de profondeur domine le lacet et le
 //! dénivelé : `s` approche l'abscisse curviligne à quelques pour cent près (voir les tests).
 use crate::spline::catmull_rom;
-use glam::{Mat3, Vec3};
+use glam::{Mat3, Quat, Vec3};
 
 /// Distance de profondeur entre deux jalons.
-pub const SPACING: f32 = 5.0;
+pub const SPACING: f32 = 6.0;
 /// Amplitude et phase (radians par jalon) du lacet latéral.
-pub const SWAY: f32 = 1.5;
-pub const SWAY_PHASE: f32 = 1.0;
+pub const SWAY: f32 = 3.4;
+pub const SWAY_PHASE: f32 = 1.3;
 /// Dénivelé par jalon : le chemin monte doucement.
-pub const RISE: f32 = 0.4;
+pub const RISE: f32 = 1.0;
 /// Hauteur du rail sous l'axe des médailles, et demi-largeur du rail.
-pub const RAIL_DROP: f32 = 1.45;
-pub const RAIL_HALF_WIDTH: f32 = 1.1;
+pub const RAIL_DROP: f32 = 1.3;
+pub const RAIL_HALF_WIDTH: f32 = 0.12;
 /// Rayon d'une médaille, son épaisseur, et rayon extérieur de l'objectif (même encombrement).
 pub const MEDAL_RADIUS: f32 = 1.0;
 pub const MEDAL_THICKNESS: f32 = 0.24;
 pub const GOAL_RADIUS: f32 = MEDAL_RADIUS;
 /// Angle (radians) dont la face des médailles est relevée vers le ciel.
-pub const FACE_PITCH: f32 = 0.2;
+pub const FACE_PITCH: f32 = 0.4;
+/// Lacet (radians) de la direction de vue : l'œil se place en biais, la scène se lit en trois quarts
+/// et les médailles se font face à cet œil.
+pub const CAM_YAW: f32 = 0.4;
 
 /// Indice converti en abscisse. Les indices sont bornés (≤ 25) : `u16` suffit, sans conversion
 /// avec perte de précision.
@@ -71,10 +74,13 @@ pub fn rail_point(s: f32, side: f32) -> Vec3 {
     path_point(s) + path_across(s) * side - Vec3::Y * RAIL_DROP
 }
 
-/// Direction de l'œil vue depuis le chemin : en arrière du chemin, relevée de `angle`.
+/// Direction de l'œil vue depuis le chemin : en arrière (axe z du monde), tournée de `CAM_YAW`
+/// autour de la verticale (trois quarts), relevée de `angle`.
 #[must_use]
-pub fn elevated_back(s: f32, angle: f32) -> Vec3 {
-    (-path_tangent(s) * angle.cos() + Vec3::Y * angle.sin()).normalize_or_zero()
+pub fn elevated_back(_s: f32, angle: f32) -> Vec3 {
+    // Direction fixe (monde) : le lacet du chemin ne tourne pas les médailles de profil.
+    let behind = Quat::from_rotation_y(CAM_YAW) * Vec3::Z;
+    (behind * angle.cos() + Vec3::Y * angle.sin()).normalize_or_zero()
 }
 
 /// Normale de la face avant d'une médaille posée à l'abscisse `s`.

@@ -1,89 +1,87 @@
 ---
 /**
- * Milestones3D : jalons le long d'un parcours. Le rendu serveur est la version complète : une
- * liste ordonnée (`<ol role="list">`), un `<li>` par jalon (date, groupe, libellé, statut écrit en
- * toutes lettres, lien), puis la cible finale. Lisible sans JavaScript, sans WebGL, indexable ; elle
- * n'est jamais retirée ni masquée. Le comportement externe (`behaviors/milestones-3d.ts`) y ajoute,
- * quand les conditions de l'ADR-0012 tiennent, une scène 3D (canvas `aria-hidden`) dans l'emplacement
- * `data-pp-stage`, fait de la liste le sélecteur et remplit le panneau de détail. L'emplacement suit
- * la liste : l'insérer au-dessus décalerait la liste déjà affichée (CLS mesuré par l'audit #366).
- * Le composant ne trie pas : l'ordre est celui de `milestones`. Données : bloc JSON non exécuté.
+ * Milestones3D : un parcours de certifications ou de jalons, piloté au défilement quand la 3D est
+ * admise (ADR-0013). Le rendu serveur est la version complète : liste ordonnée (`<ol role="list">`)
+ * triée par date, objectif, panneau de détail de chaque jalon (masqué), lien d'évitement. Lisible
+ * sans JavaScript ni WebGL, indexable ; la liste n'est jamais retirée. Le comportement externe
+ * (`behaviors/milestones-3d.ts`) pose la scène dans `data-pp-stage`, fait de la liste le repère
+ * d'étapes et affiche le panneau du jalon actif. L'emplacement de la scène ne s'insère qu'après un
+ * geste quand la section est déjà à l'écran (CLS, audit #366). Données : bloc JSON non exécuté.
  */
 import '@paulperigault/css/milestones-3d.css';
+import Milestones3DDetail from './Milestones3DDetail.astro';
+import Milestones3DItem from './Milestones3DItem.astro';
+import { dataBlock } from './milestones-3d-data';
+import { sortMilestones } from './milestones-3d-sort';
 import {
   DEFAULT_LABELS,
   DEFAULT_LOCALE,
-  dataBlock,
   formatDate,
   type MilestoneGoal,
   type MilestoneItem,
   type MilestoneLabels,
 } from './milestones-3d-model';
+import { GOAL_ID, endAnchor, type Step } from './milestones-3d-step';
 
 interface Props {
-  /** Jalons, dans l'ordre d'affichage (1 à 24 pour la scène 3D ; la liste n'a pas de plafond). */
+  /** Jalons (1 à 24 pour la scène 3D). Triés par date croissante, tri stable. */
   milestones: MilestoneItem[];
-  /** Cible finale facultative, au bout du parcours. */
+  /** Objectif facultatif, au bout du parcours. */
   goal?: MilestoneGoal;
   /** Nom accessible de la région (`aria-label`). Recommandé quand la page en porte plusieurs. */
   label?: string;
   /** Langue des dates (`Intl`). Défaut : `fr`. À passer avec la langue de la page. */
   locale?: string;
-  /** Textes écrits par le composant (statuts, cible, lien, panneau). Défaut : français. */
+  /** Mots de l'interface écrits par le composant. Défaut : français. */
   labels?: Partial<MilestoneLabels>;
+  /** Identifiant de l'ancre qui suit la section (« Passer cette section »). Défaut : dérivé. */
+  endId?: string;
   /** Réservé au placement du composant dans son parent. */
   class?: string;
 }
 
-const { milestones, goal, label, locale = DEFAULT_LOCALE, class: className } = Astro.props;
+const { milestones, goal, label, locale = DEFAULT_LOCALE, endId, class: className } = Astro.props;
 const text: MilestoneLabels = { ...DEFAULT_LABELS, ...Astro.props.labels };
-const items = milestones.map((item) => ({
+const sorted = sortMilestones(milestones);
+const when = (date?: string) => (date ? formatDate(date, locale) : undefined);
+const steps: Step[] = sorted.map((item) => ({
   ...item,
-  when: item.date ? formatDate(item.date, locale) : undefined,
+  when: when(item.date),
   state: item.status === 'achieved' ? text.achieved : text.planned,
 }));
+if (goal) {
+  steps.push({ ...goal, id: GOAL_ID, status: 'goal', state: text.goal, when: when(goal.date) });
+}
+const end = endAnchor(endId, label ?? sorted[0]?.id ?? '');
 ---
 
-<section class:list={['pp-milestones', className]} aria-label={label} data-pp-milestones>
-  <ol class="pp-milestones__list" role="list" data-pp-list>
-    {items.map((item) => (
-      <li class="pp-milestones__item" data-pp-item={item.id} data-status={item.status}>
-        {item.when && (
-          <time class="pp-milestones__date" datetime={item.when.datetime}>
-            {item.when.text}
-          </time>
-        )}
-        {item.group && <span class="pp-milestones__group">{item.group}</span>}
-        <strong class="pp-milestones__name" data-pp-name>
-          {item.label}
-        </strong>
-        <span class="pp-milestones__status">{item.state}</span>
-        {item.href && (
-          <a
-            class="pp-milestones__link"
-            href={item.href}
-            aria-label={`${text.open} : ${item.label}`}
-          >
-            {text.open}
-          </a>
-        )}
-      </li>
-    ))}
-  </ol>
-  {goal && (
-    <p class="pp-milestones__goal" data-pp-goal>
-      <span class="pp-milestones__status">{text.goal}</span>
-      {goal.href ? <a href={goal.href}>{goal.label}</a> : <strong>{goal.label}</strong>}
-    </p>
-  )}
-  <div class="pp-milestones__stage" data-pp-stage aria-hidden="true"></div>
-  <div
-    class="pp-milestones__panel"
-    data-pp-panel
-    role="region"
-    aria-label={text.panel}
-    aria-live="polite"
-    hidden
-  ></div>
-  <script is:inline type="application/json" data-pp-data set:html={dataBlock(milestones, goal)} />
+<section
+  class:list={['pp-milestones', className]}
+  aria-label={label}
+  data-pp-milestones
+  data-pp-previous={text.previous}
+  data-pp-next={text.next}
+  data-pp-steps={text.steps}
+  data-pp-progress={text.progress}
+>
+  <div class="pp-milestones__track" data-pp-track>
+    <div class="pp-milestones__frame" data-pp-frame>
+      <a class="pp-milestones__skip" href={`#${end}`}>
+        {text.skip}
+      </a>
+      <div class="pp-milestones__stage" data-pp-stage aria-hidden="true"></div>
+      <ol class="pp-milestones__list" role="list" data-pp-list>
+        {steps.map((step) => (
+          <Milestones3DItem step={step} text={text} />
+        ))}
+      </ol>
+      <div class="pp-milestones__panel" data-pp-panel role="region" aria-label={text.panel} hidden>
+        {steps.map((step) => (
+          <Milestones3DDetail step={step} text={text} />
+        ))}
+      </div>
+    </div>
+  </div>
+  <script is:inline type="application/json" data-pp-data set:html={dataBlock(sorted, goal)} />
+  <div class="pp-milestones__end" id={end}></div>
 </section>

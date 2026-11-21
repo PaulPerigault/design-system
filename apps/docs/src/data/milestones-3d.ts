@@ -3,16 +3,7 @@
  * réelles) et poids mesurés du paquet 3D.
  */
 
-export const DEMO_MILESTONES = [
-  { id: 'prototype', label: 'Prototype', status: 'achieved', group: 'Produit', date: '2025-03' },
-  { id: 'beta', label: 'Bêta fermée', status: 'achieved', group: 'Produit', date: '2025-07' },
-  { id: 'api', label: 'API publique', status: 'achieved', group: 'Plateforme', date: '2025-11' },
-  { id: 'mobile', label: 'Version mobile', status: 'achieved', group: 'Produit', date: '2026-04' },
-  { id: 'export', label: 'Export des données', status: 'planned', group: 'Plateforme' },
-  { id: 'v2', label: 'Version 2', status: 'planned', group: 'Produit', date: '2027-01' },
-] as const;
-
-export const DEMO_GOAL = { label: 'Ouverture au public' } as const;
+export { DEMO_GOAL, DEMO_MILESTONES } from './milestones-3d-demo';
 
 export interface WeightRow {
   file: string;
