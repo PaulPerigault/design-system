@@ -4,17 +4,17 @@ import { FakeObserver } from './support.ts';
 import { start } from './instance-setup.ts';
 
 describe('création', () => {
-  it('passe les colonnes validées et le thème (30 nombres) à la scène', async () => {
+  it('passe les colonnes validées et le thème (34 nombres) à la scène', async () => {
     const { h } = await start({ activeId: 'b' });
     expect(h.created).toHaveLength(1);
     expect(h.created[0]).toMatchObject({
       ids: ['a', 'b'],
       statuses: ['achieved', 'planned'],
-      emblems: ['key', ''],
+      badges: Uint8Array.of(0, 0),
       goal: true,
       active: 'b',
     });
-    expect(h.created[0]?.theme).toHaveLength(30);
+    expect(h.created[0]?.theme).toHaveLength(34);
   });
 
   it('applique la taille avec un rapport de pixels plafonné à 2 par défaut', async () => {

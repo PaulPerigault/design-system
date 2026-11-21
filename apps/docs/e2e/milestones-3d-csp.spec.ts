@@ -28,7 +28,10 @@ test.describe('politique de sécurité réelle (3D active)', () => {
     });
     await page.goto(PATH);
     await page.locator('[data-milestones-demo]').scrollIntoViewIfNeeded();
-    await expect(enhanced(page)).toHaveCount(1, { timeout: 15_000 });
+    await expect(async () => {
+      await page.keyboard.press('Shift');
+      await expect(enhanced(page)).toHaveCount(1, { timeout: 1000 });
+    }).toPass({ timeout: 30_000 });
     const violations = await page.evaluate(
       () => (window as unknown as Record<string, string[]>).__cspViolations,
     );

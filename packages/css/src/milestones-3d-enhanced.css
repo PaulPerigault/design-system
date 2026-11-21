@@ -1,63 +1,62 @@
 /*
- * Milestones3D, mode amélioré : `data-state="loading"` (emplacement réservé, scène en cours
- * d'initialisation) puis `data-state="enhanced"` (scène affichée, liste devenue sélecteur).
- * Sans cet attribut, rien ici ne s'applique : le rendu classique reste seul.
+ * Milestones3D, mode amélioré : `data-state="loading"` puis `"enhanced"` (scène affichée, liste
+ * devenue repère d'étapes) ; `data-mode="scroll"` (piste haute, scène épinglée) ou `"steps"`
+ * (mouvement réduit : bloc de hauteur d'écran, navigation par étapes). Sans `data-state`, rien
+ * ici ne s'applique : le rendu classique reste seul. La hauteur de la piste vient de
+ * `--milestones-steps`, posée par le comportement (CSSOM), jamais d'un attribut `style`.
  */
+.pp-milestones {
+  /* Hauteur de défilement par étape, en fractions de la hauteur d'écran (ADR-0013). */
+  --milestones-step: 70svh;
+  --milestones-screen: 100svh;
+}
+
 .pp-milestones__stage {
   display: none;
 }
 
+.pp-milestones[data-mode='scroll'] .pp-milestones__track {
+  block-size: calc(var(--milestones-steps, 1) * var(--milestones-step) + var(--milestones-screen));
+}
+
+.pp-milestones[data-state] .pp-milestones__frame {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto auto auto;
+  grid-template-areas: 'skip' 'stage' 'panel' 'list' 'nav';
+  gap: var(--pp-space-xs);
+  box-sizing: border-box;
+  block-size: var(--milestones-screen);
+  padding-block: var(--pp-space-xs);
+  background-color: var(--pp-color-bg);
+}
+
+.pp-milestones[data-mode='scroll'] .pp-milestones__frame {
+  position: sticky;
+  inset-block-start: 0;
+}
+
 .pp-milestones[data-state] .pp-milestones__stage {
+  position: relative;
   display: block;
-  inline-size: 100%;
-  aspect-ratio: var(--pp-ratio-wide);
-  /* Aucun fond : la page garde le sien, aucun écart de teinte au changement de thème. */
+  grid-area: stage;
+  min-block-size: 0;
 }
 
 .pp-milestones__canvas {
+  position: absolute;
+  inset: 0;
   display: block;
   inline-size: 100%;
   block-size: 100%;
   touch-action: pan-y;
 }
 
-/* La boîte passe du libellé au bouton : mêmes dimensions, rien ne bouge. */
-.pp-milestones[data-state='enhanced'] .pp-milestones__name {
-  padding: 0;
-  border: 0;
-}
-
-.pp-milestones__select {
-  box-sizing: border-box;
-  inline-size: 100%;
-  min-block-size: var(--pp-size-target-min);
-  min-inline-size: var(--pp-size-target-min);
-  padding-block: var(--pp-space-3xs);
-  padding-inline: var(--pp-space-xs);
-  border: var(--pp-size-rule) solid var(--pp-color-line);
-  border-radius: var(--pp-radius-control);
-  background-color: var(--pp-color-bg);
-  color: var(--pp-color-fg);
-  font: inherit;
-  text-align: start;
-  cursor: pointer;
-}
-
-/* Jalon actif : bordure accent et graisse (jamais la couleur seule), et `aria-pressed`. */
-.pp-milestones__select[aria-pressed='true'] {
-  border-color: var(--pp-color-accent);
-  font-weight: var(--pp-font-weight-bold);
-}
-
-.pp-milestones__panel {
-  display: grid;
-  gap: var(--pp-space-3xs);
-  padding: var(--pp-space-s);
-  border: var(--pp-size-rule) solid var(--pp-color-line);
-  border-radius: var(--pp-radius-surface);
-  background-color: var(--pp-color-surface);
-}
-
-.pp-milestones__panel[hidden] {
-  display: none;
+@media (width >= 48rem) {
+  .pp-milestones[data-state] .pp-milestones__frame {
+    grid-template-columns: minmax(0, 1fr) minmax(0, calc(var(--pp-size-measure) * 3 / 4));
+    grid-template-rows: auto minmax(0, 1fr) auto auto;
+    grid-template-areas: 'skip skip' 'stage panel' 'list list' 'nav nav';
+    column-gap: var(--pp-space-m);
+  }
 }

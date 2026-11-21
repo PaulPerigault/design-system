@@ -1,77 +1,106 @@
 import { describe, expect, it } from 'vitest';
-import { GOAL, items, render } from './Milestones3D.fixtures';
+import { GOAL, ids, items, render } from './Milestones3D.fixtures';
 
-describe('Milestones3D (rendu classique, sans JavaScript)', () => {
-  it('rend une liste ordonnée avec role="list" et un li par jalon, dans l’ordre', async () => {
+/** Premier élément correspondant : l'absence fait échouer le test, pas une chaîne `?.`. */
+const one = (root: Element, selector: string): Element => {
+  const found = root.querySelector(selector);
+  if (!found) throw new Error(`absent : ${selector}`);
+  return found;
+};
+const text = (root: Element, selector: string): string => one(root, selector).textContent ?? '';
+const attr = (root: Element, selector: string, name: string): string | null =>
+  one(root, selector).getAttribute(name);
+const item = async (index: number, props = {}): Promise<Element> =>
+  items(await render(props))[index] as Element;
+const FOLLOWING = 4;
+
+describe('Milestones3D (rendu serveur complet, sans JavaScript)', () => {
+  it('rend une liste role="list" triée par date, un jalon sans date derrière le précédent', async () => {
     const root = await render();
-    expect(root.querySelector('ol')?.getAttribute('role')).toBe('list');
-    expect(items(root).map((li) => li.getAttribute('data-pp-item'))).toEqual(['alpha', 'beta']);
+    expect(attr(root, 'ol', 'role')).toBe('list');
+    expect(ids(root)).toEqual(['alpha', 'beta', 'sans-date', 'gamma']);
   });
 
-  it('écrit le statut en toutes lettres, jamais par la seule forme', async () => {
-    const statuses = items(await render()).map(
-      (li) => li.querySelector('.pp-milestones__status')?.textContent,
-    );
-    expect(statuses).toEqual(['Atteint', 'Prévu']);
-  });
-
-  it('formate les dates avec Intl dans la langue demandée, avec datetime machine', async () => {
-    const [first, second] = items(await render());
-    expect(first?.querySelector('time')?.textContent).toBe('mars 2025');
-    expect(first?.querySelector('time')?.getAttribute('datetime')).toBe('2025-03');
-    expect(second?.querySelector('time')?.textContent).toBe('30 novembre 2026');
-  });
-
-  it('formate les dates dans une autre langue quand locale est donné', async () => {
-    const [first] = items(await render({ locale: 'en' }));
-    expect(first?.querySelector('time')?.textContent).toBe('March 2025');
-  });
-
-  it('nomme chaque lien avec le libellé du jalon et pose le href tel quel', async () => {
-    const link = (await render()).querySelector('li a');
-    expect(link?.getAttribute('href')).toBe('/beta/');
-    expect(link?.getAttribute('aria-label')).toBe('Voir : Second jalon');
-  });
-
-  it('accepte des textes d’interface traduits', async () => {
-    const root = await render({ labels: { achieved: 'Done', planned: 'Planned', open: 'Open' } });
-    expect(
-      items(root)
-        .map((li) => li.textContent)
-        .join(' '),
-    ).toContain('Done');
-    expect(root.querySelector('li a')?.getAttribute('aria-label')).toBe('Open : Second jalon');
-  });
-
-  it('rend la cible finale avec son lien, et rien sans cible', async () => {
-    const goal = (await render({ goal: GOAL })).querySelector('[data-pp-goal]');
-    expect(goal?.textContent).toContain('Cible');
-    expect(goal?.querySelector('a')?.getAttribute('href')).toBe('https://example.org/cible');
+  it('place l’objectif en dernier dans la liste, avec son lien', async () => {
+    const root = await render({ goal: GOAL });
+    expect(ids(root).at(-1)).toBe('@goal');
+    expect(text(root, '[data-pp-goal]')).toContain('Objectif');
+    expect(attr(root, '[data-pp-goal] a', 'href')).toBe('https://example.org/cible');
     expect((await render()).querySelector('[data-pp-goal]')).toBeNull();
-    const plain = (await render({ goal: { label: 'Sans lien' } })).querySelector('[data-pp-goal]');
-    expect(plain?.querySelector('a')).toBeNull();
   });
 
-  it('réserve un emplacement de scène masqué aux lecteurs d’écran, sans canvas', async () => {
+  it('écrit date, émetteur, nom, code et statut en toutes lettres', async () => {
+    const first = await item(0);
+    expect(text(first, 'time')).toBe('mars 2025');
+    expect(attr(first, 'time', 'datetime')).toBe('2025-03');
+    expect(attr(first, 'time', 'data-pp-short')).toBe('mars 2025');
+    expect(text(first, '.pp-milestones__group')).toBe('Émetteur');
+    expect(text(first, '[data-pp-name]')).toBe('Premier jalon');
+    expect(text(first, '[data-pp-code]')).toBe('ABC-101');
+    expect(text(first, '.pp-milestones__status')).toBe('Obtenu');
+    expect(text(await item(3), '.pp-milestones__status')).toBe('Prévu');
+  });
+
+  it('formate les dates dans la langue demandée', async () => {
+    expect(text(await item(0, { locale: 'en' }), 'time')).toBe('March 2025');
+  });
+
+  it('pose le badge en <img> sans alt bruyant, avec dimensions et chargement différé', async () => {
+    const img = one(await item(0), 'img');
+    const read = (name: string): string | null => img.getAttribute(name);
+    expect([read('src'), read('alt'), read('width'), read('height')]).toEqual([
+      '/badges/alpha.webp',
+      '',
+      '512',
+      '512',
+    ]);
+    expect([read('loading'), read('decoding')]).toEqual(['lazy', 'async']);
+    expect(img.closest('.pp-milestones__medal')).not.toBeNull();
+  });
+
+  it('ne rend ni badge pour un jalon sans badge, ni aucun emblème', async () => {
     const root = await render();
-    expect(root.querySelector('[data-pp-stage]')?.getAttribute('aria-hidden')).toBe('true');
-    expect(root.querySelector('canvas')).toBeNull();
+    expect(items(root)[1]?.querySelector('img')).toBeNull();
+    expect(root.querySelector('[data-emblem], .pp-milestones__emblem, svg')).toBeNull();
   });
 
-  it('rend un panneau de détail vide et masqué, annoncé poliment', async () => {
-    const panel = (await render()).querySelector('[data-pp-panel]');
-    expect(panel?.hasAttribute('hidden')).toBe(true);
-    expect(panel?.getAttribute('aria-live')).toBe('polite');
-    expect(panel?.getAttribute('aria-label')).toBe('Détail du jalon');
+  it('lie la vérification : nom accessible, rel pour un lien externe seulement', async () => {
+    const link = one(await item(0), 'a');
+    expect(link.textContent?.trim()).toBe('Vérifier sur Credly');
+    expect(link.getAttribute('aria-label')).toBe('Vérifier sur Credly : Premier jalon');
+    expect(link.getAttribute('rel')).toBe('noopener noreferrer');
+    expect(one(await item(3), 'a').hasAttribute('rel')).toBe(false);
   });
 
-  it('nomme la région avec label seulement quand il est donné', async () => {
-    expect((await render({ label: 'Parcours' })).getAttribute('aria-label')).toBe('Parcours');
-    expect((await render()).hasAttribute('aria-label')).toBe(false);
+  it('accepte un texte de vérification traduit', async () => {
+    const link = one(await item(0, { labels: { verify: 'Verify' } }), 'a');
+    expect(link.textContent?.trim()).toBe('Verify');
   });
 
-  it('n’écrit aucun attribut style (CSP sans unsafe-inline)', async () => {
-    const root = await render({ goal: GOAL, label: 'Parcours' });
-    expect(root.querySelectorAll('[style]')).toHaveLength(0);
+  it('rend une région de détail masquée, non annoncée, avec un article masqué par étape', async () => {
+    const root = await render({ goal: GOAL });
+    const panel = one(root, '[data-pp-panel]');
+    expect([panel.hasAttribute('hidden'), panel.getAttribute('role')]).toEqual([true, 'region']);
+    expect(panel.getAttribute('aria-label')).toBe('Détail du jalon');
+    expect(panel.hasAttribute('aria-live')).toBe(false);
+    const details = Array.from(root.querySelectorAll('[data-pp-detail]'));
+    expect(details.map((d) => d.getAttribute('data-pp-detail'))).toEqual(ids(root).map((id) => id));
+    expect(details.every((d) => d.hasAttribute('hidden'))).toBe(true);
+  });
+
+  it('écrit dans le détail la description, le badge sans alt et le lien de vérification', async () => {
+    const alpha = one(await render(), '[data-pp-detail="alpha"]');
+    expect(alpha.textContent).toContain('Obtenu en mars.');
+    expect(attr(alpha, 'img', 'alt')).toBe('');
+    expect(attr(alpha, 'a', 'href')).toBe('https://example.org/verifier/alpha');
+  });
+
+  it('offre « Passer cette section » vers une ancre située après la piste', async () => {
+    const root = await render({ label: 'Mon parcours' });
+    const target = one(root, '.pp-milestones__end');
+    expect(text(root, '.pp-milestones__skip')).toBe('Passer cette section');
+    expect(attr(root, '.pp-milestones__skip', 'href')).toBe(`#${target.id}`);
+    expect(target.id).toBe('pp-milestones-end-mon-parcours');
+    expect(one(root, '[data-pp-track]').compareDocumentPosition(target)).toBe(FOLLOWING);
   });
 });

@@ -17,7 +17,7 @@ whenBuilt('.wasm construit', () => {
     const input = {
       ids: ['a'],
       statuses: ['achieved'],
-      emblems: [''],
+      badges: Uint8Array.of(0),
       goal: false,
       theme: themeToArray(theme),
       active: '',

@@ -1,22 +1,24 @@
 /**
- * Vue de Milestones3D : lecture du balisage serveur, sélecteurs, panneau de détail. Aucun
- * rendu 3D ici. La liste reste la source de vérité : en mode amélioré, le libellé de chaque jalon
- * devient un bouton (`aria-pressed`) et le panneau copie le jalon actif.
+ * Vue de Milestones3D : lecture du balisage serveur, état actif, panneau de détail. Aucun rendu 3D
+ * ici. La liste reste la source de vérité ; le panneau affiche le détail rendu par le serveur
+ * (un `<article hidden>` par étape), sans l'annoncer : aucune région `aria-live`.
  */
 
 export interface Parts {
   host: HTMLElement;
+  track: HTMLElement;
   stage: HTMLElement;
+  list: HTMLElement;
   panel: HTMLElement;
-  /** Un élément par jalon, dans l'ordre de la liste. */
+  /** Une entrée par étape (jalons triés puis objectif), dans l'ordre de la liste. */
   items: HTMLElement[];
   /** Données du bloc JSON : validées plus tard par le paquet 3D, jamais ici. */
   data: unknown;
 }
 
-const FIRST = 0;
-const SELECT_CLASS = 'pp-milestones__select';
-const NAME = '[data-pp-name]';
+const NONE = 0;
+const ITEM = 'data-pp-item';
+const STEPS_VAR = '--milestones-steps';
 
 const parse = (host: Element): unknown => {
   try {
@@ -28,54 +30,54 @@ const parse = (host: Element): unknown => {
 
 /** Éléments du composant, ou null si le balisage ne correspond pas. */
 export function collect(host: Element): Parts | null {
-  const stage = host.querySelector<HTMLElement>('[data-pp-stage]');
-  const panel = host.querySelector<HTMLElement>('[data-pp-panel]');
-  const items = Array.from(host.querySelectorAll<HTMLElement>('[data-pp-item]'));
+  const find = (name: string): HTMLElement | null => host.querySelector<HTMLElement>(name);
+  const [track, stage, list, panel] = ['track', 'stage', 'list', 'panel'].map((name) =>
+    find(`[data-pp-${name}]`),
+  );
+  const items = Array.from(host.querySelectorAll<HTMLElement>(`[${ITEM}]`));
   const data = parse(host);
-  if (!stage || !panel || items.length === FIRST || data === null) return null;
-  return { host: host as HTMLElement, stage, panel, items, data };
+  if (!track || !stage || !list || !panel || items.length === NONE || data === null) return null;
+  return { host: host as HTMLElement, track, stage, list, panel, items, data };
 }
 
-export const itemId = (item: HTMLElement): string => item.getAttribute('data-pp-item') ?? '';
+export const itemId = (item: HTMLElement): string => item.getAttribute(ITEM) ?? '';
 
-/** Libellé de chaque jalon en bouton ; `onPick` reçoit l'identifiant choisi. */
-export function addSelectors({ items }: Parts, onPick: (id: string) => void): void {
-  items.forEach((item) => {
-    const name = item.querySelector(NAME);
-    if (!name) return;
-    const button = item.ownerDocument.createElement('button');
-    button.type = 'button';
-    button.className = SELECT_CLASS;
-    button.textContent = name.textContent;
-    button.addEventListener('click', () => onPick(itemId(item)));
-    name.replaceChildren(button);
+export const ids = (parts: Parts): string[] => parts.items.map(itemId);
+
+/** Hauteur de la piste : le CSS la déduit du nombre d'étapes (CSSOM, jamais l'attribut `style`). */
+export function setTrackSteps({ track }: Parts, count: number): void {
+  track.style.setProperty(STEPS_VAR, String(count));
+}
+
+export function clearTrackSteps({ track }: Parts): void {
+  track.style.removeProperty(STEPS_VAR);
+}
+
+/** Marque l'étape active : `aria-current="step"` sur son bouton, `data-active` sur son élément. */
+export function markActive({ items }: Parts, index: number): void {
+  items.forEach((item, at) => {
+    const on = at === index;
+    item.toggleAttribute('data-active', on);
+    const button = item.querySelector('button');
+    if (on) button?.setAttribute('aria-current', 'step');
+    else button?.removeAttribute('aria-current');
   });
 }
 
-/** Remet les libellés en texte simple et vide le panneau. */
-export function removeSelectors({ items, panel }: Parts): void {
-  items.forEach((item) => {
-    const name = item.querySelector(NAME);
-    name?.replaceChildren(name.textContent ?? '');
-  });
-  panel.hidden = true;
-  panel.replaceChildren();
-}
-
-/** Copie du jalon dans le panneau : les nœuds du `<li>`, le bouton redevenu texte. */
-function fillPanel(panel: HTMLElement, item: HTMLElement): void {
-  const copy = item.cloneNode(true) as HTMLElement;
-  const name = copy.querySelector(NAME);
-  name?.replaceChildren(name.textContent ?? '');
-  panel.replaceChildren(...Array.from(copy.childNodes));
+/** Affiche le détail de l'étape (ou le masque : `null`) ; le panneau garde sa place. */
+export function showDetail({ panel }: Parts, id: string | null): void {
   panel.hidden = false;
+  panel.setAttribute('data-near', String(id !== null));
+  panel.querySelectorAll<HTMLElement>('[data-pp-detail]').forEach((detail) => {
+    detail.hidden = detail.getAttribute('data-pp-detail') !== id;
+  });
 }
 
-/** Marque le jalon actif (un seul `aria-pressed="true"`) et met le panneau à jour. */
-export function showActive({ items, panel }: Parts, id: string): void {
-  items.forEach((item) => {
-    const active = itemId(item) === id;
-    item.querySelector('button')?.setAttribute('aria-pressed', String(active));
-    if (active) fillPanel(panel, item);
+/** Remet le panneau à l'état du serveur : masqué, vide de toute sélection. */
+export function resetDetail({ panel }: Parts): void {
+  panel.hidden = true;
+  panel.removeAttribute('data-near');
+  panel.querySelectorAll<HTMLElement>('[data-pp-detail]').forEach((detail) => {
+    detail.hidden = true;
   });
 }

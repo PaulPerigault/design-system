@@ -5,27 +5,28 @@ import InlineCode from './InlineCode.astro';
 
 const [loading, data] = EXTRA_SECTIONS;
 const conditions = [
-  'Pas de `prefers-reduced-motion: reduce`. Vérifié avant tout téléchargement.',
   'Pas d’économie de données (`navigator.connection.saveData`), quand le navigateur l’expose : Chromium seulement. Vérifié avant tout téléchargement.',
   'Appareil non faible : plus de 2 cœurs (`hardwareConcurrency`) et plus de 2 Go (`deviceMemory`). Une valeur absente ne compte pas comme faible : Firefox et Safari n’exposent pas `deviceMemory`.',
   'WebGL2 disponible, testé sur un canvas jetable, rendu au navigateur aussitôt.',
-  'Section proche de l’écran (marge de 200 px). Déjà visible à l’ouverture : la 3D attend le premier geste ou l’inactivité du navigateur, pour ne pas toucher au LCP.',
+  'Section proche de l’écran (marge de 200 px). Déjà visible à l’ouverture : la 3D attend le premier geste, pour ne pas décaler la liste déjà affichée.',
 ];
 const fields = [
   '`id` (obligatoire) : identifiant unique, `[a-z0-9-]+`.',
   '`label` et `status` (obligatoires) : `achieved` ou `planned`.',
-  '`group`, `date` (`AAAA-MM` ou `AAAA-MM-JJ`), `href` (`https:` ou chemin relatif) : facultatifs.',
-  '`emblem` : `disc` (défaut), `check`, `shield`, `cloud`, `network`, `database`, `code`, `key`, `gear`. Une clé inconnue est refusée par la scène, la liste reste.',
+  '`group` (émetteur), `date` (`AAAA-MM` ou `AAAA-MM-JJ`), `code` (code court, 16 caractères au plus), `href` (lien de vérification, `https:` ou chemin relatif) : facultatifs.',
+  '`badge` : `{ src, width?, height? }`, jalon obtenu seulement, image du même site (WebP ou AVIF). Un jalon prévu n’en porte jamais.',
+  '`description` : texte du panneau de détail, écrit dans le HTML et jamais envoyé à la scène.',
+  'Les jalons sont triés par date croissante (tri stable) ; un jalon sans date garde sa place derrière le précédent. `goal` : `label`, `date?`, `href?`, `description?`.',
 ];
 const paragraphs = {
   intro:
-    'Le serveur rend toujours la liste complète. La scène 3D s’y ajoute seulement si toutes ces conditions tiennent :',
+    'Le serveur rend toujours la liste complète. La scène 3D s’y ajoute seulement si toutes ces conditions tiennent. `prefers-reduced-motion` ne la bloque plus : il remplace le défilement piloté par une navigation par étapes.',
   after:
     'Le paquet 3D est chargé après ces vérifications, puis juge lui-même l’appareil et WebGL2 ; le `.wasm` n’est lu qu’ensuite. Un échec d’`init`, un paquet absent ou bloqué par la politique de sécurité, une perte de contexte sans restauration en 2 secondes : la liste reste ou revient, sans message.',
   support:
     'WebGL2 est « Widely Available » dans le référentiel web-features depuis le 20 mars 2024 (Chrome 56, Firefox 51, Edge 79, Safari 15). La part mondiale d’utilisateurs n’est pas chiffrée ici : aucune source consultée ne la donnait.',
   data: 'Le composant ne contient aucune donnée métier : `milestones` (1 à 24 pour la scène) et `goal` viennent du site. Chaque jalon est un objet :',
-  text: 'Le composant n’invente aucun texte. Seuls les mots de l’interface (`Atteint`, `Prévu`, `Cible`, `Voir`) ont un défaut français, remplaçable par `labels` ; les dates suivent `locale` (`fr` par défaut).',
+  text: 'Le composant n’invente aucun texte. Seuls les mots de l’interface (`achieved`, `planned`, `goal`, `verify`, `skip`, `previous`, `next`, `steps`, `progress`, `panel`) ont un défaut français, remplaçable par `labels` ; les dates suivent `locale` (`fr` par défaut).',
 };
 const sources = [
   ['web-features', 'https://web-platform-dx.github.io/web-features-explorer/features/webgl2'],

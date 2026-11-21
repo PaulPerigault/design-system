@@ -3,10 +3,26 @@
   "name": "milestones-3d",
   "type": "registry:ui",
   "title": "Milestones3D",
-  "description": "Jalons en liste ordonnée complète, avec scène 3D WebGL2 en amélioration progressive chargée par import dynamique.",
+  "description": "Parcours de badges : liste ordonnée complète triée par date, avec scène 3D WebGL2 pilotée au défilement en amélioration progressive, chargée par import dynamique.",
   "files": [
     {
       "path": "packages/astro/src/content/Milestones3D.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/media/MilestoneBadge.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/content/Milestones3DDetail.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/content/Milestones3DItem.astro",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/content/milestones-3d-data.ts",
       "type": "registry:ui"
     },
     {
@@ -14,11 +30,63 @@
       "type": "registry:ui"
     },
     {
+      "path": "packages/astro/src/content/milestones-3d-sort.ts",
+      "type": "registry:ui"
+    },
+    {
       "path": "packages/astro/src/behaviors/milestones-3d.ts",
       "type": "registry:ui"
     },
     {
+      "path": "packages/astro/src/behaviors/milestones-3d-active.ts",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/behaviors/milestones-3d-env.ts",
+      "type": "registry:ui"
+    },
+    {
       "path": "packages/astro/src/behaviors/milestones-3d-gate.ts",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/behaviors/milestones-3d-keys.ts",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/behaviors/milestones-3d-labels.ts",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/behaviors/milestones-3d-loop.ts",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/behaviors/milestones-3d-pilot.ts",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/behaviors/milestones-3d-place.ts",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/behaviors/milestones-3d-progress.ts",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/behaviors/milestones-3d-run.ts",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/behaviors/milestones-3d-start.ts",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/behaviors/milestones-3d-steps.ts",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/behaviors/milestones-3d-text.ts",
       "type": "registry:ui"
     },
     {
@@ -34,7 +102,27 @@
       "type": "registry:ui"
     },
     {
+      "path": "packages/css/src/milestones-3d-badge.css",
+      "type": "registry:ui"
+    },
+    {
       "path": "packages/css/src/milestones-3d-enhanced.css",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/css/src/milestones-3d-panel.css",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/css/src/milestones-3d-steps.css",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/behaviors/milestones-3d-moved.ts",
+      "type": "registry:ui"
+    },
+    {
+      "path": "packages/astro/src/content/milestones-3d-step.ts",
       "type": "registry:ui"
     }
   ],
@@ -48,19 +136,28 @@
       "--pp-color-line",
       "--pp-color-muted",
       "--pp-color-surface",
+      "--pp-font-family-mono",
+      "--pp-font-line-height-heading",
       "--pp-font-size--1",
+      "--pp-font-size-1",
       "--pp-font-weight-bold",
       "--pp-font-weight-semibold",
       "--pp-radius-control",
       "--pp-radius-surface",
-      "--pp-ratio-wide",
+      "--pp-size-control-height",
       "--pp-size-focus-offset",
       "--pp-size-focus-width",
+      "--pp-size-measure",
       "--pp-size-rule",
       "--pp-size-target-min",
+      "--pp-space-2xl",
+      "--pp-space-2xs",
+      "--pp-space-3xl",
       "--pp-space-3xs",
+      "--pp-space-m",
       "--pp-space-s",
-      "--pp-space-xs"
+      "--pp-space-xs",
+      "--pp-z-sticky"
     ],
     "version": "0.0.0"
   }

@@ -18,7 +18,7 @@ describe('Milestones3D dans les données embarquées du MCP', () => {
   it('get_component rend ses six propriétés, son extrait et ses notes d’accessibilité', () => {
     const component = getComponent(data.components, { slug });
     const names = component.props.map((prop) => prop.name.replace(/ \(obligatoire\)|`/g, ''));
-    expect(names).toEqual(['milestones', 'goal', 'label', 'locale', 'labels', 'class']);
+    expect(names).toEqual(['milestones', 'goal', 'label', 'locale', 'labels', 'endId', 'class']);
     expect(component.snippet).toContain('<Milestones3D');
     expect(component.snippet).toContain("install } from '@paulperigault/astro/milestones-3d'");
     expect(component.a11y.screenReader.join(' ')).toContain('aria-hidden');
@@ -26,7 +26,7 @@ describe('Milestones3D dans les données embarquées du MCP', () => {
 
   it('get_component rend les jetons consommés, tous connus de tokens.json', () => {
     const { tokens } = getComponent(data.components, { slug });
-    for (const token of ['--pp-color-accent', '--pp-size-target-min', '--pp-ratio-wide']) {
+    for (const token of ['--pp-color-accent', '--pp-size-target-min', '--pp-color-bg']) {
       expect(tokens).toContain(token);
     }
     const known = new Set([

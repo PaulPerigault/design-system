@@ -14,7 +14,7 @@ interface Glue {
     canvas: HTMLCanvasElement,
     ids: string[],
     statuses: string[],
-    emblems: string[],
+    badges: Uint8Array,
     goal: boolean,
     theme: Float32Array,
     active: string,
@@ -41,9 +41,9 @@ function factory(glue: Glue): SceneFactory {
       if (typeof HTMLCanvasElement === 'undefined' || !(canvas instanceof HTMLCanvasElement)) {
         throw new MilestonesError('gl-unavailable');
       }
-      const { ids, statuses, emblems, goal, theme, active } = input;
+      const { ids, statuses, badges, goal, theme, active } = input;
       try {
-        return new glue.Scene(canvas, ids, statuses, emblems, goal, theme, active);
+        return new glue.Scene(canvas, ids, statuses, badges, goal, theme, active);
       } catch (raised) {
         throw parseFault(raised);
       }

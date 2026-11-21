@@ -1,13 +1,15 @@
 // Une instance : une scène du `.wasm`, ses écouteurs, sa boucle de rendu à la demande.
 import { DPR_MAX_DEFAULT } from './constants.ts';
 import { watchContext } from './context.ts';
-import { parseFault } from './error.ts';
+import { createHandle } from './handle.ts';
 import { createGyroscope } from './gyroscope.ts';
+import type { MilestonesHandle } from './options.ts';
+import type { Plan } from './plan.ts';
 import { bindPointer } from './pointer.ts';
 import type { Session } from './session.ts';
 import { watchSize } from './surface.ts';
+import { scheduleTextures } from './textures.ts';
 import { watchTheme } from './theme-watch.ts';
-import type { MilestonesHandle } from './types.ts';
 import { watchVisibility } from './visibility.ts';
 
 function wireWatchers(s: Session): void {
@@ -31,36 +33,25 @@ function wireInput(s: Session): void {
           scene.setGyro(tilt?.x ?? Number.NaN, tilt?.y ?? Number.NaN);
           s.redraw();
         });
+  let hovered: string | null = null;
   bindPointer(canvas, scene, bag, {
     redraw: s.redraw,
-    now: s.time,
     touchGesture: () => void gyro?.requestFromGesture(),
-    select(id) {
-      scene.setActive(id, s.time());
-      s.redraw();
-      options.onSelect?.(id);
+    hover(id) {
+      if (id === hovered) return;
+      hovered = id;
+      scene.setHover(id ?? '');
+      options.onHover?.(id);
     },
+    select: (id) => options.onSelect?.(id),
   });
 }
 
-/** Branche tout, demande la première image et rend la poignée publique. */
-export function startSession(s: Session): MilestonesHandle {
+/** Branche tout, demande la première image, programme les badges et rend la poignée. */
+export function startSession(s: Session, plan: Plan): MilestonesHandle {
   wireWatchers(s);
   wireInput(s);
   s.redraw();
-  return {
-    destroy: s.destroy,
-    setTheme(theme) {
-      if (!s.isDestroyed()) s.apply(theme);
-    },
-    setActive(id) {
-      if (s.isDestroyed()) return;
-      try {
-        s.scene.setActive(id, s.time());
-      } catch (raised) {
-        throw parseFault(raised);
-      }
-      s.redraw();
-    },
-  };
+  scheduleTextures(s, plan.jobs);
+  return createHandle(s, plan);
 }

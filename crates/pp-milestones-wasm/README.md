@@ -1,31 +1,84 @@
 # pp-milestones-wasm
 
-Couche WebGL2 de la scène de jalons : contexte, shaders, tampons, appels de dessin. Elle ne décide
-rien : tout ce qui se calcule est dans [`pp-milestones`](../pp-milestones/README.md). Pas de `wgpu`,
-`three-d` ni `bevy`. Décision : ADR-0012, chantier #360, brique #361.
+Couche WebGL2 de la scène de jalons : contexte, shaders, tampons, textures, appels de dessin. Elle ne
+décide rien : tout ce qui se calcule est dans [`pp-milestones`](../pp-milestones/README.md). Pas de
+`wgpu`, `three-d` ni `bevy`. Décisions : ADR-0012 et ADR-0013, chantiers #360 et #389.
 
-Dépendances : `pp-milestones`, `wasm-bindgen` (version exacte, comme les autres crates) et `web-sys`
-avec une feature par type utilisé (`HtmlCanvasElement`, `WebGl2RenderingContext`, `WebGlBuffer`,
-`WebGlProgram`, `WebGlShader`, `WebGlUniformLocation`, `WebGlVertexArrayObject`,
+Dépendances : `pp-milestones`, `wasm-bindgen` (version exacte) et `web-sys` avec une feature par type
+utilisé (`HtmlCanvasElement`, `ImageBitmap`, `WebGl2RenderingContext`, `WebGlBuffer`, `WebGlProgram`,
+`WebGlShader`, `WebGlTexture`, `WebGlUniformLocation`, `WebGlVertexArrayObject`,
 `WebGlContextAttributes`, `WebGlPowerPreference`, `WebglLoseContext`).
 
 ## Modules
 
-| Module     | Rôle                                                                                         |
-| ---------- | -------------------------------------------------------------------------------------------- |
-| `gl`       | contexte WebGL2 transparent (profondeur, anticrénelage, basse consommation), `loseContext`   |
-| `shaders`  | compilation et liaison ; sources GLSL ES 3.00 dans `src/shaders/*.glsl`                      |
-| `draw`     | tampons envoyés une fois en octets (`to_le_bytes`, sans `unsafe`), uniformes, `drawElements` |
-| `bindings` | `Scene` (constructeur, `frame`, perte et restauration, `destroy`)                            |
-| `controls` | taille, thème, jalon actif, pointeur, gyroscope, sélection                                   |
-| `input`    | validation des tableaux et du thème (`checkInput`), sans toucher au canvas                   |
-| `fault`    | codes d'erreur littéraux (ceux de `SceneError` et ceux de WebGL)                             |
+| Module     | Rôle                                                                                       |
+| ---------- | ------------------------------------------------------------------------------------------ |
+| `gl`       | contexte WebGL2 transparent (profondeur, anticrénelage, basse consommation), `loseContext` |
+| `shaders`  | compilation et liaison ; sommet partagé, fragment des surfaces, fragment du badge          |
+| `gpu`      | programmes, tampons envoyés une fois en octets, VAO, textures                              |
+| `draw`     | une passe sur la liste de dessin : surfaces, puis faces de badge                           |
+| `texture`  | envoi d'un `ImageBitmap`, mipmaps, anisotropie, `setTexture`                               |
+| `bindings` | `Scene` (constructeur, `frame`, perte et restauration, `destroy`)                          |
+| `controls` | taille, thème, progression, actif, survol, pointeur, gyroscope, sélection, projection      |
+| `input`    | validation des tableaux et du thème (`checkInput`), sans toucher au canvas                 |
+| `fault`    | codes d'erreur littéraux (ceux de `SceneError` et ceux de WebGL)                           |
 
-Un contexte par instance. `Scene.contextLost()` abandonne les ressources (elles n'existent plus),
-`Scene.contextRestored()` les recrée ; `Scene.destroy()` libère tampons, VAO et programme puis rend
-le contexte au navigateur. L'enveloppe TypeScript pose les écouteurs (`webglcontextlost` avec
-`preventDefault()`, `webglcontextrestored`) et pilote `requestAnimationFrame` : `Scene.frame(now)`
-dessine une image et rend vrai tant qu'une transition ou une inclinaison est en cours.
+## API wasm-bindgen (contrat du lot suivant)
+
+```
+new Scene(canvas, ids: string[], statuses: string[], badges: Uint8Array, goal: boolean,
+          theme: Float32Array, active: string)           // lève un code ; active "" : aucun
+scene.frame(now: number): boolean                         // vrai : une autre image est due
+scene.resize(width: number, height: number)               // pixels du canvas (u32)
+scene.setTheme(theme: Float32Array)                       // THEME_LEN = 34 nombres
+scene.setProgress(p: number)                              // [0, 1], lève "progress" si non fini
+scene.progressOf(id: string): number                      // [0, 1], -1 si inconnu (jamais NaN)
+scene.setActive(id: string): boolean                      // "" efface ; faux si inconnu
+scene.setHover(id: string)                                // "" ou inconnu : aucun
+scene.pointerMove(x: number, y: number)                   // [-1, 1], y vers le haut (inclinaison)
+scene.pointerLeave()
+scene.setGyro(x: number, y: number)                       // non fini : rend la main au pointeur
+scene.pick(x: number, y: number): string                  // x, y en [-1, 1], y vers le haut ; "" si rien
+scene.project(): Float32Array                             // 4 nombres par étape, voir ci-dessous
+scene.setTexture(id: string, bitmap: ImageBitmap)         // lève "unknown-id" (inconnu ou objectif)
+scene.contextLost(); scene.contextRestored(); scene.destroy()
+checkInput(ids, statuses, badges, goal, theme)            // même contrôle que le constructeur
+```
+
+- **Étapes** : les jalons dans l'ordre fourni (le tri par date est côté Astro), puis l'objectif
+  s'il y en a un, d'identifiant réservé `@goal` (accepté par `progressOf`, `setActive`, `setHover` ;
+  `pick` le rend ; `setTexture` le refuse). `badges[i]` vaut 1 quand un badge est attendu pour le
+  jalon `i` (0 sinon) ; `statuses[i]` vaut `achieved` ou `planned`.
+- **`project()`** : pour chaque étape (jalons puis objectif) : `x`, `y` de 0 à 1 (origine en haut à
+  gauche du canvas), rayon de la médaille rapporté à la hauteur du canvas (pixels CSS du rayon =
+  valeur × hauteur CSS), `visible` 1 ou 0 (devant la caméra et centre dans le cadre). Valeurs de la
+  DERNIÈRE image dessinée : appeler après `frame`. `pick` lit aussi la dernière image.
+- **Progression** : `setProgress` n'agit qu'à la prochaine `frame`, avec l'horloge de `frame` : une
+  scène au repos glisse quand même. Durée du thème nulle (mouvement réduit) : saut. Toute commande
+  (progression, survol, actif, texture, thème, taille) demande une image : `frame` rend faux au
+  repos, l'enveloppe en planifie une après chaque commande.
+- **Codes** : nouveaux `unknown-id` et `progress` ; `unknown-emblem` n'existe plus. `setActive` ne
+  déplace jamais la caméra : le défilement pilote, le consommateur appelle
+  `setProgress(progressOf(id))`.
+- **Disparu** : `activeId`, la navigation au clavier, les emblèmes (le troisième tableau du
+  constructeur est maintenant `badges`).
+
+### Badges : contrat des textures
+
+- Créer le bitmap par `createImageBitmap(blob, { premultiplyAlpha: 'premultiply',
+colorSpaceConversion: 'none', imageOrientation: 'none', resizeWidth, resizeHeight })`, 512 px au
+  plus. Pour un `ImageBitmap`, WebGL ignore les réglages `UNPACK_*` : les options de création
+  valent. Ils sont posés quand même (flip Y faux, pré-multiplication, conversion `NONE`).
+- Le shader de la face (`shaders/badge.glsl`) écrit `texture(u_badge, v_uv)` et rien d'autre : aucun
+  éclairage, brouillard, teinte ni multiplication. Mélange `ONE, ONE_MINUS_SRC_ALPHA` (canvas
+  pré-multiplié). Un test vérifie le source du shader.
+- `generateMipmap`, `LINEAR_MIPMAP_LINEAR`, `LINEAR`, `CLAMP_TO_EDGE`, anisotropie jusqu'à 8 si
+  `EXT_texture_filter_anisotropic` existe (constantes 0x84FE et 0x84FF). Sans texture reçue : le
+  support seul reste visible.
+- Perte de contexte : les `ImageBitmap` sont **conservés côté Rust** (le plus simple : rien à
+  redemander au réseau) ; `contextRestored` recrée les textures. Coût : au plus 24 bitmaps de
+  512x512 en mémoire. `destroy()` supprime les textures et ferme les bitmaps ; remplacer un badge
+  ferme l'ancien bitmap.
 
 ## Construction
 
@@ -52,30 +105,29 @@ Le profil racine reste `opt-level = "s"`. Les deux crates de la scène portent l
 `lto = true`, `codegen-units = 1`, `panic = "abort"` et `strip = true` ne se règlent pas par paquet :
 ce sont ceux du profil racine, déjà conformes à l'ADR, et ils s'appliquent au binaire final.
 
-Comparaison de `"s"` et `"z"` (2026-11-19, Rust 1.99.1, binaryen 132) :
+Comparaison de `"s"` et `"z"` (2026-11-21, ADR-0013, Rust 1.99.1, binaryen 132) :
 
 | `opt-level` | avant wasm-opt (brut / brotli) | après wasm-opt -Oz (brut / gzip / brotli) |
 | ----------- | ------------------------------ | ----------------------------------------- |
-| `"s"`       | 148 755 o / 36 264 o           | 70 857 o / 32 976 o / **28 076 o**        |
-| `"z"`       | 161 156 o / 37 665 o           | 70 732 o / 33 148 o / 28 435 o            |
+| `"s"`       | 176 912 o / 41 624 o           | 82 538 o / 37 792 o / **31 992 o**        |
+| `"z"`       | 191 769 o / 42 988 o           | 81 943 o / 37 714 o / 32 221 o            |
 
-Après `wasm-opt`, `"s"` est plus petit en brotli (le poids livré) de 359 octets, `"z"` en brut de
-125 octets. La règle de l'ADR est que la plus petite mesure l'emporte : `"s"`, valeur écrite en
-clair dans `Cargo.toml`. À refaire après un changement important du code.
+`"s"` reste plus petit en brotli (le poids livré) de 229 octets. À refaire après un changement
+important du code.
 
 ## Poids mesuré (jamais bloquant)
 
-Cible de l'ADR : 60 Kio en brotli pour le `.wasm`.
+Cible de l'ADR-0013 : 45 Kio en brotli pour le `.wasm` (60 Kio dans l'ADR-0012).
 
-| Fichier                            | brut (o) | gzip (o) | brotli (o) |
-| ---------------------------------- | -------: | -------: | ---------: |
-| `.wasm` avant wasm-opt             |  148 755 |   44 484 |     36 264 |
-| `.wasm` après wasm-opt -Oz (livré) |   70 857 |   32 976 |     28 076 |
-| glue JavaScript (`wasm-bindgen`)   |   23 810 |    5 511 |      4 887 |
+| Fichier                            | avant ADR-0013 (brut / gzip / brotli) | après (brut / gzip / brotli) |
+| ---------------------------------- | ------------------------------------- | ---------------------------- |
+| `.wasm` avant wasm-opt             | 148 650 / 44 425 / 36 236             | 176 912 / 51 480 / 41 624    |
+| `.wasm` après wasm-opt -Oz (livré) | 70 861 / 32 971 / 28 064              | 82 538 / 37 792 / 31 992     |
+| glue JavaScript (`wasm-bindgen`)   | 23 810 / 5 511 / 4 887                | 28 403 / 6 566 / 5 833       |
 
-Poids livré : 27,4 Kio en brotli pour le `.wasm`, 32,2 Kio avec la glue. `wasm-opt` retire 52 %
-du poids brut. Essais sans effet notable (moins de 0,3 %) : `--converge`, `--strip-producers`,
-`--strip-debug`, `--zero-filled-memory`. La CI écrit ce tableau dans son résumé (job `wasm`).
+Poids livré : 31,2 Kio en brotli pour le `.wasm` (cible de 45 Kio tenue, 13,8 Kio de marge), 36,9 Kio
+avec la glue. La spline, les textures et le second programme coûtent 3,9 Kio en brotli ; la
+suppression des emblèmes n'a pas suffi à les compenser. La CI écrit ce tableau dans son résumé.
 
 `.wasm` existants, mesurés avant et après ce changement (même chaîne, mêmes octets) :
 
@@ -89,7 +141,7 @@ Les deux sont reconstruits après un `cargo clean` de leurs crates, avec `wasm-b
 
 ## Vérification dans les navigateurs
 
-Fumée hors dépôt (Playwright, scène de cinq jalons, rendu logiciel) : le `.wasm` se charge, la scène
+Fumée de l'ADR-0012 (avant l'ADR-0013, à refaire avec le lot de rendu ; hors dépôt, Playwright, scène de cinq jalons, rendu logiciel) : le `.wasm` se charge, la scène
 se dessine, la glissade s'arrête au jalon actif, la sélection rend le bon identifiant et les entrées
 invalides rendent leur code, sur les Chromium, Firefox et WebKit de Playwright. L'audit complet (perte de
 contexte, Lighthouse, axe) est la brique #366.

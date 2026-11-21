@@ -1,59 +1,36 @@
 // Validation du contrat à la frontière : une fois, avant tout appel au `.wasm`. Jamais de repli
-// silencieux : un défaut lève une `MilestonesError` qui dit où il se trouve.
+// silencieux : un défaut lève une `MilestonesError` qui dit où il se trouve. Le tri par date n'est
+// pas fait ici : l'ordre donné est conservé (le composant Astro trie).
 import { MAX_MILESTONES, MIN_MILESTONES } from './constants.ts';
 import { MilestonesError } from './error.ts';
-import { isDate, isHref, isId } from './fields.ts';
-import { EMBLEM_KEYS } from './types.ts';
-import type { EmblemKey, Goal, Milestone, MilestonesData, Status } from './types.ts';
+import { isCode, isDate, isHref, isId } from './fields.ts';
+import type { Goal, Milestone, MilestonesData, Status } from './types.ts';
+import { badgeOf } from './validate-badge.ts';
+import { formatted, isRecord, optional, text } from './validate-text.ts';
+import type { Rec } from './validate-text.ts';
 
-type Rec = Readonly<Record<string, unknown>>;
-const isRecord = (value: unknown): value is Rec => typeof value === 'object' && value !== null;
-const isEmblem = (value: unknown): value is EmblemKey => EMBLEM_KEYS.some((key) => key === value);
 const isStatus = (value: unknown): value is Status => value === 'achieved' || value === 'planned';
 
-function text(source: Rec, key: string, where: string): string {
-  const value = source[key];
-  if (typeof value !== 'string' || value.trim() === '') {
-    throw new MilestonesError('invalid-label', `${where}.${key}`);
-  }
-  return value;
-}
-
-function optional(source: Rec, key: string, where: string): string | undefined {
-  return source[key] === undefined ? undefined : text(source, key, where);
-}
-
-/** Texte facultatif dont le format est contrôlé par `ok` ; `code` dit ce qui est refusé. */
-function formatted(
-  source: Rec,
-  key: 'date' | 'href',
-  where: string,
-  ok: (value: string) => boolean,
-): string | undefined {
-  const value = optional(source, key, where);
-  if (value !== undefined && !ok(value)) {
-    throw new MilestonesError(key === 'date' ? 'invalid-date' : 'invalid-href', `${where}.${key}`);
-  }
-  return value;
-}
-
-function core(raw: Rec, where: string): Pick<Milestone, 'id' | 'status' | 'emblem'> {
+function core(raw: Rec, where: string): Pick<Milestone, 'id' | 'status'> {
   const id = text(raw, 'id', where);
   if (!isId(id)) throw new MilestonesError('invalid-id', `${where}.id`);
-  const { status, emblem } = { status: raw['status'], emblem: raw['emblem'] };
+  const status = raw['status'];
   if (!isStatus(status)) throw new MilestonesError('unknown-status', `${where}.status`);
-  if (emblem === undefined) return { id, status };
-  if (!isEmblem(emblem)) throw new MilestonesError('unknown-emblem', `${where}.emblem`);
-  return { id, status, emblem };
+  return { id, status };
 }
 
-function extras(raw: Rec, where: string): Pick<Milestone, 'group' | 'date' | 'href'> {
+/** Champs facultatifs, copiés seulement s'ils sont présents. */
+function extras(raw: Rec, status: Status, where: string): Partial<Milestone> {
   const group = optional(raw, 'group', where);
   const date = formatted(raw, 'date', where, isDate);
+  const code = formatted(raw, 'code', where, isCode);
+  const badge = badgeOf(raw, status, where);
   const href = formatted(raw, 'href', where, isHref);
   return {
     ...(group === undefined ? {} : { group }),
     ...(date === undefined ? {} : { date }),
+    ...(code === undefined ? {} : { code }),
+    ...(badge === undefined ? {} : { badge }),
     ...(href === undefined ? {} : { href }),
   };
 }
@@ -61,14 +38,21 @@ function extras(raw: Rec, where: string): Pick<Milestone, 'group' | 'date' | 'hr
 function milestone(raw: unknown, index: number): Milestone {
   const where = `milestones[${index}]`;
   if (!isRecord(raw)) throw new MilestonesError('invalid-data', where);
-  return { ...core(raw, where), label: text(raw, 'label', where), ...extras(raw, where) };
+  const { id, status } = core(raw, where);
+  return { id, label: text(raw, 'label', where), status, ...extras(raw, status, where) };
 }
 
 function goal(raw: unknown): Goal | undefined {
   if (raw === undefined) return undefined;
   if (!isRecord(raw)) throw new MilestonesError('invalid-data', 'goal');
+  if (raw['badge'] !== undefined) throw new MilestonesError('invalid-badge', 'goal.badge');
+  const date = formatted(raw, 'date', 'goal', isDate);
   const href = formatted(raw, 'href', 'goal', isHref);
-  return { label: text(raw, 'label', 'goal'), ...(href === undefined ? {} : { href }) };
+  return {
+    label: text(raw, 'label', 'goal'),
+    ...(date === undefined ? {} : { date }),
+    ...(href === undefined ? {} : { href }),
+  };
 }
 
 function milestones(list: unknown): Milestone[] {
@@ -85,7 +69,10 @@ function milestones(list: unknown): Milestone[] {
   return valid;
 }
 
-/** Valide `input` et rend une copie propre. 1 à 24 jalons, `id` uniques, statuts, dates, liens. */
+/**
+ * Valide `input` et rend une copie propre, dans l'ordre fourni. 1 à 24 jalons, `id` uniques,
+ * statuts, dates, codes, badges (achieved seulement), liens.
+ */
 export function validateData(input: unknown): MilestonesData {
   const source = isRecord(input) ? input : {};
   const target = goal(source['goal']);

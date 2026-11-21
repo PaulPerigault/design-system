@@ -1,8 +1,8 @@
 ---
 /**
- * Exemple vivant de la page Milestones3D : la même liste deux fois. Le premier exemple reste en
- * version classique (le comportement ne le voit pas) ; le second reçoit la scène 3D si le
- * navigateur l'admet. Jalons fictifs.
+ * Exemple vivant de la page Milestones3D : un parcours fictif (émetteurs génériques, badges générés
+ * par `tools/fixtures/milestones-badges.ts`). Sans JavaScript ni WebGL, la liste complète s'affiche ;
+ * sinon le comportement ajoute la scène 3D, pilotée au défilement.
  */
 import Milestones3D from '@paulperigault/astro/Milestones3D.astro';
 import { DEMO_GOAL, DEMO_MILESTONES } from '../../data/milestones-3d';
@@ -11,21 +11,17 @@ const milestones = [...DEMO_MILESTONES];
 ---
 
 <div class="pp-milestones-demo">
-  <h3 id="demo-classique">Version classique</h3>
-  <Milestones3D
-    label="Parcours fictif, version classique"
-    milestones={milestones}
-    goal={DEMO_GOAL}
-  />
-
-  <h3 id="demo-3d">Version améliorée</h3>
+  <h3 id="demo-3d">Parcours de démonstration</h3>
   <p>
-    La scène s’ajoute à la liste quand le navigateur l’admet. Sans WebGL2, avec le mouvement réduit,
-    en économie de données, ou si le fichier <code>.wasm</code> n’est pas servi, la liste reste
-    seule, comme ci-dessus.
+    Les jalons sont déclarés dans le désordre : le composant les trie par date. Faites défiler la
+    page pour avancer le long du parcours, ou utilisez les étapes, les boutons ou les flèches.
   </p>
   <div data-milestones-demo>
-    <Milestones3D label="Parcours fictif, version 3D" milestones={milestones} goal={DEMO_GOAL} />
+    <Milestones3D
+      label="Parcours fictif de certifications"
+      milestones={milestones}
+      goal={DEMO_GOAL}
+    />
   </div>
 </div>
 

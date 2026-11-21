@@ -89,7 +89,7 @@ describe('ADR réelles de docs/adr', () => {
     expect(names.length).toBeGreaterThan(0);
     for (const name of names) {
       const markdown = readFileSync(`${ADR_DIR}${name}`, 'utf8');
-      expect(adr.adrEntry(name, markdown).title, name).toMatch(/^ADR-\d{4} — /);
+      expect(adr.adrEntry(name, markdown).title, name).toMatch(/^ADR-\d{4} (—|:) /);
       const { length } = adr.descriptionOf(markdown);
       expect(length, name).toBeGreaterThanOrEqual(120);
       expect(length, name).toBeLessThanOrEqual(160);

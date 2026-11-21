@@ -1,4 +1,4 @@
-//! Liaison WebGL2 de `pp-milestones` (ADR-0012, ADR-0006 décision 4).
+//! Liaison WebGL2 de `pp-milestones` (ADR-0012, ADR-0013, ADR-0006 décision 4).
 //!
 //! Couche d'entrée-sortie : elle appelle WebGL et convertit les types, elle ne décide rien. Tout
 //! ce qui se calcule (données, géométrie, caméra, animation, interaction, thème) est dans
@@ -20,5 +20,7 @@ mod convert;
 mod draw;
 mod fault;
 mod gl;
+mod gpu;
 mod input;
 mod shaders;
+mod texture;

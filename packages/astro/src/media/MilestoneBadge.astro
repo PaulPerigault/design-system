@@ -1,0 +1,28 @@
+---
+/**
+ * Badge d'un jalon obtenu (dans `media` : le seul `<img>` brut autorisé, il ne doit pas être modifié) : l'image du consommateur, non modifiée, posée sur une pastille claire
+ * fixe (`color-scheme: light`, jeton `--pp-color-bg`, voir le CSS). `alt=""` : le nom complet de la
+ * certification est écrit juste à côté. Jamais de filtre, d'opacité, de rognage ni de texte dessus.
+ */
+import type { MilestoneBadge } from '../content/milestones-3d-model';
+
+interface Props {
+  badge: MilestoneBadge;
+  /** Variante agrandie du panneau de détail. */
+  large?: boolean;
+}
+
+const { badge, large = false } = Astro.props;
+---
+
+<span class:list={['pp-milestones__medal', { 'pp-milestones__medal--large': large }]}>
+  <img
+    class="pp-milestones__badge"
+    src={badge.src}
+    alt=""
+    width={badge.width}
+    height={badge.height}
+    loading="lazy"
+    decoding="async"
+  />
+</span>

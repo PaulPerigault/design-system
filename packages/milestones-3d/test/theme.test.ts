@@ -1,31 +1,10 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { FALLBACK_EASING, THEME_TOKENS } from '../src/constants.ts';
 import { MilestonesError } from '../src/error.ts';
-import { themeToArray } from '../src/raw-theme.ts';
 import type { ThemeProbe } from '../src/theme.ts';
 import { readThemeWith } from '../src/theme.ts';
 import { SAMPLES } from './fixtures/samples.ts';
-import type { EngineSample } from './fixtures/samples.ts';
-
-const TOKEN_KEYS = new Map<string, string>([
-  [THEME_TOKENS.bg, 'bg'],
-  [THEME_TOKENS.fg, 'fg'],
-  [THEME_TOKENS.accent, 'accent'],
-  [THEME_TOKENS.onAccent, 'on-accent'],
-  [THEME_TOKENS.line, 'line'],
-  [THEME_TOKENS.muted, 'muted'],
-]);
-
-/** Sonde qui rejoue ce qu'un moteur a calculé, sans DOM. */
-function probeFor(sample: EngineSample, scheme: 'light' | 'dark', raw = sample.raw) {
-  const dispose = vi.fn();
-  const probe: ThemeProbe = {
-    color: (token) => sample.tokens[scheme][TOKEN_KEYS.get(token) ?? ''] ?? null,
-    custom: (name) => raw[name] ?? '',
-    dispose,
-  };
-  return { probe, dispose };
-}
+import { probeFor } from './support-theme.ts';
 
 describe('readTheme avec les valeurs de trois moteurs réels', () => {
   for (const sample of SAMPLES) {
@@ -41,6 +20,25 @@ describe('readTheme avec les valeurs de trois moteurs réels', () => {
       });
     }
   }
+
+  it('paper : --pp-color-bg lu en mode clair, quel que soit le thème de la page', () => {
+    const [sample] = SAMPLES;
+    if (!sample) throw new Error('aucun relevé');
+    const asked: (string | undefined)[] = [];
+    const { probe } = probeFor(sample, 'dark');
+    const spy: ThemeProbe = {
+      ...probe,
+      color(token, scheme) {
+        if (token === THEME_TOKENS.bg) asked.push(scheme);
+        return probe.color(token, scheme);
+      },
+    };
+    const dark = readThemeWith('r', () => spy);
+    const light = readThemeWith('r', () => probeFor(sample, 'light').probe);
+    expect(dark.colors.paper).toEqual(light.colors.bg);
+    expect(dark.colors.paper).not.toEqual(dark.colors.bg);
+    expect(asked).toEqual([undefined, 'light']); // bg suit la page, paper est clair
+  });
 
   it('le thème clair et le thème sombre diffèrent', () => {
     const [sample] = SAMPLES;
@@ -88,32 +86,5 @@ describe('jetons absents ou illisibles', () => {
     };
     const theme = readThemeWith('r', () => probeFor(sample, 'light', raw).probe);
     expect([theme.durationBase, theme.durationFast]).toEqual([0, 0]);
-  });
-});
-
-describe('thème pour le .wasm', () => {
-  it('30 nombres : six couleurs de quatre, deux durées, quatre points de contrôle', () => {
-    const [sample] = SAMPLES;
-    if (!sample) throw new Error('aucun relevé');
-    const array = themeToArray(readThemeWith('r', () => probeFor(sample, 'light').probe));
-    expect(array).toHaveLength(30);
-    expect(Array.from(array.slice(0, 4))).toEqual([
-      1,
-      expect.closeTo(0.985, 5),
-      expect.closeTo(0.004, 5),
-      expect.closeTo(270.7, 3),
-    ]);
-    expect(Array.from(array.slice(24))).toEqual([160, 100, expect.closeTo(0.2, 5), 0, 0, 1]);
-  });
-
-  it('une couleur sRGB porte l’étiquette d’espace 0', () => {
-    const [sample] = SAMPLES;
-    if (!sample) throw new Error('aucun relevé');
-    const base = readThemeWith('r', () => probeFor(sample, 'light').probe);
-    const array = themeToArray({
-      ...base,
-      colors: { ...base.colors, bg: { space: 'srgb', r: 1, g: 0.5, b: 0 } },
-    });
-    expect(Array.from(array.slice(0, 4))).toEqual([0, 1, 0.5, 0]);
   });
 });

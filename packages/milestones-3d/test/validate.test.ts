@@ -1,20 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { MilestonesError } from '../src/error.ts';
-import type { ErrorCode } from '../src/error.ts';
 import { validateData } from '../src/validate.ts';
+import { codeOf, one } from './support-validate.ts';
 
-const one = { id: 'a', label: 'Un', status: 'achieved' };
 const many = (count: number) =>
   Array.from({ length: count }, (_, index) => ({ ...one, id: `m${index}` }));
-
-function codeOf(input: unknown): ErrorCode | undefined {
-  try {
-    validateData(input);
-  } catch (error) {
-    return error instanceof MilestonesError ? error.code : undefined;
-  }
-  return undefined;
-}
 
 describe('bornes', () => {
   it('accepte 1 jalon et 24 jalons', () => {
@@ -63,22 +52,40 @@ describe('champs d’un jalon', () => {
     expect(codeOf({ milestones: [{ id: 'a', label: 'x' }] })).toBe('unknown-status');
   });
 
-  it('emblème : clé du jeu fermé, ou absent', () => {
-    for (const emblem of [
-      'disc',
-      'check',
-      'shield',
-      'cloud',
-      'network',
-      'database',
-      'code',
-      'key',
-      'gear',
-    ]) {
-      expect(codeOf({ milestones: [{ ...one, emblem }] }), emblem).toBeUndefined();
+  it('le code est un texte simple de 16 caractères au plus', () => {
+    const ok = (code: string) => codeOf({ milestones: [{ ...one, code }] });
+    expect(ok('SAA-C03')).toBeUndefined();
+    expect(ok('a'.repeat(16))).toBeUndefined();
+    expect(ok('a'.repeat(17))).toBe('invalid-code');
+    expect(ok('a\nb')).toBe('invalid-code');
+    expect(ok('  ')).toBe('invalid-label');
+    expect(codeOf({ milestones: [{ ...one, code: 4 }] })).toBe('invalid-label');
+    expect(() => validateData({ milestones: [{ ...one, code: 'x'.repeat(20) }] })).toThrow(
+      /invalid-code.*milestones\[0\]\.code/,
+    );
+  });
+
+  it('les anciens emblèmes ne sont plus un champ du contrat', () => {
+    const data = validateData({ milestones: [{ ...one, emblem: 'key' }] });
+    expect(data.milestones[0]).not.toHaveProperty('emblem');
+  });
+
+  it('dates : AAAA-MM ou AAAA-MM-JJ, mois et jour qui existent', () => {
+    for (const date of ['2026-02', '2026-02-28', '2024-02-29']) {
+      expect(codeOf({ milestones: [{ ...one, date }] }), date).toBeUndefined();
     }
-    expect(codeOf({ milestones: [{ ...one, emblem: 'star' }] })).toBe('unknown-emblem');
-    expect(codeOf({ milestones: [{ ...one, emblem: 3 }] })).toBe('unknown-emblem');
+    for (const date of ['2026', '2026-13', '2026-02-30', '2025-02-29', '26-02', '2026-2-1', 'x']) {
+      expect(codeOf({ milestones: [{ ...one, date }] }), date).toBe('invalid-date');
+    }
+  });
+
+  it('conserve l’ordre donné, sans trier par date', () => {
+    const list = [
+      { ...one, id: 'z', date: '2027-01' },
+      { ...one, id: 'y', date: '2020-01' },
+      { ...one, id: 'x' },
+    ];
+    expect(validateData({ milestones: list }).milestones.map((m) => m.id)).toEqual(['z', 'y', 'x']);
   });
 
   it('date et lien invalides disent où', () => {
@@ -96,21 +103,5 @@ describe('champs d’un jalon', () => {
       milestones: [{ id: 'a', label: 'Un', status: 'achieved', group: 'Émetteur' }],
     });
     expect(Object.keys(data.milestones[0] ?? {})).not.toContain('date');
-  });
-});
-
-describe('cible finale', () => {
-  it('facultative, avec libellé et lien facultatif', () => {
-    const goal = validateData({ milestones: [one], goal: { label: 'But', href: '/but' } }).goal;
-    expect(goal).toEqual({ label: 'But', href: '/but' });
-    expect(validateData({ milestones: [one] })).not.toHaveProperty('goal');
-  });
-
-  it('refuse une cible sans libellé ou avec un lien invalide', () => {
-    expect(codeOf({ milestones: [one], goal: {} })).toBe('invalid-label');
-    expect(codeOf({ milestones: [one], goal: 'but' })).toBe('invalid-data');
-    expect(codeOf({ milestones: [one], goal: { label: 'x', href: 'http://a.fr' } })).toBe(
-      'invalid-href',
-    );
   });
 });

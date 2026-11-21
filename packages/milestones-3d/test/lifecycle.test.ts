@@ -11,6 +11,7 @@ const theme: Theme = {
     onAccent: { space: 'srgb', r: 1, g: 1, b: 1 },
     line: { space: 'srgb', r: 0.8, g: 0.8, b: 0.8 },
     muted: { space: 'srgb', r: 0.5, g: 0.5, b: 0.5 },
+    paper: { space: 'srgb', r: 1, g: 1, b: 1 },
   },
   durationBase: 160,
   durationFast: 100,

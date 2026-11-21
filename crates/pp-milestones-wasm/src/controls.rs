@@ -1,9 +1,12 @@
-//! Commandes JavaScript de la scène : taille, thème, jalon actif, pointeur, gyroscope, sélection.
+//! Commandes JavaScript de la scène : taille, thème, progression, actif, survol, pointeur, sélection.
 use crate::bindings::Scene;
-use crate::convert::{Out, ms};
+use crate::convert::Out;
 use crate::fault::raise;
 use pp_milestones::{Theme, Vec2};
 use wasm_bindgen::prelude::wasm_bindgen;
+
+/// Progression rendue pour un identifiant inconnu (jamais `NaN` : les valeurs valides sont dans [0, 1]).
+const UNKNOWN_PROGRESS: f32 = -1.0;
 
 #[wasm_bindgen]
 impl Scene {
@@ -23,16 +26,30 @@ impl Scene {
         Ok(())
     }
 
-    #[wasm_bindgen(js_name = setActive)]
-    pub fn set_active(&mut self, id: &str, now: f64) -> Out<()> {
+    /// Progression de 0 (première étape) à 1 (dernière) ; appliquée à la prochaine image.
+    #[wasm_bindgen(js_name = setProgress)]
+    pub fn set_progress(&mut self, progress: f32) -> Out<()> {
         self.state
-            .set_active_id(id, ms(now))
+            .set_progress(progress)
             .map_err(|e| raise(e.into()))
     }
 
-    #[wasm_bindgen(js_name = activeId)]
-    pub fn active_id(&self) -> Option<String> {
-        self.state.active_id().map(str::to_owned)
+    /// Progression d'une étape (jalon ou `@goal`), -1 si l'identifiant est inconnu.
+    #[wasm_bindgen(js_name = progressOf)]
+    pub fn progress_of(&self, id: &str) -> f32 {
+        self.state.progress_of_id(id).unwrap_or(UNKNOWN_PROGRESS)
+    }
+
+    /// Étape active (anneau d'accent) ; chaîne vide : aucune. Faux si l'identifiant est inconnu.
+    #[wasm_bindgen(js_name = setActive)]
+    pub fn set_active(&mut self, id: &str) -> bool {
+        self.state.set_active_id(id)
+    }
+
+    /// Étape survolée (anneau, inclinaison) ; chaîne vide ou inconnue : aucune.
+    #[wasm_bindgen(js_name = setHover)]
+    pub fn set_hover(&mut self, id: &str) {
+        self.state.set_hover_id(id);
     }
 
     #[wasm_bindgen(js_name = pointerMove)]
@@ -52,9 +69,23 @@ impl Scene {
         self.state.set_gyro(tilt.is_finite().then_some(tilt));
     }
 
-    /// Identifiant du jalon sous le point visé (coordonnées normalisées, y vers le haut).
-    pub fn pick(&self, x: f32, y: f32, now: f64) -> Option<String> {
-        let index = self.state.pick(Vec2::new(x, y), ms(now))?;
-        self.state.id_at(index).map(str::to_owned)
+    /// Identifiant de l'étape sous le point visé (coordonnées normalisées de -1 à 1, y vers le
+    /// haut), chaîne vide s'il n'y en a pas.
+    pub fn pick(&self, x: f32, y: f32) -> String {
+        let index = self.state.pick(Vec2::new(x, y));
+        index
+            .and_then(|i| self.state.id_at(i))
+            .map(str::to_owned)
+            .unwrap_or_default()
+    }
+
+    /// Quatre nombres par étape, jalons puis objectif : x, y (de 0 à 1, origine en haut à gauche
+    /// du canvas), rayon de la médaille rapporté à la hauteur du canvas, visibilité (1 ou 0).
+    pub fn project(&self) -> Vec<f32> {
+        self.state
+            .project()
+            .into_iter()
+            .flat_map(|p| [p.x, p.y, p.scale, f32::from(u8::from(p.visible))])
+            .collect()
     }
 }

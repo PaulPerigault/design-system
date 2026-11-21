@@ -1,33 +1,35 @@
-/** Jeu fermé d'emblèmes géométriques fourni par le crate `pp-milestones`. */
-export const EMBLEM_KEYS = [
-  'disc',
-  'check',
-  'shield',
-  'cloud',
-  'network',
-  'database',
-  'code',
-  'key',
-  'gear',
-] as const;
-
-export type EmblemKey = (typeof EMBLEM_KEYS)[number];
 export type Status = 'achieved' | 'planned';
 
-/** Un jalon. `date` : `AAAA-MM` ou `AAAA-MM-JJ`. `href` : `https:` ou chemin relatif. */
+/**
+ * Image du badge, fournie par le consommateur (même site). `src` : `https:` absolu ou chemin
+ * relatif ; jamais `javascript:` ni `data:`. `width` et `height` (pixels, facultatifs) évitent un
+ * second décodage quand l'image dépasse la taille maximale des textures.
+ */
+export interface Badge {
+  readonly src: string;
+  readonly width?: number;
+  readonly height?: number;
+}
+
+/**
+ * Un jalon. `date` : `AAAA-MM` ou `AAAA-MM-JJ`. `code` : texte simple de 16 caractères au plus.
+ * `href` : `https:` ou chemin relatif. `badge` : réservé aux jalons `achieved`.
+ */
 export interface Milestone {
   readonly id: string;
   readonly label: string;
   readonly status: Status;
   readonly group?: string;
   readonly date?: string;
+  readonly code?: string;
+  readonly badge?: Badge;
   readonly href?: string;
-  readonly emblem?: EmblemKey;
 }
 
-/** Cible finale facultative, au bout du ruban. */
+/** Objectif au bout du parcours. Jamais de badge. */
 export interface Goal {
   readonly label: string;
+  readonly date?: string;
   readonly href?: string;
 }
 
@@ -44,10 +46,11 @@ export type ThemeColor =
   | { readonly space: 'srgb'; readonly r: number; readonly g: number; readonly b: number }
   | { readonly space: 'oklch'; readonly l: number; readonly c: number; readonly h: number };
 
-export type ThemeColorName = 'bg' | 'fg' | 'accent' | 'onAccent' | 'line' | 'muted';
+export type ThemeColorName = 'bg' | 'fg' | 'accent' | 'onAccent' | 'line' | 'muted' | 'paper';
 export type Curve = readonly [x1: number, y1: number, x2: number, y2: number];
 
 export interface Theme {
+  /** `paper` : `--pp-color-bg` en mode clair, quelles que soient les préférences. */
   readonly colors: Readonly<Record<ThemeColorName, ThemeColor>>;
   /** `--pp-duration-base` et `--pp-duration-fast`, en millisecondes. */
   readonly durationBase: number;
@@ -56,10 +59,12 @@ export interface Theme {
   readonly easing: Curve;
 }
 
-/** Raison d'un repli vers le rendu classique (liste, sans 3D). */
+/**
+ * Raison d'un repli vers le rendu classique (liste, sans 3D). `prefers-reduced-motion` n'en est
+ * plus une (ADR-0013, décision 3) : voir `prefersReducedMotion`.
+ */
 export type FallbackReason =
   | 'no-webgl2'
-  | 'reduced-motion'
   | 'save-data'
   | 'weak-device'
   | 'hidden'
@@ -68,24 +73,3 @@ export type FallbackReason =
   | 'load-failed'
   | 'init-failed'
   | 'context-lost';
-
-export interface InitOptions {
-  /** Plafond du rapport de pixels (défaut 2). */
-  readonly dprMax?: number;
-  /** Jalon actif au départ (défaut : le premier). */
-  readonly activeId?: string;
-  /** Jalon choisi sur le canvas (clic ou toucher). */
-  readonly onSelect?: (id: string) => void;
-  readonly onFallback?: (reason: FallbackReason) => void;
-  /** Élément dont les jetons sont lus (défaut : le parent du canvas, sinon `:root`). */
-  readonly themeRoot?: Element;
-  /** Inclinaison au gyroscope, demandée sur geste là où une autorisation existe (défaut : oui). */
-  readonly gyroscope?: boolean;
-}
-
-export interface MilestonesHandle {
-  /** Libère écouteurs, observateurs, boucle de rendu, ressources GL et contexte. Idempotent. */
-  destroy(): void;
-  setTheme(theme: Theme): void;
-  setActive(id: string): void;
-}

@@ -3,16 +3,21 @@
 //! Libellés, groupes, dates et liens vivent dans le HTML : le paquet TypeScript les valide, la
 //! scène ne les voit jamais. Elle rejoue ici ce qui la concerne (ADR-0012, décision 1).
 use crate::error::SceneError;
-use crate::kinds::{Emblem, Status};
+use crate::kinds::Status;
+use crate::progress::stops;
 
 pub const MIN_MILESTONES: usize = 1;
 pub const MAX_MILESTONES: usize = 24;
+/// Identifiant réservé de l'objectif : le `@` n'est pas valide dans un identifiant de jalon.
+pub const GOAL_ID: &str = "@goal";
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Milestone {
     pub id: String,
     pub status: Status,
-    pub emblem: Emblem,
+    /// Vrai si une image de badge est attendue (le jalon est obtenu et le consommateur en fournit
+    /// une). Un jalon planifié n'affiche jamais de badge, quelle que soit cette valeur.
+    pub has_badge: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -67,11 +72,30 @@ impl MilestonesData {
         self.milestones.is_empty()
     }
 
+    /// Nombre d'étapes du chemin : les jalons, plus l'objectif.
+    #[must_use]
+    pub fn stops(&self) -> usize {
+        stops(self.len(), self.goal)
+    }
+
+    /// Indice d'étape d'un identifiant : un jalon, ou `GOAL_ID` (indice `len()`) s'il y a un objectif.
     #[must_use]
     pub fn index_of(&self, id: &str) -> Option<usize> {
+        if id == GOAL_ID {
+            return self.goal.then_some(self.len());
+        }
         self.milestones
             .iter()
             .position(|milestone| milestone.id == id)
+    }
+
+    /// Identifiant de l'étape `index`.
+    #[must_use]
+    pub fn id_at(&self, index: usize) -> Option<&str> {
+        match self.milestones.get(index) {
+            Some(milestone) => Some(milestone.id.as_str()),
+            None => (self.goal && index == self.len()).then_some(GOAL_ID),
+        }
     }
 }
 

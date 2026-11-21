@@ -1,19 +1,9 @@
-import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { dataBlock, formatDate } from '../src/content/milestones-3d-model';
+import { dataBlock } from '../src/content/milestones-3d-data';
+import { formatDate } from '../src/content/milestones-3d-model';
+import { FILES, known, read, strip } from './milestones-3d-css-helpers';
 
-const read = (name: string): string =>
-  readFileSync(new URL(`../../css/src/${name}`, import.meta.url), 'utf8');
-const tokens = JSON.parse(
-  readFileSync(new URL('../../tokens/generated/tokens.json', import.meta.url), 'utf8'),
-) as { base: object; themes: Record<string, object> };
-const known = new Set([
-  ...Object.keys(tokens.base),
-  ...Object.values(tokens.themes).flatMap((theme) => Object.keys(theme)),
-]);
-const strip = (css: string): string => css.replace(/\/\*[\s\S]*?\*\//g, '');
-
-describe.each(['milestones-3d.css', 'milestones-3d-enhanced.css'])('%s', (name) => {
+describe.each(FILES)('%s', (name) => {
   const css = strip(read(name));
 
   it('ne référence que des jetons --pp-* existants', () => {
@@ -40,63 +30,20 @@ describe.each(['milestones-3d.css', 'milestones-3d-enhanced.css'])('%s', (name) 
   });
 });
 
-describe('états du composant', () => {
-  const base = strip(read('milestones-3d.css'));
-  const enhanced = strip(read('milestones-3d-enhanced.css'));
-
-  it('importe la feuille du mode amélioré depuis la feuille principale', () => {
-    expect(base).toMatch(/@import '\.\/milestones-3d-enhanced\.css';/);
-  });
-
-  it('masque l’emplacement de la scène sans état, et ne masque jamais la liste', () => {
-    expect(enhanced).toMatch(/\.pp-milestones__stage\s*\{\s*display:\s*none/);
-    expect(enhanced).toMatch(/\.pp-milestones\[data-state\] \.pp-milestones__stage\s*\{/);
-    expect(`${base}${enhanced}`).not.toMatch(/__list[^{]*\{[^}]*display:\s*none/);
-  });
-
-  it('laisse le défilement vertical au navigateur sur le canvas', () => {
-    expect(enhanced).toMatch(/\.pp-milestones__canvas\s*\{[^}]*touch-action:\s*pan-y/);
-  });
-
-  it('garantit des cibles tactiles minimales aux liens et aux boutons', () => {
-    const target = String.raw`min-block-size:\s*var\(--pp-size-target-min\)`;
-    expect(base).toMatch(new RegExp(String.raw`\.pp-milestones__link\s*\{[^}]*` + target));
-    expect(enhanced).toMatch(new RegExp(String.raw`\.pp-milestones__select\s*\{[^}]*` + target));
-  });
-
-  it('donne au libellé la boîte du bouton : le remplacer ne déplace rien (CLS)', () => {
-    const name = String.raw`\.pp-milestones__name\s*\{[^}]*`;
-    expect(base).toMatch(
-      new RegExp(name + String.raw`min-block-size:\s*var\(--pp-size-target-min\)`),
-    );
-    expect(base).toMatch(new RegExp(name + String.raw`box-sizing:\s*border-box`));
-    expect(enhanced).toMatch(
-      /\[data-state='enhanced'\] \.pp-milestones__name\s*\{\s*padding:\s*0;\s*border:\s*0/,
-    );
-    // Pas avant : au chargement le libellé est encore du texte, sa boîte ne doit pas rétrécir.
-    expect(enhanced).not.toMatch(/\[data-state\] \.pp-milestones__name/);
-  });
-
-  it('marque le jalon actif par plus que la couleur', () => {
-    const active = /\[aria-pressed='true'\]\s*\{([^}]*)\}/.exec(enhanced)?.[1] ?? '';
-    expect(active).toContain('border-color');
-    expect(active).toContain('font-weight');
-  });
-
-  it('distingue les jalons prévus par le trait, en plus du mot « Prévu »', () => {
-    expect(base).toMatch(/\[data-status='planned'\]\s*\{[^}]*border-inline-start-style:\s*dashed/);
-  });
-});
-
 describe('formatDate et dataBlock', () => {
   it('formate un mois et un jour dans la langue demandée', () => {
-    expect(formatDate('2025-03', 'fr')).toEqual({ text: 'mars 2025', datetime: '2025-03' });
+    expect(formatDate('2025-03', 'fr')).toEqual({
+      text: 'mars 2025',
+      short: 'mars 2025',
+      datetime: '2025-03',
+    });
+    expect(formatDate('2025-09-05', 'fr').short).toBe('sept. 2025');
     expect(formatDate('2025-03-05', 'en').text).toBe('March 5, 2025');
   });
 
   it('rend le texte brut sans datetime pour une date inexistante ou mal formée', () => {
     for (const bad of ['2025-13', '2025-00', '2025-04-31', '2025-4', 'hier'])
-      expect(formatDate(bad, 'fr')).toEqual({ text: bad });
+      expect(formatDate(bad, 'fr')).toEqual({ text: bad, short: bad });
   });
 
   it('ne dérive pas d’un jour au changement d’année (fuseau UTC)', () => {

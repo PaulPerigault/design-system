@@ -9,12 +9,14 @@ const snippet = `---
 import Milestones3D from '@paulperigault/astro/Milestones3D.astro';
 ---
 <Milestones3D
-  label="Feuille de route"
+  label="Certifications"
   milestones={[
-    { id: 'proto', label: 'Prototype', status: 'achieved', date: '2025-03' },
-    { id: 'v1', label: 'Version 1', status: 'planned', date: '2026-06' },
+    { id: 'base', label: 'Fondamentaux', status: 'achieved', group: 'Émetteur', date: '2023-03',
+      code: 'ABC-101', badge: { src: '/badges/base.webp', width: 512, height: 512 },
+      href: 'https://example.org/verifier/base' },
+    { id: 'suite', label: 'Niveau avancé', status: 'planned', date: '2026-06', code: 'ABC-301' },
   ]}
-  goal={{ label: 'Ouverture au public' }}
+  goal={{ label: 'Parcours complet', date: '2027-01' }}
 />
 
 <script>
@@ -26,44 +28,47 @@ import Milestones3D from '@paulperigault/astro/Milestones3D.astro';
 <ComponentPage
   slug="milestones-3d"
   title="Milestones3D"
-  summary="Milestones3D présente des jalons le long d’un parcours : une liste ordonnée complète, à laquelle une scène 3D WebGL2 peut s’ajouter."
+  summary="Milestones3D présente des certifications ou des jalons le long d’un parcours chronologique : une liste ordonnée complète, à laquelle une scène 3D WebGL2, pilotée au défilement, peut s’ajouter."
   use={[
-    'Montrer un parcours, une feuille de route ou une suite de réalisations, avec des jalons atteints et des jalons prévus.',
+    'Montrer un parcours de certifications ou de réalisations, avec des jalons obtenus (et leur badge) et des jalons prévus.',
     'Offrir une présentation plus visuelle sans perdre le texte : la liste reste la source de vérité.',
   ]}
   avoid={[
     'Pour une simple chronologie datée : utiliser Timeline, sans JavaScript ni WebAssembly.',
-    'Pour un contenu qui n’existerait que dans la scène : le canvas ne porte aucun texte et reste masqué aux lecteurs d’écran.',
+    'Pour un contenu qui n’existerait que dans la scène : le canvas et ses étiquettes sont masqués aux lecteurs d’écran.',
     'Au-delà de 24 jalons : la scène refuse, la liste seule s’affiche.',
   ]}
   snippet={snippet}
   extra={EXTRA_SECTIONS}
   a11y={{
     keyboard: [
-      'Sans 3D, la liste n’a que des liens : Tab les parcourt dans l’ordre des jalons.',
-      'Avec la 3D, chaque libellé devient un bouton (`aria-pressed`) ; Entrée ou Espace choisit le jalon et met le panneau de détail à jour.',
-      'Le canvas est hors de l’ordre de tabulation (`tabindex="-1"`) : tout se fait par la liste.',
+      'Sans 3D, la liste n’a que des liens de vérification : Tab les parcourt dans l’ordre chronologique.',
+      'Avec la 3D, la liste devient un repère d’étapes : un bouton par jalon (`aria-current="step"` sur l’actif), plus Précédent et Suivant.',
+      'Flèche gauche et droite, Début et Fin déplacent l’étape quand le focus est dans la section ; Tab et les flèches haut et bas gardent leur effet natif, le focus n’est jamais piégé.',
+      'Un lien « Passer cette section » mène après la section.',
     ],
     screenReader: [
-      'La liste est annoncée comme liste, avec le nombre de jalons ; le statut est écrit (« Atteint », « Prévu »).',
-      'Le canvas est `aria-hidden="true"` : il ne porte aucun texte qui ne soit pas écrit dans la liste (WCAG 1.1.1).',
-      'Le panneau de détail est une région nommée en `aria-live="polite"` : le jalon choisi y est annoncé.',
+      'La liste est annoncée comme liste ; le statut est écrit (« Obtenu », « Prévu ») et le nom complet de la certification est écrit à côté du badge (`alt=""`).',
+      'Le canvas et les étiquettes de la scène sont `aria-hidden` : le sens est dans la liste et le panneau.',
+      'Le panneau de détail est une région nommée, sans `aria-live` : rien n’est annoncé au défilement.',
     ],
     guaranteed: [
-      'La liste n’est jamais retirée ni masquée, avec ou sans 3D (WCAG 1.3.1).',
-      'Le statut est écrit en toutes lettres, doublé d’un trait plein ou pointillé : la forme seule ne porte pas le sens (WCAG 1.4.1).',
-      'Aucun mouvement ne démarre seul : pas de pause à offrir (WCAG 2.2.2). Le mouvement déclenché par un geste est supprimé sous `prefers-reduced-motion`, avec la 3D entière (WCAG 2.3.3, niveau AAA, retenu par prudence).',
+      'La liste n’est jamais retirée, avec ou sans 3D (WCAG 1.3.1).',
+      'Le statut est écrit en toutes lettres, doublé d’un trait plein ou pointillé (WCAG 1.4.1).',
+      'Le défilement reste celui du navigateur : aucun `preventDefault` sur la molette, le toucher ou le défilement, aucun détournement (WCAG 2.1.1).',
+      'Sous `prefers-reduced-motion`, la 3D reste là : pas de piste haute, navigation par étapes, la caméra saute sans animation (WCAG 2.3.3).',
       'Liens et boutons ont une cible d’au moins `--pp-size-target-min` (WCAG 2.5.8).',
     ],
     integrator: [
-      'Fournir des libellés, dates et liens complets : la scène n’ajoute aucune information.',
-      'Passer `locale` (langue des dates) et `labels` (mots d’interface) dans la langue de la page.',
+      'Fournir des libellés complets, des dates, des codes et des liens de vérification : la scène n’ajoute aucune information.',
+      'Les badges sont des images de votre site, que vous êtes autorisé à afficher (usage réservé à la personne certifiée). Ils sont affichés tels quels, sur une pastille claire fixe.',
+      'Passer `locale` et `labels` dans la langue de la page.',
       'Donner un `label` quand la page porte plusieurs parcours.',
-      'Vérifier le contraste du texte de vos données sur le fond de votre page : le composant n’impose pas de fond.',
     ],
   }}
   evidence={[
     { label: 'ADR-0012 : scène 3D de jalons', href: '/decisions/0012/' },
+    { label: 'ADR-0013 : parcours de badges piloté au défilement', href: '/decisions/0013/' },
     {
       label: 'WCAG 2.2.2 Pause, Stop, Hide',
       href: 'https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide',
@@ -77,7 +82,7 @@ import Milestones3D from '@paulperigault/astro/Milestones3D.astro';
       href: 'https://wikis.khronos.org/webgl/HandlingContextLost',
     },
     {
-      label: 'Tests : packages/astro/test/Milestones3D.test.ts et milestones-3d.behavior.test.ts',
+      label: 'Tests : packages/astro/test/Milestones3D.test.ts et milestones-3d.*.test.ts',
     },
   ]}
 >

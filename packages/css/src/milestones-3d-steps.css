@@ -1,0 +1,92 @@
+/* Milestones3D : repère d'étapes (la liste devenue indicateur) et boutons précédent et suivant. */
+
+/* Repère d'étapes : la liste de référence, une bande de boutons ; le reste du texte y est masqué
+   visuellement (jamais retiré : lecteurs d'écran), sans focus sur les liens cachés. */
+.pp-milestones[data-state] .pp-milestones__list {
+  position: relative;
+  grid-area: list;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(calc(var(--pp-space-2xl) * 2), 1fr);
+  gap: var(--pp-space-2xs);
+  overflow-inline: auto;
+  overscroll-behavior-x: contain;
+}
+
+.pp-milestones[data-state] .pp-milestones__item {
+  display: block;
+  padding: 0;
+  border: 0;
+}
+
+.pp-milestones[data-state] .pp-milestones__item > .pp-milestones__medal,
+.pp-milestones[data-state] .pp-milestones__text > :not([data-pp-name]) {
+  position: absolute;
+  inline-size: var(--pp-size-rule);
+  block-size: var(--pp-size-rule);
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.pp-milestones__select {
+  box-sizing: border-box;
+  inline-size: 100%;
+  block-size: 100%;
+  min-block-size: var(--pp-size-target-min);
+  padding-block: var(--pp-space-3xs);
+  padding-inline: var(--pp-space-xs);
+  border: var(--pp-size-rule) solid var(--pp-color-line);
+  border-radius: var(--pp-radius-control);
+  background-color: var(--pp-color-surface);
+  color: var(--pp-color-fg);
+  font: inherit;
+  font-size: var(--pp-font-size--1);
+  text-align: start;
+  cursor: pointer;
+}
+
+.pp-milestones__item[data-status='planned'] .pp-milestones__select {
+  border-style: dashed;
+}
+
+/* Actif : bordure accent épaissie en bas et graisse (jamais la couleur seule), plus `aria-current`. */
+.pp-milestones__select[aria-current='step'] {
+  border-color: var(--pp-color-accent);
+  border-block-end-width: calc(var(--pp-size-rule) * 3);
+  font-weight: var(--pp-font-weight-bold);
+}
+
+.pp-milestones__item[data-hover] .pp-milestones__select {
+  border-color: var(--pp-color-accent);
+}
+
+.pp-milestones__nav {
+  display: flex;
+  grid-area: nav;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pp-space-xs);
+}
+
+.pp-milestones__nav-button {
+  min-block-size: var(--pp-size-control-height);
+  min-inline-size: var(--pp-size-control-height);
+  padding-inline: var(--pp-space-s);
+  border: var(--pp-size-rule) solid var(--pp-color-line);
+  border-radius: var(--pp-radius-control);
+  background-color: var(--pp-color-surface);
+  color: var(--pp-color-fg);
+  font: inherit;
+  cursor: pointer;
+}
+
+.pp-milestones__nav-button[aria-disabled='true'] {
+  border-style: dashed;
+  color: var(--pp-color-muted);
+  cursor: default;
+}
+
+.pp-milestones__position {
+  font-size: var(--pp-font-size--1);
+  color: var(--pp-color-muted);
+}

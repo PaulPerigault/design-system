@@ -6,7 +6,8 @@ import { createLoop } from './loop.ts';
 import type { Loop } from './loop.ts';
 import type { CanvasLike, RawScene } from './raw.ts';
 import { themeToArray } from './raw-theme.ts';
-import type { FallbackReason, InitOptions, Theme } from './types.ts';
+import type { InitOptions } from './options.ts';
+import type { FallbackReason, Theme } from './types.ts';
 
 export interface Session {
   readonly canvas: CanvasLike;
@@ -19,6 +20,8 @@ export interface Session {
   time(): number;
   /** Demande une image. */
   redraw(): void;
+  /** Résolue quand la première image a été dessinée (jamais si la scène reste hors écran). */
+  readonly firstFrame: Promise<void>;
   isDestroyed(): boolean;
   /** Idempotent : retire écouteurs et observateurs, arrête la boucle, libère GL et contexte. */
   destroy(): void;
@@ -45,11 +48,18 @@ export function createSession(
 ): Session {
   const start = env.now();
   const time = (): number => env.now() - start;
-  const loop = createLoop(() => scene.frame(time()), env.loop);
+  let markDrawn = (): void => {};
+  const firstFrame = new Promise<void>((resolve) => void (markDrawn = resolve));
+  const loop = createLoop(() => {
+    const more = scene.frame(time());
+    markDrawn();
+    return more;
+  }, env.loop);
   let destroyed = false;
   const session: Session = {
     ...{ canvas, scene, options, env, loop, time, bag: createBag() },
     redraw: () => loop.request(),
+    firstFrame,
     isDestroyed: () => destroyed,
     destroy() {
       if (destroyed) return;

@@ -9,19 +9,22 @@ import {
 import { page } from './milestones-3d-fixtures';
 
 describe('blockedEarly', () => {
-  const env = (reduce: boolean, saveData?: boolean) => ({
-    matchMedia: () => ({ matches: reduce }),
+  const env = (saveData?: boolean) => ({
     navigator: { connection: saveData === undefined ? undefined : { saveData } },
   });
 
-  it('refuse le mouvement réduit puis l’économie de données', () => {
-    expect(blockedEarly(env(true))).toBe('reduced-motion');
-    expect(blockedEarly(env(false, true))).toBe('save-data');
+  it('refuse l’économie de données', () => {
+    expect(blockedEarly(env(true))).toBe('save-data');
   });
 
   it('admet une valeur absente ou fausse : l’absence n’est pas une mesure', () => {
+    expect(blockedEarly(env())).toBeNull();
     expect(blockedEarly(env(false))).toBeNull();
-    expect(blockedEarly(env(false, false))).toBeNull();
+  });
+
+  it('ne lit plus prefers-reduced-motion : il change le mode de pilotage, pas l’admission', () => {
+    expect(Object.keys(env(false))).toEqual(['navigator']);
+    expect(blockedEarly(env(false))).toBeNull();
   });
 });
 
