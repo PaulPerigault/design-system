@@ -4,7 +4,7 @@ import { FILES, read, strip } from './milestones-3d-css-helpers';
 describe('états du composant', () => {
   const all = FILES.map((name) => strip(read(name))).join('\n');
   const rule = (selector: string): string =>
-    new RegExp(`${selector.replace(/[[\]().*]/g, '\\$&')}\\s*\\{([^}]*)\\}`).exec(all)?.[1] ?? '';
+    new RegExp(`${selector.replace(/[\\[\]().*]/g, '\\$&')}\\s*\\{([^}]*)\\}`).exec(all)?.[1] ?? '';
 
   it('importe les feuilles du mode amélioré depuis la feuille principale', () => {
     const base = strip(read('milestones-3d.css'));
