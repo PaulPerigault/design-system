@@ -1784,8 +1784,7 @@
           "--pp-space-3xs",
           "--pp-space-m",
           "--pp-space-s",
-          "--pp-space-xs",
-          "--pp-z-sticky"
+          "--pp-space-xs"
         ],
         "version": "0.0.0"
       }
