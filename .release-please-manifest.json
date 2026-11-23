@@ -1,12 +1,12 @@
 {
   "packages/tokens": "0.2.1",
-  "packages/css": "0.3.0",
+  "packages/css": "0.4.0",
   "packages/color": "0.1.2",
   "packages/data": "0.1.2",
-  "packages/milestones-3d": "0.1.0",
+  "packages/milestones-3d": "0.2.0",
   "packages/dataviz": "0.1.2",
-  "packages/astro": "0.4.0",
+  "packages/astro": "0.5.0",
   "packages/guards": "0.2.0",
   "packages/create": "0.2.0",
-  "packages/mcp": "0.4.0"
+  "packages/mcp": "0.5.0"
 }

@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.5.0](https://github.com/PaulPerigault/design-system/compare/astro-v0.4.0...astro-v0.5.0) (2026-11-23)
+
+
+### Features
+
+* **milestones:** parcours de badges piloté au défilement ([#396](https://github.com/PaulPerigault/design-system/issues/396)) ([b96a8fc](https://github.com/PaulPerigault/design-system/commit/b96a8fcf9532763c5c3c3d95f5cc0f46879df355))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @paulperigault/css bumped from 0.3.0 to 0.4.0
+  * peerDependencies
+    * @paulperigault/milestones-3d bumped from >=0.0.0 <1.0.0 to >=0.2.0
+
 ## [0.4.0](https://github.com/PaulPerigault/design-system/compare/astro-v0.3.0...astro-v0.4.0) (2026-11-20)
 
 

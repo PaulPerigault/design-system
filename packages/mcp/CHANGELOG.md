@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/PaulPerigault/design-system/compare/mcp-v0.4.0...mcp-v0.5.0) (2026-11-23)
+
+
+### Features
+
+* **milestones:** parcours de badges piloté au défilement ([#396](https://github.com/PaulPerigault/design-system/issues/396)) ([b96a8fc](https://github.com/PaulPerigault/design-system/commit/b96a8fcf9532763c5c3c3d95f5cc0f46879df355))
+
 ## [0.4.0](https://github.com/PaulPerigault/design-system/compare/mcp-v0.3.0...mcp-v0.4.0) (2026-11-20)
 
 
