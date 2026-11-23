@@ -1,10 +1,11 @@
 // Performance mesurée dans Chromium (CPU ralenti 4 fois, 4G lente) : LCP, CLS, INP, poids transféré,
 // instanciation du `.wasm`, première image, temps d'image moyen et p95, tâches longues à l'init.
 // Comparaison du LCP avec le rendu classique seul (mouvement réduit), jamais de seuil sur le poids.
+// Firefox et WebKit : première image, temps d'image et `.wasm` sans ralentissement.
 import type { Page } from '@playwright/test';
 import type { Launched } from './browser.ts';
 import { openPage, untilEnhanced, wake } from './browser.ts';
-import { IDLE_WAIT_MS, at, info, row, skip } from './model.ts';
+import { IDLE_WAIT_MS, at, info, row } from './model.ts';
 import type { Row, Where } from './model.ts';
 import { INSTRUMENT, frameStats, readMetrics } from './perf-page.ts';
 import type { Metrics } from './perf-page.ts';
@@ -34,13 +35,18 @@ function transferred(page: Page): () => Promise<number> {
   return async () => (await Promise.all(sizes)).reduce((sum, bytes) => sum + bytes, 0);
 }
 
-async function measure(engine: Launched, base: string, classic: boolean): Promise<Metrics> {
+async function measure(
+  engine: Launched,
+  base: string,
+  classic: boolean,
+  throttled = true,
+): Promise<Metrics> {
   const reducedMotion = classic ? 'reduce' : 'no-preference';
   const scenario = { viewport: 'mobile', reducedMotion, wake: false, freshVisit: true } as const;
   const { context, page } = await openPage(engine.browser, base, scenario, INSTRUMENT);
   try {
     const received = transferred(page);
-    await throttle(page);
+    if (throttled) await throttle(page);
     // Navigation neuve (pas de rechargement) : l'ancre de la démonstration est honorée, la section est à l'écran.
     const url = page.url();
     await page.goto('about:blank');
@@ -92,9 +98,20 @@ function runtime(where: Where, m: Metrics): Row[] {
   ];
 }
 
+/** Firefox et WebKit : pas de CDP, donc ni ralentissement ni tâches longues ; mesures brutes. */
+async function unthrottled(engine: Launched, base: string): Promise<Row[]> {
+  const where = at(engine.name, 'mobile, sans ralentissement');
+  const m = await measure(engine, base, false, false);
+  return [
+    info(where, 'instanciation du .wasm', ms(m.wasm)),
+    info(where, 'première image', ms(m.firstFrame)),
+    info(where, 'temps d’image moyen / p95', `${ms(m.frameAvg)} / ${ms(m.frameP95)}`),
+  ];
+}
+
 export async function auditPerf(engine: Launched, base: string): Promise<Row[]> {
   const where = at(engine.name, 'mobile, CPU x4, 4G lente');
-  if (engine.name !== 'chromium') return [skip(where, 'mesures', 'CDP : Chromium seulement')];
+  if (engine.name !== 'chromium') return unthrottled(engine, base);
   const classic = await measure(engine, base, true);
   const enhanced = await measure(engine, base, false);
   return [...lcpAndLayout(where, classic, enhanced), ...runtime(where, enhanced)];

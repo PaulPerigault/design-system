@@ -66,7 +66,11 @@ export function createHarness(theme: Theme, overrides: Partial<Env> = {}): Harne
       const [handle, callback] = [...frames][0] ?? [];
       if (handle === undefined || !callback) return false;
       frames.delete(handle);
+      const drawn = (): number => scene.calls.filter((c) => c.startsWith('frame:')).length;
+      const before = drawn();
       callback(h.clock);
+      // Image d'attente de `startSession` : la vraie image est demandée par son rappel, on la joue.
+      if (drawn() === before && frames.size > 0 && before === 0) h.runFrame();
       return true;
     },
     env: {

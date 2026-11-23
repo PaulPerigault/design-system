@@ -18,12 +18,21 @@ export function devicePixels(css: number, ratio: number, dprMax: number): number
   return Math.max(1, Math.round(css * Math.min(safeRatio, dprMax)));
 }
 
-/** Applique la taille courante, puis la suit. `redraw` est appelé après chaque changement. */
+/**
+ * Applique la taille courante, puis la suit. `redraw` est appelé après chaque changement. Une taille
+ * déjà appliquée n'est pas renvoyée à la scène : poser `width` ou `height` d'un canvas WebGL réalloue
+ * toujours son tampon, même à valeur égale, et le premier rappel du `ResizeObserver` (émis à
+ * l'observation) refaisait cette allocation (80 ms de tâche, processeur ralenti 4 fois, audit #394).
+ */
 export function watchSize({ canvas, scene, env, bag, dprMax }: SurfaceDeps, redraw: () => void) {
+  let applied = '';
   const apply = (width: number, height: number): void => {
     if (!(width > 0 && height > 0)) return;
     const ratio = env.devicePixelRatio();
-    scene.resize(devicePixels(width, ratio, dprMax), devicePixels(height, ratio, dprMax));
+    const [w, h] = [devicePixels(width, ratio, dprMax), devicePixels(height, ratio, dprMax)];
+    if (`${w}x${h}` === applied) return;
+    applied = `${w}x${h}`;
+    scene.resize(w, h);
     redraw();
   };
   apply(canvas.clientWidth, canvas.clientHeight);

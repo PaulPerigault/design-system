@@ -50,7 +50,13 @@ export function createSession(
   const time = (): number => env.now() - start;
   let markDrawn = (): void => {};
   const firstFrame = new Promise<void>((resolve) => void (markDrawn = resolve));
+  let waited = false;
   const loop = createLoop(() => {
+    // Première image d'attente, sans rendu : le composant hôte change de mise en page juste après le
+    // démarrage, et le `ResizeObserver` qui en résulte tourne après les rappels d'image du même
+    // cycle. Redimensionner le canvas juste après un premier rendu bloquait la tâche jusqu'à la fin
+    // de ce rendu (logiciel : 80 ms, processeur ralenti 4 fois, audit #394).
+    if (!waited) return (waited = true);
     const more = scene.frame(time());
     markDrawn();
     return more;

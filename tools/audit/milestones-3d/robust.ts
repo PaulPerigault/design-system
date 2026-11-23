@@ -1,5 +1,5 @@
-// Robustesse : perte de contexte (repli, puis restauration), navigateur sans WebGL2, mouvement
-// réduit, économie de données, appareil faible.
+// Robustesse : perte de contexte (repli, puis restauration), navigateur sans WebGL2, économie de
+// données, appareil faible. Le mouvement réduit garde la scène : voir reduced.ts.
 import type { Page } from '@playwright/test';
 import type { Launched, Scenario } from './browser.ts';
 import { openPage, untilEnhanced } from './browser.ts';
@@ -82,7 +82,6 @@ async function contextLoss(engine: Launched, base: string, restore: boolean): Pr
 }
 
 const BLOCKERS: [string, Scenario][] = [
-  ['prefers-reduced-motion', { reducedMotion: 'reduce' }],
   ['saveData', { saveData: true }],
   ['appareil faible (2 cœurs)', { weakDevice: true }],
   ['sans WebGL2', { noWebgl2: true }],

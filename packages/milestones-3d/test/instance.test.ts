@@ -24,6 +24,31 @@ describe('création', () => {
     expect(custom.h.scene.calls).toContain('resize:400x200');
   });
 
+  it('ne renvoie pas à la scène une taille déjà appliquée (le tampon WebGL se réalloue)', async () => {
+    const { h } = await start();
+    const resizes = (): number => h.scene.calls.filter((c) => c.startsWith('resize:')).length;
+    expect(resizes()).toBe(1);
+    FakeObserver.all.at(0)?.fire([{ contentRect: { width: 400, height: 200 } }]);
+    expect(resizes()).toBe(1);
+    FakeObserver.all.at(0)?.fire([{ contentRect: { width: 300, height: 200 } }]);
+    expect(resizes()).toBe(2);
+  });
+
+  it('fait précéder le premier rendu d’une image d’attente (redimensionnement du composant hôte)', async () => {
+    const { h } = await start();
+    const play = (): void => {
+      const [id, callback] = [...h.frames][0] ?? [];
+      if (id === undefined || !callback) return;
+      h.frames.delete(id);
+      callback(h.clock);
+    };
+    play();
+    expect(h.scene.calls.some((c) => c.startsWith('frame:'))).toBe(false);
+    expect(h.frames.size).toBe(1);
+    play();
+    expect(h.scene.calls.filter((c) => c.startsWith('frame:'))).toEqual(['frame:0']);
+  });
+
   it('rend à la demande : une image, puis plus rien tant que la scène n’en veut plus', async () => {
     const { h } = await start();
     expect(h.runFrame()).toBe(true);

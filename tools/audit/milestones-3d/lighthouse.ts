@@ -19,6 +19,14 @@ const THROTTLING = [
   '--throttling.rttMs=150',
   '--throttling.throughputKbps=1638.4',
 ];
+/**
+ * Sous Linux (runner CI, conteneur), Chrome ne démarre pas sans `--no-sandbox` (espaces de noms
+ * utilisateur restreints) ni avec un `/dev/shm` minuscule : chrome-launcher conclut alors « waiting
+ * for dynamic debugging port » (CI #396). Playwright pose les mêmes options à ses propres lancements.
+ */
+const LINUX_FLAGS = ['--no-sandbox', '--disable-dev-shm-usage'];
+export const platformFlags = (platform: string): string[] =>
+  platform === 'linux' ? LINUX_FLAGS : [];
 const FLAGS = [
   '--headless=new',
   '--use-angle=swiftshader',
@@ -45,7 +53,7 @@ function command(url: string, out: string, extra: string[]): string[] {
     `--only-categories=${CATEGORIES.join(',')}`,
     '--form-factor=mobile',
     ...THROTTLING,
-    `--chrome-flags=${quoted([...FLAGS, ...extra].join(' '))}`,
+    `--chrome-flags=${quoted([...FLAGS, ...platformFlags(process.platform), ...extra].join(' '))}`,
   ];
 }
 
@@ -63,8 +71,8 @@ async function run(url: string, out: string, extra: string[]): Promise<Report | 
     return JSON.parse(readFileSync(out, 'utf8')) as Report;
   } catch (error) {
     const text = String((error as { stderr?: string }).stderr || error);
-    const message = text.split('\n').find((line) => line && !line.startsWith('npm warn'));
-    return `Lighthouse a échoué : ${message ?? 'sans message'}`;
+    const lines = text.split('\n').filter((line) => line && !line.startsWith('npm warn'));
+    return `Lighthouse a échoué : ${lines.slice(0, 3).join(' | ') || 'sans message'}`;
   }
 }
 
