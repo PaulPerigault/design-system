@@ -3142,8 +3142,7 @@
       "--pp-space-3xs",
       "--pp-space-m",
       "--pp-space-s",
-      "--pp-space-xs",
-      "--pp-z-sticky"
+      "--pp-space-xs"
     ],
     "use": [
       "Montrer un parcours de certifications ou de réalisations, avec des jalons obtenus (et leur badge) et des jalons prévus.",
