@@ -21,6 +21,8 @@ pub struct Scene {
     pub(crate) builder: Option<Builder>,
     /// Clôture du tracé de préchauffage (voir `warm.rs`).
     pub(crate) fence: Option<WebGlSync>,
+    /// Clôture de `idle` (le GPU a rattrapé son retard).
+    pub(crate) idle_fence: Option<WebGlSync>,
     /// Tampon de la lecture d'un pixel du préchauffage, libéré avec la clôture.
     pub(crate) probe: Option<WebGlBuffer>,
     /// Badges reçus, un par jalon : conservés pour recréer les textures après une perte de contexte.
@@ -55,6 +57,7 @@ impl Scene {
             gpu: None,
             builder: Some(Builder::default()),
             fence: None,
+            idle_fence: None,
             probe: None,
             bitmaps,
         })
@@ -93,6 +96,7 @@ impl Scene {
             bitmap.close();
         }
         self.gl.delete_sync(self.fence.take().as_ref());
+        self.gl.delete_sync(self.idle_fence.take().as_ref());
         self.gl.delete_buffer(self.probe.take().as_ref());
         release(&self.gl);
     }

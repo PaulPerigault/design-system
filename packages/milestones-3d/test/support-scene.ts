@@ -11,6 +11,9 @@ export class FakeScene implements RawScene {
   pickResult = 'b';
   projected = Float32Array.from([0.25, 0.5, 0.1, 1, 0.75, 0.5, 0.1, 0]);
   /** Attentes de la clôture de préchauffage simulées. */
+  /** Attentes du GPU (`idle`) simulées avant qu'il rattrape son retard. */
+  idleWaits = 0;
+  idle = (): boolean => (this.calls.push('idle'), this.idleWaits-- <= 0);
   warmWaits = 0;
   warmFrame = (now: number): void => void this.calls.push(`warm:${now}`);
   warmed = (): boolean => (this.calls.push('warmed'), this.warmWaits-- <= 0);

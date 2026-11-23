@@ -16,7 +16,7 @@ function wireWatchers(s: Session): void {
   const { canvas, scene, env, bag } = s;
   const requested = s.options.dprMax;
   const dprMax = requested !== undefined && requested > 0 ? requested : DPR_MAX_DEFAULT;
-  watchSize({ canvas, scene, env, bag, dprMax }, s.redraw);
+  s.flushSize = watchSize({ canvas, scene, env, bag, dprMax }, s.redraw);
   watchContext({ canvas, scene, env, bag, redraw: s.redraw, fail: s.fail });
   const html = canvas.ownerDocument.documentElement;
   const root = s.options.themeRoot ?? canvas.parentElement ?? html;

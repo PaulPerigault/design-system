@@ -22,6 +22,8 @@ export interface Session {
   time(): number;
   /** Demande une image. */
   redraw(): void;
+  /** Applique la dernière taille notée par l'observateur (posée par `watchSize`). */
+  flushSize: () => void;
   /** Résolue quand la première image a été dessinée (jamais si la scène reste hors écran). */
   readonly firstFrame: Promise<void>;
   isDestroyed(): boolean;
@@ -52,15 +54,16 @@ function drawer(
   scene: RawScene,
   canvas: CanvasLike,
   time: () => number,
-  drawn: () => void,
+  hooks: { drawn: () => void; flushSize: () => void },
 ): () => boolean {
-  const ready = createWarmup(scene, canvas, time);
+  const ready = createWarmup(scene, canvas, { time, flushSize: hooks.flushSize });
   let first = true;
   return () => {
     if (!ready()) return true;
+    hooks.flushSize();
     const more = first ? timed('first-frame', () => scene.frame(time())) : scene.frame(time());
     first = false;
-    drawn();
+    hooks.drawn();
     return more;
   };
 }
@@ -75,14 +78,13 @@ export function createSession(
   const time = (): number => env.now() - start;
   let markDrawn = (): void => {};
   const firstFrame = new Promise<void>((resolve) => void (markDrawn = resolve));
-  const loop = createLoop(
-    drawer(scene, canvas, time, () => markDrawn()),
-    env.loop,
-  );
+  const hooks = { drawn: () => markDrawn(), flushSize: () => session.flushSize() };
+  const loop = createLoop(drawer(scene, canvas, time, hooks), env.loop);
   let destroyed = false;
   const session: Session = {
     ...{ canvas, scene, options, env, loop, time, bag: createBag() },
     redraw: () => loop.request(),
+    flushSize: () => {},
     firstFrame,
     isDestroyed: () => destroyed,
     destroy() {

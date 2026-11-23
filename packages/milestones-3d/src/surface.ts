@@ -22,12 +22,16 @@ export function devicePixels(css: number, ratio: number, dprMax: number): number
 }
 
 /**
- * Applique la taille courante, puis la suit. `redraw` est appelé après chaque changement. Une taille
+ * Applique la taille courante, puis la suit ; rend `flush`, qui applique la dernière taille notée.
+ * `redraw` est appelé après chaque changement. Une taille
  * déjà appliquée n'est pas renvoyée à la scène : poser `width` ou `height` d'un canvas WebGL réalloue
  * toujours son tampon, même à valeur égale, et le premier rappel du `ResizeObserver` (émis à
  * l'observation) refaisait cette allocation (80 ms de tâche, processeur ralenti 4 fois, audit #394).
  */
-export function watchSize({ canvas, scene, env, bag, dprMax }: SurfaceDeps, redraw: () => void) {
+export function watchSize(
+  { canvas, scene, env, bag, dprMax }: SurfaceDeps,
+  redraw: () => void,
+): () => void {
   let applied = '';
   let sizes = 0;
   const apply = (width: number, height: number): void => {
@@ -43,10 +47,23 @@ export function watchSize({ canvas, scene, env, bag, dprMax }: SurfaceDeps, redr
     redraw();
   };
   apply(canvas.clientWidth, canvas.clientHeight);
+  // Le rappel du `ResizeObserver` ne fait que noter la taille : la boucle l'applique à son image
+  // (`flush`), quand le GPU a rattrapé son retard. Redimensionner un canvas WebGL est un appel
+  // synchrone qui attend tout ce que le GPU logiciel a en file, dont le tracé des tuiles de la page
+  // après le changement de mise en page du composant hôte (160 à 450 ms, audit #394).
+  let next: { width: number; height: number } | undefined;
+  const flush = (): void => {
+    const size = next;
+    next = undefined;
+    if (size) apply(size.width, size.height);
+  };
   const observer = new env.ResizeObserver((entries) => {
     const last = entries.at(-1);
-    if (last) apply(last.contentRect.width, last.contentRect.height);
+    if (!last) return;
+    next = { width: last.contentRect.width, height: last.contentRect.height };
+    redraw();
   });
   observer.observe(canvas);
   bag.add(() => observer.disconnect());
+  return flush;
 }

@@ -31,6 +31,24 @@ impl Scene {
         Ok(())
     }
 
+    /// Vrai quand le GPU a rattrapé tout ce qui lui a été envoyé : la clôture est posée au premier
+    /// appel et interrogée ensuite, sans jamais bloquer. Un appel synchrone (redimensionnement du
+    /// canvas) attend sinon toute la file du GPU, tracé des tuiles de la page compris.
+    pub fn idle(&mut self) -> bool {
+        let Some(fence) = &self.idle_fence else {
+            self.gl.flush();
+            self.idle_fence = self.gl.fence_sync(Gl::SYNC_GPU_COMMANDS_COMPLETE, 0);
+            self.gl.flush();
+            return self.idle_fence.is_none();
+        };
+        let status = self.gl.get_sync_parameter(fence, Gl::SYNC_STATUS).as_f64();
+        let signaled = status.is_some_and(|value| (value - f64::from(Gl::SIGNALED)).abs() < 0.5);
+        if signaled {
+            self.gl.delete_sync(self.idle_fence.take().as_ref());
+        }
+        signaled
+    }
+
     /// Vrai quand le GPU a fini l'image d'essai (ou qu'il n'y en a pas) ; ne bloque jamais.
     pub fn warmed(&mut self) -> bool {
         let Some(fence) = &self.fence else {

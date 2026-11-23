@@ -31,6 +31,11 @@ export interface RawScene {
    */
   gpuStep(): number;
   /** Trace une image d'essai (canvas caché) et pose une clôture ; `warmed()` dit si le GPU a fini. */
+  /**
+   * Vrai quand le GPU a rattrapé tout ce qui lui a été envoyé ; ne bloque jamais (clôture
+   * interrogée, créée au premier appel). Un appel synchrone attend sinon cette file.
+   */
+  idle(): boolean;
   warmFrame(now: number): void;
   warmed(): boolean;
   frame(now: number): boolean;

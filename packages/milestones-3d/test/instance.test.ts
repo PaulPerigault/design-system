@@ -29,8 +29,12 @@ describe('création', () => {
     const resizes = (): number => h.scene.calls.filter((c) => c.startsWith('resize:')).length;
     expect(resizes()).toBe(1);
     FakeObserver.all.at(0)?.fire([{ contentRect: { width: 400, height: 200 } }]);
+    h.runFrame();
     expect(resizes()).toBe(1);
+    // taille changée : appliquée à l'image suivante, non dans le rappel du `ResizeObserver`
     FakeObserver.all.at(0)?.fire([{ contentRect: { width: 300, height: 200 } }]);
+    expect(resizes()).toBe(1);
+    h.runFrame();
     expect(resizes()).toBe(2);
   });
 
@@ -45,6 +49,7 @@ describe('création', () => {
     play();
     expect(h.scene.calls.some((c) => c.startsWith('frame:'))).toBe(false);
     expect(h.frames.size).toBe(1);
+    play(); // image d'attente du redimensionnement
     play(); // image d'essai (préchauffage), puis le GPU est interrogé
     play();
     expect(h.scene.calls.filter((c) => c.startsWith('frame:'))).toEqual(['frame:0']);

@@ -9,7 +9,8 @@ import type { CanvasLike, RawScene } from './raw.ts';
 import { createSession } from './session.ts';
 import type { MilestonesData, Theme } from './types.ts';
 import { validateData } from './validate.ts';
-import { yieldToMain } from './yield.ts';
+import { hideCanvas } from './warmup.ts';
+import { yieldToFrame, yieldToMain } from './yield.ts';
 
 interface Deps {
   readonly options: InitOptions;
@@ -56,6 +57,7 @@ export async function createInstance(
   deps: Deps,
 ): Promise<MilestonesHandle> {
   const { options, env } = deps;
+  hideCanvas(canvas);
   let scene: RawScene;
   let valid: MilestonesData;
   try {
@@ -68,9 +70,13 @@ export async function createInstance(
   }
   const session = createSession(canvas, scene, options, env);
   try {
-    return startSession(session, planOf(valid));
+    const handle = startSession(session, planOf(valid));
+    await yieldToFrame();
+    // Perte de contexte pendant l'attente : le repli est déjà fait, le composant ne doit pas suivre.
+    if (session.isDestroyed()) throw new MilestonesError('gl-resource', 'scène détruite en cours');
+    return handle;
   } catch (raised) {
-    session.fail('init-failed');
+    if (!session.isDestroyed()) session.fail('init-failed');
     throw parseFault(raised);
   }
 }
