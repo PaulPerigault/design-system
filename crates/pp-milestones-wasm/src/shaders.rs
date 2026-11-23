@@ -1,49 +1,81 @@
-//! Compilation et liaison des shaders (GLSL ES 3.00, sources dans `shaders/*.glsl`).
+//! Compilation et liaison des shaders (GLSL ES 3.00, sources dans `shaders/*.glsl`), en deux temps :
+//! émission puis lecture du résultat (voir `stages`).
 use crate::fault::{Fault, GlFault};
 use web_sys::{WebGl2RenderingContext as Gl, WebGlProgram, WebGlShader};
 
+/// `COMPLETION_STATUS_KHR` (extension `KHR_parallel_shader_compile`).
+const COMPLETION_STATUS: u32 = 0x91B1;
 const VERTEX: &str = include_str!("shaders/vertex.glsl");
 /// Surfaces du thème : support, rail, repères, fantômes, étoile, anneau.
 pub const SOLID: &str = include_str!("shaders/solid.glsl");
 /// Face du badge : texture seule.
 pub const BADGE: &str = include_str!("shaders/badge.glsl");
 
-fn compile(gl: &Gl, kind: u32, source: &str) -> Result<WebGlShader, Fault> {
+fn issue_shader(gl: &Gl, kind: u32, source: &str) -> Result<WebGlShader, Fault> {
     let shader = gl.create_shader(kind).ok_or(GlFault::Shader)?;
     gl.shader_source(&shader, source);
     gl.compile_shader(&shader);
-    let compiled = gl
-        .get_shader_parameter(&shader, Gl::COMPILE_STATUS)
-        .as_bool()
-        .unwrap_or(false);
-    if compiled {
-        Ok(shader)
-    } else {
-        gl.delete_shader(Some(&shader));
-        Err(GlFault::Shader.into())
-    }
+    Ok(shader)
 }
 
-/// Programme : le sommet partagé et un des deux fragments (`SOLID` ou `BADGE`).
-pub fn program(gl: &Gl, fragment_source: &str) -> Result<WebGlProgram, Fault> {
-    let vertex = compile(gl, Gl::VERTEX_SHADER, VERTEX)?;
-    let fragment = compile(gl, Gl::FRAGMENT_SHADER, fragment_source)?;
+/// Programme émis (compilation et liaison demandées, résultat pas encore lu).
+pub struct Linking {
+    pub program: WebGlProgram,
+    shaders: [WebGlShader; 2],
+}
+
+/// Demande la compilation et la liaison du sommet partagé et d'un fragment (`SOLID` ou `BADGE`)
+/// sans lire le résultat : rien ne bloque le fil principal tant que le GPU travaille.
+pub fn issue(gl: &Gl, fragment_source: &str) -> Result<Linking, Fault> {
+    let vertex = issue_shader(gl, Gl::VERTEX_SHADER, VERTEX)?;
+    let fragment = issue_shader(gl, Gl::FRAGMENT_SHADER, fragment_source)?;
     let program = gl.create_program().ok_or(GlFault::Link)?;
     gl.attach_shader(&program, &vertex);
     gl.attach_shader(&program, &fragment);
     gl.link_program(&program);
-    // Les shaders ne servent plus une fois liés.
-    gl.delete_shader(Some(&vertex));
-    gl.delete_shader(Some(&fragment));
-    let linked = gl
-        .get_program_parameter(&program, Gl::LINK_STATUS)
-        .as_bool()
-        .unwrap_or(false);
-    if linked {
-        Ok(program)
+    Ok(Linking {
+        program,
+        shaders: [vertex, fragment],
+    })
+}
+
+fn flag(value: &wasm_bindgen::JsValue) -> bool {
+    value.as_bool().unwrap_or(false)
+}
+
+/// `KHR_parallel_shader_compile` : le programme a fini de se compiler (lire le résultat ne bloque plus).
+#[must_use]
+pub fn is_complete(gl: &Gl, linking: &Linking) -> bool {
+    flag(&gl.get_program_parameter(&linking.program, COMPLETION_STATUS))
+}
+
+/// Lit le résultat : le programme lié, ou le code de l'échec (`shader-compile` avant `program-link`).
+pub fn verify(gl: &Gl, linking: Linking) -> Result<WebGlProgram, Fault> {
+    let linked = flag(&gl.get_program_parameter(&linking.program, Gl::LINK_STATUS));
+    let compiled = linking
+        .shaders
+        .iter()
+        .all(|shader| flag(&gl.get_shader_parameter(shader, Gl::COMPILE_STATUS)));
+    for shader in &linking.shaders {
+        gl.delete_shader(Some(shader));
+    }
+    if linked && compiled {
+        return Ok(linking.program);
+    }
+    gl.delete_program(Some(&linking.program));
+    Err(if compiled {
+        GlFault::Link
     } else {
-        gl.delete_program(Some(&program));
-        Err(GlFault::Link.into())
+        GlFault::Shader
+    }
+    .into())
+}
+
+/// Libère un programme émis qui n'a pas été vérifié (destruction en cours d'initialisation).
+pub fn discard(gl: &Gl, linking: &Linking) {
+    gl.delete_program(Some(&linking.program));
+    for shader in &linking.shaders {
+        gl.delete_shader(Some(shader));
     }
 }
 

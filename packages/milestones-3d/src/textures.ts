@@ -4,6 +4,7 @@
 // échec laisse la médaille sans badge et n'arrête jamais la scène.
 import { TEXTURE_CONCURRENCY, TEXTURE_MAX_PX } from './constants.ts';
 import type { Env } from './env.ts';
+import { phaseEnd, phaseStart, timed } from './phases.ts';
 import { MilestonesError, parseFault } from './error.ts';
 import type { RawScene } from './raw.ts';
 import type { Session } from './session.ts';
@@ -63,9 +64,12 @@ async function loadOne({ id, badge }: TextureJob, deps: TextureDeps): Promise<vo
     const init = { signal: deps.signal, credentials: 'same-origin', mode: 'same-origin' } as const;
     const response = await deps.env.fetch(badge.src, init);
     if (!response.ok) throw new MilestonesError('load-failed', id);
+    const decoding = phaseStart();
     bitmap = await decode(await response.blob(), badge, deps.env);
+    phaseEnd('texture-decode', decoding);
     if (deps.signal.aborted) throw new MilestonesError('load-failed', 'annulé');
-    deps.scene.setTexture(id, bitmap);
+    const sent = bitmap;
+    timed('texture-upload', () => deps.scene.setTexture(id, sent));
     bitmap = undefined; // transmis : la scène le garde et le ferme
     deps.onLoaded();
   } catch (raised) {

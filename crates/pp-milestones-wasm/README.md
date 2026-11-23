@@ -6,28 +6,33 @@ décide rien : tout ce qui se calcule est dans [`pp-milestones`](../pp-milestone
 
 Dépendances : `pp-milestones`, `wasm-bindgen` (version exacte) et `web-sys` avec une feature par type
 utilisé (`HtmlCanvasElement`, `ImageBitmap`, `WebGl2RenderingContext`, `WebGlBuffer`, `WebGlProgram`,
-`WebGlShader`, `WebGlTexture`, `WebGlUniformLocation`, `WebGlVertexArrayObject`,
+`WebGlShader`, `WebGlSync`, `WebGlTexture`, `WebGlUniformLocation`, `WebGlVertexArrayObject`,
 `WebGlContextAttributes`, `WebGlPowerPreference`, `WebglLoseContext`).
 
 ## Modules
 
-| Module     | Rôle                                                                                       |
-| ---------- | ------------------------------------------------------------------------------------------ |
-| `gl`       | contexte WebGL2 transparent (profondeur, anticrénelage, basse consommation), `loseContext` |
-| `shaders`  | compilation et liaison ; sommet partagé, fragment des surfaces, fragment du badge          |
-| `gpu`      | programmes, tampons envoyés une fois en octets, VAO, textures                              |
-| `draw`     | une passe sur la liste de dessin : surfaces, puis faces de badge                           |
-| `texture`  | envoi d'un `ImageBitmap`, mipmaps, anisotropie, `setTexture`                               |
-| `bindings` | `Scene` (constructeur, `frame`, perte et restauration, `destroy`)                          |
-| `controls` | taille, thème, progression, actif, survol, pointeur, gyroscope, sélection, projection      |
-| `input`    | validation des tableaux et du thème (`checkInput`), sans toucher au canvas                 |
-| `fault`    | codes d'erreur littéraux (ceux de `SceneError` et ceux de WebGL)                           |
+| Module     | Rôle                                                                                             |
+| ---------- | ------------------------------------------------------------------------------------------------ |
+| `gl`       | contexte WebGL2 transparent (profondeur, anticrénelage, basse consommation), `loseContext`       |
+| `shaders`  | émission (compilation, liaison) puis lecture du résultat ; sommet partagé, deux fragments        |
+| `stages`   | initialisation du GPU par étapes (`gpuStep`), chacune bornée ; `KHR_parallel_shader_compile`     |
+| `warm`     | préchauffage du tracé caché (`warmFrame`, `warmed`) : image d'essai, clôture, lecture d'un pixel |
+| `gpu`      | programmes, tampons envoyés une fois en octets, VAO, textures                                    |
+| `draw`     | une passe sur la liste de dessin : surfaces, puis faces de badge                                 |
+| `texture`  | envoi d'un `ImageBitmap`, mipmaps, anisotropie, `setTexture`                                     |
+| `bindings` | `Scene` (constructeur sans GPU, `frame`, perte et restauration, `destroy`)                       |
+| `controls` | taille, thème, progression, actif, survol, pointeur, gyroscope, sélection, projection            |
+| `input`    | validation des tableaux et du thème (`checkInput`), sans toucher au canvas                       |
+| `fault`    | codes d'erreur littéraux (ceux de `SceneError` et ceux de WebGL)                                 |
 
 ## API wasm-bindgen (contrat du lot suivant)
 
 ```
 new Scene(canvas, ids: string[], statuses: string[], badges: Uint8Array, goal: boolean,
-          theme: Float32Array, active: string)           // lève un code ; active "" : aucun
+          theme: Float32Array, active: string)           // lève un code ; active "" : aucun ; sans GPU
+scene.gpuStep(): number                                   // une étape du GPU : 0 fini, 1 suite, 2 attendre
+scene.warmFrame(now: number)                              // image d'essai (canvas caché) + clôture
+scene.warmed(): boolean                                   // vrai quand le GPU a fini l'image d'essai
 scene.frame(now: number): boolean                         // vrai : une autre image est due
 scene.resize(width: number, height: number)               // pixels du canvas (u32)
 scene.setTheme(theme: Float32Array)                       // THEME_LEN = 34 nombres
@@ -45,6 +50,18 @@ scene.contextLost(); scene.contextRestored(); scene.destroy()
 checkInput(ids, statuses, badges, goal, theme)            // même contrôle que le constructeur
 ```
 
+- **Initialisation par étapes** (audit #394) : le constructeur ne fait que l'état et le contexte ;
+  compiler et lier les programmes, envoyer les tampons et créer la texture de remplacement se fait
+  par `gpuStep()`, appelé en boucle par l'enveloppe qui rend la main au navigateur entre deux appels
+  (une tâche de plus de 50 ms se forme sinon sous rastériseur logiciel). Les shaders sont émis sans
+  lire leur état ; avec `KHR_parallel_shader_compile`, `gpuStep` rend 2 tant que le GPU compile (rappel
+  un peu plus tard), sans l'extension chaque lecture est une étape. Aucune image n'est dessinée avant
+  la fin. Un échec libère ce qui existe et lève le code WebGL.
+- **Préchauffage** : sans carte graphique, le navigateur compose le canvas en lisant ses pixels et
+  attend le GPU logiciel, qui compile ses routines au premier usage (60 à 90 ms mesurés à la première
+  image, puis à celle des badges). `warmFrame` trace une image d'essai (faces de badge avec une texture
+  de remplacement transparente, lecture asynchrone d'un pixel pour la résolution de l'anticrénelage)
+  sur un canvas que l'enveloppe a caché, et pose une clôture ; `warmed` l'interroge sans bloquer.
 - **Étapes** : les jalons dans l'ordre fourni (le tri par date est côté Astro), puis l'objectif
   s'il y en a un, d'identifiant réservé `@goal` (accepté par `progressOf`, `setActive`, `setHover` ;
   `pick` le rend ; `setTexture` le refuse). `badges[i]` vaut 1 quand un badge est attendu pour le

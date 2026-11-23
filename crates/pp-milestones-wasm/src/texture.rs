@@ -58,6 +58,12 @@ pub fn upload(
     )
     .map_err(|_| GlFault::Resource)?;
     gl.generate_mipmap(Gl::TEXTURE_2D);
+    set_sampler(gl, anisotropy);
+    Ok(texture)
+}
+
+/// Filtrage et bords d'une texture de badge (la texture liée à `TEXTURE_2D`).
+fn set_sampler(gl: &Gl, anisotropy: Option<f32>) {
     #[allow(clippy::cast_possible_wrap, reason = "constantes WebGL (≤ 0x2900)")]
     let set = |name: u32, value: u32| gl.tex_parameteri(Gl::TEXTURE_2D, name, value as i32);
     set(Gl::TEXTURE_MIN_FILTER, Gl::LINEAR_MIPMAP_LINEAR);
@@ -67,6 +73,29 @@ pub fn upload(
     if let Some(level) = anisotropy {
         gl.tex_parameterf(Gl::TEXTURE_2D, TEXTURE_MAX_ANISOTROPY, level);
     }
+}
+
+/// Texture de 1 pixel transparent, avec les mêmes réglages qu'un badge : elle sert à préchauffer le
+/// tracé des faces (voir `Scene::warm_frame`), jamais à l'affichage.
+pub fn placeholder(gl: &Gl, anisotropy: Option<f32>) -> Result<WebGlTexture, GlFault> {
+    let texture = gl.create_texture().ok_or(GlFault::Resource)?;
+    gl.bind_texture(Gl::TEXTURE_2D, Some(&texture));
+    #[allow(clippy::cast_possible_wrap, reason = "constante WebGL (RGBA = 0x1908)")]
+    let format = Gl::RGBA as i32;
+    gl.tex_image_2d_with_i32_and_i32_and_i32_and_format_and_type_and_opt_u8_array(
+        Gl::TEXTURE_2D,
+        0,
+        format,
+        1,
+        1,
+        0,
+        Gl::RGBA,
+        Gl::UNSIGNED_BYTE,
+        Some(&[0, 0, 0, 0]),
+    )
+    .map_err(|_| GlFault::Resource)?;
+    gl.generate_mipmap(Gl::TEXTURE_2D);
+    set_sampler(gl, anisotropy);
     Ok(texture)
 }
 

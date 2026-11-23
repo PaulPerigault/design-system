@@ -391,6 +391,22 @@ Côté serveur du site : `script-src 'self' 'wasm-unsafe-eval'` et `connect-src 
 `accelerometer` dans la `Permissions-Policy` ; sans eux, l'inclinaison se fait au pointeur. Détails et
 poids : [page du composant](https://design.paulperigault.dev/components/milestones-3d/).
 
+## Initialisation par phases (aucune tâche longue)
+
+`init` ne fait jamais plus d'un morceau borné de travail par tâche (audit #394) : chargement du
+`.wasm`, création du contexte (`prepare`), état de la scène, puis les étapes du GPU (`gpuStep` : un
+programme, un tampon par étape, la compilation parallèle attendue sans bloquer quand
+`KHR_parallel_shader_compile` existe), chacune séparée de la suivante par `yieldToMain`. La boucle de
+rendu commence par un préchauffage (`warmup.ts`) : canvas caché, image d'essai, clôture du GPU
+interrogée à chaque image, puis le canvas est montré. Sans carte graphique, le navigateur compose le
+canvas en lisant ses pixels et attend le GPU logiciel ; ce préchauffage lui laisse faire ce travail
+hors du chemin visible.
+
+Chaque phase laisse une marque `performance.measure` (`pp3d:load-wasm`, `prepare-context`,
+`create-scene`, `gpu-step-N`, `resize`, `first-frame`, `texture-decode`, `texture-upload`) : l'audit
+(`tools/audit/milestones-3d`) les joint à chaque tâche longue pour dire quelle phase déborde.
+Rejouer une CI sans carte graphique en local : `AUDIT_CHROMIUM_FLAGS="--headless=new --disable-gpu"`.
+
 ## Provenance
 
 Chaque version est publiée par le workflow `release` du dépôt, avec une attestation de provenance

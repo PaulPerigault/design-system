@@ -61,3 +61,11 @@ export const WEBGL_ATTRIBUTES = {
   preserveDrawingBuffer: false,
   powerPreference: 'low-power',
 } as const;
+
+/** Initialisation du GPU par étapes : pause entre deux lectures d'un shader en cours de compilation. */
+export const GPU_WAIT_MS = 4;
+/** Durée maximale d'attente de la compilation des shaders avant le repli, en ms. */
+export const GPU_TIMEOUT_MS = 10_000;
+
+/** Préchauffage du tracé (voir `warmup.ts`) : attente maximale de la clôture du GPU, en ms. */
+export const WARM_TIMEOUT_MS = 3000;

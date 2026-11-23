@@ -10,6 +10,18 @@ export class FakeScene implements RawScene {
   known = new Set(['a', 'b', '@goal']);
   pickResult = 'b';
   projected = Float32Array.from([0.25, 0.5, 0.1, 1, 0.75, 0.5, 0.1, 0]);
+  /** Attentes de la clôture de préchauffage simulées. */
+  warmWaits = 0;
+  warmFrame = (now: number): void => void this.calls.push(`warm:${now}`);
+  warmed = (): boolean => (this.calls.push('warmed'), this.warmWaits-- <= 0);
+  /** Étapes du GPU restantes avant la fin, et attentes de compilation simulées. */
+  stepsLeft = 0;
+  waitsLeft = 0;
+  gpuStep = (): number => {
+    this.calls.push('gpu-step');
+    if (this.waitsLeft > 0) return ((this.waitsLeft -= 1), 2);
+    return this.stepsLeft > 0 ? ((this.stepsLeft -= 1), 1) : 0;
+  };
   frame = (now: number): boolean => (this.calls.push(`frame:${now}`), this.moreFrames);
   resize = (w: number, h: number): void => void this.calls.push(`resize:${w}x${h}`);
   setTheme = (theme: Float32Array): void => void this.calls.push(`theme:${theme.length}`);

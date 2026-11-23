@@ -7,7 +7,8 @@ use pp_milestones::plan::DrawItem;
 use web_sys::WebGl2RenderingContext as Gl;
 
 impl Gpu {
-    pub fn draw(&self, gl: &Gl, frame: &Frame) -> Result<(), Fault> {
+    /// `warm` : les faces sans badge reçu sont tracées avec la texture de remplacement (préchauffage).
+    pub fn draw(&self, gl: &Gl, frame: &Frame, warm: bool) -> Result<(), Fault> {
         gl.bind_vertex_array(Some(&self.vao));
         let matrix = frame.view_projection.to_cols_array();
         for program in [&self.solid, &self.badge] {
@@ -16,7 +17,7 @@ impl Gpu {
         }
         for item in &frame.items {
             match item.texture {
-                Some(index) => self.badge_face(gl, item, index)?,
+                Some(index) => self.badge_face(gl, item, index, warm)?,
                 None => self.surface(gl, item)?,
             }
         }
@@ -33,9 +34,11 @@ impl Gpu {
         indexed(gl, program, item)
     }
 
-    /// Face du badge : sans texture reçue, rien n'est tracé (le support seul reste visible).
-    fn badge_face(&self, gl: &Gl, item: &DrawItem, index: usize) -> Result<(), Fault> {
-        let Some(Some(texture)) = self.textures.get(index) else {
+    /// Face du badge : sans texture reçue, rien n'est tracé (le support seul reste visible), sauf
+    /// au préchauffage, où la texture de remplacement (transparente) prend sa place.
+    fn badge_face(&self, gl: &Gl, item: &DrawItem, index: usize, warm: bool) -> Result<(), Fault> {
+        let received = self.textures.get(index).and_then(Option::as_ref);
+        let Some(texture) = received.or(warm.then_some(&self.placeholder)) else {
             return Ok(());
         };
         gl.use_program(Some(&self.badge.program));

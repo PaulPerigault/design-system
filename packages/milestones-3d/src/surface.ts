@@ -2,6 +2,7 @@
 // par un attribut `style`), plafonnée par `dprMax`. Un `ResizeObserver` redessine au changement.
 import type { Bag } from './bag.ts';
 import type { Env } from './env.ts';
+import { timed } from './phases.ts';
 import type { CanvasLike, RawScene } from './raw.ts';
 
 export interface SurfaceDeps {
@@ -11,6 +12,8 @@ export interface SurfaceDeps {
   readonly bag: Bag;
   readonly dprMax: number;
 }
+
+const MEASURED_RESIZES = 2;
 
 /** Pixels de l'appareil pour une taille CSS : au moins un, rapport plafonné à `dprMax`. */
 export function devicePixels(css: number, ratio: number, dprMax: number): number {
@@ -26,13 +29,17 @@ export function devicePixels(css: number, ratio: number, dprMax: number): number
  */
 export function watchSize({ canvas, scene, env, bag, dprMax }: SurfaceDeps, redraw: () => void) {
   let applied = '';
+  let sizes = 0;
   const apply = (width: number, height: number): void => {
     if (!(width > 0 && height > 0)) return;
     const ratio = env.devicePixelRatio();
     const [w, h] = [devicePixels(width, ratio, dprMax), devicePixels(height, ratio, dprMax)];
     if (`${w}x${h}` === applied) return;
     applied = `${w}x${h}`;
-    scene.resize(w, h);
+    // Les deux premiers redimensionnements sont mesurés (tampon de mesures borné).
+    if (sizes < MEASURED_RESIZES) timed('resize', () => scene.resize(w, h));
+    else scene.resize(w, h);
+    sizes += 1;
     redraw();
   };
   apply(canvas.clientWidth, canvas.clientHeight);

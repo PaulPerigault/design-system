@@ -25,6 +25,7 @@ web-sys = { version = "=0.3.107", features = [
     "WebGlContextAttributes",
     "WebGlPowerPreference",
     "WebGlProgram",
+    "WebGlSync",
     "WebGlShader",
     "WebGlTexture",
     "WebGlUniformLocation",

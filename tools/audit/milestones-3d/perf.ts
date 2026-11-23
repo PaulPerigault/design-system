@@ -7,6 +7,7 @@ import type { Launched } from './browser.ts';
 import { openPage, untilEnhanced, wake } from './browser.ts';
 import { IDLE_WAIT_MS, at, info, row } from './model.ts';
 import type { Row, Where } from './model.ts';
+import { describePhases, describeTasks } from './phases.ts';
 import { INSTRUMENT, frameStats, readMetrics } from './perf-page.ts';
 import type { Metrics } from './perf-page.ts';
 
@@ -83,17 +84,18 @@ function lcpAndLayout(where: Where, classic: Metrics, enhanced: Metrics): Row[] 
 
 function runtime(where: Where, m: Metrics): Row[] {
   const count = m.longTasksAtInit.length;
-  const longest = count === 0 ? 0 : Math.max(...m.longTasksAtInit);
   return [
     info(where, 'INP (clic sur un jalon)', ms(m.inp)),
     info(where, 'instanciation du .wasm', ms(m.wasm)),
+    info(where, 'phases d’init (durée)', describePhases(m.phases)),
     info(where, 'première image', ms(m.firstFrame)),
+    info(where, 'première image tracée (après préchauffage)', ms(m.firstDraw)),
     info(where, 'temps d’image moyen / p95', `${ms(m.frameAvg)} / ${ms(m.frameP95)}`),
     row(
       where,
       'aucune tâche longue à l’init',
       count === 0,
-      count === 0 ? 'aucune' : `${count} tâche(s), max ${ms(longest)}`,
+      describeTasks(m.longTasksAtInit, m.phases, m.loading ?? 0),
     ),
   ];
 }

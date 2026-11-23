@@ -3,6 +3,8 @@ import { createBag } from './bag.ts';
 import type { Bag } from './bag.ts';
 import type { Env } from './env.ts';
 import { createLoop } from './loop.ts';
+import { timed } from './phases.ts';
+import { createWarmup } from './warmup.ts';
 import type { Loop } from './loop.ts';
 import type { CanvasLike, RawScene } from './raw.ts';
 import { themeToArray } from './raw-theme.ts';
@@ -40,6 +42,29 @@ function release({ bag, loop, scene }: Session): void {
   }
 }
 
+/**
+ * Fonction de dessin de la boucle : d'abord le préchauffage (`warmup.ts`, qui commence par une image
+ * d'attente sans rendu : le composant hôte se redimensionne juste après le démarrage, et redimensionner
+ * le canvas juste après un rendu bloquait la tâche jusqu'à sa fin, audit #394), puis les images.
+ * Seul le premier rendu est mesuré : les suivants ne doivent pas remplir le tampon de mesures.
+ */
+function drawer(
+  scene: RawScene,
+  canvas: CanvasLike,
+  time: () => number,
+  drawn: () => void,
+): () => boolean {
+  const ready = createWarmup(scene, canvas, time);
+  let first = true;
+  return () => {
+    if (!ready()) return true;
+    const more = first ? timed('first-frame', () => scene.frame(time())) : scene.frame(time());
+    first = false;
+    drawn();
+    return more;
+  };
+}
+
 export function createSession(
   canvas: CanvasLike,
   scene: RawScene,
@@ -50,17 +75,10 @@ export function createSession(
   const time = (): number => env.now() - start;
   let markDrawn = (): void => {};
   const firstFrame = new Promise<void>((resolve) => void (markDrawn = resolve));
-  let waited = false;
-  const loop = createLoop(() => {
-    // Première image d'attente, sans rendu : le composant hôte change de mise en page juste après le
-    // démarrage, et le `ResizeObserver` qui en résulte tourne après les rappels d'image du même
-    // cycle. Redimensionner le canvas juste après un premier rendu bloquait la tâche jusqu'à la fin
-    // de ce rendu (logiciel : 80 ms, processeur ralenti 4 fois, audit #394).
-    if (!waited) return (waited = true);
-    const more = scene.frame(time());
-    markDrawn();
-    return more;
-  }, env.loop);
+  const loop = createLoop(
+    drawer(scene, canvas, time, () => markDrawn()),
+    env.loop,
+  );
   let destroyed = false;
   const session: Session = {
     ...{ canvas, scene, options, env, loop, time, bag: createBag() },

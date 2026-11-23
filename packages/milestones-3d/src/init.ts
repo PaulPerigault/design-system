@@ -1,7 +1,9 @@
 import type { Env } from './env.ts';
 import { MilestonesError, parseFault, reasonOf } from './error.ts';
+import { initGpu } from './gpu-steps.ts';
 import { startSession } from './instance.ts';
 import type { InitOptions, MilestonesHandle } from './options.ts';
+import { phaseEnd, phaseStart, timed } from './phases.ts';
 import { planOf, sceneInput } from './plan.ts';
 import type { CanvasLike, RawScene } from './raw.ts';
 import { createSession } from './session.ts';
@@ -20,16 +22,26 @@ async function build(
   theme: Theme,
   deps: Deps,
 ): Promise<RawScene> {
+  const loading = phaseStart();
   const factory = await deps.env.loadScene().catch((cause: unknown) => {
     throw cause instanceof MilestonesError
       ? cause
       : new MilestonesError('load-failed', undefined, { cause });
   });
+  phaseEnd('load-wasm', loading);
   await yieldToMain();
-  factory.prepare?.(canvas);
+  timed('prepare-context', () => factory.prepare?.(canvas));
   await yieldToMain();
-  const scene = factory.create(canvas, sceneInput(valid, theme, deps.options.activeId ?? ''));
+  const input = sceneInput(valid, theme, deps.options.activeId ?? '');
+  const scene = timed('create-scene', () => factory.create(canvas, input));
   await yieldToMain();
+  try {
+    await initGpu(scene);
+  } catch (raised) {
+    scene.destroy();
+    scene.free();
+    throw raised;
+  }
   return scene;
 }
 

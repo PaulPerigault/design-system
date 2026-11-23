@@ -2,6 +2,11 @@ import type { ListenTarget } from './bag.ts';
 
 /** Ce que la scène attend d'un canvas : un `HTMLCanvasElement` convient, un faux aussi en test. */
 export interface CanvasLike extends ListenTarget {
+  /** Style CSSOM de l'élément (jamais l'attribut `style`) ; absent d'un faux canvas de test. */
+  readonly style?: {
+    setProperty(name: string, value: string): void;
+    removeProperty(name: string): string;
+  };
   readonly clientWidth: number;
   readonly clientHeight: number;
   /** Un élément du document (`Element` dans le navigateur) : la racine où lire les jetons. */
@@ -20,6 +25,14 @@ export interface CanvasLike extends ListenTarget {
  * Aucune méthode ne reçoit d'horloge sauf `frame` : la scène agit à la prochaine image.
  */
 export interface RawScene {
+  /**
+   * Une étape de l'initialisation du GPU (`pp-milestones-wasm/src/stages.rs`) : 0 terminé, 1 d'autres
+   * étapes suivent, 2 le GPU compile encore. Aucune image n'est dessinée avant la fin.
+   */
+  gpuStep(): number;
+  /** Trace une image d'essai (canvas caché) et pose une clôture ; `warmed()` dit si le GPU a fini. */
+  warmFrame(now: number): void;
+  warmed(): boolean;
   frame(now: number): boolean;
   resize(width: number, height: number): void;
   setTheme(theme: Float32Array): void;

@@ -45,6 +45,7 @@ describe('création', () => {
     play();
     expect(h.scene.calls.some((c) => c.startsWith('frame:'))).toBe(false);
     expect(h.frames.size).toBe(1);
+    play(); // image d'essai (préchauffage), puis le GPU est interrogé
     play();
     expect(h.scene.calls.filter((c) => c.startsWith('frame:'))).toEqual(['frame:0']);
   });
