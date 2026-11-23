@@ -1,4 +1,6 @@
-// Contrôles d'un champ du contrat de données : date, lien, identifiant. Fonctions pures.
+// Contrôles d'un champ du contrat de données : date, lien, identifiant, code. Fonctions pures.
+import { MAX_CODE_LENGTH } from './constants.ts';
+
 const DATE = /^(\d{4})-(\d{2})(?:-(\d{2}))?$/;
 const ID = /^[a-z0-9-]+$/;
 const SCHEME = /^[a-z][a-z0-9+.-]*:/i;
@@ -28,6 +30,20 @@ function hasControl(value: string): boolean {
     return code <= LAST_CONTROL || code === DEL;
   });
 }
+
+/** Code court : texte simple, `MAX_CODE_LENGTH` caractères au plus, sans caractère de contrôle. */
+export function isCode(value: string): boolean {
+  const chars = [...value];
+  const control = chars.some((char) => {
+    const code = char.codePointAt(0) ?? 0;
+    return code < LAST_CONTROL || code === DEL;
+  });
+  return chars.length <= MAX_CODE_LENGTH && !control;
+}
+
+/** Dimension facultative d'un badge : entier strictement positif. */
+export const isDimension = (value: unknown): value is number =>
+  typeof value === 'number' && Number.isInteger(value) && value > 0;
 
 /**
  * Lien accepté : `https:` absolu, ou chemin relatif (`/a`, `./a`, `../a`, `a/b`). Refusés : tout

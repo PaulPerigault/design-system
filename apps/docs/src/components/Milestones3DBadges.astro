@@ -1,0 +1,76 @@
+---
+/** Page Milestones3D : images des badges et conditions d'usage des émetteurs (ADR-0013). */
+import { EXTRA_SECTIONS } from '../data/milestones-3d';
+import InlineCode from './InlineCode.astro';
+
+const [, , , , , , images, terms] = EXTRA_SECTIONS;
+const imageRules = [
+  'Le consommateur fournit les images : le dépôt n’en contient aucune. Les badges de la démonstration sont des avatars géométriques fictifs.',
+  "Format WebP ou AVIF, servi par le même site (`img-src 'self'`). `src` est un chemin relatif ou une adresse `https:`.",
+  'Côté GPU, la texture est ramenée à 512 px au plus (`createImageBitmap`), puis reçoit ses mipmaps. Fournir une image carrée de 512 px suffit.',
+  'Le badge est plaqué à plat, sans éclairage, sans filtre de couleur, sans recadrage ni déformation. Le support est une pastille claire fixe, même dans le thème sombre.',
+  'Le chargement est différé, après le premier rendu. Un échec laisse la médaille sans badge.',
+];
+const sources = [
+  {
+    name: 'AWS',
+    href: 'https://aws.amazon.com/certification/policies/general-policies/',
+    text: 'Certification, general policies, Brand Usage and Guidelines. Badge non modifié, sur fond blanc ou très clair ; ni superposition, ni combinaison avec d’autres symboles ou logos ; usage réservé à la personne certifiée.',
+  },
+  {
+    name: 'Credly',
+    href: 'https://info.credly.com/user-terms-of-service',
+    text: 'Workforce Skills User Terms of Service. L’affichage public d’un badge obtenu est permis (2.e). Aucune affiliation ni soutien ne doit être suggéré (4). L’émetteur peut révoquer un badge (6.c).',
+  },
+  {
+    name: 'Google Cloud',
+    href: 'https://cloud.google.com/certification/terms',
+    text: 'Exam Terms and Conditions, section 4. La certification indique que la personne est certifiée, selon les Google Brand Feature Guidelines en vigueur.',
+  },
+  {
+    name: 'Google Skills Help',
+    href: 'https://support.google.com/qwiklabs/answer/14779166',
+    text: 'Badges Credly. Le badge numérique offre une vérification sécurisée et se partage en ligne.',
+  },
+];
+const rules = [
+  'Badge non modifié, sur une pastille claire, sans texte ni logo par-dessus.',
+  'Aucune combinaison avec d’autres symboles, mots ou logos.',
+  'Nom complet de la certification écrit en HTML, à côté du badge.',
+  'Lien de vérification vers la page de l’émetteur (`href`), qui reflète une révocation éventuelle.',
+  'Usage réservé à la personne certifiée, jamais à une entreprise.',
+  'Un jalon `planned` n’a pas de badge : aucune image ne suggère un niveau non obtenu.',
+];
+const unknown =
+  'Non établi : les Google Brand Feature Guidelines n’ont pas été lues. Les pages lues ne disent rien de la modification, des couleurs ni des liens obligatoires pour Google Cloud. Par prudence, la règle stricte d’AWS s’applique à tous les badges. Ces lectures ne sont pas un avis juridique : vérifier les conditions en vigueur chez chaque émetteur.';
+---
+
+<h2 id={images?.id}>{images?.title}</h2>
+<ul>
+  {imageRules.map((text) => (
+    <li>
+      <InlineCode text={text} />
+    </li>
+  ))}
+</ul>
+
+<h2 id={terms?.id}>{terms?.title}</h2>
+<p>Sources lues le 2026-11-21 (ADR-0013) :</p>
+<ul>
+  {sources.map(({ name, href, text }) => (
+    <li>
+      <a href={href}>{name}</a> : <InlineCode text={text} />
+    </li>
+  ))}
+</ul>
+<h3>Règles retenues</h3>
+<ul>
+  {rules.map((text) => (
+    <li>
+      <InlineCode text={text} />
+    </li>
+  ))}
+</ul>
+<p>
+  <InlineCode text={unknown} />
+</p>

@@ -19,6 +19,7 @@ export const theme: Theme = {
     onAccent: { space: 'srgb', r: 1, g: 1, b: 1 },
     line: { space: 'oklch', l: 0.885, c: 0.01, h: 270.7 },
     muted: { space: 'oklch', l: 0.43, c: 0.022, h: 270.7 },
+    paper: { space: 'oklch', l: 0.985, c: 0.004, h: 270.7 },
   },
   durationBase: 160,
   durationFast: 100,
@@ -29,7 +30,7 @@ export interface Glue {
   checkInput(
     ids: string[],
     statuses: string[],
-    emblems: string[],
+    badges: Uint8Array,
     goal: boolean,
     theme: Float32Array,
   ): void;

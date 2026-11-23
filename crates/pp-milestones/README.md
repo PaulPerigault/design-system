@@ -2,66 +2,88 @@
 
 Logique de la scène 3D de jalons, en Rust pur. Aucune dépendance à `wasm-bindgen` ni à `web-sys` :
 tout ce qui se calcule se teste avec `cargo test`, sans navigateur. La couche WebGL2 est dans
-[`pp-milestones-wasm`](../pp-milestones-wasm/README.md). Décision : ADR-0012, chantier #360, brique #361.
+[`pp-milestones-wasm`](../pp-milestones-wasm/README.md). Décisions : ADR-0012 et ADR-0013, chantiers #360 et #389.
 
 Dépendances : `glam` (f32 seulement, sans les types entiers ni f64) et `pp-color` (chemin du dépôt)
 pour la conversion OKLCH vers sRGB.
 
 ## Modules
 
-| Module        | Rôle                                                                                          |
-| ------------- | --------------------------------------------------------------------------------------------- |
-| `data`        | `MilestonesData` : 1 à 24 jalons, identifiants `[a-z0-9-]+` uniques, cible finale facultative |
-| `kinds`       | `Status` (`achieved`, `planned`) et `Emblem` (9 clés fermées)                                 |
-| `columns`     | construction depuis des tableaux parallèles, la forme qui traverse la frontière               |
-| `geometry`    | maillages : médaille, fil de fer, 9 emblèmes en relief, ruban, cible ; `Pack` (un tampon)     |
-| `layout`      | chemin du ruban, positions équidistantes                                                      |
-| `camera`      | perspective, glissade le long du chemin, projection écran                                     |
-| `easing`      | `CubicBezier` (même définition que `cubic-bezier()` en CSS)                                   |
-| `animation`   | `Tween` : durée et courbe du thème, temps injecté                                             |
-| `tilt`        | inclinaison lissée au pointeur ou au gyroscope                                                |
-| `interaction` | jalon actif, navigation `Next`, `Previous`, `First`, `Last`                                   |
-| `picking`     | sélection au pointeur par disques projetés                                                    |
-| `theme`       | six couleurs, deux durées, une courbe, validés et convertis en sRGB                           |
-| `plan`        | liste de dessin d'une image (parcourue par la couche GL, sans décision)                       |
-| `state`       | `SceneState` : tout l'état d'une scène, horloge injectée                                      |
+| Module        | Rôle                                                                                        |
+| ------------- | ------------------------------------------------------------------------------------------- |
+| `data`        | `MilestonesData` : 1 à 24 jalons (`id`, `status`, `has_badge`), objectif `@goal` facultatif |
+| `kinds`       | `Status` (`achieved`, `planned`)                                                            |
+| `columns`     | construction depuis des tableaux parallèles (ids, statuts, indicateurs de badge)            |
+| `spline`      | segment de Catmull-Rom uniforme (point et dérivée)                                          |
+| `layout`      | chemin (`path_point`, `path_tangent`), rail, repère local d'une médaille                    |
+| `progress`    | `progress_of`, `nearest`, `abscissa` : correspondance entre `p` de [0, 1] et les étapes     |
+| `camera`      | caméra sur la spline, gros plan sur un jalon, cadrage selon l'aspect, projection            |
+| `geometry`    | support, face du badge (UV 0 à 1), fantôme filaire, anneau, étoile, rail, repères ; `Pack`  |
+| `plan`        | liste de dessin d'une image (`DrawItem`), `medals` pour les médailles et l'objectif         |
+| `frame`       | `SceneState::frame` : horloge, cible de la caméra, inclinaison, liste de dessin             |
+| `state`       | `SceneState` : tout l'état d'une scène, horloge injectée                                    |
+| `controls`    | progression, étape active ou survolée, pointeur, gyroscope, sélection                       |
+| `picking`     | disque d'une étape à l'écran (sélection et étiquettes)                                      |
+| `project`     | position écran, échelle et visibilité de chaque étape                                       |
+| `easing`      | `CubicBezier` (même définition que `cubic-bezier()` en CSS)                                 |
+| `animation`   | `Tween` : durée et courbe du thème, temps injecté                                           |
+| `tilt`        | inclinaison lissée au pointeur ou au gyroscope                                              |
+| `interaction` | étape active et survolée                                                                    |
+| `theme`       | sept couleurs, deux durées, une courbe, validés et convertis en sRGB                        |
 
 Erreurs : `SceneError`, une énumération, un code littéral par variante (`SceneError::code`).
 `#![forbid(unsafe_code)]`, ni `unwrap`, `expect`, `panic!` ni indexation non vérifiée hors tests.
+Les emblèmes géométriques de l'ADR-0012 n'existent plus (ADR-0013).
 
 ## Valeurs par défaut tranchées
 
-Choix faits sans le propriétaire, comme l'ADR le demande. Chacun se change dans une constante nommée.
+Chacune se change dans une constante nommée.
 
-- **Données** : le crate ne voit que `id`, `status`, `emblem` et la présence d'une cible. Libellé,
-  groupe, date et lien vivent dans le HTML ; le paquet TypeScript les valide.
-- **Emblème absent** : `disc`. **Clé inconnue** : erreur `unknown-emblem`, jamais de repli muet.
-- **Positions** : équidistantes (`layout::SPACING` = 5), sans échelle de temps.
-- **Médaille** : cylindre à 32 segments (`geometry::solids::SEGMENTS`), biseau de 0,09, relief
-  d'emblème de 0,07, emblème à 62 % du rayon.
-- **Éclairage** : une lumière fixe et une ambiante (0,45), ombrage de Lambert multiplicatif. Les
-  couleurs restent en sRGB gamma : le canvas affiche du sRGB et les éléments non éclairés (ruban,
-  fil de fer) reprennent exactement la couleur du thème.
-- **Brouillard** vers la couleur de fond, de 9 à 42 unités : les jalons lointains se fondent dans
-  la page sans que le canvas ait un fond propre (il reste transparent).
-- **Inclinaison** : 0,35 rad au plus (environ 20°), lissée avec la durée `--pp-duration-fast`.
-- **Caméra** : 3,2 unités derrière le jalon regardé et 2,2 au-dessus, plus près que l'espacement
-  pour que le jalon précédent reste derrière l'œil. Le champ vertical s'élargit sur un canvas plus
-  haut que large, pour garder une médaille entière.
-- **Courbe non reconnue** : `CubicBezier::LINEAR` (progression linéaire), jamais une courbe inventée.
+- **Données** : le crate ne voit que `id`, `status`, `has_badge` et la présence d'un objectif.
+  L'ordre est celui fourni (le tri par date est fait côté Astro). Un jalon `planned` ne montre jamais
+  de badge, quel que soit `has_badge`.
+- **Étapes** : les jalons (indices 0 à `n - 1`), puis l'objectif (indice `n`, identifiant réservé
+  `@goal`, invalide pour un jalon). La progression `p` va de 0 (première étape) à 1 (dernière).
+- **Chemin** : spline de Catmull-Rom **uniforme**, points de contrôle analytiques (`layout::knot`) à
+  pas constant : le centripète n'apporte rien à pas constant et coûte des racines dans le `.wasm`.
+  Abscisse ordinale `i` par jalon, `n` pour l'objectif ; lacet 1,5 (`SWAY`), dénivelé 0,4 par jalon
+  (`RISE`), espacement 5. L'abscisse approche l'abscisse curviligne (vitesse entre 5,0 et 5,4,
+  vérifiée par `proptest`) : pas de table de longueurs.
+- **Caméra** : vue d'ensemble à 3,9 du point, élevée de 0,6 rad, regard 1,4 en avant ; gros plan sur
+  un jalon (palier de 0,08, retour à la vue d'ensemble à 0,35) : l'œil vient face à la médaille
+  (relevée de 0,2 rad) à la distance où son rayon occupe 74 % de la plus petite demi-étendue du
+  cadre (`camera::close_distance`) ; en portrait 390x844 le champ s'élargit (50° horizontal au
+  moins) et la médaille et son anneau restent entiers (testé pour quatre formats).
+- **Lissage** : un `Tween` vers la cible, durée `--pp-duration-base` et courbe du thème ; durée nulle
+  (mouvement réduit) : saut. `set_progress` n'agit qu'à l'image suivante, avec l'horloge de
+  l'appelant : une scène restée au repos glisse quand même.
+- **Médaille** : support à 32 segments, biseau 0,09, face du badge en carré de demi-côté 0,62 devant
+  le support (décalage 0,004), UV de 0 à 1 sur tout le carré (v = 0 en haut). Un disque ne
+  conviendrait pas : ses coins recadreraient l'image. Objectif : étoile à cinq branches extrudée
+  (0,3) avec son contour. Fantôme : même silhouette en fil de fer. Anneau : à 0,06 du bord.
+- **Éclairage** : Lambert (une lumière, ambiante 0,6) sur le support et l'étoile, jamais sur le badge.
+  Le rail, les repères et les fantômes s'estompent vers le transparent de 9 à 42 unités ; les
+  médailles ne s'estompent pas (le badge ne doit pas être altéré) et ne sont tracées que de 2
+  abscisses derrière à 5 devant la caméra.
+- **Inclinaison** : 0,35 rad au plus, lissée avec `--pp-duration-fast`, sur la médaille survolée,
+  sinon la plus proche de la caméra.
+- **Courbe non reconnue** : `CubicBezier::LINEAR`, jamais une courbe inventée.
 
 ## Thème : forme du tableau
 
-`Theme::from_slice` reçoit `THEME_LEN` = 30 nombres (le paquet TypeScript les produit) :
+`Theme::from_slice` reçoit `THEME_LEN` = 34 nombres (le paquet TypeScript les produit) :
 
-1. six couleurs de 4 nombres (`bg`, `fg`, `accent`, `on-accent`, `line`, `muted`) : espace (0 sRGB,
-   1 OKLCH) puis trois composantes ;
+1. sept couleurs de 4 nombres, dans l'ordre de `Slot` : `bg`, `fg`, `accent`, `on-accent`, `line`,
+   `muted`, `paper` ; chacune : espace (0 sRGB, 1 OKLCH) puis trois composantes ;
 2. `duration-base` et `duration-fast`, en millisecondes (0 à 10 000) ;
 3. les quatre points de contrôle de la courbe.
 
-L'analyse du texte CSS (formats `rgb()`, `color()`, `oklch()` rendus par `getComputedStyle`) est faite
-côté TypeScript, où se trouve le DOM. Ce crate valide et convertit : l'OKLCH passe par `pp-color`
-(`fit_to_gamut` puis `oklch_to_srgb`), avec une parité vérifiée à 1e-6.
+`paper` est le jeton `--pp-color-bg` résolu en mode **clair**, quelle que soit la préférence
+(`color-scheme: light` pour la sonde) : support de la médaille, clair fixe (conditions des badges
+AWS, ADR-0013). `bg` suit le thème courant ; la scène ne s'en sert plus (plus de brouillard opaque).
+
+L'analyse du texte CSS est faite côté TypeScript. Ce crate valide et convertit : l'OKLCH passe par
+`pp-color` (`fit_to_gamut` puis `oklch_to_srgb`), parité vérifiée à 1e-6.
 
 ## Vérification
 
@@ -71,6 +93,8 @@ cargo clippy --workspace --all-targets --locked -- -D warnings -W clippy::pedant
 cargo test --workspace --locked
 ```
 
-Tests : contrat de données, easing (bornes, monotonie et extrémités par `proptest`, valeur de
-référence de `ease`), interpolation, caméra, géométrie (indices dans les bornes, normales unitaires,
-emblèmes dans la face), machine d'états, thème (parité avec `pp-color`), sélection.
+Tests : contrat de données, easing, spline (continuité, bornes, vitesse, C1 par `proptest`), progression
+et étape la plus proche, caméra (gros plan exact sur un jalon, cadrage en quatre formats, jalon
+précédent derrière l'œil), lissage monotone et saut à durée nulle, géométrie (indices dans les
+bornes, UV dans [0, 1], normales unitaires, face du badge couvrant exactement le carré UV), liste de
+dessin, projection, thème (parité avec `pp-color`).

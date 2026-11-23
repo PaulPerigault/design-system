@@ -1,62 +1,17 @@
 // Performance mesurée dans Chromium (CPU ralenti 4 fois, 4G lente) : LCP, CLS, INP, poids transféré,
 // instanciation du `.wasm`, première image, temps d'image moyen et p95, tâches longues à l'init.
 // Comparaison du LCP avec le rendu classique seul (mouvement réduit), jamais de seuil sur le poids.
-import type { Page } from '@playwright/test';
+// Firefox et WebKit : première image, temps d'image et `.wasm` sans ralentissement.
 import type { Launched } from './browser.ts';
-import { openPage, untilEnhanced, wake } from './browser.ts';
-import { IDLE_WAIT_MS, at, info, row, skip } from './model.ts';
+import { at, info, row } from './model.ts';
 import type { Row, Where } from './model.ts';
-import { INSTRUMENT, frameStats, readMetrics } from './perf-page.ts';
+import { describePhases, describeTasks } from './phases.ts';
+import { measure } from './perf-run.ts';
 import type { Metrics } from './perf-page.ts';
 
-const CPU_SLOWDOWN = 4;
-const SLOW_4G = { latency: 150, downloadThroughput: 204_800, uploadThroughput: 96_000 };
 const MAX_CLS = 0.1;
 const LCP_TOLERANCE = 1.1;
 const LCP_SLACK_MS = 100;
-const CLICK_SAMPLE_MS = 1_000;
-
-/** Ralentit le processeur et le réseau (le poids se mesure à part, voir `transferred`). */
-async function throttle(page: Page): Promise<void> {
-  const cdp = await page.context().newCDPSession(page);
-  await cdp.send('Emulation.setCPUThrottlingRate', { rate: CPU_SLOWDOWN });
-  await cdp.send('Network.enable');
-  await cdp.send('Network.setCacheDisabled', { cacheDisabled: true });
-  await cdp.send('Network.emulateNetworkConditions', { offline: false, ...SLOW_4G });
-}
-
-/** Octets reçus (en-têtes et corps compressé) par toutes les requêtes terminées de la page. */
-function transferred(page: Page): () => Promise<number> {
-  const sizes: Promise<number>[] = [];
-  page.on('requestfinished', (request) => {
-    sizes.push(request.sizes().then((s) => s.responseBodySize + s.responseHeadersSize));
-  });
-  return async () => (await Promise.all(sizes)).reduce((sum, bytes) => sum + bytes, 0);
-}
-
-async function measure(engine: Launched, base: string, classic: boolean): Promise<Metrics> {
-  const reducedMotion = classic ? 'reduce' : 'no-preference';
-  const scenario = { viewport: 'mobile', reducedMotion, wake: false, freshVisit: true } as const;
-  const { context, page } = await openPage(engine.browser, base, scenario, INSTRUMENT);
-  try {
-    const received = transferred(page);
-    await throttle(page);
-    // Navigation neuve (pas de rechargement) : l'ancre de la démonstration est honorée, la section est à l'écran.
-    const url = page.url();
-    await page.goto('about:blank');
-    await page.goto(url);
-    if (!classic) await wake(page);
-    if (!classic) await untilEnhanced(page);
-    await page.waitForTimeout(IDLE_WAIT_MS);
-    if (!classic) {
-      void page.locator('.pp-milestones__select').nth(1).click();
-      await frameStats(page, CLICK_SAMPLE_MS);
-    }
-    return { ...(await readMetrics(page)), bytes: await received() };
-  } finally {
-    await context.close();
-  }
-}
 
 const ms = (value: number | null): string => (value === null ? 'n/a' : `${value.toFixed(0)} ms`);
 
@@ -75,27 +30,45 @@ function lcpAndLayout(where: Where, classic: Metrics, enhanced: Metrics): Row[] 
   ];
 }
 
-function runtime(where: Where, m: Metrics): Row[] {
+function runtime(where: Where, m: Metrics, trace?: string): Row[] {
   const count = m.longTasksAtInit.length;
-  const longest = count === 0 ? 0 : Math.max(...m.longTasksAtInit);
   return [
     info(where, 'INP (clic sur un jalon)', ms(m.inp)),
     info(where, 'instanciation du .wasm', ms(m.wasm)),
+    info(where, 'phases d’init (durée)', describePhases(m.phases)),
     info(where, 'première image', ms(m.firstFrame)),
+    info(where, 'première image tracée (après préchauffage)', ms(m.firstDraw)),
     info(where, 'temps d’image moyen / p95', `${ms(m.frameAvg)} / ${ms(m.frameP95)}`),
     row(
       where,
       'aucune tâche longue à l’init',
       count === 0,
-      count === 0 ? 'aucune' : `${count} tâche(s), max ${ms(longest)}`,
+      describeTasks(m.longTasksAtInit, m.phases, m.loading ?? 0) +
+        (trace ? ` ; trace : ${trace}` : ''),
     ),
+  ];
+}
+
+/** Firefox et WebKit : pas de CDP, donc ni ralentissement ni tâches longues ; mesures brutes. */
+async function unthrottled(engine: Launched, base: string): Promise<Row[]> {
+  const where = at(engine.name, 'mobile, sans ralentissement');
+  const m = await measure(engine, base, { classic: false, throttled: false });
+  return [
+    info(where, 'instanciation du .wasm', ms(m.wasm)),
+    info(where, 'première image', ms(m.firstFrame)),
+    info(where, 'temps d’image moyen / p95', `${ms(m.frameAvg)} / ${ms(m.frameP95)}`),
   ];
 }
 
 export async function auditPerf(engine: Launched, base: string): Promise<Row[]> {
   const where = at(engine.name, 'mobile, CPU x4, 4G lente');
-  if (engine.name !== 'chromium') return [skip(where, 'mesures', 'CDP : Chromium seulement')];
-  const classic = await measure(engine, base, true);
-  const enhanced = await measure(engine, base, false);
-  return [...lcpAndLayout(where, classic, enhanced), ...runtime(where, enhanced)];
+  if (engine.name !== 'chromium') return unthrottled(engine, base);
+  const classic = await measure(engine, base, { classic: true });
+  const enhanced = await measure(engine, base, { classic: false });
+  // Tâche longue : même mesure rejouée sous trace, pour dire de quoi elle est faite.
+  const diagnosis =
+    enhanced.longTasksAtInit.length > 0
+      ? await measure(engine, base, { classic: false, traced: true })
+      : null;
+  return [...lcpAndLayout(where, classic, enhanced), ...runtime(where, enhanced, diagnosis?.trace)];
 }

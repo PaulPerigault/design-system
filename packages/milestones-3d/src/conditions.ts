@@ -1,5 +1,8 @@
 // Conditions de chargement de la 3D (ADR-0012, décision 5). Logique pure : tout vient de `env`.
 //
+// `prefers-reduced-motion` ne bloque plus la 3D (ADR-0013, décision 3) : la caméra saute (durées
+// des jetons nulles). Le composant lit `prefersReducedMotion` pour adapter son pilotage.
+//
 // Une valeur absente n'est jamais une mesure : `deviceMemory` et `saveData` n'existent que sur
 // Chromium, `hardwareConcurrency` peut manquer. Absente ou non positive, elle ne compte NI comme
 // « appareil faible » NI comme « économie de données ».
@@ -21,6 +24,10 @@ export interface EnhanceEnv {
 
 const REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
 
+/** Vrai si la personne demande moins de mouvement : pilotage par étapes, sans animation. */
+export const prefersReducedMotion = (env: Pick<EnhanceEnv, 'matchMedia'>): boolean =>
+  env.matchMedia(REDUCED_MOTION).matches;
+
 /** Vrai si la valeur est une mesure (nombre fini et positif). */
 const measured = (value: number | undefined): value is number =>
   typeof value === 'number' && Number.isFinite(value) && value > 0;
@@ -35,7 +42,6 @@ export function isWeakDevice(navigator: EnhanceEnv['navigator']): boolean {
  * sans coût d'abord, la création d'un contexte WebGL en dernier.
  */
 export function enhanceBlocker(env: EnhanceEnv): FallbackReason | null {
-  if (env.matchMedia(REDUCED_MOTION).matches) return 'reduced-motion';
   if (env.navigator.connection?.saveData === true) return 'save-data';
   if (isWeakDevice(env.navigator)) return 'weak-device';
   if (!env.visible) return 'hidden';

@@ -1,7 +1,8 @@
 /**
  * Quand charger la scène 3D de Milestones3D (ADR-0012, décision 5). Deux temps :
- * 1. `blockedEarly` écarte, sans rien télécharger, les visiteurs qui ne veulent pas de mouvement
- *    ou d'économie de données (le paquet 3D tranche ensuite le reste : WebGL2, appareil faible).
+ * 1. `blockedEarly` écarte, sans rien télécharger, les visiteurs en économie de données (le paquet
+ *    3D tranche ensuite le reste : WebGL2, appareil faible). `prefers-reduced-motion` ne bloque plus
+ *    (ADR-0013) : il change le mode de pilotage, voir `milestones-3d-pilot.ts`.
  * 2. `whenReady` attend que la section approche du viewport (marge d'observation : le chargement
  *    démarre avant l'entrée à l'écran). Déjà visible au chargement, il attend le premier geste
  *    (clic, toucher, touche) : insérer la scène sans geste décalerait la liste déjà affichée (CLS de
@@ -14,7 +15,7 @@ export const LOAD_MARGIN = '200px 0px';
 /** Gestes discrets : ni le défilement ni la molette (leur décalage serait compté). */
 export const GESTURES: readonly string[] = ['pointerdown', 'keydown'];
 
-export type EarlyReason = 'reduced-motion' | 'save-data';
+export type EarlyReason = 'save-data';
 
 /** Plateforme du temps d'attente, injectée pour les tests. */
 export interface GateEnv {
@@ -28,12 +29,10 @@ export interface GateEnv {
 }
 
 export interface EarlyEnv {
-  matchMedia(query: string): { matches: boolean };
   navigator: { connection?: { saveData?: boolean } | undefined };
 }
 
 export function blockedEarly(env: EarlyEnv): EarlyReason | null {
-  if (env.matchMedia('(prefers-reduced-motion: reduce)').matches) return 'reduced-motion';
   return env.navigator.connection?.saveData === true ? 'save-data' : null;
 }
 

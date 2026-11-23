@@ -2,6 +2,11 @@ import type { ListenTarget } from './bag.ts';
 
 /** Ce que la scène attend d'un canvas : un `HTMLCanvasElement` convient, un faux aussi en test. */
 export interface CanvasLike extends ListenTarget {
+  /** Style CSSOM de l'élément (jamais l'attribut `style`) ; absent d'un faux canvas de test. */
+  readonly style?: {
+    setProperty(name: string, value: string): void;
+    removeProperty(name: string): string;
+  };
   readonly clientWidth: number;
   readonly clientHeight: number;
   /** Un élément du document (`Element` dans le navigateur) : la racine où lire les jetons. */
@@ -15,17 +20,39 @@ export interface CanvasLike extends ListenTarget {
   };
 }
 
-/** Surface d'une scène du `.wasm`, telle qu'exposée par wasm-bindgen (crates/pp-milestones-wasm). */
+/**
+ * Surface d'une scène du `.wasm`, telle qu'exposée par wasm-bindgen (crates/pp-milestones-wasm).
+ * Aucune méthode ne reçoit d'horloge sauf `frame` : la scène agit à la prochaine image.
+ */
 export interface RawScene {
+  /**
+   * Une étape de l'initialisation du GPU (`pp-milestones-wasm/src/stages.rs`) : 0 terminé, 1 d'autres
+   * étapes suivent, 2 le GPU compile encore. Aucune image n'est dessinée avant la fin.
+   */
+  gpuStep(): number;
+  /** Trace une image d'essai (canvas caché) et pose une clôture ; `warmed()` dit si le GPU a fini. */
+  /**
+   * Vrai quand le GPU a rattrapé tout ce qui lui a été envoyé ; ne bloque jamais (clôture
+   * interrogée, créée au premier appel). Un appel synchrone attend sinon cette file.
+   */
+  idle(): boolean;
+  warmFrame(now: number): void;
+  warmed(): boolean;
   frame(now: number): boolean;
   resize(width: number, height: number): void;
   setTheme(theme: Float32Array): void;
-  setActive(id: string, now: number): void;
-  activeId(): string | undefined;
+  setProgress(progress: number): void;
+  progressOf(id: string): number;
+  setActive(id: string): boolean;
+  setHover(id: string): void;
   pointerMove(x: number, y: number): void;
   pointerLeave(): void;
   setGyro(x: number, y: number): void;
-  pick(x: number, y: number, now: number): string | undefined;
+  /** Coordonnées normalisées de -1 à 1, y vers le haut ; chaîne vide si rien. */
+  pick(x: number, y: number): string;
+  /** Quatre nombres par étape : x, y, rayon rapporté à la hauteur, visibilité (1 ou 0). */
+  project(): Float32Array;
+  setTexture(id: string, bitmap: ImageBitmap): void;
   contextLost(): void;
   contextRestored(): void;
   destroy(): void;
@@ -35,7 +62,8 @@ export interface RawScene {
 export interface SceneInput {
   readonly ids: string[];
   readonly statuses: string[];
-  readonly emblems: string[];
+  /** 1 quand un badge est attendu pour le jalon, 0 sinon. */
+  readonly badges: Uint8Array;
   readonly goal: boolean;
   readonly theme: Float32Array;
   readonly active: string;

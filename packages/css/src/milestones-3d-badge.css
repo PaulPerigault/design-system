@@ -1,0 +1,56 @@
+/* Milestones3D : badge sur sa pastille et lien d'évitement. */
+
+/*
+ * Badge : l'image du consommateur, intacte (aucun filtre, aucune opacité, aucun rognage : `contain`),
+ * sur une pastille claire fixe. `color-scheme: light` fait résoudre `--pp-color-bg` en clair même
+ * dans le thème sombre (conditions des émetteurs de badges, ADR-0013). Rien ne la recouvre.
+ */
+.pp-milestones__medal {
+  box-sizing: border-box;
+  display: grid;
+  flex: none;
+  place-items: center;
+  inline-size: var(--pp-space-2xl);
+  block-size: var(--pp-space-2xl);
+  padding: var(--pp-space-3xs);
+  border: var(--pp-size-rule) solid var(--pp-color-line);
+  border-radius: var(--pp-radius-surface);
+  background-color: var(--pp-color-bg);
+  color-scheme: light;
+}
+
+.pp-milestones__medal--large {
+  inline-size: var(--pp-space-3xl);
+  block-size: var(--pp-space-3xl);
+}
+
+.pp-milestones__badge {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: contain;
+}
+
+/*
+ * Lien d'évitement : il n'a de sens qu'avec la scène (mode amélioré, `data-state`). Sans elle, la
+ * liste seule n'a rien à contourner : le lien est retiré du rendu.
+ */
+.pp-milestones__skip {
+  display: none;
+}
+
+/* Mode amélioré : le lien a sa propre rangée au-dessus de la scène, il ne recouvre rien. */
+.pp-milestones[data-state] .pp-milestones__skip {
+  display: inline-block;
+  position: static;
+  grid-area: skip;
+  justify-self: start;
+  min-block-size: var(--pp-size-target-min);
+  padding-block: var(--pp-space-3xs);
+  padding-inline: var(--pp-space-xs);
+  border: var(--pp-size-rule) solid var(--pp-color-line);
+  border-radius: var(--pp-radius-control);
+  background-color: var(--pp-color-surface);
+  color: var(--pp-color-accent-text);
+  font-size: var(--pp-font-size--1);
+}

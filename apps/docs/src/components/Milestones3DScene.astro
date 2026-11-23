@@ -1,0 +1,68 @@
+---
+/** Page Milestones3D : pilotage au défilement, interactions, mouvement réduit et replis. */
+import { EXTRA_SECTIONS } from '../data/milestones-3d';
+import InlineCode from './InlineCode.astro';
+
+const [pilot, fallback] = EXTRA_SECTIONS;
+const intro =
+  '`Milestones3D` trie les jalons par date croissante et les place sur un chemin, du passé vers le futur. L’espacement est ordinal : une unité de chemin par jalon, les dates sont écrites. Chaque jalon obtenu devient une médaille en volume dont la face porte son badge. Le panneau HTML ouvre son détail.';
+const scroll = [
+  'La section est épinglée (`position: sticky`) dans un conteneur de 70 `svh` par jalon, objectif compris. La position de défilement donne la progression.',
+  'Le composant n’appelle jamais `preventDefault` et ne capte pas la molette. Le défilement reste celui du navigateur, au toucher aussi (`touch-action: pan-y`). Le retour en arrière fonctionne.',
+  'Un lien « Passer cette section » mène après la section. Il n’existe que dans le mode amélioré : sans la scène, la liste seule n’a rien à contourner.',
+];
+const moves = [
+  'Clic sur une médaille, clic sur une étape, boutons Précédent et Suivant : le défilement natif se déplace vers le jalon (`window.scrollTo`).',
+  'Clavier, focus dans la section : flèche gauche et droite, Début et Fin changent d’étape. Tab et les flèches haut et bas gardent leur effet natif.',
+  'Survol : la médaille s’incline avec le pointeur et reçoit un anneau d’accent. Sous mouvement réduit, elle ne s’incline pas.',
+];
+const reduced = [
+  'Sous `prefers-reduced-motion: reduce`, il n’y a ni conteneur haut ni `sticky` : la scène est un bloc de la hauteur de l’écran.',
+  'La navigation se fait par étapes (clic, boutons, flèches). Il n’y a pas de piste de défilement. La caméra saute d’un jalon à l’autre, sans animation.',
+  'La liste d’étapes garde toute l’information : rien n’est perdu par rapport au mode animé.',
+];
+const falls = [
+  'Sans JavaScript, sans WebGL2, avec `saveData`, sur un appareil faible, après un échec du `.wasm` ou une perte de contexte sans restauration : la liste seule.',
+  'Un badge qui ne charge pas (404, image invalide) : la médaille s’affiche sans badge, le texte reste en HTML.',
+  'Au-delà de 24 jalons, la scène refuse et la liste s’affiche.',
+];
+---
+
+<h2 id={pilot?.id}>{pilot?.title}</h2>
+<p>
+  <InlineCode text={intro} />
+</p>
+<h3>Défilement</h3>
+<ul>
+  {scroll.map((text) => (
+    <li>
+      <InlineCode text={text} />
+    </li>
+  ))}
+</ul>
+<h3>Interactions et clavier</h3>
+<ul>
+  {moves.map((text) => (
+    <li>
+      <InlineCode text={text} />
+    </li>
+  ))}
+</ul>
+
+<h2 id={fallback?.id}>{fallback?.title}</h2>
+<h3>Mouvement réduit</h3>
+<ul>
+  {reduced.map((text) => (
+    <li>
+      <InlineCode text={text} />
+    </li>
+  ))}
+</ul>
+<h3>Replis</h3>
+<ul>
+  {falls.map((text) => (
+    <li>
+      <InlineCode text={text} />
+    </li>
+  ))}
+</ul>

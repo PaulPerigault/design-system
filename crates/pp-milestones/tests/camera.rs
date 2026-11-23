@@ -1,6 +1,6 @@
-use glam::Mat4;
-use pp_milestones::camera::{FOV_Y, eye, project, vertical_fov, view_projection};
-use pp_milestones::layout::{path_point, path_tangent, ribbon_point};
+use pp_milestones::camera::{FOV_Y, camera_at, close_distance, focus, project, vertical_fov};
+use pp_milestones::layout::{MEDAL_RADIUS, face_normal, path_point, path_tangent, rail_point};
+use pp_milestones::progress::{nearest, progress_of};
 
 const EPS: f32 = 1e-4;
 
@@ -14,32 +14,108 @@ fn tangent_is_a_unit_vector_toward_the_depth() {
 }
 
 #[test]
-fn path_is_equidistant_in_depth() {
-    let step = path_point(1.0).z - path_point(0.0).z;
-    assert!((path_point(5.0).z - path_point(4.0).z - step).abs() < EPS);
+fn rail_sits_under_the_medals_and_spans_its_width() {
+    let (left, right) = (rail_point(2.0, -1.0), rail_point(2.0, 1.0));
+    assert!(left.y < path_point(2.0).y && (left.y - right.y).abs() < 0.2);
+    assert!((left.distance(right) - 2.0).abs() < 0.1);
 }
 
 #[test]
-fn ribbon_sits_under_the_medals_and_spans_its_width() {
-    let (left, right) = (ribbon_point(2.0, -1.0), ribbon_point(2.0, 1.0));
-    assert!(left.y < 0.0 && (left.y - right.y).abs() < EPS);
-    assert!((left.distance(right) - 2.0).abs() < EPS);
+fn progress_maps_stops_and_back() {
+    for (count, goal) in [(1, false), (1, true), (5, false), (5, true), (24, true)] {
+        let stops = count + usize::from(goal);
+        for index in 0..stops {
+            let p = progress_of(index, count, goal);
+            assert!((0.0..=1.0).contains(&p));
+            assert_eq!(nearest(p, count, goal), index, "{count} {goal} {index}");
+        }
+    }
+    assert!((progress_of(4, 5, true) - 0.8).abs() < EPS);
+    assert!((progress_of(5, 5, true) - 1.0).abs() < EPS);
 }
 
 #[test]
-fn the_active_milestone_projects_near_the_center() {
-    for s in [0.0, 3.0, 11.0] {
-        let m = view_projection(s, 1.5);
-        let p = project(path_point(s), m).unwrap();
-        assert!(p.length() < 0.5, "jalon {s} projeté en {p}");
+fn nearest_clamps_and_survives_bad_input() {
+    assert_eq!(nearest(-3.0, 4, true), 0);
+    assert_eq!(nearest(9.0, 4, true), 4);
+    assert_eq!(nearest(f32::NAN, 4, true), 0);
+}
+
+const STOPS: usize = 6;
+
+#[test]
+fn close_up_exactly_on_a_stop_and_overview_between() {
+    for s in [0.0, 1.0, 4.0] {
+        assert!((focus(s) - 1.0).abs() < EPS);
+    }
+    assert!(focus(0.5).abs() < EPS && focus(2.5).abs() < EPS);
+    let close = camera_at(2.0, 1.0, STOPS);
+    let far = camera_at(2.5, 1.0, STOPS);
+    let near = |c: pp_milestones::camera::Camera, s: f32| c.eye.distance(path_point(s));
+    assert!(near(close, 2.0) < near(far, 2.5));
+}
+
+#[test]
+fn close_up_looks_straight_at_the_face() {
+    let camera = camera_at(3.0, 1.0, STOPS);
+    let toward_eye = (camera.eye - path_point(3.0)).normalize();
+    assert!(toward_eye.dot(face_normal(3.0)) > 1.0 - EPS);
+}
+
+/// Marge de chaque côté (6 % de la largeur), en coordonnées normalisées, moins une tolérance.
+const EDGE: f32 = 2.0 * 0.06 - 1e-3;
+const ASPECTS: [f32; 10] = [0.4, 0.46, 0.7, 0.94, 1.0, 1.15, 1.5, 1.78, 2.0, 2.5];
+
+#[test]
+fn the_active_medal_and_the_next_two_stay_in_the_frame_at_every_aspect() {
+    for count in [3_usize, 9, 24] {
+        let stops = count + 1;
+        for aspect in ASPECTS {
+            for index in 0..stops {
+                let s = f32::from(u16::try_from(index).unwrap());
+                let camera = camera_at(s, aspect, stops);
+                let matrix = camera.view_projection(aspect);
+                for k in 0..=2.min(stops - 1 - index) {
+                    let at = path_point(s + f32::from(u16::try_from(k).unwrap()));
+                    let (centre, _) = project(at, matrix).unwrap();
+                    let (edge, _) = project(at + camera.right() * MEDAL_RADIUS, matrix).unwrap();
+                    let half = (edge.x - centre.x).abs();
+                    let (rx, ry) = (half, half * aspect);
+                    let at_stop = format!("{count} jalons, aspect {aspect}, étape {index}+{k}");
+                    assert!(centre.x - rx >= -1.0 + EDGE, "{at_stop} gauche");
+                    assert!(centre.x + rx <= 1.0 - EDGE, "{at_stop} droite");
+                    assert!(centre.y + ry <= 1.0 - EDGE, "{at_stop} haut");
+                    assert!(centre.y - ry >= -1.0 + EDGE, "{at_stop} bas");
+                }
+            }
+        }
     }
 }
 
 #[test]
-fn points_behind_the_eye_do_not_project() {
-    let m = view_projection(0.0, 1.0);
-    let behind = eye(0.0) - (path_point(0.0) - eye(0.0)).normalize() * 3.0;
-    assert_eq!(project(behind, m), None);
+fn the_active_medal_is_the_largest_and_big_at_desktop_aspect() {
+    for index in 0..8 {
+        let s = f32::from(u16::try_from(index).unwrap());
+        let camera = camera_at(s, 0.94, 9);
+        let matrix = camera.view_projection(0.94);
+        let radius = |k: f32| {
+            let at = path_point(s + k);
+            let (c, _) = project(at, matrix).unwrap();
+            let (e, _) = project(at + camera.right() * MEDAL_RADIUS, matrix).unwrap();
+            (e.x - c.x).abs() * 0.94
+        };
+        assert!(
+            radius(0.0) > radius(1.0) && radius(1.0) > radius(2.0),
+            "étape {index}"
+        );
+    }
+}
+
+#[test]
+fn the_previous_medal_stays_behind_the_eye() {
+    for aspect in [0.46, 1.0, 1.6] {
+        assert!(close_distance(aspect) < pp_milestones::layout::SPACING - MEDAL_RADIUS);
+    }
 }
 
 #[test]
@@ -47,14 +123,6 @@ fn narrow_canvases_widen_the_field() {
     assert!((vertical_fov(1.5) - FOV_Y).abs() < EPS);
     assert!(vertical_fov(0.5) > FOV_Y);
     for bad in [0.0, -1.0, f32::NAN, f32::INFINITY] {
-        assert!((vertical_fov(bad) - FOV_Y).abs() < EPS);
-    }
-}
-
-#[test]
-fn a_bad_aspect_still_yields_a_finite_matrix() {
-    for aspect in [0.0, f32::NAN] {
-        let m: Mat4 = view_projection(1.0, aspect);
-        assert!(m.to_cols_array().iter().all(|v| v.is_finite()));
+        assert!(close_distance(bad).is_finite());
     }
 }

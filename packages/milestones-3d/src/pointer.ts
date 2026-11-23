@@ -1,5 +1,6 @@
-// Pointeur : inclinaison au survol ou au glissé, sélection au clic ou au toucher. Le canvas est
-// `aria-hidden` : la sélection au clavier passe par la liste HTML (`setActive`).
+// Pointeur : inclinaison, survol (via `pick`) et sélection au clic ou au toucher. Écouteurs
+// passifs, aucun `preventDefault` : le défilement natif n'est jamais bloqué (`touch-action: pan-y`
+// côté CSS). Le canvas est `aria-hidden` : le clavier passe par le HTML.
 import type { Bag } from './bag.ts';
 import type { CanvasLike, RawScene } from './raw.ts';
 
@@ -20,15 +21,17 @@ const isPointer = (event: unknown): event is PointerLike =>
 export interface PointerHooks {
   /** Une image est due (inclinaison en cours). */
   redraw(): void;
-  /** Jalon choisi sur le canvas. */
+  /** Médaille choisie. */
   select(id: string): void;
+  /** Étape sous le pointeur, `null` s'il n'y en a pas. Appelé à chaque déplacement. */
+  hover(id: string | null): void;
   /** Un geste de toucher a eu lieu : le moment de demander le gyroscope. */
   touchGesture(): void;
-  now(): number;
 }
 
 /** Étendue de l'espace normalisé : de -1 à 1. */
 const NDC_SPAN = 2;
+const PASSIVE = { passive: true } as const;
 
 /** Position du pointeur en coordonnées normalisées : [-1, 1], y vers le haut. */
 export function normalize(event: PointerLike, canvas: CanvasLike): { x: number; y: number } {
@@ -42,21 +45,38 @@ export function normalize(event: PointerLike, canvas: CanvasLike): { x: number; 
 }
 
 export function bindPointer(canvas: CanvasLike, scene: RawScene, bag: Bag, hooks: PointerHooks) {
-  bag.listen(canvas, 'pointermove', (event) => {
-    if (!isPointer(event)) return;
-    const { x, y } = normalize(event, canvas);
-    scene.pointerMove(x, y);
-    hooks.redraw();
-  });
-  bag.listen(canvas, 'pointerleave', () => {
-    scene.pointerLeave();
-    hooks.redraw();
-  });
-  bag.listen(canvas, 'pointerup', (event) => {
-    if (!isPointer(event)) return;
-    const { x, y } = normalize(event, canvas);
-    const id = scene.pick(x, y, hooks.now());
-    if (id !== undefined) hooks.select(id);
-    if (event.pointerType === 'touch') hooks.touchGesture();
-  });
+  bag.listen(
+    canvas,
+    'pointermove',
+    (event) => {
+      if (!isPointer(event)) return;
+      const { x, y } = normalize(event, canvas);
+      scene.pointerMove(x, y);
+      hooks.hover(scene.pick(x, y) || null);
+      hooks.redraw();
+    },
+    PASSIVE,
+  );
+  bag.listen(
+    canvas,
+    'pointerleave',
+    () => {
+      scene.pointerLeave();
+      hooks.hover(null);
+      hooks.redraw();
+    },
+    PASSIVE,
+  );
+  bag.listen(
+    canvas,
+    'pointerup',
+    (event) => {
+      if (!isPointer(event)) return;
+      const { x, y } = normalize(event, canvas);
+      const id = scene.pick(x, y);
+      if (id !== '') hooks.select(id);
+      if (event.pointerType === 'touch') hooks.touchGesture();
+    },
+    PASSIVE,
+  );
 }

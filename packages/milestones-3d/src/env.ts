@@ -3,6 +3,7 @@
 import type { ListenTarget } from './bag.ts';
 import type { EnhanceEnv } from './conditions.ts';
 import { hasWebGL2 } from './conditions.ts';
+import { IDLE_TIMEOUT_MS } from './constants.ts';
 import { MilestonesError } from './error.ts';
 import type { GyroEnv } from './gyroscope.ts';
 import type { LoopDeps } from './loop.ts';
@@ -21,6 +22,17 @@ export interface MutationWatcher {
 }
 export interface MediaList extends ListenTarget {
   readonly matches: boolean;
+}
+
+/** Réponse minimale utile au chargement d'un badge (`Response` convient). */
+export interface FetchedImage {
+  readonly ok: boolean;
+  blob(): Promise<Blob>;
+}
+export interface FetchInit {
+  readonly signal: AbortSignal;
+  readonly credentials: 'same-origin';
+  readonly mode: 'same-origin';
 }
 
 export interface Env {
@@ -43,6 +55,11 @@ export interface Env {
   ) => Observer;
   readonly MutationObserver: new (callback: () => void) => MutationWatcher;
   readTheme(root: object): Theme;
+  /** Images du même site : ni identifiants tiers ni CORS. */
+  fetch(url: string, init: FetchInit): Promise<FetchedImage>;
+  createImageBitmap(blob: Blob, options: ImageBitmapOptions): Promise<ImageBitmap>;
+  /** Appelle `callback` au prochain temps libre (au plus `IDLE_TIMEOUT_MS`) ; rend l'annulation. */
+  whenIdle(callback: () => void): () => void;
   readonly orientation: GyroEnv['orientation'];
 }
 
@@ -54,6 +71,15 @@ export function enhanceEnv(visible: boolean, win: Window = window): EnhanceEnv {
     navigator: win.navigator,
     visible,
   };
+}
+
+function whenIdle(callback: () => void): () => void {
+  if (typeof requestIdleCallback === 'function') {
+    const id = requestIdleCallback(callback, { timeout: IDLE_TIMEOUT_MS });
+    return () => cancelIdleCallback(id);
+  }
+  const id = window.setTimeout(callback, 1);
+  return () => window.clearTimeout(id);
 }
 
 export const browserEnv = (): Env => ({
@@ -77,5 +103,8 @@ export const browserEnv = (): Env => ({
     if (!(root instanceof Element)) throw new MilestonesError('invalid-theme', 'racine');
     return readTheme(root);
   },
+  fetch: (url, init) => globalThis.fetch(url, init),
+  createImageBitmap: (blob, options) => globalThis.createImageBitmap(blob, options),
+  whenIdle,
   orientation: globalThis.DeviceOrientationEvent,
 });

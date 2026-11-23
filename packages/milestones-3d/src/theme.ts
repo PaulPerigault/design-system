@@ -4,7 +4,8 @@
 // une propriété personnalisée non enregistrée n'est pas calculée. On applique donc le jeton à la
 // propriété `color` d'un élément sonde, posé sous la racine pour hériter de `color-scheme`, et on
 // lit la `color` calculée. La sonde passe par le CSSOM (aucun attribut `style` dans le balisage :
-// compatible avec une CSP sans `unsafe-inline`).
+// compatible avec une CSP sans `unsafe-inline`). `paper` est `--pp-color-bg` lu en mode clair : la
+// sonde pose `color-scheme: light` sur elle-même, quelles que soient les préférences.
 import { parseColor } from './color.ts';
 import { FALLBACK_DURATION_MS, FALLBACK_EASING, THEME_TOKENS } from './constants.ts';
 import { parseDuration, parseEasing } from './css-values.ts';
@@ -13,8 +14,8 @@ import type { Theme, ThemeColor, ThemeColorName } from './types.ts';
 
 /** Ce que `readTheme` demande à la page ; une sonde injectable remplace le DOM dans les tests. */
 export interface ThemeProbe {
-  /** Couleur calculée d'un jeton, ou `null` si le jeton n'est pas défini. */
-  color(token: string): string | null;
+  /** Couleur calculée d'un jeton (`scheme: 'light'` : lu en mode clair), `null` si non défini. */
+  color(token: string, scheme?: 'light'): string | null;
   /** Texte brut d'une propriété personnalisée (vide si absente). */
   custom(name: string): string;
   dispose(): void;
@@ -33,8 +34,10 @@ export const domProbe: ThemeEnv = (root) => {
   const rootStyle = view.getComputedStyle(root);
   return {
     custom: (name) => rootStyle.getPropertyValue(name).trim(),
-    color(token) {
+    color(token, scheme) {
       if (rootStyle.getPropertyValue(token).trim() === '') return null;
+      if (scheme === undefined) element.style.removeProperty('color-scheme');
+      else element.style.setProperty('color-scheme', scheme);
       element.style.setProperty('color', `var(${token})`);
       return view.getComputedStyle(element).color;
     },
@@ -44,7 +47,7 @@ export const domProbe: ThemeEnv = (root) => {
 
 function colorOf(probe: ThemeProbe, name: ThemeColorName): ThemeColor {
   const token = THEME_TOKENS[name];
-  const computed = probe.color(token);
+  const computed = probe.color(token, name === 'paper' ? 'light' : undefined);
   if (computed === null) throw new MilestonesError('invalid-theme', `${token} absent`);
   return parseColor(computed);
 }
@@ -66,6 +69,7 @@ export function readThemeWith<R>(root: R, env: ThemeEnv<R>): Theme {
         onAccent: color('onAccent'),
         line: color('line'),
         muted: color('muted'),
+        paper: color('paper'),
       },
       durationBase: parseDuration(probe.custom(THEME_TOKENS.durationBase)) ?? FALLBACK_DURATION_MS,
       durationFast: parseDuration(probe.custom(THEME_TOKENS.durationFast)) ?? FALLBACK_DURATION_MS,

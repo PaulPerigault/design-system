@@ -1,7 +1,7 @@
 import type { FallbackReason } from './types.ts';
 
 /**
- * Chaque code d'erreur et la raison de repli qu'il entraîne. Les seize premiers viennent du `.wasm`
+ * Chaque code d'erreur et la raison de repli qu'il entraîne. Les dix-sept premiers viennent du `.wasm`
  * (`SceneError::code` et codes WebGL de crates/pp-milestones-wasm/src/fault.rs) ; les autres sont
  * ceux de l'enveloppe.
  */
@@ -10,12 +10,13 @@ const REASONS = {
   'invalid-id': 'invalid-data',
   'duplicate-id': 'invalid-data',
   'unknown-status': 'invalid-data',
-  'unknown-emblem': 'invalid-data',
   'length-mismatch': 'invalid-data',
   'theme-length': 'invalid-theme',
   'theme-value': 'invalid-theme',
   'theme-color': 'invalid-theme',
   'active-index': 'invalid-data',
+  'unknown-id': 'invalid-data',
+  progress: 'invalid-data',
   viewport: 'init-failed',
   'geometry-size': 'init-failed',
   'gl-unavailable': 'no-webgl2',
@@ -26,6 +27,9 @@ const REASONS = {
   'invalid-label': 'invalid-data',
   'invalid-date': 'invalid-data',
   'invalid-href': 'invalid-data',
+  'invalid-code': 'invalid-data',
+  'invalid-badge': 'invalid-data',
+  'planned-badge': 'invalid-data',
   'invalid-theme': 'invalid-theme',
   'unsupported-color': 'invalid-theme',
   'load-failed': 'load-failed',

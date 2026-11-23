@@ -1,35 +1,30 @@
 use glam::Vec2;
+use pp_milestones::SceneError;
 use pp_milestones::interaction::Interaction;
 use pp_milestones::tilt::{MAX_TILT, Tilt};
-use pp_milestones::{Key, SceneError};
 
 const EPS: f32 = 1e-3;
 
 #[test]
 fn active_must_be_in_range() {
-    assert_eq!(Interaction::new(3, 3), Err(SceneError::ActiveIndex));
-    assert!(Interaction::new(3, 2).is_ok());
-    assert_eq!(Interaction::new(0, 0), Err(SceneError::ActiveIndex));
+    assert_eq!(Interaction::new(3, Some(3)), Err(SceneError::ActiveIndex));
+    assert!(Interaction::new(3, Some(2)).is_ok());
+    assert!(Interaction::new(0, None).is_ok());
 }
 
 #[test]
-fn navigation_clamps_at_both_ends() {
-    let mut state = Interaction::new(3, 0).unwrap();
-    assert_eq!(state.navigate(Key::Previous), None);
-    assert_eq!(state.navigate(Key::Next), Some(1));
-    assert_eq!(state.navigate(Key::Last), Some(2));
-    assert_eq!(state.navigate(Key::Next), None);
-    assert_eq!(state.navigate(Key::First), Some(0));
-    assert_eq!(state.navigate(Key::First), None);
-}
-
-#[test]
-fn set_active_reports_a_change() {
-    let mut state = Interaction::new(3, 0).unwrap();
-    assert_eq!(state.set_active(2), Ok(true));
-    assert_eq!(state.set_active(2), Ok(false));
-    assert_eq!(state.set_active(3), Err(SceneError::ActiveIndex));
-    assert_eq!(state.active(), 2);
+fn active_and_hover_are_independent_and_clearable() {
+    let mut state = Interaction::new(3, None).unwrap();
+    assert_eq!(state.set_active(Some(2)), Ok(()));
+    assert_eq!(state.set_active(Some(3)), Err(SceneError::ActiveIndex));
+    assert_eq!(state.active(), Some(2));
+    state.set_hover(Some(1));
+    state.set_hover(Some(9));
+    assert_eq!(state.hover(), None, "hors du tableau : effacé");
+    state.set_hover(Some(0));
+    assert_eq!((state.active(), state.hover()), (Some(2), Some(0)));
+    assert_eq!(state.set_active(None), Ok(()));
+    assert_eq!(state.active(), None);
 }
 
 #[test]

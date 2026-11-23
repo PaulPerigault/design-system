@@ -1,6 +1,8 @@
-// Instrumentation de la page pour `perf.ts` : observateurs posés avant tout script, lecture des
-// mesures, échantillonnage des images pendant une transition.
+// Instrumentation de la page pour `perf.ts` : observateurs, lecture des mesures, images échantillonnées.
 import type { Page } from '@playwright/test';
+import { initWindow } from './phases.ts';
+import { mean, percentile } from './stats.ts';
+import type { LongTask, Phase } from './phases.ts';
 
 export interface Metrics {
   lcp: number | null;
@@ -12,7 +14,11 @@ export interface Metrics {
   firstFrame: number | null;
   frameAvg: number | null;
   frameP95: number | null;
-  longTasksAtInit: number[];
+  longTasksAtInit: LongTask[];
+  phases: Phase[];
+  loading: number | null;
+  /** Début du chargement jusqu'à la fin du tracé de la première image réelle. */
+  firstDraw: number | null;
 }
 
 interface Raw {
@@ -20,7 +26,8 @@ interface Raw {
   cls: number;
   shifts: string[];
   events: number[];
-  long: { start: number; duration: number }[];
+  long: LongTask[];
+  phases: Phase[];
   wasm: number | null;
   loading: number | null;
   enhanced: number | null;
@@ -78,21 +85,17 @@ export async function frameStats(page: Page, duration: number): Promise<void> {
   );
 }
 
-function percentile(values: number[], p: number): number | null {
-  const sorted = [...values].sort((a, b) => a - b);
-  return sorted[Math.min(sorted.length - 1, Math.ceil(p * sorted.length) - 1)] ?? null;
-}
-
-const mean = (values: number[]): number | null =>
-  values.length === 0 ? null : values.reduce((a, b) => a + b, 0) / values.length;
-
 export async function readMetrics(page: Page): Promise<Metrics> {
   const raw = await page.evaluate((): Raw => {
-    const m = (window as unknown as { __m: Omit<Raw, 'bytes'> }).__m;
+    const m = (window as unknown as { __m: Omit<Raw, 'bytes' | 'phases'> }).__m;
     const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
-    return { ...m, bytes: resources.reduce((sum, e) => sum + (e.transferSize || 0), 0) };
+    const phases = performance
+      .getEntriesByType('measure')
+      .filter((e) => e.name.startsWith('pp3d:'))
+      .map((e) => ({ name: e.name.slice(5), start: e.startTime, duration: e.duration }));
+    return { ...m, phases, bytes: resources.reduce((sum, e) => sum + (e.transferSize || 0), 0) };
   });
-  const end = raw.frame ?? raw.enhanced ?? 0;
+  const { end, drawn } = initWindow(raw.frame ?? raw.enhanced ?? 0, raw.phases);
   const atInit = raw.long.filter(
     (t) => raw.loading !== null && t.start >= raw.loading && t.start <= end,
   );
@@ -106,6 +109,9 @@ export async function readMetrics(page: Page): Promise<Metrics> {
     firstFrame: raw.loading !== null && raw.frame !== null ? raw.frame - raw.loading : null,
     frameAvg: mean(raw.frames),
     frameP95: percentile(raw.frames, P95),
-    longTasksAtInit: atInit.map((t) => t.duration),
+    longTasksAtInit: atInit,
+    phases: raw.phases,
+    loading: raw.loading,
+    firstDraw: raw.loading !== null && drawn !== null ? drawn - raw.loading : null,
   };
 }

@@ -1,23 +1,39 @@
-//! Sélection au pointeur : la médaille dont le disque projeté contient le point visé.
-use crate::camera::project;
-use crate::layout::{MEDAL_RADIUS, path_point};
+//! Disque d'une médaille à l'écran : sélection au pointeur et projection des étiquettes.
+use crate::camera::{Camera, project};
+use crate::layout::MEDAL_RADIUS;
 use glam::{Mat4, Vec2, Vec3};
 
-/// Centre et rayon (normalisés) du disque d'une médaille à l'écran.
-#[allow(clippy::cast_precision_loss, reason = "indice ≤ 24")]
-fn screen_disc(index: usize, matrix: Mat4) -> Option<(Vec2, f32)> {
-    let center = path_point(index as f32);
-    let middle = project(center, matrix)?;
-    let edge = project(center + Vec3::X * MEDAL_RADIUS, matrix)?;
-    Some((middle, middle.distance(edge)))
+/// Disque projeté, en espace isotrope : y de -1 (bas) à 1 (haut), x de `-aspect` à `aspect`.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Disc {
+    pub center: Vec2,
+    pub radius: f32,
+    /// Profondeur de vue du centre (la plus petite est la plus proche).
+    pub depth: f32,
 }
 
-/// Indice du jalon le plus proche de `ndc` parmi ceux dont le disque le contient.
+/// Disque du point `center` (rayon d'une médaille) ; `None` derrière la caméra.
 #[must_use]
-pub fn pick(count: usize, matrix: Mat4, ndc: Vec2) -> Option<usize> {
-    (0..count)
-        .filter_map(|index| screen_disc(index, matrix).map(|disc| (index, disc)))
-        .filter(|(_, (center, radius))| center.distance(ndc) <= *radius)
-        .min_by(|(_, (a, _)), (_, (b, _))| a.distance(ndc).total_cmp(&b.distance(ndc)))
+pub fn disc(center: Vec3, camera: &Camera, matrix: Mat4, aspect: f32) -> Option<Disc> {
+    let iso = |ndc: Vec2| Vec2::new(ndc.x * aspect, ndc.y);
+    let (middle, depth) = project(center, matrix)?;
+    let (edge, _) = project(center + camera.right() * MEDAL_RADIUS, matrix)?;
+    Some(Disc {
+        center: iso(middle),
+        radius: iso(middle).distance(iso(edge)),
+        depth,
+    })
+}
+
+/// Indice du disque le plus proche de la caméra parmi ceux qui contiennent `ndc`.
+#[must_use]
+pub fn hit(discs: &[Option<Disc>], ndc: Vec2, aspect: f32) -> Option<usize> {
+    let point = Vec2::new(ndc.x * aspect, ndc.y);
+    discs
+        .iter()
+        .enumerate()
+        .filter_map(|(index, disc)| disc.map(|d| (index, d)))
+        .filter(|(_, d)| d.center.distance(point) <= d.radius)
+        .min_by(|(_, a), (_, b)| a.depth.total_cmp(&b.depth))
         .map(|(index, _)| index)
 }

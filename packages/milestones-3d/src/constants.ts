@@ -1,6 +1,16 @@
-/** Bornes du contrat de données (ADR-0012, décision 1). */
+/** Bornes du contrat de données (ADR-0012, décision 1 ; ADR-0013, décision 1). */
 export const MIN_MILESTONES = 1;
 export const MAX_MILESTONES = 24;
+/** Longueur maximale du `code` d'un jalon (code d'examen), en caractères. */
+export const MAX_CODE_LENGTH = 16;
+/** Identifiant réservé de l'objectif dans la scène (refusé pour un jalon : `@` n'est pas admis). */
+export const GOAL_ID = '@goal';
+
+/** Textures de badge (ADR-0013, décision 2) : côté maximal en pixels et chargements simultanés. */
+export const TEXTURE_MAX_PX = 512;
+export const TEXTURE_CONCURRENCY = 2;
+/** Attente maximale du temps libre du navigateur avant de charger les badges, en ms. */
+export const IDLE_TIMEOUT_MS = 1000;
 
 /** Délai laissé au navigateur pour restaurer un contexte perdu, avant le repli définitif. */
 export const CONTEXT_RESTORE_TIMEOUT_MS = 2000;
@@ -23,13 +33,15 @@ export const THEME_TOKENS = {
   onAccent: '--pp-color-on-accent',
   line: '--pp-color-line',
   muted: '--pp-color-muted',
+  /** Même jeton que `bg`, lu en mode clair : support clair fixe de la médaille (ADR-0013). */
+  paper: '--pp-color-bg',
   durationBase: '--pp-duration-base',
   durationFast: '--pp-duration-fast',
   easing: '--pp-easing-standard',
 } as const;
 
 /** Ordre des couleurs dans le tableau reçu par le `.wasm` (voir `pp-milestones::theme`). */
-export const COLOR_ORDER = ['bg', 'fg', 'accent', 'onAccent', 'line', 'muted'] as const;
+export const COLOR_ORDER = ['bg', 'fg', 'accent', 'onAccent', 'line', 'muted', 'paper'] as const;
 
 /** Repli d'une durée illisible : aucune animation, jamais un mouvement inventé. */
 export const FALLBACK_DURATION_MS = 0;
@@ -49,3 +61,11 @@ export const WEBGL_ATTRIBUTES = {
   preserveDrawingBuffer: false,
   powerPreference: 'low-power',
 } as const;
+
+/** Initialisation du GPU par étapes : pause entre deux lectures d'un shader en cours de compilation. */
+export const GPU_WAIT_MS = 4;
+/** Durée maximale d'attente de la compilation des shaders avant le repli, en ms. */
+export const GPU_TIMEOUT_MS = 10_000;
+
+/** Préchauffage du tracé (voir `warmup.ts`) : attente maximale de la clôture du GPU, en ms. */
+export const WARM_TIMEOUT_MS = 3000;

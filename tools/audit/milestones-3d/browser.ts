@@ -22,14 +22,19 @@ export interface LaunchOptions {
 /**
  * Options de lancement d'un moteur. Firefox sans écran sous Linux n'offre pas WebGL2 (liste de
  * blocage, aucun pilote GL) ; avec un écran, il le fournit par défaut. Un affichage défini
- * (`DISPLAY`, par exemple sous `xvfb-run`) le lance donc avec écran.
+ * (`DISPLAY`, par exemple sous `xvfb-run`) le lance donc avec écran. `AUDIT_CHROMIUM_FLAGS` ajoute des
+ * options à Chromium (`--headless=new --disable-gpu` imite un runner sans carte graphique : le
+ * navigateur compose alors le canvas par lecture des pixels, comme en CI).
  */
 export function launchOptions(
   name: EngineName,
   gpu: Gpu,
   env: Readonly<Record<string, string | undefined>>,
 ): LaunchOptions {
-  const args = name === 'chromium' && gpu === 'software' ? SOFTWARE_ARGS : [];
+  const base = name === 'chromium' && gpu === 'software' ? SOFTWARE_ARGS : [];
+  const extra =
+    name === 'chromium' ? (env['AUDIT_CHROMIUM_FLAGS'] ?? '').split(' ').filter(Boolean) : [];
+  const args = [...base, ...extra];
   const display = (env['DISPLAY'] ?? '') !== '';
   return name === 'firefox' && display ? { args, headless: false } : { args };
 }

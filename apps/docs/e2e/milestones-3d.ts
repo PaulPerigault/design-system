@@ -1,3 +1,4 @@
+import { expect } from '@playwright/test';
 import type { Locator, Page } from '@playwright/test';
 import { existsSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -17,3 +18,16 @@ export const SOFTWARE_GL_NOISE = /GL Driver Message .*GPU stall due to ReadPixel
 
 export const enhanced = (page: Page): Locator =>
   page.locator('[data-milestones-demo] .pp-milestones[data-state="enhanced"]');
+
+/** Badge de démonstration : 4 jalons obtenus en portent un, le plus ancien est « Réseaux ». */
+export const DEMO_STEPS = 9;
+
+export async function activate(page: Page): Promise<void> {
+  await page.goto(PATH);
+  await page.locator('[data-milestones-demo]').scrollIntoViewIfNeeded();
+  // Section déjà à l'écran : la 3D attend un geste discret (renouvelé, l'observateur répond en asynchrone).
+  await expect(async () => {
+    await page.keyboard.press('Shift');
+    await expect(enhanced(page)).toHaveCount(1, { timeout: 1000 });
+  }).toPass({ timeout: 30_000 });
+}

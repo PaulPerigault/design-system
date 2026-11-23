@@ -17,6 +17,7 @@ fn oklch_colors_match_pp_color() {
         Slot::OnAccent,
         Slot::Line,
         Slot::Muted,
+        Slot::Paper,
     ];
     for (index, slot) in slots.into_iter().enumerate() {
         let at = index * COLOR_STRIDE;

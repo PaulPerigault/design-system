@@ -1,0 +1,56 @@
+---
+/** Un jalon (ou l'objectif) de la liste de référence : tout le texte, lisible sans JavaScript. */
+import MilestoneBadge from '../media/MilestoneBadge.astro';
+import type { MilestoneLabels } from './milestones-3d-model';
+import { isExternal, type Step } from './milestones-3d-step';
+
+interface Props {
+  step: Step;
+  text: MilestoneLabels;
+}
+
+const { step, text } = Astro.props;
+const goal = step.status === 'goal';
+---
+
+<li
+  class:list={['pp-milestones__item', { 'pp-milestones__item--goal': goal }]}
+  data-pp-item={step.id}
+  data-status={step.status}
+  data-pp-goal={goal ? '' : undefined}
+>
+  {step.badge && <MilestoneBadge badge={step.badge} />}
+  <div class="pp-milestones__text">
+    <p class="pp-milestones__meta">
+      {step.when && (
+        <time
+          class="pp-milestones__date"
+          datetime={step.when.datetime}
+          data-pp-short={step.when.short}
+        >
+          {step.when.text}
+        </time>
+      )}
+      {step.group && <span class="pp-milestones__group">{step.group}</span>}
+    </p>
+    <strong class="pp-milestones__name" data-pp-name>
+      {step.label}
+    </strong>
+    {step.code && (
+      <span class="pp-milestones__code" data-pp-code>
+        {step.code}
+      </span>
+    )}
+    <span class="pp-milestones__status">{step.state}</span>
+    {step.href && (
+      <a
+        class="pp-milestones__link"
+        href={step.href}
+        rel={isExternal(step.href) ? 'noopener noreferrer' : undefined}
+        aria-label={`${text.verify} : ${step.label}`}
+      >
+        {text.verify}
+      </a>
+    )}
+  </div>
+</li>

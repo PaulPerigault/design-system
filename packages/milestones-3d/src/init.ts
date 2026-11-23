@@ -1,47 +1,48 @@
 import type { Env } from './env.ts';
 import { MilestonesError, parseFault, reasonOf } from './error.ts';
+import { initGpu } from './gpu-steps.ts';
 import { startSession } from './instance.ts';
-import type { CanvasLike, RawScene, SceneInput } from './raw.ts';
-import { themeToArray } from './raw-theme.ts';
+import type { InitOptions, MilestonesHandle } from './options.ts';
+import { phaseEnd, phaseStart, timed } from './phases.ts';
+import { planOf, sceneInput } from './plan.ts';
+import type { CanvasLike, RawScene } from './raw.ts';
 import { createSession } from './session.ts';
-import type { InitOptions, MilestonesData, MilestonesHandle, Theme } from './types.ts';
+import type { MilestonesData, Theme } from './types.ts';
 import { validateData } from './validate.ts';
-import { yieldToMain } from './yield.ts';
+import { hideCanvas } from './warmup.ts';
+import { yieldToFrame, yieldToMain } from './yield.ts';
 
 interface Deps {
   readonly options: InitOptions;
   readonly env: Env;
 }
 
-function input(data: MilestonesData, theme: Theme, active: string | undefined): SceneInput {
-  const { milestones } = data;
-  return {
-    ids: milestones.map((m) => m.id),
-    statuses: milestones.map((m) => m.status),
-    emblems: milestones.map((m) => m.emblem ?? ''),
-    goal: data.goal !== undefined,
-    theme: themeToArray(theme),
-    active: active ?? '',
-  };
-}
-
 async function build(
   canvas: CanvasLike,
-  data: unknown,
+  valid: MilestonesData,
   theme: Theme,
   deps: Deps,
 ): Promise<RawScene> {
-  const valid = validateData(data);
+  const loading = phaseStart();
   const factory = await deps.env.loadScene().catch((cause: unknown) => {
     throw cause instanceof MilestonesError
       ? cause
       : new MilestonesError('load-failed', undefined, { cause });
   });
+  phaseEnd('load-wasm', loading);
   await yieldToMain();
-  factory.prepare?.(canvas);
+  timed('prepare-context', () => factory.prepare?.(canvas));
   await yieldToMain();
-  const scene = factory.create(canvas, input(valid, theme, deps.options.activeId));
+  const input = sceneInput(valid, theme, deps.options.activeId ?? '');
+  const scene = timed('create-scene', () => factory.create(canvas, input));
   await yieldToMain();
+  try {
+    await initGpu(scene);
+  } catch (raised) {
+    scene.destroy();
+    scene.free();
+    throw raised;
+  }
   return scene;
 }
 
@@ -56,9 +57,12 @@ export async function createInstance(
   deps: Deps,
 ): Promise<MilestonesHandle> {
   const { options, env } = deps;
+  hideCanvas(canvas);
   let scene: RawScene;
+  let valid: MilestonesData;
   try {
-    scene = await build(canvas, data, theme, deps);
+    valid = validateData(data);
+    scene = await build(canvas, valid, theme, deps);
   } catch (raised) {
     const error = parseFault(raised);
     options.onFallback?.(reasonOf(error));
@@ -66,9 +70,13 @@ export async function createInstance(
   }
   const session = createSession(canvas, scene, options, env);
   try {
-    return startSession(session);
+    const handle = startSession(session, planOf(valid));
+    await yieldToFrame();
+    // Perte de contexte pendant l'attente : le repli est déjà fait, le composant ne doit pas suivre.
+    if (session.isDestroyed()) throw new MilestonesError('gl-resource', 'scène détruite en cours');
+    return handle;
   } catch (raised) {
-    session.fail('init-failed');
+    if (!session.isDestroyed()) session.fail('init-failed');
     throw parseFault(raised);
   }
 }

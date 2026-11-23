@@ -9,15 +9,13 @@ import { resolveTokens } from './colors.ts';
 import type { TokenColors } from './colors.ts';
 import { IDLE_WAIT_MS, at, brief, info, row } from './model.ts';
 import type { Row, Where } from './model.ts';
-import type { Coverage } from './pixels.ts';
 import { contrast, coverage, dominantHue, hueDistance, hueOf } from './pixels.ts';
+import { framingDetail, readMarks, worstMargin } from './marks.ts';
 import { decodePng } from './png.ts';
 
 const MIN_COVERED = 0.02;
 const MAX_HUE_GAP_DEG = 25;
 const MIN_WIRE_CONTRAST = 3;
-const CENTER_MIN = 0.25;
-const CENTER_MAX = 0.75;
 const STAGE = '[data-milestones-demo] .pp-milestones__stage';
 const THEMES = ['light', 'dark'] as const;
 const SIZES = ['desktop', 'mobile'] as const;
@@ -39,30 +37,22 @@ async function enhanceAndShoot(page: Page): Promise<Buffer> {
   return page.locator(STAGE).screenshot();
 }
 
-/** Centre horizontal de la boîte occupée (0 à 1) et bords gauche et droit touchés ou non. */
-function placement(box: Coverage['box'], width: number): { middle: number; clipped: boolean } {
-  if (box === null) return { middle: 0, clipped: false };
-  return {
-    middle: (box.left + box.right) / 2 / width,
-    clipped: box.left === 0 || box.right === width - 1,
-  };
+function framing(where: Where, png: Buffer, tokens: TokenColors): Row {
+  const { covered } = coverage(decodePng(png), tokens.bg);
+  return row(
+    where,
+    'rendu non vide',
+    covered >= MIN_COVERED,
+    `${(covered * 100).toFixed(1)} % des pixels`,
+  );
 }
 
-function framing(where: Where, png: Buffer, tokens: TokenColors): Row[] {
-  const image = decodePng(png);
-  const { covered, box } = coverage(image, tokens.bg);
-  const { middle, clipped } = placement(box, image.width);
-  const centered = box !== null && middle > CENTER_MIN && middle < CENTER_MAX && !clipped;
-  const detail = `centre ${(middle * 100).toFixed(0)} %, bords ${clipped ? 'touchés' : 'libres'}`;
-  return [
-    row(
-      where,
-      'rendu non vide',
-      covered >= MIN_COVERED,
-      `${(covered * 100).toFixed(1)} % des pixels`,
-    ),
-    row(where, 'cadrage', centered, box ? detail : 'rien'),
-  ];
+/** Cadrage de l'ADR-0013 : l'active et ses deux suivantes entièrement dans le cadre, marge de 6 %. */
+async function framed(where: Where, page: Page): Promise<Row> {
+  const stage = await page.locator(STAGE).boundingBox();
+  const margin = stage ? worstMargin(await readMarks(page), 0, stage) : null;
+  const { ok, detail } = framingDetail(margin);
+  return row(where, 'cadrage', ok, detail);
 }
 
 function fidelity(where: Where, png: Buffer, tokens: TokenColors): Row[] {
@@ -92,14 +82,19 @@ async function one(
   scenario: Where & { colorScheme: 'light' | 'dark'; viewport: 'desktop' | 'mobile' },
 ): Promise<Row[]> {
   const { colorScheme, viewport, ...where } = scenario;
-  const { context, page } = await openPage(engine.browser, base, { colorScheme, viewport });
+  const { context, page } = await openPage(engine.browser, base, {
+    colorScheme,
+    viewport,
+    marks: true,
+  });
   try {
     const png = await enhanceAndShoot(page);
     writeFileSync(join(outDir, `${engine.name}-${colorScheme}-${viewport}.png`), png);
     const tokens = await resolveTokens(page);
     const first = colorScheme === 'light' && viewport === 'desktop';
     const renderer = first ? [info(where, 'rastériseur', await rendererOf(page))] : [];
-    return [...renderer, ...framing(where, png, tokens), ...fidelity(where, png, tokens)];
+    const framing3d = await framed(where, page);
+    return [...renderer, framing(where, png, tokens), framing3d, ...fidelity(where, png, tokens)];
   } catch (error) {
     return [row(where, 'activation de la 3D', false, brief(error))];
   } finally {

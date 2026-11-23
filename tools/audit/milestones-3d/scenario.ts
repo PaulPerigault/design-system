@@ -1,5 +1,6 @@
 // Scénarios de page : taille, thème, préférences et simulations (économie de données, appareil
 // faible, navigateur sans WebGL2) posées avant tout script de la page.
+import { MARKS_SCRIPT } from './marks.ts';
 import { VIEWPORTS } from './model.ts';
 
 export interface Scenario {
@@ -14,6 +15,8 @@ export interface Scenario {
   wake?: boolean;
   /** Première visite : service worker bloqué, les octets viennent du réseau et non du cache du site. */
   freshVisit?: boolean;
+  /** Relève les positions de `project()` dans `window.__marks` (voir marks.ts). */
+  marks?: boolean;
 }
 
 /** Simulations injectées avant le script de la page (états refusés par `canEnhance`). */
@@ -34,6 +37,7 @@ export function initScript(scenario: Scenario): string {
       "const g=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(t,...a){return t==='webgl2'?null:g.call(this,t,...a);};",
     );
   }
+  if (scenario.marks) parts.push(MARKS_SCRIPT);
   return parts.join('\n');
 }
 
