@@ -12,13 +12,13 @@ export const GPU_WAIT = 2;
 
 const pause = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
-/** Mène `gpuStep()` à son terme ; une compilation qui n'aboutit pas dans le délai lève `init-failed`. */
+/** Mène `gpuStep()` à son terme ; une compilation qui n'aboutit pas dans le délai lève `shader-compile` (repli `init-failed`). */
 export async function initGpu(scene: RawScene, now: () => number = Date.now): Promise<void> {
   const deadline = now() + GPU_TIMEOUT_MS;
   for (let step = 1; ; step += 1) {
     let state = GPU_WAIT;
     while (state === GPU_WAIT) {
-      if (now() > deadline) throw new MilestonesError('init-failed', 'compilation des shaders');
+      if (now() > deadline) throw new MilestonesError('shader-compile', 'délai dépassé');
       const start = phaseStart();
       state = scene.gpuStep();
       if (state === GPU_WAIT) await pause(GPU_WAIT_MS);

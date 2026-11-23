@@ -19,11 +19,11 @@ describe('initGpu', () => {
     expect(scene.calls.filter((c) => c === 'gpu-step')).toHaveLength(4);
   });
 
-  it('une compilation qui n’aboutit pas dans le délai lève init-failed', async () => {
+  it('une compilation qui n’aboutit pas dans le délai lève shader-compile', async () => {
     const scene = new FakeScene();
     scene.waitsLeft = Number.MAX_SAFE_INTEGER;
     let clock = 0;
     const now = (): number => (clock += GPU_TIMEOUT_MS / 3);
-    await expect(initGpu(scene, now)).rejects.toMatchObject({ code: 'init-failed' });
+    await expect(initGpu(scene, now)).rejects.toMatchObject({ code: 'shader-compile' });
   });
 });
