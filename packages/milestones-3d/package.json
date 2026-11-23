@@ -1,6 +1,6 @@
 {
   "name": "@paulperigault/milestones-3d",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Scène 3D de jalons en WebGL2 : pp-milestones compilé en WebAssembly, enveloppe TypeScript stricte, amélioration progressive.",
   "type": "module",
   "license": "MIT",
