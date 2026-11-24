@@ -7,7 +7,7 @@
 // 2. une image d'attente, puis attente que le GPU ait rattrapé son retard (`idle`) : le
 //    redimensionnement qui suit la mise en page du composant hôte est un appel synchrone, il
 //    attendrait le tracé des tuiles de la page ; il est appliqué ici, avant le premier tracé ;
-// 3. image d'essai canvas caché (programmes, faces avec texture de remplacement, lecture asynchrone
+// 3. image d'essai canvas caché (programmes, supports, lecture asynchrone
 //    d'un pixel qui force la résolution de l'anticrénelage) ;
 // 4. clôture atteinte : le canvas est montré et l'image réelle peut être dessinée.
 // Un refus ou un dépassement montrent le canvas sans attendre.

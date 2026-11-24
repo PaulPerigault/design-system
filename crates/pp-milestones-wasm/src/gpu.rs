@@ -1,8 +1,8 @@
-//! Ressources GPU : programmes, tampons envoyés une fois en octets, textures des badges.
+//! Ressources GPU : programmes, tampons envoyés une fois en octets.
 use crate::fault::{Fault, GlFault};
 use pp_milestones::plan::{AMBIENT, FOG_END, FOG_START, LIGHT};
 use web_sys::{
-    WebGl2RenderingContext as Gl, WebGlBuffer, WebGlProgram, WebGlTexture, WebGlUniformLocation,
+    WebGl2RenderingContext as Gl, WebGlBuffer, WebGlProgram, WebGlUniformLocation,
     WebGlVertexArrayObject,
 };
 
@@ -23,14 +23,8 @@ pub struct Uniforms {
 
 pub struct Gpu {
     pub solid: Uniforms,
-    pub badge: Uniforms,
     pub vao: WebGlVertexArrayObject,
     pub buffers: [WebGlBuffer; 2],
-    /// Une texture par jalon, quand son badge est arrivé.
-    pub textures: Vec<Option<WebGlTexture>>,
-    pub anisotropy: Option<f32>,
-    /// Pixel transparent pour préchauffer le tracé des faces sans badge reçu.
-    pub placeholder: WebGlTexture,
 }
 
 pub fn count(value: usize) -> Result<i32, Fault> {
@@ -67,17 +61,12 @@ pub fn constants(gl: &Gl, program: &WebGlProgram) {
 }
 
 impl Gpu {
-    /// Libère programmes, VAO, tampons et textures (le contexte vivant les possède).
+    /// Libère programmes, VAO, tampons (le contexte vivant les possède).
     pub fn free(&self, gl: &Gl) {
         gl.delete_program(Some(&self.solid.program));
-        gl.delete_program(Some(&self.badge.program));
         gl.delete_vertex_array(Some(&self.vao));
         for buffer in &self.buffers {
             gl.delete_buffer(Some(buffer));
         }
-        for texture in self.textures.iter().flatten() {
-            gl.delete_texture(Some(texture));
-        }
-        gl.delete_texture(Some(&self.placeholder));
     }
 }

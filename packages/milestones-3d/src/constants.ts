@@ -6,12 +6,6 @@ export const MAX_CODE_LENGTH = 16;
 /** Identifiant réservé de l'objectif dans la scène (refusé pour un jalon : `@` n'est pas admis). */
 export const GOAL_ID = '@goal';
 
-/** Textures de badge (ADR-0013, décision 2) : côté maximal en pixels et chargements simultanés. */
-export const TEXTURE_MAX_PX = 512;
-export const TEXTURE_CONCURRENCY = 2;
-/** Attente maximale du temps libre du navigateur avant de charger les badges, en ms. */
-export const IDLE_TIMEOUT_MS = 1000;
-
 /** Délai laissé au navigateur pour restaurer un contexte perdu, avant le repli définitif. */
 export const CONTEXT_RESTORE_TIMEOUT_MS = 2000;
 /** Rapport de pixels maximal par défaut : au-delà, le coût GPU n'apporte rien à l'œil. */

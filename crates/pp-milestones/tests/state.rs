@@ -176,23 +176,69 @@ fn pose(s: f32) -> Pose {
     }
 }
 
+fn count_of(drawn: &[pp_milestones::plan::DrawItem], part: Part, count: usize) -> usize {
+    let range = Pack::build(count, true).unwrap().range(part).unwrap();
+    drawn.iter().filter(|i| i.range == range).count()
+}
+
 #[test]
-fn plan_draws_the_badge_only_for_achieved_milestones_with_a_badge() {
+fn a_badged_milestone_draws_its_support_without_check() {
     let drawn = items(4, true, &pose(0.0));
-    let badges: Vec<_> = drawn.iter().filter_map(|i| i.texture).collect();
+    assert_eq!(count_of(&drawn, Part::Support, 4), 2, "m0 et m2");
+    assert_eq!(count_of(&drawn, Part::Check, 4), 0, "m0 et m2 ont un badge");
     assert_eq!(
-        badges,
-        vec![2, 0],
-        "m0 et m2 seulement, du plus loin au plus proche"
+        count_of(&drawn, Part::Wire, 4),
+        1,
+        "m1 : fantôme, m3 hors cadre"
     );
     assert!(
         drawn
             .iter()
-            .filter(|i| i.texture.is_some())
-            .all(|i| !i.lit && !i.fade)
+            .filter(|i| i.range == Pack::build(4, true).unwrap().range(Part::Support).unwrap())
+            .all(|i| i.lit && !i.fade)
     );
-    let pack = Pack::build(4, true).unwrap();
-    assert!(pack.range(Part::Wire).is_some_and(|r| r.count > 0));
+}
+
+#[test]
+fn a_milestone_without_badge_draws_support_and_check() {
+    let (data, theme) = (
+        pp_milestones::MilestonesData::new(
+            vec![common::milestone(
+                "a",
+                pp_milestones::Status::Achieved,
+                false,
+            )],
+            false,
+        )
+        .unwrap(),
+        theme(),
+    );
+    let pack = Pack::build(1, false).unwrap();
+    let inputs = Inputs {
+        data: &data,
+        theme: &theme,
+        pack: &pack,
+    };
+    let drawn = build(&inputs, &pose(0.0));
+    assert_eq!(count_of(&drawn, Part::Support, 1), 1);
+    assert_eq!(count_of(&drawn, Part::Check, 1), 1);
+    assert_eq!(count_of(&drawn, Part::Ring, 1), 1, "anneau de repos");
+}
+
+#[test]
+fn hover_keeps_the_projected_centre_and_the_support_matrix() {
+    let support = Pack::build(4, true).unwrap().range(Part::Support).unwrap();
+    let models = |scene: &mut SceneState, now: f32| {
+        let frame = scene.frame(now);
+        let all: Vec<_> = frame.items.iter().filter(|i| i.range == support).collect();
+        all.iter().map(|i| i.model).collect::<Vec<_>>()
+    };
+    let mut scene = state(4);
+    let (before, rest) = (scene.project(), models(&mut scene, 0.0));
+    scene.set_hover_id("m0");
+    let hovered = models(&mut scene, 1.0);
+    assert_eq!(scene.project(), before);
+    assert_eq!(hovered, rest, "ni avancée ni agrandissement au survol");
 }
 
 #[test]

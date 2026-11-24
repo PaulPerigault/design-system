@@ -9,18 +9,17 @@ use crate::convert::Out;
 use crate::fault::raise;
 use crate::fault::{Fault, GlFault};
 use crate::gpu::{Gpu, Uniforms, WORD, constants, count, locate, upload_buffer};
-use crate::shaders::{BADGE, Linking, SOLID, discard, is_complete, issue, verify};
-use crate::texture::{anisotropy_limit, placeholder, upload};
+use crate::shaders::{Linking, SOLID, discard, is_complete, issue, verify};
 use pp_milestones::geometry::mesh::FLOATS_PER_VERTEX;
 use pp_milestones::geometry::pack::Pack;
 use wasm_bindgen::prelude::wasm_bindgen;
-use web_sys::{ImageBitmap, WebGl2RenderingContext as Gl, WebGlBuffer, WebGlVertexArrayObject};
+use web_sys::{WebGl2RenderingContext as Gl, WebGlBuffer, WebGlVertexArrayObject};
 
 /// Emplacements des attributs (`layout(location)` du sommet partagé) : taille en flottants.
 const VECTOR: i32 = 3;
 const UV: i32 = 2;
 const ATTRIBUTES: [(u32, i32); 3] = [(0, VECTOR), (1, VECTOR), (2, UV)];
-const FRAGMENTS: [&str; 2] = [SOLID, BADGE];
+const FRAGMENTS: [&str; 1] = [SOLID];
 
 /// Résultat d'une étape.
 pub enum Step {
@@ -43,12 +42,7 @@ pub struct Builder {
 
 impl Builder {
     /// Une étape : programme émis, programme lu, tampon des sommets, tampon des indices, ou fin.
-    pub fn step(
-        &mut self,
-        gl: &Gl,
-        pack: &Pack,
-        bitmaps: &[Option<ImageBitmap>],
-    ) -> Result<Step, Fault> {
+    pub fn step(&mut self, gl: &Gl, pack: &Pack) -> Result<Step, Fault> {
         let issued = self.linking.len() + self.ready.len();
         if issued < FRAGMENTS.len() {
             return self.issue_next(gl, issued);
@@ -69,7 +63,7 @@ impl Builder {
             )?);
             return Ok(Step::More);
         }
-        self.finish(gl, bitmaps).map(Step::Done)
+        self.finish(gl).map(Step::Done)
     }
 
     fn issue_next(&mut self, gl: &Gl, issued: usize) -> Result<Step, Fault> {
@@ -108,36 +102,21 @@ impl Builder {
         Ok(Step::More)
     }
 
-    fn finish(&mut self, gl: &Gl, bitmaps: &[Option<ImageBitmap>]) -> Result<Gpu, Fault> {
+    fn finish(&mut self, gl: &Gl) -> Result<Gpu, Fault> {
         let (Some(vao), Some(vertices), Some(indices)) =
             (self.vao.take(), self.vertices.take(), self.indices.take())
         else {
             return Err(GlFault::Resource.into());
         };
         let mut ready = core::mem::take(&mut self.ready).into_iter();
-        let (Some(solid), Some(badge)) = (ready.next(), ready.next()) else {
+        let Some(solid) = ready.next() else {
             return Err(GlFault::Resource.into());
         };
         constants(gl, &solid.program);
-        gl.use_program(Some(&badge.program));
-        gl.uniform1i(
-            gl.get_uniform_location(&badge.program, "u_badge").as_ref(),
-            0,
-        );
-        let anisotropy = anisotropy_limit(gl);
-        let textures = bitmaps
-            .iter()
-            .map(|bitmap| bitmap.as_ref().and_then(|b| upload(gl, b, anisotropy).ok()))
-            .collect();
-        let placeholder = placeholder(gl, anisotropy)?;
         Ok(Gpu {
             solid,
-            badge,
             vao,
             buffers: [vertices, indices],
-            textures,
-            anisotropy,
-            placeholder,
         })
     }
 
@@ -155,10 +134,10 @@ impl Builder {
 }
 
 /// Toutes les étapes d'un coup (restauration d'un contexte perdu : rare, jamais au chargement).
-pub fn build_all(gl: &Gl, pack: &Pack, bitmaps: &[Option<ImageBitmap>]) -> Result<Gpu, Fault> {
+pub fn build_all(gl: &Gl, pack: &Pack) -> Result<Gpu, Fault> {
     let mut builder = Builder::default();
     loop {
-        match builder.step(gl, pack, bitmaps) {
+        match builder.step(gl, pack) {
             Ok(Step::Done(gpu)) => return Ok(gpu),
             Ok(Step::More | Step::Wait) => {}
             Err(fault) => {
@@ -187,7 +166,7 @@ impl Scene {
         let Some(builder) = self.builder.as_mut() else {
             return Ok(GPU_DONE);
         };
-        match builder.step(&self.gl, self.state.pack(), &self.bitmaps) {
+        match builder.step(&self.gl, self.state.pack()) {
             Ok(Step::More) => Ok(GPU_MORE),
             Ok(Step::Wait) => Ok(GPU_WAIT),
             Ok(Step::Done(gpu)) => {

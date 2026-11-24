@@ -3,13 +3,11 @@
 import { GOAL_ID } from './constants.ts';
 import type { SceneInput } from './raw.ts';
 import { themeToArray } from './raw-theme.ts';
-import type { TextureJob } from './textures.ts';
 import type { MilestonesData, Theme } from './types.ts';
 
 export interface Plan {
   /** Identifiants des étapes : jalons dans l'ordre fourni, puis `@goal` s'il y a un objectif. */
   readonly ids: readonly string[];
-  readonly jobs: readonly TextureJob[];
 }
 
 export function sceneInput(data: MilestonesData, theme: Theme, active: string): SceneInput {
@@ -26,6 +24,5 @@ export function sceneInput(data: MilestonesData, theme: Theme, active: string): 
 
 export function planOf(data: MilestonesData): Plan {
   const ids = data.milestones.map((m) => m.id);
-  const jobs = data.milestones.flatMap((m) => (m.badge ? [{ id: m.id, badge: m.badge }] : []));
-  return { ids: data.goal ? [...ids, GOAL_ID] : ids, jobs };
+  return { ids: data.goal ? [...ids, GOAL_ID] : ids };
 }

@@ -7,7 +7,7 @@ use crate::state::SceneState;
 use glam::Vec2;
 
 /// Une étape à l'écran : centre normalisé ([0, 1], origine en haut à gauche), rayon de la médaille
-/// rapporté à la hauteur du canvas, et visibilité (devant la caméra et dans le cadre).
+/// rapporté à la hauteur du canvas, et visibilité (devant la caméra et disque touchant le cadre).
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Projected {
     pub x: f32,
@@ -24,8 +24,10 @@ const HIDDEN: Projected = Projected {
 };
 const HALF: f32 = 0.5;
 
-fn in_frame(ndc: Vec2) -> bool {
-    ndc.abs().max_element() <= 1.0
+/// Le disque touche le cadre : un badge HTML posé dessus reste affiché tant qu'une part du support
+/// l'est. Le rayon est isotrope (unité de la hauteur), donc rapporté à la largeur par `aspect`.
+fn touches_frame(ndc: Vec2, radius: f32, aspect: f32) -> bool {
+    ndc.x.abs() <= 1.0 + radius / aspect && ndc.y.abs() <= 1.0 + radius
 }
 
 impl SceneState {
@@ -59,7 +61,7 @@ impl SceneState {
             x: (ndc.x + 1.0) * HALF,
             y: (1.0 - ndc.y) * HALF,
             scale: d.radius * HALF,
-            visible: in_frame(ndc),
+            visible: touches_frame(ndc, d.radius, self.aspect),
         }
     }
 }

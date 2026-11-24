@@ -24,5 +24,4 @@ mod gpu;
 mod input;
 mod shaders;
 mod stages;
-mod texture;
 mod warm;

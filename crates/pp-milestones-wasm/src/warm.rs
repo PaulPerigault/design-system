@@ -1,8 +1,8 @@
 //! Préchauffage du tracé (audit #394). Sans carte graphique, le navigateur compose le canvas WebGL
 //! en lisant ses pixels (`ReadPixels`), et cette lecture attend que le GPU logiciel ait exécuté ce
 //! qui a été tracé, y compris la compilation à la volée de ses routines : 60 à 85 ms d'attente du
-//! fil principal à la première image, puis à celle des badges. L'enveloppe cache donc le canvas,
-//! trace une image d'essai (faces comprises, avec une texture de remplacement), attend la clôture
+//! fil principal à la première image. L'enveloppe cache donc le canvas,
+//! trace une image d'essai (mêmes programmes et tampons que les images visibles), attend la clôture
 //! sans bloquer (`warmed`), puis le montre : les images visibles n'attendent plus rien.
 use crate::bindings::Scene;
 use crate::convert::Out;
@@ -23,7 +23,7 @@ impl Scene {
         if self.gpu.is_none() {
             return Ok(());
         }
-        self.render(now, true)?;
+        self.render(now)?;
         self.read_back_one_pixel();
         self.fence = self.gl.fence_sync(Gl::SYNC_GPU_COMMANDS_COMPLETE, 0);
         // La clôture ne se signale que si les commandes qui la précèdent sont envoyées (Firefox).

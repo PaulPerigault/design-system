@@ -8,6 +8,7 @@
 @import './milestones-3d-badge.css';
 @import './milestones-3d-steps.css';
 @import './milestones-3d-panel.css';
+@import './milestones-3d-sprites.css';
 
 .pp-milestones {
   display: block;

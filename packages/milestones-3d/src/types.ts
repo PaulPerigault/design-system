@@ -1,9 +1,10 @@
 export type Status = 'achieved' | 'planned';
 
 /**
- * Image du badge, fournie par le consommateur (même site). `src` : `https:` absolu ou chemin
- * relatif ; jamais `javascript:` ni `data:`. `width` et `height` (pixels, facultatifs) évitent un
- * second décodage quand l'image dépasse la taille maximale des textures.
+ * Image du badge, fournie par le consommateur (même site) et affichée telle quelle en HTML par le
+ * composant, jamais plaquée en texture (ADR-0014). `src` : `https:` absolu ou chemin relatif ;
+ * jamais `javascript:` ni `data:`. `width` et `height` (pixels, facultatifs) donnent le rapport
+ * naturel avant le chargement de l'image.
  */
 export interface Badge {
   readonly src: string;

@@ -18,7 +18,7 @@ pour la conversion OKLCH vers sRGB.
 | `layout`      | chemin (`path_point`, `path_tangent`), rail, repère local d'une médaille                    |
 | `progress`    | `progress_of`, `nearest`, `abscissa` : correspondance entre `p` de [0, 1] et les étapes     |
 | `camera`      | caméra sur la spline, gros plan sur un jalon, cadrage selon l'aspect, projection            |
-| `geometry`    | support, face du badge (UV 0 à 1), fantôme filaire, anneau, étoile, rail, repères ; `Pack`  |
+| `geometry`    | support, fantôme filaire, anneau, étoile, rail, repères ; `Pack`                            |
 | `plan`        | liste de dessin d'une image (`DrawItem`), `medals` pour les médailles et l'objectif         |
 | `frame`       | `SceneState::frame` : horloge, cible de la caméra, inclinaison, liste de dessin             |
 | `state`       | `SceneState` : tout l'état d'une scène, horloge injectée                                    |
@@ -57,16 +57,15 @@ Chacune se change dans une constante nommée.
 - **Lissage** : un `Tween` vers la cible, durée `--pp-duration-base` et courbe du thème ; durée nulle
   (mouvement réduit) : saut. `set_progress` n'agit qu'à l'image suivante, avec l'horloge de
   l'appelant : une scène restée au repos glisse quand même.
-- **Médaille** : support à 32 segments, biseau 0,09, face du badge en carré de demi-côté 0,62 devant
-  le support (décalage 0,004), UV de 0 à 1 sur tout le carré (v = 0 en haut). Un disque ne
-  conviendrait pas : ses coins recadreraient l'image. Objectif : étoile à cinq branches extrudée
+- **Médaille** : support à 32 segments, biseau 0,09, pas de face de badge (image HTML, ADR-0014). Objectif : étoile à cinq branches extrudée
   (0,3) avec son contour. Fantôme : même silhouette en fil de fer. Anneau : à 0,06 du bord.
-- **Éclairage** : Lambert (une lumière, ambiante 0,6) sur le support et l'étoile, jamais sur le badge.
+- **Éclairage** : Lambert (une lumière, ambiante 0,6) sur le support et l'étoile.
   Le rail, les repères et les fantômes s'estompent vers le transparent de 9 à 42 unités ; les
-  médailles ne s'estompent pas (le badge ne doit pas être altéré) et ne sont tracées que de 2
+  médailles ne s'estompent pas et ne sont tracées que de 2
   abscisses derrière à 5 devant la caméra.
 - **Inclinaison** : 0,35 rad au plus, lissée avec `--pp-duration-fast`, sur la médaille survolée,
-  sinon la plus proche de la caméra.
+  sinon la plus proche de la caméra. Le survol n'avance ni n'agrandit la médaille : le badge HTML reste
+  centré sur la position projetée.
 - **Courbe non reconnue** : `CubicBezier::LINEAR`, jamais une courbe inventée.
 
 ## Thème : forme du tableau
@@ -96,5 +95,5 @@ cargo test --workspace --locked
 Tests : contrat de données, easing, spline (continuité, bornes, vitesse, C1 par `proptest`), progression
 et étape la plus proche, caméra (gros plan exact sur un jalon, cadrage en quatre formats, jalon
 précédent derrière l'œil), lissage monotone et saut à durée nulle, géométrie (indices dans les
-bornes, UV dans [0, 1], normales unitaires, face du badge couvrant exactement le carré UV), liste de
+bornes, UV dans [0, 1], normales unitaires), liste de
 dessin, projection, thème (parité avec `pp-color`).

@@ -1,8 +1,7 @@
-use glam::Vec2;
 use pp_milestones::geometry::mesh::{FLOATS_PER_VERTEX, Mesh};
 use pp_milestones::geometry::pack::{Mode, Pack, Part};
 use pp_milestones::geometry::{medal, rail, star};
-use pp_milestones::layout::{MEDAL_RADIUS, MEDAL_THICKNESS};
+use pp_milestones::layout::MEDAL_RADIUS;
 
 const UNIT: f32 = 1e-4;
 
@@ -40,42 +39,6 @@ fn the_support_is_closed_and_lit() {
     let support = medal::support();
     assert_valid(&support, true);
     assert!(!support.triangles.is_empty() && support.lines.is_empty());
-}
-
-#[test]
-fn the_badge_face_covers_exactly_the_uv_square_and_stays_square() {
-    let face = medal::badge();
-    assert_valid(&face, true);
-    let vertices = all(&face);
-    let uvs: Vec<Vec2> = vertices.iter().map(|v| v.uv).collect();
-    for corner in [Vec2::ZERO, Vec2::X, Vec2::Y, Vec2::ONE] {
-        assert!(uvs.contains(&corner), "coin UV {corner}");
-    }
-    let (min, max) = vertices.iter().fold((Vec2::MAX, Vec2::MIN), |(lo, hi), v| {
-        (lo.min(v.position.truncate()), hi.max(v.position.truncate()))
-    });
-    assert!(
-        ((max.x - min.x) - (max.y - min.y)).abs() < UNIT,
-        "aspect carré"
-    );
-    assert!((max.x - medal::badge_half()).abs() < UNIT);
-    for v in &vertices {
-        let expected = Vec2::new(
-            (v.position.x - min.x) / (max.x - min.x),
-            1.0 - (v.position.y - min.y) / (max.y - min.y),
-        );
-        assert!(
-            (v.uv - expected).length() < UNIT,
-            "UV linéaire, v = 0 en haut"
-        );
-        assert!(v.normal.z > 1.0 - UNIT, "face avant vers +z");
-        assert!(
-            v.position.truncate().length() < MEDAL_RADIUS - medal::BEVEL,
-            "dans le plat"
-        );
-        assert!(v.position.z > MEDAL_THICKNESS / 2.0);
-    }
-    assert_eq!(face.triangles.len(), 6);
 }
 
 #[test]
@@ -126,7 +89,6 @@ fn pack_ranges_cover_every_part_inside_the_index_buffer() {
     let pack = Pack::build(8, true).unwrap();
     let parts = [
         Part::Support,
-        Part::Badge,
         Part::Wire,
         Part::Ring,
         Part::Check,

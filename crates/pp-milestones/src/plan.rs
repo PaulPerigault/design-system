@@ -27,8 +27,6 @@ pub struct DrawItem {
     pub lit: bool,
     /// Fondu avec la distance (rail, repères, fantômes).
     pub fade: bool,
-    /// Face de badge : indice du jalon dont la texture se plaque telle quelle, sans couleur.
-    pub texture: Option<usize>,
 }
 
 /// Ce que la liste de dessin lit : données, thème et maillages.
@@ -57,7 +55,6 @@ impl Inputs<'_> {
             color: self.theme.color(slot),
             lit: false,
             fade: false,
-            texture: None,
         })
     }
 
