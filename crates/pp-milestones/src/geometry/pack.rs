@@ -8,7 +8,6 @@ use crate::error::SceneError;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Part {
     Support,
-    Badge,
     Wire,
     Ring,
     Check,
@@ -48,7 +47,6 @@ impl Pack {
         let mut pack = Self::default();
         let solid = Mode::Triangles;
         pack.add(Part::Support, &medal::support(), solid);
-        pack.add(Part::Badge, &medal::badge(), solid);
         pack.add(Part::Wire, &medal::wire(), Mode::Lines);
         pack.add(Part::Ring, &medal::ring(), solid);
         pack.add(Part::Check, &check::check(), solid);

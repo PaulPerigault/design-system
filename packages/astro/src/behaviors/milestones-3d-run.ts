@@ -3,6 +3,7 @@
  * image de la boucle, saut et défilement vers une étape. Voir `milestones-3d-pilot.ts`.
  */
 import type { Active } from './milestones-3d-active';
+import type { Badges } from './milestones-3d-badges';
 import type { Labels } from './milestones-3d-labels';
 import type { Loop } from './milestones-3d-loop';
 import { moved } from './milestones-3d-moved';
@@ -19,6 +20,7 @@ export interface PilotContext {
   env: Env;
   steps: Steps;
   labels: Labels;
+  badges: Badges;
 }
 
 /** État mutable d'un pilote ; les fonctions ci-dessous le font évoluer. */
@@ -50,12 +52,13 @@ export function follow(run: Run): boolean {
   return changed;
 }
 
-/** Une image : progression (mode `scroll`), puis étiquettes ; vrai tant que quelque chose bouge. */
+/** Une image : progression (mode `scroll`), puis badges et étiquettes ; vrai tant que quelque chose bouge. */
 export function tick(run: Run): boolean {
   const changed = run.mode === 'scroll' ? follow(run) : false;
   const next = run.scene.project();
   const shifted = moved(run.marks, next);
   run.marks = next;
+  run.badges.update(next);
   run.labels.update(next);
   return changed || shifted;
 }

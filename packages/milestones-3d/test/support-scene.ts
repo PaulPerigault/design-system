@@ -3,7 +3,6 @@ import type { RawScene } from '../src/raw.ts';
 
 export class FakeScene implements RawScene {
   calls: string[] = [];
-  textures = new Map<string, ImageBitmap>();
   moreFrames = false;
   failNext: string | undefined;
   /** Rend faux pour un identifiant inconnu (`setActive`). */
@@ -44,11 +43,6 @@ export class FakeScene implements RawScene {
   setGyro = (x: number, y: number): void => void this.calls.push(`gyro:${x},${y}`);
   pick = (): string => this.pickResult;
   project = (): Float32Array => this.projected;
-  setTexture = (id: string, bitmap: ImageBitmap): void => {
-    if (this.failNext) throw this.failNext;
-    this.calls.push(`texture:${id}`);
-    this.textures.set(id, bitmap);
-  };
   contextLost = (): void => void this.calls.push('lost');
   contextRestored = (): void => {
     if (this.failNext) throw this.failNext;

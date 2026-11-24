@@ -52,7 +52,6 @@ export interface RawScene {
   pick(x: number, y: number): string;
   /** Quatre nombres par étape : x, y, rayon rapporté à la hauteur, visibilité (1 ou 0). */
   project(): Float32Array;
-  setTexture(id: string, bitmap: ImageBitmap): void;
   contextLost(): void;
   contextRestored(): void;
   destroy(): void;

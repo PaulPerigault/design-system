@@ -1,12 +1,12 @@
 # pp-milestones-wasm
 
-Couche WebGL2 de la scène de jalons : contexte, shaders, tampons, textures, appels de dessin. Elle ne
+Couche WebGL2 de la scène de jalons : contexte, shaders, tampons, appels de dessin. Elle ne
 décide rien : tout ce qui se calcule est dans [`pp-milestones`](../pp-milestones/README.md). Pas de
 `wgpu`, `three-d` ni `bevy`. Décisions : ADR-0012 et ADR-0013, chantiers #360 et #389.
 
 Dépendances : `pp-milestones`, `wasm-bindgen` (version exacte) et `web-sys` avec une feature par type
-utilisé (`HtmlCanvasElement`, `ImageBitmap`, `WebGl2RenderingContext`, `WebGlBuffer`, `WebGlProgram`,
-`WebGlShader`, `WebGlSync`, `WebGlTexture`, `WebGlUniformLocation`, `WebGlVertexArrayObject`,
+utilisé (`HtmlCanvasElement`, `WebGl2RenderingContext`, `WebGlBuffer`, `WebGlProgram`,
+`WebGlShader`, `WebGlSync`, `WebGlUniformLocation`, `WebGlVertexArrayObject`,
 `WebGlContextAttributes`, `WebGlPowerPreference`, `WebglLoseContext`).
 
 ## Modules
@@ -14,12 +14,11 @@ utilisé (`HtmlCanvasElement`, `ImageBitmap`, `WebGl2RenderingContext`, `WebGlBu
 | Module     | Rôle                                                                                             |
 | ---------- | ------------------------------------------------------------------------------------------------ |
 | `gl`       | contexte WebGL2 transparent (profondeur, anticrénelage, basse consommation), `loseContext`       |
-| `shaders`  | émission (compilation, liaison) puis lecture du résultat ; sommet partagé, deux fragments        |
+| `shaders`  | émission (compilation, liaison) puis lecture du résultat ; sommet partagé, un fragment           |
 | `stages`   | initialisation du GPU par étapes (`gpuStep`), chacune bornée ; `KHR_parallel_shader_compile`     |
 | `warm`     | préchauffage du tracé caché (`warmFrame`, `warmed`) : image d'essai, clôture, lecture d'un pixel |
-| `gpu`      | programmes, tampons envoyés une fois en octets, VAO, textures                                    |
-| `draw`     | une passe sur la liste de dessin : surfaces, puis faces de badge                                 |
-| `texture`  | envoi d'un `ImageBitmap`, mipmaps, anisotropie, `setTexture`                                     |
+| `gpu`      | programmes, tampons envoyés une fois en octets, VAO                                              |
+| `draw`     | une passe sur la liste de dessin : surfaces du thème                                             |
 | `bindings` | `Scene` (constructeur sans GPU, `frame`, perte et restauration, `destroy`)                       |
 | `controls` | taille, thème, progression, actif, survol, pointeur, gyroscope, sélection, projection            |
 | `input`    | validation des tableaux et du thème (`checkInput`), sans toucher au canvas                       |
@@ -45,13 +44,12 @@ scene.pointerLeave()
 scene.setGyro(x: number, y: number)                       // non fini : rend la main au pointeur
 scene.pick(x: number, y: number): string                  // x, y en [-1, 1], y vers le haut ; "" si rien
 scene.project(): Float32Array                             // 4 nombres par étape, voir ci-dessous
-scene.setTexture(id: string, bitmap: ImageBitmap)         // lève "unknown-id" (inconnu ou objectif)
 scene.contextLost(); scene.contextRestored(); scene.destroy()
 checkInput(ids, statuses, badges, goal, theme)            // même contrôle que le constructeur
 ```
 
 - **Initialisation par étapes** (audit #394) : le constructeur ne fait que l'état et le contexte ;
-  compiler et lier les programmes, envoyer les tampons et créer la texture de remplacement se fait
+  compiler et lier les programmes, envoyer les tampons se fait
   par `gpuStep()`, appelé en boucle par l'enveloppe qui rend la main au navigateur entre deux appels
   (une tâche de plus de 50 ms se forme sinon sous rastériseur logiciel). Les shaders sont émis sans
   lire leur état ; avec `KHR_parallel_shader_compile`, `gpuStep` rend 2 tant que le GPU compile (rappel
@@ -59,43 +57,26 @@ checkInput(ids, statuses, badges, goal, theme)            // même contrôle que
   la fin. Un échec libère ce qui existe et lève le code WebGL.
 - **Préchauffage** : sans carte graphique, le navigateur compose le canvas en lisant ses pixels et
   attend le GPU logiciel, qui compile ses routines au premier usage (60 à 90 ms mesurés à la première
-  image, puis à celle des badges). `warmFrame` trace une image d'essai (faces de badge avec une texture
-  de remplacement transparente, lecture asynchrone d'un pixel pour la résolution de l'anticrénelage)
+  image). `warmFrame` trace une image d'essai (lecture asynchrone d'un pixel pour la résolution de l'anticrénelage)
   sur un canvas que l'enveloppe a caché, et pose une clôture ; `warmed` l'interroge sans bloquer.
 - **Étapes** : les jalons dans l'ordre fourni (le tri par date est côté Astro), puis l'objectif
   s'il y en a un, d'identifiant réservé `@goal` (accepté par `progressOf`, `setActive`, `setHover` ;
-  `pick` le rend ; `setTexture` le refuse). `badges[i]` vaut 1 quand un badge est attendu pour le
-  jalon `i` (0 sinon) ; `statuses[i]` vaut `achieved` ou `planned`.
+  `pick` le rend). `badges[i]` vaut 1 quand un badge est attendu pour le
+  jalon `i` (0 sinon) : le badge est une image HTML posée par `project()` (ADR-0014), la scène ne
+  dessine que le support, et la coche quand il n'y a pas de badge ; `statuses[i]` vaut `achieved` ou `planned`.
 - **`project()`** : pour chaque étape (jalons puis objectif) : `x`, `y` de 0 à 1 (origine en haut à
   gauche du canvas), rayon de la médaille rapporté à la hauteur du canvas (pixels CSS du rayon =
   valeur × hauteur CSS), `visible` 1 ou 0 (devant la caméra et centre dans le cadre). Valeurs de la
   DERNIÈRE image dessinée : appeler après `frame`. `pick` lit aussi la dernière image.
 - **Progression** : `setProgress` n'agit qu'à la prochaine `frame`, avec l'horloge de `frame` : une
   scène au repos glisse quand même. Durée du thème nulle (mouvement réduit) : saut. Toute commande
-  (progression, survol, actif, texture, thème, taille) demande une image : `frame` rend faux au
+  (progression, survol, actif, thème, taille) demande une image : `frame` rend faux au
   repos, l'enveloppe en planifie une après chaque commande.
 - **Codes** : nouveaux `unknown-id` et `progress` ; `unknown-emblem` n'existe plus. `setActive` ne
   déplace jamais la caméra : le défilement pilote, le consommateur appelle
   `setProgress(progressOf(id))`.
 - **Disparu** : `activeId`, la navigation au clavier, les emblèmes (le troisième tableau du
   constructeur est maintenant `badges`).
-
-### Badges : contrat des textures
-
-- Créer le bitmap par `createImageBitmap(blob, { premultiplyAlpha: 'premultiply',
-colorSpaceConversion: 'none', imageOrientation: 'none', resizeWidth, resizeHeight })`, 512 px au
-  plus. Pour un `ImageBitmap`, WebGL ignore les réglages `UNPACK_*` : les options de création
-  valent. Ils sont posés quand même (flip Y faux, pré-multiplication, conversion `NONE`).
-- Le shader de la face (`shaders/badge.glsl`) écrit `texture(u_badge, v_uv)` et rien d'autre : aucun
-  éclairage, brouillard, teinte ni multiplication. Mélange `ONE, ONE_MINUS_SRC_ALPHA` (canvas
-  pré-multiplié). Un test vérifie le source du shader.
-- `generateMipmap`, `LINEAR_MIPMAP_LINEAR`, `LINEAR`, `CLAMP_TO_EDGE`, anisotropie jusqu'à 8 si
-  `EXT_texture_filter_anisotropic` existe (constantes 0x84FE et 0x84FF). Sans texture reçue : le
-  support seul reste visible.
-- Perte de contexte : les `ImageBitmap` sont **conservés côté Rust** (le plus simple : rien à
-  redemander au réseau) ; `contextRestored` recrée les textures. Coût : au plus 24 bitmaps de
-  512x512 en mémoire. `destroy()` supprime les textures et ferme les bitmaps ; remplacer un badge
-  ferme l'ancien bitmap.
 
 ## Construction
 
@@ -143,8 +124,7 @@ Cible de l'ADR-0013 : 45 Kio en brotli pour le `.wasm` (60 Kio dans l'ADR-0012).
 | glue JavaScript (`wasm-bindgen`)   | 23 810 / 5 511 / 4 887                | 28 403 / 6 566 / 5 833       |
 
 Poids livré : 31,2 Kio en brotli pour le `.wasm` (cible de 45 Kio tenue, 13,8 Kio de marge), 36,9 Kio
-avec la glue. La spline, les textures et le second programme coûtent 3,9 Kio en brotli ; la
-suppression des emblèmes n'a pas suffi à les compenser. La CI écrit ce tableau dans son résumé.
+avec la glue. Mesure d'avant le retrait des textures de badge (ADR-0014) : à refaire. La CI écrit ce tableau dans son résumé.
 
 `.wasm` existants, mesurés avant et après ce changement (même chaîne, mêmes octets) :
 

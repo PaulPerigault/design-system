@@ -24,7 +24,6 @@ export interface SceneOptions {
   onSelect(id: string): void;
   onHover(id: string | null): void;
   onFallback(reason: string): void;
-  onTextureError?(id: string): void;
 }
 
 export interface SceneModule {

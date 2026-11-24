@@ -1,7 +1,7 @@
 //! Statut d'un jalon : un jeu fermé.
 use crate::error::SceneError;
 
-/// Jalon obtenu (médaille pleine, badge en face avant) ou planifié (fantôme filaire).
+/// Jalon obtenu (médaille pleine, badge HTML superposé) ou planifié (fantôme filaire).
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Status {
     Achieved,

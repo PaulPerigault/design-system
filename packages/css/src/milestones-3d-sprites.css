@@ -1,0 +1,31 @@
+/*
+ * Milestones3D : badges superposés à la scène (ADR-0014). Chaque badge est une image HTML de face,
+ * à sa taille naturelle ; le comportement n'y pose que `translate` et `scale` uniforme (CSSOM).
+ * Aucune rotation, aucun filtre, aucune opacité, aucun masque, aucun arrondi : rien ne l'altère.
+ * Cachés avant leur première position et quand leur médaille sort du cadre (`visibility` seulement,
+ * pas de transition : rien ne s'anime, ce qui vaut aussi sous `prefers-reduced-motion`).
+ */
+.pp-milestones__sprites {
+  position: absolute;
+  inset: 0;
+  direction: ltr;
+  overflow: clip;
+  pointer-events: none;
+}
+
+.pp-milestones__sprite {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: auto;
+  block-size: auto;
+  max-inline-size: none;
+  max-block-size: none;
+  transform-origin: 0 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.pp-milestones__sprite[data-hidden] {
+  visibility: hidden;
+}

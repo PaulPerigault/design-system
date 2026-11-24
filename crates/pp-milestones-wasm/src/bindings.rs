@@ -7,9 +7,7 @@ use crate::input::build;
 use crate::stages::{Builder, build_all};
 use pp_milestones::SceneState;
 use wasm_bindgen::prelude::wasm_bindgen;
-use web_sys::{
-    HtmlCanvasElement, ImageBitmap, WebGl2RenderingContext as Gl, WebGlBuffer, WebGlSync,
-};
+use web_sys::{HtmlCanvasElement, WebGl2RenderingContext as Gl, WebGlBuffer, WebGlSync};
 
 #[wasm_bindgen]
 pub struct Scene {
@@ -25,8 +23,6 @@ pub struct Scene {
     pub(crate) idle_fence: Option<WebGlSync>,
     /// Tampon de la lecture d'un pixel du préchauffage, libéré avec la clôture.
     pub(crate) probe: Option<WebGlBuffer>,
-    /// Badges reçus, un par jalon : conservés pour recréer les textures après une perte de contexte.
-    pub(crate) bitmaps: Vec<Option<ImageBitmap>>,
 }
 
 #[wasm_bindgen]
@@ -49,7 +45,6 @@ impl Scene {
     ) -> Out<Scene> {
         let state = build((&ids, &statuses, badges), goal, theme, active).map_err(raise)?;
         let gl = context(&canvas).map_err(raise)?;
-        let bitmaps = vec![None; ids.len()];
         Ok(Scene {
             canvas,
             gl,
@@ -59,14 +54,13 @@ impl Scene {
             fence: None,
             idle_fence: None,
             probe: None,
-            bitmaps,
         })
     }
 
     /// Dessine une image ; vrai si une autre image est due (transition ou inclinaison en cours).
-    /// Toute commande (progression, survol, actif, texture, thème, taille) demande une image.
+    /// Toute commande (progression, survol, actif, thème, taille) demande une image.
     pub fn frame(&mut self, now: f64) -> Out<bool> {
-        self.render(now, false)
+        self.render(now)
     }
 
     /// Le contexte est perdu : ses ressources n'existent plus, rien à libérer.
@@ -76,24 +70,21 @@ impl Scene {
         self.builder = None;
     }
 
-    /// Le contexte est revenu : programmes, tampons et textures (depuis les bitmaps conservés).
+    /// Le contexte est revenu : programmes et tampons.
     #[wasm_bindgen(js_name = contextRestored)]
     pub fn context_restored(&mut self) -> Out<()> {
-        let gpu = build_all(&self.gl, self.state.pack(), &self.bitmaps).map_err(raise)?;
+        let gpu = build_all(&self.gl, self.state.pack()).map_err(raise)?;
         self.gpu = Some(gpu);
         Ok(())
     }
 
-    /// Libère les ressources, ferme les bitmaps et rend le contexte au navigateur.
+    /// Libère les ressources et rend le contexte au navigateur.
     pub fn destroy(&mut self) {
         if let Some(mut builder) = self.builder.take() {
             builder.free(&self.gl);
         }
         if let Some(gpu) = self.gpu.take() {
             gpu.free(&self.gl);
-        }
-        for bitmap in self.bitmaps.iter_mut().filter_map(Option::take) {
-            bitmap.close();
         }
         self.gl.delete_sync(self.fence.take().as_ref());
         self.gl.delete_sync(self.idle_fence.take().as_ref());
@@ -103,8 +94,8 @@ impl Scene {
 }
 
 impl Scene {
-    /// Dessine une image (`warm` : préchauffage, voir `warm.rs`).
-    pub(crate) fn render(&mut self, now: f64, warm: bool) -> Out<bool> {
+    /// Dessine une image (le préchauffage de `warm.rs` en trace une aussi).
+    pub(crate) fn render(&mut self, now: f64) -> Out<bool> {
         let frame = self.state.frame(ms(now));
         if let Some(gpu) = &self.gpu {
             let (width, height) = (self.canvas.width(), self.canvas.height());
@@ -120,7 +111,7 @@ impl Scene {
             gl.blend_func(Gl::ONE, Gl::ONE_MINUS_SRC_ALPHA);
             gl.clear_color(0.0, 0.0, 0.0, 0.0);
             gl.clear(Gl::COLOR_BUFFER_BIT | Gl::DEPTH_BUFFER_BIT);
-            gpu.draw(gl, &frame, warm).map_err(raise)?;
+            gpu.draw(gl, &frame).map_err(raise)?;
         }
         Ok(frame.animating)
     }

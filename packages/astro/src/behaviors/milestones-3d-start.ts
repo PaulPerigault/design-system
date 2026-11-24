@@ -2,6 +2,7 @@
  * Mise en route de la scène d'un composant : canvas, `init` du paquet 3D, repère d'étapes,
  * étiquettes, pilotage et clavier. Tout échec appelle `revert` : retour à la liste, sans message.
  */
+import { addBadges } from './milestones-3d-badges';
 import { addKeys } from './milestones-3d-keys';
 import { addLabels } from './milestones-3d-labels';
 import { createPilot, type Mode, type Pilot } from './milestones-3d-pilot';
@@ -57,10 +58,15 @@ function mount(parts: Parts, scene: Scene, env: Env, live: Live): void {
     move: (delta) => live.pilot?.move(delta),
   });
   live.steps = steps;
+  const badges = addBadges(parts, () => live.pilot?.redraw());
   const labels = addLabels(parts);
-  const pilot = createPilot({ parts, scene, env, steps, labels });
+  const pilot = createPilot({ parts, scene, env, steps, labels, badges });
   live.pilot = pilot;
-  live.cleanups.push(() => labels.remove(), addKeys(parts.host, pilot));
+  live.cleanups.push(
+    () => badges.remove(),
+    () => labels.remove(),
+    addKeys(parts.host, pilot),
+  );
   live.cleanups.push(env.reducedMotion().subscribe(() => pilot.setMode(modeOf(env))));
   pilot.setMode(modeOf(env));
 }

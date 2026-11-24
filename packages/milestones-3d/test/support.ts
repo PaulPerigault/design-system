@@ -22,12 +22,8 @@ export interface Harness {
   clock: number;
   visible: boolean;
   loadError: Error | undefined;
-  /** Rappels `whenIdle` en attente. */
-  readonly idles: Set<() => void>;
   /** Joue la première image planifiée ; vrai s'il y en avait une. */
   runFrame(): boolean;
-  /** Joue les rappels de temps libre en attente. */
-  runIdle(): void;
 }
 
 export function createHarness(theme: Theme, overrides: Partial<Env> = {}): Harness {
@@ -39,7 +35,6 @@ export function createHarness(theme: Theme, overrides: Partial<Env> = {}): Harne
   const frames = new Map<number, (t: number) => void>();
   const created: SceneInput[] = [];
   const readThemes: Theme[] = [];
-  const idles = new Set<() => void>();
   let next = 1;
   const id = (): number => (next += 1);
   const h: Harness = {
@@ -52,16 +47,9 @@ export function createHarness(theme: Theme, overrides: Partial<Env> = {}): Harne
     timers,
     frames,
     readThemes,
-    idles,
     clock: 1000,
     visible: true,
     loadError: undefined,
-    runIdle() {
-      for (const callback of [...idles]) {
-        idles.delete(callback);
-        callback();
-      }
-    },
     runFrame() {
       const [handle, callback] = [...frames][0] ?? [];
       if (handle === undefined || !callback) return false;
@@ -104,12 +92,6 @@ export function createHarness(theme: Theme, overrides: Partial<Env> = {}): Harne
       IntersectionObserver: FakeObserver,
       MutationObserver: FakeObserver,
       readTheme: () => (readThemes.push(theme), theme),
-      fetch: async () => ({ ok: true, blob: async () => new Blob([]) }),
-      createImageBitmap: async () => ({ width: 64, height: 64, close: () => {} }),
-      whenIdle: (callback) => {
-        idles.add(callback);
-        return () => void idles.delete(callback);
-      },
       orientation: undefined,
       ...overrides,
     },

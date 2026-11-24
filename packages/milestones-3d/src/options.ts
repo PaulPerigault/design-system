@@ -10,8 +10,6 @@ export interface InitOptions {
   /** Étape sous le pointeur, `null` quand il la quitte (appelé à chaque changement seulement). */
   readonly onHover?: (id: string | null) => void;
   readonly onFallback?: (reason: FallbackReason) => void;
-  /** Le badge d'un jalon n'a pas pu être chargé : la médaille reste sans badge. */
-  readonly onTextureError?: (id: string) => void;
   /** Élément dont les jetons sont lus (défaut : le parent du canvas, sinon `:root`). */
   readonly themeRoot?: Element;
   /** Inclinaison au gyroscope, demandée sur geste là où une autorisation existe (défaut : oui). */
@@ -22,7 +20,7 @@ export interface InitOptions {
  * Position d'une étape (jalon ou objectif) dans la dernière image dessinée. `x` et `y` : de 0 à 1,
  * origine en haut à gauche du canvas (directement ce que rend le `.wasm`, sans changement de
  * repère). `scale` : rayon de la médaille rapporté à la hauteur du canvas (pixels CSS du rayon =
- * `scale` x hauteur CSS). `visible` : devant la caméra et centre dans le cadre.
+ * `scale` x hauteur CSS). `visible` : devant la caméra et disque de la médaille touchant le cadre.
  */
 export interface MilestoneMark {
   readonly id: string;

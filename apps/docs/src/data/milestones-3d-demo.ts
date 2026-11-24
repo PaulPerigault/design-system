@@ -32,7 +32,7 @@ export const DEMO_MILESTONES = [
     group: 'Atelier Cloud',
     date: '2023-03',
     code: 'CLD-101',
-    badge: badge('test-badge-1'),
+    badge: badge('test-badge-arc'),
     href: verify('cloud-bases'),
     description: 'Notions de base : calcul, stockage, réseau et partage des responsabilités.',
   },

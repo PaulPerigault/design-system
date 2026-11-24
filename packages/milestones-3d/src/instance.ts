@@ -8,7 +8,6 @@ import type { Plan } from './plan.ts';
 import { bindPointer } from './pointer.ts';
 import type { Session } from './session.ts';
 import { watchSize } from './surface.ts';
-import { scheduleTextures } from './textures.ts';
 import { watchTheme } from './theme-watch.ts';
 import { watchVisibility } from './visibility.ts';
 
@@ -47,11 +46,10 @@ function wireInput(s: Session): void {
   });
 }
 
-/** Branche tout, demande la première image, programme les badges et rend la poignée. */
+/** Branche tout, demande la première image et rend la poignée. */
 export function startSession(s: Session, plan: Plan): MilestonesHandle {
   wireWatchers(s);
   wireInput(s);
   s.redraw();
-  scheduleTextures(s, plan.jobs);
   return createHandle(s, plan);
 }

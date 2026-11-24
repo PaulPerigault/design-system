@@ -3,7 +3,7 @@
 import type { Page } from '@playwright/test';
 import type { Launched } from './browser.ts';
 import { openPage, untilEnhanced } from './browser.ts';
-import { BADGE_URL, TEXTURE_WAIT_MS } from './badges.ts';
+import { BADGE_URL, BADGE_WAIT_MS } from './badges.ts';
 import { HOST, at, brief, isEngineNoise, row } from './model.ts';
 import type { Row, Where } from './model.ts';
 import { stepNames } from './steps.ts';
@@ -69,7 +69,7 @@ export async function auditBroken(engine: Launched, base: string): Promise<Row[]
   const { context, page } = await openPage(engine.browser, base, {}, (p) => listen(p, problems));
   try {
     await untilEnhanced(page);
-    await page.waitForTimeout(TEXTURE_WAIT_MS);
+    await page.waitForTimeout(BADGE_WAIT_MS);
     return await rows(page, where, problems);
   } catch (error) {
     return [row(where, 'image en 404', false, brief(error))];

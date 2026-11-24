@@ -24,6 +24,8 @@ export interface Pilot {
   goTo(id: string): void;
   move(delta: number): void;
   setMode(mode: Mode): void;
+  /** Demande une image (un badge vient de se charger). */
+  redraw(): void;
   stop(): void;
 }
 
@@ -65,6 +67,7 @@ export function createPilot(context: PilotContext): Pilot {
       goAt(run, stepIndex(Math.max(START, run.active.index()), delta, order.length));
     },
     setMode: (mode) => setMode(run, mode),
+    redraw: loop.kick,
     stop() {
       run.unscroll?.();
       run.loop.stop();

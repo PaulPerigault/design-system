@@ -8,8 +8,6 @@ const COMPLETION_STATUS: u32 = 0x91B1;
 const VERTEX: &str = include_str!("shaders/vertex.glsl");
 /// Surfaces du thème : support, rail, repères, fantômes, étoile, anneau.
 pub const SOLID: &str = include_str!("shaders/solid.glsl");
-/// Face du badge : texture seule.
-pub const BADGE: &str = include_str!("shaders/badge.glsl");
 
 fn issue_shader(gl: &Gl, kind: u32, source: &str) -> Result<WebGlShader, Fault> {
     let shader = gl.create_shader(kind).ok_or(GlFault::Shader)?;
@@ -24,7 +22,7 @@ pub struct Linking {
     shaders: [WebGlShader; 2],
 }
 
-/// Demande la compilation et la liaison du sommet partagé et d'un fragment (`SOLID` ou `BADGE`)
+/// Demande la compilation et la liaison du sommet partagé et d'un fragment (`SOLID`)
 /// sans lire le résultat : rien ne bloque le fil principal tant que le GPU travaille.
 pub fn issue(gl: &Gl, fragment_source: &str) -> Result<Linking, Fault> {
     let vertex = issue_shader(gl, Gl::VERTEX_SHADER, VERTEX)?;
@@ -81,40 +79,14 @@ pub fn discard(gl: &Gl, linking: &Linking) {
 
 #[cfg(test)]
 mod tests {
-    use super::{BADGE, SOLID};
-
-    /// Règle d'usage des badges (ADR-0013) : la face les écrit tels quels, sans rien d'autre.
-    #[test]
-    fn the_badge_fragment_only_samples_the_texture() {
-        let code: Vec<&str> = BADGE
-            .lines()
-            .filter(|l| !l.trim_start().starts_with("//"))
-            .collect();
-        let body = code.join("\n");
-        assert_eq!(body.matches("texture(").count(), 1);
-        assert!(body.contains("out_color = texture(u_badge, v_uv);"));
-        for forbidden in [
-            "u_color",
-            "u_light",
-            "u_fog",
-            "u_ambient",
-            "u_lit",
-            "mix(",
-            "dot(",
-            " * ",
-        ] {
-            assert!(!body.contains(forbidden), "{forbidden}");
-        }
-    }
+    use super::SOLID;
 
     #[test]
     fn no_shader_writes_a_literal_color() {
-        for source in [SOLID, BADGE] {
-            assert!(!source.contains("vec3(0") && !source.contains("vec4(0"));
-            assert!(
-                !source.contains('#') || source.matches('#').count() == 1,
-                "seul #version"
-            );
-        }
+        assert!(!SOLID.contains("vec3(0") && !SOLID.contains("vec4(0"));
+        assert!(
+            !SOLID.contains('#') || SOLID.matches('#').count() == 1,
+            "seul #version"
+        );
     }
 }
