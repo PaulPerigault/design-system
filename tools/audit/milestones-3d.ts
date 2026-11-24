@@ -10,6 +10,7 @@ import { build } from './milestones-3d/build.ts';
 import { auditA11y } from './milestones-3d/a11y.ts';
 import { auditBadges } from './milestones-3d/badges.ts';
 import { auditBroken } from './milestones-3d/broken.ts';
+import { auditShift } from './milestones-3d/cls.ts';
 import { auditFraming } from './milestones-3d/framing-steps.ts';
 import { launch, parseEngines } from './milestones-3d/browser.ts';
 import type { Launched } from './milestones-3d/browser.ts';
@@ -53,6 +54,7 @@ async function auditEngine(engine: Launched, base: string, out: string): Promise
     ['rendu', () => auditRender(engine, base, out)],
     ['cadrage par étape', () => auditFraming(engine, base)],
     ['défilement', () => auditScroll(engine, base)],
+    ['décalage de mise en page', () => auditShift(engine, base)],
     ['badges', () => auditBadges(engine, base)],
     ['image en 404', () => auditBroken(engine, base)],
     ['mouvement réduit', () => auditReduced(engine, base)],

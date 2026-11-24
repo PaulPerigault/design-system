@@ -13,10 +13,17 @@ const overflow = () => document.documentElement.scrollWidth - innerWidth;
 /** Texte masqué par un débordement coupé (même contrôle que 1.4.12). */
 function clipped(): string[] {
   const CLIPPING = ['hidden', 'clip'];
+  const HIDDEN_BOX = 2;
   return [...document.body.querySelectorAll<HTMLElement>('*')]
     .filter((el) =>
       [...el.childNodes].some((n) => n.nodeType === Node.TEXT_NODE && n.textContent?.trim()),
     )
+    .filter((el) => {
+      // Texte réservé aux lecteurs d'écran (boîte d'un pixel ou `clip-path`) : coupé par construction.
+      const box = el.getBoundingClientRect();
+      const masked = getComputedStyle(el).clipPath !== 'none';
+      return !(masked || box.width <= HIDDEN_BOX || box.height <= HIDDEN_BOX);
+    })
     .filter((el) => {
       const style = getComputedStyle(el);
       const clips = CLIPPING.includes(style.overflowX) || CLIPPING.includes(style.overflowY);

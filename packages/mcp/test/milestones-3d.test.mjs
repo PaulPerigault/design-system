@@ -15,10 +15,19 @@ describe('Milestones3D dans les données embarquées du MCP', () => {
     expect(found?.group).toBe('content');
   });
 
-  it('get_component rend ses six propriétés, son extrait et ses notes d’accessibilité', () => {
+  it('get_component rend ses sept propriétés, son extrait et ses notes d’accessibilité', () => {
     const component = getComponent(data.components, { slug });
     const names = component.props.map((prop) => prop.name.replace(/ \(obligatoire\)|`/g, ''));
-    expect(names).toEqual(['milestones', 'goal', 'label', 'locale', 'labels', 'endId', 'class']);
+    expect(names).toEqual([
+      'milestones',
+      'goal',
+      'label',
+      'locale',
+      'labels',
+      'endId',
+      'reserve',
+      'class',
+    ]);
     expect(component.snippet).toContain('<Milestones3D');
     expect(component.snippet).toContain("install } from '@paulperigault/astro/milestones-3d'");
     expect(component.a11y.screenReader.join(' ')).toContain('aria-hidden');

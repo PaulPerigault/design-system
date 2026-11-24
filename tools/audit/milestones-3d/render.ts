@@ -8,6 +8,7 @@ import { openPage, untilEnhanced } from './browser.ts';
 import { resolveTokens } from './colors.ts';
 import type { TokenColors } from './colors.ts';
 import { IDLE_WAIT_MS, at, brief, info, row } from './model.ts';
+import { shootWithoutBadges } from './sprites.ts';
 import type { Row, Where } from './model.ts';
 import { contrast, coverage, dominantHue, hueDistance, hueOf } from './pixels.ts';
 import { framingDetail, readMarks, worstMargin } from './marks.ts';
@@ -30,14 +31,11 @@ export async function rendererOf(page: Page): Promise<string> {
   });
 }
 
-const HIDE_SPRITES = '.pp-milestones__sprites { visibility: hidden !important; }';
-
 async function enhanceAndShoot(page: Page): Promise<Buffer> {
   await untilEnhanced(page);
   await page.locator(STAGE).scrollIntoViewIfNeeded();
   await page.waitForTimeout(IDLE_WAIT_MS);
-  // Le contrôle de fidélité porte sur la 3D (support, rail, anneau) : les badges HTML en sont exclus.
-  return page.locator(STAGE).screenshot({ style: HIDE_SPRITES });
+  return shootWithoutBadges(page, STAGE);
 }
 
 function framing(where: Where, png: Buffer, tokens: TokenColors): Row {

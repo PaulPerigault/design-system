@@ -40,6 +40,9 @@ export function collect(host: Element): Parts | null {
   return { host: host as HTMLElement, track, stage, list, panel, items, data };
 }
 
+/** Lève la réservation d'empreinte : la liste reprend sa place (repli, un seul décalage). */
+export const releaseReserve = (host: Element): void => host.removeAttribute('data-reserve');
+
 export const itemId = (item: HTMLElement): string => item.getAttribute(ITEM) ?? '';
 
 export const ids = (parts: Parts): string[] => parts.items.map(itemId);

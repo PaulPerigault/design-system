@@ -14,6 +14,19 @@ const item = async (index: number, props = {}): Promise<Element> =>
   items(await render(props))[index] as Element;
 const FOLLOWING = 4;
 
+describe('Milestones3D (empreinte réservée, ADR-0014)', () => {
+  it('pose data-reserve et le nombre d’étapes (jalons et objectif) par défaut', async () => {
+    const root = await render({ goal: GOAL });
+    expect(root.getAttribute('data-reserve')).toBe('on');
+    expect(root.getAttribute('data-pp-count')).toBe('5');
+  });
+
+  it('ne réserve rien avec reserve={false}', async () => {
+    const root = await render({ reserve: false });
+    expect(root.hasAttribute('data-reserve')).toBe(false);
+  });
+});
+
 describe('Milestones3D (rendu serveur complet, sans JavaScript)', () => {
   it('rend une liste role="list" triée par date, un jalon sans date derrière le précédent', async () => {
     const root = await render();

@@ -3014,7 +3014,7 @@
         "Pas d’économie de données (`navigator.connection.saveData`), quand le navigateur l’expose : Chromium seulement. Vérifié avant tout téléchargement.",
         "Appareil non faible : plus de 2 cœurs (`hardwareConcurrency`) et plus de 2 Go (`deviceMemory`). Une valeur absente ne compte pas comme faible : Firefox et Safari n’exposent pas `deviceMemory`.",
         "WebGL2 disponible, testé sur un canvas jetable, rendu au navigateur aussitôt.",
-        "Section proche de l’écran (marge de 200 px). Déjà visible à l’ouverture : la 3D attend le premier geste, pour ne pas décaler la liste déjà affichée.",
+        "Section proche de l’écran (marge de 200 px). Avec `reserve` (défaut), la scène s’installe aussitôt, sans décalage : le HTML serveur occupe déjà l’empreinte finale (piste, cadre épinglé, liste en bande d’étapes, rangée de navigation), avec JavaScript seulement. Avec `reserve={false}`, une section déjà visible à l’ouverture attend le premier geste.",
         "[web-features](https://web-platform-dx.github.io/web-features-explorer/features/webgl2)",
         "[caniuse](https://caniuse.com/webgl2)",
         "`id` (obligatoire) : identifiant unique, `[a-z0-9-]+`.",
@@ -3104,6 +3104,12 @@
         "fallback": "—",
         "name": "`endId`",
         "type": "`string`"
+      },
+      {
+        "description": "Réserve dès le HTML serveur l'empreinte du mode amélioré (piste, cadre, bande d'étapes) : la scène s'y installe sans décalage de mise en page. Défaut : oui. À mettre à `false` si la page n'installe pas le comportement `milestones-3d` (sinon l'empreinte resterait vide).",
+        "fallback": "`true`",
+        "name": "`reserve`",
+        "type": "`boolean`"
       },
       {
         "description": "Réservé au placement du composant dans son parent.",

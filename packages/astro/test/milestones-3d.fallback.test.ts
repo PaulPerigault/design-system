@@ -83,4 +83,30 @@ describe('enhance (repli sur la liste)', () => {
     expect(host.querySelector('canvas')).toBeNull();
     expect(host.textContent).not.toMatch(/webgl|erreur/i);
   });
+
+  it('lève la réservation d’empreinte à chaque repli (init, chargement, WebGL2, économie de données)', async () => {
+    const reserved = (): HTMLElement => {
+      const host = page();
+      host.setAttribute('data-reserve', 'on');
+      return host;
+    };
+    const failing = reserved();
+    await enhance(failing, setup({ init: () => Promise.reject(new Error('shader')) }).deps);
+    const offline = reserved();
+    await enhance(offline, { ...setup().deps, load: () => Promise.reject(new Error('404')) });
+    const noGl = reserved();
+    await enhance(noGl, setup({ canEnhance: () => false }).deps);
+    const saving = reserved();
+    await enhance(saving, { ...setup().deps, early: () => 'save-data' });
+    for (const host of [failing, offline, noGl, saving]) {
+      expect(host.hasAttribute('data-reserve')).toBe(false);
+    }
+  });
+
+  it('garde la réservation quand la scène est affichée', async () => {
+    const host = page();
+    host.setAttribute('data-reserve', 'on');
+    await enhance(host, setup({}, fakeEnv(true)).deps);
+    expect(host.getAttribute('data-reserve')).toBe('on');
+  });
 });

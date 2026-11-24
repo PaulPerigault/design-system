@@ -9,6 +9,8 @@
 @import './milestones-3d-steps.css';
 @import './milestones-3d-panel.css';
 @import './milestones-3d-sprites.css';
+@import './milestones-3d-reserve.css';
+@import './milestones-3d-reserve-track.css';
 
 .pp-milestones {
   display: block;

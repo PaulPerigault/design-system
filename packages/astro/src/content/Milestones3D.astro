@@ -6,7 +6,8 @@
  * sans JavaScript ni WebGL, indexable ; la liste n'est jamais retirée. Le comportement externe
  * (`behaviors/milestones-3d.ts`) pose la scène dans `data-pp-stage`, fait de la liste le repère
  * d'étapes et affiche le panneau du jalon actif. L'emplacement de la scène ne s'insère qu'après un
- * geste quand la section est déjà à l'écran (CLS, audit #366). Données : bloc JSON non exécuté.
+ * geste quand la section est déjà à l'écran et que l'empreinte n'est pas réservée (`reserve`, ADR-0014 :
+ * avec elle, la scène s'installe sans décalage). Données : bloc JSON non exécuté.
  */
 import '@paulperigault/css/milestones-3d.css';
 import Milestones3DDetail from './Milestones3DDetail.astro';
@@ -36,11 +37,25 @@ interface Props {
   labels?: Partial<MilestoneLabels>;
   /** Identifiant de l'ancre qui suit la section (« Passer cette section »). Défaut : dérivé. */
   endId?: string;
+  /**
+   * Réserve dès le HTML serveur l'empreinte du mode amélioré (piste, cadre, bande d'étapes) : la
+   * scène s'y installe sans décalage de mise en page. Défaut : oui. À mettre à `false` si la page
+   * n'installe pas le comportement `milestones-3d` (sinon l'empreinte resterait vide).
+   */
+  reserve?: boolean;
   /** Réservé au placement du composant dans son parent. */
   class?: string;
 }
 
-const { milestones, goal, label, locale = DEFAULT_LOCALE, endId, class: className } = Astro.props;
+const {
+  milestones,
+  goal,
+  label,
+  locale = DEFAULT_LOCALE,
+  endId,
+  reserve = true,
+  class: className,
+} = Astro.props;
 const text: MilestoneLabels = { ...DEFAULT_LABELS, ...Astro.props.labels };
 const sorted = sortMilestones(milestones);
 const when = (date?: string) => (date ? formatDate(date, locale) : undefined);
@@ -59,6 +74,8 @@ const end = endAnchor(endId, label ?? sorted[0]?.id ?? '');
   class:list={['pp-milestones', className]}
   aria-label={label}
   data-pp-milestones
+  data-reserve={reserve ? 'on' : undefined}
+  data-pp-count={steps.length}
   data-pp-previous={text.previous}
   data-pp-next={text.next}
   data-pp-steps={text.steps}

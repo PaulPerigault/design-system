@@ -36,7 +36,8 @@ Le défilement n'est pas une entrée récente : l'exclusion des décalages aprè
 - Le HTML serveur est mis en page dès le départ comme le mode amélioré : piste haute (selon le nombre d'étapes), cadre épinglé de la hauteur de l'écran, scène vide réservée, liste déjà en bande d'étapes, rangée de navigation réservée. Condition CSS `(scripting: enabled)` : sans JavaScript, la liste reste en flux normal. La piste haute dépend en plus de `(prefers-reduced-motion: no-preference)`, comme le mode `scroll`.
 - À l'activation, le comportement ajoute le canvas (positionné en absolu), les boutons d'étapes (même boîte que le texte qu'ils remplacent) et la navigation (rangée déjà réservée) : aucun élément déjà peint ne bouge.
 - Prop `reserve` (défaut `true`) : à `false`, aucune empreinte n'est réservée (page qui n'installe pas le comportement). Au repli (WebGL2 absent, économie de données, échec), la réservation est levée : un décalage unique, limité à ces appareils, mesuré dans le rapport.
-- Le geste exigé avant l'activation d'une section déjà à l'écran (D-195) n'a plus de raison d'être pour le CLS ; il est conservé pour ne pas charger de code pendant le LCP.
+- Le geste exigé avant l'activation d'une section déjà à l'écran (D-195) n'est plus demandé quand l'empreinte est réservée : la scène s'installe dès que la section approche du viewport. Il reste exigé avec `reserve={false}`.
+- Zones de contrôle : un test compare chaque règle de réservation (`milestones-3d-reserve.css`) à sa jumelle du mode amélioré ; le nombre d'étapes est lu dans `data-pp-count` (1 à 25).
 
 ### Reproductibilité du `.wasm`
 
