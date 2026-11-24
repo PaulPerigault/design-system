@@ -20,8 +20,11 @@ function findProblems(): Problem[] {
   const hasText = (el: Element) =>
     [...el.childNodes].some((n) => n.nodeType === Node.TEXT_NODE && n.textContent?.trim());
   // Le texte SVG n'a pas de boîte CSS (clientWidth sans sens) : vérifié par capture (Diagram).
+  // Texte réservé aux lecteurs d'écran (`clip-path` : liste en bande d'étapes) : coupé par construction.
   const isBox = (el: HTMLElement) =>
-    !(el instanceof SVGElement) && !['inline', 'none'].includes(getComputedStyle(el).display);
+    !(el instanceof SVGElement) &&
+    !['inline', 'none'].includes(getComputedStyle(el).display) &&
+    getComputedStyle(el).clipPath === 'none';
   const reasons = (el: HTMLElement) => {
     const style = getComputedStyle(el);
     const clips = CLIPPING.includes(style.overflowY) || CLIPPING.includes(style.overflowX);

@@ -7,7 +7,8 @@ import type { Launched } from './browser.ts';
 import { openPage, untilEnhanced } from './browser.ts';
 import { resolveTokens } from './colors.ts';
 import type { TokenColors } from './colors.ts';
-import { HOST, IDLE_WAIT_MS, at, brief, info, row } from './model.ts';
+import { IDLE_WAIT_MS, at, brief, info, row } from './model.ts';
+import { shootWithoutBadges } from './sprites.ts';
 import type { Row, Where } from './model.ts';
 import { contrast, coverage, dominantHue, hueDistance, hueOf } from './pixels.ts';
 import { framingDetail, readMarks, worstMargin } from './marks.ts';
@@ -30,19 +31,11 @@ export async function rendererOf(page: Page): Promise<string> {
   });
 }
 
-const SPRITES = `${HOST} .pp-milestones__sprites`;
-
 async function enhanceAndShoot(page: Page): Promise<Buffer> {
   await untilEnhanced(page);
   await page.locator(STAGE).scrollIntoViewIfNeeded();
   await page.waitForTimeout(IDLE_WAIT_MS);
-  // Le contrôle de fidélité porte sur la 3D (support, rail, anneau) : les badges HTML en sont exclus.
-  // CSSOM et non une feuille injectée : la CSP du site refuse les styles non déclarés.
-  const sprites = page.locator(SPRITES);
-  await sprites.evaluate((layer) => layer.style.setProperty('visibility', 'hidden'));
-  const png = await page.locator(STAGE).screenshot();
-  await sprites.evaluate((layer) => layer.style.removeProperty('visibility'));
-  return png;
+  return shootWithoutBadges(page, STAGE);
 }
 
 function framing(where: Where, png: Buffer, tokens: TokenColors): Row {

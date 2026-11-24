@@ -76,3 +76,15 @@ export async function spriteRows(page: Page, where: Where, net: Network): Promis
     ),
   ];
 }
+
+/**
+ * Capture de la scène sans les badges HTML : la fidélité aux jetons porte sur la 3D seule. Masqués
+ * par le CSSOM, non par une feuille injectée (la CSP du site refuse les styles non déclarés).
+ */
+export async function shootWithoutBadges(page: Page, stage: string): Promise<Buffer> {
+  const layer = page.locator(`${HOST} .pp-milestones__sprites`);
+  await layer.evaluate((node) => node.style.setProperty('visibility', 'hidden'));
+  const png = await page.locator(stage).screenshot();
+  await layer.evaluate((node) => node.style.removeProperty('visibility'));
+  return png;
+}
