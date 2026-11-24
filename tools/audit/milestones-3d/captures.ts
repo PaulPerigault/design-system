@@ -13,7 +13,7 @@ import { serve } from './server.ts';
 
 const SIZES = { bureau: { width: 1440, height: 900 }, mobile: { width: 390, height: 844 } };
 const SETTLE_MS = 2500;
-const TEXTURE_MS = 3000;
+const BADGE_MS = 3000;
 const STEPS = '.pp-milestones__select';
 const { values } = parseArgs({
   options: {
@@ -32,7 +32,7 @@ async function ready(page: Page): Promise<void> {
     await page.waitForTimeout(400);
   }
   await page.locator(ENHANCED).waitFor({ timeout: 1000 });
-  await page.waitForTimeout(TEXTURE_MS);
+  await page.waitForTimeout(BADGE_MS);
 }
 
 async function toStart(page: Page): Promise<void> {

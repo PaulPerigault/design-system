@@ -1,5 +1,5 @@
 ---
-/** Page Milestones3D : images des badges et conditions d'usage des émetteurs (ADR-0013). */
+/** Page Milestones3D : images des badges et conditions d'usage des émetteurs (ADR-0013, ADR-0014). */
 import { EXTRA_SECTIONS } from '../data/milestones-3d';
 import InlineCode from './InlineCode.astro';
 
@@ -7,9 +7,11 @@ const [, , , , , , images, terms] = EXTRA_SECTIONS;
 const imageRules = [
   'Le consommateur fournit les images : le dépôt n’en contient aucune. Les badges de la démonstration sont des avatars géométriques fictifs.',
   "Format WebP ou AVIF, servi par le même site (`img-src 'self'`). `src` est un chemin relatif ou une adresse `https:`.",
-  'Côté GPU, la texture est ramenée à 512 px au plus (`createImageBitmap`), puis reçoit ses mipmaps. Fournir une image carrée de 512 px suffit.',
-  'Le badge est plaqué à plat, sans éclairage, sans filtre de couleur, sans recadrage ni déformation. Le support est une pastille claire fixe, même dans le thème sombre.',
-  'Le chargement est différé, après le premier rendu. Un échec laisse la médaille sans badge.',
+  'Le badge est une vraie image HTML posée sur la médaille, jamais une texture : de face, sans rotation, inclinaison, perspective, éclairage, filtre ni transparence variable. Seules transformations : translation et mise à l’échelle uniforme, le rapport largeur/hauteur de l’image est conservé.',
+  'Fournir une image d’au moins le double de la taille affichée (carrée de 512 px, par exemple) : le navigateur la réduit, il ne l’agrandit pas. Au mobile, le badge de la médaille active fait au moins 150 px de large.',
+  'Le support est une pastille 3D claire fixe, même dans le thème sombre. Seul le support s’incline au survol, jamais l’image. Les badges de toutes les médailles obtenues restent visibles le long du chemin ; un jalon prévu n’en a pas.',
+  'Les images sont `aria-hidden` avec un `alt` vide : la liste et le panneau portent déjà le nom et l’image avec leur texte alternatif. Survol et toucher atteignent la médaille derrière l’image.',
+  'Une image ne se charge qu’à la première apparition de sa médaille. Un échec laisse le support nu.',
 ];
 const sources = [
   {
@@ -34,7 +36,7 @@ const sources = [
   },
 ];
 const rules = [
-  'Badge non modifié, sur une pastille claire, sans texte ni logo par-dessus.',
+  'Badge non modifié et de face, sur un support clair, sans texte ni logo par-dessus ; jamais déformé, incliné ni réduit de façon non uniforme.',
   'Aucune combinaison avec d’autres symboles, mots ou logos.',
   'Nom complet de la certification écrit en HTML, à côté du badge.',
   'Lien de vérification vers la page de l’émetteur (`href`), qui reflète une révocation éventuelle.',
@@ -55,7 +57,7 @@ const unknown =
 </ul>
 
 <h2 id={terms?.id}>{terms?.title}</h2>
-<p>Sources lues le 2026-11-21 (ADR-0013) :</p>
+<p>Sources lues le 2026-11-21 (ADR-0013), règles reprises par l’ADR-0014 :</p>
 <ul>
   {sources.map(({ name, href, text }) => (
     <li>

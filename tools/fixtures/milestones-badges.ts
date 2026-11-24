@@ -6,10 +6,13 @@ import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import sharp from 'sharp';
+import { arcText } from './arc-text.ts';
 
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const SIZE = 512;
 const MID = SIZE / 2;
+/** Rayon du texte en arc, juste à l'intérieur du bord du disque. */
+const ARC_RADIUS = 206;
 
 type Shape = 'hexagon' | 'circle' | 'shield';
 interface Badge {
@@ -18,6 +21,8 @@ interface Badge {
   ground: string;
   ink: string;
   glyph: 'bars' | 'rings' | 'grid' | 'peaks' | 'dots' | 'waves';
+  /** Texte fin en arc le long du bord : le piège des badges réels (lisibilité à petite taille). */
+  arc?: string;
 }
 
 const BADGES: Badge[] = [
@@ -27,6 +32,14 @@ const BADGES: Badge[] = [
   { name: 'test-badge-4', shape: 'hexagon', ground: '#3d3d3d', ink: '#7fd1b9', glyph: 'peaks' },
   { name: 'test-badge-5', shape: 'circle', ground: '#c9692b', ink: '#1d1d2b', glyph: 'dots' },
   { name: 'test-badge-6', shape: 'shield', ground: '#4b3f9e', ink: '#e8e4ff', glyph: 'waves' },
+  {
+    name: 'test-badge-arc',
+    shape: 'circle',
+    ground: '#1d3557',
+    ink: '#f1faee',
+    glyph: 'rings',
+    arc: 'CLOUD ARCHITECT TEST',
+  },
 ];
 
 function outline(shape: Shape): string {
@@ -84,7 +97,7 @@ function glyph(kind: Badge['glyph']): string {
 function svg(b: Badge): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${SIZE}" height="${SIZE}" viewBox="0 0 ${SIZE} ${SIZE}">
 <g fill="${b.ground}">${outline(b.shape)}</g>
-<g fill="${b.ink}" stroke="${b.ink}">${glyph(b.glyph)}</g></svg>`;
+<g fill="${b.ink}" stroke="${b.ink}">${glyph(b.glyph)}</g>${b.arc ? arcText(b.arc, b.ink, MID, ARC_RADIUS) : ''}</svg>`;
 }
 
 const { values } = parseArgs({ options: { out: { type: 'string' } } });

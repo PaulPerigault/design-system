@@ -1,11 +1,11 @@
 # @paulperigault/milestones-3d
 
 Scène 3D de jalons en WebGL2 : un parcours chronologique piloté au défilement. Chaque certification
-obtenue est une médaille en volume dont la face porte le vrai badge, non modifié ; un jalon prévu est
+obtenue est une médaille en volume (support clair fixe) sur laquelle le composant pose le vrai badge, en image HTML intacte ; un jalon prévu est
 un fantôme filaire sans badge ; l'objectif a sa propre forme. Le rendu est écrit en Rust
 (`crates/pp-milestones` et `crates/pp-milestones-wasm`, compilés en WebAssembly) ; ce paquet est
 l'enveloppe TypeScript stricte qui valide les données, lit le thème dans la page, décide si la 3D est
-admise, charge le `.wasm` puis les badges, et relaie les commandes et les événements. Aucun rendu en
+admise, charge le `.wasm`, et relaie les commandes et les événements. Aucun rendu en
 TypeScript, aucune dépendance d'exécution.
 
 La 3D n'est qu'une amélioration : la liste HTML complète reste la source de vérité (composant Astro
@@ -39,7 +39,6 @@ if (canEnhance(env)) {
   const handle = await init(canvas, data, readTheme(document.documentElement), {
     onSelect: (id) => scrollToStep(id),
     onHover: (id) => highlightLabel(id),
-    onTextureError: (id) => console.warn(`badge de ${id} indisponible`),
     onFallback: (reason) => showClassicList(reason),
   });
   handle.setProgress(scrollProgress); // de 0 à 1, à chaque défilement
@@ -49,20 +48,19 @@ if (canEnhance(env)) {
 ```
 
 `init(canvas, data, theme, options?)` rend `Promise<MilestonesHandle>`. Elle valide `data`, charge le
-`.wasm` une seule fois, crée la scène, branche les écouteurs et demande la première image. Les badges
-se chargent ensuite (voir « Badges »). Un échec appelle `options.onFallback(raison)`, libère tout ce
+`.wasm` une seule fois, crée la scène, branche les écouteurs et demande la première image.
+Un échec appelle `options.onFallback(raison)`, libère tout ce
 qui a été créé, puis rejette avec une `MilestonesError`.
 
-| Option           | Défaut                          | Rôle                                                             |
-| ---------------- | ------------------------------- | ---------------------------------------------------------------- |
-| `dprMax`         | 2                               | plafond du rapport de pixels                                     |
-| `activeId`       | aucune étape active             | étape active au départ (`@goal` : l'objectif)                    |
-| `onSelect`       | aucun                           | médaille choisie sur le canvas (clic ou toucher), via `pick`     |
-| `onHover`        | aucun                           | étape sous le pointeur, `null` à la sortie (au changement seul)  |
-| `onFallback`     | aucun                           | repli vers le rendu classique, avec la raison                    |
-| `onTextureError` | aucun                           | le badge d'un jalon n'a pas pu être chargé                       |
-| `themeRoot`      | parent du canvas, sinon `:root` | élément sous lequel les jetons sont lus (et relus au changement) |
-| `gyroscope`      | `true`                          | inclinaison au gyroscope, demandée sur geste là où il le faut    |
+| Option       | Défaut                          | Rôle                                                             |
+| ------------ | ------------------------------- | ---------------------------------------------------------------- |
+| `dprMax`     | 2                               | plafond du rapport de pixels                                     |
+| `activeId`   | aucune étape active             | étape active au départ (`@goal` : l'objectif)                    |
+| `onSelect`   | aucun                           | médaille choisie sur le canvas (clic ou toucher), via `pick`     |
+| `onHover`    | aucun                           | étape sous le pointeur, `null` à la sortie (au changement seul)  |
+| `onFallback` | aucun                           | repli vers le rendu classique, avec la raison                    |
+| `themeRoot`  | parent du canvas, sinon `:root` | élément sous lequel les jetons sont lus (et relus au changement) |
+| `gyroscope`  | `true`                          | inclinaison au gyroscope, demandée sur geste là où il le faut    |
 
 `onSelect` n'est appelé que pour un clic ou un toucher sur une médaille (`pick`) ; il ne change pas
 l'étape active ni la caméra. Entrée au clavier : c'est le HTML (boutons, liste), pas ce paquet.
@@ -107,25 +105,13 @@ interface MilestoneMark {
 
 ## Badges
 
-Chaque jalon `achieved` peut porter `badge: { src, width?, height? }`. Après la création de la scène
-et la première image dessinée, au temps libre du navigateur (`requestIdleCallback`, 1 s au plus ;
-`setTimeout` sinon), chaque badge se charge, deux à la fois au plus :
-
-1. `fetch(src, { credentials: 'same-origin', mode: 'same-origin' })` : images du même site, sans CORS ;
-2. `createImageBitmap(blob, { premultiplyAlpha: 'premultiply', colorSpaceConversion: 'none',
-imageOrientation: 'none' })` ; si l'image dépasse 512 px, elle est redécodée à 512 px au plus
-   (`resizeQuality: 'high'`, proportions gardées). Avec `width` et `height` déclarés, un seul
-   décodage suffit ;
-3. `scene.setTexture(id, bitmap)` puis une image demandée.
-
-Un échec (réseau, 404, image invalide, taille nulle, refus de la scène) appelle `onTextureError(id)`
-et laisse la médaille sans badge : la scène n'échoue jamais pour une image. `destroy()` annule les
-requêtes en cours (`AbortController`), vide la file et ferme les `ImageBitmap` non transmis. Section
-jamais visible : aucun badge n'est demandé (pas d'image, donc pas de donnée mobile gaspillée).
-
-Le badge est affiché tel quel, sans éclairage ni filtre (ADR-0013, conditions des émetteurs). Le
-paquet n'embarque aucune image : le consommateur fournit une image du même site, qu'il est autorisé à
-afficher (usage réservé à la personne certifiée).
+Le badge n'est jamais une texture (ADR-0014). Chaque jalon `achieved` peut porter
+`badge: { src, width?, height? }` : l'image est affichée par le composant Astro `Milestones3D` en
+HTML, de face et intacte, posée sur la médaille d'après `project()` (centre, rayon, visibilité).
+Seules transformations : `translate` et `scale` uniforme, le rapport largeur/hauteur naturel est
+conservé. Pas de rotation, de biais, de perspective, d'éclairage, de filtre ni d'opacité. La
+médaille 3D est un support clair fixe qui s'incline seul au survol. Le paquet ne charge aucune
+image : `badge.src` reste une donnée validée du jalon, lue par l'HTML.
 
 ## Données
 
@@ -272,7 +258,7 @@ imposer de boîte de dialogue.
   `webglcontextrestored` n'arrive pas avant `CONTEXT_RESTORE_TIMEOUT_MS` (2 000 ms),
   `onFallback('context-lost')` puis `destroy()`. À la restauration, les ressources sont recréées.
 - **`destroy()`** retire tous les écouteurs, déconnecte les observateurs, annule le minuteur et
-  l'image planifiée et les chargements de badges, libère tampons, VAO et programme, puis rend le contexte au navigateur
+  l'image planifiée, libère tampons, VAO et programme, puis rend le contexte au navigateur
   (`loseContext`). Idempotent. Le compte des écouteurs est testé (`test/lifecycle.test.ts`).
 
 ## Construction et mesures
@@ -303,8 +289,7 @@ pas : leurs `.wasm` (54 205 et 58 498 octets) sont identiques octet pour octet a
 parseur de couleur avec les valeurs de trois moteurs, durées et courbes, thème avec sonde injectée
 (dont `paper` en mode clair), conditions de chargement (table de cas, sans `reduced-motion`),
 gyroscope, boucle, commandes et image planifiée, survol et sélection, écouteurs passifs, chargement
-différé des badges avec faux `fetch` et faux `createImageBitmap` (succès, 404, rejet, annulation,
-concurrence de deux), repli sur échec, perte et restauration avec un faux contexte, `destroy()`.
+repli sur échec, perte et restauration avec un faux contexte, `destroy()`.
 Le job CI `wasm` rejoue en plus les tests contre le `.wasm` construit (`PP_MILESTONES_WASM=required`).
 
 Parcours réel de l'ADR-0012, hors dépôt, à refaire avec le lot de rendu (Playwright, rendu logiciel) sur Chromium 156, Firefox 153 et WebKit 27 :
@@ -403,7 +388,7 @@ canvas en lisant ses pixels et attend le GPU logiciel ; ce préchauffage lui lai
 hors du chemin visible.
 
 Chaque phase laisse une marque `performance.measure` (`pp3d:load-wasm`, `prepare-context`,
-`create-scene`, `gpu-step-N`, `resize`, `first-frame`, `texture-decode`, `texture-upload`) : l'audit
+`create-scene`, `gpu-step-N`, `resize`, `first-frame`) : l'audit
 (`tools/audit/milestones-3d`) les joint à chaque tâche longue pour dire quelle phase déborde.
 Rejouer une CI sans carte graphique en local : `AUDIT_CHROMIUM_FLAGS="--headless=new --disable-gpu"`.
 
