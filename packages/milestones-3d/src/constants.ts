@@ -6,6 +6,9 @@ export const MAX_CODE_LENGTH = 16;
 /** Identifiant réservé de l'objectif dans la scène (refusé pour un jalon : `@` n'est pas admis). */
 export const GOAL_ID = '@goal';
 
+/** Canevas compact : plus étroit que ce nombre de pixels CSS (téléphone), cadrage de l'active seule. */
+export const COMPACT_MAX_CSS_PX = 480;
+
 /** Délai laissé au navigateur pour restaurer un contexte perdu, avant le repli définitif. */
 export const CONTEXT_RESTORE_TIMEOUT_MS = 2000;
 /** Rapport de pixels maximal par défaut : au-delà, le coût GPU n'apporte rien à l'œil. */

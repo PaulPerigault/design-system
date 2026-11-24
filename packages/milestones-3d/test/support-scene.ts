@@ -25,6 +25,7 @@ export class FakeScene implements RawScene {
     return this.stepsLeft > 0 ? ((this.stepsLeft -= 1), 1) : 0;
   };
   frame = (now: number): boolean => (this.calls.push(`frame:${now}`), this.moreFrames);
+  setCompact = (compact: boolean): void => void this.calls.push(`compact:${compact}`);
   resize = (w: number, h: number): void => void this.calls.push(`resize:${w}x${h}`);
   setTheme = (theme: Float32Array): void => void this.calls.push(`theme:${theme.length}`);
   setProgress = (p: number): void => {

@@ -1,6 +1,7 @@
 // Taille du canvas : résolution interne suivant la taille CSS (posée par la feuille de style, jamais
 // par un attribut `style`), plafonnée par `dprMax`. Un `ResizeObserver` redessine au changement.
 import type { Bag } from './bag.ts';
+import { COMPACT_MAX_CSS_PX } from './constants.ts';
 import type { Env } from './env.ts';
 import { timed } from './phases.ts';
 import type { CanvasLike, RawScene } from './raw.ts';
@@ -40,6 +41,7 @@ export function watchSize(
     const [w, h] = [devicePixels(width, ratio, dprMax), devicePixels(height, ratio, dprMax)];
     if (`${w}x${h}` === applied) return;
     applied = `${w}x${h}`;
+    scene.setCompact(width < COMPACT_MAX_CSS_PX);
     // Les deux premiers redimensionnements sont mesurés (tampon de mesures borné).
     if (sizes < MEASURED_RESIZES) timed('resize', () => scene.resize(w, h));
     else scene.resize(w, h);

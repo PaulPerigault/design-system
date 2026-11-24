@@ -45,6 +45,9 @@ const measure = (page: Page): Promise<Measure[]> =>
     });
   }, SPRITES);
 
+const MOBILE_MIN_PX = 150;
+const SETTLE_TIMEOUT_MS = 20_000;
+
 test.describe('badges en images HTML intactes (ADR-0014)', () => {
   test.skip(!hasWasm(), 'build sans .wasm');
 
@@ -86,5 +89,15 @@ test.describe('badges en images HTML intactes (ADR-0014)', () => {
       return [style.transform, style.perspective, style.filter, style.opacity];
     });
     expect(layer).toEqual(['none', 'none', 'none', '1']);
+  });
+
+  test('mobile : le badge de la médaille active fait au moins 150 px de large', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await activate(page);
+    const widest = async (): Promise<number> =>
+      Math.max(0, ...(await measure(page)).map((badge) => badge.width));
+    await expect.poll(widest, { timeout: SETTLE_TIMEOUT_MS }).toBeGreaterThanOrEqual(MOBILE_MIN_PX);
   });
 });

@@ -40,6 +40,8 @@ export interface RawScene {
   warmed(): boolean;
   frame(now: number): boolean;
   resize(width: number, height: number): void;
+  /** Canevas étroit en pixels CSS : la scène cadre la médaille active seule, en grand. */
+  setCompact(compact: boolean): void;
   setTheme(theme: Float32Array): void;
   setProgress(progress: number): void;
   progressOf(id: string): number;

@@ -18,6 +18,9 @@ pub const LOOK_AHEAD: f32 = 1.4;
 pub const CLOSE_FILL: f32 = 0.38;
 /// Cadre peu large (mobile) : la médaille occupe davantage, au moins ~45 % de la largeur.
 pub const CLOSE_FILL_NARROW: f32 = 0.4;
+/// Canevas compact (téléphone, scène étroite) : le support couvre `CLOSE_FILL_COMPACT` de la
+/// demi-largeur, le badge (88 %) fait au moins 150 px à 390 px d'écran.
+pub const CLOSE_FILL_COMPACT: f32 = 0.64;
 pub const CLOSE_FILL_MOBILE: f32 = 0.6;
 const WIDE_SPAN: f32 = 0.5;
 pub const NARROW_ASPECT: f32 = 1.3;
@@ -70,7 +73,10 @@ pub fn focus(s: f32) -> f32 {
 /// Part de remplissage selon le cadre : `CLOSE_FILL_NARROW` en portrait et presque carré (bureau,
 /// scène à côté du panneau), jusqu'à `CLOSE_FILL_MOBILE` à `NARROW_ASPECT` (mobile, scène basse et
 /// large), puis retour à `CLOSE_FILL` en paysage large.
-fn close_fill(aspect: f32) -> f32 {
+fn close_fill(aspect: f32, compact: bool) -> f32 {
+    if compact {
+        return CLOSE_FILL_COMPACT;
+    }
     if aspect <= 1.0 {
         return CLOSE_FILL_NARROW;
     }
@@ -88,12 +94,36 @@ fn close_fill(aspect: f32) -> f32 {
     )
 }
 
+/// Format du canevas : rapport largeur/hauteur, et `compact` quand il est étroit en pixels CSS
+/// (téléphone) : seule la médaille active est alors cadrée, en grand.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Framing {
+    pub aspect: f32,
+    pub compact: bool,
+}
+
+impl Framing {
+    #[must_use]
+    pub const fn wide(aspect: f32) -> Self {
+        Self {
+            aspect,
+            compact: false,
+        }
+    }
+}
+
+/// Distance de gros plan d'un canevas non compact (voir `fit_distance`).
+#[must_use]
+pub fn close_distance(aspect: f32) -> f32 {
+    fit_distance(Framing::wide(aspect))
+}
+
 /// Distance de l'œil pour que le rayon d'une médaille occupe `CLOSE_FILL` de la plus petite
 /// demi-étendue du cadre (hauteur en paysage, largeur en portrait).
 #[must_use]
-pub fn close_distance(aspect: f32) -> f32 {
-    let aspect = safe_aspect(aspect);
-    let fill = close_fill(aspect);
+pub fn fit_distance(framing: Framing) -> f32 {
+    let aspect = safe_aspect(framing.aspect);
+    let fill = close_fill(aspect, framing.compact);
     let half_extent = (vertical_fov(aspect) * HALF).tan() * aspect.min(1.0);
     (MEDAL_RADIUS / (fill * half_extent)).min(MAX_CLOSE_DISTANCE)
 }
@@ -102,6 +132,12 @@ pub fn close_distance(aspect: f32) -> f32 {
 /// entre les jalons (vue d'ensemble), cadrage du gros plan (`camera_fit`) à proximité d'une étape.
 #[must_use]
 pub fn camera_at(s: f32, aspect: f32, stops: usize) -> Camera {
+    camera_for(s, Framing::wide(aspect), stops)
+}
+
+/// Comme `camera_at`, pour un format de canevas complet (`Framing`).
+#[must_use]
+pub fn camera_for(s: f32, framing: Framing, stops: usize) -> Camera {
     let f = focus(s);
     let angle = ANGLE_FAR;
     let far = Camera {
@@ -111,7 +147,7 @@ pub fn camera_at(s: f32, aspect: f32, stops: usize) -> Camera {
     if f <= 0.0 {
         return far;
     }
-    let close = close_camera(nearest_to(s, stops), stops, aspect);
+    let close = close_camera(nearest_to(s, stops), stops, framing);
     Camera {
         eye: far.eye.lerp(close.eye, f),
         target: far.target.lerp(close.target, f),

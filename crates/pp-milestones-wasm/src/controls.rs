@@ -19,6 +19,12 @@ impl Scene {
             .map_err(|e| raise(e.into()))
     }
 
+    /// Canevas compact (étroit en pixels CSS) : cadrage de la médaille active seule, en grand.
+    #[wasm_bindgen(js_name = setCompact)]
+    pub fn set_compact(&mut self, compact: bool) {
+        self.state.set_compact(compact);
+    }
+
     #[wasm_bindgen(js_name = setTheme)]
     pub fn set_theme(&mut self, theme: &[f32]) -> Out<()> {
         self.state
