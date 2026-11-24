@@ -27,7 +27,7 @@ Mesures après l'ADR-0013 (Chromium, 4G lente, CPU x6) : au mobile la médaille 
 
 ### Taille au mobile
 
-La médaille active est cadrée pour que le badge fasse au moins 150 px CSS à 390 px de large (45 % de la largeur visée). Le cadrage ne garantit plus que les deux étapes suivantes tiennent entièrement dans le cadre sur les formats étroits : la médaille active prime, les voisines peuvent être partiellement rognées par le bord. Testé pour des rapports d'écran de 0,4 à 2,5.
+La médaille active est cadrée pour que le badge fasse au moins 150 px CSS à 390 px de large (45 % de la largeur visée). L'enveloppe déclare le canevas « compact » (`setCompact`) quand sa largeur CSS est sous 480 px : la scène cadre alors la médaille active seule, en grand (support sur 0,64 de la demi-largeur, badge sur 88 % du diamètre du support), au-dessus d'une place d'étiquette plus haute ; les voisines peuvent être partiellement rognées par le bord. Le rapport d'écran ne suffit pas à distinguer le téléphone du bureau (0,98 et 0,95 mesurés avec le panneau ouvert), d'où le drapeau. Hors format compact, le cadrage groupé (active et deux suivantes entières dans le cadre) est conservé. Testé pour des rapports d'écran de 0,4 à 2,5.
 
 ### Empreinte stable (CLS)
 
