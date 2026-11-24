@@ -41,7 +41,19 @@ function labelFor(item: HTMLElement): HTMLElement {
     label.append(part);
   });
   label.toggleAttribute('data-bare', code === '' && short === '');
+  // Masquée jusqu'à sa première position : jamais posée en (0, 0) puis déplacée (décalage).
+  label.setAttribute('data-hidden', '');
   return label;
+}
+
+/** Mesure chaque étiquette (pixels CSS) ; une étiquette non mesurable vaut zéro. */
+function measureAll(labels: ReadonlyMap<string, HTMLElement>, sizes: Map<string, Size>): void {
+  labels.forEach((label, id) =>
+    sizes.set(id, {
+      width: Number(label.offsetWidth) || NONE,
+      height: Number(label.offsetHeight) || NONE,
+    }),
+  );
 }
 
 export function addLabels(parts: Parts): Labels {
@@ -53,21 +65,18 @@ export function addLabels(parts: Parts): Labels {
   parts.stage.append(layer);
   const sizes = new Map<string, Size>();
   let active: string | null = null;
+  let last: readonly Mark[] = [];
   return {
-    measure() {
-      labels.forEach((label, id) =>
-        sizes.set(id, {
-          width: Number(label.offsetWidth) || NONE,
-          height: Number(label.offsetHeight) || NONE,
-        }),
-      );
-    },
+    measure: () => measureAll(labels, sizes),
     setActive(id) {
       active = id;
       labels.forEach((label, key) => label.toggleAttribute('data-active', key === id));
       this.measure();
+      // L'actif change de taille (titre) : on le recentre avant la peinture, pas à l'image suivante.
+      if (last.length > NONE) this.update(last);
     },
     update(marks) {
+      last = marks;
       const area = { width: parts.stage.clientWidth, height: parts.stage.clientHeight };
       if (sizes.size === NONE) this.measure();
       const placed = placeLabels(marks, sizes, area, active);

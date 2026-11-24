@@ -77,6 +77,14 @@ describe('whenReady', () => {
     expect(calls.listening).toBe(0);
   });
 
+  it('n’exige aucun geste quand l’empreinte est réservée, même déjà à l’écran', async () => {
+    const { env, calls } = fakeGate({ top: 100, bottom: 400 });
+    const host = page();
+    host.setAttribute('data-reserve', 'on');
+    await whenReady(host, env);
+    expect(calls.listening).toBe(0);
+  });
+
   it('n’attend ni le défilement ni la molette : seuls les gestes discrets comptent', () => {
     expect(GESTURES).toEqual(['pointerdown', 'keydown']);
   });

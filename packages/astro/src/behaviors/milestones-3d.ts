@@ -12,7 +12,7 @@ import { blockedEarly, browserGate, whenReady } from './milestones-3d-gate';
 import { browserEnv } from './milestones-3d-env';
 import { start } from './milestones-3d-start';
 import type { Deps, SceneModule } from './milestones-3d-types';
-import { collect } from './milestones-3d-view';
+import { collect, releaseReserve } from './milestones-3d-view';
 
 export type { Deps, Env, Mark, Scene, SceneModule } from './milestones-3d-types';
 
@@ -35,7 +35,8 @@ export const defaultDeps = (win: Window & typeof globalThis = window): Deps => {
 /** Améliore un composant : ne rejette jamais, le rendu classique reste en cas d'échec. */
 export async function enhance(host: Element, deps: Deps): Promise<void> {
   const parts = collect(host);
-  if (!parts || started.has(host) || deps.early() !== null) return;
+  if (!parts || started.has(host)) return;
+  if (deps.early() !== null) return releaseReserve(host);
   started.add(host);
   try {
     await deps.ready(host);
@@ -43,6 +44,8 @@ export async function enhance(host: Element, deps: Deps): Promise<void> {
   } catch {
     // Paquet absent, bloqué par la CSP ou hors ligne : la liste reste, rien n'est affiché.
   }
+  // Sans scène (WebGL2 absent, appareil faible, échec) : la liste reprend sa place.
+  if (host.getAttribute('data-state') !== 'enhanced') releaseReserve(host);
 }
 
 /** Démarre chaque composant sous `root` ; renvoie le nombre de composants trouvés. */

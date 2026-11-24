@@ -41,7 +41,7 @@ function reverter(parts: Parts, canvas: HTMLCanvasElement, live: Live): () => vo
     clearTrackSteps(parts);
     resetDetail(parts);
     canvas.remove();
-    ['data-state', 'data-mode'].forEach((name) => parts.host.removeAttribute(name));
+    ['data-state', 'data-mode', 'data-reserve'].forEach((name) => parts.host.removeAttribute(name));
   };
 }
 

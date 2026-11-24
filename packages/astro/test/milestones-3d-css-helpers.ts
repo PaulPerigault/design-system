@@ -17,4 +17,5 @@ export const FILES = [
   'milestones-3d-enhanced.css',
   'milestones-3d-panel.css',
   'milestones-3d-steps.css',
+  'milestones-3d-reserve.css',
 ];

@@ -1,0 +1,93 @@
+/*
+ * Milestones3D : piste haute réservée avant l'activation (ADR-0014), comme `data-mode="scroll"` du
+ * comportement : mêmes conditions (JavaScript, mouvement non réduit), même hauteur. Le nombre
+ * d'étapes vient de `data-pp-count` (jalons et objectif, 25 au plus) : aucun attribut `style`.
+ */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .pp-milestones[data-reserve='on'][data-pp-count='1'] {
+    --milestones-steps: 1;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='2'] {
+    --milestones-steps: 2;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='3'] {
+    --milestones-steps: 3;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='4'] {
+    --milestones-steps: 4;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='5'] {
+    --milestones-steps: 5;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='6'] {
+    --milestones-steps: 6;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='7'] {
+    --milestones-steps: 7;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='8'] {
+    --milestones-steps: 8;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='9'] {
+    --milestones-steps: 9;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='10'] {
+    --milestones-steps: 10;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='11'] {
+    --milestones-steps: 11;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='12'] {
+    --milestones-steps: 12;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='13'] {
+    --milestones-steps: 13;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='14'] {
+    --milestones-steps: 14;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='15'] {
+    --milestones-steps: 15;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='16'] {
+    --milestones-steps: 16;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='17'] {
+    --milestones-steps: 17;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='18'] {
+    --milestones-steps: 18;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='19'] {
+    --milestones-steps: 19;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='20'] {
+    --milestones-steps: 20;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='21'] {
+    --milestones-steps: 21;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='22'] {
+    --milestones-steps: 22;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='23'] {
+    --milestones-steps: 23;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='24'] {
+    --milestones-steps: 24;
+  }
+  .pp-milestones[data-reserve='on'][data-pp-count='25'] {
+    --milestones-steps: 25;
+  }
+
+  .pp-milestones[data-reserve='on'] .pp-milestones__track {
+    block-size: calc(
+      var(--milestones-steps, 1) * var(--milestones-step) + var(--milestones-screen)
+    );
+  }
+
+  .pp-milestones[data-reserve='on'] .pp-milestones__frame {
+    position: sticky;
+    inset-block-start: 0;
+  }
+}

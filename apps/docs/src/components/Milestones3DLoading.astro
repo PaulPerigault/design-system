@@ -8,7 +8,7 @@ const conditions = [
   'Pas d’économie de données (`navigator.connection.saveData`), quand le navigateur l’expose : Chromium seulement. Vérifié avant tout téléchargement.',
   'Appareil non faible : plus de 2 cœurs (`hardwareConcurrency`) et plus de 2 Go (`deviceMemory`). Une valeur absente ne compte pas comme faible : Firefox et Safari n’exposent pas `deviceMemory`.',
   'WebGL2 disponible, testé sur un canvas jetable, rendu au navigateur aussitôt.',
-  'Section proche de l’écran (marge de 200 px). Déjà visible à l’ouverture : la 3D attend le premier geste, pour ne pas décaler la liste déjà affichée.',
+  'Section proche de l’écran (marge de 200 px). Avec `reserve` (défaut), la scène s’installe aussitôt, sans décalage : le HTML serveur occupe déjà l’empreinte finale (piste, cadre épinglé, liste en bande d’étapes, rangée de navigation), avec JavaScript seulement. Avec `reserve={false}`, une section déjà visible à l’ouverture attend le premier geste.',
 ];
 const fields = [
   '`id` (obligatoire) : identifiant unique, `[a-z0-9-]+`.',
@@ -21,6 +21,8 @@ const fields = [
 const paragraphs = {
   intro:
     'Le serveur rend toujours la liste complète. La scène 3D s’y ajoute seulement si toutes ces conditions tiennent. `prefers-reduced-motion` ne la bloque plus : il remplace le défilement piloté par une navigation par étapes.',
+  reserve:
+    'Empreinte réservée (ADR-0014) : avant l’activation, avec JavaScript, la section a déjà la hauteur de la piste et une scène vide ; elle devient la scène sans qu’aucun élément ne bouge, quel que soit le délai (CLS 0 mesuré avec une scène prête après 3 s, processeur ralenti six fois). Si la 3D n’est pas admise (WebGL2 absent, appareil faible, économie de données, échec), la réservation est levée et la liste reprend sa place : un décalage unique, limité à ces appareils. Une page qui n’installe pas le comportement `milestones-3d` passe `reserve={false}` : sinon la scène vide resterait.',
   after:
     'Le paquet 3D est chargé après ces vérifications, puis juge lui-même l’appareil et WebGL2 ; le `.wasm` n’est lu qu’ensuite. Un échec d’`init`, un paquet absent ou bloqué par la politique de sécurité, une perte de contexte sans restauration en 2 secondes : la liste reste ou revient, sans message.',
   support:
@@ -45,6 +47,9 @@ const sources = [
     </li>
   ))}
 </ul>
+<p>
+  <InlineCode text={paragraphs.reserve} />
+</p>
 <p>
   <InlineCode text={paragraphs.after} />
 </p>

@@ -22,6 +22,8 @@ export const enhanced = (page: Page): Locator =>
 /** Badge de démonstration : 4 jalons obtenus en portent un, le plus ancien est « Réseaux ». */
 export const DEMO_STEPS = 9;
 
+const SETTLE_MS = 800;
+
 export async function activate(page: Page): Promise<void> {
   await page.goto(PATH);
   await page.locator('[data-milestones-demo]').scrollIntoViewIfNeeded();
@@ -30,4 +32,9 @@ export async function activate(page: Page): Promise<void> {
     await page.keyboard.press('Shift');
     await expect(enhanced(page)).toHaveCount(1, { timeout: 1000 });
   }).toPass({ timeout: 30_000 });
+  // L'empreinte étant réservée dès le HTML, la page peut être au milieu de la piste : on revient au début.
+  await page.locator('[data-milestones-demo] [data-pp-track]').evaluate((track) => {
+    track.scrollIntoView({ block: 'start' });
+  });
+  await page.waitForTimeout(SETTLE_MS);
 }

@@ -1,0 +1,101 @@
+/*
+ * Milestones3D : empreinte réservée avant l'activation (ADR-0014). Le défilement n'est pas une
+ * entrée récente : seule une empreinte identique avant et après l'activation donne un CLS nul. Avec
+ * JavaScript (`scripting: enabled`), le HTML serveur est donc déjà mis en page comme le mode
+ * amélioré : piste haute, cadre épinglé, scène vide, liste en bande d'étapes, rangée de
+ * navigation. `data-reserve="on"` vient de la prop `reserve` ; le comportement le retire au repli.
+ * Sans JavaScript, ces règles ne s'appliquent pas : la liste reste en flux normal.
+ *
+ * Chaque règle recopie celle du mode amélioré (`data-state`) de `milestones-3d-enhanced.css`,
+ * `milestones-3d-badge.css` et `milestones-3d-steps.css` : un test compare les déclarations.
+ */
+@media (scripting: enabled) {
+  .pp-milestones[data-reserve='on'] .pp-milestones__frame {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto auto minmax(var(--pp-size-control-height), auto);
+    grid-template-areas: 'skip' 'stage' 'panel' 'list' 'nav';
+    gap: var(--pp-space-xs);
+    box-sizing: border-box;
+    block-size: var(--milestones-screen);
+    padding-block: var(--pp-space-xs);
+    background-color: var(--pp-color-bg);
+  }
+
+  .pp-milestones[data-reserve='on'] .pp-milestones__stage {
+    position: relative;
+    display: block;
+    grid-area: stage;
+    min-block-size: 0;
+  }
+
+  .pp-milestones[data-reserve='on'] .pp-milestones__skip {
+    display: inline-block;
+    position: static;
+    grid-area: skip;
+    justify-self: start;
+    min-block-size: var(--pp-size-target-min);
+    padding-block: var(--pp-space-3xs);
+    padding-inline: var(--pp-space-xs);
+    border: var(--pp-size-rule) solid var(--pp-color-line);
+    border-radius: var(--pp-radius-control);
+    background-color: var(--pp-color-surface);
+    color: var(--pp-color-accent-text);
+    font-size: var(--pp-font-size--1);
+  }
+
+  .pp-milestones[data-reserve='on'] .pp-milestones__list {
+    position: relative;
+    grid-area: list;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(calc(var(--pp-space-2xl) * 2), 1fr);
+    gap: var(--pp-space-2xs);
+    overflow-inline: auto;
+    overscroll-behavior-x: contain;
+  }
+
+  .pp-milestones[data-reserve='on'] .pp-milestones__item {
+    display: block;
+    padding: 0;
+    border: 0;
+  }
+
+  .pp-milestones[data-reserve='on'] .pp-milestones__item > .pp-milestones__medal,
+  .pp-milestones[data-reserve='on'] .pp-milestones__text > :not([data-pp-name]) {
+    position: absolute;
+    inline-size: var(--pp-size-rule);
+    block-size: var(--pp-size-rule);
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* Le nom prend la boîte du bouton d'étape que le comportement y met : même hauteur, rien ne bouge. */
+  .pp-milestones[data-reserve='on'] [data-pp-name]:not(:has(.pp-milestones__select)) {
+    box-sizing: border-box;
+    inline-size: 100%;
+    block-size: 100%;
+    min-block-size: var(--pp-size-target-min);
+    padding-block: var(--pp-space-3xs);
+    padding-inline: var(--pp-space-xs);
+    padding-block-end: calc(var(--pp-space-3xs) + var(--pp-size-rule) * 2);
+    border: var(--pp-size-rule) solid var(--pp-color-line);
+    border-radius: var(--pp-radius-control);
+    background-color: var(--pp-color-surface);
+    font-size: var(--pp-font-size--1);
+    text-align: start;
+  }
+
+  .pp-milestones[data-reserve='on'] .pp-milestones__item[data-status='planned'] [data-pp-name] {
+    border-style: dashed;
+  }
+
+  @media (width >= 48rem) {
+    .pp-milestones[data-reserve='on'] .pp-milestones__frame {
+      grid-template-columns: minmax(0, 1fr) minmax(0, calc(var(--pp-size-measure) * 3 / 4));
+      grid-template-rows: auto minmax(0, 1fr) auto minmax(var(--pp-size-control-height), auto);
+      grid-template-areas: 'skip skip' 'stage panel' 'list list' 'nav nav';
+      column-gap: var(--pp-space-m);
+    }
+  }
+}

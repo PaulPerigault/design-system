@@ -4,10 +4,11 @@
  *    3D tranche ensuite le reste : WebGL2, appareil faible). `prefers-reduced-motion` ne bloque plus
  *    (ADR-0013) : il change le mode de pilotage, voir `milestones-3d-pilot.ts`.
  * 2. `whenReady` attend que la section approche du viewport (marge d'observation : le chargement
- *    démarre avant l'entrée à l'écran). Déjà visible au chargement, il attend le premier geste
- *    (clic, toucher, touche) : insérer la scène sans geste décalerait la liste déjà affichée (CLS de
- *    0,19 mesuré par l'audit #366 avec l'inactivité du navigateur) et toucherait au LCP. Un décalage
- *    qui suit un geste discret n'est pas compté par la mesure du CLS.
+ *    démarre avant l'entrée à l'écran). Empreinte réservée (`data-reserve`, ADR-0014) : la scène
+ *    s'installe sans décalage, quel que soit le délai ou le mode d'activation. Sinon, déjà visible au
+ *    chargement, il attend le premier geste (clic, toucher, touche) : insérer la scène sans geste
+ *    décalerait la liste déjà affichée (CLS de 0,19 mesuré par l'audit #366) et un décalage qui suit
+ *    un geste discret n'est pas compté par la mesure du CLS.
  */
 
 /** Marge d'observation : la section est « proche » à cette distance du viewport. */
@@ -61,8 +62,13 @@ function whenGesture(env: GateEnv): Promise<void> {
   });
 }
 
+/**
+ * Empreinte réservée (`data-reserve="on"`, ADR-0014) : la scène s'installe sans décalage, aucun
+ * geste n'est exigé. Sinon, une section déjà à l'écran attend le premier geste discret.
+ */
 export async function whenReady(host: Element, env: GateEnv): Promise<void> {
-  if (await whenNear(host, env)) await whenGesture(env);
+  const near = await whenNear(host, env);
+  if (near && host.getAttribute('data-reserve') !== 'on') await whenGesture(env);
 }
 
 type Win = Window & typeof globalThis;

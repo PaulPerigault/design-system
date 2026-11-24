@@ -35,6 +35,8 @@
   min-block-size: var(--pp-size-target-min);
   padding-block: var(--pp-space-3xs);
   padding-inline: var(--pp-space-xs);
+  /* Même hauteur actif ou non : la bordure basse épaissie de l'actif est compensée ici. */
+  padding-block-end: calc(var(--pp-space-3xs) + var(--pp-size-rule) * 2);
   border: var(--pp-size-rule) solid var(--pp-color-line);
   border-radius: var(--pp-radius-control);
   background-color: var(--pp-color-surface);
@@ -53,6 +55,7 @@
 .pp-milestones__select[aria-current='step'] {
   border-color: var(--pp-color-accent);
   border-block-end-width: calc(var(--pp-size-rule) * 3);
+  padding-block-end: var(--pp-space-3xs);
   font-weight: var(--pp-font-weight-bold);
 }
 
