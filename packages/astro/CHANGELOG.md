@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.6.0](https://github.com/PaulPerigault/design-system/compare/astro-v0.5.0...astro-v0.6.0) (2026-11-24)
+
+
+### Features
+
+* **milestones:** badges en images html intactes sur support fixe ([#407](https://github.com/PaulPerigault/design-system/issues/407)) ([14a3f7d](https://github.com/PaulPerigault/design-system/commit/14a3f7da99ce4b4543756de6ad56cbfe57e0699b)), closes [#400](https://github.com/PaulPerigault/design-system/issues/400)
+* **milestones:** cadrage mobile, badge de 150 px au moins ([#409](https://github.com/PaulPerigault/design-system/issues/409)) ([d610482](https://github.com/PaulPerigault/design-system/commit/d610482b300562855df7fb8bb16ea26f8c0ad71d)), closes [#401](https://github.com/PaulPerigault/design-system/issues/401)
+
+
+### Bug Fixes
+
+* **milestones:** empreinte réservée dès le html, cls nul ([#410](https://github.com/PaulPerigault/design-system/issues/410)) ([2d05924](https://github.com/PaulPerigault/design-system/commit/2d05924369fd8b88b5a3f89588a4b9080eda2ba5)), closes [#402](https://github.com/PaulPerigault/design-system/issues/402)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @paulperigault/css bumped from 0.4.0 to 0.5.0
+  * peerDependencies
+    * @paulperigault/milestones-3d bumped from >=0.0.0 <1.0.0 to >=0.3.0
+
 ## [0.5.0](https://github.com/PaulPerigault/design-system/compare/astro-v0.4.0...astro-v0.5.0) (2026-11-23)
 
 

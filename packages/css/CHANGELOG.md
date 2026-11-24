@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.0](https://github.com/PaulPerigault/design-system/compare/css-v0.4.0...css-v0.5.0) (2026-11-24)
+
+
+### Features
+
+* **milestones:** badges en images html intactes sur support fixe ([#407](https://github.com/PaulPerigault/design-system/issues/407)) ([14a3f7d](https://github.com/PaulPerigault/design-system/commit/14a3f7da99ce4b4543756de6ad56cbfe57e0699b)), closes [#400](https://github.com/PaulPerigault/design-system/issues/400)
+
+
+### Bug Fixes
+
+* **milestones:** empreinte réservée dès le html, cls nul ([#410](https://github.com/PaulPerigault/design-system/issues/410)) ([2d05924](https://github.com/PaulPerigault/design-system/commit/2d05924369fd8b88b5a3f89588a4b9080eda2ba5)), closes [#402](https://github.com/PaulPerigault/design-system/issues/402)
+
 ## [0.4.0](https://github.com/PaulPerigault/design-system/compare/css-v0.3.0...css-v0.4.0) (2026-11-23)
 
 
