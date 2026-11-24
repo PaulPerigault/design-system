@@ -1,5 +1,5 @@
 //! Image d'une scène : avance l'horloge, applique la cible de la caméra, dresse la liste de dessin.
-use crate::camera::camera_at;
+use crate::camera::camera_for;
 use crate::plan::{DrawItem, Inputs, Pose, build};
 use crate::progress::nearest_to;
 use crate::state::SceneState;
@@ -44,7 +44,7 @@ impl SceneState {
             pack: &self.pack,
         };
         Frame {
-            view_projection: camera_at(self.shown, self.aspect, self.data.stops())
+            view_projection: camera_for(self.shown, self.framing(), self.data.stops())
                 .view_projection(self.aspect),
             items: build(&inputs, &pose),
             animating: self.camera.is_running(now) || !self.interaction.tilt.settled(),

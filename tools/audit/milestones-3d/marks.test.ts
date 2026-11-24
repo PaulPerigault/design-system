@@ -18,9 +18,15 @@ describe('worstMargin', () => {
       0.3, 0.7, 0.1, 1, 0.5, 0.4, 0.05, 1, 0.8, 0.2, 0.05, 1, 0.99, 0.5, 0.2, 1,
     ]);
     // active 0 : rayon 80 px, centre (120, 560) : gauche 40/400 = 0,10 ; bas 160/800 = 0,20
-    expect(worstMargin(marks, 0, AREA)).toBeCloseTo(0.1, 5);
+    expect(worstMargin(marks, 0, AREA, false)).toBeCloseTo(0.1, 5);
     // le quatrième repère (hors cadrage voulu) ne compte pas
-    expect(worstMargin(marks.slice(0, 3), 0, AREA)).toBeCloseTo(0.1, 5);
+    expect(worstMargin(marks.slice(0, 3), 0, AREA, false)).toBeCloseTo(0.1, 5);
+  });
+
+  it('format compact (sous 480 px) : l’active seule compte, les suivantes peuvent déborder', () => {
+    const marks = parseMarks([0.5, 0.5, 0.1, 1, 0.99, 0.5, 0.2, 1]);
+    expect(worstMargin(marks, 0, AREA)).toBeCloseTo(0.3, 5);
+    expect(worstMargin(marks, 0, AREA, false)).toBeLessThan(0);
   });
 
   it('rend null si une médaille cadrée est invisible, ou s’il n’y en a pas', () => {

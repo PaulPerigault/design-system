@@ -7,7 +7,7 @@ import type { Size } from './milestones-3d-place';
 import type { Mark } from './milestones-3d-types';
 
 /** Part du diamètre du support que couvre le plus grand côté du badge ; le reste est le rebord. */
-export const BADGE_SPAN = 0.84;
+export const BADGE_SPAN = 0.88;
 const DIAMETER = 2;
 const HALF = 2;
 /** Précision de l'ordre de superposition : plus grande est la médaille, plus elle est proche. */

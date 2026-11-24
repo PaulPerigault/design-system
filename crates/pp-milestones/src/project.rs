@@ -1,5 +1,5 @@
 //! Projection des étapes à l'écran : positions des étiquettes HTML posées sur la scène.
-use crate::camera::camera_at;
+use crate::camera::camera_for;
 use crate::layout::{ordinal, path_point};
 use crate::picking::{Disc, disc};
 use crate::plan::{AHEAD_UNITS, BEHIND_UNITS};
@@ -33,7 +33,7 @@ fn touches_frame(ndc: Vec2, radius: f32, aspect: f32) -> bool {
 impl SceneState {
     /// Disques de toutes les étapes (jalons puis objectif), pour la caméra affichée.
     pub(crate) fn discs(&self) -> Vec<Option<Disc>> {
-        let camera = camera_at(self.shown, self.aspect, self.data.stops());
+        let camera = camera_for(self.shown, self.framing(), self.data.stops());
         let matrix = camera.view_projection(self.aspect);
         (0..self.data.stops())
             .map(|index| {

@@ -24,6 +24,11 @@ describe('création', () => {
     expect(custom.h.scene.calls).toContain('resize:400x200');
   });
 
+  it('déclare compact un canvas plus étroit que 480 px CSS (téléphone)', async () => {
+    const { h } = await start();
+    expect(h.scene.calls).toContain('compact:true');
+  });
+
   it('ne renvoie pas à la scène une taille déjà appliquée (le tampon WebGL se réalloue)', async () => {
     const { h } = await start();
     const resizes = (): number => h.scene.calls.filter((c) => c.startsWith('resize:')).length;

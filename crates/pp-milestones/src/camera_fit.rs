@@ -2,7 +2,7 @@
 //! étapes suivantes (ou moins, en fin de parcours) tiennent entièrement dans le cadre, marges
 //! comprises, puis le regard est centré sur leur emprise. Pur : aucun état, testé sur tous les
 //! formats et toutes les étapes. La médaille active reste la plus proche donc la plus grande.
-use crate::camera::{Camera, close_distance, project, vertical_fov};
+use crate::camera::{Camera, Framing, fit_distance, project, vertical_fov};
 use crate::layout::{FACE_PITCH, MEDAL_RADIUS, elevated_back, ordinal, path_point};
 use glam::{Vec2, Vec3};
 
@@ -10,6 +10,8 @@ use glam::{Vec2, Vec3};
 pub const MARGIN: f32 = 0.06;
 /// Place réservée sous la médaille active pour son étiquette (en coordonnées normalisées).
 pub const LABEL_ROOM: f32 = 0.18;
+/// Idem en format compact (scène basse : l'étiquette de trois lignes y pèse davantage).
+pub const LABEL_ROOM_COMPACT: f32 = 0.34;
 /// Nombre d'étapes à venir cadrées avec l'active.
 pub const AHEAD: usize = 2;
 /// Encombrement d'une médaille : anneau de survol, médaille avancée et agrandie (× rayon).
@@ -21,10 +23,12 @@ const CENTER_STEPS: usize = 6;
 const HALF: f32 = 0.5;
 const NDC_SPAN: f32 = 2.0;
 
-/// Centres des médailles cadrées : l'active, puis jusqu'à `AHEAD` étapes suivantes.
-fn centers(index: usize, stops: usize) -> Vec<Vec3> {
+/// Centres des médailles cadrées : l'active, puis jusqu'à `AHEAD` étapes suivantes (cadre large). Format compact :
+/// l'active seule, elle prime (badge d'au moins 150 px à 390 px) et les voisines peuvent dépasser.
+fn centers(index: usize, stops: usize, compact: bool) -> Vec<Vec3> {
     let last = stops.saturating_sub(1);
-    (index..=(index + AHEAD).min(last.max(index)))
+    let ahead = if compact { 0 } else { AHEAD };
+    (index..=(index + ahead).min(last.max(index)))
         .map(|stop| path_point(ordinal(stop)))
         .collect()
 }
@@ -37,9 +41,22 @@ fn disc(center: Vec3, camera: &Camera, matrix: glam::Mat4, aspect: f32) -> Optio
     Some((middle, Vec2::new(half_x, half_x * aspect)))
 }
 
-fn camera_at_distance(index: usize, stops: usize, aspect: f32, distance: f32) -> (Camera, bool) {
+fn camera_at_distance(
+    index: usize,
+    stops: usize,
+    framing: Framing,
+    distance: f32,
+) -> (Camera, bool) {
+    let aspect = framing.aspect;
     let base = path_point(ordinal(index));
-    let points = centers(index, stops);
+    let points = centers(index, stops, framing.compact);
+    let room = if framing.compact {
+        LABEL_ROOM_COMPACT
+    } else {
+        LABEL_ROOM
+    };
+    // Active seule : elle est centrée au-dessus de la place de son étiquette.
+    let lift = if points.len() == 1 { room * HALF } else { 0.0 };
     let eye = base + elevated_back(ordinal(index), FACE_PITCH) * distance;
     let mut target = points.iter().sum::<Vec3>() / ordinal(points.len());
     let half_fov = (vertical_fov(aspect) * HALF).tan();
@@ -60,7 +77,8 @@ fn camera_at_distance(index: usize, stops: usize, aspect: f32, distance: f32) ->
         let Some((min, max, _)) = extent(&camera) else {
             break;
         };
-        let (centre, forward) = ((min + max) * HALF, (target - eye).normalize_or_zero());
+        let centre = (min + max) * HALF - Vec2::new(0.0, lift);
+        let forward = (target - eye).normalize_or_zero();
         let up = camera.right().cross(forward);
         let height = (target - eye).length() * half_fov;
         target += camera.right() * centre.x * aspect * height + up * centre.y * height;
@@ -72,7 +90,7 @@ fn camera_at_distance(index: usize, stops: usize, aspect: f32, distance: f32) ->
             && max.x <= 1.0 - edge
             && min.y >= -1.0 + edge
             && max.y <= 1.0 - edge
-            && active_bottom >= -1.0 + edge + LABEL_ROOM
+            && active_bottom >= -1.0 + edge + room
     });
     (camera, fits)
 }
@@ -81,19 +99,19 @@ fn camera_at_distance(index: usize, stops: usize, aspect: f32, distance: f32) ->
 /// `aspect` : la plus proche (la plus grande médaille active) dont tout le groupe tient dans le
 /// cadre. Jamais plus proche que le remplissage de `close_distance`.
 #[must_use]
-pub fn close_camera(index: usize, stops: usize, aspect: f32) -> Camera {
-    let (mut low, mut high) = (close_distance(aspect), MAX_DISTANCE);
-    let (nearest, fits) = camera_at_distance(index, stops, aspect, low);
+pub fn close_camera(index: usize, stops: usize, framing: Framing) -> Camera {
+    let (mut low, mut high) = (fit_distance(framing), MAX_DISTANCE);
+    let (nearest, fits) = camera_at_distance(index, stops, framing, low);
     if fits {
         return nearest;
     }
     for _ in 0..SEARCH_STEPS {
         let middle = (low + high) * HALF;
-        if camera_at_distance(index, stops, aspect, middle).1 {
+        if camera_at_distance(index, stops, framing, middle).1 {
             high = middle;
         } else {
             low = middle;
         }
     }
-    camera_at_distance(index, stops, aspect, high).0
+    camera_at_distance(index, stops, framing, high).0
 }

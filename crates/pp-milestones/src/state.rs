@@ -19,6 +19,8 @@ pub struct SceneState {
     /// Abscisse de la dernière image dessinée : ce que `pick` et `project` voient à l'écran.
     pub(crate) shown: f32,
     pub(crate) aspect: f32,
+    /// Canevas compact (étroit en pixels CSS) : cadrage de la seule médaille active.
+    pub(crate) compact: bool,
     pub(crate) last: Option<f32>,
 }
 
@@ -41,6 +43,7 @@ impl SceneState {
             pending: None,
             shown: 0.0,
             aspect: 1.0,
+            compact: false,
             last: None,
         })
     }
@@ -68,6 +71,17 @@ impl SceneState {
 
     pub const fn set_theme(&mut self, theme: Theme) {
         self.theme = theme;
+    }
+
+    pub(crate) const fn framing(&self) -> crate::camera::Framing {
+        crate::camera::Framing {
+            aspect: self.aspect,
+            compact: self.compact,
+        }
+    }
+
+    pub const fn set_compact(&mut self, compact: bool) {
+        self.compact = compact;
     }
 
     /// # Errors

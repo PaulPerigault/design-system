@@ -1,4 +1,6 @@
-use pp_milestones::camera::{FOV_Y, camera_at, close_distance, focus, project, vertical_fov};
+use pp_milestones::camera::{
+    FOV_Y, Framing, camera_at, camera_for, close_distance, focus, project, vertical_fov,
+};
 use pp_milestones::layout::{MEDAL_RADIUS, face_normal, path_point, path_tangent, rail_point};
 use pp_milestones::progress::{nearest, progress_of};
 
@@ -75,7 +77,8 @@ fn the_active_medal_and_the_next_two_stay_in_the_frame_at_every_aspect() {
                 let s = f32::from(u16::try_from(index).unwrap());
                 let camera = camera_at(s, aspect, stops);
                 let matrix = camera.view_projection(aspect);
-                for k in 0..=2.min(stops - 1 - index) {
+                let ahead = 2;
+                for k in 0..=ahead.min(stops - 1 - index) {
                     let at = path_point(s + f32::from(u16::try_from(k).unwrap()));
                     let (centre, _) = project(at, matrix).unwrap();
                     let (edge, _) = project(at + camera.right() * MEDAL_RADIUS, matrix).unwrap();
@@ -124,5 +127,46 @@ fn narrow_canvases_widen_the_field() {
     assert!(vertical_fov(0.5) > FOV_Y);
     for bad in [0.0, -1.0, f32::NAN, f32::INFINITY] {
         assert!(close_distance(bad).is_finite());
+    }
+}
+
+/// Part de la largeur que couvre le rayon du support actif (le badge en couvre 88 % du diamètre).
+fn compact_share(aspect: f32, index: usize, stops: usize) -> f32 {
+    let s = f32::from(u16::try_from(index).unwrap());
+    let camera = camera_for(
+        s,
+        Framing {
+            aspect,
+            compact: true,
+        },
+        stops,
+    );
+    let matrix = camera.view_projection(aspect);
+    let at = path_point(s);
+    let (centre, _) = project(at, matrix).unwrap();
+    let (edge, _) = project(at + camera.right() * MEDAL_RADIUS, matrix).unwrap();
+    assert!(
+        centre.x.abs() <= 1.0 && centre.y.abs() <= 1.0,
+        "centre hors cadre"
+    );
+    (edge.x - centre.x).abs()
+}
+
+#[test]
+fn the_compact_active_support_is_wide_and_inside_the_frame() {
+    // Canevas de 324 px à 390 px d'écran : le support couvre au moins 0,62 de la largeur, le
+    // badge (88 %) fait 169 px, au-delà des 150 px exigés (0,46 suffit à 390 px). Aspect 0,98 :
+    // canevas réel du téléphone avec le panneau ouvert.
+    for aspect in [0.4, 0.46, 0.58, 0.7, 0.98] {
+        for index in [0_usize, 3, 8] {
+            let share = compact_share(aspect, index, 10);
+            assert!(share >= 0.46, "aspect {aspect}, étape {index} : {share}");
+        }
+    }
+    for aspect in [0.4, 0.46, 0.58, 0.7] {
+        assert!(compact_share(aspect, 3, 10) >= 0.62, "aspect {aspect}");
+    }
+    for aspect in [1.3, 1.8, 2.5] {
+        assert!(compact_share(aspect, 3, 10) > 0.0, "aspect {aspect}");
     }
 }
