@@ -1,6 +1,6 @@
 {
   "name": "@paulperigault/data",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Agrégation, quantiles de type 7 et sous-échantillonnage LTTB : pp-data compilé en WebAssembly.",
   "type": "module",
   "license": "MIT",

@@ -1,6 +1,6 @@
 {
   "name": "@paulperigault/css",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Base CSS, reset, impression, polices et thème Tailwind v4 bâtis sur @paulperigault/tokens.",
   "type": "module",
   "license": "MIT",

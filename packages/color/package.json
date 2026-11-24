@@ -1,6 +1,6 @@
 {
   "name": "@paulperigault/color",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Couleur OKLCH, sRGB, gamut et contraste (WCAG 2, APCA) : pp-color compilé en WebAssembly.",
   "type": "module",
   "license": "MIT",
