@@ -30,11 +30,14 @@ export async function rendererOf(page: Page): Promise<string> {
   });
 }
 
+const HIDE_SPRITES = '.pp-milestones__sprites { visibility: hidden !important; }';
+
 async function enhanceAndShoot(page: Page): Promise<Buffer> {
   await untilEnhanced(page);
   await page.locator(STAGE).scrollIntoViewIfNeeded();
   await page.waitForTimeout(IDLE_WAIT_MS);
-  return page.locator(STAGE).screenshot();
+  // Le contrôle de fidélité porte sur la 3D (support, rail, anneau) : les badges HTML en sont exclus.
+  return page.locator(STAGE).screenshot({ style: HIDE_SPRITES });
 }
 
 function framing(where: Where, png: Buffer, tokens: TokenColors): Row {
