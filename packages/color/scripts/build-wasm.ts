@@ -4,15 +4,16 @@ import { spawnSync } from 'node:child_process';
 import { appendFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { reproducibleEnv } from '../../../tools/wasm/reproducible.ts';
 import { DIGEST_FILE, WASM_DIR, WASM_FILE, digestLine, weigh, weightLine } from './wasm-files.ts';
 
 const ROOT = fileURLToPath(new URL('../../../', import.meta.url));
 const PACKAGE = fileURLToPath(new URL('../', import.meta.url));
 const RELEASE = 'target/wasm32-unknown-unknown/release/pp_color_wasm.wasm';
 
-function step(command: string, args: string[]): void {
+function step(command: string, args: string[], env = process.env): void {
   console.log(`$ ${command} ${args.join(' ')}`);
-  const { status } = spawnSync(command, args, { cwd: ROOT, stdio: 'inherit' });
+  const { status } = spawnSync(command, args, { cwd: ROOT, stdio: 'inherit', env });
   if (status !== 0) throw new Error(`${command} a échoué (code ${status})`);
 }
 
@@ -23,6 +24,7 @@ step(
     '--release',
     '--locked',
   ]),
+  reproducibleEnv(ROOT),
 );
 mkdirSync(out, { recursive: true });
 step('wasm-bindgen', ['--target', 'web', '--out-dir', out, '--out-name', 'pp_color_wasm', RELEASE]);
